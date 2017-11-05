@@ -1,0 +1,44 @@
+buildscript {
+    repositories { mavenCentral() }
+}
+
+plugins {
+    id "io.spring.dependency-management" version "1.0.0.RELEASE"
+    id 'java'
+    id 'net.ltgt.apt' version '0.9'
+}
+
+ext {
+    springBootVersion = '1.5.8.RELEASE'
+    mapstructVersion = "1.2.0.Final"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+jar {
+    baseName = 'Converter'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+
+repositories { mavenCentral() }
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter')
+
+    compile("org.mapstruct:mapstruct-jdk8:${mapstructVersion}")
+
+    apt("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+
+    compile project(":DAO")
+    compile project(":DTO")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    //testCompile 'org.testng:testng:6.10', 'org.easytesting:fest-assert:1.4'
+}
+
+dependencyManagement {
+    imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+}
+
+

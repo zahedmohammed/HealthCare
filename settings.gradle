@@ -1,0 +1,8 @@
+rootProject.name = 'Fxt'
+
+include 'DAO'
+include 'DTO'
+include 'Converter'
+include 'Services'
+include 'REST'
+include 'Web'

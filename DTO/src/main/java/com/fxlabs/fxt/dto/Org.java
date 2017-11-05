@@ -1,0 +1,20 @@
+package com.fxlabs.fxt.dto;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Org extends BaseDto<String> {
+
+
+    private String name;
+    private String company;
+    private String location;
+
+
+}
+
