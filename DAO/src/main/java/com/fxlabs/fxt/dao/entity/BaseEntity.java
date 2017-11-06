@@ -12,17 +12,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 //import org.springframework.data.solr.core.mapping.SolrDocument;
 
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
 //@Builder
 @EqualsAndHashCode(of = {"id"})
-public class BaseEntity<U> {
+public class BaseEntity<U> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
