@@ -3,15 +3,18 @@ package com.fxlabs.fxt.services.base;
 import com.fxlabs.fxt.converters.BaseConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 
-@Service
-@Transactional
+//@Service
+//@Transactional
 public class GenericServiceImpl<E, D, ID extends Serializable> {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -31,6 +34,12 @@ public class GenericServiceImpl<E, D, ID extends Serializable> {
         D d = converter.convertToDto(e);
         return new Response<D>(dto);
 
+    }
+
+    public Response<List<D>> findAll(String user, Pageable pageable) {
+        Page<E> page = repository.findAll(pageable);
+        List<D> dtos = converter.convertToDtos(page.getContent());
+        return new Response<List<D>>(dtos, page.getTotalElements(), (long) page.getTotalPages());
     }
 
     public Response<D> findById(ID id) {

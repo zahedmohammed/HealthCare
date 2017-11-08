@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Response<D> implements Serializable {
-    private String requestId;
-    private Date requestTime;
+    private String requestId = "None";
+    private Date requestTime = new Date();
     private boolean errors = false;
     private List<Message> messages;
     private D data;
@@ -28,7 +28,12 @@ public class Response<D> implements Serializable {
         this.errors = false;
         this.pages = 1L;
         this.total = 1L;
+    }
 
+    public Response(D data, Long totalElements, Long totalPages) {
+        this.data = data;
+        this.pages = totalPages;
+        this.total = totalElements;
     }
 
 
