@@ -3,32 +3,32 @@ package com.fxlabs.fxt.services;
 import com.fxlabs.fxt.converters.UsersConverter;
 import com.fxlabs.fxt.dao.entity.Users;
 import com.fxlabs.fxt.dao.repository.UsersRepository;
+import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class UsersService {
+public class UsersService extends GenericServiceImpl<Users, com.fxlabs.fxt.dto.Users, String> {
 
     @Autowired
-    private UsersRepository usersRepository;
-
-    @Autowired
-    private UsersConverter converter;
+    public UsersService(UsersRepository repository, UsersConverter converter) {
+        super(repository, converter);
+    }
 
 
     public void create(String name) {
         Users users = new Users();
         users.setName(name);
 
-        usersRepository.save(users);
+        repository.save(users);
 
         com.fxlabs.fxt.dto.Users dto = converter.convertToDto(users);
-        System.out.println("DTO ---> " + dto.toString());
+        logger.info("DTO ---> [{}]", dto.toString());
     }
 
     public Iterable<Users> findAll() {
-        return usersRepository.findAll();
+        return repository.findAll();
     }
 }

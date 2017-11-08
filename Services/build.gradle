@@ -19,7 +19,7 @@ repositories { mavenCentral() }
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')
-
+    compileOnly('org.projectlombok:lombok')
 
     compile project (":DAO")
     compile project (":DTO")
