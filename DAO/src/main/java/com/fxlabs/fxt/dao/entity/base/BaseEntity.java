@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.dao.entity;
+package com.fxlabs.fxt.dao.entity.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

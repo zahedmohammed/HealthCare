@@ -1,14 +1,11 @@
 package com.fxlabs.fxt.services.base;
 
-import com.fxlabs.fxt.converters.BaseConverter;
+import com.fxlabs.fxt.converters.base.BaseConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;

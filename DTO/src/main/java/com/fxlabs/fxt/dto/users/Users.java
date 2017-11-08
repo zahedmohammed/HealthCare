@@ -1,19 +1,16 @@
-package com.fxlabs.fxt.dao.entity;
+package com.fxlabs.fxt.dto.users;
 
+import com.fxlabs.fxt.dto.base.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-
-//@SolrDocument(collection = "fx")
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Users extends BaseEntity<String> {
+public class Users extends BaseDto<String> {
 
 
     private String name;

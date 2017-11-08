@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.converters;
+package com.fxlabs.fxt.converters.base;
 
 
 import org.mapstruct.InheritInverseConfiguration;

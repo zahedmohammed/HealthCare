@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.dto;
+package com.fxlabs.fxt.dto.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

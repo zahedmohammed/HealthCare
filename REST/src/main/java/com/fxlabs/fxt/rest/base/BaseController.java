@@ -1,0 +1,53 @@
+package com.fxlabs.fxt.rest.base;
+
+import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.services.base.GenericService;
+import com.fxlabs.fxt.services.base.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+public abstract class BaseController<D> {
+
+    public final Logger logger = LoggerFactory.getLogger(getClass());
+    public static final String API_BASE = "/api/v1";
+    public static final String USER_BASE = API_BASE + "/users";
+
+    public static final String PROJECTS_BASE = API_BASE + "/projects";
+    public static final String PROJECT_API_ENDPOINTS_BASE = API_BASE + "/project-api-endpoints";
+    public static final String PROJECT_CREDENTIALS_BASE = API_BASE + "/project-credentails";
+    public static final String PROJECT_DATASETS_BASE = API_BASE + "/project-datasets";
+    public static final String PROJECT_ENVIRONMENTS_BASE = API_BASE + "/project-environments";
+    public static final String PROJECT_JOBS_BASE = API_BASE + "/project-jobs";
+    public static final String PROJECT_RUNS_BASE = API_BASE + "/project-runs";
+
+    public final String PAGE_PARAM = "page";
+    public final String PAGE_SIZE_PARAM = "pageSize";
+
+    public final String DEFAULT_PAGE_VALUE = "0";
+    public final String DEFAULT_PAGE_SIZE_VALUE = "20";
+
+    private GenericService<D> service;
+
+    protected BaseController(GenericService<D> service) {
+        this.service = service;
+    }
+
+    @GetMapping()
+    public Response<List<D>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.findAll(null, new PageRequest(0, 20));
+    }
+
+    @PostMapping()
+    public void create(D dto) {
+        service.save(dto);
+    }
+
+
+}
