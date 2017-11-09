@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectAPIEndpoint extends BaseEntity<String> {
+public class ProjectApiEndpoint extends BaseEntity<String> {
 
     @ManyToOne
     private Project projectId;

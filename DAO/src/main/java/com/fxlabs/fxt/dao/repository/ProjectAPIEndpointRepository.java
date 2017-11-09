@@ -1,7 +1,7 @@
 package com.fxlabs.fxt.dao.repository;
 
-import com.fxlabs.fxt.dao.entity.project.ProjectAPIEndpoint;
+import com.fxlabs.fxt.dao.entity.project.ProjectApiEndpoint;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProjectAPIEndpointRepository extends JpaRepository<ProjectAPIEndpoint, String> {
+public interface ProjectAPIEndpointRepository extends JpaRepository<ProjectApiEndpoint, String> {
 }

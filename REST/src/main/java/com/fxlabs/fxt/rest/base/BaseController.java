@@ -6,9 +6,7 @@ import com.fxlabs.fxt.services.base.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,15 +36,30 @@ public abstract class BaseController<D> {
         this.service = service;
     }
 
-    @GetMapping()
+    @RequestMapping(method = RequestMethod.GET)
     public Response<List<D>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                      @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return service.findAll(null, new PageRequest(0, 20));
     }
 
-    @PostMapping()
-    public void create(D dto) {
-        service.save(dto);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Response<D> findById(@PathVariable("id") String id) {
+        return service.findById(id);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Response<D> create(D dto) {
+        return service.save(dto);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response<D> update(D dto) {
+        return service.save(dto);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Response<D> delete(@PathVariable("id") String id) {
+        return service.delete(id);
     }
 
 

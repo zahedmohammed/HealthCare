@@ -22,7 +22,7 @@ import java.util.List;
 public class ProjectRun extends BaseEntity<String> {
 
     @ManyToOne
-    private Project projectId;
+    private Project project;
 
     @ManyToOne
     private ProjectJob projectJob;
@@ -32,8 +32,8 @@ public class ProjectRun extends BaseEntity<String> {
     private String description;
 
     private String status;
-    private Date start;
-    private Date end;
+    private Date startTime;
+    private Date endTime;
 
 
     private ProjectEnvironment projectEnvironment;
