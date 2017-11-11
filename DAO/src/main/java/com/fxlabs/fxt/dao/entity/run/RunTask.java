@@ -1,48 +1,40 @@
-package com.fxlabs.fxt.dao.entity.project;
+package com.fxlabs.fxt.dao.entity.run;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
+import com.fxlabs.fxt.dao.entity.project.Project;
+import com.fxlabs.fxt.dao.entity.project.ProjectEnvironment;
+import com.fxlabs.fxt.dao.entity.project.ProjectJob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
 
 //@SolrDocument(collection = "fx")
-@Entity
+@Embeddable
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectRun extends BaseEntity<String> {
+public class RunTask {
 
-    @ManyToOne
-    private Project project;
 
-    @ManyToOne
-    private ProjectJob projectJob;
-
-    private Long runId;
     private String name;
     private String description;
 
-    private String status;
+    private String status; // WAITING --> PROCESSING --> COMPLETED
     private Date startTime;
     private Date endTime;
 
-
-    private ProjectEnvironment projectEnvironment;
-
-    @ElementCollection
-    private List<String> dataSetTags;
-
-    private String region;
-
+    private Long totalTests;
+    private Long totalTestCompleted;
+    private Long failedTests;
 
 }
 

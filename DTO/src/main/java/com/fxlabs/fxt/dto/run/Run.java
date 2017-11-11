@@ -1,11 +1,16 @@
-package com.fxlabs.fxt.dto.project;
+package com.fxlabs.fxt.dto.run;
+
 
 import com.fxlabs.fxt.dto.base.BaseDto;
+import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectEnvironment;
+import com.fxlabs.fxt.dto.project.ProjectJob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.ElementCollection;
 import java.util.Date;
 import java.util.List;
 
@@ -13,26 +18,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectRun extends BaseDto<String> {
-
-    private Project project;
+public class Run extends BaseDto<String> {
 
     private ProjectJob projectJob;
 
     private Long runId;
-    private String name;
-    private String description;
 
     private String status;
-    private Date startTime;
-    private Date endTime;
 
-
-    private ProjectEnvironment projectEnvironment;
-
-    private List<String> dataSetTags;
-
-    private String region;
+    @ElementCollection
+    List<RunTask> tasks;
 
 
 }

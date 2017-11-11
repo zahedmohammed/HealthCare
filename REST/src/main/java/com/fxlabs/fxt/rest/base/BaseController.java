@@ -20,7 +20,7 @@ public abstract class BaseController<D> {
     public static final String PROJECT_DATASETS_BASE = API_BASE + "/project-datasets";
     public static final String PROJECT_ENVIRONMENTS_BASE = API_BASE + "/project-environments";
     public static final String PROJECT_JOBS_BASE = API_BASE + "/project-jobs";
-    public static final String PROJECT_RUNS_BASE = API_BASE + "/project-runs";
+    public static final String PROJECT_RUNS_BASE = API_BASE + "/run";
 
     public final String PAGE_PARAM = "page";
     public final String PAGE_SIZE_PARAM = "pageSize";

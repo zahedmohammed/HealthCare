@@ -6,6 +6,7 @@ import com.fxlabs.fxt.services.project.ProjectDataSetService;
 import com.fxlabs.fxt.services.project.ProjectEnvironmentService;
 import com.fxlabs.fxt.services.project.ProjectJobService;
 import com.fxlabs.fxt.services.project.ProjectService;
+import com.fxlabs.fxt.services.run.RunService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -37,6 +38,9 @@ public class FxtApplication {
     @Autowired
     ProjectJobService projectJobService;
 
+    @Autowired
+    RunService runService;
+
     @Bean
     InitializingBean sendDatabase() {
         return () -> {
@@ -59,7 +63,10 @@ public class FxtApplication {
             projectDataSetService.save(new ProjectDataSet(projectResponse.getData(), "User-Create-2", "/users", "POST", "{}", null, "", Arrays.asList("V1")));
 
             // Jobs
-            projectJobService.save(new ProjectJob(projectResponse.getData(), "Default", null, projectEnvironmentResponse.getData(), Arrays.asList("V1"), "Default"));
+            Response<ProjectJob> projectJobResponse = projectJobService.save(new ProjectJob(projectResponse.getData(), "Default", null, projectEnvironmentResponse.getData(), Arrays.asList("V1"), "Default"));
+
+            // Run
+            runService.run(projectJobResponse.getData().getId());
 
         };
     }
