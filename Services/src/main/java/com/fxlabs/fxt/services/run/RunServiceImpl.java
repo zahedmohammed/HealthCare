@@ -7,6 +7,7 @@ import com.fxlabs.fxt.dto.project.ProjectJob;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.base.Response;
+import com.fxlabs.fxt.services.processors.RunTaskProcessor;
 import com.fxlabs.fxt.services.project.ProjectJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,13 @@ import java.util.List;
 public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.run.Run, String> implements RunService {
 
     private ProjectJobService projectJobService;
+    private RunTaskProcessor taskProcessor;
 
     @Autowired
-    public RunServiceImpl(RunRepository repository, RunConverter converter, ProjectJobService projectJobService) {
+    public RunServiceImpl(RunRepository repository, RunConverter converter, ProjectJobService projectJobService, RunTaskProcessor taskProcessor) {
         super(repository, converter);
         this.projectJobService = projectJobService;
+        this.taskProcessor = taskProcessor;
     }
 
 
@@ -49,6 +52,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         run.setTasks(tasks);
 
         Response<com.fxlabs.fxt.dto.run.Run> response = save(run);
+
+        taskProcessor.process(response.getData());
 
         // Copy ProjectDataSets to DataSets.
 

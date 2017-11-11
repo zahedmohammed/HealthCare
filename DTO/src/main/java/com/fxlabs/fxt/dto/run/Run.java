@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.ElementCollection;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +25,6 @@ public class Run extends BaseDto<String> {
 
     private String status;
 
-    @ElementCollection
     List<RunTask> tasks;
 
 

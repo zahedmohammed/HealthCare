@@ -72,7 +72,7 @@ public class FxtApplication {
             projectDataSetService.save(new ProjectDataSet(projectResponse.getData(), "User-Create-2", "/users", "POST", "{}", null, "", Arrays.asList("V1")));
 
             // Jobs
-            Response<ProjectJob> projectJobResponse = projectJobService.save(new ProjectJob(projectResponse.getData(), "Default", null, projectEnvironmentResponse.getData(), Arrays.asList("V1"), "Default"));
+            Response<ProjectJob> projectJobResponse = projectJobService.save(new ProjectJob(projectResponse.getData(), "Default", null, projectEnvironmentResponse.getData(), Arrays.asList("V1"), "fx-default-queue"));
 
             // Run
             runService.run(projectJobResponse.getData().getId());
