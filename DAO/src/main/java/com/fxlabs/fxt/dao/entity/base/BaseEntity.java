@@ -18,7 +18,7 @@ import java.io.Serializable;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-//@Data
+@Data
 //@NoArgsConstructor
 //@AllArgsConstructor
 //@Builder

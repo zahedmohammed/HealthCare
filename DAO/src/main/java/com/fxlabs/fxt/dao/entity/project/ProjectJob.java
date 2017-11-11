@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 //@SolrDocument(collection = "fx")
@@ -20,15 +17,14 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class ProjectJob extends BaseEntity<String> {
 
-    @ManyToOne
-    private Project projectId;
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private Project project;
     private String name;
     private String description;
 
+    @ManyToOne(cascade = CascadeType.REFRESH)
     private ProjectEnvironment projectEnvironment;
 
-    @ElementCollection
-    private List<String> apiEndpointTags;
     @ElementCollection
     private List<String> dataSetTags;
 

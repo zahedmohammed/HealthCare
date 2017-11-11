@@ -17,8 +17,6 @@ public abstract class BaseController<D> {
     public static final String USER_BASE = API_BASE + "/users";
 
     public static final String PROJECTS_BASE = API_BASE + "/projects";
-    public static final String PROJECT_API_ENDPOINTS_BASE = API_BASE + "/project-api-endpoints";
-    public static final String PROJECT_CREDENTIALS_BASE = API_BASE + "/project-credentails";
     public static final String PROJECT_DATASETS_BASE = API_BASE + "/project-datasets";
     public static final String PROJECT_ENVIRONMENTS_BASE = API_BASE + "/project-environments";
     public static final String PROJECT_JOBS_BASE = API_BASE + "/project-jobs";

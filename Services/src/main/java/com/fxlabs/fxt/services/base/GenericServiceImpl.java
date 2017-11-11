@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.base;
 
 import com.fxlabs.fxt.converters.base.BaseConverter;
+import com.fxlabs.fxt.dao.entity.base.BaseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,7 @@ public class GenericServiceImpl<E, D, ID extends Serializable> {
     public Response<D> save(D dto) {
         E e = repository.save(converter.convertToEntity(dto));
         D d = converter.convertToDto(e);
-        return new Response<D>(dto);
+        return new Response<D>(d);
 
     }
 

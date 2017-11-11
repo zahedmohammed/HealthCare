@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 //@SolrDocument(collection = "fx")
@@ -20,12 +17,12 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class ProjectEnvironment extends BaseEntity<String> {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     private Project project;
     private String name;
     private String description;
     private String baseUrl;
-    @Embedded
+    @ElementCollection
     private List<ProjectCredential> credentials;
 
 

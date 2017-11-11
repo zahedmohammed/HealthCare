@@ -15,7 +15,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class ProjectRun extends BaseDto<String> {
 
-    private Project projectId;
+    private Project project;
 
     private ProjectJob projectJob;
 
@@ -24,13 +24,12 @@ public class ProjectRun extends BaseDto<String> {
     private String description;
 
     private String status;
-    private Date start;
-    private Date end;
+    private Date startTime;
+    private Date endTime;
 
 
     private ProjectEnvironment projectEnvironment;
 
-    private List<String> apiEndpointTags;
     private List<String> dataSetTags;
 
     private String region;

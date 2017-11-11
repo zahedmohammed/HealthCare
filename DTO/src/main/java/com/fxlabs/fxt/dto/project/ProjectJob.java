@@ -14,13 +14,12 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class ProjectJob extends BaseDto<String> {
 
-    private Project projectId;
+    private Project project;
     private String name;
     private String description;
 
     private ProjectEnvironment projectEnvironment;
 
-    private List<String> apiEndpointTags;
     private List<String> dataSetTags;
 
     private String region;

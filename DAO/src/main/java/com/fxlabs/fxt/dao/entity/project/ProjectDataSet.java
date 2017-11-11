@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -19,8 +20,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class ProjectDataSet extends BaseEntity<String> {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     private Project project;
+    private String name;
     private String endpoint;
     private String method;
     private String request;

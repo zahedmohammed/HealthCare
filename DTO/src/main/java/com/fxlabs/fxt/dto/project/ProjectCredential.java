@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectCredential extends BaseDto<String> {
+public class ProjectCredential {
 
     private String name;
 
