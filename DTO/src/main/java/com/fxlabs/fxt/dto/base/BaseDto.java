@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,9 +16,9 @@ public class BaseDto<U> {
 
     private U createdBy;
 
-    private long createdDate;
+    private Date createdDate;
 
     private U modifiedBy;
 
-    private long modifiedDate;
+    private Date modifiedDate;
 }

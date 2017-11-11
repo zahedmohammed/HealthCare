@@ -13,15 +13,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 //import org.springframework.data.solr.core.mapping.SolrDocument;
 
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
 @EqualsAndHashCode(of = {"id"})
 public class BaseEntity<U> implements Serializable {
 
@@ -38,15 +36,17 @@ public class BaseEntity<U> implements Serializable {
 
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
-    private long createdDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
 
     @Column(name = "modified_by")
-    //@LastModifiedBy
+    @LastModifiedBy
     private U modifiedBy;
 
     @Column(name = "modified_date")
-    //@LastModifiedDate
-    private long modifiedDate;
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modifiedDate;
 
 }
 
