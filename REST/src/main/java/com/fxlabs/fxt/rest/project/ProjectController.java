@@ -16,7 +16,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.PROJECTS_BASE;
 
 @RestController
 @RequestMapping(PROJECTS_BASE)
-public class ProjectController extends BaseController {
+public class ProjectController extends BaseController<Project> {
 
     @Autowired
     public ProjectController(

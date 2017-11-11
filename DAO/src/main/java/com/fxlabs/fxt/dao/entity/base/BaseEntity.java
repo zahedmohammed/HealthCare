@@ -33,11 +33,11 @@ public class BaseEntity<U> implements Serializable {
     private String id;
 
     @Column(name = "created_by")
-    //@CreatedBy
+    @CreatedBy
     private U createdBy;
 
     @Column(name = "created_date", nullable = false, updatable = false)
-    //@CreatedDate
+    @CreatedDate
     private long createdDate;
 
     @Column(name = "modified_by")

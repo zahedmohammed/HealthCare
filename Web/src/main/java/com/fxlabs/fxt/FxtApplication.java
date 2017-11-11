@@ -13,9 +13,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootApplication
@@ -71,4 +79,25 @@ public class FxtApplication {
         };
     }
 
+}
+
+@Configuration
+@EnableWebSecurity
+class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable()
+                .formLogin()
+                .and()
+                .httpBasic();
+    }
+
+    @Bean
+    UserDetailsService user() {
+        return new InMemoryUserDetailsManager(Collections.singleton(User.withUsername("admin").roles("USER").password("admin123").build()));
+    }
 }

@@ -46,12 +46,12 @@ public abstract class BaseController<D> {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response<D> create(D dto) {
+    public Response<D> create(@RequestBody D dto) {
         return service.save(dto);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    public Response<D> update(D dto) {
+    public Response<D> update(@RequestBody D dto) {
         return service.save(dto);
     }
 
