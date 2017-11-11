@@ -14,11 +14,13 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class ProjectDataSet extends BaseDto<String> {
 
-    private ProjectAPIEndpoint projectEndpointId;
+    private Project project;
+    private String endpoint;
+    private String method;
     private String request;
-    private String result; // http method
+    private String result;
+    private String assertions;
     private List<String> tags;
-    //private List<>  // name, type, validation
 
 }
 

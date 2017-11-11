@@ -39,8 +39,6 @@ public class ProjectRun extends BaseEntity<String> {
     private ProjectEnvironment projectEnvironment;
 
     @ElementCollection
-    private List<String> apiEndpointTags;
-    @ElementCollection
     private List<String> dataSetTags;
 
     private String region;

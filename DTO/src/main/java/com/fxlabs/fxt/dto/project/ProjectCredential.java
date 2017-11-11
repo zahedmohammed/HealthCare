@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class ProjectCredential extends BaseDto<String> {
 
-    private Project projectId;
     private String name;
-    private String description;
+
     private String method; // login method
     private String username;
     private String password;

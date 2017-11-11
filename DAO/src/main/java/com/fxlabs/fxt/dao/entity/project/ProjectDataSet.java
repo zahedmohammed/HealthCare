@@ -20,12 +20,14 @@ import java.util.List;
 public class ProjectDataSet extends BaseEntity<String> {
 
     @ManyToOne
-    private ProjectApiEndpoint projectApiEndpoint;
+    private Project project;
+    private String endpoint;
+    private String method;
     private String request;
-    private String result; // http method
+    private String result;
+    private String assertions;
     @ElementCollection
     private List<String> tags;
-    //private List<>  // name, type, validation
 
 }
 
