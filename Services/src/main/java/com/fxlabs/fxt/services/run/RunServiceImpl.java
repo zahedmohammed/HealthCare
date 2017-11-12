@@ -43,8 +43,12 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         // Create Run
         com.fxlabs.fxt.dto.run.Run run = new com.fxlabs.fxt.dto.run.Run();
         run.setProjectJob(projectJobResponse.getData());
-        run.setRunId(1L);
-        //run.setStatus("PROCESSING");
+        // read last run and
+        Long maxId = ( (RunRepository) repository).findMaxRunId(projectJob);
+        if (maxId == null) {
+            maxId = 0L;
+        }
+        run.setRunId(maxId + 1L);
 
         // Create Task
         RunTask task = new RunTask();
