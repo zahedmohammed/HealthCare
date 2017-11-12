@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.bot;
+package com.fxlabs.fxt.bot.amqp;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

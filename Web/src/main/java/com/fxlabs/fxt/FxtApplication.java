@@ -63,19 +63,33 @@ public class FxtApplication {
             List<ProjectCredential> projectCredentials = new ArrayList<>();
             projectCredentials.add(projectCredential);
 
-            Response<ProjectEnvironment> projectEnvironmentResponse = projectEnvironmentService.save(new ProjectEnvironment(projectResponse.getData(), "Default", null, "http://locahost:8080/api/v1", projectCredentials));
+            Response<ProjectEnvironment> projectEnvironmentResponse = projectEnvironmentService.save(new ProjectEnvironment(projectResponse.getData(), "Default", null, "http://localhost:8080/api/v1", projectCredentials));
 
             // Datasets
             ProjectDataSet ds = new ProjectDataSet();
 
-            projectDataSetService.save(new ProjectDataSet(projectResponse.getData(), "User-Create-1", "/users", "POST", "{}", null, "", Arrays.asList("V1")));
-            projectDataSetService.save(new ProjectDataSet(projectResponse.getData(), "User-Create-2", "/users", "POST", "{}", null, "", Arrays.asList("V1")));
+            projectDataSetService.save(new ProjectDataSet(projectResponse.getData(), "User-Create-1", "/users", "POST", "{\n" +
+                    "    \"name\":\"Bob Lee\",\n" +
+                    "    \"username\":\"bob\",\n" +
+                    "    \"email\":\"bob@fxlabs.com\",\n" +
+                    "    \"company\":\"FxLabs\",\n" +
+                    "    \"location\":\"San Francisco\",\n" +
+                    "    \"title\":\"Designer\"\n" +
+                    "  }", null, "", Arrays.asList("V1")));
+            projectDataSetService.save(new ProjectDataSet(projectResponse.getData(), "User-Create-2", "/users", "POST", "{\n" +
+                    "    \"name\":\"Foo Lee\",\n" +
+                    "    \"username\":\"foo\",\n" +
+                    "    \"email\":\"foo@fxlabs.com\",\n" +
+                    "    \"company\":\"FxLabs\",\n" +
+                    "    \"location\":\"San Francisco\",\n" +
+                    "    \"title\":\"Designer\"\n" +
+                    "  }", null, "", Arrays.asList("V1")));
 
             // Jobs
             Response<ProjectJob> projectJobResponse = projectJobService.save(new ProjectJob(projectResponse.getData(), "Default", null, projectEnvironmentResponse.getData(), Arrays.asList("V1"), "fx-default-queue"));
 
             // Run
-            runService.run(projectJobResponse.getData().getId());
+            //runService.run(projectJobResponse.getData().getId());
 
         };
     }

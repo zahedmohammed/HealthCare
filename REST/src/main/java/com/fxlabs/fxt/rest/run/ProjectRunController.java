@@ -11,7 +11,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.PROJECT_RUNS_BASE;
 
 @RestController
 @RequestMapping(PROJECT_RUNS_BASE)
-public class ProjectRunController extends BaseController {
+public class ProjectRunController extends BaseController<Run> {
 
     RunService runService;
 
@@ -27,11 +27,6 @@ public class ProjectRunController extends BaseController {
     public Response<Run> create(@PathVariable("id") String id) {
         return runService.run(id);
     }
-
-    /*@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response<Run> inspect(@PathVariable("id") String id) {
-        return runService.findById(id);
-    }*/
 
 
 }

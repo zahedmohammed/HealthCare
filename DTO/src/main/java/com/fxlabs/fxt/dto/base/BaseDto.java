@@ -21,4 +21,6 @@ public class BaseDto<U> {
     private U modifiedBy;
 
     private Date modifiedDate;
+
+    private Long version;
 }

@@ -1,28 +1,47 @@
 package com.fxlabs.fxt.services.processors;
 
+import com.fxlabs.fxt.dao.entity.project.ProjectDataSet;
+import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
+import com.fxlabs.fxt.dto.project.ProjectCredential;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.Run;
-import com.fxlabs.fxt.services.sender.BotClientService;
+import com.fxlabs.fxt.services.amqp.sender.BotClientService;
+import com.fxlabs.fxt.services.project.ProjectDataSetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class RunTaskProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private BotClientService botClientService;
+    private ProjectDataSetRepository projectDataSetRepository;
 
     @Autowired
-    public RunTaskProcessor(BotClientService botClientService) {
+    public RunTaskProcessor(BotClientService botClientService, ProjectDataSetRepository projectDataSetRepository) {
         this.botClientService = botClientService;
+        this.projectDataSetRepository = projectDataSetRepository;
     }
 
     public void process(Run run) {
         BotTask task = new BotTask();
-        task.setId("123");
+        task.setId(run.getId());
+        ProjectCredential cred = run.getProjectJob().getProjectEnvironment().getCredentials().get(0);
         logger.info("Sending task [{}] to region [{}]...", task.getId(), run.getProjectJob().getRegion());
-        botClientService.sendTask(task, run.getProjectJob().getRegion());
+
+        List<ProjectDataSet> list = projectDataSetRepository.findByProjectId(run.getProjectJob().getProject().getId());
+        for (ProjectDataSet ds : list) {
+            task.setRequest(ds.getRequest());
+            task.setMethod(ds.getMethod());
+            task.setUsername(cred.getUsername());
+            task.setPassword(cred.getPassword());
+            // TODO - defaults to Basic Auth
+            task.setEndpoint(run.getProjectJob().getProjectEnvironment().getBaseUrl() + ds.getEndpoint());
+            botClientService.sendTask(task, run.getProjectJob().getRegion());
+        }
     }
 }

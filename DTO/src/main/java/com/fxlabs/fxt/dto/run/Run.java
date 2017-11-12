@@ -23,9 +23,7 @@ public class Run extends BaseDto<String> {
 
     private Long runId;
 
-    private String status;
-
-    List<RunTask> tasks;
+    private RunTask task;
 
 
 }

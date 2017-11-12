@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.services.sender;
+package com.fxlabs.fxt.services.amqp.sender;
 
 import com.fxlabs.fxt.dto.run.BotTask;
 

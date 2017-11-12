@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.run;
 
 import com.fxlabs.fxt.converters.run.RunConverter;
 import com.fxlabs.fxt.dao.entity.run.Run;
+import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.project.ProjectJob;
 import com.fxlabs.fxt.dto.run.RunTask;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,12 +25,15 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
     private ProjectJobService projectJobService;
     private RunTaskProcessor taskProcessor;
+    private ProjectDataSetRepository projectDataSetRepository;
 
     @Autowired
-    public RunServiceImpl(RunRepository repository, RunConverter converter, ProjectJobService projectJobService, RunTaskProcessor taskProcessor) {
+    public RunServiceImpl(RunRepository repository, RunConverter converter, ProjectJobService projectJobService,
+                          RunTaskProcessor taskProcessor, ProjectDataSetRepository projectDataSetRepository) {
         super(repository, converter);
         this.projectJobService = projectJobService;
         this.taskProcessor = taskProcessor;
+        this.projectDataSetRepository = projectDataSetRepository;
     }
 
 
@@ -39,17 +44,19 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         com.fxlabs.fxt.dto.run.Run run = new com.fxlabs.fxt.dto.run.Run();
         run.setProjectJob(projectJobResponse.getData());
         run.setRunId(1L);
-        run.setStatus("In-progress");
+        //run.setStatus("PROCESSING");
 
         // Create Task
         RunTask task = new RunTask();
         task.setName("Fresh Run");
-        task.setStatus("WAITING");
-        task.setTotalTests(10L);
+        task.setStatus("PROCESSING");
+        task.setStartTime(new Date());
 
-        List<RunTask> tasks = new ArrayList<>();
-        tasks.add(task);
-        run.setTasks(tasks);
+        // TODO - find total tests
+        Long totalTests = projectDataSetRepository.countByProjectId(projectJobResponse.getData().getProject().getId());
+        task.setTotalTests(totalTests);
+
+        run.setTask(task);
 
         Response<com.fxlabs.fxt.dto.run.Run> response = save(run);
 
