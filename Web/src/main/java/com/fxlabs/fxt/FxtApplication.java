@@ -117,6 +117,11 @@ class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     UserDetailsService user() {
-        return new InMemoryUserDetailsManager(Collections.singleton(User.withUsername("admin").roles("USER").password("admin123").build()));
+        return new InMemoryUserDetailsManager(
+                Arrays.asList(
+                        User.withUsername("admin").roles("USER", "SUPERUSER").password("admin123").build(),
+                        User.withUsername("user1").roles("USER").password("user1").build(),
+                        User.withUsername("user2").roles("USER").password("user2").build()
+                ));
     }
 }
