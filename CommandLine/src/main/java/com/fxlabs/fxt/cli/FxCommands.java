@@ -17,8 +17,11 @@ public class FxCommands {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @ShellMethod("Add two integers together.")
-    public int add(int a, int b) {
-        return a + b;
+    @Autowired
+    FxCommandService service;
+
+    @ShellMethod("Loads project files into Fx server")
+    public void load() {
+        service.load();
     }
 }

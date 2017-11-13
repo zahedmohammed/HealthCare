@@ -7,17 +7,14 @@ import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.project.ProjectJob;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
-import com.fxlabs.fxt.services.base.Response;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.processors.RunTaskProcessor;
 import com.fxlabs.fxt.services.project.ProjectJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @Service
 @Transactional

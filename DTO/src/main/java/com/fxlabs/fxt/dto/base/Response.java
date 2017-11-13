@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.services.base;
+package com.fxlabs.fxt.dto.base;
 
 import java.io.Serializable;
 import java.util.Date;

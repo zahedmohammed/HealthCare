@@ -2,7 +2,7 @@ package com.fxlabs.fxt.rest.run;
 
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.rest.base.BaseController;
-import com.fxlabs.fxt.services.base.Response;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.run.RunService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

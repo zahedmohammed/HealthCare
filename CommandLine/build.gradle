@@ -31,6 +31,7 @@ repositories {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')
+    compile('org.springframework.boot:spring-boot-starter-amqp')
     compile('org.springframework.shell:spring-shell-starter:2.0.0.M2')
 
     compile project (":DTO")

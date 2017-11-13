@@ -1,8 +1,7 @@
 package com.fxlabs.fxt.rest.base;
 
-import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericService;
-import com.fxlabs.fxt.services.base.Response;
+import com.fxlabs.fxt.dto.base.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
