@@ -116,7 +116,7 @@ public class RestRespository {
 
         ResponseEntity<Response<ProjectDataSet>> response = restTemplate.exchange(url + "/api/v1/datasets/batch", method, request, paramTypeRefMap.get(ProjectDataSet.class));
 
-        return response.getBody().getData().getId();
+        return null;
 
     }
 
