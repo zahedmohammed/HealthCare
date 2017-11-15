@@ -68,22 +68,24 @@ public class FxtApplication {
             // Datasets
             ProjectDataSet ds = new ProjectDataSet();
 
-            projectDataSetService.save(new ProjectDataSet(projectDto, "User-Create-1", "/users", "POST", "{\n" +
+            projectDataSetService.save(new ProjectDataSet(projectDto, "User-Create-1", "/users", "POST", Arrays.asList("{\n" +
                     "    \"name\":\"Bob Lee\",\n" +
                     "    \"username\":\"bob\",\n" +
                     "    \"email\":\"bob@fxlabs.com\",\n" +
                     "    \"company\":\"FxLabs\",\n" +
                     "    \"location\":\"San Francisco\",\n" +
                     "    \"title\":\"Designer\"\n" +
-                    "  }", null, "", Arrays.asList("V1")));
-            projectDataSetService.save(new ProjectDataSet(projectDto, "User-Create-2", "/users", "POST", "{\n" +
+                    "  }"), null, Arrays.asList("V1")));
+
+
+            projectDataSetService.save(new ProjectDataSet(projectDto, "User-Create-2", "/users", "POST", Arrays.asList("{\n" +
                     "    \"name\":\"Foo Lee\",\n" +
                     "    \"username\":\"foo\",\n" +
                     "    \"email\":\"foo@fxlabs.com\",\n" +
                     "    \"company\":\"FxLabs\",\n" +
                     "    \"location\":\"San Francisco\",\n" +
                     "    \"title\":\"Designer\"\n" +
-                    "  }", null, "", Arrays.asList("V1")));
+                    "  }"), null, Arrays.asList("V1")));
 
             // Jobs
             Response<ProjectJob> projectJobResponse = projectJobService.save(new ProjectJob(projectDto, "Default", null, projectEnvironmentResponse.getData(), Arrays.asList("V1"), "fx-default-queue"));

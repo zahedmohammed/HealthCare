@@ -34,7 +34,7 @@ public class RestRespository {
         });
         paramTypeRefMap.put(ProjectEnvironment.class, new ParameterizedTypeReference<Response<ProjectEnvironment>>() {
         });
-        paramTypeRefMap.put(ProjectDataSet.class, new ParameterizedTypeReference<Response<ProjectDataSet>>() {
+        paramTypeRefMap.put(ProjectDataSet.class, new ParameterizedTypeReference<Response<List<ProjectDataSet>>>() {
         });
         paramTypeRefMap.put(ProjectJob.class, new ParameterizedTypeReference<Response<ProjectJob>>() {
         });
@@ -96,7 +96,7 @@ public class RestRespository {
 
     }
 
-    public String saveDS(Project project, String name, String endpoint, String method_, String request_, String assertions, List<String> tags, String url, String u, String p) {
+    public String saveDS(Project project, ProjectDataSet[] dataSets, String url, String u, String p) {
 
         // execute request
         RestTemplate restTemplate = new RestTemplate();
@@ -105,23 +105,16 @@ public class RestRespository {
 
         HttpHeaders httpHeaders = getHttpHeaders(u, p);
 
-        ProjectDataSet ds = new ProjectDataSet();
-        ds.setName(name);
-        ds.setEndpoint(endpoint);
-        ds.setMethod(method_);
-        ds.setRequest(request_);
-        ds.setAssertions(assertions);
-        ds.setTags(tags);
-
         NameDto proj = new NameDto();
         proj.setId(project.getId());
         proj.setVersion(project.getVersion());
-        ds.setProject(proj);
+        for (ProjectDataSet ds : dataSets) {
+            ds.setProject(proj);
+        }
 
+        HttpEntity<ProjectDataSet[]> request = new HttpEntity<>(dataSets, httpHeaders);
 
-        HttpEntity<ProjectDataSet> request = new HttpEntity<>(ds, httpHeaders);
-
-        ResponseEntity<Response<ProjectDataSet>> response = restTemplate.exchange(url + "/api/v1/datasets", method, request, paramTypeRefMap.get(ProjectDataSet.class));
+        ResponseEntity<Response<ProjectDataSet>> response = restTemplate.exchange(url + "/api/v1/datasets/batch", method, request, paramTypeRefMap.get(ProjectDataSet.class));
 
         return response.getBody().getData().getId();
 

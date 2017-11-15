@@ -1,15 +1,21 @@
 package com.fxlabs.fxt.cli;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectDataSet;
 import com.fxlabs.fxt.dto.project.ProjectEnvironment;
+import com.fxlabs.fxt.dto.run.DataSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -83,6 +89,16 @@ public class FxCommandService {
             logger.info("job created with id [{}]...", id);
 
             // create dataset
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            ProjectDataSet[] values = mapper.readValue(new File("dataset/data.json"), ProjectDataSet[].class);
+
+            logger.info("ds size: [{}]", values.length);
+
+            logger.info("ds : [{}]", values[0].toString());
+
+            respository.saveDS(project, values, fxMasterUrl, fxAccessKey, fxSecretKey);
 
             logger.info("Successful!");
 

@@ -10,7 +10,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.PROJECT_DATASETS_BASE;
 
 @RestController
 @RequestMapping(PROJECT_DATASETS_BASE)
-public class ProjectDataSetController extends BaseController<ProjectDataSet> {
+public class ProjectDataSetController extends BaseController<ProjectDataSet, String> {
 
     @Autowired
     public ProjectDataSetController(

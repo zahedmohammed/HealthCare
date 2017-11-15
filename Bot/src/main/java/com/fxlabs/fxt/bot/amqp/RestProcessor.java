@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.bot.amqp;
 
-import com.fxlabs.fxt.bot.amqp.Receiver;
-import com.fxlabs.fxt.bot.amqp.Sender;
+
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -33,9 +32,7 @@ public class RestProcessor {
         if (task == null || task.getId() == null || task.getEndpoint() == null) {
             return;
         }
-        BotTask newTask = new BotTask();
-        newTask.setId(task.getId());
-        newTask.setRequestStartTime(new Date());
+
 
         logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
@@ -48,23 +45,32 @@ public class RestProcessor {
         httpHeaders.set("Accept", "application/json");
         httpHeaders.set("Authorization", createBasicAuth(task.getUsername(), task.getPassword()));
 
-        HttpEntity<String> request = new HttpEntity<>(task.getRequest(), httpHeaders);
-        ResponseEntity<String> response = restTemplate.exchange(url, method, request, String.class);
+        for (String req : task.getRequest()) {
 
-        // validate assertions
-        // compose response
-        newTask.setResponse(response.getBody());
-        newTask.setRequestEndTime(new Date());
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            newTask.setLogs(String.format("Expected http status code [%s], but was [%s]", HttpStatus.OK.value(), response.getStatusCode().value()));
-            newTask.setSuccess(false);
-        } else {
+            BotTask newTask = new BotTask();
+            newTask.setId(task.getId());
+            newTask.setRequestStartTime(new Date());
             newTask.setSuccess(true);
+
+            HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
+            ResponseEntity<String> response = restTemplate.exchange(url, method, request, String.class);
+            newTask.setRequestEndTime(new Date());
+
+            // validate assertions
+            // compose response
+            newTask.getResponse().add(response.getBody());
+
+
+            if (response.getStatusCode() != HttpStatus.OK) {
+                newTask.setLogs(String.format("Expected http status code [%s], but was [%s]", HttpStatus.OK.value(), response.getStatusCode().value()));
+                newTask.setSuccess(false);
+            }
+
+            // return processed task
+            sender.sendTask(newTask);
         }
 
-        // return processed task
-        sender.sendTask(newTask);
+
     }
 
     String createBasicAuth(String username, String password) {

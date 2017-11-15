@@ -25,9 +25,10 @@ public class ProjectDataSet extends BaseEntity<String> {
     private String name;
     private String endpoint;
     private String method;
-    private String request;
-    private String result;
-    private String assertions;
+    @ElementCollection
+    private List<String> request;
+    @ElementCollection
+    private List<String> assertions;
     @ElementCollection
     private List<String> tags;
 

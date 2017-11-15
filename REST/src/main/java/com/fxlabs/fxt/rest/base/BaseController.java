@@ -7,9 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class BaseController<D> {
+public abstract class BaseController<D, ID extends Serializable> {
 
     public final Logger logger = LoggerFactory.getLogger(getClass());
     public static final String API_BASE = "/api/v1";
@@ -27,9 +28,9 @@ public abstract class BaseController<D> {
     public final String DEFAULT_PAGE_VALUE = "0";
     public final String DEFAULT_PAGE_SIZE_VALUE = "20";
 
-    private GenericService<D> service;
+    private GenericService<D, ID> service;
 
-    protected BaseController(GenericService<D> service) {
+    protected BaseController(GenericService<D, ID> service) {
         this.service = service;
     }
 
@@ -40,13 +41,18 @@ public abstract class BaseController<D> {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response<D> findById(@PathVariable("id") String id) {
+    public Response<D> findById(@PathVariable("id") ID id) {
         return service.findById(id);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response<D> create(@RequestBody D dto) {
+    @RequestMapping(value = "/batch", method = RequestMethod.POST)
+    public Response<D> create(@RequestBody List<D> dto) {
         return service.save(dto);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Response<D> create(@RequestBody D dtos) {
+        return service.save(dtos);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
@@ -55,7 +61,7 @@ public abstract class BaseController<D> {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Response<D> delete(@PathVariable("id") String id) {
+    public Response<D> delete(@PathVariable("id") ID id) {
         return service.delete(id);
     }
 

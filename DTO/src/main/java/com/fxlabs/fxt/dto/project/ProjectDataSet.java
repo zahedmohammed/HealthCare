@@ -20,9 +20,8 @@ public class ProjectDataSet extends BaseDto<String> {
     private String name;
     private String endpoint;
     private String method;
-    private String request;
-    private String result;
-    private String assertions;
+    private List<String> request;
+    private List<String> assertions;
     private List<String> tags;
 
 }

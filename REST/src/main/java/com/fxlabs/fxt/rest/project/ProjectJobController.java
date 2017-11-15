@@ -10,7 +10,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.PROJECT_JOBS_BASE;
 
 @RestController
 @RequestMapping(PROJECT_JOBS_BASE)
-public class ProjectJobController extends BaseController<ProjectJob> {
+public class ProjectJobController extends BaseController<ProjectJob, String> {
 
     @Autowired
     public ProjectJobController(

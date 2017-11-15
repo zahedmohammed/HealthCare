@@ -11,7 +11,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.PROJECT_RUNS_BASE;
 
 @RestController
 @RequestMapping(PROJECT_RUNS_BASE)
-public class ProjectRunController extends BaseController<Run> {
+public class ProjectRunController extends BaseController<Run, String> {
 
     RunService runService;
 

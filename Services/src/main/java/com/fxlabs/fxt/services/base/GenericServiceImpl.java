@@ -13,7 +13,7 @@ import java.util.List;
 
 //@Service
 //@Transactional
-public class GenericServiceImpl<E, D, ID extends Serializable> {
+public class GenericServiceImpl<E, D, ID extends Serializable> implements GenericService<D, ID> {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -31,6 +31,13 @@ public class GenericServiceImpl<E, D, ID extends Serializable> {
         E e = repository.save(converter.convertToEntity(dto));
         D d = converter.convertToDto(e);
         return new Response<D>(d);
+
+    }
+
+    public Response<D> save(List<D> dtos) {
+        List<E> e = repository.save(converter.convertToEntities(dtos));
+        List<D> d = converter.convertToDtos(e);
+        return new Response<D>();
 
     }
 
