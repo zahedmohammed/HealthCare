@@ -23,10 +23,4 @@ public class ProjectRunController extends BaseController<Run, String> {
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public Response<Run> create(@PathVariable("id") String id) {
-        return runService.run(id);
-    }
-
-
 }

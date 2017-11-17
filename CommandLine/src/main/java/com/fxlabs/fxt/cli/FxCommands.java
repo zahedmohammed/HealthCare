@@ -24,4 +24,21 @@ public class FxCommands {
     public void load() {
         service.load();
     }
+
+    @ShellMethod("Lists Jobs")
+    public void jobLs() {
+        service.lsJobs();
+    }
+
+    @ShellMethod("Run Job")
+    public void jobRun(String id) {
+        service.runJob(id);
+    }
+
+    @ShellMethod("Inspect Run")
+    public void inspectRun(String id) {
+        service.inspectRun(id);
+    }
+
+
 }

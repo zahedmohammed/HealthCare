@@ -49,7 +49,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
         // Create Task
         RunTask task = new RunTask();
-        task.setName("Fresh Run");
+        task.setName(new Date().toString());
         task.setStatus("PROCESSING");
         task.setStartTime(new Date());
 

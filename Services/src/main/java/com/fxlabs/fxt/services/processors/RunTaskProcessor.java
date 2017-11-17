@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -35,7 +36,12 @@ public class RunTaskProcessor {
 
         List<ProjectDataSet> list = projectDataSetRepository.findByProjectId(run.getProjectJob().getProject().getId());
         for (ProjectDataSet ds : list) {
-            task.setRequest(ds.getRequest());
+            List<String> reqs = ds.getRequest();
+            List<String> l = new ArrayList<>();
+            for (String r : reqs) {
+                l.add(r);
+            }
+            task.setRequest(l);
             task.setMethod(ds.getMethod());
             task.setUsername(cred.getUsername());
             task.setPassword(cred.getPassword());

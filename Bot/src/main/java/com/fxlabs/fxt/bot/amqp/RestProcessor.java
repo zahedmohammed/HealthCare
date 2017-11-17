@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Component
@@ -52,18 +53,22 @@ public class RestProcessor {
             newTask.setRequestStartTime(new Date());
             newTask.setSuccess(true);
 
+            logger.info("Request: [{}]", req);
             HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
             ResponseEntity<String> response = restTemplate.exchange(url, method, request, String.class);
             newTask.setRequestEndTime(new Date());
 
             // validate assertions
-            // compose response
-            newTask.getResponse().add(response.getBody());
+
 
 
             if (response.getStatusCode() != HttpStatus.OK) {
                 newTask.setLogs(String.format("Expected http status code [%s], but was [%s]", HttpStatus.OK.value(), response.getStatusCode().value()));
                 newTask.setSuccess(false);
+            } else {
+                // compose response
+                newTask.setResponse(new ArrayList<>());
+                newTask.getResponse().add(response.getBody());
             }
 
             // return processed task
