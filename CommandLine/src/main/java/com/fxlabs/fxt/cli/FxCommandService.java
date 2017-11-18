@@ -163,6 +163,13 @@ public class FxCommandService {
 
     }
 
+    public void lsProjects() {
+        List<Project> list = projectRepository.findAll();
+
+        printProjects(list);
+
+    }
+
     public void lsRuns() {
         List<Run> list = runRestRepository.findAll();
 
@@ -223,11 +230,27 @@ public class FxCommandService {
 
     }
 
+    private void printProjects(List<Project> list) {
+        LinkedHashMap<String, Object> header = new LinkedHashMap<>();
+        header.put("name", "Project Name");
+        header.put("id", "Project ID");
+
+        // "name", "id", "project.name", "region"
+        Table table = new TableBuilder(new BeanListTableModel<Project>(list, header))
+                .addOutlineBorder(BorderStyle.fancy_light)
+                .addFullBorder(BorderStyle.fancy_light)
+                .addHeaderBorder(BorderStyle.fancy_light)
+                .addHeaderAndVerticalsBorders(BorderStyle.fancy_light)
+                .build();
+        String result = table.render(300);
+        System.out.println(result);
+    }
+
     private void printRuns(List<RunTask> list) {
         LinkedHashMap<String, Object> header = new LinkedHashMap<>();
         header.put("name", "Name");
         header.put("status", "Status");
-        header.put("totalTests", "Total Tests");
+        header.put("totalTests", "Total Suites");
         header.put("totalTestCompleted", "Total Completed");
         header.put("failedTests", "Total Failed");
         header.put("skippedTests", "Total Skipped");

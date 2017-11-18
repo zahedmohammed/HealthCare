@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class FxPromptProvider implements PromptProvider {
 
     public AttributedString getPrompt() {
-        return new AttributedString("Fx:> ");
+        return new AttributedString("FxLabs :> ");
     }
 }
 
