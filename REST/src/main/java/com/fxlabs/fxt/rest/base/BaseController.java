@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 
@@ -46,17 +47,17 @@ public abstract class BaseController<D, ID extends Serializable> {
     }
 
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
-    public Response<D> create(@RequestBody List<D> dto) {
+    public Response<D> create(@Valid @RequestBody List<D> dto) {
         return service.save(dto);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response<D> create(@RequestBody D dtos) {
+    public Response<D> create(@Valid @RequestBody D dtos) {
         return service.save(dtos);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    public Response<D> update(@RequestBody D dto) {
+    public Response<D> update(@Valid @RequestBody D dto) {
         return service.save(dto);
     }
 

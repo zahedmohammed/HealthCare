@@ -47,7 +47,7 @@ public class FxtApplication {
     @Autowired
     RunService runService;
 
-    @Bean
+    //@Bean
     InitializingBean sendDatabase() {
         return () -> {
             // Project

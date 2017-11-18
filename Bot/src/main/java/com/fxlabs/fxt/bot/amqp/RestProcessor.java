@@ -19,13 +19,10 @@ public class RestProcessor {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     private Sender sender;
-    //private RestTemplate restTemplate;
 
     @Autowired
     RestProcessor(Sender sender) {
         this.sender = sender;
-        //, RestTemplate restTemplate
-        //this.restTemplate = restTemplate;
     }
 
     public void process(BotTask task) {
@@ -35,7 +32,7 @@ public class RestProcessor {
         }
 
 
-        logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
+        //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
         // execute request
         RestTemplate restTemplate = new RestTemplate();
@@ -53,22 +50,28 @@ public class RestProcessor {
             newTask.setRequestStartTime(new Date());
             newTask.setSuccess(true);
 
-            logger.info("Request: [{}]", req);
+            //logger.info("Request: [{}]", req);
             HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
-            ResponseEntity<String> response = restTemplate.exchange(url, method, request, String.class);
+
+            ResponseEntity<String> response = null;
+            try {
+                response = restTemplate.exchange(url, method, request, String.class);
+            } catch (Exception e) {
+                logger.warn(e.getLocalizedMessage());
+            }
             newTask.setRequestEndTime(new Date());
 
             // validate assertions
 
-
-
-            if (response.getStatusCode() != HttpStatus.OK) {
-                newTask.setLogs(String.format("Expected http status code [%s], but was [%s]", HttpStatus.OK.value(), response.getStatusCode().value()));
+            if (response == null || response.getStatusCode() != HttpStatus.OK) {
+                newTask.setLogs(String.format("Expected http status code [%s], but was [%s]", HttpStatus.OK.value(), response));
                 newTask.setSuccess(false);
+                logger.info("Request [{}] response [{}]", req, response);
             } else {
                 // compose response
                 newTask.setResponse(new ArrayList<>());
                 newTask.getResponse().add(response.getBody());
+                logger.info("Request [{}] status-code [{}] response-body [{}]", req, response.getStatusCode(), response.getBody());
             }
 
             // return processed task
