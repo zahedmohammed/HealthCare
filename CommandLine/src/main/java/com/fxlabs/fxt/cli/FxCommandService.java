@@ -11,12 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.table.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @PropertySource(ignoreResourceNotFound = true, value = "file:fx.properties")
@@ -92,6 +93,7 @@ public class FxCommandService {
             env.setBaseUrl(envUrl);
             NameDto proj = new NameDto();
             proj.setId(project.getId());
+            proj.setName(project.getName());
             proj.setVersion(project.getVersion());
             env.setProject(proj);
             ProjectCredential cred = new ProjectCredential();
@@ -118,6 +120,7 @@ public class FxCommandService {
 
             NameDto proj_ = new NameDto();
             proj_.setId(project.getId());
+            proj_.setName(project.getName());
             proj_.setVersion(project.getVersion());
 
             for (ProjectDataSet dataSet : values) {
@@ -143,6 +146,8 @@ public class FxCommandService {
 
             logger.info("Successful!");
 
+            printJobs(Arrays.asList(job));
+
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage(), e);
         }
@@ -151,9 +156,28 @@ public class FxCommandService {
 
     public void lsJobs() {
         List<ProjectJob> list = jobRestRepository.findAll();
-        for (ProjectJob job : list) {
-            System.out.println(job.getName() + " (" + job.getId() + ")");
-        }
+
+        printJobs(list);
+
+    }
+
+    private void printJobs(List<ProjectJob> list) {
+        LinkedHashMap<String, Object> header = new LinkedHashMap<>();
+        header.put("name", "Job Name");
+        header.put("id", "Job ID");
+        header.put("project.name", "Project Name");
+        header.put("project.id", "Project ID");
+        header.put("region", "Region");
+
+        // "name", "id", "project.name", "region"
+        Table table = new TableBuilder(new BeanListTableModel<ProjectJob>(list, header))
+                .addOutlineBorder(BorderStyle.fancy_heavy)
+                .addFullBorder(BorderStyle.fancy_heavy)
+                .addHeaderBorder(BorderStyle.fancy_heavy)
+                .addHeaderAndVerticalsBorders(BorderStyle.fancy_heavy)
+                .build();
+        String result = table.render(80);
+        System.out.println(result);
     }
 
     public void runJob(String jobId) {
@@ -183,6 +207,8 @@ public class FxCommandService {
     }
 
     private void printRun(Run run) {
+
+
         RunTask task = run.getTask();
         System.out.println("Name: " + task.getName());
         System.out.println("Status: " + task.getStatus());
@@ -193,6 +219,7 @@ public class FxCommandService {
         System.out.println("Start Time: " + task.getStartTime());
         System.out.println("End Time: " + task.getEndTime());
         System.out.println("Total Time : " + task.getTotalTime() + " ms");
+
 
     }
 
