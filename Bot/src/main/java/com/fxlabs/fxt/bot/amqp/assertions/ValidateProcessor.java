@@ -44,7 +44,7 @@ public class ValidateProcessor {
             }
 
             // extract validator type
-            if (assertion.matches("@Response.statusCode.*")) {
+            if (assertion.matches("@StatusCode.*")) {
                 statusCodeValidator.validate(assertion, response.getStatusCodeValue(), status, logs);
             } else {
                 logger.warn("Invalid assertion [{}]", assertion);

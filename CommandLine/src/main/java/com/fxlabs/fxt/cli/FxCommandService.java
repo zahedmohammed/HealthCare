@@ -74,7 +74,7 @@ public class FxCommandService {
 
     }
 
-    public void load() {
+    public String load() {
         try {
             // read fx server details
 
@@ -150,12 +150,20 @@ public class FxCommandService {
 
             printJobs(Arrays.asList(job));
 
+            return job.getId();
+
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage(), e);
         }
-
+        return null;
     }
 
+    public void loadAndRun() {
+        System.out.println ("loading data...");
+        String jobId = load();
+        System.out.println ("running job...");
+        runJob(jobId);
+    }
     public void lsJobs() {
         List<ProjectJob> list = jobRestRepository.findAll();
 

@@ -22,13 +22,14 @@ public class FxCommands {
     @Autowired
     FxCommandService service;
 
-    @ShellMethod(key = "project load", value = "Loads project files into Fx server")
+    /*@ShellMethod(key = "fx load", value = "Loads project files into Fx server")
     public void load() {
         service.load();
     }
+    */
 
 
-    @ShellMethod(key = "project ls", value = "Lists Projects")
+    /*@ShellMethod(key = "project ls", value = "Lists Projects")
     public void projectLs() {
         service.lsJobs();
     }
@@ -36,14 +37,14 @@ public class FxCommands {
     @ShellMethod(key = "job ls", value = "Lists Jobs")
     public void jobLs() {
         service.lsJobs();
+    }*/
+
+    @ShellMethod(key = "run", value = "Loads data and executes tests")
+    public void jobRun() {
+        service.loadAndRun();
     }
 
-    @ShellMethod(key = "job run", value = "Executes Job Pipeline")
-    public void jobRun(String id) {
-        service.runJob(id);
-    }
-
-    @ShellMethod(key = "run inspect", value = "Inspect Run")
+    /*@ShellMethod(key = "run inspect", value = "Inspect Run")
     public void inspectRun(String id) {
         service.inspectRun(id);
     }
@@ -52,6 +53,7 @@ public class FxCommands {
     public void runLs() {
         service.lsRuns();
     }
+    */
 
 
 }
