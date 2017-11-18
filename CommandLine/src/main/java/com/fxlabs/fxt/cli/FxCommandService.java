@@ -66,6 +66,8 @@ public class FxCommandService {
     private DataSetRestRepository dataSetRestRepository;
     @Autowired
     private JobRestRepository jobRestRepository;
+    @Autowired
+    private RunRestRepository runRestRepository;
 
 
     public FxCommandService() {
@@ -161,24 +163,18 @@ public class FxCommandService {
 
     }
 
-    private void printJobs(List<ProjectJob> list) {
-        LinkedHashMap<String, Object> header = new LinkedHashMap<>();
-        header.put("name", "Job Name");
-        header.put("id", "Job ID");
-        header.put("project.name", "Project Name");
-        header.put("project.id", "Project ID");
-        header.put("region", "Region");
+    public void lsRuns() {
+        List<Run> list = runRestRepository.findAll();
 
-        // "name", "id", "project.name", "region"
-        Table table = new TableBuilder(new BeanListTableModel<ProjectJob>(list, header))
-                .addOutlineBorder(BorderStyle.fancy_heavy)
-                .addFullBorder(BorderStyle.fancy_heavy)
-                .addHeaderBorder(BorderStyle.fancy_heavy)
-                .addHeaderAndVerticalsBorders(BorderStyle.fancy_heavy)
-                .build();
-        String result = table.render(80);
-        System.out.println(result);
+        List<RunTask> tasks = new ArrayList<>();
+        for (Run r : list) {
+            tasks.add(r.getTask());
+        }
+        printRuns(tasks);
+
     }
+
+
 
     public void runJob(String jobId) {
         Run run = jobRestRepository.run(jobId);
@@ -210,6 +206,9 @@ public class FxCommandService {
 
 
         RunTask task = run.getTask();
+        printRuns(Arrays.asList(task));
+
+        /*
         System.out.println("Name: " + task.getName());
         System.out.println("Status: " + task.getStatus());
         System.out.println("Total Tests: " + task.getTotalTests());
@@ -219,8 +218,49 @@ public class FxCommandService {
         System.out.println("Start Time: " + task.getStartTime());
         System.out.println("End Time: " + task.getEndTime());
         System.out.println("Total Time : " + task.getTotalTime() + " ms");
+        */
 
 
+    }
+
+    private void printRuns(List<RunTask> list) {
+        LinkedHashMap<String, Object> header = new LinkedHashMap<>();
+        header.put("name", "Name");
+        header.put("status", "Status");
+        header.put("totalTests", "Total Tests");
+        header.put("totalTestCompleted", "Total Completed");
+        header.put("failedTests", "Total Failed");
+        header.put("skippedTests", "Total Skipped");
+        header.put("totalTime", "Total Time");
+
+        // "name", "id", "project.name", "region"
+        Table table = new TableBuilder(new BeanListTableModel<RunTask>(list, header))
+                .addOutlineBorder(BorderStyle.fancy_light)
+                .addFullBorder(BorderStyle.fancy_light)
+                .addHeaderBorder(BorderStyle.fancy_light)
+                .addHeaderAndVerticalsBorders(BorderStyle.fancy_light)
+                .build();
+        String result = table.render(300);
+        System.out.println(result);
+    }
+
+    private void printJobs(List<ProjectJob> list) {
+        LinkedHashMap<String, Object> header = new LinkedHashMap<>();
+        header.put("name", "Job Name");
+        header.put("id", "Job ID");
+        header.put("project.name", "Project Name");
+        header.put("project.id", "Project ID");
+        header.put("region", "Region");
+
+        // "name", "id", "project.name", "region"
+        Table table = new TableBuilder(new BeanListTableModel<ProjectJob>(list, header))
+                .addOutlineBorder(BorderStyle.fancy_light)
+                .addFullBorder(BorderStyle.fancy_light)
+                .addHeaderBorder(BorderStyle.fancy_light)
+                .addHeaderAndVerticalsBorders(BorderStyle.fancy_light)
+                .build();
+        String result = table.render(300);
+        System.out.println(result);
     }
 
 }

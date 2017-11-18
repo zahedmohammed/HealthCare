@@ -42,5 +42,11 @@ public class FxCommands {
         service.inspectRun(id);
     }
 
+    @ShellMethod("Lists Runs")
+    public void runLs() {
+        service.lsRuns();
+    }
+
+
 
 }
