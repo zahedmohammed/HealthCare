@@ -35,6 +35,7 @@ public class RunTask {
     private Long totalTests;
     private Long totalTestCompleted;
     private Long failedTests;
+    private Long skippedTests;
     private Long totalTime;
 
 }

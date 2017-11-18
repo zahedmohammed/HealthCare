@@ -22,11 +22,12 @@ public class BotTask implements Serializable {
     private String username;
     private String password;
     private List<String> request;
-    private List<String> response;
-    private String assertions;
+    private String response;
+    private List<String> assertions;
     private String logs;
     private Date requestStartTime;
     private Date requestEndTime;
-    private Boolean success;
+    private Long requestTime;
+    private String result;
 
 }

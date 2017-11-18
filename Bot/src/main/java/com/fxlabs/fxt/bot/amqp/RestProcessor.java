@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.bot.amqp;
 
 
+import com.fxlabs.fxt.bot.amqp.assertions.ValidateProcessor;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -18,11 +19,14 @@ import java.util.Date;
 public class RestProcessor {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
+
     private Sender sender;
+    private ValidateProcessor validatorProcessor;
 
     @Autowired
-    RestProcessor(Sender sender) {
+    RestProcessor(Sender sender, ValidateProcessor validatorProcessor) {
         this.sender = sender;
+        this.validatorProcessor = validatorProcessor;
     }
 
     public void process(BotTask task) {
@@ -30,7 +34,6 @@ public class RestProcessor {
         if (task == null || task.getId() == null || task.getEndpoint() == null) {
             return;
         }
-
 
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
@@ -43,12 +46,13 @@ public class RestProcessor {
         httpHeaders.set("Accept", "application/json");
         httpHeaders.set("Authorization", createBasicAuth(task.getUsername(), task.getPassword()));
 
+        logger.info("Total tests [{}]", task.getRequest().size());
+
         for (String req : task.getRequest()) {
 
             BotTask newTask = new BotTask();
             newTask.setId(task.getId());
             newTask.setRequestStartTime(new Date());
-            newTask.setSuccess(true);
 
             //logger.info("Request: [{}]", req);
             HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
@@ -60,19 +64,15 @@ public class RestProcessor {
                 logger.warn(e.getLocalizedMessage());
             }
             newTask.setRequestEndTime(new Date());
+            newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());
 
             // validate assertions
 
-            if (response == null || response.getStatusCode() != HttpStatus.OK) {
-                newTask.setLogs(String.format("Expected http status code [%s], but was [%s]", HttpStatus.OK.value(), response));
-                newTask.setSuccess(false);
-                logger.info("Request [{}] response [{}]", req, response);
-            } else {
-                // compose response
-                newTask.setResponse(new ArrayList<>());
-                newTask.getResponse().add(response.getBody());
-                logger.info("Request [{}] status-code [{}] response-body [{}]", req, response.getStatusCode(), response.getBody());
-            }
+            StringBuilder logs = new StringBuilder();
+            StringBuilder taskStatus = new StringBuilder();
+            validatorProcessor.process(task.getAssertions(), response, logs, taskStatus);
+            newTask.setLogs(logs.toString());
+            newTask.setResult(taskStatus.toString());
 
             // return processed task
             sender.sendTask(newTask);
@@ -81,7 +81,7 @@ public class RestProcessor {
 
     }
 
-    String createBasicAuth(String username, String password) {
+    private String createBasicAuth(String username, String password) {
         String auth = username + ":" + password;
         byte[] encodedAuth = Base64.encodeBase64(
                 auth.getBytes(Charset.forName("US-ASCII")));

@@ -36,15 +36,23 @@ public class RunTaskProcessor {
 
         List<ProjectDataSet> list = projectDataSetRepository.findByProjectId(run.getProjectJob().getProject().getId());
         for (ProjectDataSet ds : list) {
-            List<String> reqs = ds.getRequest();
-            List<String> l = new ArrayList<>();
-            for (String r : reqs) {
-                l.add(r);
+
+            List<String> requests = new ArrayList<>();
+            for (String request : ds.getRequest()) {
+                requests.add(request);
             }
-            task.setRequest(l);
+            task.setRequest(requests);
+
             task.setMethod(ds.getMethod());
             task.setUsername(cred.getUsername());
             task.setPassword(cred.getPassword());
+
+            List<String> assertions = new ArrayList<>();
+            for (String assertion : ds.getAssertions()) {
+                assertions.add(assertion);
+            }
+            task.setAssertions(assertions);
+
             // TODO - defaults to Basic Auth
             task.setEndpoint(run.getProjectJob().getProjectEnvironment().getBaseUrl() + ds.getEndpoint());
             botClientService.sendTask(task, run.getProjectJob().getRegion());

@@ -189,6 +189,9 @@ public class FxCommandService {
         System.out.println("Total Tests: " + task.getTotalTests());
         System.out.println("Total Completed: " + task.getTotalTestCompleted());
         System.out.println("Total Failed: " + task.getFailedTests());
+        System.out.println("Total Skipped: " + task.getSkippedTests());
+        System.out.println("Start Time: " + task.getStartTime());
+        System.out.println("End Time: " + task.getEndTime());
         System.out.println("Total Time : " + task.getTotalTime() + " ms");
 
     }

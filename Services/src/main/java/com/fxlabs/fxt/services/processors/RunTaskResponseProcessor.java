@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -33,10 +34,14 @@ public class RunTaskResponseProcessor {
 
         runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + 1);
 
-        runTask.setTotalTime(runTask.getTotalTime() + (task.getRequestEndTime().getTime() - task.getRequestStartTime().getTime()));
+        runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
 
-        if (!task.getSuccess())
+        logger.info("Test result [{}]", task.getResult());
+        if ("fail".equals(task.getResult())) {
             runTask.setFailedTests(runTask.getFailedTests() + 1);
+        } else if ("skip".equals(task.getResult())) {
+            runTask.setFailedTests(runTask.getSkippedTests() + 1);
+        }
 
         // is complete?
         if (runTask.getTotalTestCompleted() >= runTask.getTotalTests()) {
