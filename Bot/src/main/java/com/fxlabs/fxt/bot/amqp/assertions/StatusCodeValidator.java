@@ -22,7 +22,7 @@ public class StatusCodeValidator {
         if (assertion.matches(".*==.*")) {
             assertEqual(Integer.parseInt(assertion.split("==")[1].trim()), expectedStatusCode, status, logs);
         } else if (assertion.matches(".*!=.*")) {
-            assertEqual(Integer.parseInt(assertion.split("!=")[1].trim()), expectedStatusCode, status, logs);
+            assertNotEqual(Integer.parseInt(assertion.split("!=")[1].trim()), expectedStatusCode, status, logs);
         } else {
             logger.warn("Invalid assertion [{}]", assertion);
             logs.append(String.format("Invalid assertion [%s]\n", assertion));

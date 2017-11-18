@@ -61,7 +61,8 @@ public class RestProcessor {
             try {
                 response = restTemplate.exchange(url, method, request, String.class);
             } catch (Exception e) {
-                logger.warn(e.getLocalizedMessage());
+                logger.warn(e.getLocalizedMessage(), e);
+                response = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             newTask.setRequestEndTime(new Date());
             newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());

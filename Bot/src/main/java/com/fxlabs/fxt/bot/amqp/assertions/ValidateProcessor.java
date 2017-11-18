@@ -29,8 +29,9 @@ public class ValidateProcessor {
 
         // validate response
         if (response == null) {
-            logger.warn("Invalid response [{}]", response);
-            logs.append(String.format("Invalid response [%s] from the server \n", response));
+            logger.warn("Null response ");
+            logs.append(String.format("Null response from the server \n"));
+            status.append("fail");
             return;
         }
 
