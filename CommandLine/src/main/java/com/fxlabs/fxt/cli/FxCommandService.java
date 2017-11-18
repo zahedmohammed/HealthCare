@@ -14,6 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.table.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -110,25 +111,35 @@ public class FxCommandService {
             env = envRepository.save(env);
             logger.info("env created with id [{}]...", env.getId());
 
+
             // create dataset
-
-            ObjectMapper mapper = new ObjectMapper();
-
-            ProjectDataSet[] values = mapper.readValue(new File("dataset/data.json"), ProjectDataSet[].class);
-
-            logger.info("ds size: [{}]", values.length);
-
-            logger.info("ds : [{}]", values[0].toString());
 
             NameDto proj_ = new NameDto();
             proj_.setId(project.getId());
             proj_.setName(project.getName());
             proj_.setVersion(project.getVersion());
 
-            for (ProjectDataSet dataSet : values) {
-                dataSet.setProject(proj_);
-                dataSetRestRepository.save(dataSet);
+            ObjectMapper mapper = new ObjectMapper();
+
+
+            File dataFolder = new File("dataset");
+
+            for (File file : dataFolder.listFiles()) {
+
+                ProjectDataSet[] values = mapper.readValue(file, ProjectDataSet[].class);
+                logger.info("ds size: [{}]", values.length);
+
+                logger.info("ds : [{}]", values[0].toString());
+
+
+                for (ProjectDataSet dataSet : values) {
+                    dataSet.setProject(proj_);
+                }
+                dataSetRestRepository.saveAll(Arrays.asList(values));
+                System.out.println(String.format("%s loaded...", file.getName()));
             }
+
+
             logger.info("Dataset uploaded...");
 
             // read job
@@ -159,11 +170,12 @@ public class FxCommandService {
     }
 
     public void loadAndRun() {
-        System.out.println ("loading data...");
+        System.out.println("loading data...");
         String jobId = load();
-        System.out.println ("running job...");
+        System.out.println("running job...");
         runJob(jobId);
     }
+
     public void lsJobs() {
         List<ProjectJob> list = jobRestRepository.findAll();
 
@@ -188,7 +200,6 @@ public class FxCommandService {
         printRuns(tasks);
 
     }
-
 
 
     public void runJob(String jobId) {

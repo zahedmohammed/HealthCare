@@ -34,10 +34,10 @@ public class GenericServiceImpl<E, D, ID extends Serializable> implements Generi
 
     }
 
-    public Response<D> save(List<D> dtos) {
+    public Response<List<D>> save(List<D> dtos) {
         List<E> e = repository.save(converter.convertToEntities(dtos));
         List<D> d = converter.convertToDtos(e);
-        return new Response<D>();
+        return new Response<List<D>>();
 
     }
 

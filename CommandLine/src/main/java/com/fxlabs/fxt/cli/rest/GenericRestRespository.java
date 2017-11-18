@@ -83,6 +83,18 @@ public class GenericRestRespository<T> {
 
     }
 
+    public List<T> saveAll(List<T> t) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<List<T>> request = new HttpEntity<>(t, this.httpHeaders);
+
+        ResponseEntity<Response<List<T>>> response = restTemplate.exchange(url + "/batch", HttpMethod.POST, request, referenceList);
+
+        //logger.info(response.getBody());
+        return response.getBody().getData();
+
+    }
+
     public List<T> findAll() {
         RestTemplate restTemplate = new RestTemplate();
 
