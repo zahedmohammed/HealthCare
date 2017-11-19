@@ -16,14 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class RunTaskProcessor {
+public class RunTaskRequestProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private BotClientService botClientService;
     private ProjectDataSetRepository projectDataSetRepository;
 
     @Autowired
-    public RunTaskProcessor(BotClientService botClientService, ProjectDataSetRepository projectDataSetRepository) {
+    public RunTaskRequestProcessor(BotClientService botClientService, ProjectDataSetRepository projectDataSetRepository) {
         this.botClientService = botClientService;
         this.projectDataSetRepository = projectDataSetRepository;
     }

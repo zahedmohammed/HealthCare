@@ -32,19 +32,23 @@ public class RunTaskResponseProcessor {
         com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findById(task.getId());
         com.fxlabs.fxt.dao.entity.run.RunTask runTask = run.getTask();
 
-        runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + 1);
+        // only if SUITE
+        if ("SUITE".equals(task.getResult())) {
+            runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
+            runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
+        } else {
 
-        runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
+            runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + 1);
+            logger.info("Test result [{}]", task.getResult());
+            if ("fail".equals(task.getResult())) {
+                runTask.setFailedTests(runTask.getFailedTests() + 1);
+            } else if ("skip".equals(task.getResult())) {
+                runTask.setFailedTests(runTask.getSkippedTests() + 1);
+            }
 
-        logger.info("Test result [{}]", task.getResult());
-        if ("fail".equals(task.getResult())) {
-            runTask.setFailedTests(runTask.getFailedTests() + 1);
-        } else if ("skip".equals(task.getResult())) {
-            runTask.setFailedTests(runTask.getSkippedTests() + 1);
         }
-
         // is complete?
-        if (runTask.getTotalTestCompleted() >= runTask.getTotalTests()) {
+        if (runTask.getTotalSuiteCompleted() >= runTask.getTotalTests()) {
             runTask.setStatus("Completed!");
             runTask.setEndTime(new Date());
         }

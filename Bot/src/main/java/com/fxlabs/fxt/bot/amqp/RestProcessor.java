@@ -35,6 +35,10 @@ public class RestProcessor {
             return;
         }
 
+        BotTask completeTask = new BotTask();
+        completeTask.setId(task.getId());
+        completeTask.setRequestStartTime(new Date());
+
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
         // execute request
@@ -78,6 +82,14 @@ public class RestProcessor {
             // return processed task
             sender.sendTask(newTask);
         }
+
+        // send test suite complete
+
+        completeTask.setRequestEndTime(new Date());
+        completeTask.setRequestTime(completeTask.getRequestEndTime().getTime() - completeTask.getRequestStartTime().getTime());
+        completeTask.setResult("SUITE");
+
+        sender.sendTask(completeTask);
 
 
     }

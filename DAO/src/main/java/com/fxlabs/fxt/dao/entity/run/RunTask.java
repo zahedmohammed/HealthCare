@@ -33,6 +33,7 @@ public class RunTask {
     private Date endTime;
 
     private Long totalTests;
+    private Long totalSuiteCompleted;
     private Long totalTestCompleted;
     private Long failedTests;
     private Long skippedTests;

@@ -8,7 +8,7 @@ import com.fxlabs.fxt.dto.project.ProjectJob;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.services.processors.RunTaskProcessor;
+import com.fxlabs.fxt.services.processors.RunTaskRequestProcessor;
 import com.fxlabs.fxt.services.project.ProjectJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +21,12 @@ import java.util.Date;
 public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.run.Run, String> implements RunService {
 
     private ProjectJobService projectJobService;
-    private RunTaskProcessor taskProcessor;
+    private RunTaskRequestProcessor taskProcessor;
     private ProjectDataSetRepository projectDataSetRepository;
 
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, ProjectJobService projectJobService,
-                          RunTaskProcessor taskProcessor, ProjectDataSetRepository projectDataSetRepository) {
+                          RunTaskRequestProcessor taskProcessor, ProjectDataSetRepository projectDataSetRepository) {
         super(repository, converter);
         this.projectJobService = projectJobService;
         this.taskProcessor = taskProcessor;
