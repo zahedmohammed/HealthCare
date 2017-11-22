@@ -211,14 +211,14 @@ public class FxCommandService {
         for (Run r : list) {
             tasks.add(r.getTask());
         }
-        printRuns(tasks);
+        //printRuns(tasks);
 
     }
-
 
     public void runJob(String jobId) {
         Run run = jobRestRepository.run(jobId);
         System.out.println("Running Job : " + run.getId());
+        System.out.println ("");
 
         while (true) {
             try {
@@ -229,8 +229,9 @@ public class FxCommandService {
 
             run = jobRestRepository.findInstance(run.getId());
             if (StringUtils.pathEquals(run.getTask().getStatus(), "Completed!")) {
-                printRun(run);
                 break;
+            } else {
+                printRun(run);
             }
         }
 
@@ -239,27 +240,6 @@ public class FxCommandService {
     public void inspectRun(String id) {
         Run run = jobRestRepository.findInstance(id);
         printRun(run);
-
-    }
-
-    private void printRun(Run run) {
-
-
-        RunTask task = run.getTask();
-        printRuns(Arrays.asList(task));
-
-        /*
-        System.out.println("Name: " + task.getName());
-        System.out.println("Status: " + task.getStatus());
-        System.out.println("Total Tests: " + task.getTotalTests());
-        System.out.println("Total Completed: " + task.getTotalTestCompleted());
-        System.out.println("Total Failed: " + task.getFailedTests());
-        System.out.println("Total Skipped: " + task.getSkippedTests());
-        System.out.println("Start Time: " + task.getStartTime());
-        System.out.println("End Time: " + task.getEndTime());
-        System.out.println("Total Time : " + task.getTotalTime() + " ms");
-        */
-
 
     }
 
@@ -279,7 +259,7 @@ public class FxCommandService {
         System.out.println(result);
     }
 
-    private void printRuns(List<RunTask> list) {
+    private void printRun(Run run) {
         LinkedHashMap<String, Object> header = new LinkedHashMap<>();
         header.put("name", "Name");
         header.put("status", "Status");
@@ -290,14 +270,17 @@ public class FxCommandService {
         header.put("totalTime", "Total Time");
 
         // "name", "id", "project.name", "region"
-        Table table = new TableBuilder(new BeanListTableModel<RunTask>(list, header))
+        /*Table table = new TableBuilder(new BeanListTableModel<RunTask>(list, header))
                 .addOutlineBorder(BorderStyle.fancy_light)
                 .addFullBorder(BorderStyle.fancy_light)
                 .addHeaderBorder(BorderStyle.fancy_light)
                 .addHeaderAndVerticalsBorders(BorderStyle.fancy_light)
                 .build();
-        String result = table.render(300);
-        System.out.println(result);
+        String result = table.render(300);*/
+        //System.out.print(result);
+        System.out.print(String.format("ID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s\r",
+                run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
+                run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime()));
     }
 
     private void printJobs(List<ProjectJob> list) {
