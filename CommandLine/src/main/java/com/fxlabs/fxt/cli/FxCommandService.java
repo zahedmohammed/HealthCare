@@ -118,7 +118,7 @@ public class FxCommandService {
                     continue;
                 }
 
-                System.out.println(String.format("loading %s...", file.getName()));
+                System.out.println(String.format("loading %s", file.getName()));
 
                 ProjectDataSet values = yamlMapper.readValue(file, ProjectDataSet.class);
                 //logger.info("ds size: [{}]", values.length);
@@ -173,7 +173,7 @@ public class FxCommandService {
 
             logger.info("Successful!");
 
-            printJobs(jobs);
+            //printJobs(jobs);
 
             return job_.getId();
 
