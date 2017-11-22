@@ -278,7 +278,7 @@ public class FxCommandService {
                 .build();
         String result = table.render(300);*/
         //System.out.print(result);
-        System.out.print(String.format("ID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s\r",
+        System.out.print(String.format("ID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s ms\r",
                 run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
                 run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime()));
     }
