@@ -1,6 +1,11 @@
 package com.fxlabs.fxt.cli;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fxlabs.fxt.cli.beans.Config;
+import com.fxlabs.fxt.cli.beans.Credential;
+import com.fxlabs.fxt.cli.beans.Environment;
+import com.fxlabs.fxt.cli.beans.JobProfile;
 import com.fxlabs.fxt.cli.rest.*;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.project.*;
@@ -28,37 +33,6 @@ public class FxCommandService {
 
     // Fx server connection details
 
-
-    // Project
-
-    @Value("${project.name}")
-    private String projectName;
-
-    // Test App details
-    @Value("${env.name}")
-    private String envName;
-    @Value("${env.url}")
-    private String envUrl;
-
-    @Value("${env.auth.type}")
-    private String envAuthType;
-
-    @Value("${env.accessKey}")
-    private String envUsername;
-
-    @Value("${env.secretKey}")
-    private String envPassword;
-
-    // Job details
-    @Value("${job.name}")
-    private String jobName;
-
-    @Value("${job.tags}")
-    private List<String> jobTags;
-
-    @Value("${job.region}")
-    private String jobRegion = "fx-default-queue";
-
     @Autowired
     private ProjectRestRepository projectRepository;
     @Autowired
@@ -81,9 +55,16 @@ public class FxCommandService {
 
 
             // create project
-            logger.info("loading project...");
+
+            ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+
+            logger.info("loading project.yml...");
+            Config config = yamlMapper.readValue(new File("project.yml"), Config.class);
+
+            //System.out.println(config);
+
             Project project = new Project();
-            project.setName(projectName);
+            project.setName(config.getTestApp().getName());
 
             project = projectRepository.save(project);
             logger.info("project created with id [{}]...", project.getId());
@@ -91,33 +72,40 @@ public class FxCommandService {
             // create env
             logger.info("loading env details...");
 
-            ProjectEnvironment env = new ProjectEnvironment();
-            env.setName(this.envName);
-            env.setBaseUrl(envUrl);
             NameDto proj = new NameDto();
             proj.setId(project.getId());
             proj.setName(project.getName());
             proj.setVersion(project.getVersion());
-            env.setProject(proj);
-            ProjectCredential cred = new ProjectCredential();
-            cred.setName("Default");
-            cred.setMethod(envAuthType);
-            cred.setUsername(envUsername);
-            cred.setPassword(envPassword);
-            List<ProjectCredential> list = new ArrayList<>();
-            list.add(cred);
-            env.setCredentials(list);
 
-            env = envRepository.save(env);
-            logger.info("env created with id [{}]...", env.getId());
+            List<ProjectEnvironment> projectEnvironments = new ArrayList<>();
+            for (Environment environment : config.getTestApp().getEnvironments()) {
+                ProjectEnvironment env = new ProjectEnvironment();
+                env.setName(environment.getName());
+                env.setBaseUrl(environment.getBaseUrl());
+
+                env.setProject(proj);
+
+                List<ProjectCredential> list = new ArrayList<>();
+                for (Credential credential : environment.getCredentials()) {
+                    ProjectCredential cred = new ProjectCredential();
+                    cred.setName(credential.getName());
+                    cred.setMethod(credential.getAuthType());
+                    cred.setUsername(credential.getUsername());
+                    cred.setPassword(credential.getPassword());
+
+                    list.add(cred);
+                }
+                env.setCredentials(list);
+
+                env = envRepository.save(env);
+
+                projectEnvironments.add(env);
+
+                logger.info("env created with id [{}]...", env.getId());
+            }
 
 
             // create dataset
-
-            NameDto proj_ = new NameDto();
-            proj_.setId(project.getId());
-            proj_.setName(project.getName());
-            proj_.setVersion(project.getVersion());
 
             ObjectMapper mapper = new ObjectMapper();
 
@@ -126,42 +114,68 @@ public class FxCommandService {
 
             for (File file : dataFolder.listFiles()) {
 
-                ProjectDataSet[] values = mapper.readValue(file, ProjectDataSet[].class);
-                logger.info("ds size: [{}]", values.length);
-
-                logger.info("ds : [{}]", values[0].toString());
-
-
-                for (ProjectDataSet dataSet : values) {
-                    dataSet.setProject(proj_);
+                if (!StringUtils.endsWithIgnoreCase(file.getName(), ".yml")) {
+                    continue;
                 }
-                dataSetRestRepository.saveAll(Arrays.asList(values));
-                System.out.println(String.format("%s loaded...", file.getName()));
+
+                System.out.println(String.format("loading %s...", file.getName()));
+
+                ProjectDataSet values = yamlMapper.readValue(file, ProjectDataSet.class);
+                //logger.info("ds size: [{}]", values.length);
+
+                logger.info("ds : [{}]", values.toString());
+
+
+                //for (ProjectDataSet dataSet : values) {
+                values.setProject(proj);
+                //}
+                dataSetRestRepository.save(values);
             }
 
 
             logger.info("Dataset uploaded...");
 
             // read job
+            ProjectJob job_ = null;
+            List<ProjectJob> jobs = new ArrayList<>();
             logger.info("loading job details...");
-            ProjectJob job = new ProjectJob();
-            job.setName(this.jobName);
-            job.setProject(proj_);
+            for (JobProfile jobProfile : config.getTestApp().getJobProfiles()) {
+                ProjectJob job = new ProjectJob();
+                job.setName(jobProfile.getName());
+                job.setProject(proj);
 
-            job.setDataSetTags(this.jobTags);
+                job.setDataSetTags(jobProfile.getTags());
 
-            job.setProjectEnvironment(env);
+                ProjectEnvironment projectEnvironment = null;
+                for (ProjectEnvironment pe : projectEnvironments) {
+                    if (pe.getName().equals(jobProfile.getEnvironment())) {
+                        projectEnvironment = pe;
+                    }
+                }
+                job.setProjectEnvironment(projectEnvironment);
 
-            job.setRegion(this.jobRegion);
-            job = jobRestRepository.save(job);
-            logger.info("job created with id [{}]...", job.getId());
+                job.setRegion(jobProfile.getRegion());
+                job = jobRestRepository.save(job);
+
+                jobs.add(job);
+
+                if (job.getName().equals("Default")) {
+                    job_ = job;
+                }
+
+                logger.info("job created with id [{}]...", job.getId());
+            }
+
+            if (job_ == null) {
+                job_ = jobs.get(0);
+            }
 
 
             logger.info("Successful!");
 
-            printJobs(Arrays.asList(job));
+            printJobs(jobs);
 
-            return job.getId();
+            return job_.getId();
 
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage(), e);
@@ -170,9 +184,9 @@ public class FxCommandService {
     }
 
     public void loadAndRun() {
-        System.out.println("loading data...");
+        //System.out.println("loading data...");
         String jobId = load();
-        System.out.println("running job...");
+        //System.out.println("running job...");
         runJob(jobId);
     }
 
@@ -204,7 +218,7 @@ public class FxCommandService {
 
     public void runJob(String jobId) {
         Run run = jobRestRepository.run(jobId);
-        System.out.println("Run ID: " + run.getId());
+        System.out.println("Running Job : " + run.getId());
 
         while (true) {
             try {
