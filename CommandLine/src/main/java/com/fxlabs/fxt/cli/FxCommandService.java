@@ -140,7 +140,7 @@ public class FxCommandService {
             }
 
 
-            logger.info("test-suites uploaded...");
+            logger.info("test-suites successfully uploaded...");
 
             // read job
             ProjectJob job_ = null;
@@ -292,8 +292,8 @@ public class FxCommandService {
 
     private void printRun(Run run, String carriageReturn) {
         System.out.print(
-                AnsiOutput.toString(AnsiColor.GREEN,
-                        String.format("ID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s ms%s",
+                AnsiOutput.toString(AnsiColor.BRIGHT_BLUE,
+                        String.format("\nID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s ms%s\n",
                                 run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
                                 run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime(), carriageReturn)
                         , AnsiColor.DEFAULT)
