@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Credential implements Serializable {
+public class Auth implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String name = "Default";

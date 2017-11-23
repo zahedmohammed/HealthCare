@@ -19,15 +19,23 @@ public class BotTask implements Serializable {
     private String id;
     private String endpoint;
     private String method;
+
+    private String authType;
     private String username;
     private String password;
+
     private List<String> request;
+
     private String response;
+
     private List<String> assertions;
+
     private String logs;
+
     private Date requestStartTime;
     private Date requestEndTime;
     private Long requestTime;
+
     private String result;
 
 }

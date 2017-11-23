@@ -19,7 +19,7 @@ public class Environment implements Serializable {
     private String name = "Default";
     private String baseUrl;
 
-    private List<Credential> credentials;
+    private List<Auth> auths;
 
 
 }

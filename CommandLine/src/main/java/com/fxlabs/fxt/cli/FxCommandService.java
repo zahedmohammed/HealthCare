@@ -3,7 +3,7 @@ package com.fxlabs.fxt.cli;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.cli.beans.Config;
-import com.fxlabs.fxt.cli.beans.Credential;
+import com.fxlabs.fxt.cli.beans.Auth;
 import com.fxlabs.fxt.cli.beans.Environment;
 import com.fxlabs.fxt.cli.beans.JobProfile;
 import com.fxlabs.fxt.cli.rest.*;
@@ -14,12 +14,11 @@ import com.fxlabs.fxt.dto.run.RunTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ansi.AnsiColor;
+import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.table.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -86,7 +85,7 @@ public class FxCommandService {
                 env.setProject(proj);
 
                 List<ProjectCredential> list = new ArrayList<>();
-                for (Credential credential : environment.getCredentials()) {
+                for (Auth credential : environment.getAuths()) {
                     ProjectCredential cred = new ProjectCredential();
                     cred.setName(credential.getName());
                     cred.setMethod(credential.getAuthType());
@@ -110,7 +109,7 @@ public class FxCommandService {
             ObjectMapper mapper = new ObjectMapper();
 
 
-            File dataFolder = new File("dataset");
+            File dataFolder = new File("test-suites");
 
             for (File file : dataFolder.listFiles()) {
 
@@ -217,8 +216,9 @@ public class FxCommandService {
 
     public void runJob(String jobId) {
         Run run = jobRestRepository.run(jobId);
+        System.out.println("");
         System.out.println("Running Job : " + run.getId());
-        System.out.println ("");
+        System.out.println("");
 
         while (true) {
             try {
@@ -229,9 +229,10 @@ public class FxCommandService {
 
             run = jobRestRepository.findInstance(run.getId());
             if (StringUtils.pathEquals(run.getTask().getStatus(), "Completed!")) {
+                printRun(run, "\n");
                 break;
             } else {
-                printRun(run);
+                printRun(run, "\r");
             }
         }
 
@@ -239,7 +240,7 @@ public class FxCommandService {
 
     public void inspectRun(String id) {
         Run run = jobRestRepository.findInstance(id);
-        printRun(run);
+        //printRun(run);
 
     }
 
@@ -259,7 +260,7 @@ public class FxCommandService {
         System.out.println(result);
     }
 
-    private void printRun(Run run) {
+    private void printRun(Run run, String carriageReturn) {
         LinkedHashMap<String, Object> header = new LinkedHashMap<>();
         header.put("name", "Name");
         header.put("status", "Status");
@@ -278,9 +279,13 @@ public class FxCommandService {
                 .build();
         String result = table.render(300);*/
         //System.out.print(result);
-        System.out.print(String.format("ID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s ms\r",
-                run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
-                run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime()));
+        System.out.print(
+                AnsiOutput.toString(AnsiColor.GREEN,
+                        String.format("ID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s ms%s",
+                                run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
+                                run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime(), carriageReturn)
+                        , AnsiColor.DEFAULT)
+        );
     }
 
     private void printJobs(List<ProjectJob> list) {

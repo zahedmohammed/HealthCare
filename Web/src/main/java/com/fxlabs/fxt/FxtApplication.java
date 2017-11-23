@@ -48,6 +48,7 @@ public class FxtApplication {
     RunService runService;
 
     //@Bean
+    /*
     InitializingBean sendDatabase() {
         return () -> {
             // Project
@@ -94,7 +95,7 @@ public class FxtApplication {
             //runService.run(projectJobResponse.getData().getId());
 
         };
-    }
+    }*/
 
 }
 

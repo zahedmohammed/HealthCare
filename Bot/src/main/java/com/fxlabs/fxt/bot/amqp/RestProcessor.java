@@ -4,6 +4,7 @@ package com.fxlabs.fxt.bot.amqp;
 import com.fxlabs.fxt.bot.amqp.assertions.ValidateProcessor;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,10 @@ public class RestProcessor {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Content-Type", "application/json");
         httpHeaders.set("Accept", "application/json");
-        httpHeaders.set("Authorization", createBasicAuth(task.getUsername(), task.getPassword()));
+
+        if (StringUtils.isNotEmpty(task.getAuthType())) {
+            httpHeaders.set("Authorization", createBasicAuth(task.getUsername(), task.getPassword()));
+        }
 
         logger.info("Total tests [{}]", task.getRequest().size());
 
