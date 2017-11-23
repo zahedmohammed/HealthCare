@@ -114,10 +114,12 @@ public class FxCommandService {
             for (File file : dataFolder.listFiles()) {
 
                 if (!StringUtils.endsWithIgnoreCase(file.getName(), ".yml")) {
+                    System.out.println(AnsiOutput.toString(AnsiColor.RED,
+                            String.format("%s skipped...", file.getName()),
+                            AnsiColor.DEFAULT));
                     continue;
                 }
 
-                System.out.println(String.format("loading %s", file.getName()));
 
                 ProjectDataSet values = yamlMapper.readValue(file, ProjectDataSet.class);
                 //logger.info("ds size: [{}]", values.length);
@@ -125,14 +127,16 @@ public class FxCommandService {
                 logger.info("ds : [{}]", values.toString());
 
 
-                //for (ProjectDataSet dataSet : values) {
                 values.setProject(proj);
-                //}
                 dataSetRestRepository.save(values);
+
+                System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
+                        String.format("%s loaded...", file.getName()),
+                        AnsiColor.DEFAULT));
             }
 
 
-            logger.info("Dataset uploaded...");
+            logger.info("test-suites uploaded...");
 
             // read job
             ProjectJob job_ = null;
