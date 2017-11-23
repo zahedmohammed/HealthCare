@@ -18,22 +18,19 @@ public class Response<D> implements Serializable {
     private boolean errors = false;
     private List<Message> messages;
     private D data;
-    private Long pages = 1L;
-    private Long total = 1L;
+    private Integer totalPages = 1;
+    private Long totalElements = 1L;
 
     public Response(D data) {
         this.requestId = "None";
         this.data = data;
         requestTime = new Date();
-        this.errors = false;
-        this.pages = 1L;
-        this.total = 1L;
     }
 
-    public Response(D data, Long totalElements, Long totalPages) {
+    public Response(D data, Long totalElements, Integer totalPages) {
         this.data = data;
-        this.pages = totalPages;
-        this.total = totalElements;
+        this.totalPages = totalPages;
+        this.totalElements = totalElements;
     }
 
 

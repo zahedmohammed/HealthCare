@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,8 @@ public abstract class BaseController<D, ID extends Serializable> {
 
     public final String DEFAULT_PAGE_VALUE = "0";
     public final String DEFAULT_PAGE_SIZE_VALUE = "20";
+
+    public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
 
     private GenericService<D, ID> service;
 

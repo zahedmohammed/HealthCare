@@ -44,7 +44,7 @@ public class GenericServiceImpl<E, D, ID extends Serializable> implements Generi
     public Response<List<D>> findAll(String user, Pageable pageable) {
         Page<E> page = repository.findAll(pageable);
         List<D> dtos = converter.convertToDtos(page.getContent());
-        return new Response<List<D>>(dtos, page.getTotalElements(), (long) page.getTotalPages());
+        return new Response<List<D>>(dtos, page.getTotalElements(), page.getTotalPages());
     }
 
     public Response<D> findById(ID id) {

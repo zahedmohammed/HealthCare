@@ -40,6 +40,7 @@ public class RestProcessor {
 
         BotTask completeTask = new BotTask();
         completeTask.setId(task.getId());
+        completeTask.setProjectDataSetId(task.getProjectDataSetId());
         completeTask.setRequestStartTime(new Date());
 
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
@@ -75,7 +76,7 @@ public class RestProcessor {
             try {
                 response = restTemplate.exchange(url, method, request, String.class);
             } catch (Exception e) {
-                logger.warn(e.getLocalizedMessage(), e);
+                logger.warn(e.getLocalizedMessage());
                 response = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             newTask.setRequestEndTime(new Date());
@@ -88,6 +89,15 @@ public class RestProcessor {
             validatorProcessor.process(task.getAssertions(), response, logs, taskStatus);
             newTask.setLogs(logs.toString());
             newTask.setResult(taskStatus.toString());
+
+            if (StringUtils.equalsIgnoreCase("fail", newTask.getResult())) {
+                completeTask.setTotalFailed(completeTask.getTotalFailed() + 1);
+            } else if (StringUtils.equalsIgnoreCase("skip", newTask.getResult())) {
+                completeTask.setTotalSkipped(completeTask.getTotalSkipped() + 1);
+            } else {
+                completeTask.setTotalPassed(completeTask.getTotalPassed() + 1);
+            }
+
 
             // return processed task
             sender.sendTask(newTask);

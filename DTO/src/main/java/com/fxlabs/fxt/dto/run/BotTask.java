@@ -17,6 +17,7 @@ public class BotTask implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
+    private String projectDataSetId;
     private String endpoint;
     private String method;
 
@@ -38,5 +39,9 @@ public class BotTask implements Serializable {
     private Long requestTime;
 
     private String result;
+
+    private Long totalPassed = 0L;
+    private Long totalFailed = 0L;
+    private Long totalSkipped = 0L;
 
 }

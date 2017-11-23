@@ -1,5 +1,9 @@
 package com.fxlabs.fxt.services.processors;
 
+import com.fxlabs.fxt.dao.entity.project.ProjectDataSet;
+import com.fxlabs.fxt.dao.entity.run.DataSet;
+import com.fxlabs.fxt.dao.repository.DataSetRepository;
+import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.Run;
@@ -21,10 +25,14 @@ public class RunTaskResponseProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private RunRepository runRepository;
+    private DataSetRepository dataSetRepository;
+    private ProjectDataSetRepository projectDataSetRepository;
 
     @Autowired
-    public RunTaskResponseProcessor(RunRepository runRepository) {
+    public RunTaskResponseProcessor(RunRepository runRepository, DataSetRepository dataSetRepository, ProjectDataSetRepository projectDataSetRepository) {
         this.runRepository = runRepository;
+        this.dataSetRepository = dataSetRepository;
+        this.projectDataSetRepository = projectDataSetRepository;
     }
 
     public void process(BotTask task) {
@@ -36,6 +44,7 @@ public class RunTaskResponseProcessor {
         if ("SUITE".equals(task.getResult())) {
             runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
             runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
+            saveDS(task, run);
         } else {
 
             runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + 1);
@@ -54,5 +63,30 @@ public class RunTaskResponseProcessor {
         }
 
         runRepository.save(run);
+    }
+
+    private void saveDS(BotTask task, com.fxlabs.fxt.dao.entity.run.Run run) {
+        DataSet ds = new DataSet();
+        ds.setRunId(run.getId());
+        //ProjectDataSet pds = new ProjectDataSet();
+        //pds.setId(task.getProjectDataSetId());
+        //ds.setProjectDataSet(pds);
+        ProjectDataSet pds = projectDataSetRepository.findOne(task.getProjectDataSetId());
+        ds.setTestSuite(pds.getName());
+        ds.setLogs(task.getLogs());
+        ds.setResponse(task.getResponse());
+
+        ds.setRequestEndTime(task.getRequestStartTime());
+        ds.setRequestEndTime(task.getRequestEndTime());
+        ds.setRequestTime(task.getRequestTime());
+
+        ds.setTotalPassed(task.getTotalPassed());
+        ds.setTotalFailed(task.getTotalFailed());
+        ds.setTotalSkipped(task.getTotalSkipped());
+
+        ds.setStatus(task.getResult());
+
+        this.dataSetRepository.save(ds);
+
     }
 }

@@ -8,7 +8,9 @@ import com.fxlabs.fxt.cli.beans.Environment;
 import com.fxlabs.fxt.cli.beans.JobProfile;
 import com.fxlabs.fxt.cli.rest.*;
 import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
+import com.fxlabs.fxt.dto.run.DataSet;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
 import org.slf4j.Logger;
@@ -121,14 +123,16 @@ public class FxCommandService {
                 }
 
 
-                ProjectDataSet values = yamlMapper.readValue(file, ProjectDataSet.class);
+                ProjectDataSet projectDataSet = yamlMapper.readValue(file, ProjectDataSet.class);
                 //logger.info("ds size: [{}]", values.length);
 
-                logger.info("ds : [{}]", values.toString());
+                logger.info("ds : [{}]", projectDataSet.toString());
 
-
-                values.setProject(proj);
-                dataSetRestRepository.save(values);
+                if (StringUtils.isEmpty(projectDataSet.getName())) {
+                    projectDataSet.setName(file.getName());
+                }
+                projectDataSet.setProject(proj);
+                dataSetRestRepository.save(projectDataSet);
 
                 System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
                         String.format("%s loaded...", file.getName()),
@@ -218,27 +222,48 @@ public class FxCommandService {
 
     }
 
+
     public void runJob(String jobId) {
         Run run = jobRestRepository.run(jobId);
         System.out.println("");
         System.out.println("Running Job : " + run.getId());
         System.out.println("");
 
+        int page = 0;
+        int pageSize = 10;
+        Set<DataSet> dataSets = new HashSet<>();
+
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            run = jobRestRepository.findInstance(run.getId());
-            if (StringUtils.pathEquals(run.getTask().getStatus(), "Completed!")) {
-                printRun(run, "\n");
-                break;
+            // find DataSets
+            // add them to set and print
+            Response<List<DataSet>> response = runRestRepository.findTestSuitesByRunId(run.getId(), page, pageSize);
+
+            for (DataSet ds : response.getData()) {
+                if (dataSets.add(ds)) {
+                    printDataSet(ds);
+                }
+            }
+
+            if (((page + 1) * response.getTotalElements()) < run.getTask().getTotalTests()) {
+                if (response.getTotalElements() >= pageSize) page++;
             } else {
-                printRun(run, "\r");
+                break;
             }
         }
+
+        run = jobRestRepository.findInstance(run.getId());
+        //if (StringUtils.pathEquals(run.getTask().getStatus(), "Completed!")) {
+        printRun(run, "\n");
+        //    break;
+        //} else {
+        //    printRun(run, "\r");
+        //}
 
     }
 
@@ -290,6 +315,26 @@ public class FxCommandService {
                                 run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime(), carriageReturn)
                         , AnsiColor.DEFAULT)
         );
+    }
+
+    private void printDataSet(DataSet ds) {
+        if (ds.getTotalFailed() > 0) {
+            System.out.println(
+                    AnsiOutput.toString(AnsiColor.RED,
+                            String.format("Test-Suite: %s, Pass: %s, Fail: %s, Skip: %s, Time: %s ms",
+                                    ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getTotalSkipped(),
+                                    ds.getRequestTime())
+                            , AnsiColor.DEFAULT)
+            );
+        } else {
+            System.out.println(
+                    AnsiOutput.toString(AnsiColor.GREEN,
+                            String.format("Test-Suite: %s, Pass: %s, Fail: %s, Skip: %s, Time: %s ms",
+                                    ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getTotalSkipped(),
+                                    ds.getRequestTime())
+                            , AnsiColor.DEFAULT)
+            );
+        }
     }
 
     private void printJobs(List<ProjectJob> list) {

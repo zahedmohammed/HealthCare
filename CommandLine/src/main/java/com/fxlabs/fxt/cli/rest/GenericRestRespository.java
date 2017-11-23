@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.run.DataSet;
 import com.fxlabs.fxt.dto.run.Run;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -49,6 +50,8 @@ public class GenericRestRespository<T> {
         paramTypeRefMap.put(ProjectJob[].class, new ParameterizedTypeReference<Response<List<ProjectJob>>>() {
         });
         paramTypeRefMap.put(Run[].class, new ParameterizedTypeReference<Response<List<Run>>>() {
+        });
+        paramTypeRefMap.put(DataSet[].class, new ParameterizedTypeReference<Response<List<DataSet>>>() {
         });
     }
 

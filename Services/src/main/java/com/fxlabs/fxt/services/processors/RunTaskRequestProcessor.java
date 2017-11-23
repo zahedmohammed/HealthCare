@@ -34,10 +34,13 @@ public class RunTaskRequestProcessor {
         task.setId(run.getId());
 
 
+
         logger.info("Sending task [{}] to region [{}]...", task.getId(), run.getProjectJob().getRegion());
 
         List<ProjectDataSet> list = projectDataSetRepository.findByProjectId(run.getProjectJob().getProject().getId());
         for (ProjectDataSet ds : list) {
+
+            task.setProjectDataSetId(ds.getId());
 
             task.setMethod(ds.getMethod());
 
