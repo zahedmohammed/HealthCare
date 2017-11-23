@@ -27,6 +27,8 @@ public class ProjectDataSet extends BaseEntity<String> {
     private String method;
     private String auth;
     @ElementCollection
+    private List<String> headers;
+    @ElementCollection
     private List<String> request;
     @ElementCollection
     private List<String> assertions;

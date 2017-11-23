@@ -41,6 +41,8 @@ public class RunTaskRequestProcessor {
 
             task.setMethod(ds.getMethod());
 
+            copyHeaders(task, ds);
+
             copyRequests(task, ds);
 
             copyAuth(run, task, ds);
@@ -60,6 +62,15 @@ public class RunTaskRequestProcessor {
             assertions.add(assertion);
         }
         task.setAssertions(assertions);
+    }
+
+    private void copyHeaders(BotTask task, ProjectDataSet ds) {
+        // TODO - JPA lazy-load work-around
+        List<String> headers = new ArrayList<>();
+        for (String header : ds.getHeaders()) {
+            headers.add(header);
+        }
+        task.setHeaders(headers);
     }
 
     private void copyRequests(BotTask task, ProjectDataSet ds) {

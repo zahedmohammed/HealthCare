@@ -21,6 +21,7 @@ public class ProjectDataSet extends BaseDto<String> {
     private String endpoint;
     private String method;
     private String auth;
+    private List<String> headers;
     private List<String> request;
     private List<String> assertions;
     private List<String> tags;

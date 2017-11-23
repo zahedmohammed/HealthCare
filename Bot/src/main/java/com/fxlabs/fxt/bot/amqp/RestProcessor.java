@@ -4,6 +4,7 @@ package com.fxlabs.fxt.bot.amqp;
 import com.fxlabs.fxt.bot.amqp.assertions.ValidateProcessor;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class RestProcessor {
@@ -47,8 +49,12 @@ public class RestProcessor {
         String url = task.getEndpoint();
         HttpMethod method = HttpMethod.POST;
         HttpHeaders httpHeaders = new HttpHeaders();
+
         httpHeaders.set("Content-Type", "application/json");
         httpHeaders.set("Accept", "application/json");
+
+        copyHeaders(httpHeaders, task.getHeaders());
+
 
         if (StringUtils.isNotEmpty(task.getAuthType())) {
             httpHeaders.set("Authorization", createBasicAuth(task.getUsername(), task.getPassword()));
@@ -96,6 +102,15 @@ public class RestProcessor {
         sender.sendTask(completeTask);
 
 
+    }
+
+    private void copyHeaders(HttpHeaders httpHeaders, List<String> headers) {
+        for (String header : headers) {
+            String[] tokens = StringUtils.split(header, ":");
+            if (ArrayUtils.isNotEmpty(tokens) && tokens.length == 2) {
+                httpHeaders.set(tokens[0].trim(), tokens[1].trim());
+            }
+        }
     }
 
     private String createBasicAuth(String username, String password) {
