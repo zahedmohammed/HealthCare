@@ -242,7 +242,7 @@ public class FxCommandService {
 
             // find DataSets
             // add them to set and print
-            //System.out.println ("" + page + " " + pageSize);
+
             Response<List<DataSet>> response = runRestRepository.findTestSuitesByRunId(run.getId(), page, pageSize);
 
             for (DataSet ds : response.getData()) {
@@ -251,20 +251,19 @@ public class FxCommandService {
                 }
             }
 
-            if (((page + 1) * response.getTotalElements()) < run.getTask().getTotalTests()) {
-                if (response.getTotalElements() >= pageSize) page++;
+            //System.out.println ("" + page + " " + pageSize + " " + response.getTotalElements());
+
+            if (response.getTotalElements() < run.getTask().getTotalTests()) {
+                if (response.getTotalElements() > ((page + 1) * pageSize)) {
+                    page++;
+                }
             } else {
                 break;
             }
         }
 
         run = jobRestRepository.findInstance(run.getId());
-        //if (StringUtils.pathEquals(run.getTask().getStatus(), "Completed!")) {
         printRun(run, "\n");
-        //    break;
-        //} else {
-        //    printRun(run, "\r");
-        //}
 
     }
 
