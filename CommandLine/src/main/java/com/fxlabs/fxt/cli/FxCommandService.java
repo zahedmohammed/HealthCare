@@ -242,6 +242,7 @@ public class FxCommandService {
 
             // find DataSets
             // add them to set and print
+            //System.out.println ("" + page + " " + pageSize);
             Response<List<DataSet>> response = runRestRepository.findTestSuitesByRunId(run.getId(), page, pageSize);
 
             for (DataSet ds : response.getData()) {
@@ -290,24 +291,6 @@ public class FxCommandService {
     }
 
     private void printRun(Run run, String carriageReturn) {
-        LinkedHashMap<String, Object> header = new LinkedHashMap<>();
-        header.put("name", "Name");
-        header.put("status", "Status");
-        header.put("totalTests", "Total Suites");
-        header.put("totalTestCompleted", "Total Completed");
-        header.put("failedTests", "Total Failed");
-        header.put("skippedTests", "Total Skipped");
-        header.put("totalTime", "Total Time");
-
-        // "name", "id", "project.name", "region"
-        /*Table table = new TableBuilder(new BeanListTableModel<RunTask>(list, header))
-                .addOutlineBorder(BorderStyle.fancy_light)
-                .addFullBorder(BorderStyle.fancy_light)
-                .addHeaderBorder(BorderStyle.fancy_light)
-                .addHeaderAndVerticalsBorders(BorderStyle.fancy_light)
-                .build();
-        String result = table.render(300);*/
-        //System.out.print(result);
         System.out.print(
                 AnsiOutput.toString(AnsiColor.GREEN,
                         String.format("ID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s ms%s",
@@ -315,6 +298,12 @@ public class FxCommandService {
                                 run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime(), carriageReturn)
                         , AnsiColor.DEFAULT)
         );
+    }
+
+    private void printErrorLogs(List<String> logs) {
+        System.out.println("\n Error logs....\n");
+        for (String log : logs) {
+        }
     }
 
     private void printDataSet(DataSet ds) {
