@@ -117,11 +117,14 @@ public class FxCommandService {
 
                 if (!StringUtils.endsWithIgnoreCase(file.getName(), ".yml")) {
                     System.out.println(AnsiOutput.toString(AnsiColor.RED,
-                            String.format("%s skipped...", file.getName()),
+                            String.format("%s [Skipped]", file.getName()),
                             AnsiColor.DEFAULT));
                     continue;
                 }
 
+                System.out.print(AnsiOutput.toString(AnsiColor.WHITE,
+                        String.format("%s\r", file.getName()),
+                        AnsiColor.DEFAULT));
 
                 ProjectDataSet projectDataSet = yamlMapper.readValue(file, ProjectDataSet.class);
                 //logger.info("ds size: [{}]", values.length);
@@ -134,8 +137,8 @@ public class FxCommandService {
                 projectDataSet.setProject(proj);
                 dataSetRestRepository.save(projectDataSet);
 
-                System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
-                        String.format("%s loaded...", file.getName()),
+                System.out.print(AnsiOutput.toString(AnsiColor.GREEN,
+                        String.format("%s [OK]\n", file.getName()),
                         AnsiColor.DEFAULT));
             }
 
@@ -232,6 +235,7 @@ public class FxCommandService {
         int page = 0;
         int pageSize = 10;
         Set<DataSet> dataSets = new HashSet<>();
+        int count = 0;
 
         while (true) {
             try {
@@ -251,11 +255,14 @@ public class FxCommandService {
                 }
             }
 
-            //System.out.println ("" + page + " " + pageSize + " " + response.getTotalElements());
+            System.out.println (run.getId() + " " + page + " " + pageSize + " " + response.getTotalElements());
 
             if (response.getTotalElements() < run.getTask().getTotalTests()) {
                 if (response.getTotalElements() > ((page + 1) * pageSize)) {
                     page++;
+                    count = 0;
+                } else {
+                    if (count++ > 5) page = 0;
                 }
             } else {
                 break;
@@ -292,7 +299,7 @@ public class FxCommandService {
     private void printRun(Run run, String carriageReturn) {
         System.out.print(
                 AnsiOutput.toString(AnsiColor.BRIGHT_BLUE,
-                        String.format("\nID: %s, Status: %s, Suites: %s, Completed: %s, Failed: %s, Skipped: %s, Time: %s ms%s\n",
+                        String.format("\nID: %s, Status: %s, Suites: [%s], Completed: [%s], Failed: [%s], Skipped: %s, Time: [%s] ms%s\n",
                                 run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
                                 run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime(), carriageReturn)
                         , AnsiColor.DEFAULT)
@@ -309,7 +316,7 @@ public class FxCommandService {
         if (ds.getTotalFailed() > 0) {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.RED,
-                            String.format("Test-Suite: %s, Pass: %s, Fail: %s, Skip: %s, Time: %s ms",
+                            String.format("Test-Suite: %s, Pass: %s, Fail: [%s], Skip: %s, Time: %s ms",
                                     ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getTotalSkipped(),
                                     ds.getRequestTime())
                             , AnsiColor.DEFAULT)
@@ -317,7 +324,7 @@ public class FxCommandService {
         } else {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.GREEN,
-                            String.format("Test-Suite: %s, Pass: %s, Fail: %s, Skip: %s, Time: %s ms",
+                            String.format("Test-Suite: %s, Pass: [%s], Fail: %s, Skip: %s, Time: %s ms",
                                     ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getTotalSkipped(),
                                     ds.getRequestTime())
                             , AnsiColor.DEFAULT)
