@@ -26,6 +26,30 @@ public class RunRestRepository extends GenericRestRespository<Run> {
         super(url + "/api/v1/runs", username, password, paramTypeRefMap.get(Run.class), paramTypeRefMap.get(Run[].class));
     }
 
+    public Run run(String id) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<Response<Run>> response = restTemplate.exchange(url + "/" + id, HttpMethod.POST, request, paramTypeRefMap.get(Run.class));
+
+        //logger.info(response.getBody());
+        return response.getBody().getData();
+
+    }
+
+    public Run findInstance(String id) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<Response<Run>> response = restTemplate.exchange(url + "/" + id, HttpMethod.GET, request, paramTypeRefMap.get(Run.class));
+
+        //logger.info(response.getBody());
+        return response.getBody().getData();
+
+    }
+
     public Response<List<TestSuiteResponse>> findTestSuitesByRunId(String id, Integer page, Integer pageSize) {
         RestTemplate restTemplate = new RestTemplate();
 

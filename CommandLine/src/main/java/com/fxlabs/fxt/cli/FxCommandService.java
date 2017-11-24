@@ -34,11 +34,7 @@ public class FxCommandService {
     @Autowired
     private ProjectRestRepository projectRepository;
     @Autowired
-    private EnvRestRepository envRepository;
-    @Autowired
-    private DataSetRestRepository dataSetRestRepository;
-    @Autowired
-    private JobRestRepository jobRestRepository;
+    private TestSuiteRestRepository dataSetRestRepository;
     @Autowired
     private RunRestRepository runRestRepository;
 
@@ -129,7 +125,7 @@ public class FxCommandService {
 
             project = projectRepository.save(project);
             logger.info("project created with id [{}]...", project.getId());
-            System.out.println(project);
+            //System.out.println(project);
 
             NameDto proj = new NameDto();
             proj.setId(project.getId());
@@ -148,7 +144,6 @@ public class FxCommandService {
 
             // create dataset
 
-            //ObjectMapper mapper = new ObjectMapper();
             System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                     "Loading Test-Suites...",
                     AnsiColor.DEFAULT));
@@ -190,7 +185,7 @@ public class FxCommandService {
             logger.info("test-suites successfully uploaded...");
 
 
-            logger.info("Successful!  " + job_);
+            logger.info("Successful!" );
 
             //printJobs(jobs);
 
@@ -222,10 +217,6 @@ public class FxCommandService {
     }
 
     public void lsJobs() {
-        List<com.fxlabs.fxt.dto.project.Job> list = jobRestRepository.findAll();
-
-        printJobs(list);
-
     }
 
     public void lsProjects() {
@@ -248,7 +239,7 @@ public class FxCommandService {
 
 
     public void runJob(String jobId) {
-        Run run = jobRestRepository.run(jobId);
+        Run run = runRestRepository.run(jobId);
         System.out.println("");
         System.out.println("Running Job : " + run.getId());
         System.out.println("");
@@ -290,13 +281,13 @@ public class FxCommandService {
             }
         }
 
-        run = jobRestRepository.findInstance(run.getId());
+        run = runRestRepository.findInstance(run.getId());
         printRun(run, "\n");
 
     }
 
     public void inspectRun(String id) {
-        Run run = jobRestRepository.findInstance(id);
+        Run run = runRestRepository.findInstance(id);
         //printRun(run);
 
     }

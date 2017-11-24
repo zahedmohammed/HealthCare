@@ -10,10 +10,10 @@ import static com.fxlabs.fxt.rest.base.BaseController.PROJECT_DATASETS_BASE;
 
 @RestController
 @RequestMapping(PROJECT_DATASETS_BASE)
-public class ProjectDataSetController extends BaseController<TestSuite, String> {
+public class TestSuiteController extends BaseController<TestSuite, String> {
 
     @Autowired
-    public ProjectDataSetController(
+    public TestSuiteController(
             TestSuiteService service) {
         super(service);
     }
