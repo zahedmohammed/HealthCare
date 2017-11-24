@@ -194,10 +194,22 @@ public class FxCommandService {
     }
 
     public void loadAndRun() {
+        Date start = new Date();
         //System.out.println("loading data...");
         String jobId = load();
+        Date loadEnd = new Date();
         //System.out.println("running job...");
         runJob(jobId);
+
+        System.out.println(
+                AnsiOutput.toString(AnsiColor.BRIGHT_BLUE,
+                        String.format("\nTotal time: %s ms, Load Time :%s, Job Time: %s",
+                                (new Date().getTime() - start.getTime()),
+                                (loadEnd.getTime() - start.getTime()),
+                                (new Date().getTime() - loadEnd.getTime()))
+                        , AnsiColor.DEFAULT)
+        );
+
     }
 
     public void lsJobs() {
@@ -255,7 +267,7 @@ public class FxCommandService {
                 }
             }
 
-            System.out.println (run.getId() + " " + page + " " + pageSize + " " + response.getTotalElements());
+            //System.out.println (run.getId() + " " + page + " " + pageSize + " " + response.getTotalElements());
 
             if (response.getTotalElements() < run.getTask().getTotalTests()) {
                 if (response.getTotalElements() > ((page + 1) * pageSize)) {

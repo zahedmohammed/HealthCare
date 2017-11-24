@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.LockModeType;
+import java.util.List;
 
 public interface RunRepository extends JpaRepository<Run, String> {
 
@@ -14,4 +15,9 @@ public interface RunRepository extends JpaRepository<Run, String> {
 
     @Query("SELECT MAX(runId) FROM Run WHERE projectJob.id LIKE ?1")
     Long findMaxRunId(String id);
+
+    @Query("SELECT r FROM Run r WHERE r.task.status LIKE ?1")
+    List<Run> findByStatus(String status);
+
+
 }

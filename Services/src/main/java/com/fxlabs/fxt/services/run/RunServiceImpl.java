@@ -61,7 +61,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         // Create Task
         RunTask task = new RunTask();
         task.setName(new Date().toString());
-        task.setStatus("PROCESSING");
+        task.setStatus("WAITING");
         task.setStartTime(new Date());
 
         // TODO - find total tests
@@ -72,7 +72,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
         Response<com.fxlabs.fxt.dto.run.Run> response = save(run);
 
-        taskProcessor.process(response.getData());
+        //taskProcessor.process(response.getData());
 
         // Copy ProjectDataSets to DataSets.
 
