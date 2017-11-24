@@ -12,13 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TestApp implements Serializable {
+public class Job implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String name;
-
-    private List<Environment> environments;
-
-    private List<JobProfile> jobProfiles;
+    private String name = "Default";
+    private String environment = "Default";
+    private List<String> tags;
+    private String region;
 
 }

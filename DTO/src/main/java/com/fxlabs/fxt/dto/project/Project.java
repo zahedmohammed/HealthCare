@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +17,10 @@ public class Project extends BaseDto<String> {
 
     private String name;
     private String description;
+
+    private List<Environment> environments;
+
+    private List<Job> jobs;
 
 
 }

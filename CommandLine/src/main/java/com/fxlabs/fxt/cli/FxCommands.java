@@ -34,7 +34,7 @@ public class FxCommands {
         service.lsJobs();
     }
 
-    @ShellMethod(key = "job ls", value = "Lists Jobs")
+    @ShellMethod(key = "job ls", value = "Lists Job")
     public void jobLs() {
         service.lsJobs();
     }*/

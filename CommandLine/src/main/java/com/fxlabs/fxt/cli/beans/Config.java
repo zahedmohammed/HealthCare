@@ -18,10 +18,13 @@ public class Config implements Serializable {
 
     private String version = "1";
 
-    //private FxService fxService;
+    private String name;
 
-    private TestApp testApp;
+    private String description;
 
+    private List<Environment> environments;
+
+    private List<Job> jobs;
 
 }
 

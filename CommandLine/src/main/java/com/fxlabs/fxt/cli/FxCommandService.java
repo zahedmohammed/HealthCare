@@ -3,7 +3,6 @@ package com.fxlabs.fxt.cli;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.cli.beans.Config;
-import com.fxlabs.fxt.cli.beans.JobProfile;
 import com.fxlabs.fxt.cli.rest.*;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
@@ -63,7 +62,8 @@ public class FxCommandService {
             //System.out.println(config);
 
             Project project = new Project();
-            project.setName(config.getTestApp().getName());
+            project.setName(config.getName());
+            project.setDescription(config.getDescription());
 
             project = projectRepository.save(project);
             logger.info("project created with id [{}]...", project.getId());
@@ -77,7 +77,7 @@ public class FxCommandService {
             proj.setVersion(project.getVersion());
 
             List<Environment> projectEnvironments = new ArrayList<>();
-            for (com.fxlabs.fxt.cli.beans.Environment environment : config.getTestApp().getEnvironments()) {
+            for (com.fxlabs.fxt.cli.beans.Environment environment : config.getEnvironments()) {
                 Environment env = new Environment();
                 env.setName(environment.getName());
                 env.setBaseUrl(environment.getBaseUrl());
@@ -144,11 +144,11 @@ public class FxCommandService {
             logger.info("test-suites successfully uploaded...");
 
             // read job
-            Job job_ = null;
-            List<Job> jobs = new ArrayList<>();
+            com.fxlabs.fxt.dto.project.Job job_ = null;
+            List<com.fxlabs.fxt.dto.project.Job> jobs = new ArrayList<>();
             logger.info("loading job details...");
-            for (JobProfile jobProfile : config.getTestApp().getJobProfiles()) {
-                Job job = new Job();
+            for (com.fxlabs.fxt.cli.beans.Job jobProfile : config.getJobs()) {
+                com.fxlabs.fxt.dto.project.Job job = new com.fxlabs.fxt.dto.project.Job();
                 job.setName(jobProfile.getName());
                 job.setProject(proj);
 
@@ -211,7 +211,7 @@ public class FxCommandService {
     }
 
     public void lsJobs() {
-        List<Job> list = jobRestRepository.findAll();
+        List<com.fxlabs.fxt.dto.project.Job> list = jobRestRepository.findAll();
 
         printJobs(list);
 
@@ -342,7 +342,7 @@ public class FxCommandService {
         }
     }
 
-    private void printJobs(List<Job> list) {
+    private void printJobs(List<com.fxlabs.fxt.dto.project.Job> list) {
         LinkedHashMap<String, Object> header = new LinkedHashMap<>();
         header.put("name", "Job Name");
         header.put("id", "Job ID");
@@ -351,7 +351,7 @@ public class FxCommandService {
         header.put("region", "Region");
 
         // "name", "id", "project.name", "region"
-        Table table = new TableBuilder(new BeanListTableModel<Job>(list, header))
+        Table table = new TableBuilder(new BeanListTableModel<com.fxlabs.fxt.dto.project.Job>(list, header))
                 .addOutlineBorder(BorderStyle.fancy_light)
                 .addFullBorder(BorderStyle.fancy_light)
                 .addHeaderBorder(BorderStyle.fancy_light)
