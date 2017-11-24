@@ -1,14 +1,9 @@
 package com.fxlabs.fxt.cli;
 
-import java.util.Random;
-import java.util.concurrent.CountDownLatch;
-
-import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.cli.services.FxCommandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.shell.table.*;
-import org.springframework.stereotype.Component;
 
 
 import org.springframework.shell.standard.ShellMethod;

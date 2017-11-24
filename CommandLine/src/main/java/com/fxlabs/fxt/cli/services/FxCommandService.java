@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.cli;
+package com.fxlabs.fxt.cli.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -134,7 +134,6 @@ public class FxCommandService {
 
             com.fxlabs.fxt.dto.project.Job job_ = null;
             for (Job job : project.getJobs()) {
-                System.out.println(" " + job.getId() + " " + job.getName());
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(job.getName(), "Default")) {
                     job_ = job;
                     break;
@@ -143,7 +142,7 @@ public class FxCommandService {
 
 
             // create dataset
-
+            System.out.println("");
             System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                     "Loading Test-Suites...",
                     AnsiColor.DEFAULT));
@@ -185,7 +184,7 @@ public class FxCommandService {
             logger.info("test-suites successfully uploaded...");
 
 
-            logger.info("Successful!" );
+            logger.info("Successful!");
 
             //printJobs(jobs);
 
@@ -206,8 +205,8 @@ public class FxCommandService {
         runJob(jobId);
 
         System.out.println(
-                AnsiOutput.toString(AnsiColor.BRIGHT_BLUE,
-                        String.format("\nTotal time: %s ms, Load Time :%s, Job Time: %s",
+                AnsiOutput.toString(AnsiColor.DEFAULT,
+                        String.format("Test-Suite Load Time: %s ms \nJob Time: %s ms \nTotal Time: %s ms",
                                 (new Date().getTime() - start.getTime()),
                                 (loadEnd.getTime() - start.getTime()),
                                 (new Date().getTime() - loadEnd.getTime()))
@@ -241,8 +240,9 @@ public class FxCommandService {
     public void runJob(String jobId) {
         Run run = runRestRepository.run(jobId);
         System.out.println("");
-        System.out.println("Running Job : " + run.getId());
-        System.out.println("");
+        System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                String.format("Running job: %s", jobId),
+                AnsiColor.DEFAULT));
 
         int page = 0;
         int pageSize = 10;
@@ -309,9 +309,13 @@ public class FxCommandService {
     }
 
     private void printRun(Run run, String carriageReturn) {
+        System.out.println("");
+        System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                "Run summary:",
+                AnsiColor.DEFAULT));
         System.out.print(
-                AnsiOutput.toString(AnsiColor.BRIGHT_BLUE,
-                        String.format("\nID: %s, Status: %s, Suites: [%s], Completed: [%s], Failed: [%s], Skipped: %s, Time: [%s] ms%s\n",
+                AnsiOutput.toString(AnsiColor.DEFAULT,
+                        String.format("Run Id: %s \nStatus: %s \nTest-Suites Completed: %s \nTest Completed: %s \nTest Failed: %s \nTest Skipped: %s \nProcessing Time: %s ms%s",
                                 run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
                                 run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime(), carriageReturn)
                         , AnsiColor.DEFAULT)
