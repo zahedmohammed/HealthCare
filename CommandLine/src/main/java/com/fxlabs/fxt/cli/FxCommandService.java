@@ -3,14 +3,12 @@ package com.fxlabs.fxt.cli;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.cli.beans.Config;
-import com.fxlabs.fxt.cli.beans.Auth;
-import com.fxlabs.fxt.cli.beans.Environment;
 import com.fxlabs.fxt.cli.beans.JobProfile;
 import com.fxlabs.fxt.cli.rest.*;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
-import com.fxlabs.fxt.dto.run.DataSet;
+import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
 import org.slf4j.Logger;
@@ -78,17 +76,17 @@ public class FxCommandService {
             proj.setName(project.getName());
             proj.setVersion(project.getVersion());
 
-            List<ProjectEnvironment> projectEnvironments = new ArrayList<>();
-            for (Environment environment : config.getTestApp().getEnvironments()) {
-                ProjectEnvironment env = new ProjectEnvironment();
+            List<Environment> projectEnvironments = new ArrayList<>();
+            for (com.fxlabs.fxt.cli.beans.Environment environment : config.getTestApp().getEnvironments()) {
+                Environment env = new Environment();
                 env.setName(environment.getName());
                 env.setBaseUrl(environment.getBaseUrl());
 
                 env.setProject(proj);
 
-                List<ProjectCredential> list = new ArrayList<>();
-                for (Auth credential : environment.getAuths()) {
-                    ProjectCredential cred = new ProjectCredential();
+                List<Auth> list = new ArrayList<>();
+                for (com.fxlabs.fxt.cli.beans.Auth credential : environment.getAuths()) {
+                    Auth cred = new Auth();
                     cred.setName(credential.getName());
                     cred.setMethod(credential.getAuthType());
                     cred.setUsername(credential.getUsername());
@@ -126,7 +124,7 @@ public class FxCommandService {
                         String.format("%s\r", file.getName()),
                         AnsiColor.DEFAULT));
 
-                ProjectDataSet projectDataSet = yamlMapper.readValue(file, ProjectDataSet.class);
+                TestSuite projectDataSet = yamlMapper.readValue(file, TestSuite.class);
                 //logger.info("ds size: [{}]", values.length);
 
                 logger.info("ds : [{}]", projectDataSet.toString());
@@ -146,18 +144,18 @@ public class FxCommandService {
             logger.info("test-suites successfully uploaded...");
 
             // read job
-            ProjectJob job_ = null;
-            List<ProjectJob> jobs = new ArrayList<>();
+            Job job_ = null;
+            List<Job> jobs = new ArrayList<>();
             logger.info("loading job details...");
             for (JobProfile jobProfile : config.getTestApp().getJobProfiles()) {
-                ProjectJob job = new ProjectJob();
+                Job job = new Job();
                 job.setName(jobProfile.getName());
                 job.setProject(proj);
 
                 job.setDataSetTags(jobProfile.getTags());
 
-                ProjectEnvironment projectEnvironment = null;
-                for (ProjectEnvironment pe : projectEnvironments) {
+                Environment projectEnvironment = null;
+                for (Environment pe : projectEnvironments) {
                     if (pe.getName().equals(jobProfile.getEnvironment())) {
                         projectEnvironment = pe;
                     }
@@ -213,7 +211,7 @@ public class FxCommandService {
     }
 
     public void lsJobs() {
-        List<ProjectJob> list = jobRestRepository.findAll();
+        List<Job> list = jobRestRepository.findAll();
 
         printJobs(list);
 
@@ -246,7 +244,7 @@ public class FxCommandService {
 
         int page = 0;
         int pageSize = 10;
-        Set<DataSet> dataSets = new HashSet<>();
+        Set<TestSuiteResponse> dataSets = new HashSet<>();
         int count = 0;
 
         while (true) {
@@ -259,9 +257,9 @@ public class FxCommandService {
             // find DataSets
             // add them to set and print
 
-            Response<List<DataSet>> response = runRestRepository.findTestSuitesByRunId(run.getId(), page, pageSize);
+            Response<List<TestSuiteResponse>> response = runRestRepository.findTestSuitesByRunId(run.getId(), page, pageSize);
 
-            for (DataSet ds : response.getData()) {
+            for (TestSuiteResponse ds : response.getData()) {
                 if (dataSets.add(ds)) {
                     printDataSet(ds);
                 }
@@ -324,7 +322,7 @@ public class FxCommandService {
         }
     }
 
-    private void printDataSet(DataSet ds) {
+    private void printDataSet(TestSuiteResponse ds) {
         if (ds.getTotalFailed() > 0) {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.RED,
@@ -344,7 +342,7 @@ public class FxCommandService {
         }
     }
 
-    private void printJobs(List<ProjectJob> list) {
+    private void printJobs(List<Job> list) {
         LinkedHashMap<String, Object> header = new LinkedHashMap<>();
         header.put("name", "Job Name");
         header.put("id", "Job ID");
@@ -353,7 +351,7 @@ public class FxCommandService {
         header.put("region", "Region");
 
         // "name", "id", "project.name", "region"
-        Table table = new TableBuilder(new BeanListTableModel<ProjectJob>(list, header))
+        Table table = new TableBuilder(new BeanListTableModel<Job>(list, header))
                 .addOutlineBorder(BorderStyle.fancy_light)
                 .addFullBorder(BorderStyle.fancy_light)
                 .addHeaderBorder(BorderStyle.fancy_light)

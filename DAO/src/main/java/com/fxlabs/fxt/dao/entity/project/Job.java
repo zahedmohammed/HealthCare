@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectJob extends BaseEntity<String> {
+public class Job extends BaseEntity<String> {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     private Project project;
@@ -23,7 +23,7 @@ public class ProjectJob extends BaseEntity<String> {
     private String description;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    private ProjectEnvironment projectEnvironment;
+    private Environment projectEnvironment;
 
     @ElementCollection
     private List<String> dataSetTags;

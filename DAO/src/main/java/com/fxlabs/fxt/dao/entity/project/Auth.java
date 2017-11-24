@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectCredential {
+public class Auth {
 
     private String name;
 

@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectDataSet extends BaseDto<String> {
+public class TestSuite extends BaseDto<String> {
 
     private NameDto project;
     private String name;

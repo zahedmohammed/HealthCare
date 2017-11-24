@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.rest.run;
 
-import com.fxlabs.fxt.dto.run.DataSet;
+import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.rest.base.BaseController;
 import com.fxlabs.fxt.dto.base.Response;
@@ -27,9 +27,9 @@ public class ProjectRunController extends BaseController<Run, String> {
     }
 
     @RequestMapping(value = "/{id}/test-suites", method = RequestMethod.GET)
-    public Response<List<DataSet>> run(@PathVariable("id") String id,
-                                       @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                       @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
+    public Response<List<TestSuiteResponse>> run(@PathVariable("id") String id,
+                                                 @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
                                        ) {
         return runService.findByRunId(id, new PageRequest(page, pageSize, SORT_BY_CREATE_DT));
     }

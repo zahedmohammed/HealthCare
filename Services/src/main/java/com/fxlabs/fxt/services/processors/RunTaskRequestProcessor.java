@@ -1,8 +1,9 @@
 package com.fxlabs.fxt.services.processors;
 
+import com.fxlabs.fxt.dao.entity.project.Auth;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.run.Run;
-import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
+import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.services.amqp.sender.BotClientService;
@@ -21,11 +22,11 @@ public class RunTaskRequestProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private BotClientService botClientService;
-    private ProjectDataSetRepository projectDataSetRepository;
+    private TestSuiteRepository projectDataSetRepository;
     private RunRepository runRepository;
 
     @Autowired
-    public RunTaskRequestProcessor(BotClientService botClientService, ProjectDataSetRepository projectDataSetRepository,
+    public RunTaskRequestProcessor(BotClientService botClientService, TestSuiteRepository projectDataSetRepository,
                                    RunRepository runRepository) {
         this.botClientService = botClientService;
         this.projectDataSetRepository = projectDataSetRepository;
@@ -35,7 +36,7 @@ public class RunTaskRequestProcessor {
     @Scheduled(fixedDelay = 5000)
     public void process() {
 
-        logger.info("started...");
+        //logger.info("started...");
         List<com.fxlabs.fxt.dao.entity.run.Run> runs = runRepository.findByStatus("WAITING");
 
         for (com.fxlabs.fxt.dao.entity.run.Run run : runs) {
@@ -103,9 +104,9 @@ public class RunTaskRequestProcessor {
         // if empty resolves it to Default
         // if NONE resolves it to none.
         // if value then finds and injects
-        List<com.fxlabs.fxt.dao.entity.project.ProjectCredential> creds = run.getProjectJob().getProjectEnvironment().getCredentials();
+        List<Auth> creds = run.getProjectJob().getProjectEnvironment().getCredentials();
         if (StringUtils.isEmpty(ds.getAuth())) {
-            for (com.fxlabs.fxt.dao.entity.project.ProjectCredential cred : creds) {
+            for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
                     task.setAuthType(cred.getMethod());
                     task.setUsername(cred.getUsername());
@@ -115,7 +116,7 @@ public class RunTaskRequestProcessor {
         } else if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "none")) {
             // don't send auth
         } else {
-            for (com.fxlabs.fxt.dao.entity.project.ProjectCredential cred : creds) {
+            for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
                     task.setAuthType(cred.getMethod());
                     task.setUsername(cred.getUsername());

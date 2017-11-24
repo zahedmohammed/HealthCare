@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectEnvironment extends BaseEntity<String> {
+public class Environment extends BaseEntity<String> {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     private Project project;
@@ -23,7 +23,7 @@ public class ProjectEnvironment extends BaseEntity<String> {
     private String description;
     private String baseUrl;
     @ElementCollection
-    private List<ProjectCredential> credentials;
+    private List<Auth> credentials;
 
 
 }

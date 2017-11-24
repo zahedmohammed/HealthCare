@@ -2,8 +2,8 @@ package com.fxlabs.fxt.services.processors;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
-import com.fxlabs.fxt.dao.repository.DataSetRepository;
-import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
+import com.fxlabs.fxt.dao.repository.TestSuiteResponseRepository;
+import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.slf4j.Logger;
@@ -20,11 +20,11 @@ public class RunTaskResponseProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private RunRepository runRepository;
-    private DataSetRepository dataSetRepository;
-    private ProjectDataSetRepository projectDataSetRepository;
+    private TestSuiteResponseRepository dataSetRepository;
+    private TestSuiteRepository projectDataSetRepository;
 
     @Autowired
-    public RunTaskResponseProcessor(RunRepository runRepository, DataSetRepository dataSetRepository, ProjectDataSetRepository projectDataSetRepository) {
+    public RunTaskResponseProcessor(RunRepository runRepository, TestSuiteResponseRepository dataSetRepository, TestSuiteRepository projectDataSetRepository) {
         this.runRepository = runRepository;
         this.dataSetRepository = dataSetRepository;
         this.projectDataSetRepository = projectDataSetRepository;

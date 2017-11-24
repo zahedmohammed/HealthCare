@@ -13,13 +13,18 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectEnvironment extends BaseDto<String> {
+public class Job extends BaseDto<String> {
 
     private NameDto project;
     private String name;
     private String description;
-    private String baseUrl;
-    private List<ProjectCredential> credentials;
+
+    private Environment projectEnvironment;
+
+    private List<String> dataSetTags;
+
+    private String region;
+
 
 }
 

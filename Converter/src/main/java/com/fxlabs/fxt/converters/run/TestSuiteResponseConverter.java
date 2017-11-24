@@ -6,5 +6,5 @@ import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface DataSetConverter extends BaseConverter<TestSuiteResponse, com.fxlabs.fxt.dto.run.DataSet> {
+public interface TestSuiteResponseConverter extends BaseConverter<TestSuiteResponse, com.fxlabs.fxt.dto.run.TestSuiteResponse> {
 }

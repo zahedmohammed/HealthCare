@@ -1,22 +1,17 @@
 package com.fxlabs.fxt.cli.rest;
 
-import com.fxlabs.fxt.dto.base.IdDto;
-import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
-import com.fxlabs.fxt.dto.run.BotTask;
-import com.fxlabs.fxt.dto.run.DataSet;
+import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.Run;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
@@ -32,26 +27,26 @@ public class GenericRestRespository<T> {
     static {
         paramTypeRefMap.put(Project.class, new ParameterizedTypeReference<Response<Project>>() {
         });
-        paramTypeRefMap.put(ProjectEnvironment.class, new ParameterizedTypeReference<Response<ProjectEnvironment>>() {
+        paramTypeRefMap.put(Environment.class, new ParameterizedTypeReference<Response<Environment>>() {
         });
-        paramTypeRefMap.put(ProjectDataSet.class, new ParameterizedTypeReference<Response<ProjectDataSet>>() {
+        paramTypeRefMap.put(TestSuite.class, new ParameterizedTypeReference<Response<TestSuite>>() {
         });
-        paramTypeRefMap.put(ProjectJob.class, new ParameterizedTypeReference<Response<ProjectJob>>() {
+        paramTypeRefMap.put(Job.class, new ParameterizedTypeReference<Response<Job>>() {
         });
         paramTypeRefMap.put(Run.class, new ParameterizedTypeReference<Response<Run>>() {
         });
 
         paramTypeRefMap.put(Project[].class, new ParameterizedTypeReference<Response<List<Project>>>() {
         });
-        paramTypeRefMap.put(ProjectEnvironment[].class, new ParameterizedTypeReference<Response<List<ProjectEnvironment>>>() {
+        paramTypeRefMap.put(Environment[].class, new ParameterizedTypeReference<Response<List<Environment>>>() {
         });
-        paramTypeRefMap.put(ProjectDataSet[].class, new ParameterizedTypeReference<Response<List<ProjectDataSet>>>() {
+        paramTypeRefMap.put(TestSuite[].class, new ParameterizedTypeReference<Response<List<TestSuite>>>() {
         });
-        paramTypeRefMap.put(ProjectJob[].class, new ParameterizedTypeReference<Response<List<ProjectJob>>>() {
+        paramTypeRefMap.put(Job[].class, new ParameterizedTypeReference<Response<List<Job>>>() {
         });
         paramTypeRefMap.put(Run[].class, new ParameterizedTypeReference<Response<List<Run>>>() {
         });
-        paramTypeRefMap.put(DataSet[].class, new ParameterizedTypeReference<Response<List<DataSet>>>() {
+        paramTypeRefMap.put(TestSuiteResponse[].class, new ParameterizedTypeReference<Response<List<TestSuiteResponse>>>() {
         });
     }
 

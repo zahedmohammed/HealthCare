@@ -1,14 +1,10 @@
 package com.fxlabs.fxt;
 
-import com.fxlabs.fxt.dto.base.NameDto;
-import com.fxlabs.fxt.dto.project.*;
-import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.services.project.ProjectDataSetService;
-import com.fxlabs.fxt.services.project.ProjectEnvironmentService;
-import com.fxlabs.fxt.services.project.ProjectJobService;
+import com.fxlabs.fxt.services.project.TestSuiteService;
+import com.fxlabs.fxt.services.project.EnvironmentService;
+import com.fxlabs.fxt.services.project.JobService;
 import com.fxlabs.fxt.services.project.ProjectService;
 import com.fxlabs.fxt.services.run.RunService;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,13 +34,13 @@ public class FxtApplication {
     ProjectService projectService;
 
     @Autowired
-    ProjectEnvironmentService projectEnvironmentService;
+    EnvironmentService projectEnvironmentService;
 
     @Autowired
-    ProjectDataSetService projectDataSetService;
+    TestSuiteService projectDataSetService;
 
     @Autowired
-    ProjectJobService projectJobService;
+    JobService projectJobService;
 
     @Autowired
     RunService runService;
@@ -62,11 +58,11 @@ public class FxtApplication {
             projectDto.setVersion(project.getVersion());
 
             // Env
-            ProjectCredential projectCredential = new ProjectCredential("Default", "Basic", "admin", "admin123");
-            List<ProjectCredential> projectCredentials = new ArrayList<>();
+            Auth projectCredential = new Auth("Default", "Basic", "admin", "admin123");
+            List<Auth> projectCredentials = new ArrayList<>();
             projectCredentials.add(projectCredential);
 
-            Response<ProjectEnvironment> projectEnvironmentResponse = projectEnvironmentService.save(new ProjectEnvironment(projectDto, "Default", null, "http://localhost:8080/api/v1", projectCredentials));
+            Response<Environment> projectEnvironmentResponse = projectEnvironmentService.save(new Environment(projectDto, "Default", null, "http://localhost:8080/api/v1", projectCredentials));
 
             // Datasets
             TestSuite ds = new TestSuite();
@@ -91,7 +87,7 @@ public class FxtApplication {
                     "  }"), null, Arrays.asList("V1")));
 
             // Jobs
-            Response<ProjectJob> projectJobResponse = projectJobService.save(new ProjectJob(projectDto, "Default", null, projectEnvironmentResponse.getData(), Arrays.asList("V1"), "fx-default-queue"));
+            Response<Job> projectJobResponse = projectJobService.save(new Job(projectDto, "Default", null, projectEnvironmentResponse.getData(), Arrays.asList("V1"), "fx-default-queue"));
 
             // Run
             //runService.run(projectJobResponse.getData().getId());

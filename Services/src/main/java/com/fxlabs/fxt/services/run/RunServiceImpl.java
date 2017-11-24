@@ -1,19 +1,18 @@
 package com.fxlabs.fxt.services.run;
 
-import com.fxlabs.fxt.converters.run.DataSetConverter;
+import com.fxlabs.fxt.converters.run.TestSuiteResponseConverter;
 import com.fxlabs.fxt.converters.run.RunConverter;
 import com.fxlabs.fxt.dao.entity.run.Run;
-import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
-import com.fxlabs.fxt.dao.repository.DataSetRepository;
-import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
+import com.fxlabs.fxt.dao.repository.TestSuiteResponseRepository;
+import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
-import com.fxlabs.fxt.dto.project.ProjectJob;
-import com.fxlabs.fxt.dto.run.DataSet;
+import com.fxlabs.fxt.dto.project.Job;
+import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.processors.RunTaskRequestProcessor;
-import com.fxlabs.fxt.services.project.ProjectJobService;
+import com.fxlabs.fxt.services.project.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,16 +26,16 @@ import java.util.List;
 @Transactional
 public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.run.Run, String> implements RunService {
 
-    private ProjectJobService projectJobService;
+    private JobService projectJobService;
     private RunTaskRequestProcessor taskProcessor;
-    private ProjectDataSetRepository projectDataSetRepository;
-    private DataSetRepository dataSetRepository;
-    private DataSetConverter dataSetConverter;
+    private TestSuiteRepository projectDataSetRepository;
+    private TestSuiteResponseRepository dataSetRepository;
+    private TestSuiteResponseConverter dataSetConverter;
 
     @Autowired
-    public RunServiceImpl(RunRepository repository, RunConverter converter, ProjectJobService projectJobService,
-                          RunTaskRequestProcessor taskProcessor, ProjectDataSetRepository projectDataSetRepository,
-                          DataSetRepository dataSetRepository, DataSetConverter dataSetConverter) {
+    public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService,
+                          RunTaskRequestProcessor taskProcessor, TestSuiteRepository projectDataSetRepository,
+                          TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter) {
         super(repository, converter);
         this.projectJobService = projectJobService;
         this.taskProcessor = taskProcessor;
@@ -47,7 +46,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
 
     public Response<com.fxlabs.fxt.dto.run.Run> run(String projectJob) {
-        Response<ProjectJob> projectJobResponse = this.projectJobService.findById(projectJob);
+        Response<Job> projectJobResponse = this.projectJobService.findById(projectJob);
 
         // Create Run
         com.fxlabs.fxt.dto.run.Run run = new com.fxlabs.fxt.dto.run.Run();
@@ -81,11 +80,11 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         return response;
     }
 
-    public Response<List<DataSet>> findByRunId(String runId, Pageable pageable) {
-        Page<TestSuiteResponse> page = this.dataSetRepository.findByRunId(runId, pageable);
+    public Response<List<TestSuiteResponse>> findByRunId(String runId, Pageable pageable) {
+        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.dataSetRepository.findByRunId(runId, pageable);
 
-        List<DataSet> dataSets = dataSetConverter.convertToDtos(page.getContent());
-        return new Response<List<DataSet>>(dataSets, page.getTotalElements(), page.getTotalPages());
+        List<TestSuiteResponse> dataSets = dataSetConverter.convertToDtos(page.getContent());
+        return new Response<List<TestSuiteResponse>>(dataSets, page.getTotalElements(), page.getTotalPages());
     }
 
 }

@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 //@SolrDocument(collection = "fx")
 @Entity
@@ -19,6 +21,12 @@ public class Project extends BaseEntity<String> {
 
     private String name;
     private String description;
+
+    /*@OneToMany
+    private List<Environment> environments;
+
+    @OneToMany
+    private List<Job> jobs;*/
 
 
 }
