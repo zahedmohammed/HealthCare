@@ -19,7 +19,7 @@ public class Run extends BaseEntity<String> {
 
 
     @ManyToOne
-    private Job projectJob;
+    private Job job;
 
     private Long runId;
 

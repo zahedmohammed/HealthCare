@@ -24,8 +24,8 @@ public class Job extends BaseEntity<String> {
     @ManyToOne(cascade = CascadeType.REFRESH)
     private Project project;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    private Environment environment;
+    //@ManyToOne(cascade = CascadeType.REFRESH)
+    private String environment;
 
     @ElementCollection
     private List<String> tags;

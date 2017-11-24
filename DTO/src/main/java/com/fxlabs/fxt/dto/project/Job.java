@@ -16,10 +16,11 @@ import java.util.List;
 public class Job extends BaseDto<String> {
 
     private NameDto project;
+
     private String name;
     private String description;
 
-    private Environment environment;
+    private String environment;
 
     private List<String> tags;
 

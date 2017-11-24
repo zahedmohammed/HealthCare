@@ -22,6 +22,5 @@ public class Project extends BaseDto<String> {
 
     private List<Job> jobs;
 
-
 }
 

@@ -51,7 +51,6 @@ public class FxCommandService {
         try {
             // read fx server details
 
-
             // create project
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
@@ -65,24 +64,17 @@ public class FxCommandService {
             project.setName(config.getName());
             project.setDescription(config.getDescription());
 
-            project = projectRepository.save(project);
-            logger.info("project created with id [{}]...", project.getId());
 
             // create env
             logger.info("loading env details...");
 
-            NameDto proj = new NameDto();
-            proj.setId(project.getId());
-            proj.setName(project.getName());
-            proj.setVersion(project.getVersion());
-
-            List<Environment> projectEnvironments = new ArrayList<>();
+            List<Environment> environments = new ArrayList<>();
             for (com.fxlabs.fxt.cli.beans.Environment environment : config.getEnvironments()) {
                 Environment env = new Environment();
                 env.setName(environment.getName());
                 env.setBaseUrl(environment.getBaseUrl());
 
-                env.setProject(proj);
+                //env.setProject(proj);
 
                 List<Auth> list = new ArrayList<>();
                 for (com.fxlabs.fxt.cli.beans.Auth credential : environment.getAuths()) {
@@ -96,17 +88,70 @@ public class FxCommandService {
                 }
                 env.setAuths(list);
 
-                env = envRepository.save(env);
+                //env = envRepository.save(env);
 
-                projectEnvironments.add(env);
+                environments.add(env);
 
                 logger.info("env created with id [{}]...", env.getId());
+            }
+
+            project.setEnvironments(environments);
+
+
+            // read job
+            List<com.fxlabs.fxt.dto.project.Job> jobs = new ArrayList<>();
+            logger.info("loading job details...");
+            for (com.fxlabs.fxt.cli.beans.Job jobProfile : config.getJobs()) {
+                com.fxlabs.fxt.dto.project.Job job = new com.fxlabs.fxt.dto.project.Job();
+                job.setName(jobProfile.getName());
+                //job.setProject(proj);
+
+                job.setTags(jobProfile.getTags());
+
+                /*Environment projectEnvironment = null;
+                for (Environment pe : projectEnvironments) {
+                    if (pe.getName().equals(jobProfile.getEnvironment())) {
+                        projectEnvironment = pe;
+                    }
+                }
+                job.setEnvironment(projectEnvironment);*/
+                job.setEnvironment(jobProfile.getEnvironment());
+
+                job.setRegion(jobProfile.getRegion());
+                //job = jobRestRepository.save(job);
+
+                jobs.add(job);
+
+                logger.info("job created with id [{}]...", job.getId());
+            }
+
+            project.setJobs(jobs);
+
+            project = projectRepository.save(project);
+            logger.info("project created with id [{}]...", project.getId());
+            System.out.println(project);
+
+            NameDto proj = new NameDto();
+            proj.setId(project.getId());
+            proj.setName(project.getName());
+            proj.setVersion(project.getVersion());
+
+            com.fxlabs.fxt.dto.project.Job job_ = null;
+            for (Job job : project.getJobs()) {
+                System.out.println(" " + job.getId() + " " + job.getName());
+                if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(job.getName(), "Default")) {
+                    job_ = job;
+                    break;
+                }
             }
 
 
             // create dataset
 
-            ObjectMapper mapper = new ObjectMapper();
+            //ObjectMapper mapper = new ObjectMapper();
+            System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                    "Loading Test-Suites...",
+                    AnsiColor.DEFAULT));
 
 
             File dataFolder = new File("test-suites");
@@ -124,16 +169,17 @@ public class FxCommandService {
                         String.format("%s\r", file.getName()),
                         AnsiColor.DEFAULT));
 
-                TestSuite projectDataSet = yamlMapper.readValue(file, TestSuite.class);
+                TestSuite testSuite = yamlMapper.readValue(file, TestSuite.class);
                 //logger.info("ds size: [{}]", values.length);
 
-                logger.info("ds : [{}]", projectDataSet.toString());
+                logger.info("ds : [{}]", testSuite.toString());
 
-                if (StringUtils.isEmpty(projectDataSet.getName())) {
-                    projectDataSet.setName(file.getName());
+                if (StringUtils.isEmpty(testSuite.getName())) {
+                    testSuite.setName(file.getName());
                 }
-                projectDataSet.setProject(proj);
-                dataSetRestRepository.save(projectDataSet);
+
+                testSuite.setProject(proj);
+                dataSetRestRepository.save(testSuite);
 
                 System.out.print(AnsiOutput.toString(AnsiColor.GREEN,
                         String.format("%s [OK]\n", file.getName()),
@@ -143,43 +189,8 @@ public class FxCommandService {
 
             logger.info("test-suites successfully uploaded...");
 
-            // read job
-            com.fxlabs.fxt.dto.project.Job job_ = null;
-            List<com.fxlabs.fxt.dto.project.Job> jobs = new ArrayList<>();
-            logger.info("loading job details...");
-            for (com.fxlabs.fxt.cli.beans.Job jobProfile : config.getJobs()) {
-                com.fxlabs.fxt.dto.project.Job job = new com.fxlabs.fxt.dto.project.Job();
-                job.setName(jobProfile.getName());
-                job.setProject(proj);
 
-                job.setTags(jobProfile.getTags());
-
-                Environment projectEnvironment = null;
-                for (Environment pe : projectEnvironments) {
-                    if (pe.getName().equals(jobProfile.getEnvironment())) {
-                        projectEnvironment = pe;
-                    }
-                }
-                job.setEnvironment(projectEnvironment);
-
-                job.setRegion(jobProfile.getRegion());
-                job = jobRestRepository.save(job);
-
-                jobs.add(job);
-
-                if (job.getName().equals("Default")) {
-                    job_ = job;
-                }
-
-                logger.info("job created with id [{}]...", job.getId());
-            }
-
-            if (job_ == null) {
-                job_ = jobs.get(0);
-            }
-
-
-            logger.info("Successful!");
+            logger.info("Successful!  " + job_);
 
             //printJobs(jobs);
 

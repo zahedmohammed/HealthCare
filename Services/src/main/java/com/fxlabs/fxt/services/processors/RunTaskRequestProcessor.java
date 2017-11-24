@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.processors;
 
 import com.fxlabs.fxt.dao.entity.project.Auth;
+import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
@@ -47,10 +48,18 @@ public class RunTaskRequestProcessor {
             BotTask task = new BotTask();
             task.setId(run.getId());
 
+            Environment env = null;
+            for (Environment environment : run.getJob().getProject().getEnvironments()) {
+                if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(run.getJob().getEnvironment(), environment.getName())) {
+                    env = environment;
+                    break;
+                }
+            }
 
-            logger.info("Sending task [{}] to region [{}]...", task.getId(), run.getProjectJob().getRegion());
 
-            List<TestSuite> list = projectDataSetRepository.findByProjectId(run.getProjectJob().getProject().getId());
+            logger.info("Sending task [{}] to region [{}]...", task.getId(), run.getJob().getRegion());
+
+            List<TestSuite> list = projectDataSetRepository.findByProjectId(run.getJob().getProject().getId());
             for (TestSuite ds : list) {
 
                 task.setProjectDataSetId(ds.getId());
@@ -61,13 +70,13 @@ public class RunTaskRequestProcessor {
 
                 copyRequests(task, ds);
 
-                copyAuth(run, task, ds);
+                copyAuth(run, env, task, ds);
 
                 copyAssertions(task, ds);
 
-                task.setEndpoint(run.getProjectJob().getEnvironment().getBaseUrl() + ds.getEndpoint());
+                task.setEndpoint(env.getBaseUrl() + ds.getEndpoint());
 
-                botClientService.sendTask(task, run.getProjectJob().getRegion());
+                botClientService.sendTask(task, run.getJob().getRegion());
 
             }
         }
@@ -100,11 +109,11 @@ public class RunTaskRequestProcessor {
         task.setRequest(requests);
     }
 
-    private void copyAuth(Run run, BotTask task, TestSuite ds) {
+    private void copyAuth(Run run, Environment env, BotTask task, TestSuite ds) {
         // if empty resolves it to Default
         // if NONE resolves it to none.
         // if value then finds and injects
-        List<Auth> creds = run.getProjectJob().getEnvironment().getAuths();
+        List<Auth> creds = env.getAuths();
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {

@@ -13,7 +13,7 @@ public interface RunRepository extends JpaRepository<Run, String> {
     @Lock(LockModeType.WRITE)
     Run findById(String id);
 
-    @Query("SELECT MAX(runId) FROM Run WHERE projectJob.id LIKE ?1")
+    @Query("SELECT MAX(runId) FROM Run WHERE job.id LIKE ?1")
     Long findMaxRunId(String id);
 
     @Query("SELECT r FROM Run r WHERE r.task.status LIKE ?1")

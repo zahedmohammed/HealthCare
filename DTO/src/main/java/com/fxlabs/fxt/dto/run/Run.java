@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class Run extends BaseDto<String> {
 
-    private Job projectJob;
+    private Job job;
 
     private Long runId;
 

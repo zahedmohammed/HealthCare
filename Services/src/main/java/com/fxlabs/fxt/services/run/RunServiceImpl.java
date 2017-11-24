@@ -45,14 +45,14 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
 
-    public Response<com.fxlabs.fxt.dto.run.Run> run(String projectJob) {
-        Response<Job> projectJobResponse = this.projectJobService.findById(projectJob);
+    public Response<com.fxlabs.fxt.dto.run.Run> run(String jobId) {
+        Response<Job> jobResponse = this.projectJobService.findById(jobId);
 
         // Create Run
         com.fxlabs.fxt.dto.run.Run run = new com.fxlabs.fxt.dto.run.Run();
-        run.setProjectJob(projectJobResponse.getData());
+        run.setJob(jobResponse.getData());
         // read last run and
-        Long maxId = ( (RunRepository) repository).findMaxRunId(projectJob);
+        Long maxId = ( (RunRepository) repository).findMaxRunId(jobId);
         if (maxId == null) {
             maxId = 0L;
         }
@@ -65,7 +65,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         task.setStartTime(new Date());
 
         // TODO - find total tests
-        Long totalTests = projectDataSetRepository.countByProjectId(projectJobResponse.getData().getProject().getId());
+        Long totalTests = projectDataSetRepository.countByProjectId(jobResponse.getData().getProject().getId());
         task.setTotalTests(totalTests);
 
         run.setTask(task);
