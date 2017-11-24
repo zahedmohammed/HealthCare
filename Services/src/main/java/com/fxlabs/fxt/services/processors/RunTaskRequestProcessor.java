@@ -65,7 +65,7 @@ public class RunTaskRequestProcessor {
 
                 copyAssertions(task, ds);
 
-                task.setEndpoint(run.getProjectJob().getProjectEnvironment().getBaseUrl() + ds.getEndpoint());
+                task.setEndpoint(run.getProjectJob().getEnvironment().getBaseUrl() + ds.getEndpoint());
 
                 botClientService.sendTask(task, run.getProjectJob().getRegion());
 
@@ -104,11 +104,11 @@ public class RunTaskRequestProcessor {
         // if empty resolves it to Default
         // if NONE resolves it to none.
         // if value then finds and injects
-        List<Auth> creds = run.getProjectJob().getProjectEnvironment().getCredentials();
+        List<Auth> creds = run.getProjectJob().getEnvironment().getAuths();
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
-                    task.setAuthType(cred.getMethod());
+                    task.setAuthType(cred.getAuthType());
                     task.setUsername(cred.getUsername());
                     task.setPassword(cred.getPassword());
                 }
@@ -118,7 +118,7 @@ public class RunTaskRequestProcessor {
         } else {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
-                    task.setAuthType(cred.getMethod());
+                    task.setAuthType(cred.getAuthType());
                     task.setUsername(cred.getUsername());
                     task.setPassword(cred.getPassword());
                 }

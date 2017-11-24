@@ -88,13 +88,13 @@ public class FxCommandService {
                 for (com.fxlabs.fxt.cli.beans.Auth credential : environment.getAuths()) {
                     Auth cred = new Auth();
                     cred.setName(credential.getName());
-                    cred.setMethod(credential.getAuthType());
+                    cred.setAuthType(credential.getAuthType());
                     cred.setUsername(credential.getUsername());
                     cred.setPassword(credential.getPassword());
 
                     list.add(cred);
                 }
-                env.setCredentials(list);
+                env.setAuths(list);
 
                 env = envRepository.save(env);
 
@@ -152,7 +152,7 @@ public class FxCommandService {
                 job.setName(jobProfile.getName());
                 job.setProject(proj);
 
-                job.setDataSetTags(jobProfile.getTags());
+                job.setTags(jobProfile.getTags());
 
                 Environment projectEnvironment = null;
                 for (Environment pe : projectEnvironments) {
@@ -160,7 +160,7 @@ public class FxCommandService {
                         projectEnvironment = pe;
                     }
                 }
-                job.setProjectEnvironment(projectEnvironment);
+                job.setEnvironment(projectEnvironment);
 
                 job.setRegion(jobProfile.getRegion());
                 job = jobRestRepository.save(job);

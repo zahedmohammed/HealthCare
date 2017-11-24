@@ -17,16 +17,18 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Job extends BaseEntity<String> {
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    private Project project;
+
     private String name;
     private String description;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    private Environment projectEnvironment;
+    private Project project;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private Environment environment;
 
     @ElementCollection
-    private List<String> dataSetTags;
+    private List<String> tags;
 
     private String region;
 

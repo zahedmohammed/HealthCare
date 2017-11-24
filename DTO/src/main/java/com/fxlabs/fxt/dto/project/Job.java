@@ -19,9 +19,9 @@ public class Job extends BaseDto<String> {
     private String name;
     private String description;
 
-    private Environment projectEnvironment;
+    private Environment environment;
 
-    private List<String> dataSetTags;
+    private List<String> tags;
 
     private String region;
 

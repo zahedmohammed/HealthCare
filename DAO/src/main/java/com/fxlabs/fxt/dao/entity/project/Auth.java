@@ -21,7 +21,7 @@ public class Auth {
 
     private String name;
 
-    private String method; // login method
+    private String authType; // login authType
     private String username;
     private String password;
 

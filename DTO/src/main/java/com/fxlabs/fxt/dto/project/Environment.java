@@ -19,7 +19,7 @@ public class Environment extends BaseDto<String> {
     private String name;
     private String description;
     private String baseUrl;
-    private List<Auth> credentials;
+    private List<Auth> auths;
 
 }
 

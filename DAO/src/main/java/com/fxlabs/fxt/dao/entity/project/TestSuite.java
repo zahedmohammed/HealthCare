@@ -22,7 +22,9 @@ public class TestSuite extends BaseEntity<String> {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     private Project project;
+
     private String name;
+
     private String endpoint;
     private String method;
     private String auth;

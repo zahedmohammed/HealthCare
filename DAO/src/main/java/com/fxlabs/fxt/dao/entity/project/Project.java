@@ -22,11 +22,11 @@ public class Project extends BaseEntity<String> {
     private String name;
     private String description;
 
-    /*@OneToMany
+    @OneToMany
     private List<Environment> environments;
 
     @OneToMany
-    private List<Job> jobs;*/
+    private List<Job> jobs;
 
 
 }

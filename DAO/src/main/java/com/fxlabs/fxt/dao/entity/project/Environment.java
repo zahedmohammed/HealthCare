@@ -17,13 +17,17 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Environment extends BaseEntity<String> {
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    private Project project;
+
     private String name;
     private String description;
+
+
     private String baseUrl;
     @ElementCollection
-    private List<Auth> credentials;
+    private List<Auth> auths;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private Project project;
 
 
 }
