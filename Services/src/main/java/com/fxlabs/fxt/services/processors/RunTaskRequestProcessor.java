@@ -1,14 +1,11 @@
 package com.fxlabs.fxt.services.processors;
 
-import com.fxlabs.fxt.dao.entity.project.ProjectDataSet;
+import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
-import com.fxlabs.fxt.dto.project.ProjectCredential;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.services.amqp.sender.BotClientService;
-import com.fxlabs.fxt.services.project.ProjectDataSetService;
-import com.fxlabs.fxt.services.run.RunService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +49,8 @@ public class RunTaskRequestProcessor {
 
             logger.info("Sending task [{}] to region [{}]...", task.getId(), run.getProjectJob().getRegion());
 
-            List<ProjectDataSet> list = projectDataSetRepository.findByProjectId(run.getProjectJob().getProject().getId());
-            for (ProjectDataSet ds : list) {
+            List<TestSuite> list = projectDataSetRepository.findByProjectId(run.getProjectJob().getProject().getId());
+            for (TestSuite ds : list) {
 
                 task.setProjectDataSetId(ds.getId());
 
@@ -75,7 +72,7 @@ public class RunTaskRequestProcessor {
         }
     }
 
-    private void copyAssertions(BotTask task, ProjectDataSet ds) {
+    private void copyAssertions(BotTask task, TestSuite ds) {
         // TODO - JPA lazy-load work-around
         List<String> assertions = new ArrayList<>();
         for (String assertion : ds.getAssertions()) {
@@ -84,7 +81,7 @@ public class RunTaskRequestProcessor {
         task.setAssertions(assertions);
     }
 
-    private void copyHeaders(BotTask task, ProjectDataSet ds) {
+    private void copyHeaders(BotTask task, TestSuite ds) {
         // TODO - JPA lazy-load work-around
         List<String> headers = new ArrayList<>();
         for (String header : ds.getHeaders()) {
@@ -93,7 +90,7 @@ public class RunTaskRequestProcessor {
         task.setHeaders(headers);
     }
 
-    private void copyRequests(BotTask task, ProjectDataSet ds) {
+    private void copyRequests(BotTask task, TestSuite ds) {
         // TODO - JPA lazy-load work-around
         List<String> requests = new ArrayList<>();
         for (String request : ds.getRequest()) {
@@ -102,7 +99,7 @@ public class RunTaskRequestProcessor {
         task.setRequest(requests);
     }
 
-    private void copyAuth(Run run, BotTask task, ProjectDataSet ds) {
+    private void copyAuth(Run run, BotTask task, TestSuite ds) {
         // if empty resolves it to Default
         // if NONE resolves it to none.
         // if value then finds and injects

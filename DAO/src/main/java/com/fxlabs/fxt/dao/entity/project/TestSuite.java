@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectDataSet extends BaseEntity<String> {
+public class TestSuite extends BaseEntity<String> {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     private Project project;

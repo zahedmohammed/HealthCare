@@ -69,9 +69,9 @@ public class FxtApplication {
             Response<ProjectEnvironment> projectEnvironmentResponse = projectEnvironmentService.save(new ProjectEnvironment(projectDto, "Default", null, "http://localhost:8080/api/v1", projectCredentials));
 
             // Datasets
-            ProjectDataSet ds = new ProjectDataSet();
+            TestSuite ds = new TestSuite();
 
-            projectDataSetService.save(new ProjectDataSet(projectDto, "User-Create-1", "/users", "POST", Arrays.asList("{\n" +
+            projectDataSetService.save(new TestSuite(projectDto, "User-Create-1", "/users", "POST", Arrays.asList("{\n" +
                     "    \"name\":\"Bob Lee\",\n" +
                     "    \"username\":\"bob\",\n" +
                     "    \"email\":\"bob@fxlabs.com\",\n" +
@@ -81,7 +81,7 @@ public class FxtApplication {
                     "  }"), null, Arrays.asList("V1")));
 
 
-            projectDataSetService.save(new ProjectDataSet(projectDto, "User-Create-2", "/users", "POST", Arrays.asList("{\n" +
+            projectDataSetService.save(new TestSuite(projectDto, "User-Create-2", "/users", "POST", Arrays.asList("{\n" +
                     "    \"name\":\"Foo Lee\",\n" +
                     "    \"username\":\"foo\",\n" +
                     "    \"email\":\"foo@fxlabs.com\",\n" +

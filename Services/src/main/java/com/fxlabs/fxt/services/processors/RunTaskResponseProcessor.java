@@ -1,21 +1,16 @@
 package com.fxlabs.fxt.services.processors;
 
-import com.fxlabs.fxt.dao.entity.project.ProjectDataSet;
-import com.fxlabs.fxt.dao.entity.run.DataSet;
+import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
 import com.fxlabs.fxt.dao.repository.DataSetRepository;
 import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.run.BotTask;
-import com.fxlabs.fxt.dto.run.Run;
-import com.fxlabs.fxt.dto.run.RunTask;
-import com.fxlabs.fxt.services.amqp.sender.BotClientService;
-import com.fxlabs.fxt.services.run.RunService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -66,12 +61,12 @@ public class RunTaskResponseProcessor {
     }
 
     private void saveDS(BotTask task, com.fxlabs.fxt.dao.entity.run.Run run) {
-        DataSet ds = new DataSet();
+        TestSuiteResponse ds = new TestSuiteResponse();
         ds.setRunId(run.getId());
-        //ProjectDataSet pds = new ProjectDataSet();
+        //TestSuite pds = new TestSuite();
         //pds.setId(task.getProjectDataSetId());
         //ds.setProjectDataSet(pds);
-        ProjectDataSet pds = projectDataSetRepository.findOne(task.getProjectDataSetId());
+        TestSuite pds = projectDataSetRepository.findOne(task.getProjectDataSetId());
         ds.setTestSuite(pds.getName());
         ds.setLogs(task.getLogs());
         ds.setResponse(task.getResponse());

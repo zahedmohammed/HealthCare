@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.run;
 import com.fxlabs.fxt.converters.run.DataSetConverter;
 import com.fxlabs.fxt.converters.run.RunConverter;
 import com.fxlabs.fxt.dao.entity.run.Run;
+import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
 import com.fxlabs.fxt.dao.repository.DataSetRepository;
 import com.fxlabs.fxt.dao.repository.ProjectDataSetRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
@@ -81,7 +82,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     public Response<List<DataSet>> findByRunId(String runId, Pageable pageable) {
-        Page<com.fxlabs.fxt.dao.entity.run.DataSet> page = this.dataSetRepository.findByRunId(runId, pageable);
+        Page<TestSuiteResponse> page = this.dataSetRepository.findByRunId(runId, pageable);
 
         List<DataSet> dataSets = dataSetConverter.convertToDtos(page.getContent());
         return new Response<List<DataSet>>(dataSets, page.getTotalElements(), page.getTotalPages());
