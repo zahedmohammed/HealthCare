@@ -25,6 +25,7 @@ import java.util.*;
 
 @Service
 @PropertySource(ignoreResourceNotFound = true, value = "file:fx.properties")
+@PropertySource(ignoreResourceNotFound = true, value = "file:${user.home}/fxt/fx.properties")
 public class FxCommandService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
@@ -43,7 +44,7 @@ public class FxCommandService {
 
     }
 
-    public String load() {
+    public String load(String projectDir) {
         try {
             // read fx server details
 
@@ -52,7 +53,10 @@ public class FxCommandService {
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
             logger.info("loading project.yml...");
-            Config config = yamlMapper.readValue(new File("project.yml"), Config.class);
+            if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
+                projectDir += "/";
+            }
+            Config config = yamlMapper.readValue(new File(projectDir + "project.yml"), Config.class);
 
             //System.out.println(config);
 
@@ -148,7 +152,7 @@ public class FxCommandService {
                     AnsiColor.DEFAULT));
 
 
-            File dataFolder = new File("test-suites");
+            File dataFolder = new File(projectDir + "test-suites");
 
             for (File file : dataFolder.listFiles()) {
 
@@ -196,10 +200,10 @@ public class FxCommandService {
         return null;
     }
 
-    public void loadAndRun() {
+    public void loadAndRun(String projectDir) {
         Date start = new Date();
         //System.out.println("loading data...");
-        String jobId = load();
+        String jobId = load(projectDir);
         Date loadEnd = new Date();
         //System.out.println("running job...");
         runJob(jobId);

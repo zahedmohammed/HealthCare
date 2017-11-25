@@ -35,8 +35,8 @@ public class FxCommands {
     }*/
 
     @ShellMethod(key = "run", value = "Loads data and executes tests")
-    public void jobRun() {
-        service.loadAndRun();
+    public void jobRun(String projectDir) {
+        service.loadAndRun(projectDir);
     }
 
     /*@ShellMethod(key = "run inspect", value = "Inspect Run")
