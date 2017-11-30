@@ -25,6 +25,7 @@ public class TestSuite extends BaseDto<String> {
     private List<String> request;
     private List<String> assertions;
     private List<String> tags;
+    private List<String> authors;
 
 }
 
