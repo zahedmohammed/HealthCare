@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
@@ -73,8 +74,12 @@ public class RestProcessor {
             HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
 
             ResponseEntity<String> response = null;
+            int statusCode = -1;
             try {
                 response = restTemplate.exchange(url, method, request, String.class);
+                statusCode = response.getStatusCodeValue();
+            } catch (HttpStatusCodeException statusCodeException) {
+                statusCode = statusCodeException.getRawStatusCode();
             } catch (Exception e) {
                 logger.warn(e.getLocalizedMessage());
                 response = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -86,7 +91,8 @@ public class RestProcessor {
 
             StringBuilder logs = new StringBuilder();
             StringBuilder taskStatus = new StringBuilder();
-            validatorProcessor.process(task.getAssertions(), response, logs, taskStatus);
+            validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
+
             newTask.setLogs(logs.toString());
             newTask.setResult(taskStatus.toString());
 

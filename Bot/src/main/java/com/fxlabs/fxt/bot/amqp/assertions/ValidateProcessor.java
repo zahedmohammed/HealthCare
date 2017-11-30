@@ -19,7 +19,7 @@ public class ValidateProcessor {
     @Autowired
     private StatusCodeValidator statusCodeValidator;
 
-    public void process(List<String> assertions, ResponseEntity<String> response, StringBuilder logs, StringBuilder status) {
+    public void process(List<String> assertions, ResponseEntity<String> response, int statusCode, StringBuilder logs, StringBuilder status) {
 
         // validate assertions collection
         if (CollectionUtils.isEmpty(assertions)) {
@@ -28,12 +28,12 @@ public class ValidateProcessor {
         }
 
         // validate response
-        if (response == null) {
+        /*if (response == null) {
             logger.warn("Null response ");
             logs.append(String.format("Null response from the server \n"));
             status.append("fail");
             return;
-        }
+        }*/
 
         for (String assertion : assertions) {
 
@@ -45,7 +45,7 @@ public class ValidateProcessor {
 
             // extract validator type
             if (assertion.matches("@StatusCode.*")) {
-                statusCodeValidator.validate(assertion, response.getStatusCodeValue(), status, logs);
+                statusCodeValidator.validate(assertion, statusCode, status, logs);
             } else {
                 logger.warn("Invalid assertion [{}]", assertion);
                 logs.append(String.format("Invalid assertion [%s]", assertion));

@@ -35,6 +35,7 @@ public class StatusCodeValidator {
             status.append("pass");
         } else {
             status.append("fail");
+            logger.info(String.format("Expected statusCode [%s], but was [%s]", expectedStatusCode, code));
             logs.append(String.format("Expected statusCode [%s], but was [%s]", expectedStatusCode, code));
         }
     }
