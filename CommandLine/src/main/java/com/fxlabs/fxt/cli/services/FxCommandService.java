@@ -10,6 +10,7 @@ import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,9 +154,11 @@ public class FxCommandService {
                     AnsiColor.DEFAULT));
 
 
-            File dataFolder = new File(projectDir + "test-suites");
 
-            for (File file : dataFolder.listFiles()) {
+            File dataFolder = new File(projectDir + "test-suites");
+            Collection<File> files = FileUtils.listFiles(dataFolder, new String[] {"yml", "yaml", "YML", "YAML"}, true);
+
+            for (File file : files) {
 
                 if (!StringUtils.endsWithIgnoreCase(file.getName(), ".yml")) {
                     System.out.println(AnsiOutput.toString(AnsiColor.RED,
