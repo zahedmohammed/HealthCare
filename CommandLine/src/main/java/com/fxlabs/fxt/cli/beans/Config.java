@@ -22,6 +22,8 @@ public class Config implements Serializable {
 
     private String description;
 
+    private List<String> licenses;
+
     private List<Environment> environments;
 
     private List<Job> jobs;

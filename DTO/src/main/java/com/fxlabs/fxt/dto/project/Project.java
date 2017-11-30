@@ -18,6 +18,8 @@ public class Project extends BaseDto<String> {
     private String name;
     private String description;
 
+    private List<String> licenses;
+
     private List<Environment> environments;
 
     private List<Job> jobs;

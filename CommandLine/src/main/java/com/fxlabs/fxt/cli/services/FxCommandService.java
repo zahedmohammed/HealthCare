@@ -62,6 +62,7 @@ public class FxCommandService {
 
             Project project = new Project();
             project.setName(config.getName());
+            project.setLicenses(config.getLicenses());
             project.setDescription(config.getDescription());
 
 

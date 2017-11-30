@@ -22,6 +22,9 @@ public class Project extends BaseEntity<String> {
     private String name;
     private String description;
 
+    @ElementCollection
+    private List<String> licenses;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Environment> environments;
 
