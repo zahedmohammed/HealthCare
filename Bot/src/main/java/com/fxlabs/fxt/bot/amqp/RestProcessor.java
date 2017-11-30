@@ -62,7 +62,7 @@ public class RestProcessor {
             httpHeaders.set("Authorization", createBasicAuth(task.getUsername(), task.getPassword()));
         }
 
-        logger.info("Total tests [{}]", task.getRequest().size());
+        logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
 
         for (String req : task.getRequest()) {
 

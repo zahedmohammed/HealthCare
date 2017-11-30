@@ -45,8 +45,6 @@ public class RunTaskRequestProcessor {
             run.getTask().setStatus("PROCESSING");
             runRepository.save(run);
 
-            BotTask task = new BotTask();
-            task.setId(run.getId());
 
             Environment env = null;
             for (Environment environment : run.getJob().getProject().getEnvironments()) {
@@ -57,11 +55,13 @@ public class RunTaskRequestProcessor {
             }
 
 
-            logger.info("Sending task [{}] to region [{}]...", task.getId(), run.getJob().getRegion());
+            logger.info("Sending task to region [{}]...", run.getJob().getRegion());
 
             List<TestSuite> list = projectDataSetRepository.findByProjectId(run.getJob().getProject().getId());
             for (TestSuite ds : list) {
 
+                BotTask task = new BotTask();
+                task.setId(run.getId());
                 task.setProjectDataSetId(ds.getId());
 
                 task.setMethod(ds.getMethod());

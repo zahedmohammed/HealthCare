@@ -30,7 +30,7 @@ public class StatusCodeValidator {
         }
     }
 
-    private void assertEqual(int code, int expectedStatusCode, StringBuilder status, StringBuilder logs) {
+    private void assertEqual(int expectedStatusCode, int code, StringBuilder status, StringBuilder logs) {
         if (code == expectedStatusCode) {
             status.append("pass");
         } else {
