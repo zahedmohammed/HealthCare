@@ -13,10 +13,10 @@ public class AssertionContext implements Serializable {
     private String response;
     private String statusCode;
     private HttpHeaders headers;
-    private StringBuilder logs;
+    private AssertionLogger logs;
     private String result = "";
 
-    public AssertionContext(String request, String response, String statusCode, HttpHeaders headers, StringBuilder logs) {
+    public AssertionContext(String request, String response, String statusCode, HttpHeaders headers, AssertionLogger logs) {
         this.request = request;
         this.response = response;
         this.statusCode = statusCode;
@@ -41,7 +41,7 @@ public class AssertionContext implements Serializable {
         return headers;
     }
 
-    public StringBuilder getLogs() {
+    public AssertionLogger getLogs() {
         return logs;
     }
 

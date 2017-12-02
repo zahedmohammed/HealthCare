@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import java.util.Date;
 
 //@SolrDocument(collection = "fx")
@@ -23,6 +25,8 @@ public class TestSuiteResponse extends BaseEntity<String> {
     private String runId;
     private Integer tests;
     private String response;
+    @Lob
+    //@Type(type = "org.hibernate.type.StringClobType")
     private String logs;
     private Date requestStartTime;
     private Date requestEndTime;

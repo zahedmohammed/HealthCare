@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.rest.base.BaseController;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.run.RunService;
+import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,14 @@ import static com.fxlabs.fxt.rest.base.BaseController.PROJECT_RUNS_BASE;
 public class RunController extends BaseController<Run, String> {
 
     private RunService runService;
+    private TestSuiteResponseService testSuiteResponseService;
 
     @Autowired
     public RunController(
-            RunService service) {
+            RunService service, TestSuiteResponseService testSuiteResponseService) {
         super(service);
         this.runService = service;
+        this.testSuiteResponseService = testSuiteResponseService;
     }
 
     @RequestMapping(value = "/{id}/test-suites", method = RequestMethod.GET)

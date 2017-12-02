@@ -40,6 +40,8 @@ public class FxCommandService {
     @Autowired
     private RunRestRepository runRestRepository;
 
+    Set<TestSuiteResponse> dataSets = new HashSet<>();
+
 
     public FxCommandService() {
 
@@ -154,9 +156,8 @@ public class FxCommandService {
                     AnsiColor.DEFAULT));
 
 
-
             File dataFolder = new File(projectDir + "test-suites");
-            Collection<File> files = FileUtils.listFiles(dataFolder, new String[] {"yml", "yaml", "YML", "YAML"}, true);
+            Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"yml", "yaml", "YML", "YAML"}, true);
 
             for (File file : files) {
 
@@ -210,6 +211,7 @@ public class FxCommandService {
         String jobId = load(projectDir);
         Date loadEnd = new Date();
         //System.out.println("running job...");
+        dataSets = new HashSet<>();
         runJob(jobId);
 
         System.out.println(
@@ -220,6 +222,8 @@ public class FxCommandService {
                                 (new Date().getTime() - loadEnd.getTime()))
                         , AnsiColor.DEFAULT)
         );
+
+        printFailedSuites(dataSets);
 
     }
 
@@ -254,7 +258,6 @@ public class FxCommandService {
 
         int page = 0;
         int pageSize = 10;
-        Set<TestSuiteResponse> dataSets = new HashSet<>();
         int count = 0;
 
         while (true) {
@@ -330,10 +333,21 @@ public class FxCommandService {
         );
     }
 
-    private void printErrorLogs(List<String> logs) {
-        System.out.println("\n Error logs....\n");
-        for (String log : logs) {
-        }
+    private void printFailedSuites(Set<TestSuiteResponse> dataSets) {
+        System.out.println("Error logs....");
+        dataSets.forEach(suite -> {
+            if (!org.apache.commons.lang3.StringUtils.equalsIgnoreCase(suite.getStatus(), "pass") &&
+                    !StringUtils.isEmpty(suite.getLogs())) {
+                System.out.println(suite.getTestSuite());
+                printErrorLogs(suite.getLogs());
+            }
+        });
+    }
+
+    private void printErrorLogs(String logs) {
+        System.out.println(
+                AnsiOutput.toString(AnsiColor.RED, logs, AnsiColor.DEFAULT)
+        );
     }
 
     private void printDataSet(TestSuiteResponse ds) {

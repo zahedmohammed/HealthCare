@@ -3,6 +3,7 @@ package com.fxlabs.fxt.bot.processor;
 
 import com.fxlabs.fxt.bot.amqp.Sender;
 import com.fxlabs.fxt.bot.assertions.AssertionContext;
+import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.codec.binary.Base64;
@@ -48,6 +49,7 @@ public class RestProcessor {
         Long totalFailed = 0L;
         Long totalSkipped = 0L;
         Long totalPassed = 0L;
+        AssertionLogger logs = new AssertionLogger();
 
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
@@ -98,16 +100,12 @@ public class RestProcessor {
 
             // validate assertions
 
-            StringBuilder logs = new StringBuilder();
-            //StringBuilder taskStatus = new StringBuilder();
-
-
             AssertionContext context = new AssertionContext(req, responseBody, String.valueOf(statusCode), headers, logs);
             assertionValidator.validate(task.getAssertions(), context);
 
             //validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
 
-            newTask.setLogs(context.getLogs().toString());
+            //newTask.setLogs(context.getLogs().toString());
             newTask.setResult(context.getResult());
 
             //logger.info("Result: [{}]", newTask.getResult());
@@ -134,6 +132,8 @@ public class RestProcessor {
         completeTask.setTotalFailed(totalFailed);
         completeTask.setTotalSkipped(totalSkipped);
         completeTask.setTotalPassed(totalPassed);
+
+        completeTask.setLogs(logs.getLogs());
 
         completeTask.setRequestEndTime(new Date());
         completeTask.setRequestTime(completeTask.getRequestEndTime().getTime() - completeTask.getRequestStartTime().getTime());

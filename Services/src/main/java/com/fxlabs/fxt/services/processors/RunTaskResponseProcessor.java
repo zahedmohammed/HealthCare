@@ -6,6 +6,7 @@ import com.fxlabs.fxt.dao.repository.TestSuiteResponseRepository;
 import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.run.BotTask;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,14 @@ public class RunTaskResponseProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private RunRepository runRepository;
-    private TestSuiteResponseRepository dataSetRepository;
-    private TestSuiteRepository projectDataSetRepository;
+    private TestSuiteResponseRepository testSuiteResponseRepository;
+    private TestSuiteRepository testSuiteRepository;
 
     @Autowired
     public RunTaskResponseProcessor(RunRepository runRepository, TestSuiteResponseRepository dataSetRepository, TestSuiteRepository projectDataSetRepository) {
         this.runRepository = runRepository;
-        this.dataSetRepository = dataSetRepository;
-        this.projectDataSetRepository = projectDataSetRepository;
+        this.testSuiteResponseRepository = dataSetRepository;
+        this.testSuiteRepository = projectDataSetRepository;
     }
 
     public void process(BotTask task) {
@@ -42,16 +43,8 @@ public class RunTaskResponseProcessor {
             runTask.setSkippedTests(runTask.getSkippedTests() + task.getTotalSkipped());
 
             runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
-            saveDS(task, run);
-        } else {
 
-            runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + 1);
-            logger.info("Test result [{}]", task.getResult());
-            if ("fail".equals(task.getResult())) {
-                runTask.setFailedTests(runTask.getFailedTests() + 1);
-            } else if ("skip".equals(task.getResult())) {
-                runTask.setFailedTests(runTask.getSkippedTests() + 1);
-            }
+            saveDS(task, run);
 
         }
         // is complete?
@@ -69,7 +62,7 @@ public class RunTaskResponseProcessor {
         //TestSuite pds = new TestSuite();
         //pds.setId(task.getProjectDataSetId());
         //ds.setProjectDataSet(pds);
-        TestSuite pds = projectDataSetRepository.findOne(task.getProjectDataSetId());
+        TestSuite pds = testSuiteRepository.findOne(task.getProjectDataSetId());
         ds.setTestSuite(pds.getName());
         ds.setLogs(task.getLogs());
         ds.setResponse(task.getResponse());
@@ -84,7 +77,7 @@ public class RunTaskResponseProcessor {
 
         ds.setStatus(task.getResult());
 
-        this.dataSetRepository.save(ds);
+        this.testSuiteResponseRepository.save(ds);
 
     }
 }
