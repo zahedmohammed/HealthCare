@@ -43,5 +43,6 @@ public class BotTask implements Serializable {
     private Long totalPassed = 0L;
     private Long totalFailed = 0L;
     private Long totalSkipped = 0L;
+    private Long totalTests = 0L;
 
 }

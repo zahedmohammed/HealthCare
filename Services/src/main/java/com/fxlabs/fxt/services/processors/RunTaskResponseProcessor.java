@@ -39,6 +39,7 @@ public class RunTaskResponseProcessor {
         // only if SUITE
         if ("SUITE".equals(task.getResult())) {
             runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
+            runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + task.getTotalTests());
             runTask.setFailedTests(runTask.getFailedTests() + task.getTotalFailed());
             runTask.setSkippedTests(runTask.getSkippedTests() + task.getTotalSkipped());
 

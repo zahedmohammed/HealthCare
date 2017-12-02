@@ -132,6 +132,7 @@ public class RestProcessor {
         completeTask.setTotalFailed(totalFailed);
         completeTask.setTotalSkipped(totalSkipped);
         completeTask.setTotalPassed(totalPassed);
+        completeTask.setTotalTests((long)task.getRequest().size());
 
         completeTask.setLogs(logs.getLogs());
 
