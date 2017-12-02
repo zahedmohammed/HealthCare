@@ -110,7 +110,7 @@ public class RestProcessor {
             newTask.setLogs(context.getLogs().toString());
             newTask.setResult(context.getResult());
 
-            logger.info("Result: [{}]", newTask.getResult());
+            //logger.info("Result: [{}]", newTask.getResult());
             switch (newTask.getResult()) {
                 case "pass":
                     totalPassed++;

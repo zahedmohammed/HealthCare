@@ -37,11 +37,13 @@ public class OperandEvaluator {
             //case "@Headers":
 
             case "@Request":
-                val = JsonPath.read(context.getRequest(), PATH);
+                Object objRequest = JsonPath.read(context.getRequest(), PATH);
+                val = objRequest.toString();
                 break;
 
             case "@Response":
-                val = JsonPath.read(context.getResponse(), PATH);
+                Object objResponse = JsonPath.read(context.getResponse(), PATH);
+                val = objResponse.toString();
                 break;
 
             default:

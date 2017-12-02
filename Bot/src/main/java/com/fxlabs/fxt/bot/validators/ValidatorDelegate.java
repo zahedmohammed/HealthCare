@@ -25,7 +25,7 @@ public class ValidatorDelegate {
     protected OperandEvaluator evaluator;
 
     public void validate(String assertion, AssertionContext context) {
-        logger.info("Validating assertion [{}]", assertion);
+        //logger.info("Validating assertion [{}]", assertion);
         String[] tokens = StringUtils.split(assertion, " ");
 
         //logger.info("tokens [{}]", tokens);

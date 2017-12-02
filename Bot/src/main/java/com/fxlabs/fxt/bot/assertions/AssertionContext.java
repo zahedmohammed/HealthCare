@@ -50,7 +50,6 @@ public class AssertionContext implements Serializable {
     }
 
     public void setResult(String result) {
-        System.out.println (result);
         if (StringUtils.equalsIgnoreCase(this.result, "fail")
                 || StringUtils.equalsIgnoreCase(this.result, "skip")
                 || StringUtils.isEmpty(result)) {
