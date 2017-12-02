@@ -1,7 +1,9 @@
-package com.fxlabs.fxt.bot.amqp;
+package com.fxlabs.fxt.bot.processor;
 
 
-import com.fxlabs.fxt.bot.amqp.assertions.ValidateProcessor;
+import com.fxlabs.fxt.bot.amqp.Sender;
+import com.fxlabs.fxt.bot.assertions.AssertionContext;
+import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.ArrayUtils;
@@ -15,7 +17,6 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,12 +26,13 @@ public class RestProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Sender sender;
-    private ValidateProcessor validatorProcessor;
+    //private ValidateProcessor validatorProcessor;
+    private AssertionValidator assertionValidator;
 
     @Autowired
-    RestProcessor(Sender sender, ValidateProcessor validatorProcessor) {
+    RestProcessor(Sender sender, AssertionValidator assertionValidator) {
         this.sender = sender;
-        this.validatorProcessor = validatorProcessor;
+        this.assertionValidator = assertionValidator;
     }
 
     public void process(BotTask task) {
@@ -43,6 +45,9 @@ public class RestProcessor {
         completeTask.setId(task.getId());
         completeTask.setProjectDataSetId(task.getProjectDataSetId());
         completeTask.setRequestStartTime(new Date());
+        Long totalFailed = 0L;
+        Long totalSkipped = 0L;
+        Long totalPassed = 0L;
 
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
@@ -75,9 +80,13 @@ public class RestProcessor {
 
             ResponseEntity<String> response = null;
             int statusCode = -1;
+            String responseBody = null;
+            HttpHeaders headers = null;
             try {
                 response = restTemplate.exchange(url, method, request, String.class);
                 statusCode = response.getStatusCodeValue();
+                responseBody = response.getBody();
+                headers = response.getHeaders();
             } catch (HttpStatusCodeException statusCodeException) {
                 statusCode = statusCodeException.getRawStatusCode();
             } catch (Exception e) {
@@ -90,18 +99,29 @@ public class RestProcessor {
             // validate assertions
 
             StringBuilder logs = new StringBuilder();
-            StringBuilder taskStatus = new StringBuilder();
-            validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
+            //StringBuilder taskStatus = new StringBuilder();
 
-            newTask.setLogs(logs.toString());
-            newTask.setResult(taskStatus.toString());
 
-            if (StringUtils.equalsIgnoreCase("fail", newTask.getResult())) {
-                completeTask.setTotalFailed(completeTask.getTotalFailed() + 1);
-            } else if (StringUtils.equalsIgnoreCase("skip", newTask.getResult())) {
-                completeTask.setTotalSkipped(completeTask.getTotalSkipped() + 1);
-            } else {
-                completeTask.setTotalPassed(completeTask.getTotalPassed() + 1);
+            AssertionContext context = new AssertionContext(req, responseBody, String.valueOf(statusCode), headers, logs);
+            assertionValidator.validate(task.getAssertions(), context);
+
+            //validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
+
+            newTask.setLogs(context.getLogs().toString());
+            newTask.setResult(context.getResult());
+
+            logger.info("Result: [{}]", newTask.getResult());
+            switch (newTask.getResult()) {
+                case "pass":
+                    totalPassed++;
+                    break;
+                case "fail":
+                    totalFailed++;
+                    break;
+                case "skip":
+                default:
+                    totalSkipped++;
+                    break;
             }
 
 
@@ -110,6 +130,10 @@ public class RestProcessor {
         }
 
         // send test suite complete
+
+        completeTask.setTotalFailed(totalFailed);
+        completeTask.setTotalSkipped(totalSkipped);
+        completeTask.setTotalPassed(totalPassed);
 
         completeTask.setRequestEndTime(new Date());
         completeTask.setRequestTime(completeTask.getRequestEndTime().getTime() - completeTask.getRequestStartTime().getTime());

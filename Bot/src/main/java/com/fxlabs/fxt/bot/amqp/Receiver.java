@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.bot.amqp;
 
-import java.util.concurrent.CountDownLatch;
-
+import com.fxlabs.fxt.bot.processor.RestProcessor;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
