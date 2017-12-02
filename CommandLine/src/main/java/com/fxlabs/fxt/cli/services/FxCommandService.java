@@ -19,10 +19,13 @@ import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.shell.table.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @PropertySource(ignoreResourceNotFound = true, value = "file:fx.properties")
@@ -159,21 +162,26 @@ public class FxCommandService {
             File dataFolder = new File(projectDir + "test-suites");
             Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"yml", "yaml", "YML", "YAML"}, true);
 
-            int totalFiles = 0;
-            for (File file : files) {
+            AtomicInteger totalFiles = new AtomicInteger(0);
+            files.parallelStream().forEach(file -> {
 
                 if (!StringUtils.endsWithIgnoreCase(file.getName(), ".yml")) {
                     System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                             String.format("%s [Skipped]", file.getName()),
                             AnsiColor.DEFAULT));
-                    continue;
+                    return;
                 }
 
                 /*System.out.print(AnsiOutput.toString(AnsiColor.WHITE,
                         String.format("%s\r", file.getName()),
                         AnsiColor.DEFAULT));*/
 
-                TestSuite testSuite = yamlMapper.readValue(file, TestSuite.class);
+                TestSuite testSuite = null;
+                try {
+                    testSuite = yamlMapper.readValue(file, TestSuite.class);
+                } catch (IOException e) {
+                    logger.warn(e.getLocalizedMessage());
+                }
                 //logger.info("ds size: [{}]", values.length);
 
                 logger.info("ds : [{}]", testSuite.toString());
@@ -189,9 +197,8 @@ public class FxCommandService {
                         String.format("%s [OK]", file.getName()),
                         AnsiColor.DEFAULT));
 
-                ++totalFiles;
-                //System.out.print(String.format("%s/%s Loaded", totalFiles, files.size()));
-            }
+                totalFiles.incrementAndGet();
+            });
 
             System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                     String.format("\nTotal Suites Loaded: [%s]", totalFiles),
@@ -259,7 +266,7 @@ public class FxCommandService {
         Run run = runRestRepository.run(jobId);
         System.out.println("");
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
-                String.format("Running job: %s", jobId),
+                String.format("Running Job: %s Run: %s", jobId, run.getId()),
                 AnsiColor.DEFAULT));
 
         int page = 0;

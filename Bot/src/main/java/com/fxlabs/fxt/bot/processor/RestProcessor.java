@@ -20,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class RestProcessor {
@@ -36,8 +38,11 @@ public class RestProcessor {
         this.assertionValidator = assertionValidator;
     }
 
+    AtomicInteger i = new AtomicInteger(1);
+
     public void process(BotTask task) {
 
+        logger.info("{}", i.incrementAndGet());
         if (task == null || task.getId() == null || task.getEndpoint() == null) {
             return;
         }
@@ -46,9 +51,9 @@ public class RestProcessor {
         completeTask.setId(task.getId());
         completeTask.setProjectDataSetId(task.getProjectDataSetId());
         completeTask.setRequestStartTime(new Date());
-        Long totalFailed = 0L;
-        Long totalSkipped = 0L;
-        Long totalPassed = 0L;
+        AtomicLong totalFailed = new AtomicLong(0L);
+        AtomicLong totalSkipped = new AtomicLong(0L);
+        AtomicLong totalPassed = new AtomicLong(0L);
         AssertionLogger logs = new AssertionLogger();
 
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
@@ -71,7 +76,7 @@ public class RestProcessor {
 
         logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
 
-        for (String req : task.getRequest()) {
+        task.getRequest().parallelStream().forEach(req -> {
 
             BotTask newTask = new BotTask();
             newTask.setId(task.getId());
@@ -111,28 +116,28 @@ public class RestProcessor {
             //logger.info("Result: [{}]", newTask.getResult());
             switch (newTask.getResult()) {
                 case "pass":
-                    totalPassed++;
+                    totalPassed.incrementAndGet();
                     break;
                 case "fail":
-                    totalFailed++;
+                    totalFailed.incrementAndGet();
                     break;
                 case "skip":
                 default:
-                    totalSkipped++;
+                    totalSkipped.incrementAndGet();
                     break;
             }
 
 
             // return processed task
-            sender.sendTask(newTask);
-        }
+            //sender.sendTask(newTask);
+        });
 
         // send test suite complete
 
-        completeTask.setTotalFailed(totalFailed);
-        completeTask.setTotalSkipped(totalSkipped);
-        completeTask.setTotalPassed(totalPassed);
-        completeTask.setTotalTests((long)task.getRequest().size());
+        completeTask.setTotalFailed(totalFailed.get());
+        completeTask.setTotalSkipped(totalSkipped.get());
+        completeTask.setTotalPassed(totalPassed.get());
+        completeTask.setTotalTests((long) task.getRequest().size());
 
         completeTask.setLogs(logs.getLogs());
 

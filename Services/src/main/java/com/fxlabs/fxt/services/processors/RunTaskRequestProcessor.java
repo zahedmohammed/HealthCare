@@ -13,12 +13,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 @Component
+@Transactional
 public class RunTaskRequestProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -40,25 +44,31 @@ public class RunTaskRequestProcessor {
         //logger.info("started...");
         List<com.fxlabs.fxt.dao.entity.run.Run> runs = runRepository.findByStatus("WAITING");
 
-        for (com.fxlabs.fxt.dao.entity.run.Run run : runs) {
+        runs.parallelStream().forEach(run -> {
 
             run.getTask().setStatus("PROCESSING");
             runRepository.save(run);
 
 
-            Environment env = null;
+            Environment env_ = null;
             for (Environment environment : run.getJob().getProject().getEnvironments()) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(run.getJob().getEnvironment(), environment.getName())) {
-                    env = environment;
+                    env_ = environment;
                     break;
                 }
             }
 
+            final Environment env = env_;
+            AtomicInteger i = new AtomicInteger(1);
+
 
             logger.info("Sending task to region [{}]...", run.getJob().getRegion());
 
-            List<TestSuite> list = projectDataSetRepository.findByProjectId(run.getJob().getProject().getId());
-            for (TestSuite ds : list) {
+            Stream<TestSuite> list = projectDataSetRepository.findByProjectId(run.getJob().getProject().getId());
+
+            //for (TestSuite ds : list) {
+            list.forEach(ds -> {
+                logger.info("Request {}", i.incrementAndGet());
 
                 BotTask task = new BotTask();
                 task.setId(run.getId());
@@ -78,8 +88,9 @@ public class RunTaskRequestProcessor {
 
                 botClientService.sendTask(task, run.getJob().getRegion());
 
-            }
-        }
+                //}
+            });
+        });
     }
 
     private void copyAssertions(BotTask task, TestSuite ds) {

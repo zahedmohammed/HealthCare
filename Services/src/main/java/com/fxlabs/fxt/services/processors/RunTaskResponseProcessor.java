@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Transactional
@@ -31,7 +32,9 @@ public class RunTaskResponseProcessor {
         this.testSuiteRepository = projectDataSetRepository;
     }
 
+    AtomicInteger i = new AtomicInteger(1);
     public void process(BotTask task) {
+        logger.info("Response {}", i.incrementAndGet());
         logger.info("Task response [{}]...", task.getId());
         com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findById(task.getId());
         com.fxlabs.fxt.dao.entity.run.RunTask runTask = run.getTask();
