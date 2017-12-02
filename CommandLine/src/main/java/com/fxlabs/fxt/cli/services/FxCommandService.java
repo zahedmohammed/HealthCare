@@ -152,25 +152,26 @@ public class FxCommandService {
             // create dataset
             System.out.println("");
             System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
-                    "Loading Test-Suites...",
+                    "Loading Test-Suites:",
                     AnsiColor.DEFAULT));
 
 
             File dataFolder = new File(projectDir + "test-suites");
             Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"yml", "yaml", "YML", "YAML"}, true);
 
+            int totalFiles = 0;
             for (File file : files) {
 
                 if (!StringUtils.endsWithIgnoreCase(file.getName(), ".yml")) {
-                    System.out.println(AnsiOutput.toString(AnsiColor.RED,
+                    System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                             String.format("%s [Skipped]", file.getName()),
                             AnsiColor.DEFAULT));
                     continue;
                 }
 
-                System.out.print(AnsiOutput.toString(AnsiColor.WHITE,
+                /*System.out.print(AnsiOutput.toString(AnsiColor.WHITE,
                         String.format("%s\r", file.getName()),
-                        AnsiColor.DEFAULT));
+                        AnsiColor.DEFAULT));*/
 
                 TestSuite testSuite = yamlMapper.readValue(file, TestSuite.class);
                 //logger.info("ds size: [{}]", values.length);
@@ -184,12 +185,17 @@ public class FxCommandService {
                 testSuite.setProject(proj);
                 dataSetRestRepository.save(testSuite);
 
-                System.out.print(AnsiOutput.toString(AnsiColor.GREEN,
-                        String.format("%s [OK]\n", file.getName()),
+                System.out.println(AnsiOutput.toString(AnsiColor.WHITE,
+                        String.format("%s [OK]", file.getName()),
                         AnsiColor.DEFAULT));
+
+                ++totalFiles;
+                //System.out.print(String.format("%s/%s Loaded", totalFiles, files.size()));
             }
 
-
+            System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                    String.format("\nTotal Suites Loaded: [%s]", totalFiles),
+                    AnsiColor.DEFAULT));
             logger.info("test-suites successfully uploaded...");
 
 
@@ -326,7 +332,7 @@ public class FxCommandService {
                 AnsiColor.DEFAULT));
         System.out.print(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
-                        String.format("Run Id: %s \nStatus: %s \nTest-Suites Completed: %s \nTest Completed: %s \nTest Failed: %s \nTest Skipped: %s \nProcessing Time: %s ms%s",
+                        String.format("Run Id: %s \nStatus: %s \nTotal Test-Suites: %s \nTotal Test: %s \nTotal Failed: %s \nTotal Skipped: %s \nProcessing Time: %s ms%s",
                                 run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
                                 run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime(), carriageReturn)
                         , AnsiColor.DEFAULT)
@@ -334,7 +340,7 @@ public class FxCommandService {
     }
 
     private void printFailedSuites(Set<TestSuiteResponse> dataSets) {
-        System.out.println("Error logs....");
+        System.out.println("Error logs:");
         dataSets.forEach(suite -> {
             if (!org.apache.commons.lang3.StringUtils.equalsIgnoreCase(suite.getStatus(), "pass") &&
                     !StringUtils.isEmpty(suite.getLogs())) {
