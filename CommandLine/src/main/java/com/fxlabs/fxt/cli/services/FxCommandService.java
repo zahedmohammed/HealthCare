@@ -339,9 +339,9 @@ public class FxCommandService {
                 AnsiColor.DEFAULT));
         System.out.print(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
-                        String.format("Run Id: %s \nStatus: %s \nTotal Test-Suites: %s \nTotal Test: %s \nTotal Failed: %s \nTotal Skipped: %s \nProcessing Time: %s ms%s",
+                        String.format("Run Id: %s \nStatus: %s \nTotal Test-Suites: %s \nTotal Test: %s \nTotal Failed: %s \nProcessing Time: %s ms%s",
                                 run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
-                                run.getTask().getFailedTests(), run.getTask().getSkippedTests(), run.getTask().getTotalTime(), carriageReturn)
+                                run.getTask().getFailedTests(), run.getTask().getTotalTime(), carriageReturn)
                         , AnsiColor.DEFAULT)
         );
     }
@@ -367,17 +367,15 @@ public class FxCommandService {
         if (ds.getTotalFailed() > 0) {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.RED,
-                            String.format("Test-Suite: %s, Pass: %s, Fail: [%s], Skip: %s, Time: %s ms",
-                                    ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getTotalSkipped(),
-                                    ds.getRequestTime())
+                            String.format("Test-Suite: %s, Pass: %s, Fail: [%s], Time: %s ms",
+                                    ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getRequestTime())
                             , AnsiColor.DEFAULT)
             );
         } else {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.GREEN,
-                            String.format("Test-Suite: %s, Pass: [%s], Fail: %s, Skip: %s, Time: %s ms",
-                                    ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getTotalSkipped(),
-                                    ds.getRequestTime())
+                            String.format("Test-Suite: %s, Pass: [%s], Fail: %s, Time: %s ms",
+                                    ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getRequestTime())
                             , AnsiColor.DEFAULT)
             );
         }

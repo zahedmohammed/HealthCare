@@ -43,7 +43,7 @@ public class RunTaskResponseProcessor {
         if ("SUITE".equals(task.getResult())) {
             runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
             runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + task.getTotalTests());
-            runTask.setFailedTests(runTask.getFailedTests() + task.getTotalFailed());
+            //runTask.setFailedTests(runTask.getFailedTests() + task.getTotalFailed());
             runTask.setSkippedTests(runTask.getSkippedTests() + task.getTotalSkipped());
 
             runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
@@ -77,7 +77,7 @@ public class RunTaskResponseProcessor {
 
         ds.setTotalPassed(task.getTotalPassed());
         ds.setTotalFailed(task.getTotalFailed());
-        ds.setTotalSkipped(task.getTotalSkipped());
+        //ds.setTotalSkipped(task.getTotalSkipped());
 
         ds.setStatus(task.getResult());
 

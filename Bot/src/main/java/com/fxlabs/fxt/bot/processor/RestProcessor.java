@@ -52,7 +52,7 @@ public class RestProcessor {
         completeTask.setProjectDataSetId(task.getProjectDataSetId());
         completeTask.setRequestStartTime(new Date());
         AtomicLong totalFailed = new AtomicLong(0L);
-        AtomicLong totalSkipped = new AtomicLong(0L);
+        //AtomicLong totalSkipped = new AtomicLong(0L);
         AtomicLong totalPassed = new AtomicLong(0L);
         AssertionLogger logs = new AssertionLogger();
 
@@ -119,11 +119,8 @@ public class RestProcessor {
                     totalPassed.incrementAndGet();
                     break;
                 case "fail":
-                    totalFailed.incrementAndGet();
-                    break;
-                case "skip":
                 default:
-                    totalSkipped.incrementAndGet();
+                    totalFailed.incrementAndGet();
                     break;
             }
 
@@ -135,7 +132,7 @@ public class RestProcessor {
         // send test suite complete
 
         completeTask.setTotalFailed(totalFailed.get());
-        completeTask.setTotalSkipped(totalSkipped.get());
+        //completeTask.setTotalSkipped(totalSkipped.get());
         completeTask.setTotalPassed(totalPassed.get());
         completeTask.setTotalTests((long) task.getRequest().size());
 
