@@ -18,8 +18,53 @@ public class ValidatorDelegate {
     protected Validator equalsValidator;
 
     @Autowired
+    @Qualifier("equalsIgnoreCaseValidator")
+    protected Validator equalsIgnoreCaseValidator;
+
+    @Autowired
     @Qualifier("notEqualsValidator")
     protected Validator notEqualsValidator;
+
+    @Autowired
+    @Qualifier("greaterAndEqualsValidator")
+    protected Validator greaterAndEqualsValidator;
+
+    @Autowired
+    @Qualifier("greaterValidator")
+    protected Validator greaterValidator;
+
+    @Autowired
+    @Qualifier("lesserAndEqualsValidator")
+    protected Validator lesserAndEqualsValidator;
+
+    @Autowired
+    @Qualifier("lesserValidator")
+    protected Validator lesserValidator;
+
+    @Autowired
+    @Qualifier("regexValidator")
+    protected Validator regexValidator;
+
+    @Autowired
+    @Qualifier("notRegexValidator")
+    protected Validator notRegexValidator;
+
+    @Autowired
+    @Qualifier("startsWithValidator")
+    protected Validator startsWithValidator;
+
+    @Autowired
+    @Qualifier("startsWithIgnoreCaseValidator")
+    protected Validator startsWithIgnoreCaseValidator;
+
+    @Autowired
+    @Qualifier("endsWithValidator")
+    protected Validator endsWithValidator;
+
+    @Autowired
+    @Qualifier("endsWithIgnoreCaseValidator")
+    protected Validator endsWithIgnoreCaseValidator;
+
 
     @Autowired
     protected OperandEvaluator evaluator;
@@ -43,8 +88,41 @@ public class ValidatorDelegate {
                 case "==":
                     equalsValidator.validate(operand1, operand2, context, assertion);
                     break;
+                case "==IgnoreCase":
+                    equalsIgnoreCaseValidator.validate(operand1, operand2, context, assertion);
+                    break;
                 case "!=":
                     notEqualsValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case ">":
+                    greaterValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case ">=":
+                    greaterAndEqualsValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case "<":
+                    lesserValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case "<=":
+                    lesserAndEqualsValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case "=~":
+                    regexValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case "!=~":
+                    notRegexValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case "startsWith":
+                    startsWithValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case "startsWithIgnoreCase":
+                    startsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case "endsWith":
+                    endsWithValidator.validate(operand1, operand2, context, assertion);
+                    break;
+                case "endsWithIgnoreCase":
+                    endsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion);
                     break;
                 default:
                     skipAssertion(context, assertion);
