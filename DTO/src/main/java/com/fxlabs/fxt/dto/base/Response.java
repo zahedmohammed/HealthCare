@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dto.base;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class Response<D> implements Serializable {
     private String requestId = "None";
     private Date requestTime = new Date();
     private boolean errors = false;
-    private List<Message> messages;
+    private List<Message> messages = new ArrayList<>();
     private D data;
     private Integer totalPages = 1;
     private Long totalElements = 1L;
@@ -32,18 +33,16 @@ public class Response<D> implements Serializable {
         this.totalElements = totalElements;
     }
 
+    public Response withErrors(boolean errors) {
+        this.setErrors(errors);
+        return this;
+    }
+
+    public Response withMessage(Message message) {
+        this.getMessages().add(message);
+        return this;
+    }
+
 
 }
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class Message implements Serializable {
-    private MessageType type;
-    private String key;
-    private String value;
-}
-
-enum MessageType {
-    INFO, ERROR
-}
