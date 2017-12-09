@@ -36,6 +36,7 @@ public class TestSuite extends BaseEntity<String> {
     private List<String> headers;
 
     @ElementCollection
+    @Lob
     private List<String> request;
 
     @ElementCollection

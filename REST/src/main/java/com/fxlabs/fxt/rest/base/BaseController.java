@@ -48,13 +48,13 @@ public abstract class BaseController<D, ID extends Serializable> {
     }
 
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
-    public Response<List<D>> create(@Valid @RequestBody List<D> dto) {
-        return service.save(dto);
+    public Response<List<D>> create(@Valid @RequestBody List<D> dtos) {
+        return service.save(dtos);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response<D> create(@Valid @RequestBody D dtos) {
-        return service.save(dtos);
+    public Response<D> create(@Valid @RequestBody D dto) {
+        return service.save(dto);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)

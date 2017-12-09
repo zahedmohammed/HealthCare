@@ -165,17 +165,6 @@ public class FxCommandService {
             AtomicInteger totalFiles = new AtomicInteger(0);
             files.parallelStream().forEach(file -> {
 
-                if (!StringUtils.endsWithIgnoreCase(file.getName(), ".yml")) {
-                    System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
-                            String.format("%s [Skipped]", file.getName()),
-                            AnsiColor.DEFAULT));
-                    return;
-                }
-
-                /*System.out.print(AnsiOutput.toString(AnsiColor.WHITE,
-                        String.format("%s\r", file.getName()),
-                        AnsiColor.DEFAULT));*/
-
                 TestSuite testSuite = null;
                 try {
                     testSuite = yamlMapper.readValue(file, TestSuite.class);
@@ -191,7 +180,12 @@ public class FxCommandService {
                 }
 
                 testSuite.setProject(proj);
-                dataSetRestRepository.save(testSuite);
+                try {
+                    dataSetRestRepository.save(testSuite);
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage());
+                    System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                }
 
                 System.out.println(AnsiOutput.toString(AnsiColor.WHITE,
                         String.format("%s [OK]", file.getName()),
