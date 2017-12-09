@@ -45,7 +45,7 @@ public class TestSuite extends BaseEntity<String> {
     private List<String> tags;
 
     @ElementCollection
-    private List<String> developers;
+    private List<String> authors;
 
     @ElementCollection
     private List<String> after;

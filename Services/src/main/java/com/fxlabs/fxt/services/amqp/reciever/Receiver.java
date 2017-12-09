@@ -1,13 +1,11 @@
 package com.fxlabs.fxt.services.amqp.reciever;
 
 import com.fxlabs.fxt.dto.run.BotTask;
-import com.fxlabs.fxt.services.processors.RunTaskResponseProcessor;
+import com.fxlabs.fxt.services.processors.receiver.RunTaskResponseProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.CountDownLatch;
 
 @Component
 public class Receiver {
@@ -18,8 +16,7 @@ public class Receiver {
     RunTaskResponseProcessor processor;
 
     public void receiveMessage(BotTask task) {
-        //System.out.println("Received <" + task.getId() + ">");
-        logger.info("Task [{}]", task.getId());
+        logger.info("Received Task [{}]", task.getId());
         processor.process(task);
     }
 

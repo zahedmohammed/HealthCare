@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.services.processors;
+package com.fxlabs.fxt.services.processors.receiver;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;

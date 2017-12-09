@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.services.processors;
+package com.fxlabs.fxt.services.processors.send;
 
 import com.fxlabs.fxt.dao.entity.project.Auth;
 import com.fxlabs.fxt.dao.entity.project.Environment;
