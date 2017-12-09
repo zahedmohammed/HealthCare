@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellOption;
 
 @ShellComponent
 public class FxCommands {
@@ -15,7 +16,7 @@ public class FxCommands {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    FxCommandService service;
+    private FxCommandService service;
 
     /*@ShellMethod(key = "fx load", value = "Loads project files into Fx server")
     public void load() {
@@ -35,7 +36,7 @@ public class FxCommands {
     }*/
 
     @ShellMethod(key = "run", value = "Loads data and executes tests")
-    public void jobRun(String projectDir) {
+    public void jobRun(@ShellOption(defaultValue = "") String projectDir) {
         service.loadAndRun(projectDir);
     }
 

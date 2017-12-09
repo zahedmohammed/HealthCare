@@ -217,6 +217,10 @@ public class FxCommandService {
     public void loadAndRun(String projectDir) {
         Date start = new Date();
         //System.out.println("loading data...");
+        if (StringUtils.isEmpty(projectDir)) {
+            File file = new File(".");
+            projectDir = file.getAbsolutePath();
+        }
         String jobId = load(projectDir);
         Date loadEnd = new Date();
         //System.out.println("running job...");
