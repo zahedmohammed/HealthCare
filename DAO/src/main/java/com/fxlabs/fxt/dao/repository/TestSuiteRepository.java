@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.repository;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
@@ -9,7 +10,9 @@ import java.util.stream.Stream;
 
 public interface TestSuiteRepository extends JpaRepository<TestSuite, String> {
 
-    Stream<TestSuite> findByProjectId(String projectId);
+    Stream<TestSuite> findByProjectIdAndType(String projectId, TestSuiteType type);
 
-    Long countByProjectId(String projectId);
+    Long countByProjectIdAndType(String projectId, TestSuiteType type);
+
+    TestSuite findByProjectIdAndTypeAndName(String projectId, TestSuiteType type, String name);
 }

@@ -1,11 +1,13 @@
 package com.fxlabs.fxt.dto.run;
 
+import com.fxlabs.fxt.dto.project.HttpMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class BotTask implements Serializable {
     private String id;
     private String projectDataSetId;
     private String endpoint;
-    private String method;
+    private HttpMethod method;
 
     private String authType;
     private String username;
@@ -44,5 +46,8 @@ public class BotTask implements Serializable {
     private Long totalFailed = 0L;
     private Long totalSkipped = 0L;
     private Long totalTests = 0L;
+
+
+    private List<BotTask> after = new ArrayList<>();
 
 }

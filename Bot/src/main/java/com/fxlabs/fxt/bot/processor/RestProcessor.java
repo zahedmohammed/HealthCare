@@ -31,18 +31,23 @@ public class RestProcessor {
     private Sender sender;
     //private ValidateProcessor validatorProcessor;
     private AssertionValidator assertionValidator;
+    private RestTemplateUtil restTemplateUtil;
+    private AfterProcessor afterProcessor;
 
     @Autowired
-    RestProcessor(Sender sender, AssertionValidator assertionValidator) {
+    RestProcessor(Sender sender, AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
+                  AfterProcessor afterProcessor) {
         this.sender = sender;
         this.assertionValidator = assertionValidator;
+        this.restTemplateUtil = restTemplateUtil;
+        this.afterProcessor = afterProcessor;
     }
 
-    AtomicInteger i = new AtomicInteger(1);
+    //AtomicInteger i = new AtomicInteger(1);
 
     public void process(BotTask task) {
 
-        logger.info("{}", i.incrementAndGet());
+        //logger.info("{}", i.incrementAndGet());
         if (task == null || task.getId() == null || task.getEndpoint() == null) {
             return;
         }
@@ -59,62 +64,49 @@ public class RestProcessor {
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
         // execute request
-        RestTemplate restTemplate = new RestTemplate();
+        //RestTemplate restTemplate = new RestTemplate();
         String url = task.getEndpoint();
-        HttpMethod method = HttpMethod.POST;
+        HttpMethod method = HttpMethodConverter.convert(task.getMethod());
         HttpHeaders httpHeaders = new HttpHeaders();
 
         httpHeaders.set("Content-Type", "application/json");
         httpHeaders.set("Accept", "application/json");
 
-        copyHeaders(httpHeaders, task.getHeaders());
+        HeaderUtils.copyHeaders(httpHeaders, task.getHeaders());
 
 
         if (StringUtils.isNotEmpty(task.getAuthType())) {
-            httpHeaders.set("Authorization", createBasicAuth(task.getUsername(), task.getPassword()));
+            httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
         }
 
         logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
 
         task.getRequest().parallelStream().forEach(req -> {
 
-            BotTask newTask = new BotTask();
-            newTask.setId(task.getId());
-            newTask.setRequestStartTime(new Date());
+            //BotTask newTask = new BotTask();
+            //newTask.setId(task.getId());
+            //newTask.setRequestStartTime(new Date());
 
             //logger.info("Request: [{}]", req);
             HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
 
-            ResponseEntity<String> response = null;
-            int statusCode = -1;
-            String responseBody = null;
-            HttpHeaders headers = null;
-            try {
-                response = restTemplate.exchange(url, method, request, String.class);
-                statusCode = response.getStatusCodeValue();
-                responseBody = response.getBody();
-                headers = response.getHeaders();
-            } catch (HttpStatusCodeException statusCodeException) {
-                statusCode = statusCodeException.getRawStatusCode();
-            } catch (Exception e) {
-                logger.warn(e.getLocalizedMessage());
-                response = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            newTask.setRequestEndTime(new Date());
-            newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());
+            ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
+
+            //newTask.setRequestEndTime(new Date());
+            //newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());
 
             // validate assertions
 
-            AssertionContext context = new AssertionContext(req, responseBody, String.valueOf(statusCode), headers, logs);
+            AssertionContext context = new AssertionContext(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), logs);
             assertionValidator.validate(task.getAssertions(), context);
 
             //validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
 
             //newTask.setLogs(context.getLogs().toString());
-            newTask.setResult(context.getResult());
+            //newTask.setResult(context.getResult());
 
             //logger.info("Result: [{}]", newTask.getResult());
-            switch (newTask.getResult()) {
+            switch (context.getResult()) {
                 case "pass":
                     totalPassed.incrementAndGet();
                     break;
@@ -122,6 +114,14 @@ public class RestProcessor {
                 default:
                     totalFailed.incrementAndGet();
                     break;
+            }
+
+            logger.info("After {}", task.getAfter());
+            // TODO - execute after
+            if (task.getAfter() != null) {
+                task.getAfter().stream().forEach(t -> {
+                    afterProcessor.process(t, context);
+                });
             }
 
 
@@ -143,25 +143,6 @@ public class RestProcessor {
         completeTask.setResult("SUITE");
 
         sender.sendTask(completeTask);
-
-
-    }
-
-    private void copyHeaders(HttpHeaders httpHeaders, List<String> headers) {
-        for (String header : headers) {
-            String[] tokens = StringUtils.split(header, ":");
-            if (ArrayUtils.isNotEmpty(tokens) && tokens.length == 2) {
-                httpHeaders.set(tokens[0].trim(), tokens[1].trim());
-            }
-        }
-    }
-
-    private String createBasicAuth(String username, String password) {
-        String auth = username + ":" + password;
-        byte[] encodedAuth = Base64.encodeBase64(
-                auth.getBytes(Charset.forName("US-ASCII")));
-        String authHeader = "Basic " + new String(encodedAuth);
-        return authHeader;
 
     }
 

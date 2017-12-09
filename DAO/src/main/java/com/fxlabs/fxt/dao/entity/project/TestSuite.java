@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 
 //@SolrDocument(collection = "fx")
@@ -25,19 +22,41 @@ public class TestSuite extends BaseEntity<String> {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private TestSuiteType type;
+
     private String endpoint;
-    private String method;
+
+    @Enumerated(EnumType.STRING)
+    private HttpMethod method;
+
     private String auth;
+
     @ElementCollection
     private List<String> headers;
+
     @ElementCollection
     private List<String> request;
+
     @ElementCollection
     private List<String> assertions;
+
     @ElementCollection
     private List<String> tags;
+
     @ElementCollection
     private List<String> developers;
+
+    @ElementCollection
+    private List<String> after;
+
+    @PrePersist
+    @PreUpdate
+    public void setDefaults() {
+        if (type == null) {
+            this.type = TestSuiteType.SUITE;
+        }
+    }
 
 }
 

@@ -18,14 +18,16 @@ public class TestSuite extends BaseDto<String> {
 
     private NameDto project;
     private String name;
+    private TestSuiteType type;
     private String endpoint;
-    private String method;
+    private HttpMethod method;
     private String auth;
     private List<String> headers;
     private List<String> request;
     private List<String> assertions;
     private List<String> tags;
     private List<String> developers;
+    private List<String> after;
 
 }
 
