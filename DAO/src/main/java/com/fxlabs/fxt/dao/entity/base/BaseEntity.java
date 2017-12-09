@@ -48,7 +48,6 @@ public class BaseEntity<U> implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
 
-
     @Version
     private Long version;
 

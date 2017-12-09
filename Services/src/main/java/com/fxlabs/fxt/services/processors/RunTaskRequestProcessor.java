@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import com.fxlabs.fxt.dao.entity.run.Run;
+import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.project.HttpMethod;
@@ -45,11 +46,11 @@ public class RunTaskRequestProcessor {
     public void process() {
 
         //logger.info("started...");
-        List<com.fxlabs.fxt.dao.entity.run.Run> runs = runRepository.findByStatus("WAITING");
+        List<com.fxlabs.fxt.dao.entity.run.Run> runs = runRepository.findByStatus(TaskStatus.WAITING);
 
         runs.parallelStream().forEach(run -> {
 
-            run.getTask().setStatus("PROCESSING");
+            run.getTask().setStatus(TaskStatus.PROCESSING);
             runRepository.save(run);
 
             Environment env = findEvn(run);

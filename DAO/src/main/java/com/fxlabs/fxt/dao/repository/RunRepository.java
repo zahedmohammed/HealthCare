@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.repository;
 
 import com.fxlabs.fxt.dao.entity.run.Run;
+import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,7 @@ public interface RunRepository extends JpaRepository<Run, String> {
     Long findMaxRunId(String id);
 
     @Query("SELECT r FROM Run r WHERE r.task.status LIKE ?1")
-    List<Run> findByStatus(String status);
+    List<Run> findByStatus(TaskStatus status);
 
 
 }

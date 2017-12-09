@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.project.Job;
 import com.fxlabs.fxt.dto.project.TestSuite;
+import com.fxlabs.fxt.dto.run.TaskStatus;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
@@ -63,7 +64,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         // Create Task
         RunTask task = new RunTask();
         task.setName(new Date().toString());
-        task.setStatus("WAITING");
+        task.setStatus(TaskStatus.WAITING);
         task.setStartTime(new Date());
 
         // TODO - find total tests

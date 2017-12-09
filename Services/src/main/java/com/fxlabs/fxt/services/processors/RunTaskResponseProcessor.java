@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.processors;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
 import com.fxlabs.fxt.dao.repository.TestSuiteResponseRepository;
 import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
@@ -53,7 +54,7 @@ public class RunTaskResponseProcessor {
         }
         // is complete?
         if (runTask.getTotalSuiteCompleted() >= runTask.getTotalTests()) {
-            runTask.setStatus("Completed!");
+            runTask.setStatus(TaskStatus.COMPLETED);
             runTask.setEndTime(new Date());
         }
 

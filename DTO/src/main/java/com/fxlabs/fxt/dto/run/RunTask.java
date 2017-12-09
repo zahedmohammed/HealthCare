@@ -17,7 +17,7 @@ public class RunTask {
     private String name;
     private String description;
 
-    private String status;
+    private TaskStatus status;
     private Date startTime;
     private Date endTime;
 

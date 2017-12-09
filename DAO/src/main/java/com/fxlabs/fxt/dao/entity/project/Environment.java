@@ -21,8 +21,8 @@ public class Environment extends BaseEntity<String> {
     private String name;
     private String description;
 
-
     private String baseUrl;
+
     @ElementCollection
     private List<Auth> auths;
 

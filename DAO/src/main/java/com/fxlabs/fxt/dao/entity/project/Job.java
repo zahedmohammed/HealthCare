@@ -17,7 +17,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Job extends BaseEntity<String> {
 
-
     private String name;
     private String description;
 

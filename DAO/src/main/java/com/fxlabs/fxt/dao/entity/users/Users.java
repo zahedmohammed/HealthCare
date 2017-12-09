@@ -22,14 +22,17 @@ public class Users extends BaseEntity<String> {
 
 
     private String name;
+
     @NotNull(message = "Username is required.")
-    @NotBlank(message="Email is required.")
-    @Size(max=64)
+    @NotBlank(message = "Email is required.")
+    @Size(max = 64)
     private String username;
-    @NotNull(message="Email is required.")
-    @NotBlank(message="Email is required.")
+
+    @NotNull(message = "Email is required.")
+    @NotBlank(message = "Email is required.")
     @Email(message = "Email is not a valid format")
     private String email;
+
     private String company;
     private String location;
     private String jobTitle;
