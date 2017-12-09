@@ -48,7 +48,7 @@ public class DataResolver {
             response = StringUtils.replace(data, "{{" + key + "}}", val);
         }
 
-        logger.info("Data [{}] response [{}]", data, response);
+        logger.debug("Data [{}] response [{}]", data, response);
         return response;
 
     }

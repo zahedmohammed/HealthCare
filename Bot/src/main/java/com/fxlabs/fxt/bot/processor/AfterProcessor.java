@@ -45,7 +45,7 @@ public class AfterProcessor {
         if (task == null || task.getEndpoint() == null) {
             return;
         }
-        logger.info("Executing after task [{}]", task.getEndpoint());
+        logger.debug("Executing after task [{}]", task.getEndpoint());
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
         // TODO - Data Injection
@@ -65,7 +65,7 @@ public class AfterProcessor {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
         }
 
-        logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
+        logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
 
         if (CollectionUtils.isEmpty(task.getRequest())) {
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);

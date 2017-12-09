@@ -55,7 +55,7 @@ public class RunTaskRequestProcessor {
 
             Environment env = findEvn(run);
 
-            AtomicInteger i = new AtomicInteger(1);
+            //AtomicInteger i = new AtomicInteger(1);
 
 
             logger.info("Sending task to region [{}]...", run.getJob().getRegion());
@@ -64,7 +64,7 @@ public class RunTaskRequestProcessor {
 
             //for (TestSuite ds : list) {
             list.forEach(ds -> {
-                logger.info("Request {}", i.incrementAndGet());
+                //logger.info("Request {}", i.incrementAndGet());
 
                 BotTask task = new BotTask();
                 task.setId(run.getId());
@@ -177,6 +177,11 @@ public class RunTaskRequestProcessor {
             logger.info("Processing after suite [{}]", suite);
 
             TestSuite suite1 = projectDataSetRepository.findByProjectIdAndTypeAndName(run.getJob().getProject().getId(), TestSuiteType.ABSTRACT, suite);
+
+            if (suite1 == null) {
+                logger.warn("No suite found for project [{}] with suite-name [{}]", run.getJob().getProject().getId(), suite);
+                continue;
+            }
 
             logger.info("Suite id [{}]", suite1.getId());
 

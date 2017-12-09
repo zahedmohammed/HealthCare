@@ -116,7 +116,7 @@ public class RestProcessor {
                     break;
             }
 
-            logger.info("After {}", task.getAfter());
+            logger.debug("After {}", task.getAfter());
             // TODO - execute after
             if (task.getAfter() != null) {
                 task.getAfter().stream().forEach(t -> {

@@ -11,6 +11,8 @@ import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,7 +178,7 @@ public class FxCommandService {
                 logger.info("ds : [{}]", testSuite.toString());
 
                 if (StringUtils.isEmpty(testSuite.getName())) {
-                    testSuite.setName(file.getName());
+                    testSuite.setName(FilenameUtils.getBaseName(file.getName()));
                 }
 
                 testSuite.setProject(proj);
