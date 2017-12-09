@@ -36,7 +36,6 @@ public class DataResolver {
         // check all occurrence
         while (matcher.find()) {
             String value = matcher.group(1);
-            logger.info("Found dependency pattern [{}]", value);
             patterns.add(value);
         }
 
