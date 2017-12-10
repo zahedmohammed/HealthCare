@@ -280,9 +280,7 @@ public class FxCommandService {
 
         System.out.println(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
-                        String.format("Test-Suite Load Time: %s ms \nJob Time: %s ms \nTotal Time: %s ms",
-                                (new Date().getTime() - start.getTime()),
-                                (loadEnd.getTime() - start.getTime()),
+                        String.format("Total Time: %s ms",
                                 (new Date().getTime() - loadEnd.getTime()))
                         , AnsiColor.DEFAULT)
         );
@@ -390,9 +388,19 @@ public class FxCommandService {
                 AnsiColor.DEFAULT));
         System.out.print(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
-                        String.format("Run Id: %s \nStatus: %s \nTotal Test-Suites: %s \nTotal Test: %s \nTotal Failed: %s \nProcessing Time: %s ms%s",
-                                run.getId(), run.getTask().getStatus(), run.getTask().getTotalTests(), run.getTask().getTotalTestCompleted(),
-                                run.getTask().getFailedTests(), run.getTask().getTotalTime(), carriageReturn)
+                        String.format("Run Id: %s " +
+                                        "\nStatus: %s " +
+                                        "\nTotal Test-Suites: %s " +
+                                        "\nTotal Test: %s " +
+                                        "\nTotal Failed: %s " +
+                                        "\nProcessing Time: %s ms%s",
+                                run.getId(),
+                                run.getTask().getStatus(),
+                                run.getTask().getTotalTests(),
+                                run.getTask().getTotalTestCompleted(),
+                                run.getTask().getFailedTests(),
+                                run.getTask().getTotalTime(),
+                                carriageReturn)
                         , AnsiColor.DEFAULT)
         );
     }
