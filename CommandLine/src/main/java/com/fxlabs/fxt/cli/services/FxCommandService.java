@@ -61,7 +61,7 @@ public class FxCommandService {
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
-            logger.info("loading project.yml...");
+            System.out.println("loading project.yml...");
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
@@ -72,9 +72,10 @@ public class FxCommandService {
             Date lastSync = null;
             Project project = getProject(config);
             if (project == null) {
-                logger.info("Project [{}] doesn't exists", config.getName());
+                System.out.println(String.format("Project [%s] doesn't exists", config.getName()));
                 project = createProject(config);
             } else {
+                System.out.println(String.format("Project [%s] exists and last-synced on [%s]", config.getName(), project.getLastSync()));
                 lastSync = project.getLastSync();
             }
             //System.out.println(project);
