@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -17,6 +18,8 @@ public class Project extends BaseDto<String> {
 
     private String name;
     private String description;
+
+    private Date lastSync;
 
     private List<String> licenses;
 

@@ -30,7 +30,7 @@ public abstract class BaseController<D, ID extends Serializable> {
 
     public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
 
-    private GenericService<D, ID> service;
+    protected GenericService<D, ID> service;
 
     protected BaseController(GenericService<D, ID> service) {
         this.service = service;

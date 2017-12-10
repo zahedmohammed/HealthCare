@@ -17,6 +17,8 @@ public interface BaseConverter<E, D> {
     @InheritInverseConfiguration
     D convertToDto(E entity);
 
+    D copyToDto(D dto);
+
     List<E> convertToEntities(List<D> dtos);
 
     List<D> convertToDtos(List<E> entities);

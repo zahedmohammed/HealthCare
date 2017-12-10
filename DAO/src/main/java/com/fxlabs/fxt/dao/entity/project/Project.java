@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 //@SolrDocument(collection = "fx")
@@ -18,9 +19,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Project extends BaseEntity<String> {
 
-
     private String name;
     private String description;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastSync;
 
     @ElementCollection
     private List<String> licenses;
@@ -30,7 +33,6 @@ public class Project extends BaseEntity<String> {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Job> jobs;
-
 
     @PrePersist
     @PreUpdate
@@ -47,7 +49,6 @@ public class Project extends BaseEntity<String> {
             }
         }
     }
-
 
 }
 

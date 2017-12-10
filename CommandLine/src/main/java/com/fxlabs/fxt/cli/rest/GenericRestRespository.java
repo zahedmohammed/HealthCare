@@ -81,6 +81,18 @@ public class GenericRestRespository<T> {
 
     }
 
+    public T update(T t) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<T> request = new HttpEntity<>(t, this.httpHeaders);
+
+        ResponseEntity<Response<T>> response = restTemplate.exchange(url, HttpMethod.PUT, request, reference);
+
+        //logger.info(response.getBody());
+        return response.getBody().getData();
+
+    }
+
     public List<T> saveAll(List<T> t) {
         RestTemplate restTemplate = new RestTemplate();
 

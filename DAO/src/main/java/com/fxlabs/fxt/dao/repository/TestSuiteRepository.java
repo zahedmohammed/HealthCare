@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface TestSuiteRepository extends JpaRepository<TestSuite, String> {
@@ -15,4 +16,6 @@ public interface TestSuiteRepository extends JpaRepository<TestSuite, String> {
     Long countByProjectIdAndType(String projectId, TestSuiteType type);
 
     TestSuite findByProjectIdAndTypeAndName(String projectId, TestSuiteType type, String name);
+
+    Optional<TestSuite> findByProjectIdAndName(String projectId, String name);
 }

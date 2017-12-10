@@ -35,5 +35,17 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
 
     }
 
+    public Project findByName(String id) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<Response<Project>> response = restTemplate.exchange(url + "/name/" + id, HttpMethod.GET, request, paramTypeRefMap.get(Project.class));
+
+        //logger.info(response.getBody());
+        return response.getBody().getData();
+
+    }
+
 
 }
