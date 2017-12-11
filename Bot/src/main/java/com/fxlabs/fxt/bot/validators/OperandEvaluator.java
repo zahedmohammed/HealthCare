@@ -13,42 +13,46 @@ public class OperandEvaluator {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     public String evaluate(String key, AssertionContext context) {
-        String[] tokens = StringUtils.split(key, ".", 2);
-        final String KEY = tokens[0];
-        String PATH = "$..*";
-        if (tokens.length == 2) {
-            PATH = "$." + tokens[1];
-        }
-
         String val = "";
-        switch (KEY) {
-            case "NULL":
-            case "null":
-            case "EMPTY":
-            case "empty":
-                val = "";
-                break;
+        try {
+            String[] tokens = StringUtils.split(key, ".", 2);
+            final String KEY = tokens[0];
+            String PATH = "$..*";
+            if (tokens.length == 2) {
+                PATH = "$." + tokens[1];
+            }
 
-            case "@StatusCode":
-                val = context.getStatusCode();
-                break;
+            switch (KEY) {
+                case "NULL":
+                case "null":
+                case "EMPTY":
+                case "empty":
+                    val = "";
+                    break;
 
-            // TODO
-            //case "@Headers":
+                case "@StatusCode":
+                    val = context.getStatusCode();
+                    break;
 
-            case "@Request":
-                Object objRequest = JsonPath.read(context.getRequest(), PATH);
-                val = objRequest.toString();
-                break;
+                // TODO
+                //case "@Headers":
 
-            case "@Response":
-                Object objResponse = JsonPath.read(context.getResponse(), PATH);
-                val = objResponse.toString();
-                break;
+                case "@Request":
+                    Object objRequest = JsonPath.read(context.getRequest(), PATH);
+                    val = objRequest.toString();
+                    break;
 
-            default:
-                val = key;
+                case "@Response":
+                    Object objResponse = JsonPath.read(context.getResponse(), PATH);
+                    val = objResponse.toString();
+                    break;
 
+                default:
+                    val = key;
+
+            }
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage());
         }
         return val;
     }
