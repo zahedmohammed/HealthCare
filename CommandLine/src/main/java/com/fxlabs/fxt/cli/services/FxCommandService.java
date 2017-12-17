@@ -231,6 +231,10 @@ public class FxCommandService {
                 testSuite = yamlMapper.readValue(file, TestSuite.class);
             } catch (IOException e) {
                 logger.warn(e.getLocalizedMessage());
+                System.out.println(AnsiOutput.toString(AnsiColor.RED,
+                        String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()),
+                        AnsiColor.DEFAULT));
+                return;
             }
             //logger.info("ds size: [{}]", values.length);
 

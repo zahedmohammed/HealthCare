@@ -16,7 +16,7 @@ public class AssertionValidator {
     @Autowired
     protected ValidatorDelegate delegate;
 
-    public void validate(List<String> assertions, AssertionContext context) {
+    public void validate(List<String> assertions, Context context) {
         assertions.parallelStream().forEach(assertion -> {
             delegate.validate(assertion, context);
         });

@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.converters.project.PoliciesConverter;
 import com.fxlabs.fxt.dao.entity.project.Auth;
 import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
@@ -33,13 +34,15 @@ public class RunTaskRequestProcessor {
     private BotClientService botClientService;
     private TestSuiteRepository projectDataSetRepository;
     private RunRepository runRepository;
+    private PoliciesConverter policiesConverter;
 
     @Autowired
     public RunTaskRequestProcessor(BotClientService botClientService, TestSuiteRepository projectDataSetRepository,
-                                   RunRepository runRepository) {
+                                   RunRepository runRepository, PoliciesConverter policiesConverter) {
         this.botClientService = botClientService;
         this.projectDataSetRepository = projectDataSetRepository;
         this.runRepository = runRepository;
+        this.policiesConverter = policiesConverter;
     }
 
     @Scheduled(fixedDelay = 5000)
@@ -63,27 +66,30 @@ public class RunTaskRequestProcessor {
             Stream<TestSuite> list = projectDataSetRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE);
 
             //for (TestSuite ds : list) {
-            list.forEach(ds -> {
+            list.forEach(testSuite -> {
                 //logger.info("Request {}", i.incrementAndGet());
 
                 BotTask task = new BotTask();
                 task.setId(run.getId());
-                task.setProjectDataSetId(ds.getId());
+                task.setProjectDataSetId(testSuite.getId());
 
-                task.setMethod(convert(ds.getMethod()));
+                task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
 
-                copyHeaders(task, ds);
+                task.setMethod(convert(testSuite.getMethod()));
 
-                copyRequests(task, ds);
+                copyHeaders(task, testSuite);
 
-                copyAuth(run, env, task, ds);
+                copyRequests(task, testSuite);
 
-                copyAssertions(task, ds);
+                copyAuth(run, env, task, testSuite);
 
-                task.setEndpoint(env.getBaseUrl() + ds.getEndpoint());
+                copyAssertions(task, testSuite);
 
-                // after
-                copyAfter(ds.getAfter(), task, run, env);
+                task.setEndpoint(env.getBaseUrl() + testSuite.getEndpoint());
+
+                // init & cleanup copy
+                copy(testSuite.getInit(), task.getInit(), run, env);
+                copy(testSuite.getCleanup(), task.getCleanup(), run, env);
 
                 botClientService.sendTask(task, run.getJob().getRegion());
 
@@ -168,7 +174,7 @@ public class RunTaskRequestProcessor {
     }
 
 
-    private void copyAfter(List<String> after, BotTask task, Run run, Environment env) {
+    private void copy(List<String> after, List<BotTask> tasks, Run run, Environment env) {
         if (CollectionUtils.isEmpty(after) || after.isEmpty()) {
             return;
         }
@@ -186,6 +192,7 @@ public class RunTaskRequestProcessor {
             logger.info("Suite id [{}]", suite1.getId());
 
             BotTask afterTask = new BotTask();
+            afterTask.setSuiteName(suite1.getName());
             afterTask.setMethod(convert(suite1.getMethod()));
 
             copyHeaders(afterTask, suite1);
@@ -198,7 +205,7 @@ public class RunTaskRequestProcessor {
 
             afterTask.setEndpoint(env.getBaseUrl() + suite1.getEndpoint());
 
-            task.getAfter().add(afterTask);
+            tasks.add(afterTask);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.bot.validators;
 
-import com.fxlabs.fxt.bot.assertions.AssertionContext;
+import com.fxlabs.fxt.bot.assertions.Context;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +69,7 @@ public class ValidatorDelegate {
     @Autowired
     protected OperandEvaluator evaluator;
 
-    public void validate(String assertion, AssertionContext context) {
+    public void validate(String assertion, Context context) {
         //logger.info("Validating assertion [{}]", assertion);
         String[] tokens = StringUtils.split(assertion, " ");
 
@@ -80,9 +80,9 @@ public class ValidatorDelegate {
         }
 
         try {
-            final String operand1 = evaluator.evaluate(tokens[0], context);
+            final String operand1 = evaluator.evaluate(tokens[0], context, StringUtils.EMPTY);
             final String OPERATOR = tokens[1];
-            final String operand2 = evaluator.evaluate(tokens[2], context);
+            final String operand2 = evaluator.evaluate(tokens[2], context, StringUtils.EMPTY);
 
             switch (OPERATOR) {
                 case "==":
@@ -133,7 +133,7 @@ public class ValidatorDelegate {
         }
     }
 
-    protected void skipAssertion(AssertionContext context, String assertion) {
+    protected void skipAssertion(Context context, String assertion) {
         context.setResult("fail");
         logger.info("Invalid assertion [{}]", assertion);
         context.getLogs().append(String.format("Invalid assertion [%s]", assertion));

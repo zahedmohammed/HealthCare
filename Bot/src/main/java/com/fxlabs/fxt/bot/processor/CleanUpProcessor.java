@@ -1,9 +1,7 @@
 package com.fxlabs.fxt.bot.processor;
 
 
-import com.fxlabs.fxt.bot.amqp.Sender;
-import com.fxlabs.fxt.bot.assertions.AssertionContext;
-import com.fxlabs.fxt.bot.assertions.AssertionLogger;
+import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.validators.OperandEvaluator;
 import com.fxlabs.fxt.dto.run.BotTask;
@@ -14,15 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Component
-public class AfterProcessor {
+public class CleanUpProcessor {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -32,15 +26,15 @@ public class AfterProcessor {
     private DataResolver dataResolver;
 
     @Autowired
-    public AfterProcessor(AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
-                          OperandEvaluator operandEvaluator, DataResolver dataResolver) {
+    public CleanUpProcessor(AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
+                            OperandEvaluator operandEvaluator, DataResolver dataResolver) {
         this.assertionValidator = assertionValidator;
         this.restTemplateUtil = restTemplateUtil;
         this.operandEvaluator = operandEvaluator;
         this.dataResolver = dataResolver;
     }
 
-    public void process(BotTask task, AssertionContext context) {
+    public void process(BotTask task, Context context, String parentSuite) {
 
         if (task == null || task.getEndpoint() == null) {
             return;
@@ -48,9 +42,8 @@ public class AfterProcessor {
         logger.debug("Executing after task [{}]", task.getEndpoint());
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
-        // TODO - Data Injection
-
-        String url = dataResolver.resolve(task.getEndpoint(), context);
+        // Data Injection
+        String url = dataResolver.resolve(task.getEndpoint(), context, parentSuite);
 
         HttpMethod method = HttpMethodConverter.convert(task.getMethod());
 
@@ -67,20 +60,22 @@ public class AfterProcessor {
 
         logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
 
+        AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getRequest())) {
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
             if (response != null && response.getStatusCodeValue() != 200) {
                 context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
             }
+        } else {
+            // TODO - Support request array
+            task.getRequest().parallelStream().forEach(req -> {
+                // Data Injection (req)
+                req = dataResolver.resolve(req, context, parentSuite);
+                ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
+                context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
+            });
+
         }
-
-        task.getRequest().parallelStream().forEach(req -> {
-            // TODO - Data Injection (req)
-            req = dataResolver.resolve(req, context);
-            ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
-            context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
-        });
-
     }
 
 }

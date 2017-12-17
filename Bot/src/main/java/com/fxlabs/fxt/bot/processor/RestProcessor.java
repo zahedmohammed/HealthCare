@@ -2,25 +2,19 @@ package com.fxlabs.fxt.bot.processor;
 
 
 import com.fxlabs.fxt.bot.amqp.Sender;
-import com.fxlabs.fxt.bot.assertions.AssertionContext;
+import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.dto.run.BotTask;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.util.CollectionUtils;
 
-import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
@@ -32,15 +26,17 @@ public class RestProcessor {
     //private ValidateProcessor validatorProcessor;
     private AssertionValidator assertionValidator;
     private RestTemplateUtil restTemplateUtil;
-    private AfterProcessor afterProcessor;
+    private InitProcessor initProcessor;
+    private CleanUpProcessor cleanUpProcessor;
 
     @Autowired
     RestProcessor(Sender sender, AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
-                  AfterProcessor afterProcessor) {
+                  InitProcessor initProcessor, CleanUpProcessor cleanUpProcessor) {
         this.sender = sender;
         this.assertionValidator = assertionValidator;
         this.restTemplateUtil = restTemplateUtil;
-        this.afterProcessor = afterProcessor;
+        this.initProcessor = initProcessor;
+        this.cleanUpProcessor = cleanUpProcessor;
     }
 
     //AtomicInteger i = new AtomicInteger(1);
@@ -60,6 +56,17 @@ public class RestProcessor {
         //AtomicLong totalSkipped = new AtomicLong(0L);
         AtomicLong totalPassed = new AtomicLong(0L);
         AssertionLogger logs = new AssertionLogger();
+        Context context = new Context(logs);
+
+
+        // execute init
+        if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Suite")) {
+            if (task.getInit() != null) {
+                task.getInit().stream().forEach(t -> {
+                    initProcessor.process(t, context);
+                });
+            }
+        }
 
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
@@ -83,6 +90,17 @@ public class RestProcessor {
 
         task.getRequest().parallelStream().forEach(req -> {
 
+            logger.debug("Init {}", task.getCleanup());
+            // execute init
+            if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getInitExec())
+                    || StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Request")) {
+                if (task.getInit() != null) {
+                    task.getInit().stream().forEach(t -> {
+                        initProcessor.process(t, context);
+                    });
+                }
+            }
+
             //BotTask newTask = new BotTask();
             //newTask.setId(task.getId());
             //newTask.setRequestStartTime(new Date());
@@ -97,7 +115,8 @@ public class RestProcessor {
 
             // validate assertions
 
-            AssertionContext context = new AssertionContext(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), logs);
+            context.withSuiteData(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+
             assertionValidator.validate(task.getAssertions(), context);
 
             //validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
@@ -116,18 +135,45 @@ public class RestProcessor {
                     break;
             }
 
-            logger.debug("After {}", task.getAfter());
-            // TODO - execute after
-            if (task.getAfter() != null) {
-                task.getAfter().stream().forEach(t -> {
-                    afterProcessor.process(t, context);
-                });
+            logger.debug("Cleanup {}", task.getCleanup());
+            // execute after
+            if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getCleanupExec())
+                    || StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Request")) {
+                if (task.getCleanup() != null) {
+                    task.getCleanup().stream().forEach(t -> {
+                        cleanUpProcessor.process(t, context, StringUtils.EMPTY);
+                    });
+                }
             }
 
+            // clean-up init tasks
+            if (!CollectionUtils.isEmpty(context.getInitTasks())) {
+                context.getInitTasks().stream().forEach(initTask -> {
+                    initTask.getInit().stream().forEach(t -> {
+                        cleanUpProcessor.process(t, context, t.getSuiteName());
+                    });
+                });
+            }
 
             // return processed task
             //sender.sendTask(newTask);
         });
+
+        if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Suite")) {
+            if (task.getCleanup() != null) {
+                task.getCleanup().stream().forEach(t -> {
+                    cleanUpProcessor.process(t, context, StringUtils.EMPTY);
+                });
+            }
+        }
+
+        if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Suite")) {
+            context.getInitTasks().stream().forEach(initTask -> {
+                initTask.getInit().stream().forEach(t -> {
+                    cleanUpProcessor.process(t, context, t.getSuiteName());
+                });
+            });
+        }
 
         // send test suite complete
 

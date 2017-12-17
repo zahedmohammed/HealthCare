@@ -49,7 +49,13 @@ public class TestSuite extends BaseEntity<String> {
     private List<String> authors;
 
     @ElementCollection
-    private List<String> after;
+    private List<String> init;
+
+    @ElementCollection
+    private List<String> cleanup;
+
+    @Embedded
+    private Policies policies;
 
     @PrePersist
     @PreUpdate

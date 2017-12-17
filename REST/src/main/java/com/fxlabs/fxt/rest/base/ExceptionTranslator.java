@@ -22,7 +22,7 @@ public class ExceptionTranslator {
             Object retVal = pjp.proceed();
             return retVal;
         } catch (Exception e) {
-            logger.warn(e.getLocalizedMessage());
+            logger.warn(e.getLocalizedMessage(), e);
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", e.getLocalizedMessage()));
         }
     }

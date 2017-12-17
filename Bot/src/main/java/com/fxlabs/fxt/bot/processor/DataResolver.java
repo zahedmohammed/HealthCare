@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.bot.processor;
 
-import com.fxlabs.fxt.bot.assertions.AssertionContext;
+import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.validators.OperandEvaluator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class DataResolver {
     }
 
 
-    public String resolve(String data, AssertionContext context) {
+    public String resolve(String data, Context context, String suite) {
         String response = null;
         Pattern pattern = Pattern.compile(PATTERN);
         Matcher matcher = pattern.matcher(data);
@@ -44,11 +44,11 @@ public class DataResolver {
         }
 
         for (String key : patterns) {
-            String val = evaluator.evaluate(key, context);
+            String val = evaluator.evaluate(key, context, suite);
             response = StringUtils.replace(data, "{{" + key + "}}", val);
         }
 
-        logger.debug("Data [{}] response [{}]", data, response);
+        logger.debug("Data [{}] response [{}] suite [{}]", data, response, suite);
         return response;
 
     }

@@ -1,13 +1,13 @@
 package com.fxlabs.fxt.bot.validators;
 
-import com.fxlabs.fxt.bot.assertions.AssertionContext;
+import com.fxlabs.fxt.bot.assertions.Context;
 import org.springframework.stereotype.Component;
 
 @Component("notRegexValidator")
 public class NotRegexValidator extends Validator {
 
     @Override
-    public void validate(String operand1, String operand2, AssertionContext context, String assertion) {
+    public void validate(String operand1, String operand2, Context context, String assertion) {
         if (!operand1.matches(operand2)) {
             context.setResult("pass");
         } else {

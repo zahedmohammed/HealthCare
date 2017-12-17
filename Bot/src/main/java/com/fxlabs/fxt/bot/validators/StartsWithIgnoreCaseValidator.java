@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.bot.validators;
 
-import com.fxlabs.fxt.bot.assertions.AssertionContext;
+import com.fxlabs.fxt.bot.assertions.Context;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class StartsWithIgnoreCaseValidator extends Validator {
 
     @Override
-    public void validate(String operand1, String operand2, AssertionContext context, String assertion) {
+    public void validate(String operand1, String operand2, Context context, String assertion) {
         if (StringUtils.startsWithIgnoreCase(operand1, operand2)) {
             context.setResult("pass");
         } else {

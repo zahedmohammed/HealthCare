@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.bot.validators;
 
-import com.fxlabs.fxt.bot.assertions.AssertionContext;
+import com.fxlabs.fxt.bot.assertions.Context;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ public class OperandEvaluator {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public String evaluate(String key, AssertionContext context) {
+    public String evaluate(String key, Context context, String suite) {
         String val = "";
         try {
             String[] tokens = StringUtils.split(key, ".", 2);
@@ -37,18 +37,27 @@ public class OperandEvaluator {
                 // TODO
                 //case "@Headers":
 
+                case "@Suite_Request":
                 case "@Request":
-                    Object objRequest = JsonPath.read(context.getRequest(), PATH);
+                    Object objRequest = JsonPath.read(context.getRequest(suite), PATH);
                     val = objRequest.toString();
                     break;
 
+                case "@Suite_Response":
                 case "@Response":
-                    Object objResponse = JsonPath.read(context.getResponse(), PATH);
+                    Object objResponse = JsonPath.read(context.getResponse(suite), PATH);
                     val = objResponse.toString();
                     break;
 
                 default:
-                    val = key;
+                    if (StringUtils.endsWithIgnoreCase(KEY, "_Request") || StringUtils.endsWithIgnoreCase(KEY, "_Response")) {
+                        Object initData = JsonPath.read(context.get(KEY), PATH);
+                        if (initData != null) {
+                            val = initData.toString();
+                        }
+                    } else {
+                        val = key;
+                    }
 
             }
         } catch (Exception e) {

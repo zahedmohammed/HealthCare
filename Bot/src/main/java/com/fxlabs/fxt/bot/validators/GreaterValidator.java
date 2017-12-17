@@ -1,14 +1,13 @@
 package com.fxlabs.fxt.bot.validators;
 
-import com.fxlabs.fxt.bot.assertions.AssertionContext;
-import org.apache.commons.lang3.StringUtils;
+import com.fxlabs.fxt.bot.assertions.Context;
 import org.springframework.stereotype.Component;
 
 @Component("greaterValidator")
 public class GreaterValidator extends Validator {
 
     @Override
-    public void validate(String operand1, String operand2, AssertionContext context, String assertion) {
+    public void validate(String operand1, String operand2, Context context, String assertion) {
         try {
             Double op1 = Double.parseDouble(operand1);
             Double op2 = Double.parseDouble(operand2);
