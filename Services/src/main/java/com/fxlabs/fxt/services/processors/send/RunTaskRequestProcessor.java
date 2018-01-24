@@ -71,6 +71,7 @@ public class RunTaskRequestProcessor {
 
                 BotTask task = new BotTask();
                 task.setId(run.getId());
+                task.setSuiteName(testSuite.getName());
                 task.setProjectDataSetId(testSuite.getId());
 
                 task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));

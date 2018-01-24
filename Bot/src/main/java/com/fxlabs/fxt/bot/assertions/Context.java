@@ -28,15 +28,13 @@ public class Context implements Serializable {
     // status - pass or fail
     private String result = "";
 
-    public Context(AssertionLogger logs) {
-        this.logs = logs;
+    private Context parent;
+
+    public Context(Context parent) {
+        this.parent = parent;
     }
 
-    public Context(String request, String response, String statusCode, HttpHeaders headers, AssertionLogger logs) {
-        this.request = request;
-        this.response = response;
-        this.statusCode = statusCode;
-        this.headers = headers;
+    public Context(AssertionLogger logs) {
         this.logs = logs;
     }
 
@@ -45,16 +43,28 @@ public class Context implements Serializable {
         this.response = response;
         this.statusCode = statusCode;
         this.headers = headers;
+        if (parent != null) {
+            this.parent.request = request;
+            this.parent.response = response;
+            this.parent.statusCode = statusCode;
+            this.parent.headers = headers;
+        }
         return this;
     }
 
     public Context withRequest(String name, String request) {
         this.data.put(name, request);
+        if (parent != null) {
+            parent.withRequest(name, request);
+        }
         return this;
     }
 
     public Context withResponse(String name, String request) {
         this.data.put(name, response);
+        if (parent != null) {
+            parent.withResponse(name, request);
+        }
         return this;
     }
 
@@ -91,10 +101,16 @@ public class Context implements Serializable {
     }
 
     public AssertionLogger getLogs() {
+        if (parent != null) {
+            return parent.logs;
+        }
         return logs;
     }
 
     public String getResult() {
+        if (parent != null) {
+            return this.parent.result;
+        }
         return result;
     }
 
@@ -107,12 +123,23 @@ public class Context implements Serializable {
     }
 
     public void setResult(String result) {
-        if (StringUtils.equalsIgnoreCase(this.result, "fail")
-                || StringUtils.equalsIgnoreCase(this.result, "skip")
-                || StringUtils.isEmpty(result)) {
+        if (parent != null) {
+            if (StringUtils.equalsIgnoreCase(this.parent.result, "fail")
+                    || StringUtils.equalsIgnoreCase(this.parent.result, "skip")
+                    || StringUtils.isEmpty(result)) {
 
-        } else {
-            this.result = result;
+            } else {
+                this.parent.result = result;
+            }
+        }
+        else {
+            if (StringUtils.equalsIgnoreCase(this.result, "fail")
+                    || StringUtils.equalsIgnoreCase(this.result, "skip")
+                    || StringUtils.isEmpty(result)) {
+
+            } else {
+                this.result = result;
+            }
         }
     }
 }

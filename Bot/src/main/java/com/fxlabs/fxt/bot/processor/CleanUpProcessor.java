@@ -58,11 +58,12 @@ public class CleanUpProcessor {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
         }
 
-        logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
+        logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}]", task.getSuiteName(), task.getRequest().size(), task.getAuthType(), url);
 
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getRequest())) {
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
+            logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getRequest().size(), task.getAuthType(), url, response.getStatusCode());
             if (response != null && response.getStatusCodeValue() != 200) {
                 context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
             }

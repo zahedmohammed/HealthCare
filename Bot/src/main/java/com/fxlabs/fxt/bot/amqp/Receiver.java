@@ -17,7 +17,7 @@ public class Receiver {
 
     public void receiveMessage(BotTask task) {
         //System.out.println("Received <" + task.getId() + ">");
-        logger.info("Task [{}]", task.getId());
+        logger.info("Task id [{}] name [{}]", task.getId(), task.getSuiteName());
 
         restProcessor.process(task);
     }
