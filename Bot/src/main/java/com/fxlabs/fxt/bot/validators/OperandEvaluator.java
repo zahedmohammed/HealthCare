@@ -18,9 +18,24 @@ public class OperandEvaluator {
             String[] tokens = StringUtils.split(key, ".", 2);
             final String KEY = tokens[0];
             String PATH = "$..*";
-            if (tokens.length == 2) {
+            String PIPE = "";
+
+            if (tokens.length == 2 && !StringUtils.equalsIgnoreCase(KEY, "@Headers")) {
                 PATH = "$." + tokens[1];
             }
+
+            if (tokens.length == 2 && StringUtils.equalsIgnoreCase(KEY, "@Headers")) {
+                PATH = tokens[1];
+            }
+
+            if (StringUtils.contains(PATH, "|")) {
+                String[] pipeTokens = StringUtils.split(PATH, "|");
+                PATH = StringUtils.trim(pipeTokens[0]);
+                if (pipeTokens.length == 2) {
+                    PIPE = StringUtils.trim(pipeTokens[1]);
+                }
+            }
+
 
             switch (KEY) {
                 case "NULL":
@@ -35,7 +50,10 @@ public class OperandEvaluator {
                     break;
 
                 // TODO
-                //case "@Headers":
+                case "@Headers":
+                    val = context.getHeaders().get(PATH).get(0);
+                    logger.info("Header [{}]", val);
+                    break;
 
                 case "@Suite_Request":
                 case "@Request":
@@ -60,9 +78,40 @@ public class OperandEvaluator {
                     }
 
             }
+
+            if (StringUtils.isNotEmpty(PIPE)) {
+                val = evaluatePipe(PIPE, val);
+            }
+
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage());
         }
+
+
+        return val;
+    }
+
+    /*
+     *  http://localhost:8090/example/v1/hotels/14
+      *  {{@Headers.Location | substringAfterLast /}}
+     */
+    private String evaluatePipe(String pipe, String text) {
+        String val = text;
+        if (StringUtils.isEmpty(pipe)) {
+            return val;
+        }
+
+        String[] seed = StringUtils.split(pipe);
+
+        String KEY = StringUtils.trim(seed[0]);
+
+
+        switch (KEY) {
+            case "substringAfterLast":
+                val = StringUtils.substringAfterLast(text, StringUtils.trim(seed[1]));
+                break;
+        }
+
         return val;
     }
 }
