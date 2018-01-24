@@ -63,6 +63,7 @@ public class CleanUpProcessor {
 
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getRequest())) {
+            logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
             logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getRequest().size(), task.getAuthType(), url, response.getStatusCode());
             context.withSuiteData(null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
@@ -78,6 +79,7 @@ public class CleanUpProcessor {
             task.getRequest().parallelStream().forEach(req -> {
                 // Data Injection (req)
                 req = dataResolver.resolve(req, context, parentSuite);
+                logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
                 context.withSuiteData(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
                 assertionValidator.validate(task.getAssertions(), context);

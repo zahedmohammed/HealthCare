@@ -14,6 +14,7 @@ public class Context implements Serializable {
 
     // init & cleanup
     private Map<String, String> data = new HashMap<>();
+    private Map<String, HttpHeaders> headerData = new HashMap<>();
 
     // suite
     private String request;
@@ -68,6 +69,14 @@ public class Context implements Serializable {
         return this;
     }
 
+    public Context withHeaders(String name, HttpHeaders headers) {
+        this.headerData.put(name, headers);
+        if (parent != null) {
+            parent.withHeaders(name, headers);
+        }
+        return this;
+    }
+
     public Context withTask(BotTask task) {
         // add clean-up tasks to Stack
         if (task != null) {
@@ -96,8 +105,12 @@ public class Context implements Serializable {
         return statusCode;
     }
 
-    public HttpHeaders getHeaders() {
-        return headers;
+    public HttpHeaders getHeaders(String suite) {
+        if (StringUtils.isEmpty(suite)) {
+            return headers;
+        } else {
+            return this.headerData.get(suite + "_Header");
+        }
     }
 
     public AssertionLogger getLogs() {
@@ -131,8 +144,7 @@ public class Context implements Serializable {
             } else {
                 this.parent.result = result;
             }
-        }
-        else {
+        } else {
             if (StringUtils.equalsIgnoreCase(this.result, "fail")
                     || StringUtils.equalsIgnoreCase(this.result, "skip")
                     || StringUtils.isEmpty(result)) {

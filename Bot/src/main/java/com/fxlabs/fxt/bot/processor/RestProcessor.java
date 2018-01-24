@@ -30,15 +30,17 @@ public class RestProcessor {
     private RestTemplateUtil restTemplateUtil;
     private InitProcessor initProcessor;
     private CleanUpProcessor cleanUpProcessor;
+    private DataResolver dataResolver;
 
     @Autowired
     RestProcessor(Sender sender, AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
-                  InitProcessor initProcessor, CleanUpProcessor cleanUpProcessor) {
+                  InitProcessor initProcessor, CleanUpProcessor cleanUpProcessor, DataResolver dataResolver) {
         this.sender = sender;
         this.assertionValidator = assertionValidator;
         this.restTemplateUtil = restTemplateUtil;
         this.initProcessor = initProcessor;
         this.cleanUpProcessor = cleanUpProcessor;
+        this.dataResolver = dataResolver;
     }
 
     //AtomicInteger i = new AtomicInteger(1);
@@ -76,7 +78,7 @@ public class RestProcessor {
 
         // execute request
         //RestTemplate restTemplate = new RestTemplate();
-        String url = task.getEndpoint();
+        //String url = task.getEndpoint();
         HttpMethod method = HttpMethodConverter.convert(task.getMethod());
         HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -120,6 +122,7 @@ public class RestProcessor {
             //logger.info("Request: [{}]", req);
             HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
 
+            String url = dataResolver.resolve(task.getEndpoint(), parentContext, task.getSuiteName());
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
 
             //newTask.setRequestEndTime(new Date());

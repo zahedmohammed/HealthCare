@@ -16,7 +16,7 @@ public class OperandEvaluator {
         String val = "";
         try {
             String[] tokens = StringUtils.split(key, ".", 2);
-            final String KEY = tokens[0];
+            String KEY = tokens[0];
             String PATH = "$..*";
             String PIPE = "";
 
@@ -36,6 +36,13 @@ public class OperandEvaluator {
                 }
             }
 
+            // Locate suite
+            String suiteName = "";
+            if (StringUtils.contains(KEY, "_")) {
+                suiteName = StringUtils.substringBeforeLast(KEY, "_");
+                suiteName = StringUtils.substringAfter(suiteName, "@");
+                KEY = "@" + StringUtils.substringAfterLast(KEY, "_");
+            }
 
             switch (KEY) {
                 case "NULL":
@@ -50,20 +57,21 @@ public class OperandEvaluator {
                     break;
 
                 // TODO
+                case "@Suite_Headers":
                 case "@Headers":
-                    val = context.getHeaders().get(PATH).get(0);
+                    val = context.getHeaders(suiteName).get(PATH).get(0);
                     logger.info("Header [{}]", val);
                     break;
 
                 case "@Suite_Request":
                 case "@Request":
-                    Object objRequest = JsonPath.read(context.getRequest(suite), PATH);
+                    Object objRequest = JsonPath.read(context.getRequest(suiteName), PATH);
                     val = objRequest.toString();
                     break;
 
                 case "@Suite_Response":
                 case "@Response":
-                    Object objResponse = JsonPath.read(context.getResponse(suite), PATH);
+                    Object objResponse = JsonPath.read(context.getResponse(suiteName), PATH);
                     val = objResponse.toString();
                     break;
 

@@ -64,17 +64,25 @@ public class InitProcessor {
 
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getRequest())) {
+            logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
-            if (response != null && response.getStatusCodeValue() != 200) {
+
+            Context initContext = new Context(context);
+            initContext.withSuiteData(null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+            assertionValidator.validate(task.getAssertions(), initContext);
+
+            /*if (response != null && response.getStatusCodeValue() != 200) {
                 context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
-            }
+            }*/
 
             context.withRequest(task.getSuiteName() + "_Request", null)
                     .withResponse(task.getSuiteName() + "_Response", response.getBody())
+                    .withHeaders(task.getSuiteName() + "_Header", response.getHeaders())
                     .withTask(task);
 
             context.withRequest(task.getSuiteName() + "_Request[0]", null)
                     .withResponse(task.getSuiteName() + "_Response[0]", response.getBody())
+                    .withHeaders(task.getSuiteName() + "_Header[0]", response.getHeaders())
                     .withTask(task);
         } else {
             // TODO - Support request array
@@ -82,17 +90,25 @@ public class InitProcessor {
             task.getRequest().parallelStream().forEach(req -> {
                 // Data Injection (req)
                 req = dataResolver.resolve(req, context, task.getSuiteName());
+                logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
-                context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
+
+                Context initContext = new Context(context);
+                initContext.withSuiteData(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+                assertionValidator.validate(task.getAssertions(), initContext);
+
+                //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
 
                 if (isOneReq) {
                     context.withRequest(task.getSuiteName() + "_Request", null)
                             .withResponse(task.getSuiteName() + "_Response", response.getBody())
+                            .withHeaders(task.getSuiteName() + "_Header", response.getHeaders())
                             .withTask(task);
                 }
 
                 context.withRequest(task.getSuiteName() + "_Request[" + idx.getAndIncrement() + "]", req)
                         .withResponse(task.getSuiteName() + "_Response[" + idx.getAndIncrement() + "]", response.getBody())
+                        .withHeaders(task.getSuiteName() + "_Header[" + idx.getAndIncrement() + "]", response.getHeaders())
                         .withTask(task);
 
             });
