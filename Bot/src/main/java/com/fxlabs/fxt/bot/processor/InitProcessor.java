@@ -77,12 +77,12 @@ public class InitProcessor {
 
             context.withRequest(task.getSuiteName() + "_Request", null)
                     .withResponse(task.getSuiteName() + "_Response", response.getBody())
-                    .withHeaders(task.getSuiteName() + "_Header", response.getHeaders())
+                    .withHeaders(task.getSuiteName() + "_Headers", response.getHeaders())
                     .withTask(task);
 
             context.withRequest(task.getSuiteName() + "_Request[0]", null)
                     .withResponse(task.getSuiteName() + "_Response[0]", response.getBody())
-                    .withHeaders(task.getSuiteName() + "_Header[0]", response.getHeaders())
+                    .withHeaders(task.getSuiteName() + "_Headers[0]", response.getHeaders())
                     .withTask(task);
         } else {
             // TODO - Support request array
@@ -99,16 +99,16 @@ public class InitProcessor {
 
                 //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
 
-                if (isOneReq) {
-                    context.withRequest(task.getSuiteName() + "_Request", null)
-                            .withResponse(task.getSuiteName() + "_Response", response.getBody())
-                            .withHeaders(task.getSuiteName() + "_Header", response.getHeaders())
-                            .withTask(task);
-                }
+                //if (isOneReq) {
+                context.withRequest(task.getSuiteName() + "_Request", req)
+                        .withResponse(task.getSuiteName() + "_Response", response.getBody())
+                        .withHeaders(task.getSuiteName() + "_Headers", response.getHeaders())
+                        .withTask(task);
+                //}
 
                 context.withRequest(task.getSuiteName() + "_Request[" + idx.getAndIncrement() + "]", req)
                         .withResponse(task.getSuiteName() + "_Response[" + idx.getAndIncrement() + "]", response.getBody())
-                        .withHeaders(task.getSuiteName() + "_Header[" + idx.getAndIncrement() + "]", response.getHeaders())
+                        .withHeaders(task.getSuiteName() + "_Headers[" + idx.getAndIncrement() + "]", response.getHeaders())
                         .withTask(task);
 
             });

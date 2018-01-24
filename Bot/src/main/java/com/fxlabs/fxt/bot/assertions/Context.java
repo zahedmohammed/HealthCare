@@ -109,7 +109,7 @@ public class Context implements Serializable {
         if (StringUtils.isEmpty(suite)) {
             return headers;
         } else {
-            return this.headerData.get(suite + "_Header");
+            return this.headerData.get(suite + "_Headers");
         }
     }
 

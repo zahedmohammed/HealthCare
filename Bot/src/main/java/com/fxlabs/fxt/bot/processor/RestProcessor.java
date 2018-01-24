@@ -122,6 +122,8 @@ public class RestProcessor {
             //logger.info("Request: [{}]", req);
             HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
 
+            String endpoint = task.getEndpoint();
+            req =  dataResolver.resolve(req, parentContext, task.getSuiteName());
             String url = dataResolver.resolve(task.getEndpoint(), parentContext, task.getSuiteName());
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
 

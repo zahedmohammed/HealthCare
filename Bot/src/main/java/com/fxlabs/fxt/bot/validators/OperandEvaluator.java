@@ -17,14 +17,14 @@ public class OperandEvaluator {
         try {
             String[] tokens = StringUtils.split(key, ".", 2);
             String KEY = tokens[0];
-            String PATH = "$..*";
+            String PATH = null;//"$..*";
             String PIPE = "";
 
-            if (tokens.length == 2 && !StringUtils.equalsIgnoreCase(KEY, "@Headers")) {
+            if (tokens.length == 2 && !StringUtils.containsIgnoreCase(KEY, "Headers")) {
                 PATH = "$." + tokens[1];
             }
 
-            if (tokens.length == 2 && StringUtils.equalsIgnoreCase(KEY, "@Headers")) {
+            if (tokens.length == 2 && StringUtils.containsIgnoreCase(KEY, "Headers")) {
                 PATH = tokens[1];
             }
 
@@ -65,14 +65,22 @@ public class OperandEvaluator {
 
                 case "@Suite_Request":
                 case "@Request":
-                    Object objRequest = JsonPath.read(context.getRequest(suiteName), PATH);
-                    val = objRequest.toString();
+                    if (StringUtils.isEmpty(PATH)) {
+                        val = context.getRequest(suiteName);
+                    } else {
+                        Object objRequest = JsonPath.read(context.getRequest(suiteName), PATH);
+                        val = objRequest.toString();
+                    }
                     break;
 
                 case "@Suite_Response":
                 case "@Response":
-                    Object objResponse = JsonPath.read(context.getResponse(suiteName), PATH);
-                    val = objResponse.toString();
+                    if (StringUtils.isEmpty(PATH)) {
+                        val = context.getResponse(suiteName);
+                    } else {
+                        Object objResponse = JsonPath.read(context.getResponse(suiteName), PATH);
+                        val = objResponse.toString();
+                    }
                     break;
 
                 default:
