@@ -2,10 +2,14 @@ package com.fxlabs.fxt.bot.validators;
 
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.jayway.jsonpath.JsonPath;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class OperandEvaluator {
@@ -20,11 +24,9 @@ public class OperandEvaluator {
             String PATH = null;//"$..*";
             String PIPE = "";
 
-            if (tokens.length == 2 && !StringUtils.containsIgnoreCase(KEY, "Headers")) {
+            if (tokens.length == 2 && (StringUtils.containsIgnoreCase(KEY, "Request") || StringUtils.containsIgnoreCase(KEY, "Response"))) {
                 PATH = "$." + tokens[1];
-            }
-
-            if (tokens.length == 2 && StringUtils.containsIgnoreCase(KEY, "Headers")) {
+            } else if (tokens.length == 2) {
                 PATH = tokens[1];
             }
 
@@ -43,6 +45,8 @@ public class OperandEvaluator {
                 suiteName = StringUtils.substringAfter(suiteName, "@");
                 KEY = "@" + StringUtils.substringAfterLast(KEY, "_");
             }
+
+            int count = 6;
 
             switch (KEY) {
                 case "NULL":
@@ -82,6 +86,44 @@ public class OperandEvaluator {
                         val = objResponse.toString();
                     }
                     break;
+
+                case "@random":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        count = Integer.parseInt(PATH);
+                    }
+                    val = RandomStringUtils.random(count);
+                    break;
+                case "@randomAscii":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        count = Integer.parseInt(PATH);
+                    }
+                    val = RandomStringUtils.randomAscii(count);
+                    break;
+                case "@randomAlphabetic":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        count = Integer.parseInt(PATH);
+                    }
+                    val = RandomStringUtils.randomAlphabetic(count);
+                    break;
+                case "@randomAlphanumeric":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        count = Integer.parseInt(PATH);
+                    }
+                    val = RandomStringUtils.randomAlphanumeric(count);
+                    break;
+                case "@randomNumeric":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        count = Integer.parseInt(PATH);
+                    }
+                    val = RandomStringUtils.randomNumeric(count);
+                    break;
+                case "@Date":
+                    val = new Date().toString();
+                    break;
+                case "@randomUUID":
+                    val = UUID.randomUUID().toString();
+                    break;
+
 
                 default:
                     if (StringUtils.endsWithIgnoreCase(KEY, "_Request") || StringUtils.endsWithIgnoreCase(KEY, "_Response")) {
