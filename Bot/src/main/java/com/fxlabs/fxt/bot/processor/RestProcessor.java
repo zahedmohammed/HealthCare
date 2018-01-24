@@ -61,7 +61,12 @@ public class RestProcessor {
         //AtomicLong totalSkipped = new AtomicLong(0L);
         AtomicLong totalPassed = new AtomicLong(0L);
         AssertionLogger logs = new AssertionLogger();
-        Context parentContext = new Context(task.getSuiteName(), logs);
+
+        String logType = null;
+        if (task.getPolicies() != null) {
+            logType = task.getPolicies().getLogger();
+        }
+        Context parentContext = new Context(task.getSuiteName(), logs, logType);
 
 
         // execute init
@@ -123,7 +128,7 @@ public class RestProcessor {
             HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
 
             String endpoint = task.getEndpoint();
-            req =  dataResolver.resolve(req, parentContext, task.getSuiteName());
+            req = dataResolver.resolve(req, parentContext, task.getSuiteName());
             String url = dataResolver.resolve(task.getEndpoint(), parentContext, task.getSuiteName());
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
 
