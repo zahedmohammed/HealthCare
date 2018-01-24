@@ -61,11 +61,11 @@ public class FxCommandService {
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
-            System.out.println("loading project.yml...");
+            System.out.println("loading Fxfile...");
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
-            Config config = yamlMapper.readValue(new File(projectDir + "project.yml"), Config.class);
+            Config config = yamlMapper.readValue(new File(projectDir + "Fxfile"), Config.class);
 
             //System.out.println(config);
 
