@@ -108,6 +108,7 @@ public class OperandEvaluator {
     }
 
     /*
+     * TODO - Nested Pipes
      *  http://localhost:8090/example/v1/hotels/14
       *  {{@Headers.Location | substringAfterLast /}}
      */
@@ -123,9 +124,111 @@ public class OperandEvaluator {
 
 
         switch (KEY) {
+
+            case "trim":
+                val = StringUtils.trim(text);
+                break;
+            case "trimToNull":
+                val = StringUtils.trimToNull(text);
+                break;
+            case "trimToEmpty":
+                val = StringUtils.trimToEmpty(text);
+                break;
+            case "truncate":
+                val = StringUtils.truncate(text, Integer.parseInt(seed[1]));
+                break;
+            case "strip":
+                val = StringUtils.strip(text, seed[1]);
+                break;
+            case "indexOf":
+                val = StringUtils.indexOf(text, seed[1]) + "";
+                break;
+            case "indexOfIgnoreCase":
+                val = StringUtils.indexOfIgnoreCase(text, seed[1]) + "";
+                break;
+            case "lastIndexOf":
+                val = StringUtils.lastIndexOf(text, seed[1]) + "";
+                break;
+            case "left":
+                val = StringUtils.left(text, Integer.parseInt(seed[1]));
+                break;
+            case "right":
+                val = StringUtils.right(text, Integer.parseInt(seed[1]));
+                break;
+            case "substringBefore":
+                val = StringUtils.substringBefore(text, seed[1]);
+                break;
+            case "substringAfter":
+                val = StringUtils.substringAfter(text, StringUtils.trim(seed[1]));
+                break;
+            case "substringBeforeLast":
+                val = StringUtils.substringBeforeLast(text, StringUtils.trim(seed[1]));
+                break;
             case "substringAfterLast":
                 val = StringUtils.substringAfterLast(text, StringUtils.trim(seed[1]));
                 break;
+            case "substringBetween":
+                val = StringUtils.substringBetween(text, StringUtils.trim(seed[1]));
+                break;
+            case "removeStart":
+                val = StringUtils.removeStart(text, StringUtils.trim(seed[1]));
+                break;
+            case "removeStartIgnoreCase":
+                val = StringUtils.removeStartIgnoreCase(text, StringUtils.trim(seed[1]));
+                break;
+            case "removeEnd":
+                val = StringUtils.removeEnd(text, StringUtils.trim(seed[1]));
+                break;
+            case "removeEndIgnoreCase":
+                val = StringUtils.removeEndIgnoreCase(text, StringUtils.trim(seed[1]));
+                break;
+            case "remove":
+                val = StringUtils.remove(text, StringUtils.trim(seed[1]));
+                break;
+            case "removeIgnoreCase":
+                val = StringUtils.removeIgnoreCase(text, StringUtils.trim(seed[1]));
+                break;
+            case "removeAll":
+                val = StringUtils.removeAll(text, StringUtils.trim(seed[1]));
+                break;
+            case "removeFirst":
+                val = StringUtils.removeFirst(text, StringUtils.trim(seed[1]));
+                break;
+            case "removePattern":
+                val = StringUtils.removePattern(text, StringUtils.trim(seed[1]));
+                break;
+            case "chomp":
+                val = StringUtils.chomp(text);
+                break;
+            case "chop":
+                val = StringUtils.chop(text);
+                break;
+            case "repeat":
+                val = StringUtils.repeat(text, Integer.parseInt(seed[1]));
+                break;
+            case "rightPad":
+                val = StringUtils.rightPad(text, Integer.parseInt(seed[1]));
+                break;
+            case "leftPad":
+                val = StringUtils.leftPad(text, Integer.parseInt(seed[1]));
+                break;
+            case "upperCase":
+                val = StringUtils.upperCase(text);
+                break;
+            case "lowerCase":
+                val = StringUtils.lowerCase(text);
+                break;
+            case "capitalize":
+                val = StringUtils.capitalize(text);
+                break;
+            case "uncapitalize":
+                val = StringUtils.uncapitalize(text);
+                break;
+            case "reverse":
+                val = StringUtils.reverse(text);
+                break;
+
+
         }
 
         return val;
