@@ -202,7 +202,7 @@ public class RunTaskRequestProcessor {
 
             copyAuth(run, env, afterTask, suite1);
 
-            //copyAssertions(task, suite1);
+            copyAssertions(afterTask, suite1);
 
             afterTask.setEndpoint(env.getBaseUrl() + suite1.getEndpoint());
 

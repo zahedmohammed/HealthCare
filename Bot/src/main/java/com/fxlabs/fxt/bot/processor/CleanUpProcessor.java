@@ -34,7 +34,7 @@ public class CleanUpProcessor {
         this.dataResolver = dataResolver;
     }
 
-    public void process(BotTask task, Context context, String parentSuite) {
+    public void process(BotTask task, Context parentContext, String parentSuite) {
 
         if (task == null || task.getEndpoint() == null) {
             return;
@@ -42,8 +42,9 @@ public class CleanUpProcessor {
         logger.debug("Executing after task [{}]", task.getEndpoint());
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
+        Context context = new Context(parentContext);
         // Data Injection
-        String url = dataResolver.resolve(task.getEndpoint(), context, parentSuite);
+        String url = dataResolver.resolve(task.getEndpoint(), parentContext, parentSuite);
 
         HttpMethod method = HttpMethodConverter.convert(task.getMethod());
 
@@ -64,16 +65,23 @@ public class CleanUpProcessor {
         if (CollectionUtils.isEmpty(task.getRequest())) {
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
             logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getRequest().size(), task.getAuthType(), url, response.getStatusCode());
-            if (response != null && response.getStatusCodeValue() != 200) {
+            context.withSuiteData(null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+
+            assertionValidator.validate(task.getAssertions(), context);
+
+            /*if (response != null && response.getStatusCodeValue() != 200) {
                 context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
-            }
+            }*/
+
         } else {
             // TODO - Support request array
             task.getRequest().parallelStream().forEach(req -> {
                 // Data Injection (req)
                 req = dataResolver.resolve(req, context, parentSuite);
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
-                context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
+                context.withSuiteData(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+                assertionValidator.validate(task.getAssertions(), context);
+                //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
             });
 
         }
