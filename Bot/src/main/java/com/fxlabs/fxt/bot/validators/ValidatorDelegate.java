@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.bot.validators;
 
+import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.Context;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -136,6 +137,7 @@ public class ValidatorDelegate {
     protected void skipAssertion(Context context, String assertion) {
         context.setResult("fail");
         logger.info("Invalid assertion [{}]", assertion);
-        context.getLogs().append(String.format("Invalid assertion [%s]", assertion));
+        context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(),
+                String.format("Invalid assertion [%s]", assertion));
     }
 }

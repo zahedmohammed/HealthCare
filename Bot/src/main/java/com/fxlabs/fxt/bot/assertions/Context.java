@@ -12,6 +12,7 @@ import java.util.Stack;
 public class Context implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private String suitename;
     // init & cleanup
     private Map<String, String> data = new HashMap<>();
     private Map<String, HttpHeaders> headerData = new HashMap<>();
@@ -35,7 +36,8 @@ public class Context implements Serializable {
         this.parent = parent;
     }
 
-    public Context(AssertionLogger logs) {
+    public Context(String suitename, AssertionLogger logs) {
+        this.suitename = suitename;
         this.logs = logs;
     }
 
@@ -152,6 +154,14 @@ public class Context implements Serializable {
             } else {
                 this.result = result;
             }
+        }
+    }
+
+    public String getSuitename() {
+        if (parent != null) {
+            return this.parent.suitename;
+        } else {
+            return suitename;
         }
     }
 }

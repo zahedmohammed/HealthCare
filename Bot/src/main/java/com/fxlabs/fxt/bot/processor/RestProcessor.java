@@ -61,7 +61,7 @@ public class RestProcessor {
         //AtomicLong totalSkipped = new AtomicLong(0L);
         AtomicLong totalPassed = new AtomicLong(0L);
         AssertionLogger logs = new AssertionLogger();
-        Context parentContext = new Context(logs);
+        Context parentContext = new Context(task.getSuiteName(), logs);
 
 
         // execute init
