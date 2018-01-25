@@ -51,5 +51,8 @@ public class BaseEntity<U> implements Serializable {
     @Version
     private Long version;
 
+    private boolean deleted = false;
+
+
 }
 

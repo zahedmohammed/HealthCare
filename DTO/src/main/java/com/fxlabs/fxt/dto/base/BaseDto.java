@@ -25,4 +25,6 @@ public class BaseDto<U> {
     private Date modifiedDate;
 
     private Long version;
+
+    private boolean deleted;
 }

@@ -17,6 +17,7 @@ public class Environment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String name = "Default";
+    private String refId;
     private String baseUrl;
 
     private List<Auth> auths;

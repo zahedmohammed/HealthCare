@@ -53,7 +53,7 @@ public class FxCommandService {
 
     }
 
-    public String load(String projectDir) {
+    public String load(String projectDir, String jobName) {
         try {
             // read fx server details
 
@@ -87,18 +87,18 @@ public class FxCommandService {
 
             com.fxlabs.fxt.dto.project.Job job_ = null;
             for (Job job : project.getJobs()) {
-                if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(job.getName(), "Default")) {
+                if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(job.getName(), jobName)) {
                     job_ = job;
                     break;
                 }
             }
 
-            // create dataset
-            loadSuites(projectDir, yamlMapper, proj, lastSync);
-
-            project.setLastSync(new Date());
-            updateProject(project);
-
+            if (job_ == null) {
+                System.out.println(AnsiOutput.toString(AnsiColor.RED,
+                        "No job found with the name: " + jobName,
+                        AnsiColor.DEFAULT));
+                return null;
+            }
 
             logger.info("Successful!");
 
@@ -269,14 +269,14 @@ public class FxCommandService {
         logger.info("test-suites successfully uploaded...");
     }
 
-    public void loadAndRun(String projectDir) {
+    public void loadAndRun(String projectDir, String jobName) {
         Date start = new Date();
         //System.out.println("loading data...");
         if (StringUtils.isEmpty(projectDir)) {
             File file = new File(".");
             projectDir = file.getAbsolutePath();
         }
-        String jobId = load(projectDir);
+        String jobId = load(projectDir, jobName);
         Date loadEnd = new Date();
         //System.out.println("running job...");
         dataSets = new HashSet<>();

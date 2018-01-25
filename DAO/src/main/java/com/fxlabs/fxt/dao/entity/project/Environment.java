@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,6 +20,7 @@ public class Environment extends BaseEntity<String> {
 
 
     private String name;
+    private String refId;
     private String description;
 
     private String baseUrl;
@@ -30,5 +32,11 @@ public class Environment extends BaseEntity<String> {
     private Project project;
 
 
+    @PrePersist
+    public void preCreate() {
+        if (StringUtils.isEmpty(refId)) {
+            refId = name;
+        }
+    }
 }
 

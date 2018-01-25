@@ -16,6 +16,7 @@ public class Job implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String name = "Default";
+    private String refId;
     private String environment = "Default";
     private List<String> tags;
     private String region;

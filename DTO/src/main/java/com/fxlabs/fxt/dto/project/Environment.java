@@ -17,6 +17,7 @@ public class Environment extends BaseDto<String> {
 
     private NameDto project;
     private String name;
+    private String refId;
     private String description;
     private String baseUrl;
     private List<Auth> auths;

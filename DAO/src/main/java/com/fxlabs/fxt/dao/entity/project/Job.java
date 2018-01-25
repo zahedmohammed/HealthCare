@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class Job extends BaseEntity<String> {
 
     private String name;
+    private String refId;
     private String description;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -30,6 +32,13 @@ public class Job extends BaseEntity<String> {
     private List<String> tags;
 
     private String region;
+
+    @PrePersist
+    public void preCreate() {
+        if (StringUtils.isEmpty(refId)) {
+            refId = name;
+        }
+    }
 
 
 }

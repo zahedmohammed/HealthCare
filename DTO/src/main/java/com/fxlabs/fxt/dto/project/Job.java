@@ -18,6 +18,7 @@ public class Job extends BaseDto<String> {
     private NameDto project;
 
     private String name;
+    private String refId;
     private String description;
 
     private String environment;
