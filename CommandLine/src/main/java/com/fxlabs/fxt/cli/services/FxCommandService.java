@@ -100,6 +100,12 @@ public class FxCommandService {
                 return null;
             }
 
+            // create dataset
+            loadSuites(projectDir, yamlMapper, proj, lastSync);
+
+            project.setLastSync(new Date());
+            updateProject(project);
+
             logger.info("Successful!");
 
             //printJobs(jobs);
