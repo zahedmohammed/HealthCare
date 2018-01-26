@@ -150,7 +150,7 @@ public class RunTaskRequestProcessor {
     private void copyRequests(BotTask task, TestSuite ds) {
         // TODO - JPA lazy-load work-around
         List<String> requests = new ArrayList<>();
-        for (String request : ds.getRequest()) {
+        for (String request : ds.getRequests()) {
             requests.add(request);
         }
         task.setRequest(requests);

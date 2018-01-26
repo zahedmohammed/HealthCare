@@ -23,7 +23,7 @@ public class TestSuite extends BaseDto<String> {
     private HttpMethod method;
     private String auth;
     private List<String> headers;
-    private List<String> request;
+    private List<String> requests;
     private List<String> assertions;
     private List<String> tags;
     private List<String> authors;
