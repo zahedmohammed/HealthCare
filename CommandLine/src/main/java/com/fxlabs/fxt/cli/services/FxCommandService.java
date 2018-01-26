@@ -416,7 +416,9 @@ public class FxCommandService {
     }
 
     private void printFailedSuites(Set<TestSuiteResponse> dataSets) {
-        System.out.println("Error logs:");
+        System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                "\nExecution logs:",
+                AnsiColor.DEFAULT));
         dataSets.forEach(suite -> {
             if (!org.apache.commons.lang3.StringUtils.equalsIgnoreCase(suite.getStatus(), "pass") &&
                     !StringUtils.isEmpty(suite.getLogs())) {
@@ -428,7 +430,7 @@ public class FxCommandService {
 
     private void printErrorLogs(String logs) {
         System.out.println(
-                AnsiOutput.toString(AnsiColor.RED, logs, AnsiColor.DEFAULT)
+                AnsiOutput.toString(AnsiColor.DEFAULT, logs, AnsiColor.DEFAULT)
         );
     }
 
