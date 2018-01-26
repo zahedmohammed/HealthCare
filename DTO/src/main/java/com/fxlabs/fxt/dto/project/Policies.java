@@ -20,6 +20,7 @@ public class Policies implements Serializable {
     private String initExec = "Request"; // Request | Suite
     private String cleanupExec = "Request"; // Request | Suite
     private String logger = "ERROR"; // ERROR | DEBUG
+    private Long timeoutSeconds = 300L;
 
 }
 
