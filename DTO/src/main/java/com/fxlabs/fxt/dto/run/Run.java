@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +23,8 @@ public class Run extends BaseDto<String> {
 
     private RunTask task;
 
+    // override region, tags, env in reference Job entity.
+    private Map<String, String> attributes = new HashMap<>();
 
 }
 

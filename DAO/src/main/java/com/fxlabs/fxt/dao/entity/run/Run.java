@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 //@SolrDocument(collection = "fx")
 @Entity
@@ -17,7 +19,6 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = false)
 public class Run extends BaseEntity<String> {
 
-
     @ManyToOne
     private Job job;
 
@@ -25,6 +26,13 @@ public class Run extends BaseEntity<String> {
 
     @Embedded
     private RunTask task;
+
+    // override region, tags, env in reference Job entity.
+    @ElementCollection
+    @MapKeyColumn(name = "name")
+    @Column(name = "value")
+    @CollectionTable(name = "run_attributes", joinColumns = @JoinColumn(name = "run_id"))
+    private Map<String, String> attributes = new HashMap<>(); // maps from attribute name to value
 
 
 }

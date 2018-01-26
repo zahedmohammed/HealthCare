@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.cli;
 
 import com.fxlabs.fxt.cli.services.FxCommandService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,13 @@ public class FxCommands {
 
     @ShellMethod(key = "run", value = "Loads data and executes tests")
     public void jobRun(@ShellOption(defaultValue = "") String projectDir,
-                       @ShellOption(defaultValue = "Default") String jobName) {
-        service.loadAndRun(projectDir, jobName);
+                       @ShellOption(defaultValue = "Default") String jobName,
+                       @ShellOption(defaultValue = "") String region,
+                       @ShellOption(defaultValue = "") String tags,
+                       @ShellOption(defaultValue = "") String envName) {
+
+        service.loadAndRun(projectDir, jobName, region, tags, envName);
+
     }
 
     /*@ShellMethod(key = "run inspect", value = "Inspect Run")

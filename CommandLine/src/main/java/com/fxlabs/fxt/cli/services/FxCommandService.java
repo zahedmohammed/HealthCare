@@ -7,6 +7,7 @@ import com.fxlabs.fxt.cli.rest.*;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
+import com.fxlabs.fxt.dto.run.TaskStatus;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
@@ -275,7 +276,7 @@ public class FxCommandService {
         logger.info("test-suites successfully uploaded...");
     }
 
-    public void loadAndRun(String projectDir, String jobName) {
+    public void loadAndRun(String projectDir, String jobName, String region, String tags, String envName) {
         Date start = new Date();
         //System.out.println("loading data...");
         if (StringUtils.isEmpty(projectDir)) {
@@ -286,7 +287,7 @@ public class FxCommandService {
         Date loadEnd = new Date();
         //System.out.println("running job...");
         dataSets = new HashSet<>();
-        runJob(jobId);
+        runJob(jobId, region, tags, envName);
 
         System.out.println(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
@@ -321,8 +322,8 @@ public class FxCommandService {
     }
 
 
-    public void runJob(String jobId) {
-        Run run = runRestRepository.run(jobId);
+    public void runJob(String jobId, String region, String tags, String envName) {
+        Run run = runRestRepository.run(jobId, region, tags, envName);
         System.out.println("");
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 String.format("Running Job: %s Run: %s", jobId, run.getId()),
@@ -331,6 +332,7 @@ public class FxCommandService {
         int page = 0;
         int pageSize = 10;
         int count = 0;
+        boolean isComplete = false;
 
         while (true) {
             try {
@@ -361,6 +363,13 @@ public class FxCommandService {
                 }
             } else {
                 break;
+            }
+
+            if (isComplete) break;
+
+            run = runRestRepository.findInstance(run.getId());
+            if (run.getTask().getStatus() == TaskStatus.COMPLETED || run.getTask().getStatus() == TaskStatus.FAIL) {
+                isComplete = true;
             }
         }
 
@@ -400,12 +409,14 @@ public class FxCommandService {
                 AnsiOutput.toString(AnsiColor.DEFAULT,
                         String.format("Run Id: %s " +
                                         "\nStatus: %s " +
+                                        "\nDescription: %s" +
                                         "\nTotal Test-Suites: %s " +
                                         "\nTotal Test: %s " +
                                         "\nTotal Failed: %s " +
                                         "\nProcessing Time: %s ms%s",
                                 run.getId(),
                                 run.getTask().getStatus(),
+                                run.getTask().getDescription(),
                                 run.getTask().getTotalTests(),
                                 run.getTask().getTotalTestCompleted(),
                                 run.getTask().getFailedTests(),

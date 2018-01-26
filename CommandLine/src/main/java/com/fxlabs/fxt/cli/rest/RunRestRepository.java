@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Component
@@ -26,12 +28,13 @@ public class RunRestRepository extends GenericRestRespository<Run> {
         super(url + "/api/v1/runs", username, password, paramTypeRefMap.get(Run.class), paramTypeRefMap.get(Run[].class));
     }
 
-    public Run run(String id) {
+    public Run run(String id, String region, String tags, String env) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<Response<Run>> response = restTemplate.exchange(url + "/" + id, HttpMethod.POST, request, paramTypeRefMap.get(Run.class));
+        ResponseEntity<Response<Run>> response = restTemplate.exchange(url + "/" + id + "?region={region}&env={env}&tags={tags}",
+                HttpMethod.POST, request, paramTypeRefMap.get(Run.class), region, env, tags);
 
         //logger.info(response.getBody());
         return response.getBody().getData();

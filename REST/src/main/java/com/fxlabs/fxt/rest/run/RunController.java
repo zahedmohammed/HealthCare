@@ -8,6 +8,7 @@ import com.fxlabs.fxt.services.run.RunService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,8 +40,13 @@ public class RunController extends BaseController<Run, String> {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public Response<Run> run(@PathVariable("id") String id) {
-        return runService.run(id);
+    public Response<Run> run(@PathVariable("id") String id,
+                             @RequestParam(value = "region", required = false) String region,
+                             @RequestParam(value = "tags", required = false) String tags,
+                             @RequestParam(value = "env", required = false) String env) {
+
+
+        return runService.run(id, region, tags, env);
     }
 
 

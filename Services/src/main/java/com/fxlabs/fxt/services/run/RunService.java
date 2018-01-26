@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RunService extends GenericService<Run, String> {
 
-    Response<Run> run(String projectJob);
+    Response<Run> run(String projectJob, String region, String tags, String env);
 
     public Response<List<TestSuiteResponse>> findByRunId(String runId, Pageable pageable);
 }

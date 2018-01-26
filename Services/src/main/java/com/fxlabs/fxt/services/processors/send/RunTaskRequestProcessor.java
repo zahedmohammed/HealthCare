@@ -11,6 +11,7 @@ import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.RunRepository;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.run.RunConstants;
 import com.fxlabs.fxt.services.amqp.sender.BotClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,15 +33,15 @@ public class RunTaskRequestProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private BotClientService botClientService;
-    private TestSuiteRepository projectDataSetRepository;
+    private TestSuiteRepository testSuiteRepository;
     private RunRepository runRepository;
     private PoliciesConverter policiesConverter;
 
     @Autowired
-    public RunTaskRequestProcessor(BotClientService botClientService, TestSuiteRepository projectDataSetRepository,
+    public RunTaskRequestProcessor(BotClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter) {
         this.botClientService = botClientService;
-        this.projectDataSetRepository = projectDataSetRepository;
+        this.testSuiteRepository = testSuiteRepository;
         this.runRepository = runRepository;
         this.policiesConverter = policiesConverter;
     }
@@ -56,16 +57,47 @@ public class RunTaskRequestProcessor {
             run.getTask().setStatus(TaskStatus.PROCESSING);
             runRepository.save(run);
 
-            Environment env = findEvn(run);
+
+            String envName;
+            if (run.getAttributes().containsKey(RunConstants.ENV)) {
+                envName = run.getAttributes().get(RunConstants.ENV);
+            } else {
+                envName = run.getJob().getEnvironment();
+            }
+
+            Environment env = findEvn(run.getJob().getProject().getEnvironments(), envName);
+            // TODO - Fail if not a valid env.
+            if (env == null) {
+                run.getTask().setStatus(TaskStatus.FAIL);
+                run.getTask().setDescription(String.format("Invalid Env: %s", envName));
+                runRepository.save(run);
+                return;
+            }
 
             //AtomicInteger i = new AtomicInteger(1);
 
+            final String region;
+            // check for overriding
+            if (run.getAttributes().containsKey(RunConstants.REGION)) {
+                region = run.getAttributes().get(RunConstants.REGION);
+            } else {
+                region = run.getJob().getRegion();
+            }
 
-            logger.info("Sending task to region [{}]...", run.getJob().getRegion());
+            // TODO - Fail if not a valid region
+            if (org.apache.commons.lang3.StringUtils.isEmpty(region)) {
+                run.getTask().setStatus(TaskStatus.FAIL);
+                run.getTask().setDescription(String.format("Invalid Region: %s", region));
+                runRepository.save(run);
+                return;
+            }
 
-            Stream<TestSuite> list = projectDataSetRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE);
 
-            //for (TestSuite ds : list) {
+            logger.info("Sending task to region [{}]...", region);
+
+            // TODO - Filter Suites by Tags
+            Stream<TestSuite> list = testSuiteRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE);
+
             list.forEach(testSuite -> {
                 //logger.info("Request {}", i.incrementAndGet());
 
@@ -92,9 +124,7 @@ public class RunTaskRequestProcessor {
                 copy(testSuite.getInit(), task.getInit(), run, env);
                 copy(testSuite.getCleanup(), task.getCleanup(), run, env);
 
-                botClientService.sendTask(task, run.getJob().getRegion());
-
-                //}
+                botClientService.sendTask(task, region);
             });
         });
     }
@@ -183,7 +213,7 @@ public class RunTaskRequestProcessor {
         for (String suite : after) {
             logger.info("Processing after suite [{}]", suite);
 
-            TestSuite suite1 = projectDataSetRepository.findByProjectIdAndTypeAndName(run.getJob().getProject().getId(), TestSuiteType.ABSTRACT, suite);
+            TestSuite suite1 = testSuiteRepository.findByProjectIdAndTypeAndName(run.getJob().getProject().getId(), TestSuiteType.ABSTRACT, suite);
 
             if (suite1 == null) {
                 logger.warn("No suite found for project [{}] with suite-name [{}]", run.getJob().getProject().getId(), suite);
@@ -210,10 +240,10 @@ public class RunTaskRequestProcessor {
         }
     }
 
-    private Environment findEvn(Run run) {
+    private Environment findEvn(List<Environment> envs, String env) {
         Environment env_ = null;
-        for (Environment environment : run.getJob().getProject().getEnvironments()) {
-            if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(run.getJob().getEnvironment(), environment.getName())) {
+        for (Environment environment : envs) {
+            if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(env, environment.getName())) {
                 env_ = environment;
                 break;
             }
