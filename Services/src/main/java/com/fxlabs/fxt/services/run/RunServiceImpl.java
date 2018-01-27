@@ -33,18 +33,18 @@ import java.util.Map;
 public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.run.Run, String> implements RunService {
 
     private JobService projectJobService;
-    private RunTaskRequestProcessor taskProcessor;
+    //private RunTaskRequestProcessor taskProcessor;
     private TestSuiteRepository projectDataSetRepository;
     private TestSuiteResponseRepository dataSetRepository;
     private TestSuiteResponseConverter dataSetConverter;
 
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService,
-                          RunTaskRequestProcessor taskProcessor, TestSuiteRepository projectDataSetRepository,
+                          /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository,
                           TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter) {
         super(repository, converter);
         this.projectJobService = projectJobService;
-        this.taskProcessor = taskProcessor;
+        //this.taskProcessor = taskProcessor;
         this.projectDataSetRepository = projectDataSetRepository;
         this.dataSetRepository = dataSetRepository;
         this.dataSetConverter = dataSetConverter;

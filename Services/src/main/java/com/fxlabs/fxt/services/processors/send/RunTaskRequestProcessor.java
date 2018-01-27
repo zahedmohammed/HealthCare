@@ -31,12 +31,12 @@ import java.util.stream.Stream;
 public class RunTaskRequestProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
+
     private BotClientService botClientService;
     private TestSuiteRepository testSuiteRepository;
     private RunRepository runRepository;
     private PoliciesConverter policiesConverter;
 
-    @Autowired
     public RunTaskRequestProcessor(BotClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter) {
         this.botClientService = botClientService;
@@ -45,7 +45,6 @@ public class RunTaskRequestProcessor {
         this.policiesConverter = policiesConverter;
     }
 
-    @Scheduled(fixedDelay = 5000)
     public void process() {
 
         //logger.info("started...");
