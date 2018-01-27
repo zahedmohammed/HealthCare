@@ -68,7 +68,7 @@ public class RunTaskRequestProcessor {
 
             // TODO - Filter Suites by Tags
             Stream<TestSuite> list = testSuiteRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE);
-            
+
             list.forEach(testSuite -> {
                 //logger.info("Request {}", i.incrementAndGet());
 

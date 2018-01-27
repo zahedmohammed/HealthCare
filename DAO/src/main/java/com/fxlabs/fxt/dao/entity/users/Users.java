@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 //@SolrDocument(collection = "fx")
 @Entity
@@ -33,10 +35,20 @@ public class Users extends BaseEntity<String> {
     @Email(message = "Email is not a valid format")
     private String email;
 
+    private String password;
+
+    @ElementCollection
+    private List<String> privileges;
+
     private String company;
     private String location;
     private String jobTitle;
     //private Org org;
+
+    private boolean accountNonExpired = true;
+    private boolean accountNonLocked = true;
+    private boolean credentialsNonExpired = true;
+    private boolean enabled = true;
 
 
 }
