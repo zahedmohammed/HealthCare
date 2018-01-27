@@ -35,30 +35,34 @@ public class RunTaskResponseProcessor {
 
     //AtomicInteger i = new AtomicInteger(1);
     public void process(BotTask task) {
-        //logger.info("Response {}", i.incrementAndGet());
-        logger.info("Task response [{}]...", task.getId());
-        com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findById(task.getId());
-        com.fxlabs.fxt.dao.entity.run.RunTask runTask = run.getTask();
+        try {
+            //logger.info("Response {}", i.incrementAndGet());
+            logger.info("Task response [{}]...", task.getId());
+            com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findById(task.getId());
+            com.fxlabs.fxt.dao.entity.run.RunTask runTask = run.getTask();
 
-        // only if SUITE
-        if ("SUITE".equals(task.getResult())) {
-            runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
-            runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + task.getTotalTests());
-            //runTask.setFailedTests(runTask.getFailedTests() + task.getTotalFailed());
-            runTask.setSkippedTests(runTask.getSkippedTests() + task.getTotalSkipped());
+            // only if SUITE
+            if ("SUITE".equals(task.getResult())) {
+                runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
+                runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + task.getTotalTests());
+                //runTask.setFailedTests(runTask.getFailedTests() + task.getTotalFailed());
+                runTask.setSkippedTests(runTask.getSkippedTests() + task.getTotalSkipped());
 
-            runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
+                runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
 
-            saveDS(task, run);
+                saveDS(task, run);
 
+            }
+            // is complete?
+            if (runTask.getTotalSuiteCompleted() >= runTask.getTotalTests()) {
+                runTask.setStatus(TaskStatus.COMPLETED);
+                runTask.setEndTime(new Date());
+            }
+
+            runRepository.save(run);
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
         }
-        // is complete?
-        if (runTask.getTotalSuiteCompleted() >= runTask.getTotalTests()) {
-            runTask.setStatus(TaskStatus.COMPLETED);
-            runTask.setEndTime(new Date());
-        }
-
-        runRepository.save(run);
     }
 
     private void saveDS(BotTask task, com.fxlabs.fxt.dao.entity.run.Run run) {

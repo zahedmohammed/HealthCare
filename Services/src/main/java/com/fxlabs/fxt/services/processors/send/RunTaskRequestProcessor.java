@@ -58,39 +58,11 @@ public class RunTaskRequestProcessor {
             runRepository.save(run);
 
 
-            String envName;
-            if (run.getAttributes().containsKey(RunConstants.ENV)) {
-                envName = run.getAttributes().get(RunConstants.ENV);
-            } else {
-                envName = run.getJob().getEnvironment();
-            }
+            Environment env = validateEnvironment(run);
+            if (env == null) return;
 
-            Environment env = findEvn(run.getJob().getProject().getEnvironments(), envName);
-            // TODO - Fail if not a valid env.
-            if (env == null) {
-                run.getTask().setStatus(TaskStatus.FAIL);
-                run.getTask().setDescription(String.format("Invalid Env: %s", envName));
-                runRepository.save(run);
-                return;
-            }
-
-            //AtomicInteger i = new AtomicInteger(1);
-
-            final String region;
-            // check for overriding
-            if (run.getAttributes().containsKey(RunConstants.REGION)) {
-                region = run.getAttributes().get(RunConstants.REGION);
-            } else {
-                region = run.getJob().getRegion();
-            }
-
-            // TODO - Fail if not a valid region
-            if (org.apache.commons.lang3.StringUtils.isEmpty(region)) {
-                run.getTask().setStatus(TaskStatus.FAIL);
-                run.getTask().setDescription(String.format("Invalid Region: %s", region));
-                runRepository.save(run);
-                return;
-            }
+            final String region = validateRegion(run);
+            if (region == null) return;
 
 
             logger.info("Sending task to region [{}]...", region);
@@ -98,33 +70,41 @@ public class RunTaskRequestProcessor {
             // TODO - Filter Suites by Tags
             Stream<TestSuite> list = testSuiteRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE);
 
+            if (!isValidSuiteCount(list, run)) {
+                return;
+            }
+
             list.forEach(testSuite -> {
                 //logger.info("Request {}", i.incrementAndGet());
 
-                BotTask task = new BotTask();
-                task.setId(run.getId());
-                task.setSuiteName(testSuite.getName());
-                task.setProjectDataSetId(testSuite.getId());
+                try {
+                    BotTask task = new BotTask();
+                    task.setId(run.getId());
+                    task.setSuiteName(testSuite.getName());
+                    task.setProjectDataSetId(testSuite.getId());
 
-                task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
+                    task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
 
-                task.setMethod(convert(testSuite.getMethod()));
+                    task.setMethod(convert(testSuite.getMethod()));
 
-                copyHeaders(task, testSuite);
+                    copyHeaders(task, testSuite);
 
-                copyRequests(task, testSuite);
+                    copyRequests(task, testSuite);
 
-                copyAuth(run, env, task, testSuite);
+                    copyAuth(run, env, task, testSuite);
 
-                copyAssertions(task, testSuite);
+                    copyAssertions(task, testSuite);
 
-                task.setEndpoint(env.getBaseUrl() + testSuite.getEndpoint());
+                    task.setEndpoint(env.getBaseUrl() + testSuite.getEndpoint());
 
-                // init & cleanup copy
-                copy(testSuite.getInit(), task.getInit(), run, env);
-                copy(testSuite.getCleanup(), task.getCleanup(), run, env);
+                    // init & cleanup copy
+                    copy(testSuite.getInit(), task.getInit(), run, env);
+                    copy(testSuite.getCleanup(), task.getCleanup(), run, env);
 
-                botClientService.sendTask(task, region);
+                    botClientService.sendTask(task, region);
+                } catch (RuntimeException ex) {
+                    logger.warn(ex.getLocalizedMessage(), ex);
+                }
             });
         });
     }
@@ -250,6 +230,54 @@ public class RunTaskRequestProcessor {
         }
 
         return env_;
+    }
+
+    private Environment validateEnvironment(Run run) {
+        String envName;
+        if (run.getAttributes().containsKey(RunConstants.ENV)) {
+            envName = run.getAttributes().get(RunConstants.ENV);
+        } else {
+            envName = run.getJob().getEnvironment();
+        }
+
+        Environment env = findEvn(run.getJob().getProject().getEnvironments(), envName);
+        // TODO - Fail if not a valid env.
+        if (env == null) {
+            run.getTask().setStatus(TaskStatus.FAIL);
+            run.getTask().setDescription(String.format("Invalid Env: %s", envName));
+            runRepository.save(run);
+            return null;
+        }
+        return env;
+    }
+
+    private String validateRegion(Run run) {
+        final String region;
+        // check for overriding
+        if (run.getAttributes().containsKey(RunConstants.REGION)) {
+            region = run.getAttributes().get(RunConstants.REGION);
+        } else {
+            region = run.getJob().getRegion();
+        }
+
+        // TODO - Fail if not a valid region
+        if (org.apache.commons.lang3.StringUtils.isEmpty(region)) {
+            run.getTask().setStatus(TaskStatus.FAIL);
+            run.getTask().setDescription(String.format("Invalid Region: %s", region));
+            runRepository.save(run);
+            return null;
+        }
+        return region;
+    }
+
+    private boolean isValidSuiteCount(Stream<TestSuite> list, Run run) {
+        if (list.count() <= 0) {
+            run.getTask().setStatus(TaskStatus.FAIL);
+            run.getTask().setDescription(String.format("No suites to run."));
+            runRepository.save(run);
+            return false;
+        }
+        return true;
     }
 
 }
