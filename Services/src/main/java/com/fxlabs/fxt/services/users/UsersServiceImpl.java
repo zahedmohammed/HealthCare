@@ -19,12 +19,12 @@ import java.util.Optional;
 @Transactional
 public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.dto.users.Users, String> implements UsersService {
 
-    private PasswordEncoder passwordEncoder;
+    //private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersServiceImpl(UsersRepository repository, UsersConverter converter, PasswordEncoder passwordEncoder) {
+    public UsersServiceImpl(UsersRepository repository, UsersConverter converter/*, PasswordEncoder passwordEncoder*/) {
         super(repository, converter);
-        this.passwordEncoder = passwordEncoder;
+        //this.passwordEncoder = passwordEncoder;
     }
 
 

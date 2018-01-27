@@ -4,6 +4,9 @@ buildscript {
     }
     repositories {
         mavenCentral()
+        maven {
+            url 'https://repo.spring.io/libs-milestone'
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -11,9 +14,11 @@ buildscript {
 }
 
 
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 
 jar {
@@ -22,7 +27,12 @@ jar {
 }
 sourceCompatibility = 1.8
 
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')
@@ -32,7 +42,7 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.3.0'
 
-    compile project (":DTO")
+    compile project(":DTO")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

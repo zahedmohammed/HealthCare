@@ -1,5 +1,16 @@
 buildscript {
-    repositories { mavenCentral() }
+    ext {
+        springBootVersion = SPRING_BOOT_VERSION
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://repo.spring.io/libs-milestone'
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 plugins {
@@ -15,6 +26,7 @@ ext {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'io.spring.dependency-management'
 
 jar {
     baseName = 'Converter'
@@ -22,7 +34,12 @@ jar {
 }
 sourceCompatibility = 1.8
 
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')

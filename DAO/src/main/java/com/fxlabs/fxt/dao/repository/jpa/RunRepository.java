@@ -11,8 +11,10 @@ import java.util.List;
 
 public interface RunRepository extends JpaRepository<Run, String> {
 
-    @Lock(LockModeType.WRITE)
-    Run findById(String id);
+    // TODO - Replace this with job updating RunTask status
+    //@Lock(LockModeType.WRITE)
+    @Query("SELECT r FROM Run r WHERE r.id LIKE ?1")
+    Run findByRunId(String id);
 
     @Query("SELECT MAX(runId) FROM Run WHERE job.id LIKE ?1")
     Long findMaxRunId(String id);

@@ -36,13 +36,14 @@ class AuditorAwareImpl implements AuditorAware<String> {
      * (non-Javadoc)
      * @see org.springframework.data.domain.AuditorAware#getCurrentAuditor()
      */
-    public String getCurrentAuditor() {
+    public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
+            return Optional.empty();
         }
+        Optional<String> username = Optional.of((((User) authentication.getPrincipal()).getUsername()));
 
-        return ((User) authentication.getPrincipal()).getUsername();
+        return username;
     }
 }

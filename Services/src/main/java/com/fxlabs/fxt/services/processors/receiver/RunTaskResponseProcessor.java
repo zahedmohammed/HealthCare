@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -36,30 +37,31 @@ public class RunTaskResponseProcessor {
         try {
             //logger.info("Response {}", i.incrementAndGet());
             logger.info("Task response [{}]...", task.getId());
-            com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findById(task.getId());
+            // TODO - Replace this with job updating RunTask status
+            com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findByRunId(task.getId());
             com.fxlabs.fxt.dao.entity.run.RunTask runTask = run.getTask();
 
             // only if SUITE
             if ("SUITE".equals(task.getResult())) {
-                runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
-                runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + task.getTotalTests());
-                //runTask.setFailedTests(runTask.getFailedTests() + task.getTotalFailed());
-                runTask.setSkippedTests(runTask.getSkippedTests() + task.getTotalSkipped());
+                //runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
+                //runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + task.getTotalTests());
+                //runTask.setSkippedTests(runTask.getSkippedTests() + task.getTotalSkipped());
 
-                runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
+                //runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
 
                 saveDS(task, run);
 
             }
             // is complete?
             if (runTask.getTotalSuiteCompleted() >= runTask.getTotalTests()) {
-                runTask.setStatus(TaskStatus.COMPLETED);
-                runTask.setEndTime(new Date());
+                //runTask.setStatus(TaskStatus.COMPLETED);
+                //runTask.setEndTime(new Date());
             }
 
-            runRepository.save(run);
+            //runRepository.save(run);
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
+            //process(task);
         }
     }
 
@@ -69,7 +71,11 @@ public class RunTaskResponseProcessor {
         //TestSuite pds = new TestSuite();
         //pds.setId(task.getProjectDataSetId());
         //ds.setProjectDataSet(pds);
-        TestSuite pds = testSuiteRepository.findOne(task.getProjectDataSetId());
+        Optional<TestSuite> testSuiteOptional = testSuiteRepository.findById(task.getProjectDataSetId());
+        if (!testSuiteOptional.isPresent()) {
+            logger.warn("Invalid Test-Suite Id");
+        }
+        TestSuite pds = testSuiteOptional.get();
         ds.setTestSuite(pds.getName());
         ds.setLogs(task.getLogs());
         ds.setResponse(task.getResponse());

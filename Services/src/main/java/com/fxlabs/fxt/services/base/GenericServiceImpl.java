@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 //@Service
 //@Transactional
@@ -35,7 +36,7 @@ public class GenericServiceImpl<E, D, ID extends Serializable> implements Generi
     }
 
     public Response<List<D>> save(List<D> dtos) {
-        List<E> e = repository.save(converter.convertToEntities(dtos));
+        List<E> e = repository.saveAll(converter.convertToEntities(dtos));
         List<D> d = converter.convertToDtos(e);
         return new Response<List<D>>();
 
@@ -48,14 +49,17 @@ public class GenericServiceImpl<E, D, ID extends Serializable> implements Generi
     }
 
     public Response<D> findById(ID id) {
-        E e = repository.findOne(id);
-        D d = converter.convertToDto(e);
-        return new Response<D>(d);
+        Optional<E> eOptional = repository.findById(id);
+        if (eOptional.isPresent()) {
+            D d = converter.convertToDto(eOptional.get());
+            return new Response<D>(d);
+        }
+        return new Response<D>().withErrors(true);
 
     }
 
     public Response<D> delete(ID id) {
-        repository.delete(id);
+        repository.deleteById(id);
         return new Response<D>(null);
 
     }
