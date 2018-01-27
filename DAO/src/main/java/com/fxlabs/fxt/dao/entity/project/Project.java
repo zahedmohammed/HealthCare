@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.entity.project;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
+import com.fxlabs.fxt.dao.entity.users.Org;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,10 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Project extends BaseEntity<String> {
+
+    @ManyToOne
+    @JoinColumn(name="org_id")
+    private Org org;
 
     private String name;
     private String description;

@@ -2,7 +2,7 @@ package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.EnvironmentConverter;
 import com.fxlabs.fxt.dao.entity.project.Environment;
-import com.fxlabs.fxt.dao.repository.EnvironmentRepository;
+import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

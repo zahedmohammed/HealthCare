@@ -1,9 +1,8 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.TestSuiteConverter;
-import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
-import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

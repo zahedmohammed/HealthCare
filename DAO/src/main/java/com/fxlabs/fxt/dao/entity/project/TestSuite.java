@@ -18,6 +18,7 @@ import java.util.List;
 public class TestSuite extends BaseEntity<String> {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name="project_id")
     private Project project;
 
     private String name;

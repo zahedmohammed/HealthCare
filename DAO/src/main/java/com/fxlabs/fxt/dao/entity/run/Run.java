@@ -20,6 +20,7 @@ import java.util.Map;
 public class Run extends BaseEntity<String> {
 
     @ManyToOne
+    @JoinColumn(name="job_id")
     private Job job;
 
     private Long runId;

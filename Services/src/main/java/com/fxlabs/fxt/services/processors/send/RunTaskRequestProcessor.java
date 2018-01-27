@@ -7,8 +7,8 @@ import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
-import com.fxlabs.fxt.dao.repository.TestSuiteRepository;
-import com.fxlabs.fxt.dao.repository.RunRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
+import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.RunConstants;
@@ -24,7 +24,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 @Component
@@ -69,11 +68,7 @@ public class RunTaskRequestProcessor {
 
             // TODO - Filter Suites by Tags
             Stream<TestSuite> list = testSuiteRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE);
-
-            if (!isValidSuiteCount(list, run)) {
-                return;
-            }
-
+            
             list.forEach(testSuite -> {
                 //logger.info("Request {}", i.incrementAndGet());
 

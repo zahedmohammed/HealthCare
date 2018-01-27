@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.dao.repository;
+package com.fxlabs.fxt.dao.repository.jpa;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.project.TestSuiteType;

@@ -1,7 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.ProjectConverter;
-import com.fxlabs.fxt.dao.repository.ProjectRepository;
+import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
