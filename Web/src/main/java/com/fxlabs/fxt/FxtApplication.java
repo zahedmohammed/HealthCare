@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -28,6 +30,7 @@ import java.util.*;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableJpaRepositories(basePackages = "com.fxlabs.fxt.dao.repository.jpa")
 @ComponentScan(basePackages = {"com.fxlabs.fxt"})
 public class FxtApplication {
 
@@ -37,45 +40,3 @@ public class FxtApplication {
 
 }
 
-@Configuration
-@EnableWebSecurity
-class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private FxUserDetailsService userDetailsService;
-
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .csrf().disable()
-                .formLogin()
-                .and()
-                .httpBasic();
-    }
-
-    /*@Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider
-                = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(encoder());
-
-        return authProvider;
-    }*/
-
-    //@Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(11);
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-                .withUser("admin").password("admin123").roles("USER", "SUPERUSER"); // ... etc.
-    }
-
-}

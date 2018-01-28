@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.processors.receiver;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
+import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteResponseRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
@@ -24,12 +25,15 @@ public class RunTaskResponseProcessor {
     private RunRepository runRepository;
     private TestSuiteResponseRepository testSuiteResponseRepository;
     private TestSuiteRepository testSuiteRepository;
+    private TestSuiteResponseESRepository testSuiteResponseESRepository;
 
     @Autowired
-    public RunTaskResponseProcessor(RunRepository runRepository, TestSuiteResponseRepository dataSetRepository, TestSuiteRepository projectDataSetRepository) {
+    public RunTaskResponseProcessor(RunRepository runRepository, TestSuiteResponseRepository dataSetRepository,
+                                    TestSuiteRepository projectDataSetRepository, TestSuiteResponseESRepository testSuiteResponseESRepository) {
         this.runRepository = runRepository;
         this.testSuiteResponseRepository = dataSetRepository;
         this.testSuiteRepository = projectDataSetRepository;
+        this.testSuiteResponseESRepository = testSuiteResponseESRepository;
     }
 
     //AtomicInteger i = new AtomicInteger(1);
@@ -90,7 +94,8 @@ public class RunTaskResponseProcessor {
 
         ds.setStatus(task.getResult());
 
-        this.testSuiteResponseRepository.save(ds);
+        ds = this.testSuiteResponseRepository.save(ds);
+        this.testSuiteResponseESRepository.save(ds);
 
     }
 }
