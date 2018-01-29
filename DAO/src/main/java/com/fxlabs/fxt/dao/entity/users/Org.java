@@ -21,7 +21,7 @@ public class Org extends BaseEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private OrgType type; // PERSONAL | TEAM | ENTERPRISE
+    private OrgType orgType; // PERSONAL | TEAM | ENTERPRISE
     private String billingEmail;
 
     private String company;
