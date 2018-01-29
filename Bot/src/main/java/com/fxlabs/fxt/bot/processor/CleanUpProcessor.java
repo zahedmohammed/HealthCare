@@ -24,14 +24,16 @@ public class CleanUpProcessor {
     private RestTemplateUtil restTemplateUtil;
     private OperandEvaluator operandEvaluator;
     private DataResolver dataResolver;
+    private HeaderUtils headerUtils;
 
     @Autowired
     public CleanUpProcessor(AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
-                            OperandEvaluator operandEvaluator, DataResolver dataResolver) {
+                            OperandEvaluator operandEvaluator, DataResolver dataResolver, HeaderUtils headerUtils) {
         this.assertionValidator = assertionValidator;
         this.restTemplateUtil = restTemplateUtil;
         this.operandEvaluator = operandEvaluator;
         this.dataResolver = dataResolver;
+        this.headerUtils = headerUtils;
     }
 
     public void process(BotTask task, Context parentContext, String parentSuite) {
@@ -53,9 +55,9 @@ public class CleanUpProcessor {
         httpHeaders.set("Content-Type", "application/json");
         httpHeaders.set("Accept", "application/json");
 
-        HeaderUtils.copyHeaders(httpHeaders, task.getHeaders());
+        headerUtils.copyHeaders(httpHeaders, task.getHeaders(), context, task.getSuiteName());
 
-        if (StringUtils.isNotEmpty(task.getAuthType())) {
+        if (StringUtils.equalsIgnoreCase(task.getAuthType(), "basic")) {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
         }
 

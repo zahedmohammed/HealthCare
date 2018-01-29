@@ -31,16 +31,19 @@ public class RestProcessor {
     private InitProcessor initProcessor;
     private CleanUpProcessor cleanUpProcessor;
     private DataResolver dataResolver;
+    private HeaderUtils headerUtils;
 
     @Autowired
     RestProcessor(Sender sender, AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
-                  InitProcessor initProcessor, CleanUpProcessor cleanUpProcessor, DataResolver dataResolver) {
+                  InitProcessor initProcessor, CleanUpProcessor cleanUpProcessor, DataResolver dataResolver,
+                  HeaderUtils headerUtils) {
         this.sender = sender;
         this.assertionValidator = assertionValidator;
         this.restTemplateUtil = restTemplateUtil;
         this.initProcessor = initProcessor;
         this.cleanUpProcessor = cleanUpProcessor;
         this.dataResolver = dataResolver;
+        this.headerUtils = headerUtils;
     }
 
     public void process(BotTask task) {
@@ -91,10 +94,10 @@ public class RestProcessor {
             httpHeaders.set("Content-Type", "application/json");
             httpHeaders.set("Accept", "application/json");
 
-            HeaderUtils.copyHeaders(httpHeaders, task.getHeaders());
+            headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
 
-
-            if (StringUtils.isNotEmpty(task.getAuthType())) {
+            // TODO - handle other auth types
+            if (StringUtils.equalsIgnoreCase(task.getAuthType(), "basic")) {
                 httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
             }
 
@@ -128,7 +131,7 @@ public class RestProcessor {
                 //logger.info("Request: [{}]", req);
                 HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
 
-                String endpoint = task.getEndpoint();
+                //String endpoint = task.getEndpoint();
                 req = dataResolver.resolve(req, parentContext, task.getSuiteName());
                 String url = dataResolver.resolve(task.getEndpoint(), parentContext, task.getSuiteName());
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
