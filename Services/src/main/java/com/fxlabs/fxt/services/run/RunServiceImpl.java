@@ -14,7 +14,6 @@ import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.services.processors.send.RunTaskRequestProcessor;
 import com.fxlabs.fxt.services.project.JobService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,9 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
     private JobService projectJobService;
     //private RunTaskRequestProcessor taskProcessor;
-    private TestSuiteRepository projectDataSetRepository;
-    private TestSuiteResponseRepository dataSetRepository;
-    private TestSuiteResponseConverter dataSetConverter;
+    private TestSuiteRepository testSuiteRepository;
+    private TestSuiteResponseRepository testSuiteResponseRepository;
+    private TestSuiteResponseConverter testSuiteResponseConverter;
 
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService,
@@ -45,9 +44,9 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         super(repository, converter);
         this.projectJobService = projectJobService;
         //this.taskProcessor = taskProcessor;
-        this.projectDataSetRepository = projectDataSetRepository;
-        this.dataSetRepository = dataSetRepository;
-        this.dataSetConverter = dataSetConverter;
+        this.testSuiteRepository = projectDataSetRepository;
+        this.testSuiteResponseRepository = dataSetRepository;
+        this.testSuiteResponseConverter = dataSetConverter;
     }
 
 
@@ -83,8 +82,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         task.setStatus(TaskStatus.WAITING);
         task.setStartTime(new Date());
 
-        // TODO - find total tests
-        Long totalTests = projectDataSetRepository.countByProjectIdAndType(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE);
+        // TODO - find total tests by Tags
+        Long totalTests = testSuiteRepository.countByProjectIdAndType(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE);
         task.setTotalTests(totalTests);
 
         run.setTask(task);
@@ -100,9 +99,9 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     public Response<List<TestSuiteResponse>> findByRunId(String runId, Pageable pageable) {
-        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.dataSetRepository.findByRunId(runId, pageable);
+        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.testSuiteResponseRepository.findByRunId(runId, pageable);
 
-        List<TestSuiteResponse> dataSets = dataSetConverter.convertToDtos(page.getContent());
+        List<TestSuiteResponse> dataSets = testSuiteResponseConverter.convertToDtos(page.getContent());
         return new Response<List<TestSuiteResponse>>(dataSets, page.getTotalElements(), page.getTotalPages());
     }
 

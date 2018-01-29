@@ -53,7 +53,7 @@ public class RunTaskRequestProcessor {
         runs.parallelStream().forEach(run -> {
 
             run.getTask().setStatus(TaskStatus.PROCESSING);
-            runRepository.save(run);
+            runRepository.saveAndFlush(run);
 
 
             Environment env = validateEnvironment(run);
@@ -239,7 +239,7 @@ public class RunTaskRequestProcessor {
         if (env == null) {
             run.getTask().setStatus(TaskStatus.FAIL);
             run.getTask().setDescription(String.format("Invalid Env: %s", envName));
-            runRepository.save(run);
+            runRepository.saveAndFlush(run);
             return null;
         }
         return env;
@@ -258,7 +258,7 @@ public class RunTaskRequestProcessor {
         if (org.apache.commons.lang3.StringUtils.isEmpty(region)) {
             run.getTask().setStatus(TaskStatus.FAIL);
             run.getTask().setDescription(String.format("Invalid Region: %s", region));
-            runRepository.save(run);
+            runRepository.saveAndFlush(run);
             return null;
         }
         return region;
@@ -268,7 +268,7 @@ public class RunTaskRequestProcessor {
         if (list.count() <= 0) {
             run.getTask().setStatus(TaskStatus.FAIL);
             run.getTask().setDescription(String.format("No suites to run."));
-            runRepository.save(run);
+            runRepository.saveAndFlush(run);
             return false;
         }
         return true;
