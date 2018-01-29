@@ -19,7 +19,7 @@ public class ProjectUsers extends BaseDto<String> {
 
     private Users users;
 
-    private String role; // READ | WRITE | OWNER
+    private ProjectRole role; // READ | WRITE | OWNER
 
 }
 

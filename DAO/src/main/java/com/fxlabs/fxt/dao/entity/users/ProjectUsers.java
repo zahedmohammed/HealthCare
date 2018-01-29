@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -27,7 +24,8 @@ public class ProjectUsers extends BaseEntity {
     @JoinColumn(name="users_id")
     private Users users;
 
-    private String role; // READ | WRITE | OWNER
+    @Enumerated(EnumType.STRING)
+    private ProjectRole role; // READ | WRITE | OWNER
 
 }
 

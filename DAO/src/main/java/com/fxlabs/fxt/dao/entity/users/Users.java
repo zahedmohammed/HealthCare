@@ -21,7 +21,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Users extends BaseEntity {
 
-
     private String name;
 
     @NotNull(message = "Username is required.")
@@ -42,13 +41,11 @@ public class Users extends BaseEntity {
     private String company;
     private String location;
     private String jobTitle;
-    //private Org org;
 
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
-
 
 }
 

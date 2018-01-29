@@ -17,7 +17,7 @@ public class Org extends BaseDto<String> {
     private String name;
     private String description;
 
-    private String type; // PERSONAL | TEAM | ENTERPRISE
+    private OrgType type; // PERSONAL | TEAM | ENTERPRISE
     private String billingEmail;
 
     private String company;

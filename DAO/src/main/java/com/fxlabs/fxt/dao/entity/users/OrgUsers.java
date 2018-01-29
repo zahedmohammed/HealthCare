@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -26,7 +23,8 @@ public class OrgUsers extends BaseEntity {
     @JoinColumn(name="users_id")
     private Users users;
 
-    private String role; // USER | ADMIN
+    @Enumerated(EnumType.STRING)
+    private OrgRole role; // USER | ADMIN
 
     private String status; // INVITE_SENT | ACTIVE | DECLINED
 

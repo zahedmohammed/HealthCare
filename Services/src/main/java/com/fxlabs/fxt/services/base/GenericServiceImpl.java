@@ -29,7 +29,7 @@ public class GenericServiceImpl<E, D, ID extends Serializable> implements Generi
 
     // CRUD
     public Response<D> save(D dto) {
-        E e = repository.save(converter.convertToEntity(dto));
+        E e = repository.saveAndFlush(converter.convertToEntity(dto));
         D d = converter.convertToDto(e);
         return new Response<D>(d);
 

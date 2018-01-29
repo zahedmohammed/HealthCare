@@ -17,6 +17,7 @@ public class TestSuiteResponse extends BaseDto<String> {
     //private NameDto projectDataSet;
     private String testSuite;
     private String runId;
+    private String region;
     private Integer tests;
     private String response;
     private String logs;

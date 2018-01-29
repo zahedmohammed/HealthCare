@@ -17,7 +17,7 @@ public class OrgUsers extends BaseDto<String> {
 
     private Users users;
 
-    private String role; // USER | ADMIN
+    private OrgRole role; // USER | ADMIN
 
     private String status; // INVITE_SENT | ACTIVE | DECLINED
 

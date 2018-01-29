@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 @Data
@@ -18,7 +20,8 @@ public class Org extends BaseEntity {
     private String name;
     private String description;
 
-    private String type; // PERSONAL | TEAM | ENTERPRISE
+    @Enumerated(EnumType.STRING)
+    private OrgType type; // PERSONAL | TEAM | ENTERPRISE
     private String billingEmail;
 
     private String company;
