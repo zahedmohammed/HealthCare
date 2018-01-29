@@ -9,13 +9,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-//@SolrDocument(collection = "fx")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class TestSuite extends BaseEntity<String> {
+public class TestSuite extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name="project_id")

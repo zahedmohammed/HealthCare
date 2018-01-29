@@ -8,13 +8,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 
-//@SolrDocument(collection = "fx")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Org extends BaseEntity<String> {
+public class Org extends BaseEntity {
 
     private String name;
     private String description;

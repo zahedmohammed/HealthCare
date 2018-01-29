@@ -11,13 +11,12 @@ import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
-//@SolrDocument(collection = "fx")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Run extends BaseEntity<String> {
+public class Run extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name="job_id")

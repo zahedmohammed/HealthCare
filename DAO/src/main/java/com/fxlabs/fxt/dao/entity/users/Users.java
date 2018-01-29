@@ -14,13 +14,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-//@SolrDocument(collection = "fx")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Users extends BaseEntity<String> {
+public class Users extends BaseEntity {
 
 
     private String name;

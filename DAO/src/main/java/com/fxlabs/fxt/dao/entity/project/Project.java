@@ -12,13 +12,12 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-//@SolrDocument(collection = "fx")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Project extends BaseEntity<String> {
+public class Project extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name="org_id")

@@ -15,44 +15,43 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-//import org.springframework.data.solr.core.mapping.SolrDocument;
 
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Data
 @EqualsAndHashCode(of = {"id"})
-public class BaseEntity<U> implements Serializable {
+public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
+    protected String id;
 
     @Column(name = "created_by")
     @CreatedBy
-    private U createdBy;
+    protected String createdBy;
 
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    protected Date createdDate;
 
     @Column(name = "modified_by")
     @LastModifiedBy
-    private U modifiedBy;
+    protected String modifiedBy;
 
     @Column(name = "modified_date")
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
+    protected Date modifiedDate;
 
     @Version
-    private Long version;
+    protected Long version;
 
-    private boolean deleted = false;
+    protected boolean deleted = false;
 
 
 }

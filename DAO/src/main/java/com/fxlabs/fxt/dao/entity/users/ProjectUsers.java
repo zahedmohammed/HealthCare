@@ -12,13 +12,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-//@SolrDocument(collection = "fx")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ProjectUsers extends BaseEntity<String> {
+public class ProjectUsers extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name="project_id")

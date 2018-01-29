@@ -11,7 +11,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.util.Date;
 
-//@SolrDocument(collection = "fx")
 @Embeddable
 @Data
 @AllArgsConstructor

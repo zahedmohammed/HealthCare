@@ -10,13 +10,12 @@ import org.springframework.util.StringUtils;
 import javax.persistence.*;
 import java.util.List;
 
-//@SolrDocument(collection = "fx")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Job extends BaseEntity<String> {
+public class Job extends BaseEntity {
 
     private String name;
     private String refId;
