@@ -1,6 +1,7 @@
 package com.fxlabs.fxt;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authProvider;
     }*/
 
-    //@Bean
+    @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder(11);
     }

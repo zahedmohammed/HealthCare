@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.fxlabs.fxt.dto.users.Users;
+import com.fxlabs.fxt.dto.users.UsersPassword;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,10 +15,12 @@ public class FxUserPrinciple implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private final Users user;
+    private final UsersPassword usersPassword;
 
     //
-    public FxUserPrinciple(Users user) {
+    public FxUserPrinciple(Users user, UsersPassword usersPassword) {
         this.user = user;
+        this.usersPassword = usersPassword;
     }
 
     //
@@ -28,7 +31,7 @@ public class FxUserPrinciple implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return usersPassword.getPassword();
     }
 
     @Override

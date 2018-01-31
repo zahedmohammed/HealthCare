@@ -2,6 +2,7 @@ package com.fxlabs.fxt;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.users.Users;
+import com.fxlabs.fxt.dto.users.UsersPassword;
 import com.fxlabs.fxt.services.users.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,10 @@ public class FxUserDetailsService implements UserDetailsService {
         if (usersResponse.isErrors()) {
             throw new UsernameNotFoundException(username);
         }
-        return new FxUserPrinciple(usersResponse.getData());
+        final Response<UsersPassword> usersPasswordResponse = usersService.findActivePassword(username);
+        if (usersPasswordResponse.isErrors()) {
+            throw new UsernameNotFoundException(usersPasswordResponse.getMessages().get(0).getValue());
+        }
+        return new FxUserPrinciple(usersResponse.getData(), usersPasswordResponse.getData());
     }
 }
