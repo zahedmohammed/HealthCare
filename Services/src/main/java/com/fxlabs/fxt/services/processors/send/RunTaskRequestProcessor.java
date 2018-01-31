@@ -251,7 +251,7 @@ public class RunTaskRequestProcessor {
         if (run.getAttributes().containsKey(RunConstants.REGION)) {
             region = run.getAttributes().get(RunConstants.REGION);
         } else {
-            region = run.getJob().getRegion();
+            region = run.getJob().getRegions();
         }
 
         // TODO - Fail if not a valid region

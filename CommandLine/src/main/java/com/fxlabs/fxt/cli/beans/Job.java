@@ -19,6 +19,6 @@ public class Job implements Serializable {
     private String refId;
     private String environment = "Default";
     private List<String> tags;
-    private String region;
+    private String regions;
 
 }

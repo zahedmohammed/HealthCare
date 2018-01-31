@@ -200,7 +200,7 @@ public class FxCommandService {
             job.setEnvironment(projectEnvironment);*/
             job.setEnvironment(jobProfile.getEnvironment());
 
-            job.setRegion(jobProfile.getRegion());
+            job.setRegions(jobProfile.getRegions());
             //job = jobRestRepository.save(job);
 
             jobs.add(job);
