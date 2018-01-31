@@ -24,9 +24,9 @@ public class OrgUsers extends BaseEntity {
     private Users users;
 
     @Enumerated(EnumType.STRING)
-    private OrgRole role; // USER | ADMIN
+    private OrgRole orgRole; // USER | ADMIN
 
-    private String status; // INVITE_SENT | ACTIVE | DECLINED
+    private OrgUserStatus status; // INVITE_SENT | ACTIVE | DECLINED
 
 
 }

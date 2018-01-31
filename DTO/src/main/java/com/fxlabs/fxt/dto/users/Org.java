@@ -23,7 +23,7 @@ public class Org extends BaseDto<String> {
     private String company;
     private String location;
 
-    private String plan; // FREE | PRO | UNLIMITED | PAY-AS-YOU-GO
+    private OrgPlan orgPlan; // FREE | PRO | UNLIMITED | PAY-AS-YOU-GO
 
     // TODO Billing Info
 

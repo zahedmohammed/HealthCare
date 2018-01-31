@@ -19,6 +19,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String USER_BASE = API_BASE + "/users";
 
     public static final String PROJECTS_BASE = API_BASE + "/projects";
+    public static final String JOBS_BASE = API_BASE + "/jobs";
     public static final String PROJECT_DATASETS_BASE = API_BASE + "/test-suites";
     public static final String PROJECT_RUNS_BASE = API_BASE + "/runs";
 

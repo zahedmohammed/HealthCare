@@ -31,7 +31,7 @@ public class Job extends BaseEntity {
     @ElementCollection
     private List<String> tags;
 
-    private String region;
+    private String regions;
 
     @PrePersist
     public void preCreate() {

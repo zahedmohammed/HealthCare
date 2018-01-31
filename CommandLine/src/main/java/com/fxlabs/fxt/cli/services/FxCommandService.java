@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.cli.beans.Config;
 import com.fxlabs.fxt.cli.rest.*;
-import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.TaskStatus;
@@ -13,8 +13,6 @@ import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.shell.table.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -81,7 +78,7 @@ public class FxCommandService {
             }
             //System.out.println(project);
 
-            NameDto proj = new NameDto();
+            ProjectMinimalDto proj = new ProjectMinimalDto();
             proj.setId(project.getId());
             proj.setName(project.getName());
             proj.setVersion(project.getVersion());
@@ -213,7 +210,7 @@ public class FxCommandService {
         return jobs;
     }
 
-    private void loadSuites(String projectDir, ObjectMapper yamlMapper, NameDto proj, Date lastSync) {
+    private void loadSuites(String projectDir, ObjectMapper yamlMapper, ProjectMinimalDto proj, Date lastSync) {
         System.out.println("");
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 "Loading Test-Suites:",

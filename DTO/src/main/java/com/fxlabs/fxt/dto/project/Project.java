@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.dto.project;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
+import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.users.Org;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,9 +18,9 @@ import java.util.List;
 public class Project extends BaseDto<String> {
 
 
+    private NameDto org;
     private String name;
     private String description;
-
     private Date lastSync;
 
     private List<String> licenses;
