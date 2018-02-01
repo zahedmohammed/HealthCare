@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.TestSuiteConverter;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
@@ -18,9 +19,12 @@ import java.util.Optional;
 @Transactional
 public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxlabs.fxt.dto.project.TestSuite, String> implements TestSuiteService {
 
+    private TestSuiteESRepository testSuiteESRepository;
+
     @Autowired
-    public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter) {
+    public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository) {
         super(repository, converter);
+        this.testSuiteESRepository = testSuiteESRepository;
     }
 
     @Override
@@ -38,8 +42,10 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             testSuite.setVersion(entity.getVersion());
         }
 
+        TestSuite ts = converter.convertToEntity(testSuite);
+        entity = repository.save(ts);
+        testSuiteESRepository.save(entity);
 
-        entity = repository.save(converter.convertToEntity(testSuite));
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 
     }

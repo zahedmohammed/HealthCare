@@ -7,6 +7,7 @@ import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
+import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.project.HttpMethod;
@@ -38,13 +39,16 @@ public class RunTaskRequestProcessor {
     private TestSuiteRepository testSuiteRepository;
     private RunRepository runRepository;
     private PoliciesConverter policiesConverter;
+    private TestSuiteESRepository testSuiteESRepository;
 
     public RunTaskRequestProcessor(BotClientService botClientService, TestSuiteRepository testSuiteRepository,
-                                   RunRepository runRepository, PoliciesConverter policiesConverter) {
+                                   RunRepository runRepository, PoliciesConverter policiesConverter,
+                                   TestSuiteESRepository testSuiteESRepository) {
         this.botClientService = botClientService;
         this.testSuiteRepository = testSuiteRepository;
         this.runRepository = runRepository;
         this.policiesConverter = policiesConverter;
+        this.testSuiteESRepository = testSuiteESRepository;
     }
 
     public void process() {
@@ -73,10 +77,26 @@ public class RunTaskRequestProcessor {
                 suites = null;
             }
 
+            final List<String> tags;
+            String _tags = run.getAttributes().get(RunConstants.TAGS);
+            if (!StringUtils.isEmpty(_tags)) {
+                String[] tokens = org.apache.commons.lang3.StringUtils.split(_tags, ",");
+                tags = Arrays.asList(tokens);
+            } else {
+                tags = run.getJob().getTags();
+            }
+
             logger.info("Sending task to region [{}]...", region);
 
-            // TODO - Filter Suites by Tags
-            Stream<TestSuite> list = testSuiteRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE);
+            // TODO - Filter Suites by Overridden-suites, Overridden-Tags, tags.
+            Stream<TestSuite> list;
+            if (suites != null) {
+                list = testSuiteESRepository.findByProjectIdAndNameIn(run.getJob().getProject().getId(), suites);
+            } else if (!CollectionUtils.isEmpty(tags)) {
+                list = testSuiteESRepository.findByProjectIdAndTypeAndTagsIn(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString(), tags);
+            } else {
+                list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
+            }
 
             list.forEach(testSuite -> {
                 //logger.info("Request {}", i.incrementAndGet());
@@ -84,9 +104,9 @@ public class RunTaskRequestProcessor {
                 try {
 
                     // TODO - Replace with the query
-                    if (suites != null && !CollectionUtils.contains(suites.iterator(), testSuite.getName())) {
-                        return;
-                    }
+                    //if (suites != null && !CollectionUtils.contains(suites.iterator(), testSuite.getName())) {
+                    //    return;
+                    //}
 
                     BotTask task = new BotTask();
                     task.setId(run.getId());
@@ -131,18 +151,20 @@ public class RunTaskRequestProcessor {
     private void copyHeaders(BotTask task, TestSuite ds) {
         // TODO - JPA lazy-load work-around
         List<String> headers = new ArrayList<>();
-        for (String header : ds.getHeaders()) {
-            headers.add(header);
-        }
+        if (ds.getHeaders() != null)
+            for (String header : ds.getHeaders()) {
+                headers.add(header);
+            }
         task.setHeaders(headers);
     }
 
     private void copyRequests(BotTask task, TestSuite ds) {
         // TODO - JPA lazy-load work-around
         List<String> requests = new ArrayList<>();
-        for (String request : ds.getRequests()) {
-            requests.add(request);
-        }
+        if (ds.getRequests() != null)
+            for (String request : ds.getRequests()) {
+                requests.add(request);
+            }
         task.setRequest(requests);
     }
 

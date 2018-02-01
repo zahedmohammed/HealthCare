@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * @author Intesar Shannan Mohammed
  */
+@Document(indexName = "fxtestsuite")
 @Entity
 @Data
 @AllArgsConstructor

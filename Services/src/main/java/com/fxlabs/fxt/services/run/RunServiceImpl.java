@@ -4,6 +4,7 @@ import com.fxlabs.fxt.converters.run.RunConverter;
 import com.fxlabs.fxt.converters.run.TestSuiteResponseConverter;
 import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import com.fxlabs.fxt.dao.entity.run.Run;
+import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteResponseRepository;
@@ -22,10 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -39,17 +37,20 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     private TestSuiteRepository testSuiteRepository;
     private TestSuiteResponseRepository testSuiteResponseRepository;
     private TestSuiteResponseConverter testSuiteResponseConverter;
+    private TestSuiteESRepository testSuiteESRepository;
 
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService,
                           /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository,
-                          TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter) {
+                          TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter,
+                          TestSuiteESRepository testSuiteESRepository) {
         super(repository, converter);
         this.projectJobService = projectJobService;
         //this.taskProcessor = taskProcessor;
         this.testSuiteRepository = projectDataSetRepository;
         this.testSuiteResponseRepository = dataSetRepository;
         this.testSuiteResponseConverter = dataSetConverter;
+        this.testSuiteESRepository = testSuiteESRepository;
     }
 
 
@@ -74,8 +75,11 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         if (StringUtils.isNotEmpty(env)) {
             attributes.put(RunConstants.ENV, env);
         }
+        String[] _tags = null;
         if (StringUtils.isNotEmpty(tags)) {
             attributes.put(RunConstants.TAGS, tags);
+            _tags = StringUtils.split(tags, ",");
+
         }
         if (StringUtils.isNotEmpty(suites)) {
             attributes.put(RunConstants.SUITES, suites);
@@ -89,8 +93,15 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         task.setStartTime(new Date());
 
         // TODO - find total tests by Tags
-        Long totalTests = testSuiteRepository.countByProjectIdAndType(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE);
-        task.setTotalTests(totalTests);
+        Long totalTests = 0l;
+
+        if (StringUtils.isNotEmpty(tags)) {
+            totalTests = testSuiteESRepository.countByProjectIdAndTypeAndTagsIn(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE.toString(), Arrays.asList(_tags));
+            task.setTotalTests(totalTests);
+        } else {
+            totalTests = testSuiteESRepository.countByProjectIdAndType(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE.toString());
+            task.setTotalTests(totalTests);
+        }
 
         if (StringUtils.isNotEmpty(suites)) {
             int total = StringUtils.split(suites, ",").length;
