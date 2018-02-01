@@ -50,10 +50,48 @@ public class RestProcessor {
 
     public void process(BotTask task) {
 
+        if (task.getPolicies() != null && task.getPolicies().getRepeat() != null && task.getPolicies().getRepeat() > 0) {
+            for (int i = 0; i < task.getPolicies().getRepeat(); i++) {
+                BotTask completeTask = run(task);
+                if (completeTask == null) return;
+                sender.sendTask(completeTask);
+                if (task.getPolicies().getRepeatDelay() != null && task.getPolicies().getRepeatDelay() > 0) {
+                    try {
+                        Thread.sleep(task.getPolicies().getRepeatDelay());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else if (task.getPolicies() != null && task.getPolicies().getRepeatOnFailure() != null && task.getPolicies().getRepeatOnFailure() > 0) {
+            for (int i = 0; i < task.getPolicies().getRepeatOnFailure(); i++) {
+                BotTask completeTask = run(task);
+                if (completeTask == null) return;
+                if (completeTask.getTotalFailed() <= 0 ) {
+                    sender.sendTask(completeTask);
+                    break;
+                }
+                if (task.getPolicies().getRepeatDelay() != null && task.getPolicies().getRepeatDelay() > 0) {
+                    try {
+                        Thread.sleep(task.getPolicies().getRepeatDelay());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            BotTask completeTask = run(task);
+            if (completeTask == null) return;
+            sender.sendTask(completeTask);
+        }
+
+    }
+
+    private BotTask run(BotTask task) {
         //logger.info("{}", i.incrementAndGet());
         if (task == null || task.getId() == null || task.getEndpoint() == null) {
             logger.warn("Skipping empty task");
-            return;
+            return null;
         }
 
         BotTask completeTask = new BotTask();
@@ -225,8 +263,7 @@ public class RestProcessor {
             completeTask.setRequestEndTime(new Date());
             completeTask.setLogs(completeTask.getLogs() + "\n " + ex.getLocalizedMessage());
         }
-        sender.sendTask(completeTask);
-
+        return completeTask;
     }
 
 

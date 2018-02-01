@@ -46,7 +46,7 @@ public class FxCommandService {
     @Autowired
     private ProjectRestRepository projectRepository;
     @Autowired
-    private TestSuiteRestRepository dataSetRestRepository;
+    private TestSuiteRestRepository testSuiteRestRepository;
     @Autowired
     private RunRestRepository runRestRepository;
 
@@ -337,9 +337,12 @@ public class FxCommandService {
             testSuite.setProject(proj);
             try {
                 if (lastSync == null) {
-                    dataSetRestRepository.save(testSuite);
+                    testSuiteRestRepository.save(testSuite);
                 } else {
-                    dataSetRestRepository.update(testSuite);
+                    System.out.println ("Repeat: " + testSuite.getPolicies().getRepeat());
+                    System.out.println ("RepeatOnFailure: " + testSuite.getPolicies().getRepeatOnFailure());
+                    System.out.println ("RepeatDelay: " + testSuite.getPolicies().getRepeatDelay());
+                    testSuiteRestRepository.update(testSuite);
                 }
             } catch (Exception e) {
                 logger.warn(e.getLocalizedMessage());

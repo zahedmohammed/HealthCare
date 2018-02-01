@@ -22,11 +22,11 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite) {
-        Optional<TestSuite> projectOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
+        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
         TestSuite entity = null;
-        if (projectOptional.isPresent()) {
-            entity = projectOptional.get();
+        if (testSuiteOptional.isPresent()) {
+            entity = testSuiteOptional.get();
         }
 
         if (entity != null) {

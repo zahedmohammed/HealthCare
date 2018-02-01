@@ -21,6 +21,9 @@ public class Policies implements Serializable {
     private String cleanupExec = "Request"; // Request | Suite
     private String logger = "ERROR"; // ERROR | DEBUG
     private Long timeoutSeconds = 300L;
+    private Integer repeatOnFailure = 0;
+    private Integer repeat = 0;
+    private Long repeatDelay = 0L; //ms
 
 }
 
