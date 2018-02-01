@@ -7,6 +7,10 @@ import lombok.ToString;
 
 import java.io.Serializable;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

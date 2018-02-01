@@ -15,7 +15,6 @@ import com.fxlabs.fxt.dto.run.TaskStatus;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Service
 @PropertySource(ignoreResourceNotFound = true, value = "file:fx.properties")
 @PropertySource(ignoreResourceNotFound = true, value = "file:${user.home}/fxt/fx.properties")
@@ -339,9 +341,9 @@ public class FxCommandService {
                 if (lastSync == null) {
                     testSuiteRestRepository.save(testSuite);
                 } else {
-                    System.out.println ("Repeat: " + testSuite.getPolicies().getRepeat());
-                    System.out.println ("RepeatOnFailure: " + testSuite.getPolicies().getRepeatOnFailure());
-                    System.out.println ("RepeatDelay: " + testSuite.getPolicies().getRepeatDelay());
+                    System.out.println("Repeat: " + testSuite.getPolicies().getRepeat());
+                    System.out.println("RepeatOnFailure: " + testSuite.getPolicies().getRepeatOnFailure());
+                    System.out.println("RepeatDelay: " + testSuite.getPolicies().getRepeatDelay());
                     testSuiteRestRepository.update(testSuite);
                 }
             } catch (Exception e) {

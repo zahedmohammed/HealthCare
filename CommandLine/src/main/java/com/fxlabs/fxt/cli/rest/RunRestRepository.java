@@ -13,7 +13,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Component
 public class RunRestRepository extends GenericRestRespository<Run> {
 

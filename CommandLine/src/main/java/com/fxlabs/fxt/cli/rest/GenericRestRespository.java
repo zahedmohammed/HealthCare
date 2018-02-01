@@ -21,6 +21,9 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public class GenericRestRespository<T> {
 
     public final static HashMap<Class, ParameterizedTypeReference> paramTypeRefMap = new HashMap<>();

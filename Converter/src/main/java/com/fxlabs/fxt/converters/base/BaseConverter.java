@@ -6,6 +6,9 @@ import org.mapstruct.InheritInverseConfiguration;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 //@Mapper//(componentModel = "spring")
 public interface BaseConverter<E, D> {
 
