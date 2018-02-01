@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Component
 public class RestProcessor {
 
@@ -67,7 +70,7 @@ public class RestProcessor {
             for (int i = 0; i < task.getPolicies().getRepeatOnFailure(); i++) {
                 BotTask completeTask = run(task);
                 if (completeTask == null) return;
-                if (completeTask.getTotalFailed() <= 0 ) {
+                if (completeTask.getTotalFailed() <= 0) {
                     sender.sendTask(completeTask);
                     break;
                 }

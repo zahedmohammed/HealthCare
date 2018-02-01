@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Component
 public class ValidatorDelegate {
 

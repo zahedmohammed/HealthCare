@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public class Context implements Serializable {
     private static final long serialVersionUID = 1L;
 

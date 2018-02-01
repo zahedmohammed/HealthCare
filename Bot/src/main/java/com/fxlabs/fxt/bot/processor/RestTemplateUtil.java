@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Component
 public class RestTemplateUtil {
 

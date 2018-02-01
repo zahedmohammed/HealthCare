@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Component
 public class HeaderUtils {
 

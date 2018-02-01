@@ -2,6 +2,9 @@ package com.fxlabs.fxt.bot.processor;
 
 import org.springframework.http.HttpMethod;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public class HttpMethodConverter {
 
     public static HttpMethod convert(com.fxlabs.fxt.dto.project.HttpMethod httpMethod) {

@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Component
 public class DataResolver {
 

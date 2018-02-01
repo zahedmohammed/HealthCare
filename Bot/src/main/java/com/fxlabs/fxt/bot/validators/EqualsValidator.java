@@ -4,6 +4,9 @@ import com.fxlabs.fxt.bot.assertions.Context;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Component("equalsValidator")
 public class EqualsValidator extends Validator {
 

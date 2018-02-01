@@ -5,6 +5,9 @@ import com.fxlabs.fxt.bot.assertions.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public abstract class Validator {
 
     final Logger logger = LoggerFactory.getLogger(getClass());

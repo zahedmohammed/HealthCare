@@ -4,6 +4,9 @@ import org.apache.commons.codec.binary.Base64;
 
 import java.nio.charset.Charset;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public class AuthBuilder {
 
     public static String createBasicAuth(String username, String password) {

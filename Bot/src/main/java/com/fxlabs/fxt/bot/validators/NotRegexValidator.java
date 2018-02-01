@@ -3,6 +3,9 @@ package com.fxlabs.fxt.bot.validators;
 import com.fxlabs.fxt.bot.assertions.Context;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Component("notRegexValidator")
 public class NotRegexValidator extends Validator {
 
