@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public interface RunService extends GenericService<Run, String> {
 
     Response<Run> run(String projectJob, String region, String tags, String env, String suites);

@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 //@Service
 //@Transactional
 public class GenericServiceImpl<E, D, ID extends Serializable> implements GenericService<D, ID> {

@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Configuration
 public class AmqpConfig {
 

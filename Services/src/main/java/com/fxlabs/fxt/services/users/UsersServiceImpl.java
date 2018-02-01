@@ -21,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Service
 @Transactional
 public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.dto.users.Users, String> implements UsersService {

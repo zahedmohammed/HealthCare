@@ -14,6 +14,9 @@ import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Configuration
 //@ConditionalOnExpression("'${using.spring.schedulerFactory}'=='true'")
 public class JobConfig {

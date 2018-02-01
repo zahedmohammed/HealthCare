@@ -5,6 +5,9 @@ import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.users.UsersPassword;
 import com.fxlabs.fxt.services.base.GenericService;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public interface UsersService extends GenericService<Users, String> {
 
     public Response<Users> findByEmail(String email);

@@ -6,6 +6,9 @@ import org.springframework.data.domain.Pageable;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public interface GenericService<D, ID extends Serializable> {
     // CRUD
     public Response<D> save(D dto);
