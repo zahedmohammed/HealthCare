@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.fxlabs.fxt.rest.base.BaseController.JOBS_BASE;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @RestController
 @RequestMapping(JOBS_BASE)
 public class JobController extends BaseController<Job, String> {

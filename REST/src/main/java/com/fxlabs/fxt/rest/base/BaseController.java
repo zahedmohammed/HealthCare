@@ -13,6 +13,9 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public abstract class BaseController<D, ID extends Serializable> {
 
     public static final String API_BASE = "/api/v1";

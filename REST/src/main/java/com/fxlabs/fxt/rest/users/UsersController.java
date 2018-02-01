@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.fxlabs.fxt.rest.base.BaseController.USER_BASE;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @RestController
 @RequestMapping(USER_BASE)
 public class UsersController extends BaseController<Users, String> {

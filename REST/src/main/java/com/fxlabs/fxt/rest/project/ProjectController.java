@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.fxlabs.fxt.rest.base.BaseController.PROJECTS_BASE;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @RestController
 @RequestMapping(PROJECTS_BASE)
 public class ProjectController extends BaseController<Project, String> {
