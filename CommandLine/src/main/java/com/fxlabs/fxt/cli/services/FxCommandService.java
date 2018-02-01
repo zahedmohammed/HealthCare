@@ -359,7 +359,7 @@ public class FxCommandService {
         logger.info("test-suites successfully uploaded...");
     }
 
-    public void loadAndRun(String projectDir, String jobName, String region, String tags, String envName) {
+    public void loadAndRun(String projectDir, String jobName, String region, String tags, String envName, String suites) {
         Date start = new Date();
         //System.out.println("loading data...");
         if (StringUtils.isEmpty(projectDir)) {
@@ -370,7 +370,7 @@ public class FxCommandService {
         Date loadEnd = new Date();
         //System.out.println("running job...");
         dataSets = new HashSet<>();
-        runJob(jobId, region, tags, envName);
+        runJob(jobId, region, tags, envName, suites);
 
         System.out.println(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
@@ -405,8 +405,8 @@ public class FxCommandService {
     }
 
 
-    public void runJob(String jobId, String region, String tags, String envName) {
-        Run run = runRestRepository.run(jobId, region, tags, envName);
+    public void runJob(String jobId, String region, String tags, String envName, String suites) {
+        Run run = runRestRepository.run(jobId, region, tags, envName, suites);
         System.out.println("");
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 String.format("Running Job: %s Run: %s", jobId, run.getId()),
@@ -435,7 +435,7 @@ public class FxCommandService {
                 }
             }
 
-            //System.out.println (run.getId() + " " + page + " " + pageSize + " " + response.getTotalElements());
+            //System.out.println (run.getId() + " Total Tests: " + run.getTask().getTotalTests() + " Completed: " + response.getTotalElements());
 
             if (response.getTotalElements() < run.getTask().getTotalTests()) {
                 if (response.getTotalElements() > ((page + 1) * pageSize)) {

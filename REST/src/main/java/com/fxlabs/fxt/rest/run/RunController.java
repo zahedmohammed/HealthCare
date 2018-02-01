@@ -45,10 +45,11 @@ public class RunController extends BaseController<Run, String> {
     public Response<Run> run(@PathVariable("id") String id,
                              @RequestParam(value = "region", required = false) String region,
                              @RequestParam(value = "tags", required = false) String tags,
-                             @RequestParam(value = "env", required = false) String env) {
+                             @RequestParam(value = "env", required = false) String env,
+                             @RequestParam(value = "suites", required = false) String suites) {
 
 
-        return runService.run(id, region, tags, env);
+        return runService.run(id, region, tags, env, suites);
     }
 
 

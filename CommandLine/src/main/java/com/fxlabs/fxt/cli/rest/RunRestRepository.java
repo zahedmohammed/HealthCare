@@ -26,13 +26,13 @@ public class RunRestRepository extends GenericRestRespository<Run> {
         super(url + "/api/v1/runs", username, password, paramTypeRefMap.get(Run.class), paramTypeRefMap.get(Run[].class));
     }
 
-    public Run run(String id, String region, String tags, String env) {
+    public Run run(String id, String region, String tags, String env, String suites) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<Response<Run>> response = restTemplate.exchange(url + "/" + id + "?region={region}&env={env}&tags={tags}",
-                HttpMethod.POST, request, paramTypeRefMap.get(Run.class), region, env, tags);
+        ResponseEntity<Response<Run>> response = restTemplate.exchange(url + "/" + id + "?region={region}&env={env}&tags={tags}&suites={suites}",
+                HttpMethod.POST, request, paramTypeRefMap.get(Run.class), region, env, tags, suites);
 
         //logger.info(response.getBody());
         return response.getBody().getData();

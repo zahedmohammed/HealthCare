@@ -50,7 +50,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
 
-    public Response<com.fxlabs.fxt.dto.run.Run> run(String jobId, String region, String tags, String env) {
+    public Response<com.fxlabs.fxt.dto.run.Run> run(String jobId, String region, String tags, String env, String suites) {
         Response<Job> jobResponse = this.projectJobService.findById(jobId);
 
         // Create Run
@@ -74,6 +74,9 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         if (StringUtils.isNotEmpty(tags)) {
             attributes.put(RunConstants.TAGS, tags);
         }
+        if (StringUtils.isNotEmpty(suites)) {
+            attributes.put(RunConstants.SUITES, suites);
+        }
         run.setAttributes(attributes);
 
         // Create Task
@@ -85,6 +88,11 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         // TODO - find total tests by Tags
         Long totalTests = testSuiteRepository.countByProjectIdAndType(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE);
         task.setTotalTests(totalTests);
+
+        if (StringUtils.isNotEmpty(suites)) {
+            int total = StringUtils.split(suites, ",").length;
+            task.setTotalTests(new Long(total));
+        }
 
         run.setTask(task);
 

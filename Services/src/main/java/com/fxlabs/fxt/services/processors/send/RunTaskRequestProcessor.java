@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -60,6 +61,14 @@ public class RunTaskRequestProcessor {
             final String region = validateRegion(run);
             if (region == null) return;
 
+            final List<String> suites;
+            String _suite = run.getAttributes().get(RunConstants.SUITES);
+            if (!StringUtils.isEmpty(_suite)) {
+                String[] tokens = org.apache.commons.lang3.StringUtils.split(_suite, ",");
+                suites = Arrays.asList(tokens);
+            } else {
+                suites = null;
+            }
 
             logger.info("Sending task to region [{}]...", region);
 
@@ -70,6 +79,12 @@ public class RunTaskRequestProcessor {
                 //logger.info("Request {}", i.incrementAndGet());
 
                 try {
+
+                    // TODO - Replace with the query
+                    if (suites != null && !CollectionUtils.contains(suites.iterator(), testSuite.getName())) {
+                        return;
+                    }
+
                     BotTask task = new BotTask();
                     task.setId(run.getId());
                     task.setSuiteName(testSuite.getName());

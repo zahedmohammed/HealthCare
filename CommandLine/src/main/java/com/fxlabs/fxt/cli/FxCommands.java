@@ -38,9 +38,10 @@ public class FxCommands {
                        @ShellOption(defaultValue = "Default") String jobName,
                        @ShellOption(defaultValue = "") String region,
                        @ShellOption(defaultValue = "") String tags,
-                       @ShellOption(defaultValue = "") String envName) {
+                       @ShellOption(defaultValue = "") String envName,
+                       @ShellOption(defaultValue = "") String suites) {
 
-        service.loadAndRun(projectDir, jobName, region, tags, envName);
+        service.loadAndRun(projectDir, jobName, region, tags, envName, suites);
 
     }
 
