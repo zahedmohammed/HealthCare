@@ -13,6 +13,7 @@ import java.util.TimeZone;
  * @author Intesar Shannan Mohammed
  */
 public class AssertionLogger implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private static final String DATE_FORMAT = "yyyy-MM-dd KK:mm:ss.SSS";
     final Logger logger = LoggerFactory.getLogger(getClass());

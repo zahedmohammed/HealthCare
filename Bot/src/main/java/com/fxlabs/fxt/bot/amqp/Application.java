@@ -22,13 +22,15 @@ public class Application {
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
                                              MessageListenerAdapter listenerAdapter,
-                                             @Value("${fx.default.queue}") String queueName) {
+                                             @Value("${fx.default.queue}") String queueName,
+                                             @Value("${concurrentConsumers}") int concurrentConsumers,
+                                             @Value("${maxConcurrentConsumers}") int maxConcurrentConsumers) {
 
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
-        container.setConcurrentConsumers(10);
-        container.setMaxConcurrentConsumers(10);
+        container.setConcurrentConsumers(concurrentConsumers);
+        container.setMaxConcurrentConsumers(maxConcurrentConsumers);
         container.setDefaultRequeueRejected(false);
         container.setAcknowledgeMode(AcknowledgeMode.AUTO);
         container.setMessageListener(listenerAdapter);
