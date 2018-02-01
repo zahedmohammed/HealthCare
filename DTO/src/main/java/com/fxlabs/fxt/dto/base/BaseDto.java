@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

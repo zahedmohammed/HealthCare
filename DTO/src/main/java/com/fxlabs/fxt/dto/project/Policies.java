@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 
-//@SolrDocument(collection = "fx")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-//@SolrDocument(collection = "fx")
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

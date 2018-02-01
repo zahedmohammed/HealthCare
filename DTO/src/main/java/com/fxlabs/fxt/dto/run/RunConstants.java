@@ -1,5 +1,8 @@
 package com.fxlabs.fxt.dto.run;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public class RunConstants {
 
     public static final String REGION = "REGION";

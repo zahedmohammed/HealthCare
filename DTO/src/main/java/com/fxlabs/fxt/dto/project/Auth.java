@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
