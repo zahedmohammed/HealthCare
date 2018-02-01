@@ -18,7 +18,9 @@ public class Environment implements Serializable {
 
     private String name = "Default";
     private String refId;
+    private String description;
     private String baseUrl;
+    private boolean inactive = true;
 
     private List<Auth> auths;
 

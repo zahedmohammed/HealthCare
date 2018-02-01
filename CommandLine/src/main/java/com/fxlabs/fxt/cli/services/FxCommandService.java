@@ -15,6 +15,7 @@ import com.fxlabs.fxt.dto.run.TaskStatus;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,17 +67,20 @@ public class FxCommandService {
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
-            Config config = yamlMapper.readValue(new File(projectDir + "Fxfile"), Config.class);
+            File fxfile = FileUtils.getFile(new File(projectDir), "Fxfile.yml");
+
+            //new File(projectDir + "Fxfile.yml")
+            Config config = yamlMapper.readValue(fxfile, Config.class);
 
             //System.out.println(config);
 
             Date lastSync = null;
             Project project = getProject(config);
             if (project == null) {
-                System.out.println(String.format("Project [%s] doesn't exists", config.getName()));
+                System.out.println(String.format("Fxfile.yml file doesn't exists", config.getName()));
                 project = createProject(config);
             } else {
-                System.out.println(String.format("Project [%s] exists and last-synced on [%s]", config.getName(), project.getLastSync()));
+                System.out.println(String.format("Fxfile [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
                 lastSync = project.getLastSync();
             }
             //System.out.println(project);
@@ -105,7 +109,7 @@ public class FxCommandService {
             loadSuites(projectDir, yamlMapper, proj, lastSync);
 
             project.setLastSync(new Date());
-            updateProject(project);
+            updateProject(project, config);
 
             logger.info("Successful!");
 
@@ -144,8 +148,85 @@ public class FxCommandService {
         return project;
     }
 
-    private Project updateProject(Project project) {
+    private Project updateProject(Project project, Config config) {
+
+        project.setLicenses(config.getLicenses());
+        project.setDescription(config.getDescription());
+
+        List<Environment> environments = getEnvironments(config);
+        for (Environment environment : environments) {
+            boolean found = false;
+            for (Environment old : project.getEnvironments()) {
+                if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(environment.getName(), old.getRefId())) {
+                    old.setDeleted(environment.isDeleted());
+                    old.setName(environment.getName());
+                    old.setDescription(environment.getDescription());
+                    old.setBaseUrl(environment.getBaseUrl());
+
+                    List<Auth> list = new ArrayList<>();
+                    for (Auth credential : environment.getAuths()) {
+                        boolean authFound = false;
+                        for (Auth a : old.getAuths()) {
+                            if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(credential.getName(), a.getName())) {
+                                // update
+                                a.setAuthType(credential.getAuthType());
+                                a.setUsername(credential.getUsername());
+                                a.setPassword(credential.getPassword());
+                                authFound = true;
+                                break;
+                            }
+                        }
+                        if (!authFound) {
+                            // new auth
+                            Auth cred = new Auth();
+                            cred.setName(credential.getName());
+                            cred.setAuthType(credential.getAuthType());
+                            cred.setUsername(credential.getUsername());
+                            cred.setPassword(credential.getPassword());
+                            old.getAuths().add(cred);
+                        }
+
+                    }
+                    //old.setAuths(list);
+
+
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                Environment e = new Environment();
+                e = environment;
+                project.getEnvironments().add(e);
+            }
+        }
+        //project.setEnvironments(environments);
+
+        List<Job> jobs = getJobs(config);
+        for (Job job : jobs) {
+            boolean found = false;
+            for (Job old : project.getJobs()) {
+                if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(job.getName(), old.getRefId())) {
+                    old.setTags(job.getTags());
+                    old.setEnvironment(job.getEnvironment());
+                    old.setDescription(job.getDescription());
+                    old.setName(job.getName());
+                    old.setRegions(job.getRegions());
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                Job j = new Job();
+                j = job;
+                project.getJobs().add(j);
+            }
+        }
+
+        //project.setJobs(jobs);
+
         project = projectRepository.update(project);
+
         logger.info("project created with id [{}]...", project.getId());
         return project;
     }
@@ -158,7 +239,9 @@ public class FxCommandService {
         for (com.fxlabs.fxt.cli.beans.Environment environment : config.getEnvironments()) {
             Environment env = new Environment();
             env.setName(environment.getName());
+            env.setDeleted(environment.isInactive());
             env.setBaseUrl(environment.getBaseUrl());
+            env.setDescription(environment.getDescription());
 
             //env.setProject(proj);
 
