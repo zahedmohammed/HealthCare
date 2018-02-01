@@ -20,7 +20,7 @@ import java.util.List;
 public class Project extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="org_id")
+    @JoinColumn(name = "org_id")
     private Org org;
 
     private String name;

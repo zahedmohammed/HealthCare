@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.bot.amqp;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
@@ -11,6 +11,10 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(scanBasePackages = {"com.fxlabs.fxt.bot"})
 public class Application {
+
+    public static void main(String[] args) throws InterruptedException {
+        SpringApplication.run(Application.class, args);
+    }
 
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
@@ -31,10 +35,6 @@ public class Application {
     @Bean
     MessageListenerAdapter listenerAdapter(Receiver receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        SpringApplication.run(Application.class, args);
     }
 
 }

@@ -1,12 +1,11 @@
 package com.fxlabs.fxt.services.processors.receiver;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
-import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
-import com.fxlabs.fxt.dao.repository.jpa.TestSuiteResponseRepository;
-import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestSuiteResponseRepository;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Component

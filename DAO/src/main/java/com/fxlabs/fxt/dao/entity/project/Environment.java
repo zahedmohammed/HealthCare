@@ -28,7 +28,7 @@ public class Environment extends BaseEntity {
     private List<Auth> auths;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="project_id")
+    @JoinColumn(name = "project_id")
     private Project project;
 
 

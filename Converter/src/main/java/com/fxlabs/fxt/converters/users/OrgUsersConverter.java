@@ -2,7 +2,6 @@ package com.fxlabs.fxt.converters.users;
 
 
 import com.fxlabs.fxt.converters.base.BaseConverter;
-import com.fxlabs.fxt.dao.entity.users.Org;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
 import org.mapstruct.Mapper;
 

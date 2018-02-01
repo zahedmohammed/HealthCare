@@ -17,11 +17,11 @@ import javax.persistence.*;
 public class ProjectUsers extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="project_id")
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="users_id")
+    @JoinColumn(name = "users_id")
     private Users users;
 
     @Enumerated(EnumType.STRING)

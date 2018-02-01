@@ -1,14 +1,14 @@
 package com.fxlabs.fxt.rest.run;
 
-import com.fxlabs.fxt.dto.run.TestSuiteResponse;
-import com.fxlabs.fxt.dto.run.Run;
-import com.fxlabs.fxt.rest.base.BaseController;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.run.Run;
+import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.rest.base.BaseController;
 import com.fxlabs.fxt.services.run.RunService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +30,7 @@ public class RunController extends BaseController<Run, String> {
         this.testSuiteResponseService = testSuiteResponseService;
     }
 
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}/test-suites", method = RequestMethod.GET)
     public Response<List<TestSuiteResponse>> run(@PathVariable("id") String id,
                                                  @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
@@ -39,6 +40,7 @@ public class RunController extends BaseController<Run, String> {
     }
 
 
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public Response<Run> run(@PathVariable("id") String id,
                              @RequestParam(value = "region", required = false) String region,

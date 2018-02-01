@@ -1,9 +1,12 @@
 package com.fxlabs.fxt.cli.rest;
 
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.*;
-import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.dto.project.Environment;
+import com.fxlabs.fxt.dto.project.Job;
+import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.dto.run.Run;
+import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
 public class GenericRestRespository<T> {
-
-    final Logger logger = LoggerFactory.getLogger(getClass());
-
 
     public final static HashMap<Class, ParameterizedTypeReference> paramTypeRefMap = new HashMap<>();
 
@@ -50,6 +51,7 @@ public class GenericRestRespository<T> {
         });
     }
 
+    final Logger logger = LoggerFactory.getLogger(getClass());
     protected String url;
     protected String username;
     protected String password;

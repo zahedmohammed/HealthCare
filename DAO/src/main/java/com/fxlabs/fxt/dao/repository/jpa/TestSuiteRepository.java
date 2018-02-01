@@ -4,8 +4,6 @@ import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 

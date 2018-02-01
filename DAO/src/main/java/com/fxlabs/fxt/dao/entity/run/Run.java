@@ -19,7 +19,7 @@ import java.util.Map;
 public class Run extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name="job_id")
+    @JoinColumn(name = "job_id")
     private Job job;
 
     private Long runId;

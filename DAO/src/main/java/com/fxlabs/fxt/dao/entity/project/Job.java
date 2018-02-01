@@ -22,7 +22,7 @@ public class Job extends BaseEntity {
     private String description;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="project_id")
+    @JoinColumn(name = "project_id")
     private Project project;
 
     //@ManyToOne(cascade = CascadeType.REFRESH)

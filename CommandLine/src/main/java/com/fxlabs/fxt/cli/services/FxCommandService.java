@@ -3,14 +3,16 @@ package com.fxlabs.fxt.cli.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.cli.beans.Config;
-import com.fxlabs.fxt.cli.rest.*;
+import com.fxlabs.fxt.cli.rest.ProjectRestRepository;
+import com.fxlabs.fxt.cli.rest.RunRestRepository;
+import com.fxlabs.fxt.cli.rest.TestSuiteRestRepository;
 import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
-import com.fxlabs.fxt.dto.run.TaskStatus;
-import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
+import com.fxlabs.fxt.dto.run.TaskStatus;
+import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -19,7 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.shell.table.*;
+import org.springframework.shell.table.BeanListTableModel;
+import org.springframework.shell.table.BorderStyle;
+import org.springframework.shell.table.Table;
+import org.springframework.shell.table.TableBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -36,15 +41,13 @@ public class FxCommandService {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     // Fx server connection details
-
+    Set<TestSuiteResponse> dataSets = new HashSet<>();
     @Autowired
     private ProjectRestRepository projectRepository;
     @Autowired
     private TestSuiteRestRepository dataSetRestRepository;
     @Autowired
     private RunRestRepository runRestRepository;
-
-    Set<TestSuiteResponse> dataSets = new HashSet<>();
 
 
     public FxCommandService() {

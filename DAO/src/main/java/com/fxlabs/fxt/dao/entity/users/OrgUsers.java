@@ -16,11 +16,11 @@ import javax.persistence.*;
 public class OrgUsers extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="org_id")
+    @JoinColumn(name = "org_id")
     private Org org;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="users_id")
+    @JoinColumn(name = "users_id")
     private Users users;
 
     @Enumerated(EnumType.STRING)

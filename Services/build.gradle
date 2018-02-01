@@ -30,9 +30,9 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-validator/commons-validator
     compile group: 'commons-validator', name: 'commons-validator', version: '1.6'
 
-    compile project (":DAO")
-    compile project (":DTO")
-    compile project (":Converter")
+    compile project(":DAO")
+    compile project(":DTO")
+    compile project(":Converter")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 repositories {

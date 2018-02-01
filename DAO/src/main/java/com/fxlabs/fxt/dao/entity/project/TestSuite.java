@@ -17,7 +17,7 @@ import java.util.List;
 public class TestSuite extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="project_id")
+    @JoinColumn(name = "project_id")
     private Project project;
 
     private String name;

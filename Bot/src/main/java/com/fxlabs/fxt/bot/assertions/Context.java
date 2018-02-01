@@ -113,30 +113,6 @@ public class Context implements Serializable {
         return this;
     }
 
-    public void setResult(String result) {
-        if (parent != null) {
-            if (StringUtils.equalsIgnoreCase(this.parent.result, "fail")
-                    || StringUtils.equalsIgnoreCase(this.parent.result, "skip")
-                    || StringUtils.isEmpty(result)) {
-
-            } else {
-                this.parent.result = result;
-                // log
-                this.log(this.parent.suitename, String.format("Result [%s]", result));
-            }
-        } else {
-            if (StringUtils.equalsIgnoreCase(this.result, "fail")
-                    || StringUtils.equalsIgnoreCase(this.result, "skip")
-                    || StringUtils.isEmpty(result)) {
-
-            } else {
-                this.result = result;
-                // log
-                this.log(this.suitename, String.format("Result [%s]", result));
-            }
-        }
-    }
-
     private void log(String suite, String msg) {
         if ((this.parent != null && this.parent.logType == AssertionLogger.LogType.DEBUG) ||
                 this.logType == AssertionLogger.LogType.DEBUG) {
@@ -189,6 +165,30 @@ public class Context implements Serializable {
             return this.parent.result;
         }
         return result;
+    }
+
+    public void setResult(String result) {
+        if (parent != null) {
+            if (StringUtils.equalsIgnoreCase(this.parent.result, "fail")
+                    || StringUtils.equalsIgnoreCase(this.parent.result, "skip")
+                    || StringUtils.isEmpty(result)) {
+
+            } else {
+                this.parent.result = result;
+                // log
+                this.log(this.parent.suitename, String.format("Result [%s]", result));
+            }
+        } else {
+            if (StringUtils.equalsIgnoreCase(this.result, "fail")
+                    || StringUtils.equalsIgnoreCase(this.result, "skip")
+                    || StringUtils.isEmpty(result)) {
+
+            } else {
+                this.result = result;
+                // log
+                this.log(this.suitename, String.format("Result [%s]", result));
+            }
+        }
     }
 
     public String get(String key) {

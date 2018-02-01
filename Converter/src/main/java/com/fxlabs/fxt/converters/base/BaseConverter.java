@@ -2,7 +2,6 @@ package com.fxlabs.fxt.converters.base;
 
 
 import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
 
 import java.util.List;
 import java.util.Set;

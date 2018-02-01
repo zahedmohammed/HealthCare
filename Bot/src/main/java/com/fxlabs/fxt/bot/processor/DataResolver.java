@@ -17,9 +17,8 @@ import java.util.regex.Pattern;
 @Component
 public class DataResolver {
 
-    final Logger logger = LoggerFactory.getLogger(getClass());
     final static String PATTERN = "\\{\\{(.*?)\\}\\}";
-
+    final Logger logger = LoggerFactory.getLogger(getClass());
     private OperandEvaluator evaluator;
 
     @Autowired

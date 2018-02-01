@@ -1,8 +1,8 @@
 package com.fxlabs.fxt.bot.processor;
 
 
-import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
+import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.validators.OperandEvaluator;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.lang3.StringUtils;

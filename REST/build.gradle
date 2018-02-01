@@ -40,7 +40,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-websocket')
     compile('org.springframework.boot:spring-boot-starter-security')
 
-    compile project (":Services")
+    compile project(":Services")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

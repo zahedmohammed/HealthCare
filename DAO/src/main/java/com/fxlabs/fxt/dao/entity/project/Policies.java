@@ -1,15 +1,11 @@
 package com.fxlabs.fxt.dao.entity.project;
 
-import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.util.Date;
 
 @Embeddable
 @Data

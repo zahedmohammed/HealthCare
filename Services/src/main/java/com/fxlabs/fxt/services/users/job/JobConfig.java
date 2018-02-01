@@ -1,10 +1,5 @@
 package com.fxlabs.fxt.services.users.job;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
-
-import com.fxlabs.fxt.services.processors.send.RunTaskRequestProcessor;
 import com.fxlabs.fxt.services.processors.send.SendRequestJob;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -12,9 +7,12 @@ import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 @Configuration
 //@ConditionalOnExpression("'${using.spring.schedulerFactory}'=='true'")
