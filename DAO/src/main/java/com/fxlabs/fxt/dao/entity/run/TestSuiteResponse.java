@@ -11,6 +11,10 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import java.util.Date;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
+
 @Document(indexName = "fxindex")
 @Entity
 @Data

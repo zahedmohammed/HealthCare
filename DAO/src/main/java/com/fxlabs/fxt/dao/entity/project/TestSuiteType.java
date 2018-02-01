@@ -1,5 +1,8 @@
 package com.fxlabs.fxt.dao.entity.project;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public enum TestSuiteType {
 
     SUITE("Suite"), ABSTRACT("Abstract");

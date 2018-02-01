@@ -10,6 +10,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.util.Date;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
+
 @Embeddable
 @Data
 @AllArgsConstructor

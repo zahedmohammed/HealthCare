@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public interface ProjectRepository extends JpaRepository<Project, String> {
 
     Optional<Project> findByNameAndCreatedBy(String name, String createdBy);

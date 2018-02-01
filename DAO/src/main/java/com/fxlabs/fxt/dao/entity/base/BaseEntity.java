@@ -13,6 +13,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)

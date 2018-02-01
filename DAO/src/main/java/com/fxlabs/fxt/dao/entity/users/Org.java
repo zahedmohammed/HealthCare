@@ -10,6 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
+
 @Entity
 @Data
 @AllArgsConstructor

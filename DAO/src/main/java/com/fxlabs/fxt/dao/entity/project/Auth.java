@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
-//@SolrDocument(collection = "fx")
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Embeddable
 @Data
 @AllArgsConstructor

@@ -11,6 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Entity
 @Data
 @AllArgsConstructor

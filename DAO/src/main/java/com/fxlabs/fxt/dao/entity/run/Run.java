@@ -11,6 +11,10 @@ import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
+
 @Entity
 @Data
 @AllArgsConstructor

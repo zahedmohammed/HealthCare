@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public interface UsersPasswordRepository extends JpaRepository<UsersPassword, String> {
 
     public Optional<UsersPassword> findByUsersEmailAndActive(String email, Boolean active);

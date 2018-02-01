@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public interface TestSuiteRepository extends JpaRepository<TestSuite, String> {
 
     Stream<TestSuite> findByProjectIdAndType(String projectId, TestSuiteType type);
