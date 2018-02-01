@@ -39,6 +39,41 @@ public class CleanUpProcessor {
     }
 
     public void process(BotTask task, Context parentContext, String parentSuite) {
+        if (task.getPolicies() != null && task.getPolicies().getRepeat() != null && task.getPolicies().getRepeat() > 0) {
+            for (int i = 0; i < task.getPolicies().getRepeat(); i++) {
+                run(task, parentContext, parentSuite);
+
+                if (task.getPolicies().getRepeatDelay() != null && task.getPolicies().getRepeatDelay() > 0) {
+                    try {
+                        Thread.sleep(task.getPolicies().getRepeatDelay());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else if (task.getPolicies() != null && task.getPolicies().getRepeatOnFailure() != null && task.getPolicies().getRepeatOnFailure() > 0) {
+            for (int i = 0; i < task.getPolicies().getRepeatOnFailure(); i++) {
+
+                run(task, parentContext, parentSuite);
+
+                if (StringUtils.equalsIgnoreCase(parentContext.getResult(), "pass")) {
+                    break;
+                }
+                if (task.getPolicies().getRepeatDelay() != null && task.getPolicies().getRepeatDelay() > 0) {
+                    try {
+                        Thread.sleep(task.getPolicies().getRepeatDelay());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            run(task, parentContext, parentSuite);
+
+        }
+    }
+
+    private void run(BotTask task, Context parentContext, String parentSuite) {
 
         if (task == null || task.getEndpoint() == null) {
             return;
