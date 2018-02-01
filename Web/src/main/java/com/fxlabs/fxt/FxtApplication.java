@@ -6,6 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @SpringBootApplication
 @EnableScheduling
 @EnableJpaRepositories(basePackages = "com.fxlabs.fxt.dao.repository.jpa")

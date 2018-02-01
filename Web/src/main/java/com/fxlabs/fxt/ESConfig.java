@@ -3,7 +3,9 @@ package com.fxlabs.fxt;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.fxlabs.fxt.dao.repository.es")
 public class ESConfig {

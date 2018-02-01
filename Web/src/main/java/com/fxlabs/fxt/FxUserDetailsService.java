@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 @Service
 public class FxUserDetailsService implements UserDetailsService {
 

@@ -7,6 +7,9 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Optional;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public class AuditorAwareImpl implements AuditorAware<String> {
 
     private Optional<String> auditor = Optional.empty();

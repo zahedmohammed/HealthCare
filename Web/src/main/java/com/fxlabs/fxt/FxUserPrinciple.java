@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author Intesar Shannan Mohammed
+ */
 public class FxUserPrinciple implements UserDetails {
 
     private static final long serialVersionUID = 1L;
