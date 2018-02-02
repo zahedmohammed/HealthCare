@@ -8,15 +8,17 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
  */
 @Document(indexName = "fxprojectfile")
-@JsonIgnoreProperties( value = {"content"} )
+@JsonIgnoreProperties(value = {"content"})
 @Entity
 @Data
 @AllArgsConstructor
@@ -29,6 +31,8 @@ public class ProjectFile extends BaseEntity {
     private String projectId;
 
     private String filename;
+
+    private String checksum;
 
     @Lob
     private String content;

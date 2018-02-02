@@ -2,6 +2,7 @@ package com.fxlabs.fxt.cli.rest;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -34,6 +37,18 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
 
         //logger.info(response.getBody());
         return response.getBody().getData();
+
+    }
+
+    public Response<List<ProjectFile>> findProjectChecksums(String projectId) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<Response<List<ProjectFile>>> response = restTemplate.exchange(url + "/" + projectId + "/project-checksums", HttpMethod.GET, request, paramTypeRefMap.get(ProjectFile[].class));
+
+        //logger.info(response.getBody());
+        return response.getBody();
 
     }
 

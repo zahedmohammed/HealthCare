@@ -11,6 +11,7 @@ import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.dto.run.TaskStatus;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -72,7 +73,7 @@ public class FxCommandService {
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
-            File fxfile = FileUtils.getFile(new File(projectDir), "Fxfile.yml");
+            File fxfile = FileUtils.getFile(new File(projectDir), "Fxfile.yaml");
 
             //new File(projectDir + "Fxfile.yml")
             Config config = yamlMapper.readValue(fxfile, Config.class);
@@ -83,11 +84,11 @@ public class FxCommandService {
             Project project = getProject(config);
 
             if (project == null) {
-                System.out.println(String.format("Fxfile.yml project [%s] not found...creating new", config.getName()));
+                System.out.println(String.format("Fxfile.yaml project [%s] not found...creating new", config.getName()));
                 project = createProject(config);
                 System.out.println("Project id: " + project.getId());
             } else {
-                System.out.println(String.format("Fxfile.yml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
+                System.out.println(String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
                 lastSync = project.getLastSync();
                 project.setLicenses(config.getLicenses());
                 project.setDescription(config.getDescription());
@@ -96,6 +97,8 @@ public class FxCommandService {
                 Long lastModified = fxfile.lastModified();
                 project.getProps().put(Project.FILE_CONTENT, fxfileContent);
                 project.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
+                project.getProps().put(Project.FILE_NAME, fxfile.getName());
+                //project.getProps().put(Project.MD5_HEX, checksum);
 
                 //project.setLastSync(new Date());
 
@@ -105,11 +108,9 @@ public class FxCommandService {
                     System.err.println(projectResponse.getMessages());
                 }
                 System.out.println("Project id: " + projectResponse.getData().getId());
-                System.out.println ("Project updated...");
+                System.out.println("Project updated...");
             }
             //System.out.println(project);
-
-
 
 
             project = updateProject(project, config);
@@ -140,9 +141,6 @@ public class FxCommandService {
                         AnsiColor.DEFAULT));
                 return null;
             }
-
-
-
 
 
             logger.info("Successful!");
@@ -199,7 +197,7 @@ public class FxCommandService {
 
         if (olds.isErrors()) {
             System.err.println(olds.getMessages());
-        } else if (!CollectionUtils.isEmpty(olds.getData())){
+        } else if (!CollectionUtils.isEmpty(olds.getData())) {
             oldEnvs.addAll(olds.getData());
         }
         for (Environment environment : environments) {
@@ -249,7 +247,7 @@ public class FxCommandService {
             }
         }
         envRestRepository.saveAll(oldEnvs);
-        System.out.println ("Env updated...");
+        System.out.println("Env updated...");
         //project.setEnvironments(environments);
 
         List<Job> jobs = getJobs(config, project.getId());
@@ -259,7 +257,7 @@ public class FxCommandService {
 
         if (oldJobsResponse.isErrors()) {
             System.err.println(oldJobsResponse.getMessages());
-        } else if (!CollectionUtils.isEmpty(oldJobsResponse.getData())){
+        } else if (!CollectionUtils.isEmpty(oldJobsResponse.getData())) {
             oldJobs.addAll(oldJobsResponse.getData());
         }
 
@@ -283,7 +281,7 @@ public class FxCommandService {
             }
         }
         jobRestRepository.saveAll(oldJobs);
-        System.out.println ("Jobs updated...");
+        System.out.println("Jobs updated...");
 
         //project.setJobs(jobs);
         //System.out.println(project);
@@ -367,19 +365,40 @@ public class FxCommandService {
 
 
         File dataFolder = new File(projectDir + "test-suites");
-        Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"yml", "yaml", "YML", "YAML"}, true);
+        Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"yaml"}, true);
+
+        final Response<List<ProjectFile>> projectFilesResponse = this.projectRepository.findProjectChecksums(proj.getId());
+        final List<ProjectFile> projectFiles = projectFilesResponse.getData();
 
         AtomicInteger totalFiles = new AtomicInteger(0);
         files.parallelStream().forEach(file -> {
 
             TestSuite testSuite = null;
+            String testSuiteContent = null;
+            final String checksum;
+            try {
+                testSuiteContent = FileUtils.readFileToString(file, "UTF-8");
+            } catch (IOException e) {
+                logger.warn(e.getLocalizedMessage());
+                System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
+            }
+
             try {
                 //System.out.println(String.format("File [%s] last-modified [%s] last-sync [%s]", file.getName(), new Date(file.lastModified()), lastSync));
-                if (lastSync != null && new Date(file.lastModified()).before(lastSync)) {
-                    System.out.println(AnsiOutput.toString(AnsiColor.WHITE,
-                            String.format("Test-Suite: %s [Up-to-date]", file.getName()),
-                            AnsiColor.DEFAULT));
-                    return;
+                checksum = DigestUtils.md5Hex(testSuiteContent);
+
+                if (projectFiles != null && !CollectionUtils.isEmpty(projectFiles)) {
+                    //System.out.println(projectFiles);
+                    //System.out.println(checksum);
+                    Optional<ProjectFile> projectFileOptional = projectFiles.stream().filter(pf -> org.apache.commons.lang3.StringUtils.equals(checksum, pf.getChecksum()))
+                            .findFirst();
+
+                    if (projectFileOptional.isPresent()) {
+                        System.out.println(AnsiOutput.toString(AnsiColor.WHITE,
+                                String.format("Test-Suite: %s [Up-to-date]", file.getName()),
+                                AnsiColor.DEFAULT));
+                        return;
+                    }
                 }
                 testSuite = yamlMapper.readValue(file, TestSuite.class);
             } catch (IOException e) {
@@ -391,35 +410,33 @@ public class FxCommandService {
             }
             //logger.info("ds size: [{}]", values.length);
 
-            logger.info("ds : [{}]", testSuite.toString());
 
             if (StringUtils.isEmpty(testSuite.getName())) {
                 testSuite.setName(FilenameUtils.getBaseName(file.getName()));
             }
 
             // set file content
-            String testSuiteContent = null;
-            try {
-                testSuiteContent = FileUtils.readFileToString(file, "UTF-8");
-                Long lastModified = file.lastModified();
-                testSuite.setProps(new HashMap<>());
-                testSuite.getProps().put(Project.FILE_CONTENT, testSuiteContent);
-                testSuite.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
-            } catch (IOException e) {
-                logger.warn(e.getLocalizedMessage());
-                System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
-            }
+
+
+            Long lastModified = file.lastModified();
+            testSuite.setProps(new HashMap<>());
+            testSuite.getProps().put(Project.FILE_CONTENT, testSuiteContent);
+            testSuite.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
+            testSuite.getProps().put(Project.MD5_HEX, checksum);
+            testSuite.getProps().put(Project.FILE_NAME, file.getName());
+
 
             testSuite.setProjectId(proj.getId());
             try {
-                if (lastSync == null) {
-                    testSuiteRestRepository.save(testSuite);
-                } else {
-                    System.out.println("Repeat: " + testSuite.getPolicies().getRepeat());
-                    System.out.println("RepeatOnFailure: " + testSuite.getPolicies().getRepeatOnFailure());
-                    System.out.println("RepeatDelay: " + testSuite.getPolicies().getRepeatDelay());
-                    testSuiteRestRepository.update(testSuite);
-                }
+                //if (lastSync == null) {
+                //System.out.println("ds : [{}]" + testSuite.toString());
+                testSuiteRestRepository.save(testSuite);
+                //} else {
+                //System.out.println("Repeat: " + testSuite.getPolicies().getRepeat());
+                //System.out.println("RepeatOnFailure: " + testSuite.getPolicies().getRepeatOnFailure());
+                //System.out.println("RepeatDelay: " + testSuite.getPolicies().getRepeatDelay());
+                //testSuiteRestRepository.update(testSuite);
+                //}
             } catch (Exception e) {
                 logger.warn(e.getLocalizedMessage());
                 System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));

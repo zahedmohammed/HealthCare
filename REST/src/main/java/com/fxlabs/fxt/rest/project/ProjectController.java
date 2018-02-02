@@ -2,14 +2,16 @@ package com.fxlabs.fxt.rest.project;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.rest.base.BaseController;
+import com.fxlabs.fxt.services.project.ProjectFileService;
 import com.fxlabs.fxt.services.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.fxlabs.fxt.rest.base.BaseController.PROJECTS_BASE;
 
@@ -20,10 +22,13 @@ import static com.fxlabs.fxt.rest.base.BaseController.PROJECTS_BASE;
 @RequestMapping(PROJECTS_BASE)
 public class ProjectController extends BaseController<Project, String> {
 
+    private ProjectFileService projectFileService;
+
     @Autowired
     public ProjectController(
-            ProjectService projectService) {
+            ProjectService projectService, ProjectFileService projectFileService) {
         super(projectService);
+        this.projectFileService = projectFileService;
     }
 
     @Secured(ROLE_USER)
@@ -32,5 +37,12 @@ public class ProjectController extends BaseController<Project, String> {
         return ((ProjectService) service).findByName(name, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}/project-checksums", method = RequestMethod.GET)
+    public Response<List<ProjectFile>> findByProjectId(@PathVariable("id") String projectId, @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                       @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return projectFileService.findByProjectId(projectId, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor(), new PageRequest(page, pageSize));
+    }
 
 }

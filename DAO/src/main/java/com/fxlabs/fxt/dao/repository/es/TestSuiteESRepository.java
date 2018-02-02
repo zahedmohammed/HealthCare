@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.dao.repository.es;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
-import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;
@@ -15,10 +14,14 @@ public interface TestSuiteESRepository extends ElasticsearchRepository<TestSuite
     //Page<TestSuiteResponse> findByRunId(String id, Pageable pageable);
 
     Long countByProjectIdAndTypeAndTagsIn(String projectId, String type, List<String> tags);
+
     Long countByProjectIdAndType(String projectId, String type);
+
     Long countByProjectId(String projectId);
 
     Stream<TestSuite> findByProjectIdAndTypeAndTagsIn(String projectId, String type, List<String> tags);
+
     Stream<TestSuite> findByProjectIdAndType(String projectId, String type);
+
     Stream<TestSuite> findByProjectIdAndNameIn(String projectId, List<String> name);
 }

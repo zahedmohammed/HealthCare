@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -45,9 +46,10 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
         String fileName = dto.getProps().get(Project.FILE_NAME);
         String content = dto.getProps().get(Project.FILE_CONTENT);
         String modified = dto.getProps().get(Project.MODIFIED_DATE);
+        String md5Hex = dto.getProps().get(Project.MD5_HEX);
 
 
-        return saveProjectFile(projectId, fileName, content, modified);
+        return saveProjectFile(projectId, fileName, content, modified, md5Hex);
     }
 
     @Override
@@ -64,11 +66,18 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
         String fileName = dto.getProps().get(Project.FILE_NAME);
         String content = dto.getProps().get(Project.FILE_CONTENT);
         String modified = dto.getProps().get(Project.MODIFIED_DATE);
+        String md5Hex = dto.getProps().get(Project.MD5_HEX);
 
-        return saveProjectFile(projectId, fileName, content, modified);
+        return saveProjectFile(projectId, fileName, content, modified, md5Hex);
     }
 
-    private Response<ProjectFile> saveProjectFile(String projectId, String fileName, String content, String modified) {
+    @Override
+    public Response<List<ProjectFile>> findByProjectId(String projectId, String user, org.springframework.data.domain.Pageable pageable) {
+        List<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFiles = this.projectFileESRepository.findByProjectId(projectId, pageable);
+        return new Response<>(converter.convertToDtos(projectFiles));
+    }
+
+    private Response<ProjectFile> saveProjectFile(String projectId, String fileName, String content, String modified, String md5Hex) {
         Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileOptional = projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(projectId, fileName);
         com.fxlabs.fxt.dao.entity.project.ProjectFile projectFile = null;
         if (projectFileOptional.isPresent()) {
@@ -83,9 +92,10 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
 
         projectFile.setContent(content);
         projectFile.setModified(new Date(Long.parseLong(modified)));
+        projectFile.setChecksum(md5Hex);
 
         Response<ProjectFile> projectFileResponse = save(converter.convertToDto(projectFile));
-        projectFileESRepository.save(projectFile);
+        projectFileESRepository.save(converter.convertToEntity(projectFileResponse.getData()));
 
 
         return projectFileResponse;

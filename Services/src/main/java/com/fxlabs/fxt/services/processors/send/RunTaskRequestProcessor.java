@@ -15,7 +15,6 @@ import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.RunConstants;
 import com.fxlabs.fxt.services.amqp.sender.BotClientService;
-import com.fxlabs.fxt.services.project.EnvironmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

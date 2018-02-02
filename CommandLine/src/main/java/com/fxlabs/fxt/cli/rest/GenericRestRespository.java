@@ -1,10 +1,7 @@
 package com.fxlabs.fxt.cli.rest;
 
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.Environment;
-import com.fxlabs.fxt.dto.project.Job;
-import com.fxlabs.fxt.dto.project.Project;
-import com.fxlabs.fxt.dto.project.TestSuite;
+import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import org.apache.commons.codec.binary.Base64;
@@ -51,6 +48,8 @@ public class GenericRestRespository<T> {
         paramTypeRefMap.put(Run[].class, new ParameterizedTypeReference<Response<List<Run>>>() {
         });
         paramTypeRefMap.put(TestSuiteResponse[].class, new ParameterizedTypeReference<Response<List<TestSuiteResponse>>>() {
+        });
+        paramTypeRefMap.put(ProjectFile[].class, new ParameterizedTypeReference<Response<List<ProjectFile>>>() {
         });
     }
 

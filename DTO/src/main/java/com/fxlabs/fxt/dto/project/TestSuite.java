@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.dto.project;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
-import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,9 +35,6 @@ public class TestSuite extends BaseDto<String> {
     private List<String> cleanup;
 
     private Policies policies;
-
-    public static final String FILE_CONTENT = "FILE_CONTENT";
-    public static final String MODIFIED_DATE = "MODIFIED_DATE";
 
     private Map<String, String> props = new HashMap<>();
 

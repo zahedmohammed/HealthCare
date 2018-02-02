@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.dto.project;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
-import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +20,7 @@ public class ProjectFile extends BaseDto<String> {
     private String projectId;
     private String filename;
     private String content;
+    private String checksum;
     private Date modified;
 
 

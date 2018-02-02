@@ -20,5 +20,4 @@ public class TestSuiteRestRepository extends GenericRestRespository<TestSuite> {
 
     }
 
-
 }

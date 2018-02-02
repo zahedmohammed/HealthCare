@@ -23,7 +23,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String PROJECTS_BASE = API_BASE + "/projects";
     public static final String JOBS_BASE = API_BASE + "/jobs";
     public static final String ENVS_BASE = API_BASE + "/envs";
-    public static final String PROJECT_DATASETS_BASE = API_BASE + "/test-suites";
+    public static final String TEST_SUITES_BASE = API_BASE + "/test-suites";
     public static final String PROJECT_RUNS_BASE = API_BASE + "/runs";
     public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
     public static final String ROLE_USER = "ROLE_USER";
@@ -33,6 +33,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public final String PAGE_SIZE_PARAM = "pageSize";
     public final String DEFAULT_PAGE_VALUE = "0";
     public final String DEFAULT_PAGE_SIZE_VALUE = "20";
+    public final String DEFAULT_MAX_PAGE_SIZE_VALUE = "100";
     protected GenericService<D, ID> service;
 
     protected BaseController(GenericService<D, ID> service) {

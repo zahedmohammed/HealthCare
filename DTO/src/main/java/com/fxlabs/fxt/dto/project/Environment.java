@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.dto.project;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
-import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -2,7 +2,6 @@ package com.fxlabs.fxt.cli.rest;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Job;
-import com.fxlabs.fxt.dto.project.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

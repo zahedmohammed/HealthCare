@@ -50,7 +50,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         testSuiteESRepository.save(entity);
 
         // project_file
-        this.projectFileService.saveFromTestSuite(converter.convertToDto(entity), ts.getProjectId());
+        this.projectFileService.saveFromTestSuite(testSuite, ts.getProjectId());
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 
