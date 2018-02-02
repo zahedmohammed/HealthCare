@@ -21,9 +21,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class TestSuite extends BaseEntity {
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "project_id")
-    private Project project;
+    //@ManyToOne(cascade = CascadeType.REFRESH)
+    //@JoinColumn(name = "project_id")
+    private String projectId;
 
     private String name;
 

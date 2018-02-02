@@ -8,12 +8,14 @@ import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.RunConstants;
 import com.fxlabs.fxt.services.amqp.sender.BotClientService;
+import com.fxlabs.fxt.services.project.EnvironmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -40,15 +42,17 @@ public class RunTaskRequestProcessor {
     private RunRepository runRepository;
     private PoliciesConverter policiesConverter;
     private TestSuiteESRepository testSuiteESRepository;
+    private EnvironmentRepository environmentRepository;
 
     public RunTaskRequestProcessor(BotClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter,
-                                   TestSuiteESRepository testSuiteESRepository) {
+                                   TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository) {
         this.botClientService = botClientService;
         this.testSuiteRepository = testSuiteRepository;
         this.runRepository = runRepository;
         this.policiesConverter = policiesConverter;
         this.testSuiteESRepository = testSuiteESRepository;
+        this.environmentRepository = environmentRepository;
     }
 
     public void process() {
@@ -91,11 +95,11 @@ public class RunTaskRequestProcessor {
             // TODO - Filter Suites by Overridden-suites, Overridden-Tags, tags.
             Stream<TestSuite> list;
             if (suites != null) {
-                list = testSuiteESRepository.findByProjectIdAndNameIn(run.getJob().getProject().getId(), suites);
+                list = testSuiteESRepository.findByProjectIdAndNameIn(run.getJob().getProjectId(), suites);
             } else if (!CollectionUtils.isEmpty(tags)) {
-                list = testSuiteESRepository.findByProjectIdAndTypeAndTagsIn(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString(), tags);
+                list = testSuiteESRepository.findByProjectIdAndTypeAndTagsIn(run.getJob().getProjectId(), TestSuiteType.SUITE.toString(), tags);
             } else {
-                list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
+                list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProjectId(), TestSuiteType.SUITE.toString());
             }
 
             list.forEach(testSuite -> {
@@ -132,7 +136,7 @@ public class RunTaskRequestProcessor {
                     copy(testSuite.getCleanup(), task.getCleanup(), run, env);
 
                     botClientService.sendTask(task, region);
-                } catch (RuntimeException ex) {
+                } catch (Exception ex) {
                     logger.warn(ex.getLocalizedMessage(), ex);
                 }
             });
@@ -225,10 +229,10 @@ public class RunTaskRequestProcessor {
         for (String suite : after) {
             logger.info("Processing after suite [{}]", suite);
 
-            TestSuite suite1 = testSuiteRepository.findByProjectIdAndTypeAndName(run.getJob().getProject().getId(), TestSuiteType.ABSTRACT, suite);
+            TestSuite suite1 = testSuiteRepository.findByProjectIdAndTypeAndName(run.getJob().getProjectId(), TestSuiteType.ABSTRACT, suite);
 
             if (suite1 == null) {
-                logger.warn("No suite found for project [{}] with suite-name [{}]", run.getJob().getProject().getId(), suite);
+                logger.warn("No suite found for project [{}] with suite-name [{}]", run.getJob().getProjectId(), suite);
                 continue;
             }
 
@@ -252,7 +256,9 @@ public class RunTaskRequestProcessor {
         }
     }
 
-    private Environment findEvn(List<Environment> envs, String env) {
+    private Environment findEvn(String projectId, String env) {
+
+        List<Environment> envs = environmentRepository.findByProjectId(projectId);
         Environment env_ = null;
         for (Environment environment : envs) {
             if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(env, environment.getName())) {
@@ -272,7 +278,7 @@ public class RunTaskRequestProcessor {
             envName = run.getJob().getEnvironment();
         }
 
-        Environment env = findEvn(run.getJob().getProject().getEnvironments(), envName);
+        Environment env = findEvn(run.getJob().getProjectId(), envName);
         // TODO - Fail if not a valid env.
         if (env == null) {
             run.getTask().setStatus(TaskStatus.FAIL);

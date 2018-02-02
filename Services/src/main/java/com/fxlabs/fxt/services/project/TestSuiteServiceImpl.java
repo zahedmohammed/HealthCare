@@ -20,16 +20,19 @@ import java.util.Optional;
 public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxlabs.fxt.dto.project.TestSuite, String> implements TestSuiteService {
 
     private TestSuiteESRepository testSuiteESRepository;
+    private ProjectFileService projectFileService;
 
     @Autowired
-    public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository) {
+    public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository,
+                                ProjectFileService projectFileService) {
         super(repository, converter);
         this.testSuiteESRepository = testSuiteESRepository;
+        this.projectFileService = projectFileService;
     }
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite) {
-        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
+        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProjectId(), testSuite.getName());
 
         TestSuite entity = null;
         if (testSuiteOptional.isPresent()) {
@@ -43,8 +46,11 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
 
         TestSuite ts = converter.convertToEntity(testSuite);
-        entity = repository.save(ts);
+        entity = ((TestSuiteRepository) repository).saveAndFlush(ts);
         testSuiteESRepository.save(entity);
+
+        // project_file
+        this.projectFileService.saveFromTestSuite(converter.convertToDto(entity), ts.getProjectId());
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 

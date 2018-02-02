@@ -22,6 +22,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String USER_BASE = API_BASE + "/users";
     public static final String PROJECTS_BASE = API_BASE + "/projects";
     public static final String JOBS_BASE = API_BASE + "/jobs";
+    public static final String ENVS_BASE = API_BASE + "/envs";
     public static final String PROJECT_DATASETS_BASE = API_BASE + "/test-suites";
     public static final String PROJECT_RUNS_BASE = API_BASE + "/runs";
     public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
@@ -38,6 +39,7 @@ public abstract class BaseController<D, ID extends Serializable> {
         this.service = service;
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<D>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                      @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {

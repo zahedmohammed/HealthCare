@@ -20,9 +20,12 @@ import java.util.Optional;
 @Transactional
 public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.entity.project.Project, com.fxlabs.fxt.dto.project.Project, String> implements ProjectService {
 
+    private ProjectFileService projectFileService;
+
     @Autowired
-    public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter) {
+    public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService) {
         super(repository, converter);
+        this.projectFileService = projectFileService;
     }
 
     public Response<Project> findByName(String name, String owner) {
@@ -34,5 +37,16 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return new Response<Project>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("No Project found with the name [%s]", name)));
     }
 
+    @Override
+    public Response<Project> save(Project dto) {
 
+        Response<Project> projectResponse = super.save(dto);
+        // set org
+
+        // create project_file
+        this.projectFileService.saveFromProject(dto, projectResponse.getData().getId());
+
+
+        return projectResponse;
+    }
 }

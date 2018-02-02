@@ -35,13 +35,13 @@ public class Project extends BaseEntity {
     @ElementCollection
     private List<String> licenses;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Environment> environments;
+    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //private List<Environment> environments;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Job> jobs;
+    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //private List<Job> jobs;
 
-    @PrePersist
+    /*@PrePersist
     @PreUpdate
     public void updateEnvironments() {
         if (!CollectionUtils.isEmpty(this.environments)) {
@@ -55,7 +55,7 @@ public class Project extends BaseEntity {
                 job.setProject(this);
             }
         }
-    }
+    }*/
 
 }
 

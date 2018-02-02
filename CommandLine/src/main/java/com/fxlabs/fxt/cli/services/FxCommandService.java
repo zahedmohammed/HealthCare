@@ -3,9 +3,7 @@ package com.fxlabs.fxt.cli.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.cli.beans.Config;
-import com.fxlabs.fxt.cli.rest.ProjectRestRepository;
-import com.fxlabs.fxt.cli.rest.RunRestRepository;
-import com.fxlabs.fxt.cli.rest.TestSuiteRestRepository;
+import com.fxlabs.fxt.cli.rest.*;
 import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
@@ -26,6 +24,7 @@ import org.springframework.shell.table.BorderStyle;
 import org.springframework.shell.table.Table;
 import org.springframework.shell.table.TableBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -51,6 +50,10 @@ public class FxCommandService {
     private TestSuiteRestRepository testSuiteRestRepository;
     @Autowired
     private RunRestRepository runRestRepository;
+    @Autowired
+    private JobRestRepository jobRestRepository;
+    @Autowired
+    private EnvRestRepository envRestRepository;
 
 
     public FxCommandService() {
@@ -78,22 +81,53 @@ public class FxCommandService {
 
             Date lastSync = null;
             Project project = getProject(config);
+
             if (project == null) {
-                System.out.println(String.format("Fxfile.yml file doesn't exists", config.getName()));
+                System.out.println(String.format("Fxfile.yml project [%s] not found...creating new", config.getName()));
                 project = createProject(config);
+                System.out.println("Project id: " + project.getId());
             } else {
-                System.out.println(String.format("Fxfile [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
+                System.out.println(String.format("Fxfile.yml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
                 lastSync = project.getLastSync();
+                project.setLicenses(config.getLicenses());
+                project.setDescription(config.getDescription());
+
+                String fxfileContent = FileUtils.readFileToString(fxfile, "UTF-8");
+                Long lastModified = fxfile.lastModified();
+                project.getProps().put(Project.FILE_CONTENT, fxfileContent);
+                project.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
+
+                //project.setLastSync(new Date());
+
+                Response<Project> projectResponse = projectRepository.update(project);
+
+                if (projectResponse.isErrors()) {
+                    System.err.println(projectResponse.getMessages());
+                }
+                System.out.println("Project id: " + projectResponse.getData().getId());
+                System.out.println ("Project updated...");
             }
             //System.out.println(project);
 
+
+
+
+            project = updateProject(project, config);
+
+            // create dataset
             ProjectMinimalDto proj = new ProjectMinimalDto();
             proj.setId(project.getId());
             proj.setName(project.getName());
             proj.setVersion(project.getVersion());
+            loadSuites(projectDir, yamlMapper, proj, lastSync);
+
 
             com.fxlabs.fxt.dto.project.Job job_ = null;
-            for (Job job : project.getJobs()) {
+            Response<List<Job>> jobs = jobRestRepository.findByProjectId(project.getId());
+            if (jobs.isErrors()) {
+                System.err.println(jobs.getMessages());
+            }
+            for (Job job : jobs.getData()) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(job.getName(), jobName)) {
                     job_ = job;
                     break;
@@ -107,11 +141,9 @@ public class FxCommandService {
                 return null;
             }
 
-            // create dataset
-            loadSuites(projectDir, yamlMapper, proj, lastSync);
 
-            project.setLastSync(new Date());
-            updateProject(project, config);
+
+
 
             logger.info("Successful!");
 
@@ -135,30 +167,44 @@ public class FxCommandService {
         project.setName(config.getName());
         project.setLicenses(config.getLicenses());
         project.setDescription(config.getDescription());
+        Response<Project> projectResponse = projectRepository.save(project);
+        if (projectResponse.isErrors()) {
+            System.err.println(projectResponse.getMessages());
+        }
 
-        List<Environment> environments = getEnvironments(config);
+        List<Environment> environments = getEnvironments(config, projectResponse.getData().getId());
+        envRestRepository.saveAll(environments);
+
+        // TODO - Save envs
+        // TODO - save jobs
+        //project.setEnvironments(environments);
+        List<Job> jobs = getJobs(config, projectResponse.getData().getId());
+
+        this.jobRestRepository.saveAll(jobs);
+
+        //project.setJobs(jobs);
 
 
-        project.setEnvironments(environments);
-        List<Job> jobs = getJobs(config);
-
-
-        project.setJobs(jobs);
-
-        project = projectRepository.save(project);
         logger.info("project created with id [{}]...", project.getId());
-        return project;
+        return projectResponse.getData();
     }
 
     private Project updateProject(Project project, Config config) {
 
-        project.setLicenses(config.getLicenses());
-        project.setDescription(config.getDescription());
+        //System.out.println(project);
 
-        List<Environment> environments = getEnvironments(config);
+        List<Environment> environments = getEnvironments(config, project.getId());
+        Response<List<Environment>> olds = envRestRepository.findByProjectId(project.getId());
+        List<Environment> oldEnvs = new ArrayList<>();
+
+        if (olds.isErrors()) {
+            System.err.println(olds.getMessages());
+        } else if (!CollectionUtils.isEmpty(olds.getData())){
+            oldEnvs.addAll(olds.getData());
+        }
         for (Environment environment : environments) {
             boolean found = false;
-            for (Environment old : project.getEnvironments()) {
+            for (Environment old : oldEnvs) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(environment.getName(), old.getRefId())) {
                     old.setDeleted(environment.isDeleted());
                     old.setName(environment.getName());
@@ -199,15 +245,27 @@ public class FxCommandService {
             if (!found) {
                 Environment e = new Environment();
                 e = environment;
-                project.getEnvironments().add(e);
+                oldEnvs.add(e);
             }
         }
+        envRestRepository.saveAll(oldEnvs);
+        System.out.println ("Env updated...");
         //project.setEnvironments(environments);
 
-        List<Job> jobs = getJobs(config);
+        List<Job> jobs = getJobs(config, project.getId());
+        Response<List<Job>> oldJobsResponse = this.jobRestRepository.findByProjectId(project.getId());
+
+        List<Job> oldJobs = new ArrayList<>();
+
+        if (oldJobsResponse.isErrors()) {
+            System.err.println(oldJobsResponse.getMessages());
+        } else if (!CollectionUtils.isEmpty(oldJobsResponse.getData())){
+            oldJobs.addAll(oldJobsResponse.getData());
+        }
+
         for (Job job : jobs) {
             boolean found = false;
-            for (Job old : project.getJobs()) {
+            for (Job old : oldJobs) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(job.getName(), old.getRefId())) {
                     old.setTags(job.getTags());
                     old.setEnvironment(job.getEnvironment());
@@ -221,19 +279,20 @@ public class FxCommandService {
             if (!found) {
                 Job j = new Job();
                 j = job;
-                project.getJobs().add(j);
+                oldJobs.add(j);
             }
         }
+        jobRestRepository.saveAll(oldJobs);
+        System.out.println ("Jobs updated...");
 
         //project.setJobs(jobs);
-
-        project = projectRepository.update(project);
+        //System.out.println(project);
 
         logger.info("project created with id [{}]...", project.getId());
         return project;
     }
 
-    private List<Environment> getEnvironments(Config config) {
+    private List<Environment> getEnvironments(Config config, String projectId) {
         // create env
         logger.info("loading env details...");
 
@@ -244,6 +303,7 @@ public class FxCommandService {
             env.setDeleted(environment.isInactive());
             env.setBaseUrl(environment.getBaseUrl());
             env.setDescription(environment.getDescription());
+            env.setProjectId(projectId);
 
             //env.setProject(proj);
 
@@ -268,7 +328,7 @@ public class FxCommandService {
         return environments;
     }
 
-    private List<Job> getJobs(Config config) {
+    private List<Job> getJobs(Config config, String projectId) {
         // read job
         List<Job> jobs = new ArrayList<>();
         logger.info("loading job details...");
@@ -289,6 +349,7 @@ public class FxCommandService {
             job.setEnvironment(jobProfile.getEnvironment());
 
             job.setRegions(jobProfile.getRegions());
+            job.setProjectId(projectId);
             //job = jobRestRepository.save(job);
 
             jobs.add(job);
@@ -336,7 +397,20 @@ public class FxCommandService {
                 testSuite.setName(FilenameUtils.getBaseName(file.getName()));
             }
 
-            testSuite.setProject(proj);
+            // set file content
+            String testSuiteContent = null;
+            try {
+                testSuiteContent = FileUtils.readFileToString(file, "UTF-8");
+                Long lastModified = file.lastModified();
+                testSuite.setProps(new HashMap<>());
+                testSuite.getProps().put(Project.FILE_CONTENT, testSuiteContent);
+                testSuite.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
+            } catch (IOException e) {
+                logger.warn(e.getLocalizedMessage());
+                System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
+            }
+
+            testSuite.setProjectId(proj.getId());
             try {
                 if (lastSync == null) {
                     testSuiteRestRepository.save(testSuite);
@@ -392,17 +466,23 @@ public class FxCommandService {
     }
 
     public void lsProjects() {
-        List<Project> list = projectRepository.findAll();
+        Response<List<Project>> list = projectRepository.findAll();
 
-        printProjects(list);
+        if (list.isErrors()) {
+            System.err.println(list.getMessages());
+        }
+        printProjects(list.getData());
 
     }
 
     public void lsRuns() {
-        List<Run> list = runRestRepository.findAll();
+        Response<List<Run>> list = runRestRepository.findAll();
+        if (list.isErrors()) {
+            System.err.println(list.getMessages());
+        }
 
         List<RunTask> tasks = new ArrayList<>();
-        for (Run r : list) {
+        for (Run r : list.getData()) {
             tasks.add(r.getTask());
         }
         //printRuns(tasks);

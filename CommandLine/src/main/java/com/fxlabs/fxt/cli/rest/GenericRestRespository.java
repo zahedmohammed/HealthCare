@@ -74,7 +74,7 @@ public class GenericRestRespository<T> {
         this.referenceList = referenceList;
     }
 
-    public T save(T t) {
+    public Response<T> save(T t) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<T> request = new HttpEntity<>(t, this.httpHeaders);
@@ -82,11 +82,11 @@ public class GenericRestRespository<T> {
         ResponseEntity<Response<T>> response = restTemplate.exchange(url, HttpMethod.POST, request, reference);
 
         //logger.info(response.getBody());
-        return response.getBody().getData();
+        return response.getBody();
 
     }
 
-    public T update(T t) {
+    public Response<T> update(T t) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<T> request = new HttpEntity<>(t, this.httpHeaders);
@@ -94,11 +94,11 @@ public class GenericRestRespository<T> {
         ResponseEntity<Response<T>> response = restTemplate.exchange(url, HttpMethod.PUT, request, reference);
 
         //logger.info(response.getBody());
-        return response.getBody().getData();
+        return response.getBody();
 
     }
 
-    public List<T> saveAll(List<T> t) {
+    public Response<List<T>> saveAll(List<T> t) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<List<T>> request = new HttpEntity<>(t, this.httpHeaders);
@@ -106,11 +106,11 @@ public class GenericRestRespository<T> {
         ResponseEntity<Response<List<T>>> response = restTemplate.exchange(url + "/batch", HttpMethod.POST, request, referenceList);
 
         //logger.info(response.getBody());
-        return response.getBody().getData();
+        return response.getBody();
 
     }
 
-    public List<T> findAll() {
+    public Response<List<T>> findAll() {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(this.httpHeaders);
@@ -118,12 +118,12 @@ public class GenericRestRespository<T> {
         ResponseEntity<Response<List<T>>> response = restTemplate.exchange(url, HttpMethod.GET, request, referenceList);
 
         //logger.info(response.getBody());
-        return response.getBody().getData();
+        return response.getBody();
 
     }
 
 
-    public T findById(String id) {
+    public Response<T> findById(String id) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(this.httpHeaders);
@@ -131,7 +131,7 @@ public class GenericRestRespository<T> {
         ResponseEntity<Response<T>> response = restTemplate.exchange(url + "/instance/" + id, HttpMethod.GET, request, reference);
 
         //logger.info(response.getBody());
-        return response.getBody().getData();
+        return response.getBody();
 
     }
 

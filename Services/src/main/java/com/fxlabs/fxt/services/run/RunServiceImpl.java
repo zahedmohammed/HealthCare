@@ -96,10 +96,10 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         Long totalTests = 0l;
 
         if (StringUtils.isNotEmpty(tags)) {
-            totalTests = testSuiteESRepository.countByProjectIdAndTypeAndTagsIn(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE.toString(), Arrays.asList(_tags));
+            totalTests = testSuiteESRepository.countByProjectIdAndTypeAndTagsIn(jobResponse.getData().getProjectId(), TestSuiteType.SUITE.toString(), Arrays.asList(_tags));
             task.setTotalTests(totalTests);
         } else {
-            totalTests = testSuiteESRepository.countByProjectIdAndType(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE.toString());
+            totalTests = testSuiteESRepository.countByProjectIdAndType(jobResponse.getData().getProjectId(), TestSuiteType.SUITE.toString());
             task.setTotalTests(totalTests);
         }
 

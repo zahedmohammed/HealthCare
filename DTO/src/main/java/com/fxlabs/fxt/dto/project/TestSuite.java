@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -18,7 +20,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class TestSuite extends BaseDto<String> {
 
-    private ProjectMinimalDto project;
+    private String projectId;
     private String name;
     private TestSuiteType type;
     private String endpoint;
@@ -34,6 +36,11 @@ public class TestSuite extends BaseDto<String> {
     private List<String> cleanup;
 
     private Policies policies;
+
+    public static final String FILE_CONTENT = "FILE_CONTENT";
+    public static final String MODIFIED_DATE = "MODIFIED_DATE";
+
+    private Map<String, String> props = new HashMap<>();
 
 
 }

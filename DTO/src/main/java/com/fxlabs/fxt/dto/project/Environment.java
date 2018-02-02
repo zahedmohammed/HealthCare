@@ -18,7 +18,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Environment extends BaseDto<String> {
 
-    private ProjectMinimalDto project;
+    //private ProjectMinimalDto project;
+    private String projectId;
     private String name;
     private String refId;
     private String description;
