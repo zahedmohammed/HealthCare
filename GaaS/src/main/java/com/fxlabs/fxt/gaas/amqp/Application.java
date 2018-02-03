@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * @author Intesar Shannan Mohammed
  */
-@SpringBootApplication(scanBasePackages = {"com.fxlabs.fxt.bot"})
+@SpringBootApplication(scanBasePackages = {"com.fxlabs.fxt"})
 public class Application {
 
     public static void main(String[] args) throws InterruptedException {

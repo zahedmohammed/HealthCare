@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.amqp.sender;
 
+import com.fxlabs.fxt.dto.git.GitTask;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +11,14 @@ import org.springframework.stereotype.Component;
  * @author Intesar Shannan Mohammed
  */
 @Component
-public class BotClientServiceImpl implements BotClientService {
+public class AmqpClientServiceImpl implements AmqpClientService {
 
     private AmqpTemplate template;
     private String exchange;
 
 
     @Autowired
-    public BotClientServiceImpl(AmqpTemplate template, @Value("${fx.exchange}") String exchange) {
+    public AmqpClientServiceImpl(AmqpTemplate template, @Value("${fx.exchange}") String exchange) {
         this.template = template;
         this.exchange = exchange;
     }
@@ -25,6 +26,11 @@ public class BotClientServiceImpl implements BotClientService {
 
     @Override
     public void sendTask(BotTask task, String region) {
+        this.template.convertAndSend(exchange, region, task);
+    }
+
+    @Override
+    public void sendTask(GitTask task, String region) {
         this.template.convertAndSend(exchange, region, task);
     }
 }

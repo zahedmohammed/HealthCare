@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.gaas.amqp;
 
-import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.git.GitTaskResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -31,7 +31,7 @@ public class Sender {
     }
 
 
-    public void sendTask(BotTask task) {
+    public void sendTask(GitTaskResponse task) {
         this.template.convertAndSend(exchange, routingKey, task);
     }
 }

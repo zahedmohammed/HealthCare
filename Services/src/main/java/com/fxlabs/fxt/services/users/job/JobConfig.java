@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.users.job;
 
+import com.fxlabs.fxt.services.processors.send.SendGaaSTaskJob;
 import com.fxlabs.fxt.services.processors.send.SendRequestJob;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -7,6 +8,7 @@ import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,18 +25,31 @@ public class JobConfig {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Bean
+    @Bean(name = "botJobDetail")
     public JobDetail jobDetail() {
-
         return newJob().ofType(SendRequestJob.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_RunRequestProcessor_Job_Detail")).withDescription("Invoke RunRequestProcessor Job service...").build();
     }
 
     @Bean
-    public Trigger trigger(JobDetail job) {
+    public Trigger trigger(@Qualifier("botJobDetail") JobDetail job) {
 
         int frequencyInSec = 3;
         logger.info("Configuring trigger to fire every {} seconds", frequencyInSec);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_RunRequestProcessor_Trigger")).withDescription("RunRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInSeconds(frequencyInSec).repeatForever()).build();
+    }
+
+    @Bean(name = "gaaSJobDetail")
+    public JobDetail gaaSJobDetail() {
+        return newJob().ofType(SendGaaSTaskJob.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_GaaSRequestProcessor_Job_Detail")).withDescription("Invoke GaaSRequestProcessor Job service...").build();
+    }
+
+    @Bean
+    public Trigger gaaSTrigger(@Qualifier("gaaSJobDetail") JobDetail job) {
+
+        int frequencyInMins = 15;
+        logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
+
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaaSRequestProcessor_Trigger")).withDescription("GaaSRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
     }
 }

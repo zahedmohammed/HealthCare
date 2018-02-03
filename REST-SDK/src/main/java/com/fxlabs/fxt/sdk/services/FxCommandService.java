@@ -42,6 +42,8 @@ public class FxCommandService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
+    public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
+
     // Fx server connection details
     Set<TestSuiteResponse> dataSets = new HashSet<>();
     @Autowired
@@ -99,6 +101,7 @@ public class FxCommandService {
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
             System.out.println("loading Fxfile...");
+            taskLogger.get().append("loading Fxfile...").append("\n");
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
@@ -115,6 +118,7 @@ public class FxCommandService {
 
             if (project == null) {
                 System.out.println(String.format("Fxfile.yaml project [%s] not found...creating new", config.getName()));
+                taskLogger.get().append(String.format("Fxfile.yaml project [%s] not found...creating new", config.getName())).append("\n");
                 Response<Project> projectResponse = createProject(config);
 
                 if (projectResponse.isErrors()) {
@@ -128,9 +132,11 @@ public class FxCommandService {
 
                 saveJobs(config, project.getId());
 
-                System.out.println("Project created with id: " + project.getId());
+                System.out.println(String.format("Project created with id: [%s]", project.getId()));
+                taskLogger.get().append(String.format("Project created with id: [%s]", project.getId())).append("\n");
             } else {
                 System.out.println(String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
+                taskLogger.get().append(String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync())).append("\n");
 
                 projectFiles = getProjectChecksums(project.getId());
 
@@ -141,6 +147,7 @@ public class FxCommandService {
                 } catch (IOException e) {
                     logger.warn(e.getLocalizedMessage());
                     System.out.println(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
+                    taskLogger.get().append(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage())).append("\n");
                 }
 
                 //System.out.println(projectFiles);
@@ -153,8 +160,10 @@ public class FxCommandService {
                     if (projectResponse.isErrors()) {
                         System.err.println(projectResponse.getMessages());
                     }
-                    System.out.println("Project id: " + projectResponse.getData().getId());
+                    System.out.println(String.format("Project id: [%s]", projectResponse.getData().getId()));
+                    taskLogger.get().append(String.format("Project id: [%s]", projectResponse.getData().getId())).append("\n");
                     System.out.println("Project updated...");
+                    taskLogger.get().append("Project updated...").append("\n");
                 }
 
             }
@@ -167,6 +176,8 @@ public class FxCommandService {
 
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage(), e);
+            System.out.println(String.format("Failed with error [%s]", e.getLocalizedMessage()));
+            taskLogger.get().append(String.format("Failed with error [%s]", e.getLocalizedMessage())).append("\n");
         }
         return null;
     }
@@ -184,6 +195,7 @@ public class FxCommandService {
         Response<Project> projectResponse = projectRepository.save(project);
 
         logger.info("project created with id [{}]...", project.getId());
+        taskLogger.get().append(String.format("project created with id [%s]...", project.getId())).append("\n");
         return projectResponse;
     }
 
@@ -225,7 +237,8 @@ public class FxCommandService {
         mergeAndSaveJobs(config, project.getId());
 
 
-        logger.info("project created with id [{}]...", project.getId());
+        logger.info("project updated with id [{}]...", project.getId());
+        taskLogger.get().append("Project updated...").append("\n");
         return projectResponse;
     }
 
@@ -287,6 +300,7 @@ public class FxCommandService {
         }
         Response<List<Environment>> response = envRestRepository.saveAll(oldEnvs);
         System.out.println("Env updated...");
+        taskLogger.get().append("Environments updated...").append("\n");
         return response;
     }
 
@@ -322,7 +336,7 @@ public class FxCommandService {
             }
         }
         Response<List<Job>> listResponse = jobRestRepository.saveAll(oldJobs);
-        System.out.println("Jobs updated...");
+        taskLogger.get().append("Jobs updated...").append("\n");
         return listResponse;
     }
 
@@ -405,6 +419,7 @@ public class FxCommandService {
             } catch (IOException e) {
                 logger.warn(e.getLocalizedMessage());
                 System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
+                taskLogger.get().append(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
             }
 
             try {
@@ -419,6 +434,7 @@ public class FxCommandService {
                 System.out.println(AnsiOutput.toString(AnsiColor.RED,
                         String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()),
                         AnsiColor.DEFAULT));
+                taskLogger.get().append(String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
                 return;
             }
             //logger.info("ds size: [{}]", values.length);
@@ -444,11 +460,13 @@ public class FxCommandService {
             } catch (Exception e) {
                 logger.warn(e.getLocalizedMessage());
                 System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                taskLogger.get().append(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
             }
 
             System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
                     String.format("Test-Suite: %s [Synced]", file.getName()),
                     AnsiColor.DEFAULT));
+            taskLogger.get().append(String.format("Test-Suite: %s [Synced]", file.getName())).append("\n");
 
             totalFiles.incrementAndGet();
         });
@@ -457,6 +475,7 @@ public class FxCommandService {
                 String.format("\nTotal Suites Loaded: [%s]", totalFiles),
                 AnsiColor.DEFAULT));
         logger.info("test-suites successfully uploaded...");
+        taskLogger.get().append("test-suites successfully uploaded...").append("\n");
     }
 
     private boolean isChecksumPresent(List<ProjectFile> projectFiles, File file, String checksum) {
@@ -468,6 +487,7 @@ public class FxCommandService {
                 System.out.println(AnsiOutput.toString(AnsiColor.WHITE,
                         String.format("Test-Suite: %s [Up-to-date]", file.getName()),
                         AnsiColor.DEFAULT));
+                taskLogger.get().append(String.format("Test-Suite: %s [Up-to-date]", file.getName())).append("\n");
                 return true;
             }
         }

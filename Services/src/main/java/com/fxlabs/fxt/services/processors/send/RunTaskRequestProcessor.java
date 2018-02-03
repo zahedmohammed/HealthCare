@@ -14,7 +14,7 @@ import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.RunConstants;
-import com.fxlabs.fxt.services.amqp.sender.BotClientService;
+import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -36,14 +36,14 @@ public class RunTaskRequestProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    private BotClientService botClientService;
+    private AmqpClientService botClientService;
     private TestSuiteRepository testSuiteRepository;
     private RunRepository runRepository;
     private PoliciesConverter policiesConverter;
     private TestSuiteESRepository testSuiteESRepository;
     private EnvironmentRepository environmentRepository;
 
-    public RunTaskRequestProcessor(BotClientService botClientService, TestSuiteRepository testSuiteRepository,
+    public RunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter,
                                    TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository) {
         this.botClientService = botClientService;

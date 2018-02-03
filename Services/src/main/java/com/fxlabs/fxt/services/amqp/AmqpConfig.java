@@ -28,29 +28,29 @@ public class AmqpConfig {
         return new TopicExchange(exchange);
     }
 
-    // Default-Queue
+    // Bot-Default-Queue
     @Bean(name = "botDefaultQueue")
-    public Queue defaultQueue(@Value("${fx.default.queue}") String queue) {
+    public Queue botDefaultQueue(@Value("${fx.default.queue}") String queue) {
         Map<String, Object> args = new HashMap<>();
         args.put("x-message-ttl", 3600000);
         return new Queue(queue, true, false, false, args);
     }
 
     @Bean
-    public Binding defaultQueueBinding(@Value("${fx.default.queue.routingkey}") String routingKey, @Qualifier("botDefaultQueue") Queue queue, TopicExchange exchange) {
+    public Binding botDefaultQueueBinding(@Value("${fx.default.queue.routingkey}") String routingKey, @Qualifier("botDefaultQueue") Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
     // Response-Queue
-    @Bean(name = "responseQueue")
-    public Queue responseQueue(@Value("${fx.default.response.queue}") String queue) {
+    @Bean(name = "botResponseQueue")
+    public Queue botResponseQueue(@Value("${fx.default.response.queue}") String queue) {
         Map<String, Object> args = new HashMap<>();
         args.put("x-message-ttl", 3600000);
         return new Queue(queue, true, false, false, args);
     }
 
     @Bean
-    public Binding responseQueueBinding(@Value("${fx.default.response.queue.routingkey}") String routingKey, @Qualifier("responseQueue") Queue queue, TopicExchange exchange) {
+    public Binding botResponseQueueBinding(@Value("${fx.default.response.queue.routingkey}") String routingKey, @Qualifier("botResponseQueue") Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
@@ -69,6 +69,134 @@ public class AmqpConfig {
         container.setMessageListener(listenerAdapter);
         return container;
     }
+
+
+    // GaaS-Queue
+    @Bean(name = "gaaSQueue")
+    public Queue gaaSQueue(@Value("${fx.gaas.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding gaaSQueueBinding(@Value("${fx.gaas.queue.routingkey}") String routingKey, @Qualifier("gaaSQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // GaaS-Response-Queue
+    @Bean(name = "gaaSResponseQueue")
+    public Queue gaaSResponseQueue(@Value("${fx.gaas.response.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding gaaSResponseQueueBinding(@Value("${fx.gaas.response.queue.routingkey}") String routingKey, @Qualifier("gaaSResponseQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    @Bean
+    SimpleMessageListenerContainer gaaSContainer(ConnectionFactory connectionFactory,
+                                                 MessageListenerAdapter listenerAdapter,
+                                                 @Value("${fx.gaas.response.queue}") String queueName) {
+
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(queueName);
+        container.setConcurrentConsumers(10);
+        container.setMaxConcurrentConsumers(10);
+        container.setDefaultRequeueRejected(false);
+        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
+
+    // NaaS-Queue
+    @Bean(name = "naaSQueue")
+    public Queue naaSQueue(@Value("${fx.naas.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding naaSQueueBinding(@Value("${fx.naas.queue.routingkey}") String routingKey, @Qualifier("naaSQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // NaaS-Response-Queue
+    @Bean(name = "naaSResponseQueue")
+    public Queue naaSResponseQueue(@Value("${fx.naas.response.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding naaSResponseQueueBinding(@Value("${fx.naas.response.queue.routingkey}") String routingKey, @Qualifier("naaSResponseQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    @Bean
+    SimpleMessageListenerContainer naaSContainer(ConnectionFactory connectionFactory,
+                                                 MessageListenerAdapter listenerAdapter,
+                                                 @Value("${fx.naas.response.queue}") String queueName) {
+
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(queueName);
+        container.setConcurrentConsumers(10);
+        container.setMaxConcurrentConsumers(10);
+        container.setDefaultRequeueRejected(false);
+        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
+
+    // BaaS-Queue
+    @Bean(name = "baaSQueue")
+    public Queue baaSQueue(@Value("${fx.baas.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding baaSQueueBinding(@Value("${fx.baas.queue.routingkey}") String routingKey, @Qualifier("baaSQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // NaaS-Response-Queue
+    @Bean(name = "baaSResponseQueue")
+    public Queue baaSResponseQueue(@Value("${fx.baas.response.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding baaSResponseQueueBinding(@Value("${fx.baas.response.queue.routingkey}") String routingKey, @Qualifier("baaSResponseQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    @Bean
+    SimpleMessageListenerContainer baaSContainer(ConnectionFactory connectionFactory,
+                                                 MessageListenerAdapter listenerAdapter,
+                                                 @Value("${fx.naas.response.queue}") String queueName) {
+
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(queueName);
+        container.setConcurrentConsumers(10);
+        container.setMaxConcurrentConsumers(10);
+        container.setDefaultRequeueRejected(false);
+        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
+
 
     @Bean
     MessageListenerAdapter listenerAdapter(Receiver receiver) {
