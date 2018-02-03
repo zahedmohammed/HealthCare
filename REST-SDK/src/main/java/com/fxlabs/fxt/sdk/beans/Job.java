@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.cli.beans;
+package com.fxlabs.fxt.sdk.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,21 +6,26 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
  */
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Auth implements Serializable {
+public class Job implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String name = "Default";
-    private String authType = "BASIC";
-    private String username;
-    private String password;
+    private String refId;
+    private String description;
+
+    private String environment = "Default";
+    private List<String> tags;
+    private String regions;
 
 }

@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.cli.beans;
+package com.fxlabs.fxt.sdk.beans;
 
 
 import lombok.AllArgsConstructor;

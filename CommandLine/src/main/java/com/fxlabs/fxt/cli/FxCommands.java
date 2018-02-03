@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.cli;
 
-import com.fxlabs.fxt.cli.services.FxCommandService;
+import com.fxlabs.fxt.sdk.services.FxCommandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

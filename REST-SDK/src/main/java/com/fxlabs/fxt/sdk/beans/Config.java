@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.cli.beans;
+package com.fxlabs.fxt.sdk.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,15 +17,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Job implements Serializable {
+public class Config implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
-    private String name = "Default";
-    private String refId;
+    private String version = "1";
+
+    private String name;
+
     private String description;
 
-    private String environment = "Default";
-    private List<String> tags;
-    private String regions;
+    private List<String> licenses;
+
+    private List<Environment> environments;
+
+    private List<Job> jobs;
 
 }
+
+

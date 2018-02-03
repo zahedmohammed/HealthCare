@@ -1,9 +1,9 @@
-package com.fxlabs.fxt.cli.services;
+package com.fxlabs.fxt.sdk.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fxlabs.fxt.cli.beans.Config;
-import com.fxlabs.fxt.cli.rest.*;
+import com.fxlabs.fxt.sdk.beans.Config;
+import com.fxlabs.fxt.sdk.rest.*;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.Run;
@@ -331,7 +331,7 @@ public class FxCommandService {
         logger.info("loading env details...");
 
         List<Environment> environments = new ArrayList<>();
-        for (com.fxlabs.fxt.cli.beans.Environment environment : config.getEnvironments()) {
+        for (com.fxlabs.fxt.sdk.beans.Environment environment : config.getEnvironments()) {
             Environment env = new Environment();
             env.setName(environment.getName());
             env.setDeleted(environment.isInactive());
@@ -342,7 +342,7 @@ public class FxCommandService {
             //env.setProject(proj);
 
             List<Auth> list = new ArrayList<>();
-            for (com.fxlabs.fxt.cli.beans.Auth credential : environment.getAuths()) {
+            for (com.fxlabs.fxt.sdk.beans.Auth credential : environment.getAuths()) {
                 Auth cred = new Auth();
                 cred.setName(credential.getName());
                 cred.setAuthType(credential.getAuthType());
@@ -366,7 +366,7 @@ public class FxCommandService {
         // read job
         List<Job> jobs = new ArrayList<>();
         logger.info("loading job details...");
-        for (com.fxlabs.fxt.cli.beans.Job jobProfile : config.getJobs()) {
+        for (com.fxlabs.fxt.sdk.beans.Job jobProfile : config.getJobs()) {
             Job job = new Job();
             job.setName(jobProfile.getName());
 

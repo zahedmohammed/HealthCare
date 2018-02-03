@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.cli.rest;
+package com.fxlabs.fxt.sdk.rest;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.run.Run;
