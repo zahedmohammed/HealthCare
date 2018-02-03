@@ -28,6 +28,12 @@ public class Project extends BaseEntity {
     private String name;
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private ProjectType projectType;
+
+    @Enumerated(EnumType.STRING)
+    private ProjectVisibility visibility;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastSync;
 

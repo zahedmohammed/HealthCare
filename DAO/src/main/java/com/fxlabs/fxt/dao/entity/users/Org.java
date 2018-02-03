@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,7 @@ import javax.persistence.Enumerated;
  * @author Intesar Shannan Mohammed
  */
 
+@Document(indexName = "fxorg")
 @Entity
 @Data
 @AllArgsConstructor
@@ -31,6 +33,7 @@ public class Org extends BaseEntity {
     private String company;
     private String location;
 
+    @Enumerated(EnumType.STRING)
     private OrgPlan orgPlan; // FREE | PRO | UNLIMITED | PAY-AS-YOU-GO
 
     // TODO Billing Info

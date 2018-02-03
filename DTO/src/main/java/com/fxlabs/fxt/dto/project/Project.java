@@ -33,6 +33,8 @@ public class Project extends BaseDto<String> {
     //private List<Job> jobs;
     private String name;
     private String description;
+    private ProjectType projectType;
+    private ProjectVisibility visibility;
     private Date lastSync;
     private List<String> licenses;
     private Map<String, String> props = new HashMap<>();

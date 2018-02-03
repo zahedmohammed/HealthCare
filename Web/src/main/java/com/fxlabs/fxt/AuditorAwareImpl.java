@@ -1,9 +1,9 @@
 package com.fxlabs.fxt;
 
+import com.fxlabs.fxt.rest.base.FxUserPrinciple;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Optional;
 
@@ -31,7 +31,13 @@ public class AuditorAwareImpl implements AuditorAware<String> {
         if (authentication == null || !authentication.isAuthenticated()) {
             return Optional.empty();
         }
-        Optional<String> username = Optional.of((((User) authentication.getPrincipal()).getUsername()));
+        Optional<String> username = Optional.empty();
+        if (authentication.getPrincipal() instanceof FxUserPrinciple) {
+            username = Optional.ofNullable(((FxUserPrinciple) authentication.getPrincipal()).getUsername());
+        } else if (authentication.getPrincipal() instanceof String) {
+            username = Optional.ofNullable(authentication.getPrincipal().toString());
+        }
+
 
         return username;
     }

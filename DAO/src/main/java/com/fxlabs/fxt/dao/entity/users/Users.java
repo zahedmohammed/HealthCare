@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * @author Intesar Shannan Mohammed
  */
+@Document(indexName = "fxusers")
 @Entity
 @Data
 @AllArgsConstructor

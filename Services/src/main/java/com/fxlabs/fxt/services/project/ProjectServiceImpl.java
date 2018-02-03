@@ -1,17 +1,29 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.ProjectConverter;
-import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
+import com.fxlabs.fxt.dao.entity.users.*;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
+import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectRequest;
+import com.fxlabs.fxt.dto.project.ProjectType;
+import com.fxlabs.fxt.dto.project.ProjectVisibility;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -21,11 +33,28 @@ import java.util.Optional;
 public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.entity.project.Project, com.fxlabs.fxt.dto.project.Project, String> implements ProjectService {
 
     private ProjectFileService projectFileService;
+    private ProjectRepository projectRepository;
+    private ProjectGitAccountRepository projectGitAccountRepository;
+    private OrgUsersRepository orgUsersRepository;
+    private PasswordEncoder passwordEncoder;
+    private OrgRepository orgRepository;
+    private UsersRepository usersRepository;
+    private ProjectUsersRepository projectUsersRepository;
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService) {
+    public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
+                              ProjectGitAccountRepository projectGitAccountRepository, OrgUsersRepository orgUsersRepository,
+                              PasswordEncoder passwordEncoder, OrgRepository orgRepository, UsersRepository usersRepository,
+                              ProjectUsersRepository projectUsersRepository) {
         super(repository, converter);
+        this.projectRepository = repository;
         this.projectFileService = projectFileService;
+        this.projectGitAccountRepository = projectGitAccountRepository;
+        this.orgUsersRepository = orgUsersRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.orgRepository = orgRepository;
+        this.usersRepository = usersRepository;
+        this.projectUsersRepository = projectUsersRepository;
     }
 
     public Response<Project> findByName(String name, String owner) {
@@ -46,7 +75,94 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         // create project_file
         this.projectFileService.saveFromProject(dto, projectResponse.getData().getId());
 
-
         return projectResponse;
+    }
+
+    public Response<List<Project>> findProjects(String owner, Pageable pageable) {
+        List<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsers = projectUsersRepository.findByUsersIdAndRole(owner, ProjectRole.OWNER);
+        if (CollectionUtils.isEmpty(projectUsers)) {
+            return new Response<>();
+        }
+        final List<com.fxlabs.fxt.dao.entity.project.Project> projects = new ArrayList<>();
+        projectUsers.stream().forEach(pu -> projects.add(pu.getProject()));
+        return new Response<List<Project>>(converter.convertToDtos(projects));
+    }
+
+    @Override
+    public Response<Project> add(ProjectRequest request, String owner) {
+        Response<Project> projectResponse = null;
+
+        try {
+            OrgUsers orgUsers = null;
+            if (StringUtils.isEmpty(request.getOrgId())) {
+                Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(owner, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+                if (CollectionUtils.isEmpty(set)) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
+                }
+
+                orgUsers = set.iterator().next();
+                request.setOrgId(orgUsers.getOrg().getId());
+
+            } else {
+                // check user had write access to Org
+                Optional<com.fxlabs.fxt.dao.entity.users.OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(request.getOrgId(), owner, OrgUserStatus.ACTIVE);
+                if (!orgUsersOptional.isPresent() || orgUsersOptional.get().getOrgRole() == OrgRole.READ) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [WRITE] or [ADMIN] access to the Org [%s]", request.getOrgId())));
+                }
+            }
+
+            // check name is not duplicate
+            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgId(request.getName(), request.getOrgId());
+            if (projectOptional.isPresent()) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Project with name [%s] exists", request.getName())));
+            }
+            // create project, project-git-account
+            Project project = new Project();
+            NameDto nameDto = new NameDto();
+            Optional<com.fxlabs.fxt.dao.entity.users.Org> org = orgRepository.findById(request.getOrgId());
+
+            nameDto.setId(org.get().getId());
+
+            nameDto.setVersion(org.get().getVersion());
+            project.setOrg(nameDto);
+            project.setName(request.getName());
+            project.setDescription(request.getDescription());
+            project.setProjectType(request.getProjectType());
+            project.setVisibility(ProjectVisibility.PRIVATE);
+
+            projectResponse = save(project);
+            if (projectResponse.isErrors()) {
+                return projectResponse;
+            }
+
+            ProjectUsers projectUsers = new ProjectUsers();
+            projectUsers.setProject(converter.convertToEntity(projectResponse.getData()));
+            Optional<Users> users = usersRepository.findById(owner);
+            projectUsers.setUsers(users.get());
+            projectUsers.setRole(ProjectRole.OWNER);
+            // save to db/es
+            this.projectUsersRepository.saveAndFlush(projectUsers);
+
+
+            // Git Account
+            if (request.getProjectType() == ProjectType.GIT) {
+                com.fxlabs.fxt.dao.entity.project.ProjectGitAccount account = new com.fxlabs.fxt.dao.entity.project.ProjectGitAccount();
+                account.setUrl(request.getUrl());
+                account.setBranch(request.getBranch());
+                account.setUsername(request.getUsername());
+                account.setPassword(passwordEncoder.encode(request.getPassword()));
+                account.setProjectId(projectResponse.getData().getId());
+                this.projectGitAccountRepository.saveAndFlush(account);
+
+                // Create GaaS Task
+            }
+
+
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            projectResponse = new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", ex.getLocalizedMessage()));
+        }
+        return projectResponse;
+
     }
 }

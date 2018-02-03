@@ -16,6 +16,6 @@ public class SecurityUtil {
             return null;
         }
 
-        return ((User) authentication.getPrincipal()).getUsername();
+        return ((FxUserPrinciple) authentication.getPrincipal()).getUsername();
     }
 }

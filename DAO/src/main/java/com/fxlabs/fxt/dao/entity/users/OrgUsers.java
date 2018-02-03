@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
  * @author Intesar Shannan Mohammed
  */
 
+@Document(indexName = "fxorgusers")
 @Entity
 @Data
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class OrgUsers extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrgRole orgRole; // USER | ADMIN
 
+    @Enumerated(EnumType.STRING)
     private OrgUserStatus status; // INVITE_SENT | ACTIVE | DECLINED
 
 

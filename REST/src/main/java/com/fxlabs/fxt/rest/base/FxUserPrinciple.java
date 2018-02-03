@@ -1,4 +1,4 @@
-package com.fxlabs.fxt;
+package com.fxlabs.fxt.rest.base;
 
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.users.UsersPassword;
@@ -29,7 +29,7 @@ public class FxUserPrinciple implements UserDetails {
     //
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getId();
     }
 
     @Override

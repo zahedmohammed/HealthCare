@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface ProjectRepository extends JpaRepository<Project, String> {
 
     Optional<Project> findByNameAndCreatedBy(String name, String createdBy);
+
+    Optional<Project> findByNameIgnoreCaseAndOrgId(String name, String orgId);
 }

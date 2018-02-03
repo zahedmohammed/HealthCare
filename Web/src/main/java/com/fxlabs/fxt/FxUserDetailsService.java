@@ -3,6 +3,7 @@ package com.fxlabs.fxt;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.users.UsersPassword;
+import com.fxlabs.fxt.rest.base.FxUserPrinciple;
 import com.fxlabs.fxt.services.users.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
