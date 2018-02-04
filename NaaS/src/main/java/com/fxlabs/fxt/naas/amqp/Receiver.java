@@ -1,7 +1,8 @@
 package com.fxlabs.fxt.naas.amqp;
 
 
-import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.task.EmailTask;
+import com.fxlabs.fxt.naas.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,12 @@ public class Receiver {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    //@Autowired
-    //RestProcessor restProcessor;
+    @Autowired
+    private EmailService emailService;
 
-    public void receiveMessage(BotTask task) {
-        logger.info("Task id [{}] name [{}]", task.getId(), task.getSuiteName());
-        //restProcessor.process(task);
+    public void receiveMessage(EmailTask task) {
+        logger.info("Task id [{}] name [{}]", task.getTo(), task.getSubject());
+        emailService.send(task.getTo(), task.getSubject(), task.getBody());
     }
 
 }

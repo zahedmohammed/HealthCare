@@ -1,6 +1,6 @@
 package com.fxlabs.fxt.naas.amqp;
 
-import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.task.EmailTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -23,7 +23,7 @@ public class Sender {
 
     @Autowired
     public Sender(AmqpTemplate template,
-                  @Value("${fx.naas}") String exchange,
+                  @Value("${fx.exchange}") String exchange,
                   @Value("${fx.naas.response.queue.routingkey}") String routingKey) {
         this.template = template;
         this.exchange = exchange;
@@ -31,7 +31,7 @@ public class Sender {
     }
 
 
-    public void sendTask(BotTask task) {
+    public void sendTask(EmailTask task) {
         this.template.convertAndSend(exchange, routingKey, task);
     }
 }
