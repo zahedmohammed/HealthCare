@@ -19,10 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.shell.table.BeanListTableModel;
-import org.springframework.shell.table.BorderStyle;
-import org.springframework.shell.table.Table;
-import org.springframework.shell.table.TableBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -99,6 +95,7 @@ public class FxCommandService {
             // create project
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+            taskLogger.set(new StringBuilder());
 
             System.out.println("loading Fxfile...");
             taskLogger.get().append("loading Fxfile...").append("\n");
@@ -594,14 +591,14 @@ public class FxCommandService {
         header.put("id", "Project ID");
 
         // "name", "id", "project.name", "region"
-        Table table = new TableBuilder(new BeanListTableModel<Project>(list, header))
+        /*Table table = new TableBuilder(new BeanListTableModel<Project>(list, header))
                 .addOutlineBorder(BorderStyle.fancy_light)
                 .addFullBorder(BorderStyle.fancy_light)
                 .addHeaderBorder(BorderStyle.fancy_light)
                 .addHeaderAndVerticalsBorders(BorderStyle.fancy_light)
                 .build();
         String result = table.render(300);
-        System.out.println(result);
+        System.out.println(result);*/
     }
 
     private void printRun(Run run, String carriageReturn) {
@@ -704,14 +701,14 @@ public class FxCommandService {
         header.put("region", "Region");
 
         // "name", "id", "project.name", "region"
-        Table table = new TableBuilder(new BeanListTableModel<com.fxlabs.fxt.dto.project.Job>(list, header))
+        /*Table table = new TableBuilder(new BeanListTableModel<com.fxlabs.fxt.dto.project.Job>(list, header))
                 .addOutlineBorder(BorderStyle.fancy_light)
                 .addFullBorder(BorderStyle.fancy_light)
                 .addHeaderBorder(BorderStyle.fancy_light)
                 .addHeaderAndVerticalsBorders(BorderStyle.fancy_light)
                 .build();
         String result = table.render(300);
-        System.out.println(result);
+        System.out.println(result);*/
     }
 
 }

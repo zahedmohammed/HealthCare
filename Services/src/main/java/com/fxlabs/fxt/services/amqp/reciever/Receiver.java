@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.services.amqp.reciever;
 
+import com.fxlabs.fxt.dto.git.GitTaskResponse;
 import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.services.processors.receiver.GitTaskResponseProcessor;
 import com.fxlabs.fxt.services.processors.receiver.RunTaskResponseProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +18,19 @@ public class Receiver {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    RunTaskResponseProcessor processor;
+    private RunTaskResponseProcessor processor;
+
+    @Autowired
+    private GitTaskResponseProcessor taskResponseProcessor;
 
     public void receiveMessage(BotTask task) {
         logger.info("Received Task [{}]", task.getId());
         processor.process(task);
+    }
+
+    public void receiveMessage(GitTaskResponse task) {
+        logger.info("Received Task [{}]", task.getProjectId());
+        taskResponseProcessor.process(task);
     }
 
 

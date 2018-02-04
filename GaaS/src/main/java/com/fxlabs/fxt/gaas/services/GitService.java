@@ -85,7 +85,7 @@ public class GitService {
 
     private Repository findRepository(String path) {
         FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
-        File file = new File(path);
+        File file = new File(path + "/.git");
 
         Repository repository = null;
 

@@ -10,5 +10,5 @@ import java.util.Optional;
  * @author Intesar Shannan Mohammed
  */
 public interface ProjectGitAccountRepository extends JpaRepository<ProjectGitAccount, String> {
-
+    Optional<ProjectGitAccount> findByProjectId(String projectId);
 }

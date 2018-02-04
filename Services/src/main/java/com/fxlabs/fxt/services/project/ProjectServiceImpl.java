@@ -14,6 +14,8 @@ import com.fxlabs.fxt.dto.project.ProjectVisibility;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.encrypt.BytesEncryptor;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +38,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private ProjectRepository projectRepository;
     private ProjectGitAccountRepository projectGitAccountRepository;
     private OrgUsersRepository orgUsersRepository;
-    private PasswordEncoder passwordEncoder;
+    private BytesEncryptor encryptor;
     private OrgRepository orgRepository;
     private UsersRepository usersRepository;
     private ProjectUsersRepository projectUsersRepository;
@@ -44,14 +46,14 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               ProjectGitAccountRepository projectGitAccountRepository, OrgUsersRepository orgUsersRepository,
-                              PasswordEncoder passwordEncoder, OrgRepository orgRepository, UsersRepository usersRepository,
+                              BytesEncryptor encryptor, OrgRepository orgRepository, UsersRepository usersRepository,
                               ProjectUsersRepository projectUsersRepository) {
         super(repository, converter);
         this.projectRepository = repository;
         this.projectFileService = projectFileService;
         this.projectGitAccountRepository = projectGitAccountRepository;
         this.orgUsersRepository = orgUsersRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.encryptor = encryptor;
         this.orgRepository = orgRepository;
         this.usersRepository = usersRepository;
         this.projectUsersRepository = projectUsersRepository;
@@ -150,7 +152,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 account.setUrl(request.getUrl());
                 account.setBranch(request.getBranch());
                 account.setUsername(request.getUsername());
-                account.setPassword(passwordEncoder.encode(request.getPassword()));
+                if (!StringUtils.isEmpty(request.getPassword())) {
+                    account.setPassword(new String(encryptor.encrypt(request.getPassword().getBytes())));
+                }
                 account.setProjectId(projectResponse.getData().getId());
                 this.projectGitAccountRepository.saveAndFlush(account);
 

@@ -23,7 +23,7 @@ public class Sender {
 
     @Autowired
     public Sender(AmqpTemplate template,
-                  @Value("${fx.gaas}") String exchange,
+                  @Value("${fx.exchange}") String exchange,
                   @Value("${fx.gaas.response.queue.routingkey}") String routingKey) {
         this.template = template;
         this.exchange = exchange;
