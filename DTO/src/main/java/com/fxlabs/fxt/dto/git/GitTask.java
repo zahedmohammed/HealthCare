@@ -21,5 +21,8 @@ public class GitTask implements Serializable {
     private String gitPassword;
     private String gitBranch;
     private String gitLastCommit;
+    private String fxUrl;
+    private String projectUser;
+    private String projectGrant;
 
 }

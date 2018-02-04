@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.git.GitTask;
 import com.fxlabs.fxt.dto.git.GitTaskResponse;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.gaas.amqp.Sender;
+import com.fxlabs.fxt.sdk.services.CredUtils;
 import com.fxlabs.fxt.sdk.services.FxCommandService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,12 +30,23 @@ public class GitDelegate {
         GitTaskResponse response = gitService.process(task);
 
         if (response.isSuccess() && !StringUtils.equals(response.getGitLastCommit(), task.getGitLastCommit())) {
+            CredUtils.url.set(task.getFxUrl());
+            CredUtils.username.set(task.getProjectUser());
+            CredUtils.password.set(task.getProjectGrant());
             Project project = service.load(response.getPath());
             if (project == null) {
                 response.setSuccess(false);
             }
         }
-        response.setLogs(response.getLogs() + "\n" + service.taskLogger.get().toString());
+        String driverLogs = new String();
+        String gitLogs = new String();
+        if (CredUtils.taskLogger.get() != null) {
+            driverLogs = CredUtils.taskLogger.get().toString();
+        }
+        if (response.getLogs() != null) {
+            gitLogs = response.getLogs();
+        }
+        response.setLogs(gitLogs + "\n" + driverLogs);
         logger.info(response.toString());
 
 

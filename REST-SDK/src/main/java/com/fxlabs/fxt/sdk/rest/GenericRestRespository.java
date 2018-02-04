@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.sdk.services.CredUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,21 +55,15 @@ public class GenericRestRespository<T> {
     }
 
     final Logger logger = LoggerFactory.getLogger(getClass());
-    protected String url;
-    protected String username;
-    protected String password;
 
 
-    protected HttpHeaders httpHeaders;
+
+    //protected HttpHeaders httpHeaders;
     protected ParameterizedTypeReference reference;
     protected ParameterizedTypeReference referenceList;
 
 
-    public GenericRestRespository(String url, String username, String password, ParameterizedTypeReference reference, ParameterizedTypeReference referenceList) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
-        this.httpHeaders = getHttpHeaders(this.username, this.password);
+    public GenericRestRespository(ParameterizedTypeReference reference, ParameterizedTypeReference referenceList) {
         this.reference = reference;
         this.referenceList = referenceList;
     }
@@ -76,9 +71,9 @@ public class GenericRestRespository<T> {
     public Response<T> save(T t) {
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpEntity<T> request = new HttpEntity<>(t, this.httpHeaders);
+        HttpEntity<T> request = new HttpEntity<>(t, this.getHeaders());
 
-        ResponseEntity<Response<T>> response = restTemplate.exchange(url, HttpMethod.POST, request, reference);
+        ResponseEntity<Response<T>> response = restTemplate.exchange(getUrl(), HttpMethod.POST, request, reference);
 
         //logger.info(response.getBody());
         return response.getBody();
@@ -88,9 +83,9 @@ public class GenericRestRespository<T> {
     public Response<T> update(T t) {
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpEntity<T> request = new HttpEntity<>(t, this.httpHeaders);
+        HttpEntity<T> request = new HttpEntity<>(t, this.getHeaders());
 
-        ResponseEntity<Response<T>> response = restTemplate.exchange(url, HttpMethod.PUT, request, reference);
+        ResponseEntity<Response<T>> response = restTemplate.exchange(getUrl(), HttpMethod.PUT, request, reference);
 
         //logger.info(response.getBody());
         return response.getBody();
@@ -100,9 +95,9 @@ public class GenericRestRespository<T> {
     public Response<List<T>> saveAll(List<T> t) {
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpEntity<List<T>> request = new HttpEntity<>(t, this.httpHeaders);
+        HttpEntity<List<T>> request = new HttpEntity<>(t, this.getHeaders());
 
-        ResponseEntity<Response<List<T>>> response = restTemplate.exchange(url + "/batch", HttpMethod.POST, request, referenceList);
+        ResponseEntity<Response<List<T>>> response = restTemplate.exchange(getUrl() + "/batch", HttpMethod.POST, request, referenceList);
 
         //logger.info(response.getBody());
         return response.getBody();
@@ -112,9 +107,9 @@ public class GenericRestRespository<T> {
     public Response<List<T>> findAll() {
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpEntity<Void> request = new HttpEntity<>(this.httpHeaders);
+        HttpEntity<Void> request = new HttpEntity<>(this.getHeaders());
 
-        ResponseEntity<Response<List<T>>> response = restTemplate.exchange(url, HttpMethod.GET, request, referenceList);
+        ResponseEntity<Response<List<T>>> response = restTemplate.exchange(getUrl(), HttpMethod.GET, request, referenceList);
 
         //logger.info(response.getBody());
         return response.getBody();
@@ -125,9 +120,9 @@ public class GenericRestRespository<T> {
     public Response<T> findById(String id) {
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpEntity<Void> request = new HttpEntity<>(this.httpHeaders);
+        HttpEntity<Void> request = new HttpEntity<>(this.getHeaders());
 
-        ResponseEntity<Response<T>> response = restTemplate.exchange(url + "/instance/" + id, HttpMethod.GET, request, reference);
+        ResponseEntity<Response<T>> response = restTemplate.exchange(getUrl() + "/instance/" + id, HttpMethod.GET, request, reference);
 
         //logger.info(response.getBody());
         return response.getBody();
@@ -148,7 +143,22 @@ public class GenericRestRespository<T> {
                 auth.getBytes(Charset.forName("US-ASCII")));
         String authHeader = "Basic " + new String(encodedAuth);
         return authHeader;
+    }
 
+    protected String getUrl() {
+        return CredUtils.url.get();
+    }
+
+    protected String getUsername() {
+        return CredUtils.username.get();
+    }
+
+    protected String getPassword() {
+        return CredUtils.password.get();
+    }
+
+    protected HttpHeaders getHeaders() {
+        return getHttpHeaders(getUsername(), getPassword());
     }
 
 

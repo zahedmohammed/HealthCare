@@ -2,8 +2,8 @@ package com.fxlabs.fxt.sdk.rest;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Job;
+import com.fxlabs.fxt.sdk.services.CredUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +20,21 @@ public class JobRestRepository extends GenericRestRespository<Job> {
 
 
     @Autowired
-    public JobRestRepository(@Value("${fx.master.url}") String url,
-                             @Value("${fx.master.accessKey}") String username,
-                             @Value("${fx.master.secretKey}") String password) {
-        super(url + "/api/v1/jobs", username, password, paramTypeRefMap.get(Job.class), paramTypeRefMap.get(Job[].class));
+    public JobRestRepository() {
+        super(paramTypeRefMap.get(Job.class), paramTypeRefMap.get(Job[].class));
 
+    }
+
+    protected String getUrl() {
+        return CredUtils.url.get() + "/api/v1/jobs";
     }
 
     public Response<List<Job>> findByProjectId(String id) {
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpEntity<Void> request = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
-        ResponseEntity<Response<List<Job>>> response = restTemplate.exchange(url + "/project-id/" + id, HttpMethod.GET, request, paramTypeRefMap.get(Job[].class));
+        ResponseEntity<Response<List<Job>>> response = restTemplate.exchange(getUrl() + "/project-id/" + id, HttpMethod.GET, request, paramTypeRefMap.get(Job[].class));
 
         //logger.info(response.getBody());
         return response.getBody();

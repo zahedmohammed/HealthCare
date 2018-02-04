@@ -1,8 +1,8 @@
 package com.fxlabs.fxt.sdk.rest;
 
 import com.fxlabs.fxt.dto.project.TestSuite;
+import com.fxlabs.fxt.sdk.services.CredUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,11 +13,12 @@ public class TestSuiteRestRepository extends GenericRestRespository<TestSuite> {
 
 
     @Autowired
-    public TestSuiteRestRepository(@Value("${fx.master.url}") String url,
-                                   @Value("${fx.master.accessKey}") String username,
-                                   @Value("${fx.master.secretKey}") String password) {
-        super(url + "/api/v1/test-suites", username, password, paramTypeRefMap.get(TestSuite.class), paramTypeRefMap.get(TestSuite[].class));
+    public TestSuiteRestRepository() {
+        super(paramTypeRefMap.get(TestSuite.class), paramTypeRefMap.get(TestSuite[].class));
+    }
 
+    protected String getUrl() {
+        return CredUtils.url.get() + "/api/v1/test-suites";
     }
 
 }

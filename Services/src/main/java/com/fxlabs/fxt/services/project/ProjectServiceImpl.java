@@ -38,7 +38,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private ProjectRepository projectRepository;
     private ProjectGitAccountRepository projectGitAccountRepository;
     private OrgUsersRepository orgUsersRepository;
-    private BytesEncryptor encryptor;
+    private TextEncryptor encryptor;
     private OrgRepository orgRepository;
     private UsersRepository usersRepository;
     private ProjectUsersRepository projectUsersRepository;
@@ -46,7 +46,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               ProjectGitAccountRepository projectGitAccountRepository, OrgUsersRepository orgUsersRepository,
-                              BytesEncryptor encryptor, OrgRepository orgRepository, UsersRepository usersRepository,
+                              TextEncryptor encryptor, OrgRepository orgRepository, UsersRepository usersRepository,
                               ProjectUsersRepository projectUsersRepository) {
         super(repository, converter);
         this.projectRepository = repository;
@@ -153,7 +153,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 account.setBranch(request.getBranch());
                 account.setUsername(request.getUsername());
                 if (!StringUtils.isEmpty(request.getPassword())) {
-                    account.setPassword(new String(encryptor.encrypt(request.getPassword().getBytes())));
+                    // TODO - Use encryption
+                    account.setPassword(request.getPassword());
                 }
                 account.setProjectId(projectResponse.getData().getId());
                 this.projectGitAccountRepository.saveAndFlush(account);

@@ -14,6 +14,8 @@ import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.encrypt.BytesEncryptor;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,17 +35,19 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
     private OrgUsersRepository orgUsersRepository;
     private UsersPasswordRepository usersPasswordRepository;
     private UsersPasswordConverter usersPasswordConverter;
+    private TextEncryptor encryptor;
 
     @Autowired
     public UsersServiceImpl(UsersRepository repository, UsersConverter converter, PasswordEncoder passwordEncoder,
                             OrgRepository orgRepository, OrgUsersRepository orgUsersRepository, UsersPasswordRepository usersPasswordRepository,
-                            UsersPasswordConverter usersPasswordConverter) {
+                            UsersPasswordConverter usersPasswordConverter, TextEncryptor encryptor) {
         super(repository, converter);
         this.passwordEncoder = passwordEncoder;
         this.orgRepository = orgRepository;
         this.orgUsersRepository = orgUsersRepository;
         this.usersPasswordRepository = usersPasswordRepository;
         this.usersPasswordConverter = usersPasswordConverter;
+        this.encryptor = encryptor;
     }
 
 
@@ -120,6 +124,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
             // UsersPassword
             UsersPassword usersPassword = new UsersPassword();
             usersPassword.setUsers(user);
+            usersPassword.setGrantKey(users.getPassword());
             usersPassword.setPassword(this.passwordEncoder.encode(users.getPassword()));
             usersPassword.setActive(true);
             usersPasswordRepository.save(usersPassword);

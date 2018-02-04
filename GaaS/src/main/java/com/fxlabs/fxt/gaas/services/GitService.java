@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dto.git.GitTaskResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -37,6 +38,7 @@ public class GitService {
 
 
             String path = org.apache.commons.io.FileUtils.getTempDirectory() + "/" + task.getProjectId();
+            response.setPath(path);
 
             Repository repository = findAndCreateRepository(task, response, path);
 
@@ -51,7 +53,7 @@ public class GitService {
                 repository = findAndCreateRepository(task, response, path);
             }
 
-            if (!pull(repository)) {
+            if (!pull(repository, task.getGitUsername(), task.getGitPassword())) {
                 response.setLogs(taskLogger.get().toString());
                 logger.info(response.toString());
                 return response;
@@ -153,9 +155,13 @@ public class GitService {
         return false;
     }
 
-    private boolean pull(Repository repository) {
+    private boolean pull(Repository repository, String username, String password) {
         try {
-            return new Git(repository).pull().call().isSuccessful();
+            PullCommand pullCommand = new Git(repository).pull();
+            if(StringUtils.isNotEmpty(username)) {
+                pullCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+            }
+            return pullCommand.call().isSuccessful();
         } catch (GitAPIException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");

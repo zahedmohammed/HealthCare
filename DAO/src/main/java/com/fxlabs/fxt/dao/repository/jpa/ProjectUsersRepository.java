@@ -14,4 +14,6 @@ import java.util.Optional;
 public interface ProjectUsersRepository extends JpaRepository<ProjectUsers, String> {
 
     List<ProjectUsers> findByUsersIdAndRole(String owner, ProjectRole role);
+
+    List<ProjectUsers> findByProjectIdAndRole(String projectId, ProjectRole role);
 }
