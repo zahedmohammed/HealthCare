@@ -27,6 +27,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String PROJECT_RUNS_BASE = API_BASE + "/runs";
     public static final String SYSTEM_SETTING_BASE = API_BASE + "/system-settings";
     public static final String ALERT_BASE = API_BASE + "/alerts";
+    public static final String CLUSTER_BASE = API_BASE + "/clusters";
 
 
     public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
