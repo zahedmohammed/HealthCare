@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -21,6 +22,7 @@ public class ClusterPing extends BaseEntity {
 
     private String botId;
     private String key;
+    @Column(name = "total_v_bots")
     private Integer totalVBots;
 
 
