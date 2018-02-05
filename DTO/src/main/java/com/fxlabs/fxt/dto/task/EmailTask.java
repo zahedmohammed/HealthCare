@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -18,7 +20,7 @@ public class EmailTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String to;
+    private List<String> tos = new ArrayList<>();
     private String subject;
     private String body;
 }

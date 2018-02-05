@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.users.job;
 
 import com.fxlabs.fxt.services.processors.send.SendGaaSTaskJob;
+import com.fxlabs.fxt.services.processors.send.SendNaaSTaskJob;
 import com.fxlabs.fxt.services.processors.send.SendRequestJob;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -47,9 +48,23 @@ public class JobConfig {
     @Bean
     public Trigger gaaSTrigger(@Qualifier("gaaSJobDetail") JobDetail job) {
 
-        int frequencyInMins = 1;
+        int frequencyInMins = 10;
         logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaaSRequestProcessor_Trigger")).withDescription("GaaSRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
+    }
+
+    @Bean(name = "naaSJobDetail")
+    public JobDetail naaSJobDetail() {
+        return newJob().ofType(SendNaaSTaskJob.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_NaaSRequestProcessor_Job_Detail")).withDescription("Invoke NaaSRequestProcessor Job service...").build();
+    }
+
+    @Bean
+    public Trigger naaSTrigger(@Qualifier("naaSJobDetail") JobDetail job) {
+
+        int frequencyInMins = 10;
+        logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
+
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_NaaSRequestProcessor_Trigger")).withDescription("NaaSRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
     }
 }
