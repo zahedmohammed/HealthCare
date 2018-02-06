@@ -16,4 +16,8 @@ public interface OrgUsersRepository extends JpaRepository<OrgUsers, String> {
     Optional<OrgUsers> findByOrgIdAndUsersIdAndStatus(String orgId, String usersId, OrgUserStatus status);
 
     Set<OrgUsers> findByUsersIdAndStatusAndOrgRole(String usersId, OrgUserStatus status, OrgRole orgRole);
+
+    Optional<OrgUsers> findByUsersIdAndStatusAndOrgNameAndOrgRole(String usersId, OrgUserStatus status, String orgName, OrgRole orgRole);
+
+    Optional<OrgUsers> findByUsersIdAndOrgIdAndStatusAndOrgRole(String usersId, String orgId, OrgUserStatus status, OrgRole orgRole);
 }

@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.rest.base;
 
+import com.fxlabs.fxt.dto.users.Org;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.users.UsersPassword;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,11 +20,13 @@ public class FxUserPrinciple implements UserDetails {
 
     private final Users user;
     private final UsersPassword usersPassword;
+    private final Org org;
 
     //
-    public FxUserPrinciple(Users user, UsersPassword usersPassword) {
+    public FxUserPrinciple(Users user, UsersPassword usersPassword, Org org) {
         this.user = user;
         this.usersPassword = usersPassword;
+        this.org = org;
     }
 
     //
@@ -69,6 +72,10 @@ public class FxUserPrinciple implements UserDetails {
     //
     public Users getUser() {
         return user;
+    }
+
+    public Org getOrg() {
+        return org;
     }
 
 }

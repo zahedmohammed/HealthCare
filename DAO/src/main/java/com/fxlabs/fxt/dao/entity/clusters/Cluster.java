@@ -36,7 +36,19 @@ public class Cluster extends BaseEntity {
 
     private String name;
     private String region;
+
     private String key;
+
+    @PrePersist
+    @PreUpdate
+    public void defaults() {
+        if (driver == null) {
+            driver = ClusterDriver.MANUAL;
+        }
+        if (visibility == null) {
+            visibility = ClusterVisibility.PRIVATE;
+        }
+    }
 
 
 }

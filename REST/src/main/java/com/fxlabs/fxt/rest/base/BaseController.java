@@ -31,8 +31,11 @@ public abstract class BaseController<D, ID extends Serializable> {
 
 
     public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
+
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_ENTERPRISE_ADMIN = "ROLE_ENTERPRISE_ADMIN";
+
     public final Logger logger = LoggerFactory.getLogger(getClass());
     public final String PAGE_PARAM = "page";
     public final String PAGE_SIZE_PARAM = "pageSize";

@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.users;
 
+import com.fxlabs.fxt.converters.users.OrgUsersConverter;
 import com.fxlabs.fxt.converters.users.UsersConverter;
 import com.fxlabs.fxt.converters.users.UsersPasswordConverter;
 import com.fxlabs.fxt.dao.entity.users.*;
@@ -14,13 +15,13 @@ import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,12 +36,13 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
     private OrgUsersRepository orgUsersRepository;
     private UsersPasswordRepository usersPasswordRepository;
     private UsersPasswordConverter usersPasswordConverter;
+    private OrgUsersConverter orgUsersConverter;
     private TextEncryptor encryptor;
 
     @Autowired
     public UsersServiceImpl(UsersRepository repository, UsersConverter converter, PasswordEncoder passwordEncoder,
                             OrgRepository orgRepository, OrgUsersRepository orgUsersRepository, UsersPasswordRepository usersPasswordRepository,
-                            UsersPasswordConverter usersPasswordConverter, TextEncryptor encryptor) {
+                            UsersPasswordConverter usersPasswordConverter, TextEncryptor encryptor, OrgUsersConverter orgUsersConverter) {
         super(repository, converter);
         this.passwordEncoder = passwordEncoder;
         this.orgRepository = orgRepository;
@@ -48,6 +50,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         this.usersPasswordRepository = usersPasswordRepository;
         this.usersPasswordConverter = usersPasswordConverter;
         this.encryptor = encryptor;
+        this.orgUsersConverter  = orgUsersConverter;
     }
 
 
@@ -73,7 +76,52 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         return new Response<com.fxlabs.fxt.dto.users.UsersPassword>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("No active password found!")));
     }
 
-    public Response<Boolean> signUp(com.fxlabs.fxt.dto.users.Users users) {
+    public Response<Boolean> personalSignUp(com.fxlabs.fxt.dto.users.Users users) {
+
+        String tokens[] = StringUtils.split(users.getEmail(), "@");
+        String company = users.getCompany();
+
+        if (StringUtils.isEmpty(users.getCompany())) {
+            company = tokens[0];
+        }
+
+        return signUp(users, company, OrgType.PERSONAL, Arrays.asList("ROLE_USER"));
+    }
+
+    public Response<Boolean> teamSignUp(com.fxlabs.fxt.dto.users.Users users) {
+        return signUp(users, users.getCompany(), OrgType.TEAM, Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
+    }
+
+    public Response<Boolean> enterpriseSignUp(com.fxlabs.fxt.dto.users.Users users) {
+        return signUp(users, users.getCompany(), OrgType.ENTERPRISE, Arrays.asList("ROLE_USER", "ROLE_ADMIN", "ROLE_ENTERPRISE"));
+    }
+
+    public Response<Boolean> addToOrg(com.fxlabs.fxt.dto.users.OrgUsers orgUsers, String user) {
+        // check user is admin of the org.
+        Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByUsersIdAndOrgIdAndStatusAndOrgRole(user, orgUsers.getOrg().getId(), OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+        if (!orgUsersOptional.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "User not authorized!"));
+        }
+        // check user, role present
+        if (orgUsers.getUsers() == null || orgUsers.getOrgRole() == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Invalid UserId or Role"));
+        }
+
+        OrgUsers ou = new OrgUsers();
+        // TODO - Send invite and later when user accepts change it to ACTIVE
+        ou.setStatus(OrgUserStatus.ACTIVE);
+        Optional<Org> orgOptional = orgRepository.findById(orgUsers.getOrg().getId());
+        ou.setOrg(orgOptional.get());
+        Optional<Users> usersOptional = repository.findById(orgUsers.getUsers().getId());
+        ou.setUsers(usersOptional.get());
+        ou.setOrgRole(orgUsersConverter.convertToEntity(orgUsers).getOrgRole());
+
+        this.orgUsersRepository.save(ou);
+
+        return new Response<>(true);
+    }
+
+    private Response<Boolean> signUp(com.fxlabs.fxt.dto.users.Users users, String orgName, OrgType orgType, List<String> roles) {
 
         Response<Boolean> response = new Response<>(false);
         try {
@@ -97,20 +145,17 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
             // check type is either PERSONAL or TEAM
             Org org = new Org();
             org.setCompany(users.getCompany());
-            org.setName(users.getCompany());
-            org.setOrgType(OrgType.TEAM);
+            org.setName(orgName);
             org.setBillingEmail(users.getEmail());
-            if (StringUtils.isEmpty(org.getName())) {
-                org.setName(tokens[0]);
-                org.setOrgType(OrgType.PERSONAL);
-            }
+            org.setOrgType(orgType);
+
             org = this.orgRepository.save(org);
 
             // users
             Users user = new Users();
             user.setEmail(users.getEmail());
             user.setUsername(tokens[0]);
-            user.setPrivileges(Arrays.asList("ROLE_USER"));
+            user.setPrivileges(roles);
             user = repository.save(user);
 
             // OrgUsers
