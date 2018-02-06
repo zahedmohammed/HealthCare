@@ -54,7 +54,7 @@ public class UsersController /*extends BaseController<Users, String>*/ {
     }
 
     @Secured({ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.PUT)
     public Response<List<Users>> upgrade(Org org) {
         return null;
     }
