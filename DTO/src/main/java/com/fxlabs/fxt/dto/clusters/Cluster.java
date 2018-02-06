@@ -24,6 +24,8 @@ public class Cluster extends BaseDto<String> {
 
     private ClusterVisibility visibility;
 
+    private ClusterCloud cloudType;
+
     private String name;
     private String region;
     private String key;

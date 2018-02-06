@@ -34,6 +34,9 @@ public class Cluster extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ClusterVisibility visibility;
 
+    @Enumerated(EnumType.STRING)
+    private ClusterCloud cloudType;
+
     private String name;
     private String region;
 
@@ -47,6 +50,9 @@ public class Cluster extends BaseEntity {
         }
         if (visibility == null) {
             visibility = ClusterVisibility.PRIVATE;
+        }
+        if (cloudType == null) {
+            cloudType = ClusterCloud.OTHER;
         }
     }
 

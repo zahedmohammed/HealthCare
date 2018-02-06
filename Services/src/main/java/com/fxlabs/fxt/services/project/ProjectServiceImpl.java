@@ -14,9 +14,7 @@ import com.fxlabs.fxt.dto.project.ProjectVisibility;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.encrypt.BytesEncryptor;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -129,7 +127,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             project.setOrg(nameDto);
             project.setName(request.getName());
             project.setDescription(request.getDescription());
-            project.setProjectType(request.getProjectType());
+            if (request.getProjectType() == null) {
+                project.setProjectType(ProjectType.LOCAL);
+            } else {
+                project.setProjectType(request.getProjectType());
+            }
+
             project.setVisibility(ProjectVisibility.PRIVATE);
 
             projectResponse = save(project);
