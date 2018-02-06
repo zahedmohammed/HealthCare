@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,13 +38,24 @@ public class Job extends BaseEntity {
 
     private String regions;
 
+    private String cron;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date nextFire;
+
     @PrePersist
+    @PreUpdate
     public void preCreate() {
         if (StringUtils.isEmpty(refId)) {
             refId = name;
         }
-    }
 
+        if (!StringUtils.isEmpty(cron) && CronSequenceGenerator.isValidExpression(cron)) {
+            CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(cron);
+            Date next = cronSequenceGenerator.next(new Date());
+            this.nextFire = next;
+        }
+    }
 
 }
 

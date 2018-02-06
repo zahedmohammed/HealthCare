@@ -343,6 +343,7 @@ public class FxCommandService {
                     old.setDescription(job.getDescription());
                     old.setName(job.getName());
                     old.setRegions(job.getRegions());
+                    old.setCron(job.getCron());
                     found = true;
                     break;
                 }
@@ -407,6 +408,7 @@ public class FxCommandService {
             job.setEnvironment(jobProfile.getEnvironment());
 
             job.setRegions(jobProfile.getRegions());
+            job.setCron(jobProfile.getCron());
             job.setProjectId(projectId);
 
             jobs.add(job);

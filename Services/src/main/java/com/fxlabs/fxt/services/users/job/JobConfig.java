@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.users.job;
 
+import com.fxlabs.fxt.services.processors.send.JobCronTaskJob;
 import com.fxlabs.fxt.services.processors.send.SendGaaSTaskJob;
 import com.fxlabs.fxt.services.processors.send.SendNaaSTaskJob;
 import com.fxlabs.fxt.services.processors.send.SendRequestJob;
@@ -48,7 +49,7 @@ public class JobConfig {
     @Bean
     public Trigger gaaSTrigger(@Qualifier("gaaSJobDetail") JobDetail job) {
 
-        int frequencyInMins = 1;
+        int frequencyInMins = 3;
         logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaaSRequestProcessor_Trigger")).withDescription("GaaSRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
@@ -62,9 +63,23 @@ public class JobConfig {
     @Bean
     public Trigger naaSTrigger(@Qualifier("naaSJobDetail") JobDetail job) {
 
-        int frequencyInMins = 1;
+        int frequencyInMins = 3;
         logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_NaaSRequestProcessor_Trigger")).withDescription("NaaSRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
+    }
+
+    @Bean(name = "jobCronJobDetail")
+    public JobDetail jobCronJobDetail() {
+        return newJob().ofType(JobCronTaskJob.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_JobCronRequestProcessor_Job_Detail")).withDescription("Invoke JobCronRequestProcessor Job service...").build();
+    }
+
+    @Bean
+    public Trigger jobCronTrigger(@Qualifier("jobCronJobDetail") JobDetail job) {
+
+        int frequencyInMins = 4;
+        logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
+
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_JobCronRequestProcessor_Trigger")).withDescription("JobCronRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
     }
 }

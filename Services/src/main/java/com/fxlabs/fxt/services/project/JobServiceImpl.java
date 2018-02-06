@@ -5,10 +5,12 @@ import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**

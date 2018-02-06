@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +30,10 @@ public class Job extends BaseDto<String> {
     private List<String> tags;
 
     private String regions;
+
+    private String cron;
+
+    private Date nextFire;
 
 
 }

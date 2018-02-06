@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,5 +28,9 @@ public class Job implements Serializable {
     private String environment = "Default";
     private List<String> tags;
     private String regions;
+
+    private String cron;
+    private Date nextFire;
+
 
 }

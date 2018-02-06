@@ -12,4 +12,5 @@ import java.util.List;
 public interface JobService extends GenericService<Job, String> {
 
     Response<List<Job>> findByProjectId(String projectId, String user);
+
 }
