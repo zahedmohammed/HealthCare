@@ -41,6 +41,7 @@ public class Alert extends BaseEntity {
     private String refId;
     private String refName;
     private String subject;
+    @Lob
     private String message;
     @Temporal(TemporalType.TIMESTAMP)
     private Date readDate;

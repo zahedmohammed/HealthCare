@@ -7,6 +7,7 @@ import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
@@ -69,6 +70,9 @@ public class GitService {
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             response.setLogs(taskLogger.get().toString());
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
 
         return response;
@@ -79,6 +83,7 @@ public class GitService {
         Repository repository = findRepository(path);
 
         if (repository == null) {
+            deleteRepo(path);
             repository = createRepository(task.getGitUrl(), task.getGitUsername(), task.getGitPassword(), task.getGitBranch(), path);
         }
 
@@ -98,7 +103,12 @@ public class GitService {
                     .setMustExist(true)
                     .build();
 
+        } catch (RepositoryNotFoundException rnf) {
+            logger.warn(rnf.getLocalizedMessage());
         } catch (IOException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
@@ -129,6 +139,9 @@ public class GitService {
         } catch (GitAPIException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
 
         return repository;
@@ -138,6 +151,9 @@ public class GitService {
         try {
             return new Git(repository).status().call().isClean();
         } catch (GitAPIException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
@@ -151,6 +167,9 @@ public class GitService {
         } catch (IOException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
         return false;
     }
@@ -158,11 +177,14 @@ public class GitService {
     private boolean pull(Repository repository, String username, String password) {
         try {
             PullCommand pullCommand = new Git(repository).pull();
-            if(StringUtils.isNotEmpty(username)) {
+            if (StringUtils.isNotEmpty(username)) {
                 pullCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
             }
             return pullCommand.call().isSuccessful();
         } catch (GitAPIException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
@@ -175,6 +197,9 @@ public class GitService {
             ObjectId lastCommitId = repository.resolve(Constants.HEAD);
             return lastCommitId.toString();
         } catch (IOException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
