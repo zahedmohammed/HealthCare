@@ -104,7 +104,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
             NameDto o = new NameDto();
             o.setId(set.iterator().next().getOrg().getId());
-            o.setVersion(set.iterator().next().getOrg().getVersion());
+            //o.setVersion(set.iterator().next().getOrg().getVersion());
             dto.setOrg(o);
 
         } else {

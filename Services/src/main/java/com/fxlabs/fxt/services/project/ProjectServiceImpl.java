@@ -12,6 +12,7 @@ import com.fxlabs.fxt.dto.project.ProjectRequest;
 import com.fxlabs.fxt.dto.project.ProjectType;
 import com.fxlabs.fxt.dto.project.ProjectVisibility;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
@@ -40,12 +41,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private OrgRepository orgRepository;
     private UsersRepository usersRepository;
     private ProjectUsersRepository projectUsersRepository;
+    private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               ProjectGitAccountRepository projectGitAccountRepository, OrgUsersRepository orgUsersRepository,
                               TextEncryptor encryptor, OrgRepository orgRepository, UsersRepository usersRepository,
-                              ProjectUsersRepository projectUsersRepository) {
+                              ProjectUsersRepository projectUsersRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor) {
         super(repository, converter);
         this.projectRepository = repository;
         this.projectFileService = projectFileService;
@@ -55,6 +57,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.orgRepository = orgRepository;
         this.usersRepository = usersRepository;
         this.projectUsersRepository = projectUsersRepository;
+        this.gaaSTaskRequestProcessor = gaaSTaskRequestProcessor;
     }
 
     public Response<Project> findByName(String name, String owner) {
@@ -78,6 +81,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return projectResponse;
     }
 
+    @Override
     public Response<List<Project>> findProjects(String owner, Pageable pageable) {
         List<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsers = projectUsersRepository.findByUsersIdAndRole(owner, ProjectRole.OWNER);
         if (CollectionUtils.isEmpty(projectUsers)) {
@@ -86,6 +90,17 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         final List<com.fxlabs.fxt.dao.entity.project.Project> projects = new ArrayList<>();
         projectUsers.stream().forEach(pu -> projects.add(pu.getProject()));
         return new Response<List<Project>>(converter.convertToDtos(projects));
+    }
+
+
+    @Override
+    public Response<Project> findProjectById(String id, String owner) {
+        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersIdRole(id, owner);
+
+        if (projectUsersOptional.isPresent()) {
+            return new Response<Project>(converter.convertToDto(projectUsersOptional.get().getProject()));
+        }
+        return new Response<Project>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Project id or user doesn't have access."));
     }
 
     @Override
@@ -123,7 +138,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
             nameDto.setId(org.get().getId());
 
-            nameDto.setVersion(org.get().getVersion());
+            //nameDto.setVersion(org.get().getVersion());
             project.setOrg(nameDto);
             project.setName(request.getName());
             project.setDescription(request.getDescription());
@@ -163,6 +178,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 this.projectGitAccountRepository.saveAndFlush(account);
 
                 // Create GaaS Task
+                this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
             }
 
 

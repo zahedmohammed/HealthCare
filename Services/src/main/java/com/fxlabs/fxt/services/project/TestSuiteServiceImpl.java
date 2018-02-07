@@ -42,7 +42,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         if (entity != null) {
             // copy id and version
             testSuite.setId(entity.getId());
-            testSuite.setVersion(entity.getVersion());
+            //testSuite.setVersion(entity.getVersion());
         }
 
         TestSuite ts = converter.convertToEntity(testSuite);

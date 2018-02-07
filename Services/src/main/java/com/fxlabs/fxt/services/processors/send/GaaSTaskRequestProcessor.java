@@ -10,13 +10,10 @@ import com.fxlabs.fxt.dao.entity.users.UsersPassword;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.git.GitTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
-import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.encrypt.BytesEncryptor;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -66,6 +63,12 @@ public class GaaSTaskRequestProcessor {
     public void process() {
         Stream<Project> projects = projectRepository.findByProjectTypeAndDeleted(ProjectType.GIT, false);
         projects.forEach(project -> {
+            process(project);
+        });
+    }
+
+    public void process(Project project) {
+        try {
             Optional<ProjectGitAccount> gitAccount = projectGitAccountRepository.findByProjectId(project.getId());
             if (!gitAccount.isPresent()) {
                 logger.warn("Ignoring Git sync for project with ID [{}] and Name [{}]", project.getId(), project.getName());
@@ -106,8 +109,9 @@ public class GaaSTaskRequestProcessor {
             }
 
             amqpClientService.sendTask(task, gaaSQueue);
-
-        });
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+        }
     }
 
 }

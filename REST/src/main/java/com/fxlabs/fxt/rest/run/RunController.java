@@ -3,7 +3,6 @@ package com.fxlabs.fxt.rest.run;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
-import com.fxlabs.fxt.rest.base.BaseController;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.run.RunService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
@@ -43,12 +42,18 @@ public class RunController /*extends BaseController<Run, String>*/ {
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response<List<TestSuiteResponse>> findByRunId(@PathVariable("id") String id,
-                                                 @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
+    @RequestMapping(value = "/{id}/test-suite-responses", method = RequestMethod.GET)
+    public Response<List<TestSuiteResponse>> findResponsesByRunId(@PathVariable("id") String id,
+                                                                 @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
         return runService.findByRunId(id, new PageRequest(page, pageSize, SORT_BY_CREATE_DT));
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Response<Run> findByRunId(@PathVariable("id") String id) {
+        return runService.findById(id);
     }
 
 

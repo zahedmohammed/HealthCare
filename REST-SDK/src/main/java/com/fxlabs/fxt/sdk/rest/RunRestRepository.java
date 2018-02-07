@@ -19,7 +19,6 @@ import java.util.List;
 @Component
 public class RunRestRepository extends GenericRestRespository<Run> {
 
-
     @Autowired
     public RunRestRepository() {
 
@@ -35,7 +34,7 @@ public class RunRestRepository extends GenericRestRespository<Run> {
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
-        ResponseEntity<Response<Run>> response = restTemplate.exchange(getUrl() + "/" + id + "?region={region}&env={env}&tags={tags}&suites={suites}",
+        ResponseEntity<Response<Run>> response = restTemplate.exchange(getUrl() + "/job/" + id + "?region={region}&env={env}&tags={tags}&suites={suites}",
                 HttpMethod.POST, request, paramTypeRefMap.get(Run.class), region, env, tags, suites);
 
         //logger.info(response.getBody());
@@ -60,7 +59,7 @@ public class RunRestRepository extends GenericRestRespository<Run> {
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
-        ResponseEntity<Response<List<TestSuiteResponse>>> response = restTemplate.exchange(getUrl() + "/" + id + "/test-suites", HttpMethod.GET, request, paramTypeRefMap.get(TestSuiteResponse[].class));
+        ResponseEntity<Response<List<TestSuiteResponse>>> response = restTemplate.exchange(getUrl() + "/" + id + "/test-suite-responses", HttpMethod.GET, request, paramTypeRefMap.get(TestSuiteResponse[].class));
 
         //logger.info(response.getBody());
         return response.getBody();

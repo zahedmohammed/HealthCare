@@ -2,36 +2,67 @@ package com.fxlabs.fxt.rest.project;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Environment;
-import com.fxlabs.fxt.rest.base.BaseController;
 import com.fxlabs.fxt.services.project.EnvironmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.fxlabs.fxt.rest.base.BaseController.ENVS_BASE;
+import static com.fxlabs.fxt.rest.base.BaseController.ROLE_USER;
 
 /**
  * @author Intesar Shannan Mohammed
  */
 @RestController
 @RequestMapping(ENVS_BASE)
-public class EnvironmentController extends BaseController<Environment, String> {
+public class EnvironmentController /*extends BaseController<Environment, String>*/ {
+
+    private EnvironmentService service;
 
     @Autowired
     public EnvironmentController(
             EnvironmentService service) {
-        super(service);
+        this.service = service;
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/project-id/{id}", method = RequestMethod.GET)
     public Response<List<Environment>> findByProjectId(@PathVariable("id") String projectId) {
-        return ((EnvironmentService) service).findByProjectId(projectId, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
+        return service.findByProjectId(projectId, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Response<Environment> findById(@PathVariable("id") String id) {
+        return service.findById(id);
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/batch", method = RequestMethod.POST)
+    public Response<List<Environment>> create(@Valid @RequestBody List<Environment> dtos) {
+        return service.save(dtos);
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Response<Environment> create(@Valid @RequestBody Environment dto) {
+        return service.save(dto);
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response<Environment> update(@Valid @RequestBody Environment dto) {
+        return service.save(dto);
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Response<Environment> delete(@PathVariable("id") String id) {
+        return service.delete(id);
+    }
+
 
 }

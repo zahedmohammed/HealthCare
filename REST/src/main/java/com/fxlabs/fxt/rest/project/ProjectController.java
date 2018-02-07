@@ -12,16 +12,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-import static com.fxlabs.fxt.rest.base.BaseController.PROJECTS_BASE;
+import static com.fxlabs.fxt.rest.base.BaseController.*;
 
 /**
  * @author Intesar Shannan Mohammed
  */
 @RestController
 @RequestMapping(PROJECTS_BASE)
-public class ProjectController extends BaseController<Project, String> {
+public class ProjectController /*extends BaseController<Project, String>*/ {
 
     private ProjectFileService projectFileService;
     private ProjectService projectService;
@@ -29,10 +30,35 @@ public class ProjectController extends BaseController<Project, String> {
     @Autowired
     public ProjectController(
             ProjectService projectService, ProjectFileService projectFileService) {
-        super(projectService);
+        //super(projectService);
         this.projectService = projectService;
         this.projectFileService = projectFileService;
     }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Response<Project> findById(@PathVariable("id") String id) {
+        return projectService.findProjectById(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Response<Project> create(@Valid @RequestBody Project dto) {
+        return projectService.save(dto);
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response<Project> update(@Valid @RequestBody Project dto) {
+        return projectService.save(dto);
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Response<Project> delete(@PathVariable("id") String id) {
+        return projectService.delete(id);
+    }
+
 
     @Secured(ROLE_USER)
     @RequestMapping(method = RequestMethod.GET)
@@ -49,7 +75,7 @@ public class ProjectController extends BaseController<Project, String> {
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
-    public Response<Project> findById(@PathVariable("name") String name) {
+    public Response<Project> findByName(@PathVariable("name") String name) {
         return projectService.findByName(name, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
