@@ -2,14 +2,14 @@ package com.fxlabs.fxt.sdk.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fxlabs.fxt.sdk.beans.Config;
-import com.fxlabs.fxt.sdk.rest.*;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.dto.run.TaskStatus;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.sdk.beans.Config;
+import com.fxlabs.fxt.sdk.rest.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -40,9 +40,12 @@ public class FxCommandService {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    @Value("${fx.master.url}") String url;
-    @Value("${fx.master.accessKey}") String username;
-    @Value("${fx.master.secretKey}") String password;
+    @Value("${fx.master.url}")
+    String url;
+    @Value("${fx.master.accessKey}")
+    String username;
+    @Value("${fx.master.secretKey}")
+    String password;
 
     // Fx server connection details
     Set<TestSuiteResponse> dataSets = new HashSet<>();

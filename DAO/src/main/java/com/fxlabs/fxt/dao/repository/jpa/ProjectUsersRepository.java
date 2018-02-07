@@ -17,5 +17,5 @@ public interface ProjectUsersRepository extends JpaRepository<ProjectUsers, Stri
 
     List<ProjectUsers> findByProjectIdAndRole(String projectId, ProjectRole role);
 
-    Optional<ProjectUsers> findByProjectIdAndUsersIdRole(String projectId, String usersId);
+    Optional<ProjectUsers> findByProjectIdAndUsersId(String projectId, String usersId);
 }

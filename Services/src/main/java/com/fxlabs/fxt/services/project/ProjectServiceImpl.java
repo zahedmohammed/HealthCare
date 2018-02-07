@@ -95,7 +95,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public Response<Project> findProjectById(String id, String owner) {
-        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersIdRole(id, owner);
+        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersId(id, owner);
 
         if (projectUsersOptional.isPresent()) {
             return new Response<Project>(converter.convertToDto(projectUsersOptional.get().getProject()));
