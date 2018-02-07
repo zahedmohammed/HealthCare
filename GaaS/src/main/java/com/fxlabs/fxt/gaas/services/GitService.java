@@ -40,7 +40,7 @@ public class GitService {
             taskLogger.set(new StringBuilder());
 
 
-            path = "/var/lib/fx/" + task.getProjectId();
+            path = "/var/lib/fx/" + RandomStringUtils.randomAlphabetic(6);//task.getProjectId();
             response.setPath(path);
 
             Repository repository = findAndCreateRepository(task, response, path);
@@ -156,7 +156,7 @@ public class GitService {
         return false;
     }
 
-    private boolean deleteRepo(String path) {
+    public boolean deleteRepo(String path) {
         try {
             org.apache.commons.io.FileUtils.deleteQuietly(new File(path));
             return true;
