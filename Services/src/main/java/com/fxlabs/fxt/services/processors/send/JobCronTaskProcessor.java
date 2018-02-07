@@ -43,6 +43,7 @@ public class JobCronTaskProcessor {
                     for (Message m : runResponse.getMessages())
                         logger.warn(m.getValue());
                 }
+                jobRepository.saveAndFlush(job);
             } catch (RuntimeException ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }

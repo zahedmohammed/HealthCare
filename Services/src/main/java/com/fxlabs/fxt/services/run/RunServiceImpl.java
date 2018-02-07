@@ -53,6 +53,11 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         this.testSuiteESRepository = testSuiteESRepository;
     }
 
+    public Response<List<com.fxlabs.fxt.dto.run.Run>> findByJobId(String jobId, String user, Pageable pageable) {
+        // TODO - user has access to job/project
+        List<Run> runs = ((RunRepository) repository).findByJobId(jobId, pageable);
+        return new Response<>(converter.convertToDtos(runs));
+    }
 
     public Response<com.fxlabs.fxt.dto.run.Run> run(String jobId, String region, String tags, String env, String suites) {
         Response<Job> jobResponse = this.projectJobService.findById(jobId);

@@ -37,11 +37,11 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String ROLE_ENTERPRISE_ADMIN = "ROLE_ENTERPRISE_ADMIN";
 
     public final Logger logger = LoggerFactory.getLogger(getClass());
-    public final String PAGE_PARAM = "page";
-    public final String PAGE_SIZE_PARAM = "pageSize";
-    public final String DEFAULT_PAGE_VALUE = "0";
-    public final String DEFAULT_PAGE_SIZE_VALUE = "20";
-    public final String DEFAULT_MAX_PAGE_SIZE_VALUE = "100";
+    public static final String PAGE_PARAM = "page";
+    public static final String PAGE_SIZE_PARAM = "pageSize";
+    public static final String DEFAULT_PAGE_VALUE = "0";
+    public static final String DEFAULT_PAGE_SIZE_VALUE = "20";
+    public static final String DEFAULT_MAX_PAGE_SIZE_VALUE = "100";
     protected GenericService<D, ID> service;
 
     protected BaseController(GenericService<D, ID> service) {

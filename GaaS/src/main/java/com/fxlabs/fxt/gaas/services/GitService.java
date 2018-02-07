@@ -11,7 +11,6 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.util.FileUtils;
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ public class GitService {
             taskLogger.set(new StringBuilder());
 
 
-            String path = org.apache.commons.io.FileUtils.getTempDirectory() + "/" + task.getProjectId();
+            String path = "/tmp" + "/" + task.getProjectId();
             response.setPath(path);
 
             Repository repository = findAndCreateRepository(task, response, path);
@@ -91,17 +90,11 @@ public class GitService {
     }
 
     private Repository findRepository(String path) {
-        FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
-        File file = new File(path);
-
         Repository repository = null;
 
         try {
-            repository = repositoryBuilder.setGitDir(file)
-                    .readEnvironment() // scan environment GIT_* variables
-                    .findGitDir() // scan up the file system tree
-                    .setMustExist(true)
-                    .build();
+
+            repository = Git.open(new File(path + "/.git")).getRepository();
 
         } catch (RepositoryNotFoundException rnf) {
             logger.warn(rnf.getLocalizedMessage());

@@ -13,7 +13,9 @@ import java.util.List;
  */
 public interface RunService extends GenericService<Run, String> {
 
+    Response<List<com.fxlabs.fxt.dto.run.Run>> findByJobId(String jobId, String user, Pageable pageable);
+
     Response<Run> run(String jobId, String region, String tags, String env, String suites);
 
-    public Response<List<TestSuiteResponse>> findByRunId(String runId, Pageable pageable);
+    Response<List<TestSuiteResponse>> findByRunId(String runId, Pageable pageable);
 }
