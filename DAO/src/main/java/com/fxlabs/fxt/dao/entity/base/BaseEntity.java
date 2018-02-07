@@ -48,8 +48,8 @@ public class BaseEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     protected Date modifiedDate;
 
-    @Version
-    protected Long version;
+    //@Version
+    //protected Long version;
 
     protected boolean deleted = false;
 
