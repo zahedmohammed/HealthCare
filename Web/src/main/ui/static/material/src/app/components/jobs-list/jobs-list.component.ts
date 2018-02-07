@@ -29,6 +29,13 @@ export class JobslistComponent implements OnInit {
   }
 
   runJob(id: string) {
-    this.runService.run(id);
+    this.runService.run(id).subscribe(results => {
+      this.showSpinner = false;
+      if (!results)
+        return;
+      //this.jobs = results['data'];
+    }, error => {
+      console.log("Unable to fetch jobs");
+    });
   }
 }

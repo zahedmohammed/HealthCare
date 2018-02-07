@@ -22,10 +22,10 @@
     <div class="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
       <ul class="list-unstyled list-inline">
         <!--<li class="list-inline-item"><button mat-button class="md-button header-btn" myOpenSearchOverlay><i class="material-icons">search</i></button></li>-->
-        <li class="list-inline-item">
+        <li class="list-inline-item" [routerLink]="['/app/messages']">
           <button mat-button class="md-button header-btn" [matMenuTriggerFor]="appNotification">
-            <i class="material-icons" [routerLink]="['/app/messages']">notifications_none</i>
-            <span class="badge">3</span>
+            <i class="material-icons" >notifications_none</i>
+            <!--<span class="badge">3</span>-->
           </button>
           <!--<mat-menu #appNotification="matMenu" x-position="after" y-position="below" overlapTrigger="false">
             <mat-list dense>

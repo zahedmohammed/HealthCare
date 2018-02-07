@@ -83,6 +83,7 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
 import { EditProjectComponent } from './components/edit-project/edit-project.component';
 import { MessageListComponent } from './components/message-list/message-list.component';
 import { MessageDetailComponent } from './components/message-detail/message-detail.component';
+import { RunDetailComponent } from './components/run-detail/run-detail.component';
 
 @NgModule({
   imports: [
@@ -165,6 +166,7 @@ import { MessageDetailComponent } from './components/message-detail/message-deta
     EditProjectComponent,
     MessageListComponent,
     MessageDetailComponent,
+    RunDetailComponent,
   ],
   bootstrap: [AppComponent]
 })
