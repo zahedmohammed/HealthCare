@@ -1,0 +1,27 @@
+<section class="container-fluid with-maxwidth chapter">
+
+    <article class="article">
+        <h2 class="article-title">Projects
+            <button mat-raised-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/new-project']">New Project</button><div class="divider divider-sm"></div>
+        </h2>
+
+        <div class="box box-default table-box mdl-shadow--2dp">
+            <table class="mdl-data-table">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Name</th>
+                    <th class="mdl-data-table__cell--non-numeric">Type</th>
+                    <th class="mdl-data-table__cell--non-numeric">Visibility</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let project of projects">
+                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/project', project.id]">{{project.org.name}}/{{project.name}}</a></td>
+                    <td class="mdl-data-table__cell--non-numeric">{{project.projectType}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{project.visibility}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>

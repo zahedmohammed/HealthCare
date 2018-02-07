@@ -1,0 +1,28 @@
+<section class="container-fluid with-maxwidth chapter">
+
+  <article class="article">
+    <h2 class="article-title">Alerts
+    </h2>
+
+    <div class="box box-default table-box mdl-shadow--2dp">
+      <table class="mdl-data-table">
+        <thead>
+        <tr>
+          <th class="mdl-data-table__cell--non-numeric">Subject</th>
+          <th class="mdl-data-table__cell--non-numeric">Type</th>
+          <th class="mdl-data-table__cell--non-numeric">State</th>
+          <th class="mdl-data-table__cell--non-numeric">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of items">
+          <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/message', item.id]">{{item.subject}}</a></td>
+          <td class="mdl-data-table__cell--non-numeric">{{item.severity}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{item.state}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</section>

@@ -5,3 +5,20 @@
 1510526713065:exit
 1510526756354:help
 1510530715375:exit
+1517468550033:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --tags v3
+1517468746323:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test
+1517468762962:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --tags v3
+1517468784622:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --tags v1
+1517469477219:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test
+1517469992962:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --tags v1
+1517470002837:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --tags v3
+1517470009566:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --suites 'hotel_list,hotels_params_negative'
+1517523475309:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test
+1517537118221:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --suites 'hotel_list,hotels_params_negative'
+1517537246654:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test
+1517540629397:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --suites 'hotel_list,hotels_params_negative'
+1517540644719:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --tags v3
+1517540654931:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --tags v1
+1517557054754:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test
+1517560471790:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test --tags v1
+1517623544464:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test

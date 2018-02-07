@@ -74,17 +74,17 @@ dependencyManagement {
 }
 
 
-def webappDir = "$projectDir/src/main/material"
+def webappDir = "$projectDir/src/main/ui/static/material"
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/material/dist", "src/main/resources"]
+            srcDirs = ["src/main/ui", "src/main/ux", "src/main/resources"]
         }
     }
 }
 
 processResources {
-    //dependsOn "buildAngular"
+    dependsOn "buildAngular"
 }
 
 task buildAngular(type: Exec) {

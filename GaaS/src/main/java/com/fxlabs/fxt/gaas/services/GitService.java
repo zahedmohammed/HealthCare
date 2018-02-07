@@ -2,6 +2,8 @@ package com.fxlabs.fxt.gaas.services;
 
 import com.fxlabs.fxt.dto.git.GitTask;
 import com.fxlabs.fxt.dto.git.GitTaskResponse;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -32,12 +34,13 @@ public class GitService {
         GitTaskResponse response = new GitTaskResponse();
         response.setProjectId(task.getProjectId());
         response.setSuccess(false);
+        String path = null;
 
         try {
             taskLogger.set(new StringBuilder());
 
 
-            String path = "/tmp" + "/" + task.getProjectId();
+            path = "/var/lib/fx/" + task.getProjectId();
             response.setPath(path);
 
             Repository repository = findAndCreateRepository(task, response, path);
@@ -155,11 +158,8 @@ public class GitService {
 
     private boolean deleteRepo(String path) {
         try {
-            FileUtils.delete(new File(path));
+            org.apache.commons.io.FileUtils.deleteQuietly(new File(path));
             return true;
-        } catch (IOException ex) {
-            logger.warn(ex.getLocalizedMessage(), ex);
-            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
