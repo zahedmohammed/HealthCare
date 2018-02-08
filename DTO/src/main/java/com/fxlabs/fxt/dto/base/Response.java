@@ -46,6 +46,11 @@ public class Response<D> implements Serializable {
         return this;
     }
 
+    public Response withMessages(List<Message> message) {
+        this.setMessages(message);
+        return this;
+    }
+
 
 }
 

@@ -1,3 +1,18 @@
-<p>
-  message-detail works!
-</p>
+<section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter">
+  <div class="item-card card__horizontal1" >
+    <div class="card__body card-white">
+      <div class="card__title">
+        <h4>{{item.subject}}</h4>
+        <h6>{{item.type}}</h6>
+      </div>
+      <div class="card__price">
+        <span>Date: {{item.createdDate | date:'short'}}</span>
+        <span>State:  ({{item.state}})</span>
+        <span>Status: {{item.status}}</span>
+
+      </div>
+      <div class="divider divider-solid divider-lg"></div>
+      <p class="card__desc">{{item.message}}</p>
+    </div>
+  </div>
+</section>

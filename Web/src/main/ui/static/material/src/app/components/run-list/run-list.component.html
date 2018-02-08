@@ -1,28 +1,33 @@
+
 <section class="container-fluid with-maxwidth chapter">
 
-  <article class="article">
-    <h2 class="article-title">Job Runs</h2>
-    <div class="box box-default table-box mdl-shadow--2dp">
-      <table class="mdl-data-table">
-        <thead>
-        <tr>
-          <th class="mdl-data-table__cell--non-numeric">Name</th>
-          <th class="mdl-data-table__cell--non-numeric">Region</th>
-          <th class="mdl-data-table__cell--non-numeric">Status</th>
-          <th class="mdl-data-table__cell--non-numeric">Completed/Fail</th>
-          <th class="mdl-data-table__cell--non-numeric">Time</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let item of list">
-          <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/run', item.id]">{{item.job.name}}/{{item.runId}}</a></td>
-          <td class="mdl-data-table__cell--non-numeric">{{item.job.regions}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{item.task.status}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime}}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </article>
+    <article class="article">
+        <h2 class="article-title">Runs</h2>
+        <div class="box box-default table-box mdl-shadow--2dp">
+            <table class="mdl-data-table">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Name</th>
+                    <th class="mdl-data-table__cell--non-numeric">Region</th>
+                    <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    <th class="mdl-data-table__cell--non-numeric">Completed/Fail</th>
+                    <th class="mdl-data-table__cell--non-numeric">Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of list">
+                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
+                                                                     [routerLink]="['/app/run', item.id]">{{item.job.name}}/{{item.runId}}</a>
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.job.regions}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.status}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        {{item.task.totalTestCompleted}}/{{item.task.failedTests}}
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
 </section>

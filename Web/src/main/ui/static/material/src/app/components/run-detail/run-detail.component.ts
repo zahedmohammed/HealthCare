@@ -10,7 +10,8 @@ import { RunService } from '../../services/run.service';
   providers: [RunService]
 })
 export class RunDetailComponent implements OnInit {
-  item;
+  run;
+  list;
   showSpinner: boolean = false;
   constructor(private runService: RunService, private route: ActivatedRoute) { }
 
@@ -18,7 +19,8 @@ export class RunDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {
-        this.getRunById(params['id'])
+        this.getRunById(params['id']);
+        this.getTestSuiteResponsesByRunId(params['id']);
       }
     });
   }
@@ -31,7 +33,21 @@ export class RunDetailComponent implements OnInit {
         // TODO - handle errors
         return;
       }
-      this.item = results['data'];
+      this.run = results['data'];
+    }, error => {
+      console.log("Unable to fetch regions");
+    });
+  }
+
+  getTestSuiteResponsesByRunId(id: string) {
+    this.showSpinner = true;
+    this.runService.getTestSuiteResponses(id).subscribe(results => {
+      this.showSpinner = false;
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      this.list = results['data'];
     }, error => {
       console.log("Unable to fetch regions");
     });

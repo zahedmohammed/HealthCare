@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
+import { Project } from '../models/project.model';
 
 @Injectable()
 export class ProjectService {
@@ -15,6 +16,17 @@ export class ProjectService {
    */
   getProjects() {   
       return this.http.get(this.serviceUrl); 
+  }
+
+  getById(id: string) {
+    return this.http.get(this.serviceUrl + "/" + id);
+  }
+
+  create(project: Project) {
+    return this.http.post(this.serviceUrl + "/add", project);
+  }
+  update(project: Project) {
+    return this.http.put(this.serviceUrl, project);
   }
 
 }

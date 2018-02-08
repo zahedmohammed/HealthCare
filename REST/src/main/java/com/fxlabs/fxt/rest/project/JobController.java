@@ -4,14 +4,14 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Job;
 import com.fxlabs.fxt.services.project.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.fxlabs.fxt.rest.base.BaseController.JOBS_BASE;
-import static com.fxlabs.fxt.rest.base.BaseController.ROLE_USER;
+import static com.fxlabs.fxt.rest.base.BaseController.*;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -26,6 +26,13 @@ public class JobController /* extends BaseController<Job, String>*/ {
     public JobController(
             JobService jobService) {
         this.service = jobService;
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @RequestMapping(method = RequestMethod.GET)
+    public Response<List<Job>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                       @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.findAll(com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
     }
 
     @Secured(ROLE_USER)
@@ -63,7 +70,6 @@ public class JobController /* extends BaseController<Job, String>*/ {
     public Response<Job> delete(@PathVariable("id") String id) {
         return service.delete(id);
     }
-
 
 
 }

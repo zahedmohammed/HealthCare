@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
+import { Project } from '../../models/project.model';
 
 @Component({
   selector: 'app-new-project',
@@ -9,14 +10,26 @@ import { ProjectService } from '../../services/project.service';
 })
 export class NewProjectComponent implements OnInit {
 
-  project = new Object();
+  showSpinner: boolean = false;
+  project: Project = new Project('', '', '', '', 'GIT');
   constructor(private projectService: ProjectService) { }
 
   ngOnInit() {
   }
 
-  save() {
+  create() {
     console.log(this.project);
+    this.projectService.create(this.project).subscribe(results => {
+      this.showSpinner = false;
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      console.log(results);
+      //this.project = new Project('','','','','GIT');
+    }, error => {
+      console.log("Unable to fetch regions");
+    });
   }
 
 }
