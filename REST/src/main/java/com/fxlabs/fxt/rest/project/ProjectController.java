@@ -4,7 +4,6 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.ProjectRequest;
-import com.fxlabs.fxt.rest.base.BaseController;
 import com.fxlabs.fxt.services.project.ProjectFileService;
 import com.fxlabs.fxt.services.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +62,7 @@ public class ProjectController /*extends BaseController<Project, String>*/ {
     @Secured(ROLE_USER)
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<Project>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                           @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return projectService.findProjects(com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
     }
 
@@ -85,6 +84,18 @@ public class ProjectController /*extends BaseController<Project, String>*/ {
     public Response<List<ProjectFile>> findByProjectId(@PathVariable("id") String projectId, @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                        @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return projectFileService.findByProjectId(projectId, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor(), new PageRequest(page, pageSize));
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}/git-account", method = RequestMethod.GET)
+    public Response<ProjectRequest> findGitAccount(@PathVariable("id") String id) {
+        return projectService.findGitByProjectId(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}/git-account", method = RequestMethod.PUT)
+    public Response<ProjectRequest> findGitAccount(@RequestBody ProjectRequest request) {
+        return projectService.saveGitAccount(request, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
 }

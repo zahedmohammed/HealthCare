@@ -13,7 +13,7 @@ export class EditProjectComponent implements OnInit {
 
   showSpinner: boolean = false;
   project: Project;// = new Project('', '', '', '', 'GIT');
-  constructor(private projectService: ProjectService, private route: ActivatedRoute) { }
+  constructor(private projectService: ProjectService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -48,7 +48,7 @@ export class EditProjectComponent implements OnInit {
         return;
       }
       console.log(results);
-      //this.project = new Project('','','','','GIT');
+      this.router.navigate(['/app/projects']);
     }, error => {
       console.log("Unable to fetch regions");
     });

@@ -22,4 +22,8 @@ public interface ProjectService extends GenericService<Project, String> {
 
     Response<Project> add(ProjectRequest account, String owner);
 
+    Response<ProjectRequest> findGitByProjectId(String projectId, String user);
+
+    Response<ProjectRequest> saveGitAccount(ProjectRequest request, String user);
+
 }

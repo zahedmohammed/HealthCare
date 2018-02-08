@@ -7,10 +7,7 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.Project;
-import com.fxlabs.fxt.dto.project.ProjectRequest;
-import com.fxlabs.fxt.dto.project.ProjectType;
-import com.fxlabs.fxt.dto.project.ProjectVisibility;
+import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +39,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private UsersRepository usersRepository;
     private ProjectUsersRepository projectUsersRepository;
     private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
+
+    private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
@@ -108,6 +107,11 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Response<Project> projectResponse = null;
 
         try {
+
+            if (StringUtils.isEmpty(request.getName())) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project name"));
+            }
+
             OrgUsers orgUsers = null;
             if (StringUtils.isEmpty(request.getOrgId())) {
                 Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(owner, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
@@ -188,5 +192,62 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
         return projectResponse;
 
+    }
+
+    @Override
+    public Response<ProjectRequest> findGitByProjectId(String projectId, String user) {
+        Response<Project> projectResponse = findProjectById(projectId, user);
+        if (projectResponse.isErrors()) {
+            return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.project.ProjectGitAccount> accountOptional = projectGitAccountRepository.findByProjectId(projectId);
+        if (!accountOptional.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "No account found."));
+        }
+        ProjectRequest project = new ProjectRequest();
+        project.setName(projectResponse.getData().getName());
+        project.setId(accountOptional.get().getId());
+        project.setProjectId(accountOptional.get().getProjectId());
+        project.setUrl(accountOptional.get().getUrl());
+        project.setBranch(accountOptional.get().getBranch());
+        project.setUsername(accountOptional.get().getUsername());
+        project.setPassword(PASSWORD_MASKED);
+
+        return new Response<ProjectRequest>(project);
+    }
+
+    @Override
+    public Response<ProjectRequest> saveGitAccount(ProjectRequest request, String user) {
+        Response<Project> projectResponse = findProjectById(request.getProjectId(), user);
+        if (projectResponse.isErrors()) {
+            return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.project.ProjectGitAccount> accountOptional = projectGitAccountRepository.findByProjectId(request.getProjectId());
+
+        com.fxlabs.fxt.dao.entity.project.ProjectGitAccount account = null;
+
+        if (accountOptional.isPresent()) {
+            account = accountOptional.get();
+        } else {
+            account = new com.fxlabs.fxt.dao.entity.project.ProjectGitAccount();
+            account.setProjectId(request.getProjectId());
+        }
+
+        account.setUrl(request.getUrl());
+        account.setBranch(request.getBranch());
+        account.setUsername(request.getUsername());
+
+        if (!org.apache.commons.lang3.StringUtils.equals(PASSWORD_MASKED, request.getPassword())) {
+            account.setPassword(request.getPassword());
+        }
+
+        this.projectGitAccountRepository.saveAndFlush(account);
+
+        // Create GaaS Task
+        this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
+
+        return new Response<ProjectRequest>();
     }
 }
