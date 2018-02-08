@@ -1,42 +1,44 @@
 <section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter">
     <article class="article">
-        <h2 class="article-title">Run Summary</h2>
+        <h2 class="article-title"> <a href="javascript:;" [routerLink]="['/app/jobs']">Jobs</a> / {{run.job.name}} / <a href="javascript:;" [routerLink]="['/app/runs']">Runs</a> / {{run.runId}}
+        </h2>
     </article>
-</section>
 
-<section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter">
-    <div class="item-card card__horizontal1">
-        <div class="card__body card-white">
-            <div class="card__title">
-                <h4>{{run.job.name}} / ({{run.task.status}})</h4>
-                <h6>Summary</h6>
+
+    <div class="box box-default table-box mdl-shadow--2dp">
+        <div class="item-card card__horizontal1">
+            <div class="card__body card-white">
+                <div class="card__title">
+                    <h4>{{run.job.name}} / ({{run.task.status}})</h4>
+                    <h6>Summary</h6>
+                </div>
+                <div class="card__price">
+                    <span>Pass: {{run.task.totalTestCompleted}}</span>
+                    <span class="type--strikethrough">Fail: {{run.task.failedTests}}</span>
+                    <span>Time: {{run.task.totalTime}}</span>
+                </div>
+                <div class="divider divider-solid divider-lg"></div>
+                <p class="card__desc" style="white-space: pre;">{{run.task.description}}</p>
             </div>
-            <div class="card__price">
-                <span>Pass: {{run.task.totalTestCompleted}}</span>
-                <span class="type--strikethrough">Fail: {{run.task.failedTests}}</span>
-                <span>Time: {{run.task.totalTime}}</span>
-            </div>
-            <div class="divider divider-solid divider-lg"></div>
-            <p class="card__desc">{{run.task.description}}</p>
         </div>
     </div>
-</section>
 
 
-<section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter">
-    <div class="item-card card__horizontal1" *ngFor="let item of list">
-        <div class="card__body card-white">
-            <div class="card__title">
-                <h4>{{item.testSuite}}</h4>
-                <h6>Test-Suite</h6>
+    <div class="box box-default table-box mdl-shadow--2dp">
+        <div class="item-card card__horizontal1" *ngFor="let item of list">
+            <div class="card__body card-white">
+                <div class="card__title">
+                    <h4>{{item.testSuite}}</h4>
+                    <h6>Test-Suite</h6>
+                </div>
+                <div class="card__price">
+                    <span>Pass: {{item.totalPassed}}</span>
+                    <span class="type--strikethrough">Fail: {{item.totalFailed}}</span>
+                    <span>Time: {{item.requestTime}}</span>
+                </div>
+                <div class="divider divider-solid divider-lg"></div>
+                <p class="card__desc" style="white-space: pre;">{{item.logs}}</p>
             </div>
-            <div class="card__price">
-                <span>Pass: {{item.totalPassed}}</span>
-                <span class="type--strikethrough">Fail: {{item.totalFailed}}</span>
-                <span>Time: {{item.requestTime}}</span>
-            </div>
-            <div class="divider divider-solid divider-lg"></div>
-            <p class="card__desc">{{item.logs}}</p>
         </div>
     </div>
 </section>

@@ -12,6 +12,7 @@
                     <th class="mdl-data-table__cell--non-numeric">Name</th>
                     <th class="mdl-data-table__cell--non-numeric">Repository</th>
                     <th class="mdl-data-table__cell--non-numeric">Visibility</th>
+                    <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -19,6 +20,7 @@
                     <td class="mdl-data-table__cell--non-numeric">{{project.org.name}}/{{project.name}}</td>
                     <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/project', project.id]">{{project.projectType}}</a></td>
                     <td class="mdl-data-table__cell--non-numeric">{{project.visibility}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{project.createdDate | date:'shortDate'}}</td>
                 </tr>
                 </tbody>
             </table>

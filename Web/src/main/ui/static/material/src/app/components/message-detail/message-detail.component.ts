@@ -10,6 +10,7 @@ import { MessageService } from '../../services/message.service';
 })
 export class MessageDetailComponent implements OnInit {
   item;
+  msg;
   showSpinner: boolean = false;
   constructor(private messageService: MessageService, private route: ActivatedRoute) { }
 
@@ -31,10 +32,18 @@ export class MessageDetailComponent implements OnInit {
         return;
       }
       this.item = results['data'];
+      this.msg = this.item.message.replace(new RegExp('\n', 'g'), "<br />");
       console.log(this.item);
     }, error => {
       console.log("Unable to fetch regions");
     });
+  }
+
+  filterNl(txt: string) {
+    if(txt) {
+      return txt.replace(/(?:\r\n|\r|\n)/g, '<br />');
+    }
+    return txt;
   }
 
 

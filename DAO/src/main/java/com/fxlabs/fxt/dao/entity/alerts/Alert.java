@@ -24,13 +24,13 @@ import java.util.List;
 public class Alert extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
+    private TaskType taskType;
+
+    @Enumerated(EnumType.STRING)
+    private TaskState taskState;
+
+    @Enumerated(EnumType.STRING)
     private AlertType type;
-
-    @Enumerated(EnumType.STRING)
-    private AlertSeverity severity;
-
-    @Enumerated(EnumType.STRING)
-    private AlertState state;
 
     @Enumerated(EnumType.STRING)
     private AlertStatus status;

@@ -19,11 +19,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Alert extends BaseDto<String> {
 
+    private TaskType taskType;
+
+    private TaskState taskState;
+
     private AlertType type;
-
-    private AlertSeverity severity;
-
-    private AlertState state;
 
     private AlertStatus status;
 
@@ -31,6 +31,7 @@ public class Alert extends BaseDto<String> {
 
     private String refId;
     private String refName;
+
     private String subject;
     private String message;
 

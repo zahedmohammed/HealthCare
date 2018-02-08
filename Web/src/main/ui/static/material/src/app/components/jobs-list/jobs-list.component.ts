@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { JobsService } from '../../services/jobs.service';
 import { RunService } from '../../services/run.service';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
@@ -14,7 +15,7 @@ export class JobslistComponent implements OnInit {
 
   jobs;
   showSpinner: boolean = false;
-  constructor(private jobsService: JobsService, private runService: RunService) { }
+  constructor(private jobsService: JobsService, private runService: RunService, private router: Router) { }
 
   ngOnInit() {   
     this.showSpinner = true;
@@ -34,6 +35,7 @@ export class JobslistComponent implements OnInit {
       if (!results)
         return;
       //this.jobs = results['data'];
+      this.router.navigate(['/app/runs', id]);
     }, error => {
       console.log("Unable to fetch jobs");
     });

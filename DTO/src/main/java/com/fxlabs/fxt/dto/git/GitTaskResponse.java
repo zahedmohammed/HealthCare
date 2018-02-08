@@ -16,6 +16,7 @@ public class GitTaskResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String projectId;
+    private String projectName;
     private String gitLastCommit;
     private String logs;
     private boolean success;

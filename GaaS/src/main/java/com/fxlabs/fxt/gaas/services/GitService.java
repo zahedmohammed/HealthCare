@@ -33,6 +33,7 @@ public class GitService {
 
         GitTaskResponse response = new GitTaskResponse();
         response.setProjectId(task.getProjectId());
+        response.setProjectName(task.getProjectName());
         response.setSuccess(false);
         String path = null;
 

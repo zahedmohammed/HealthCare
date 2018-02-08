@@ -16,6 +16,7 @@ public class GitTask implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String projectId;
+    private String projectName;
     private String gitUrl;
     private String gitUsername;
     private String gitPassword;

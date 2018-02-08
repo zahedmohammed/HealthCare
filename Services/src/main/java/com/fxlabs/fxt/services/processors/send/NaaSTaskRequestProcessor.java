@@ -1,7 +1,7 @@
 package com.fxlabs.fxt.services.processors.send;
 
 import com.fxlabs.fxt.dao.entity.alerts.Alert;
-import com.fxlabs.fxt.dao.entity.alerts.AlertSeverity;
+import com.fxlabs.fxt.dao.entity.alerts.AlertType;
 import com.fxlabs.fxt.dao.entity.alerts.AlertStatus;
 import com.fxlabs.fxt.dao.entity.users.Users;
 import com.fxlabs.fxt.dao.repository.es.AlertESRepository;
@@ -54,7 +54,7 @@ public class NaaSTaskRequestProcessor {
      * Send as NaaSTask
      */
     public void process() {
-        Stream<Alert> alerts = alertESRepository.findBySeverityAndStatus(AlertSeverity.ERROR, AlertStatus.UNREAD);
+        Stream<Alert> alerts = alertESRepository.findByTypeAndStatus(AlertType.ERROR, AlertStatus.UNREAD);
         alerts.forEach(alert -> {
 
             EmailTask task = new EmailTask();
@@ -66,10 +66,9 @@ public class NaaSTaskRequestProcessor {
                     .append("Component: ").append(alert.getRefType()).append("\n")
                     .append("Name: ").append(alert.getRefName()).append("\n")
                     .append("ID: ").append(alert.getRefId()).append("\n")
-                    .append("Severity: ").append(alert.getSeverity()).append("\n")
                     .append("Type: ").append(alert.getType()).append("\n")
-                    .append("State: ").append(alert.getState()).append("\n")
-
+                    .append("Task-Type: ").append(alert.getTaskType()).append("\n")
+                    //.append("State: ").append(alert.getState()).append("\n")
                     .append("Logs: ").append(alert.getMessage()).append("\n");
 
             task.setBody(sb.toString());

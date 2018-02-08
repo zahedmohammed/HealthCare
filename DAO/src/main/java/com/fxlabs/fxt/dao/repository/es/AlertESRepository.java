@@ -1,7 +1,7 @@
 package com.fxlabs.fxt.dao.repository.es;
 
 import com.fxlabs.fxt.dao.entity.alerts.Alert;
-import com.fxlabs.fxt.dao.entity.alerts.AlertSeverity;
+import com.fxlabs.fxt.dao.entity.alerts.AlertType;
 import com.fxlabs.fxt.dao.entity.alerts.AlertStatus;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
@@ -15,5 +15,5 @@ public interface AlertESRepository extends ElasticsearchRepository<Alert, String
 
     public List<Alert> findByRefIdAndUsersIn(String refId, String user);
 
-    public Stream<Alert> findBySeverityAndStatus(AlertSeverity severity, AlertStatus status);
+    public Stream<Alert> findByTypeAndStatus(AlertType type, AlertStatus status);
 }

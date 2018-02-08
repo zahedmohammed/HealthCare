@@ -76,6 +76,7 @@ public class GaaSTaskRequestProcessor {
             }
             GitTask task = new GitTask();
             task.setProjectId(project.getId());
+            task.setProjectName(project.getName());
             task.setGitUrl(gitAccount.get().getUrl());
             task.setGitBranch(gitAccount.get().getBranch());
             task.setGitUsername(gitAccount.get().getUsername());

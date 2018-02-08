@@ -39,18 +39,19 @@ public class GitTaskResponseProcessor {
             Alert alert = new Alert();
             alert.setRefId(task.getProjectId());
             alert.setRefType(AlertRefType.PROJECT);
-            alert.setState(AlertState.ACTIVE);
+            alert.setTaskType(TaskType.PROJECT_SYNC);
+            alert.setTaskState(TaskState.ACTIVE);
+
+            alert.setRefType(AlertRefType.PROJECT);
 
             if (task.isSuccess()) {
-                alert.setSeverity(AlertSeverity.SUCCESS);
-                alert.setType(AlertType.PROJECT_SYNC_SUCCESS); // TODO
+                alert.setType(AlertType.INFO);
             } else {
-                alert.setSeverity(AlertSeverity.ERROR); // TODO
-                alert.setType(AlertType.PROJECT_SYNC_FAILURE); // TODO
+                alert.setType(AlertType.ERROR);
             }
 
             alert.setStatus(AlertStatus.UNREAD);
-            alert.setSubject("Project Git Pull");
+            alert.setSubject(task.getProjectName());
 
             alert.setMessage(task.getLogs());
             List<String> users = new ArrayList<>();
