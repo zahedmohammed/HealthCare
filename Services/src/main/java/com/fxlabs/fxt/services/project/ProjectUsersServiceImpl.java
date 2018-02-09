@@ -31,4 +31,8 @@ public class ProjectUsersServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     }
 
 
+    @Override
+    public void isUserEntitled(String s, String user) {
+        // TODO
+    }
 }

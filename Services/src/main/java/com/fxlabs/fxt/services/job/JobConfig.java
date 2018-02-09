@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.services.users.job;
+package com.fxlabs.fxt.services.job;
 
 import com.fxlabs.fxt.services.processors.send.JobCronTaskJob;
 import com.fxlabs.fxt.services.processors.send.SendGaaSTaskJob;

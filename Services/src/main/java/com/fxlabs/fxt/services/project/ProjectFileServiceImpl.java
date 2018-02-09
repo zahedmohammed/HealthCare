@@ -101,4 +101,8 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
         return projectFileResponse;
     }
 
+    @Override
+    public void isUserEntitled(String s, String user) {
+        // TODO
+    }
 }

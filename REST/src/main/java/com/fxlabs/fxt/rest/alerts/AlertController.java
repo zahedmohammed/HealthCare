@@ -2,39 +2,74 @@ package com.fxlabs.fxt.rest.alerts;
 
 import com.fxlabs.fxt.dto.alerts.Alert;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.rest.base.BaseController;
+import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.alerts.AlertService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-import static com.fxlabs.fxt.rest.base.BaseController.ALERT_BASE;
+import static com.fxlabs.fxt.rest.base.BaseController.*;
 
 /**
  * @author Intesar Shannan Mohammed
  */
 @RestController
 @RequestMapping(ALERT_BASE)
-public class AlertController extends BaseController<Alert, String> {
+public class AlertController {
 
-    private AlertService alertService;
+    private AlertService service;
 
     @Autowired
     public AlertController(
             AlertService service) {
-        super(service);
-        this.alertService = alertService;
+        this.service = service;
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(method = RequestMethod.GET)
+    public Response<List<Alert>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.findAll(SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/ref/{id}", method = RequestMethod.GET)
     public Response<List<Alert>> findByProjectId(@PathVariable("id") String refId) {
-        return alertService.findRefId(refId, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
+        return service.findRefId(refId, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Response<Alert> findById(@PathVariable("id") String id) {
+        return service.findById(id, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/batch", method = RequestMethod.POST)
+    public Response<List<Alert>> create(@Valid @RequestBody List<Alert> dtos) {
+        return service.save(dtos, SecurityUtil.getCurrentAuditor());
+    }
+
+    /*@Secured(ROLE_USER)
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Response<Alert> create(@Valid @RequestBody Alert dto) {
+        return service.save(dto, SecurityUtil.getCurrentAuditor());
+    }*/
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response<Alert> update(@Valid @RequestBody Alert dto) {
+        return service.save(dto, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Response<Alert> delete(@PathVariable("id") String id) {
+        return service.delete(id, SecurityUtil.getCurrentAuditor());
     }
 
 }

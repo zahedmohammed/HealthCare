@@ -18,7 +18,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.ROLE_USER;
  */
 @RestController
 @RequestMapping(ENVS_BASE)
-public class EnvironmentController /*extends BaseController<Environment, String>*/ {
+public class EnvironmentController {
 
     private EnvironmentService service;
 
@@ -37,31 +37,31 @@ public class EnvironmentController /*extends BaseController<Environment, String>
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Environment> findById(@PathVariable("id") String id) {
-        return service.findById(id);
+        return service.findById(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<Environment>> create(@Valid @RequestBody List<Environment> dtos) {
-        return service.save(dtos);
+        return service.save(dtos, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Environment> create(@Valid @RequestBody Environment dto) {
-        return service.save(dto);
+        return service.save(dto, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Environment> update(@Valid @RequestBody Environment dto) {
-        return service.save(dto);
+        return service.save(dto, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Environment> delete(@PathVariable("id") String id) {
-        return service.delete(id);
+        return service.delete(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
 

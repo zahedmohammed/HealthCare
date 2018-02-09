@@ -26,5 +26,10 @@ public class SystemSettingServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.
 
     }
 
+    @Override
+    public void isUserEntitled(String s, String user) {
+        // TODO
+    }
+
 
 }

@@ -19,7 +19,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
  */
 @RestController
 @RequestMapping(USER_BASE)
-public class UsersController /*extends BaseController<Users, String>*/ {
+public class UsersController {
 
     private UsersService usersService;
 

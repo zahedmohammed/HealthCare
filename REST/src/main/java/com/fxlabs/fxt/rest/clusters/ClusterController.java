@@ -2,7 +2,6 @@ package com.fxlabs.fxt.rest.clusters;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
-import com.fxlabs.fxt.rest.base.BaseController;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.clusters.ClusterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,28 +12,27 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.fxlabs.fxt.rest.base.BaseController.CLUSTER_BASE;
+import static com.fxlabs.fxt.rest.base.BaseController.*;
 
 /**
  * @author Intesar Shannan Mohammed
  */
 @RestController
 @RequestMapping(CLUSTER_BASE)
-public class ClusterController extends BaseController<Cluster, String> {
+public class ClusterController {
 
     private ClusterService clusterService;
 
     @Autowired
     public ClusterController(
             ClusterService clusterService) {
-        super(clusterService);
         this.clusterService = clusterService;
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<Cluster>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                           @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return clusterService.findAll(SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
     }
 

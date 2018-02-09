@@ -44,47 +44,47 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String DEFAULT_MAX_PAGE_SIZE_VALUE = "100";
     protected GenericService<D, ID> service;
 
-    protected BaseController(GenericService<D, ID> service) {
+    /*protected BaseController(GenericService<D, ID> service) {
         this.service = service;
-    }
+    }*/
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    /*@CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<D>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                      @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return service.findAll(null, new PageRequest(0, 20));
+        return service.findAll(SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
     }
 
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<D> findById(@PathVariable("id") ID id) {
-        return service.findById(id);
+        return service.findById(id, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<D>> create(@Valid @RequestBody List<D> dtos) {
-        return service.save(dtos);
+        return service.save(dtos, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<D> create(@Valid @RequestBody D dto) {
-        return service.save(dto);
+        return service.save(dto, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<D> update(@Valid @RequestBody D dto) {
-        return service.save(dto);
+        return service.save(dto, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<D> delete(@PathVariable("id") ID id) {
-        return service.delete(id);
-    }
+        return service.delete(id, SecurityUtil.getCurrentAuditor());
+    }*/
 
 
 }

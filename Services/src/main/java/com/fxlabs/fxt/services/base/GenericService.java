@@ -11,13 +11,18 @@ import java.util.List;
  */
 public interface GenericService<D, ID extends Serializable> {
     // CRUD
-    public Response<D> save(D dto);
 
-    public Response<List<D>> save(List<D> dtos);
+    Response<D> save(D dto);
 
-    public Response<D> findById(ID id);
+    Response<D> save(D dto, String user);
 
-    public Response<List<D>> findAll(String user, Pageable pageable);
+    Response<List<D>> save(List<D> dtos, String user);
 
-    public Response<D> delete(ID id);
+    Response<D> findById(ID id, String user);
+
+    Response<List<D>> findAll(String user, Pageable pageable);
+
+    Response<D> delete(ID id, String user);
+
+    void isUserEntitled(ID id, String user);
 }

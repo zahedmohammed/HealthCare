@@ -2,6 +2,7 @@ package com.fxlabs.fxt.sdk.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.Run;
@@ -412,7 +413,9 @@ public class FxCommandService {
 
             job.setRegions(jobProfile.getRegions());
             job.setCron(jobProfile.getCron());
-            job.setProjectId(projectId);
+            ProjectMinimalDto proj = new ProjectMinimalDto();
+            proj.setId(projectId);
+            job.setProject(proj);
 
             jobs.add(job);
 

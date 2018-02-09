@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dto.project;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
+import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,8 +19,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Job extends BaseDto<String> {
 
-    //private ProjectMinimalDto project;
-    private String projectId;
+    private ProjectMinimalDto project;
+    //private String projectId;
 
     private String name;
     private String refId;

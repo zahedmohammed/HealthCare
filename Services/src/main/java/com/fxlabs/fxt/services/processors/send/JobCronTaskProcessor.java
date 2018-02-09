@@ -9,6 +9,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +38,8 @@ public class JobCronTaskProcessor {
 
         jobs.forEach(job -> {
             try {
-                logger.info("Scheduling job [{}] name [{}] project [{}]", job.getId(), job.getName(), job.getProjectId());
-                Response<com.fxlabs.fxt.dto.run.Run> runResponse = runService.run(job.getId(), null, null, null, null);
+                logger.info("Scheduling job [{}] name [{}] project [{}]", job.getId(), job.getName(), job.getProject().getId());
+                Response<com.fxlabs.fxt.dto.run.Run> runResponse = runService.run(job.getId(), null, null, null, null, job.getCreatedBy());
                 if (runResponse.isErrors()) {
                     for (Message m : runResponse.getMessages())
                         logger.warn(m.getValue());

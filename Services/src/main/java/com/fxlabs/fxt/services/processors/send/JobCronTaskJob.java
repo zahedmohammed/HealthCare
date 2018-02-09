@@ -26,7 +26,6 @@ public class JobCronTaskJob implements org.quartz.Job {
      */
     public void execute(JobExecutionContext context) throws JobExecutionException {
         jobCronTaskProcessor.process();
-
     }
 
 }

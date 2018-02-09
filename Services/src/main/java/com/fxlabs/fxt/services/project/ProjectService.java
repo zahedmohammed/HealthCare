@@ -18,12 +18,16 @@ public interface ProjectService extends GenericService<Project, String> {
 
     Response<Project> findByName(String name, String owner);
 
-    Response<Project> findProjectById(String id, String owner);
+    //Response<Project> findProjectById(String id, String owner);
 
     Response<Project> add(ProjectRequest account, String owner);
 
     Response<ProjectRequest> findGitByProjectId(String projectId, String user);
 
     Response<ProjectRequest> saveGitAccount(ProjectRequest request, String user);
+
+    Response<Project> save(Project dto, String user);
+
+    Response<Project> delete(String id, String user);
 
 }

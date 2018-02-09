@@ -5,5 +5,6 @@ package com.fxlabs.fxt.dto.users;
  */
 public enum ProjectRole {
 
-    READ, WRITE, OWNER, ORG_VISIBLE, PUBLIC
+    //READ, WRITE, OWNER, ORG_VISIBLE, PUBLIC
+    OWNER, COLLABORATOR
 }

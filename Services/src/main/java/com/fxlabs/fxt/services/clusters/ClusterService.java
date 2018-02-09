@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.clusters;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.services.base.GenericService;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface ClusterService extends GenericService<Cluster, String> {
 
     Response<Cluster> update(Cluster dto, String user);
 
-    Response<List<Cluster>> findAll(String user);
+    Response<List<Cluster>> findAll(String user, Pageable pageable);
 
     Response<Cluster> findByName(String id, String user);
 

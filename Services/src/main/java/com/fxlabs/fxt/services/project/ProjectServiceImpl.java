@@ -7,8 +7,12 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.*;
+import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectRequest;
+import com.fxlabs.fxt.dto.project.ProjectType;
+import com.fxlabs.fxt.dto.project.ProjectVisibility;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -63,15 +67,23 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByNameAndCreatedBy(name, owner);
 
         if (projectOptional.isPresent()) {
+            isUserEntitled(projectOptional.get().getId(), owner);
             return new Response<Project>(converter.convertToDto(projectOptional.get()));
         }
         return new Response<Project>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("No Project found with the name [%s]", name)));
     }
 
     @Override
-    public Response<Project> save(Project dto) {
+    public Response<Project> delete(String id, String user) {
+        throw new RuntimeException("Operation not-supported.");
+    }
 
-        Response<Project> projectResponse = super.save(dto);
+    @Override
+    public Response<Project> save(Project dto, String user) {
+
+        // TODO - check user entitled to org
+
+        Response<Project> projectResponse = super.save(dto, user);
         // set org
 
         // create project_file
@@ -91,16 +103,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return new Response<List<Project>>(converter.convertToDtos(projects));
     }
 
-
-    @Override
-    public Response<Project> findProjectById(String id, String owner) {
-        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersId(id, owner);
-
-        if (projectUsersOptional.isPresent()) {
-            return new Response<Project>(converter.convertToDto(projectUsersOptional.get().getProject()));
-        }
-        return new Response<Project>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Project id or user doesn't have access."));
-    }
 
     @Override
     public Response<Project> add(ProjectRequest request, String owner) {
@@ -154,7 +156,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
             project.setVisibility(ProjectVisibility.PRIVATE);
 
-            projectResponse = save(project);
+            projectResponse = save(project, owner);
             if (projectResponse.isErrors()) {
                 return projectResponse;
             }
@@ -196,7 +198,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public Response<ProjectRequest> findGitByProjectId(String projectId, String user) {
-        Response<Project> projectResponse = findProjectById(projectId, user);
+        Response<Project> projectResponse = findById(projectId, user);
         if (projectResponse.isErrors()) {
             return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
         }
@@ -219,7 +221,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public Response<ProjectRequest> saveGitAccount(ProjectRequest request, String user) {
-        Response<Project> projectResponse = findProjectById(request.getProjectId(), user);
+        Response<Project> projectResponse = findById(request.getProjectId(), user);
         if (projectResponse.isErrors()) {
             return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
         }
@@ -249,5 +251,14 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
 
         return new Response<ProjectRequest>();
+    }
+
+    public void isUserEntitled(String id, String user) {
+        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersIdAndRole(id, user, ProjectRole.OWNER);
+
+        if (!projectUsersOptional.isPresent()) {
+            throw new FxException(String.format("User [%s] not entitled to the resource.", user));
+        }
+
     }
 }

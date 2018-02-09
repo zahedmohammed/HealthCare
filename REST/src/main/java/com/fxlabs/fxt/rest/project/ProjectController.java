@@ -21,7 +21,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
  */
 @RestController
 @RequestMapping(PROJECTS_BASE)
-public class ProjectController /*extends BaseController<Project, String>*/ {
+public class ProjectController {
 
     private ProjectFileService projectFileService;
     private ProjectService projectService;
@@ -37,25 +37,19 @@ public class ProjectController /*extends BaseController<Project, String>*/ {
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Project> findById(@PathVariable("id") String id) {
-        return projectService.findProjectById(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response<Project> create(@Valid @RequestBody Project dto) {
-        return projectService.save(dto);
+        return projectService.findById(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Project> update(@Valid @RequestBody Project dto) {
-        return projectService.save(dto);
+        return projectService.save(dto, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Project> delete(@PathVariable("id") String id) {
-        return projectService.delete(id);
+        return projectService.delete(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
 

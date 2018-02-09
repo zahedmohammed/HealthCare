@@ -94,11 +94,11 @@ public class RunTaskRequestProcessor {
             // TODO - Filter Suites by Overridden-suites, Overridden-Tags, tags.
             Stream<TestSuite> list;
             if (suites != null) {
-                list = testSuiteESRepository.findByProjectIdAndNameIn(run.getJob().getProjectId(), suites);
+                list = testSuiteESRepository.findByProjectIdAndNameIn(run.getJob().getProject().getId(), suites);
             } else if (!CollectionUtils.isEmpty(tags)) {
-                list = testSuiteESRepository.findByProjectIdAndTypeAndTagsIn(run.getJob().getProjectId(), TestSuiteType.SUITE.toString(), tags);
+                list = testSuiteESRepository.findByProjectIdAndTypeAndTagsIn(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString(), tags);
             } else {
-                list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProjectId(), TestSuiteType.SUITE.toString());
+                list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
             }
 
             list.forEach(testSuite -> {
@@ -228,10 +228,10 @@ public class RunTaskRequestProcessor {
         for (String suite : after) {
             logger.info("Processing after suite [{}]", suite);
 
-            TestSuite suite1 = testSuiteRepository.findByProjectIdAndTypeAndName(run.getJob().getProjectId(), TestSuiteType.ABSTRACT, suite);
+            TestSuite suite1 = testSuiteRepository.findByProjectIdAndTypeAndName(run.getJob().getProject().getId(), TestSuiteType.ABSTRACT, suite);
 
             if (suite1 == null) {
-                logger.warn("No suite found for project [{}] with suite-name [{}]", run.getJob().getProjectId(), suite);
+                logger.warn("No suite found for project [{}] with suite-name [{}]", run.getJob().getProject().getId(), suite);
                 continue;
             }
 
@@ -277,7 +277,7 @@ public class RunTaskRequestProcessor {
             envName = run.getJob().getEnvironment();
         }
 
-        Environment env = findEvn(run.getJob().getProjectId(), envName);
+        Environment env = findEvn(run.getJob().getProject().getId(), envName);
         // TODO - Fail if not a valid env.
         if (env == null) {
             run.getTask().setStatus(TaskStatus.FAIL);

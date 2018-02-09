@@ -14,12 +14,14 @@ import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.exceptions.FxException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -58,7 +60,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     @Override
-    public Response<List<Cluster>> findAll(String user) {
+    public Response<List<Cluster>> findAll(String user, Pageable pageable) {
         // Find all public
         List<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusters = clusterESRepository.findByVisibility(ClusterVisibility.PUBLIC);
         return new Response<>(converter.convertToDtos(clusters));
@@ -81,7 +83,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findByNameAndOrgName(clusterName, orgName);
 
         if (!clusterOptional.isPresent()) {
-            return  new Response<>().withErrors(true);
+            return new Response<>().withErrors(true);
         }
         // TODO validate user is entitled to use the cluster.
         return new Response<Cluster>(converter.convertToDto(clusterOptional.get()));
@@ -118,7 +120,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         String queue = "key-" + RandomStringUtils.randomAlphabetic(12);
         Map<String, Object> args = new HashMap<>();
         args.put("x-message-ttl", 3600000);
-        Queue q =  new Queue(queue, true, false, false, args);
+        Queue q = new Queue(queue, true, false, false, args);
         Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
         amqpAdmin.declareQueue(q);
         amqpAdmin.declareBinding(binding);
@@ -127,13 +129,13 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         // generate key
 
-        return super.save(dto);
+        return super.save(dto, user);
     }
 
     @Override
     public Response<Cluster> update(Cluster dto, String user) {
         // validate user is the org admin
-        return super.save(dto);
+        return super.save(dto, user);
     }
 
     @Override
@@ -149,6 +151,14 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         args.put("x-message-ttl", 3600000);
         Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
         amqpAdmin.removeBinding(binding);
-        return super.delete(clusterId);
+        return super.delete(clusterId, user);
+    }
+
+    @Override
+    public void isUserEntitled(String s, String user) {
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> optional = repository.findById(s);
+        if (!optional.isPresent() || !org.apache.commons.lang3.StringUtils.equals(optional.get().getCreatedBy(), user)) {
+            throw new FxException(String.format("Invalid cluster id [%s]", s));
+        }
     }
 }

@@ -6,11 +6,14 @@ import com.fxlabs.fxt.dao.repository.jpa.AlertRepository;
 import com.fxlabs.fxt.dto.alerts.Alert;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -35,10 +38,30 @@ public class AlertServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.enti
 
     }
 
+    public Response<Alert> save(Alert dto) {
+        Response<Alert> response = save(dto, null);
+        alertESRepository.save(converter.convertToEntity(response.getData()));
+        return response;
+    }
+
+    @Override
     public Response<List<Alert>> findRefId(String refId, String user) {
         List<com.fxlabs.fxt.dao.entity.alerts.Alert> alertList = alertESRepository.findByRefIdAndUsersIn(refId, user);
         return new Response<List<Alert>>(converter.convertToDtos(alertList));
     }
 
+    @Override
+    public Response<List<Alert>> findAll(String user, Pageable pageable) {
+        List<com.fxlabs.fxt.dao.entity.alerts.Alert> alertList = alertESRepository.findByUsersIn(user);
+        return new Response<List<Alert>>(converter.convertToDtos(alertList));
+    }
 
+    @Override
+    public void isUserEntitled(String id, String user) {
+        // TODO
+        Optional<com.fxlabs.fxt.dao.entity.alerts.Alert> optional = alertESRepository.findByIdAndUsersIn(id, user);
+        if (!optional.isPresent()) {
+            throw new FxException(String.format("Invalid alert id [%s]", id));
+        }
+    }
 }

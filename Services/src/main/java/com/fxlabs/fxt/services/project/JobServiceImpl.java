@@ -3,17 +3,23 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.converters.project.JobConverter;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
+import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.exceptions.FxException;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -32,16 +38,50 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         this.projectService = projectService;
     }
 
+    /*@Override
+    public Response<List<com.fxlabs.fxt.dto.project.Job>> save(List<com.fxlabs.fxt.dto.project.Job> jobs, String user) {
+        if (CollectionUtils.isEmpty(jobs)) {
+            throw new FxException("Invalid arguments");
+        }
+        final List<Message> messages = new ArrayList<>();
+        Response response = new Response<>();
+        jobs.stream().forEach(job -> {
+            Response<com.fxlabs.fxt.dto.project.Job> jobResponse = save(job, user);
+            if (!CollectionUtils.isEmpty(jobResponse.getMessages())) {
+                messages.addAll(jobResponse.getMessages());
+            }
+            if (jobResponse.isErrors()) {
+                response.withErrors(true);
+            }
+        });
+
+        return response.withMessages(messages);
+    }*/
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.Job> save(com.fxlabs.fxt.dto.project.Job job, String user) {
+
+        if (!org.springframework.util.StringUtils.isEmpty(job.getCron()) && CronSequenceGenerator.isValidExpression(job.getCron())) {
+            CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(job.getCron());
+            Date start = DateUtils.addMinutes(new Date(), 2);
+            Date next = cronSequenceGenerator.next(start);
+            job.setNextFire(next);
+        }
+
+        return super.save(job, user);
+    }
+
     @Override
     public Response<List<com.fxlabs.fxt.dto.project.Job>> findByProjectId(String projectId, String user) {
-        // TODO - check user has access to project
+        // check user has access to project
+        projectService.isUserEntitled(projectId, user);
         List<Job> jobs = this.jobRepository.findByProjectId(projectId);
         return new Response<>(converter.convertToDtos(jobs));
     }
 
     @Override
     public Response<List<com.fxlabs.fxt.dto.project.Job>> findAll(String user, Pageable pageable) {
-        // TODO - check user has access to project
+        // check user has access to project
         // find owned projects org --> projects --> jobs
         // users --> org or users --> projects
         // least - a project should be visible to owner
@@ -61,6 +101,16 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
         return new Response<>(converter.convertToDtos(jobs));
 
+    }
+
+    @Override
+    public void isUserEntitled(String jobId, String user) {
+        // TODO - user has access to job/project
+        Optional<Job> jobOptional = jobRepository.findById(jobId);
+        if (!jobOptional.isPresent()) {
+            throw new FxException(String.format("Invalid job id [%s]", jobId));
+        }
+        projectService.isUserEntitled(jobOptional.get().getProject().getId(), user);
     }
 
 }

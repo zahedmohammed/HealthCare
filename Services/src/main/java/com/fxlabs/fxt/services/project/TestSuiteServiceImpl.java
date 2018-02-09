@@ -6,6 +6,7 @@ import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,17 +22,19 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
     private TestSuiteESRepository testSuiteESRepository;
     private ProjectFileService projectFileService;
+    private ProjectService projectService;
 
     @Autowired
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository,
-                                ProjectFileService projectFileService) {
+                                ProjectFileService projectFileService, ProjectService projectService) {
         super(repository, converter);
         this.testSuiteESRepository = testSuiteESRepository;
         this.projectFileService = projectFileService;
+        this.projectService = projectService;
     }
 
     @Override
-    public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite) {
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
         Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProjectId(), testSuite.getName());
 
         TestSuite entity = null;
@@ -46,7 +49,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
 
         TestSuite ts = converter.convertToEntity(testSuite);
-        entity = ((TestSuiteRepository) repository).saveAndFlush(ts);
+        entity = ((TestSuiteRepository) repository).save(ts);
         testSuiteESRepository.save(entity);
 
         // project_file
@@ -56,4 +59,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
     }
 
+    @Override
+    public void isUserEntitled(String id, String user) {
+        Optional<TestSuite> optional = repository.findById(id);
+        if (!optional.isPresent()) {
+            throw new FxException(String.format("Invalid Test-Suite id [%s]", id));
+        }
+        projectService.isUserEntitled(optional.get().getProjectId(), user);
+    }
 }

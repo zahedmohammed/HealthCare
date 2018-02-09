@@ -20,7 +20,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
  */
 @RestController
 @RequestMapping(PROJECT_RUNS_BASE)
-public class RunController /*extends BaseController<Run, String>*/ {
+public class RunController {
 
     private RunService runService;
     private TestSuiteResponseService testSuiteResponseService;
@@ -44,16 +44,16 @@ public class RunController /*extends BaseController<Run, String>*/ {
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}/test-suite-responses", method = RequestMethod.GET)
     public Response<List<TestSuiteResponse>> findResponsesByRunId(@PathVariable("id") String id,
-                                                                 @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
+                                                                  @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                                  @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return runService.findByRunId(id, new PageRequest(page, pageSize, SORT_BY_CREATE_DT));
+        return runService.findByRunId(id, SecurityUtil.getCurrentAuditor(), new PageRequest(page, pageSize, SORT_BY_CREATE_DT));
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Run> findByRunId(@PathVariable("id") String id) {
-        return runService.findById(id);
+        return runService.findById(id, SecurityUtil.getCurrentAuditor());
     }
 
 
@@ -66,7 +66,7 @@ public class RunController /*extends BaseController<Run, String>*/ {
                              @RequestParam(value = "suites", required = false) String suites) {
 
 
-        return runService.run(id, region, tags, env, suites);
+        return runService.run(id, region, tags, env, suites, SecurityUtil.getCurrentAuditor());
     }
 
 

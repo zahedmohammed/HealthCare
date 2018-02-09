@@ -20,4 +20,8 @@ public class TestSuiteResponseServiceImpl extends GenericServiceImpl<TestSuiteRe
         super(repository, converter);
     }
 
+    @Override
+    public void isUserEntitled(String s, String user) {
+        // TODO
+    }
 }
