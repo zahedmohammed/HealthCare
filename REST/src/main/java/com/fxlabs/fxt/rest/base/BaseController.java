@@ -1,17 +1,11 @@
 package com.fxlabs.fxt.rest.base;
 
-import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -42,6 +36,8 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String DEFAULT_PAGE_VALUE = "0";
     public static final String DEFAULT_PAGE_SIZE_VALUE = "20";
     public static final String DEFAULT_MAX_PAGE_SIZE_VALUE = "100";
+    public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
+
     protected GenericService<D, ID> service;
 
     /*protected BaseController(GenericService<D, ID> service) {

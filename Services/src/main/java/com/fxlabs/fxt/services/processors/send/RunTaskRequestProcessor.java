@@ -59,17 +59,20 @@ public class RunTaskRequestProcessor {
         //logger.info("started...");
         List<com.fxlabs.fxt.dao.entity.run.Run> runs = runRepository.findByStatus(TaskStatus.WAITING);
 
-        runs.parallelStream().forEach(run -> {
+        runs.stream().forEach(run -> {
 
             run.getTask().setStatus(TaskStatus.PROCESSING);
             runRepository.saveAndFlush(run);
 
-
             Environment env = validateEnvironment(run);
-            if (env == null) return;
+            if (env == null) {
+                return;
+            }
 
             final String region = validateRegion(run);
-            if (region == null) return;
+            if (region == null) {
+                return;
+            }
 
             final List<String> suites;
             String _suite = run.getAttributes().get(RunConstants.SUITES);
@@ -101,7 +104,7 @@ public class RunTaskRequestProcessor {
                 list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
             }
 
-            list.forEach(testSuite -> {
+            list.parallel().forEach(testSuite -> {
                 //logger.info("Request {}", i.incrementAndGet());
 
                 try {
@@ -280,9 +283,9 @@ public class RunTaskRequestProcessor {
         Environment env = findEvn(run.getJob().getProject().getId(), envName);
         // TODO - Fail if not a valid env.
         if (env == null) {
-            run.getTask().setStatus(TaskStatus.FAIL);
-            run.getTask().setDescription(String.format("Invalid Env: %s", envName));
-            runRepository.saveAndFlush(run);
+            //run.getTask().setStatus(TaskStatus.FAIL);
+            //run.getTask().setDescription(String.format("Invalid Env: %s", envName));
+            //runRepository.saveAndFlush(run);
             return null;
         }
         return env;

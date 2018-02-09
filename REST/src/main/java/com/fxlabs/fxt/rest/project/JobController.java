@@ -33,13 +33,15 @@ public class JobController {
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<Job>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                        @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return service.findAll(SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
+        return service.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/project-id/{id}", method = RequestMethod.GET)
-    public Response<List<Job>> findByProjectId(@PathVariable("id") String projectId) {
-        return service.findByProjectId(projectId, SecurityUtil.getCurrentAuditor());
+    public Response<List<Job>> findByProjectId(@PathVariable("id") String projectId,
+                                               @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                               @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.findByProjectId(projectId, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)

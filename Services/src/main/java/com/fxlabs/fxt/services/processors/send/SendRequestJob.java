@@ -15,7 +15,7 @@ public class SendRequestJob implements Job {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    RunTaskRequestProcessor processor;
+    private RunTaskRequestProcessor processor;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

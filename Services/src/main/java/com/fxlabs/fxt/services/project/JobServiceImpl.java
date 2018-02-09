@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,10 +64,10 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     }
 
     @Override
-    public Response<List<com.fxlabs.fxt.dto.project.Job>> findByProjectId(String projectId, String user) {
+    public Response<List<com.fxlabs.fxt.dto.project.Job>> findByProjectId(String projectId, String user, Pageable pageable) {
         // check user has access to project
         projectService.isUserEntitled(projectId, user);
-        List<Job> jobs = this.jobRepository.findByProjectId(projectId);
+        List<Job> jobs = this.jobRepository.findByProjectId(projectId, pageable);
         return new Response<>(converter.convertToDtos(jobs));
     }
 
@@ -84,7 +85,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         final List<Job> jobs = new ArrayList<>();
 
         projectsResponse.getData().stream().forEach(p -> {
-            List<Job> _jobs = jobRepository.findByProjectId(p.getId());
+            List<Job> _jobs = jobRepository.findByProjectId(p.getId(), PageRequest.of(0, 20));
             if (!CollectionUtils.isEmpty(_jobs)) {
                 jobs.addAll(_jobs);
             }

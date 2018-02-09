@@ -38,7 +38,7 @@ public class RunController {
     public Response<List<Run>> findByJobId(@PathVariable("id") String id,
                                            @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                            @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return runService.findByJobId(id, SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
+        return runService.findByJobId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)
@@ -47,7 +47,7 @@ public class RunController {
                                                                   @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                                   @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return runService.findByRunId(id, SecurityUtil.getCurrentAuditor(), new PageRequest(page, pageSize, SORT_BY_CREATE_DT));
+        return runService.findByRunId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)

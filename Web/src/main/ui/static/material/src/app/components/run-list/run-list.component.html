@@ -10,6 +10,7 @@
                     <th class="mdl-data-table__cell--non-numeric">Name</th>
                     <th class="mdl-data-table__cell--non-numeric">Region</th>
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    <th class="mdl-data-table__cell--non-numeric">Suites</th>
                     <th class="mdl-data-table__cell--non-numeric">Completed/Fail</th>
                     <th class="mdl-data-table__cell--non-numeric">Time</th>
                 </tr>
@@ -21,6 +22,7 @@
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.job.regions}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.status}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTests}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
                         {{item.task.totalTestCompleted}}/{{item.task.failedTests}}
                     </td>

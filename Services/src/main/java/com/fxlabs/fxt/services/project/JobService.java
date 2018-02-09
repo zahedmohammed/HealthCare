@@ -16,7 +16,7 @@ public interface JobService extends GenericService<Job, String> {
 
     Response<List<com.fxlabs.fxt.dto.project.Job>> save(List<com.fxlabs.fxt.dto.project.Job> jobs, String user);
 
-    Response<List<Job>> findByProjectId(String projectId, String user);
+    Response<List<Job>> findByProjectId(String projectId, String user, Pageable pageable);
 
     Response<List<com.fxlabs.fxt.dto.project.Job>> findAll(String user, Pageable pageable);
 
