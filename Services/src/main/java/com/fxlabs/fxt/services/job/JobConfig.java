@@ -35,7 +35,7 @@ public class JobConfig {
     @Bean
     public Trigger trigger(@Qualifier("botJobDetail") JobDetail job) {
 
-        int frequencyInSec = 30;
+        int frequencyInSec = 15;
         logger.info("Configuring trigger to fire every {} seconds", frequencyInSec);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_RunRequestProcessor_Trigger")).withDescription("RunRequestProcessor trigger")
