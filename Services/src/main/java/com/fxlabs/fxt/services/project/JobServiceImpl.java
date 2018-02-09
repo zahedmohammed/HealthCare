@@ -3,15 +3,12 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.converters.project.JobConverter;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
-import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -60,14 +57,8 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.Job> save(com.fxlabs.fxt.dto.project.Job job, String user) {
-
-        if (!org.springframework.util.StringUtils.isEmpty(job.getCron()) && CronSequenceGenerator.isValidExpression(job.getCron())) {
-            CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(job.getCron());
-            Date start = DateUtils.addMinutes(new Date(), 2);
-            Date next = cronSequenceGenerator.next(start);
-            job.setNextFire(next);
-        }
-
+        Date next = CronUtils.cronNext(job.getCron());
+        job.setNextFire(next);
         return super.save(job, user);
     }
 
