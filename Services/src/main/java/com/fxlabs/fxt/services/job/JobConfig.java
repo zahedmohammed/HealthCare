@@ -35,10 +35,16 @@ public class JobConfig {
     @Bean
     public Trigger trigger(@Qualifier("botJobDetail") JobDetail job) {
 
-        int frequencyInSec = 3;
+        int frequencyInSec = 30;
         logger.info("Configuring trigger to fire every {} seconds", frequencyInSec);
 
-        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_RunRequestProcessor_Trigger")).withDescription("RunRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInSeconds(frequencyInSec).repeatForever()).build();
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_RunRequestProcessor_Trigger")).withDescription("RunRequestProcessor trigger")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInSeconds(frequencyInSec)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionIgnoreMisfires()
+                )
+                .build();
     }
 
     @Bean(name = "gaaSJobDetail")
@@ -49,10 +55,15 @@ public class JobConfig {
     @Bean
     public Trigger gaaSTrigger(@Qualifier("gaaSJobDetail") JobDetail job) {
 
-        int frequencyInMins = 3;
+        int frequencyInMins = 15;
         logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
 
-        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaaSRequestProcessor_Trigger")).withDescription("GaaSRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaaSRequestProcessor_Trigger")).withDescription("GaaSRequestProcessor trigger")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInMinutes(frequencyInMins)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionIgnoreMisfires())
+                .build();
     }
 
     @Bean(name = "naaSJobDetail")
@@ -63,10 +74,15 @@ public class JobConfig {
     @Bean
     public Trigger naaSTrigger(@Qualifier("naaSJobDetail") JobDetail job) {
 
-        int frequencyInMins = 3;
+        int frequencyInMins = 5;
         logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
 
-        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_NaaSRequestProcessor_Trigger")).withDescription("NaaSRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_NaaSRequestProcessor_Trigger")).withDescription("NaaSRequestProcessor trigger")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInMinutes(frequencyInMins)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionIgnoreMisfires())
+                .build();
     }
 
     @Bean(name = "jobCronJobDetail")
@@ -80,6 +96,11 @@ public class JobConfig {
         int frequencyInMins = 4;
         logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
 
-        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_JobCronRequestProcessor_Trigger")).withDescription("JobCronRequestProcessor trigger").withSchedule(simpleSchedule().withIntervalInMinutes(frequencyInMins).repeatForever()).build();
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_JobCronRequestProcessor_Trigger")).withDescription("JobCronRequestProcessor trigger")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInMinutes(frequencyInMins)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionIgnoreMisfires())
+                .build();
     }
 }
