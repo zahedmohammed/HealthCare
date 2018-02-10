@@ -45,8 +45,8 @@ public class AlertServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.enti
     }
 
     @Override
-    public Response<List<Alert>> findRefId(String refId, String user) {
-        List<com.fxlabs.fxt.dao.entity.alerts.Alert> alertList = alertESRepository.findByRefIdAndUsersIn(refId, user);
+    public Response<List<Alert>> findRefId(String refId, String user, Pageable pageable) {
+        List<com.fxlabs.fxt.dao.entity.alerts.Alert> alertList = alertESRepository.findByRefIdAndUsersIn(refId, user, pageable);
         return new Response<List<Alert>>(converter.convertToDtos(alertList));
     }
 

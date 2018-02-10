@@ -32,14 +32,16 @@ public class AlertController {
     @Secured(ROLE_USER)
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<Alert>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return service.findAll(SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
+                                         @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/ref/{id}", method = RequestMethod.GET)
-    public Response<List<Alert>> findByProjectId(@PathVariable("id") String refId) {
-        return service.findRefId(refId, SecurityUtil.getCurrentAuditor());
+    public Response<List<Alert>> findByProjectId(@PathVariable("id") String refId,
+                                                 @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.findRefId(refId, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)

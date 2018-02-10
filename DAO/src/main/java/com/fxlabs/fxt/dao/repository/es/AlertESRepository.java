@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  */
 public interface AlertESRepository extends ElasticsearchRepository<Alert, String> {
 
-    public List<Alert> findByRefIdAndUsersIn(String refId, String user);
+    public List<Alert> findByRefIdAndUsersIn(String refId, String user, Pageable pageable);
 
     public Optional<Alert> findByIdAndUsersIn(String refId, String user);
 
