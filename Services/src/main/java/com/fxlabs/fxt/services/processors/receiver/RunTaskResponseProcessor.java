@@ -85,7 +85,7 @@ public class RunTaskResponseProcessor {
         ds.setLogs(task.getLogs());
         ds.setResponse(task.getResponse());
 
-        ds.setRequestEndTime(task.getRequestStartTime());
+        ds.setRequestStartTime(task.getRequestStartTime());
         ds.setRequestEndTime(task.getRequestEndTime());
         ds.setRequestTime(task.getRequestTime());
 

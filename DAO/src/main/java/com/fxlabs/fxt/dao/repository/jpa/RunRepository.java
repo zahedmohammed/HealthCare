@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -22,7 +24,11 @@ public interface RunRepository extends JpaRepository<Run, String> {
     Long findMaxRunId(String id);
 
     @Query("SELECT r FROM Run r WHERE r.task.status LIKE ?1")
-    List<Run> findByStatus(TaskStatus status);
+    Stream<Run> findByStatus(TaskStatus status);
+
+    Stream<Run> findByTaskStatusAndCreatedDateLessThan(TaskStatus status, Date dt);
+
+    Stream<Run> findByTaskStatusAndCreatedDateGreaterThan(TaskStatus status, Date dt);
 
     List<Run> findByJobId(String id, Pageable pageable);
 

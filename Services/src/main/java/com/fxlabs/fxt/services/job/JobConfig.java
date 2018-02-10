@@ -1,9 +1,6 @@
 package com.fxlabs.fxt.services.job;
 
-import com.fxlabs.fxt.services.processors.send.JobCronTaskJob;
-import com.fxlabs.fxt.services.processors.send.SendGaaSTaskJob;
-import com.fxlabs.fxt.services.processors.send.SendNaaSTaskJob;
-import com.fxlabs.fxt.services.processors.send.SendRequestJob;
+import com.fxlabs.fxt.services.processors.send.*;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Trigger;
@@ -95,6 +92,66 @@ public class JobConfig {
 
         int frequencyInMins = 4;
         logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
+
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_JobCronRequestProcessor_Trigger")).withDescription("JobCronRequestProcessor trigger")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInMinutes(frequencyInMins)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionIgnoreMisfires())
+                .build();
+    }
+
+    // Task complete job
+    @Bean(name = "taskCompleteJobDetail")
+    public JobDetail taskCompleteJobDetail() {
+        return newJob().ofType(MarkCompleteTaskJob.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_TaskCompleteRequestProcessor_Job_Detail")).withDescription("Invoke TaskCompleteProcessor Job service...").build();
+    }
+
+    @Bean
+    public Trigger taskCompleteTrigger(@Qualifier("taskCompleteJobDetail") JobDetail job) {
+
+        int frequencyInMins = 1;
+        logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
+
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_TaskCompleteRequestProcessor_Trigger")).withDescription("TaskCompleteRequestProcessor trigger")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInMinutes(frequencyInMins)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionIgnoreMisfires())
+                .build();
+    }
+
+    // Task timeout job
+    @Bean(name = "taskTimeoutJobDetail")
+    public JobDetail taskTimeoutJobDetail() {
+        return newJob().ofType(MarkTimeoutTaskJob.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_TaskTimeoutRequestProcessor_Job_Detail")).withDescription("Invoke TaskTimeoutRequestProcessor Job service...").build();
+    }
+
+    @Bean
+    public Trigger taskTimeoutTrigger(@Qualifier("taskTimeoutJobDetail") JobDetail job) {
+
+        int frequencyInMins = 10;
+        logger.info("Configuring trigger to fire every [{}] mins", frequencyInMins);
+
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_TaskTimeoutRequestProcessor_Trigger")).withDescription("TaskTimeoutRequestProcessor trigger")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInMinutes(frequencyInMins)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionIgnoreMisfires())
+                .build();
+    }
+
+    // Recalculate/heal cron's next-fire event
+    @Bean(name = "healNextFireJobDetail")
+    public JobDetail healNextFireJobDetail() {
+        return newJob().ofType(HealNextFireTaskJob.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_HealNextFireRequestProcessor_Job_Detail")).withDescription("Invoke HealNextFireRequestProcessor Job service...").build();
+    }
+
+    @Bean
+    public Trigger healNextFireTrigger(@Qualifier("healNextFireJobDetail") JobDetail job) {
+
+        int frequencyInMins = 10;
+        logger.info("Configuring trigger to fire every [{}] mins", frequencyInMins);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_JobCronRequestProcessor_Trigger")).withDescription("JobCronRequestProcessor trigger")
                 .withSchedule(simpleSchedule()

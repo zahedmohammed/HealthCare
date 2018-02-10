@@ -12,7 +12,6 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Job;
-import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.run.RunConstants;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.dto.run.TaskStatus;
@@ -21,11 +20,9 @@ import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.project.JobService;
 import com.fxlabs.fxt.services.project.ProjectService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -144,8 +141,6 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         //taskProcessor.process(response.getData());
 
         // Copy ProjectDataSets to DataSets.
-
-
         return response;
     }
 

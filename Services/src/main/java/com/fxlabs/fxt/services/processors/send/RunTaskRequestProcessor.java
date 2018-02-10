@@ -57,9 +57,9 @@ public class RunTaskRequestProcessor {
     public void process() {
 
         //logger.info("started...");
-        List<com.fxlabs.fxt.dao.entity.run.Run> runs = runRepository.findByStatus(TaskStatus.WAITING);
+        Stream<Run> runs = runRepository.findByStatus(TaskStatus.WAITING);
 
-        runs.stream().forEach(run -> {
+        runs.forEach(run -> {
 
             run.getTask().setStatus(TaskStatus.PROCESSING);
             runRepository.saveAndFlush(run);

@@ -16,4 +16,6 @@ public interface JobRepository extends JpaRepository<Job, String> {
     List<Job> findByProjectId(String project, Pageable pageable);
 
     Stream<Job> findByNextFireBetween(Date start, Date end);
+
+    Stream<Job> findByNextFireLessThan(Date dt);
 }

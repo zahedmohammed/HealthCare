@@ -50,11 +50,11 @@ public class Job extends BaseEntity {
             refId = name;
         }
 
-        if (!StringUtils.isEmpty(cron) && CronSequenceGenerator.isValidExpression(cron)) {
+        /*if (!StringUtils.isEmpty(cron) && CronSequenceGenerator.isValidExpression(cron)) {
             CronSequenceGenerator cronSequenceGenerator = new CronSequenceGenerator(cron);
             Date next = cronSequenceGenerator.next(new Date());
             this.nextFire = next;
-        }
+        }*/
     }
 
 }
