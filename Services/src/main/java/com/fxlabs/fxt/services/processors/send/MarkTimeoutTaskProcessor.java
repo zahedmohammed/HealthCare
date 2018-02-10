@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
+import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -30,6 +30,9 @@ public class MarkTimeoutTaskProcessor {
 
     @Autowired
     private TestSuiteResponseESRepository testSuiteResponseESRepository;
+
+    @Autowired
+    private TestSuiteResponseService testSuiteResponseService;
 
     /**
      * Find Tasks with state 'PROCESSING'
@@ -51,9 +54,9 @@ public class MarkTimeoutTaskProcessor {
                     // count total-fail
                     // count total-time
                     run.getTask().setTotalSuiteCompleted(count.get());
-                    run.getTask().setFailedTests(testSuiteResponseESRepository.sumOfFailedByRunId(run.getId()));
-                    run.getTask().setTotalTestCompleted(testSuiteResponseESRepository.sumOfPassedByRunId(run.getId()));
-                    run.getTask().setTotalTime(testSuiteResponseESRepository.sumOfTimeByRunId(run.getId()));
+                    run.getTask().setFailedTests(testSuiteResponseService.failedSum(run.getId()));
+                    run.getTask().setTotalTestCompleted(testSuiteResponseService.passedSum(run.getId()));
+                    run.getTask().setTotalTime(testSuiteResponseService.timeSum(run.getId()));
                 }
                 runRepository.saveAndFlush(run);
                 // TODO - Test-Suites

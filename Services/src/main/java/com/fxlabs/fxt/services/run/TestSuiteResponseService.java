@@ -8,4 +8,9 @@ import com.fxlabs.fxt.services.base.GenericService;
  */
 public interface TestSuiteResponseService extends GenericService<TestSuiteResponse, String> {
 
+    public Long passedSum(String runId);
+
+    public Long failedSum(String runId);
+
+    public Long timeSum(String runId);
 }
