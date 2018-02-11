@@ -62,7 +62,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<List<Cluster>> findAll(String user, Pageable pageable) {
         // Find all public
-        List<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusters = clusterESRepository.findByVisibility(ClusterVisibility.PUBLIC);
+        List<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusters = this.clusterRepository.findByVisibility(ClusterVisibility.PUBLIC);
         return new Response<>(converter.convertToDtos(clusters));
     }
 
@@ -74,10 +74,10 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<Cluster> findByName(String id, String user) {
         // org//name
-        if (!org.apache.commons.lang3.StringUtils.contains(id, "//")) {
-            return new Response<>().withErrors(true);
+        if (!org.apache.commons.lang3.StringUtils.contains(id, "/")) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid region"));
         }
-        String[] tokens = StringUtils.split(id, "//");
+        String[] tokens = StringUtils.split(id, "/");
         String orgName = tokens[0];
         String clusterName = tokens[1];
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findByNameAndOrgName(clusterName, orgName);
@@ -93,12 +93,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<Cluster> create(Cluster dto, String user) {
         // check duplicate name
-        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = clusterRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
-        if (clusterOptional.isPresent()) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Duplicate cluster name"));
-        }
-
-        if (StringUtils.isEmpty(dto.getOrg().getId())) {
+        if (dto.getOrg() == null || StringUtils.isEmpty(dto.getOrg().getId())) {
             Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
             if (CollectionUtils.isEmpty(set)) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
@@ -117,7 +112,17 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
         }
 
-        String queue = "key-" + RandomStringUtils.randomAlphabetic(12);
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = clusterRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
+        if (clusterOptional.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Duplicate cluster name"));
+        }
+
+        String queue = null;
+        if (StringUtils.isEmpty(dto.getKey())) {
+            queue = "key-" + RandomStringUtils.randomAlphabetic(12);
+        } else {
+            queue = dto.getKey();
+        }
         Map<String, Object> args = new HashMap<>();
         args.put("x-message-ttl", 3600000);
         Queue q = new Queue(queue, true, false, false, args);
@@ -129,7 +134,9 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         // generate key
 
-        return super.save(dto, user);
+        com.fxlabs.fxt.dao.entity.clusters.Cluster cluster = this.clusterRepository.saveAndFlush(converter.convertToEntity(dto));
+        this.clusterESRepository.save(cluster);
+        return new Response<>(converter.convertToDto(cluster));
     }
 
     @Override
