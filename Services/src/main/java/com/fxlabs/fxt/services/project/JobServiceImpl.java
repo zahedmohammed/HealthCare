@@ -67,7 +67,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     public Response<List<com.fxlabs.fxt.dto.project.Job>> findByProjectId(String projectId, String user, Pageable pageable) {
         // check user has access to project
         projectService.isUserEntitled(projectId, user);
-        List<Job> jobs = this.jobRepository.findByProjectId(projectId, pageable);
+        List<Job> jobs = this.jobRepository.findByProjectIdAndInactive(projectId, false, pageable);
         return new Response<>(converter.convertToDtos(jobs));
     }
 
@@ -76,7 +76,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         // check user has access to project
         Response<List<com.fxlabs.fxt.dto.project.Job>> jobs = findByProjectId(projectId, user, pageable);
         jobs.getData().stream().forEach(job -> {
-            job.setDeleted(true);
+            job.setInactive(true);
         });
         return save(jobs.getData(), user);
     }
@@ -95,7 +95,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         final List<Job> jobs = new ArrayList<>();
 
         projectsResponse.getData().stream().forEach(p -> {
-            List<Job> _jobs = jobRepository.findByProjectId(p.getId(), PageRequest.of(0, 20));
+            List<Job> _jobs = jobRepository.findByProjectIdAndInactive(p.getId(), false, PageRequest.of(0, 20));
             if (!CollectionUtils.isEmpty(_jobs)) {
                 jobs.addAll(_jobs);
             }

@@ -81,7 +81,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return projectResponse;
         }
         Project project = projectResponse.getData();
-        project.setDeleted(true);
+        project.setInactive(true);
 
         // TODO - Delete Jobs
         return save(project, user);
@@ -109,7 +109,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
         final List<com.fxlabs.fxt.dao.entity.project.Project> projects = new ArrayList<>();
         projectUsers.stream().forEach(pu -> {
-            if (BooleanUtils.isFalse(pu.getProject().isDeleted()))
+            if (BooleanUtils.isFalse(pu.getProject().isInactive()))
                 projects.add(pu.getProject());
         });
         return new Response<List<Project>>(converter.convertToDtos(projects));
@@ -145,7 +145,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // check name is not duplicate
-            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndDeleted(request.getName(), request.getOrgId(), false);
+            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndInactive(request.getName(), request.getOrgId(), false);
             if (projectOptional.isPresent()) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Project with name [%s] exists", request.getName())));
             }

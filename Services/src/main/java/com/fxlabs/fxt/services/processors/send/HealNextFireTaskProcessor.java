@@ -31,7 +31,7 @@ public class HealNextFireTaskProcessor {
      */
     public void process() {
         Date dt = DateUtils.addMinutes(new Date(), -10);
-        Stream<Job> jobs = this.jobRepository.findByNextFireLessThan(dt);
+        Stream<Job> jobs = this.jobRepository.findByNextFireLessThanAndInactive(dt, false);
         jobs.forEach(job -> {
             try {
                 logger.info("Healing next-fire for job [{}] name [{}] project [{}]", job.getId(), job.getName(), job.getProject().getId());

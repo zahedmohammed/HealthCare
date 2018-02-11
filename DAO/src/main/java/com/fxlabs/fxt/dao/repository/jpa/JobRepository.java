@@ -13,9 +13,9 @@ import java.util.stream.Stream;
  */
 public interface JobRepository extends JpaRepository<Job, String> {
 
-    List<Job> findByProjectId(String project, Pageable pageable);
+    List<Job> findByProjectIdAndInactive(String project, boolean inactive, Pageable pageable);
 
-    Stream<Job> findByNextFireBetween(Date start, Date end);
+    Stream<Job> findByNextFireBetweenAndInactive(Date start, Date end, boolean inative);
 
-    Stream<Job> findByNextFireLessThan(Date dt);
+    Stream<Job> findByNextFireLessThanAndInactive(Date dt, boolean inactive);
 }

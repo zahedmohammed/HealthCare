@@ -61,7 +61,7 @@ public class GaaSTaskRequestProcessor {
      * Send as GitTask
      */
     public void process() {
-        Stream<Project> projects = projectRepository.findByProjectTypeAndDeleted(ProjectType.GIT, false);
+        Stream<Project> projects = projectRepository.findByProjectTypeAndInactive(ProjectType.GIT, false);
         projects.forEach(project -> {
             process(project);
         });

@@ -30,5 +30,5 @@ public class BaseDto<U> {
 
     private Long version;
 
-    private boolean deleted;
+    private boolean inactive;
 }

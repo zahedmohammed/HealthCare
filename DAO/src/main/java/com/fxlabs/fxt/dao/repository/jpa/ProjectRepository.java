@@ -14,7 +14,7 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
 
     Optional<Project> findByNameAndCreatedBy(String name, String createdBy);
 
-    Optional<Project> findByNameIgnoreCaseAndOrgIdAndDeleted(String name, String orgId, boolean deleted);
+    Optional<Project> findByNameIgnoreCaseAndOrgIdAndInactive(String name, String orgId, boolean inactive);
 
-    Stream<Project> findByProjectTypeAndDeleted(ProjectType projectType, boolean deleted);
+    Stream<Project> findByProjectTypeAndInactive(ProjectType projectType, boolean inactive);
 }

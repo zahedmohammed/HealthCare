@@ -42,7 +42,7 @@ public class JobCronTaskProcessor {
     public void process() {
         Date end = new Date();
         Date start = DateUtils.addMinutes(end, -5);
-        Stream<Job> jobs = this.jobRepository.findByNextFireBetween(start, end);
+        Stream<Job> jobs = this.jobRepository.findByNextFireBetweenAndInactive(start, end, false);
         jobs.forEach(job -> {
             try {
                 logger.info("Scheduling job [{}] name [{}] project [{}]", job.getId(), job.getName(), job.getProject().getId());
