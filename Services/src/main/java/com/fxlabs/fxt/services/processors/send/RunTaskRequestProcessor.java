@@ -11,10 +11,13 @@ import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
+import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.RunConstants;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
+import com.fxlabs.fxt.services.clusters.ClusterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,16 +45,19 @@ public class RunTaskRequestProcessor {
     private PoliciesConverter policiesConverter;
     private TestSuiteESRepository testSuiteESRepository;
     private EnvironmentRepository environmentRepository;
+    private ClusterService clusterService;
 
     public RunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter,
-                                   TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository) {
+                                   TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository,
+                                   ClusterService clusterService) {
         this.botClientService = botClientService;
         this.testSuiteRepository = testSuiteRepository;
         this.runRepository = runRepository;
         this.policiesConverter = policiesConverter;
         this.testSuiteESRepository = testSuiteESRepository;
         this.environmentRepository = environmentRepository;
+        this.clusterService = clusterService;
     }
 
     public void process() {
@@ -307,7 +313,17 @@ public class RunTaskRequestProcessor {
             runRepository.saveAndFlush(run);
             return null;
         }
-        return region;
+
+        // get cluster by name
+        Response<Cluster> clusterResponse =  clusterService.findByName(region, run.getJob().getCreatedBy());
+        if (clusterResponse.isErrors()) {
+            run.getTask().setStatus(TaskStatus.FAIL);
+            run.getTask().setDescription(String.format("Invalid Region: %s", region));
+            runRepository.saveAndFlush(run);
+            return null;
+        }
+
+        return clusterResponse.getData().getKey();
     }
 
     private boolean isValidSuiteCount(Stream<TestSuite> list, Run run) {

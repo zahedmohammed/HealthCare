@@ -82,7 +82,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         String clusterName = tokens[1];
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findByNameAndOrgName(clusterName, orgName);
 
-        if (!clusterOptional.isPresent()) {
+        if (!clusterOptional.isPresent() && clusterOptional.get().getVisibility() != ClusterVisibility.PUBLIC) {
             return new Response<>().withErrors(true);
         }
         // TODO validate user is entitled to use the cluster.
