@@ -47,6 +47,9 @@
                       class="btn-w-md no-margin-left">Save
               </button>
               <span class="space space-md"></span>
+              <button mat-raised-button type="button" color="warn" class="btn-w-md" (click)="delete(); heroForm.reset()">Delete
+              </button>
+              <span class="space space-md"></span>
               <button mat-raised-button type="button" class="btn-w-md" [routerLink]="['/app/projects']">Cancel
               </button>
             </div>

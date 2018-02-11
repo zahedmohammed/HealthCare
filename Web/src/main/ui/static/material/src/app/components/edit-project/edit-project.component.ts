@@ -35,7 +35,7 @@ export class EditProjectComponent implements OnInit {
       this.project = results['data'];
       console.log(this.project);
     }, error => {
-      console.log("Unable to fetch regions");
+      console.log("Unable to fetch projects");
     });
   }
 
@@ -50,7 +50,22 @@ export class EditProjectComponent implements OnInit {
       console.log(results);
       this.router.navigate(['/app/projects']);
     }, error => {
-      console.log("Unable to fetch regions");
+      console.log("Unable to update project");
+    });
+  }
+
+  delete() {
+    console.log(this.project);
+    this.projectService.delete(this.project).subscribe(results => {
+      this.showSpinner = false;
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      console.log(results);
+      this.router.navigate(['/app/projects']);
+    }, error => {
+      console.log("Unable to delete project");
     });
   }
 

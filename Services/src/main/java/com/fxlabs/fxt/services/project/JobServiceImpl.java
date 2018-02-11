@@ -72,6 +72,16 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     }
 
     @Override
+    public Response<List<com.fxlabs.fxt.dto.project.Job>> deleteByProjectId(String projectId, String user, Pageable pageable) {
+        // check user has access to project
+        Response<List<com.fxlabs.fxt.dto.project.Job>> jobs = findByProjectId(projectId, user, pageable);
+        jobs.getData().stream().forEach(job -> {
+            job.setDeleted(true);
+        });
+        return save(jobs.getData(), user);
+    }
+
+    @Override
     public Response<List<com.fxlabs.fxt.dto.project.Job>> findAll(String user, Pageable pageable) {
         // check user has access to project
         // find owned projects org --> projects --> jobs

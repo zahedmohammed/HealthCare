@@ -14,6 +14,7 @@ import com.fxlabs.fxt.dto.project.ProjectVisibility;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
@@ -75,7 +76,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public Response<Project> delete(String id, String user) {
-        throw new RuntimeException("Operation not-supported.");
+        Response<Project> projectResponse = findById(id, user);
+        if (projectResponse.isErrors()) {
+            return projectResponse;
+        }
+        Project project = projectResponse.getData();
+        project.setDeleted(true);
+
+        // TODO - Delete Jobs
+        return save(project, user);
     }
 
     @Override
@@ -99,7 +108,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>();
         }
         final List<com.fxlabs.fxt.dao.entity.project.Project> projects = new ArrayList<>();
-        projectUsers.stream().forEach(pu -> projects.add(pu.getProject()));
+        projectUsers.stream().forEach(pu -> {
+            if (BooleanUtils.isFalse(pu.getProject().isDeleted()))
+                projects.add(pu.getProject());
+        });
         return new Response<List<Project>>(converter.convertToDtos(projects));
     }
 
@@ -133,7 +145,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // check name is not duplicate
-            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgId(request.getName(), request.getOrgId());
+            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndDeleted(request.getName(), request.getOrgId(), false);
             if (projectOptional.isPresent()) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Project with name [%s] exists", request.getName())));
             }

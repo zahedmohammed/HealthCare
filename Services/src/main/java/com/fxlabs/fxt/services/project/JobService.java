@@ -18,6 +18,8 @@ public interface JobService extends GenericService<Job, String> {
 
     Response<List<Job>> findByProjectId(String projectId, String user, Pageable pageable);
 
+    Response<List<com.fxlabs.fxt.dto.project.Job>> deleteByProjectId(String projectId, String user, Pageable pageable);
+
     Response<List<com.fxlabs.fxt.dto.project.Job>> findAll(String user, Pageable pageable);
 
 }
