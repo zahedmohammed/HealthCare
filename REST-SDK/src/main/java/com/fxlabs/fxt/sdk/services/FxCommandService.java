@@ -278,7 +278,7 @@ public class FxCommandService {
             boolean found = false;
             for (Environment old : oldEnvs) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(environment.getName(), old.getRefId())) {
-                    old.setDeleted(environment.isDeleted());
+                    old.setInactive(environment.isInactive());
                     old.setName(environment.getName());
                     old.setDescription(environment.getDescription());
                     old.setBaseUrl(environment.getBaseUrl());
@@ -348,6 +348,7 @@ public class FxCommandService {
                     old.setName(job.getName());
                     old.setRegions(job.getRegions());
                     old.setCron(job.getCron());
+                    old.setInactive(job.isInactive());
                     found = true;
                     break;
                 }
@@ -371,7 +372,7 @@ public class FxCommandService {
         for (com.fxlabs.fxt.sdk.beans.Environment environment : config.getEnvironments()) {
             Environment env = new Environment();
             env.setName(environment.getName());
-            env.setDeleted(environment.isInactive());
+            env.setInactive(environment.isInactive());
             env.setBaseUrl(environment.getBaseUrl());
             env.setDescription(environment.getDescription());
             env.setProjectId(projectId);
@@ -413,6 +414,7 @@ public class FxCommandService {
 
             job.setRegions(jobProfile.getRegions());
             job.setCron(jobProfile.getCron());
+            job.setInactive(jobProfile.isInactive());
             ProjectMinimalDto proj = new ProjectMinimalDto();
             proj.setId(projectId);
             job.setProject(proj);

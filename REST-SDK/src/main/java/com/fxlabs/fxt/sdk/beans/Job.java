@@ -32,5 +32,7 @@ public class Job implements Serializable {
     private String cron;
     private Date nextFire;
 
+    private boolean inactive;
+
 
 }
