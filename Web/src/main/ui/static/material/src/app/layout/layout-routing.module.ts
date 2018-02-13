@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: '', redirectTo: '/app/jobs', pathMatch: 'full' },
       //{ path: 'jobs', component: JobslistComponent },
       //{ path: 'projects', component: ProjectlistComponent },
-      //{ path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: DashboardComponent },
       { path: 'jobs', component: JobslistComponent },
       { path: 'runs/:id', component: RunListComponent },
       { path: 'run/:id', component: RunDetailComponent },
