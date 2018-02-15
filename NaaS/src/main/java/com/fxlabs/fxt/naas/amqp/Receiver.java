@@ -20,8 +20,8 @@ public class Receiver {
     private EmailService emailService;
 
     public void receiveMessage(EmailTask task) {
-        logger.info("Task id [{}] name [{}]", task.getTo(), task.getSubject());
-        emailService.send(task.getTo(), task.getSubject(), task.getBody());
+        logger.info("Task to [{}] name [{}]", task.getTos(), task.getSubject());
+        emailService.send(task.getSubject(), task.getBody(), task.getTos().stream().toArray(String[]::new));
     }
 
 }
