@@ -29,13 +29,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/personal-sign-up", "/api/v1/users/team-sign-up", "/api/v1/users/enterprise-sign-up").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .csrf().disable()
+                    .anyRequest().authenticated()
+                    .and()
+                    .csrf().disable()
                 .formLogin()
-                .and()
+                    .and()
                 .httpBasic()
-                .and()
+                    .and()
                 .logout();
     }
 
