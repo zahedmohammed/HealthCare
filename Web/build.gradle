@@ -10,16 +10,18 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
+apply plugin: 'docker'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.fxlabs'
-version = '0.0.1-SNAPSHOT'
+//version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
@@ -110,5 +112,19 @@ task installAngular(type: Exec) {
         commandLine "npm.cmd", "install"
     } else {
         commandLine "npm", "install"
+    }
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+
+    push = false
+    tag = 'fxlabs/fxcp'
+    tagVersion = "latest"
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from 'build/libs/Web.jar'
+            into 'build/docker'
+        }
     }
 }

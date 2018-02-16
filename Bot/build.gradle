@@ -10,11 +10,12 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
 
-
+apply plugin: 'docker'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
@@ -46,3 +47,16 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+task buildDocker(type: Docker, dependsOn: build) {
+
+    push = false
+    tag = 'fxlabs/bot'
+    tagVersion = "latest"
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from 'build/libs/Bot.jar'
+            into 'build/docker'
+        }
+    }
+}

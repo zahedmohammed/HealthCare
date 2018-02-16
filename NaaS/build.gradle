@@ -10,11 +10,12 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
 
-
+apply plugin: 'docker'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
@@ -23,7 +24,7 @@ apply plugin: 'io.spring.dependency-management'
 
 jar {
     baseName = 'NaaS'
-    version = '0.0.1-SNAPSHOT'
+    //version = '0.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.8
 
@@ -46,3 +47,16 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+task buildDocker(type: Docker, dependsOn: build) {
+
+    push = false
+    tag = 'fxlabs/mail-bot'
+    tagVersion = "latest"
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from 'build/libs/NaaS.jar'
+            into 'build/docker'
+        }
+    }
+}
