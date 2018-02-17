@@ -106,7 +106,7 @@ public class GaaSTaskRequestProcessor {
             if (systemSettingOptional.isPresent()) {
                 task.setFxUrl(systemSettingOptional.get().getValue());
             } else {
-                task.setFxUrl("http://localhost:8080");
+                task.setFxUrl("http://fx-control-plane:8080");
             }
 
             amqpClientService.sendTask(task, gaaSQueue);
