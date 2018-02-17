@@ -41,6 +41,7 @@ dependencies {
     compile('org.springframework.data:spring-data-elasticsearch:2.1.10.RELEASE')
     runtime('org.postgresql:postgresql')
     compileOnly('org.projectlombok:lombok')
+    compile('org.flywaydb:flyway-core')
 
     compile('org.springframework.boot:spring-boot-starter-validation')
     testCompile('org.springframework.boot:spring-boot-starter-test')
