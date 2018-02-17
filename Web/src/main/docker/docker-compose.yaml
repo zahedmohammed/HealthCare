@@ -21,6 +21,17 @@ services:
     # inject elasticsearch, port,
     # inject redis, port
 
+  fx-bot-aas:
+    image: "fxlabs/bot-aas:latest"
+    environment:
+      # RabbitMQ
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+
+    # inject rabbit-host, port, vhost, user-mail, user-mail-pass
+
   fx-bot:
     image: "fxlabs/bot:latest"
     environment:
