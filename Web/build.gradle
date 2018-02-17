@@ -118,7 +118,7 @@ task installAngular(type: Exec) {
 task buildDocker(type: Docker, dependsOn: build) {
 
     push = false
-    tag = 'fxlabs/fxcp'
+    tag = 'fxlabs/control-plane'
     tagVersion = "latest"
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
