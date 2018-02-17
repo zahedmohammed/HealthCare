@@ -144,3 +144,7 @@ task buildDocker(type: Docker, dependsOn: build) {
 def getDate() {
     new Date().format('yyyyMMddHHmm')
 }
+
+bootRun {
+    //jvmArgs = ["-Dspring.config.location=/opt/fx/config"]
+}

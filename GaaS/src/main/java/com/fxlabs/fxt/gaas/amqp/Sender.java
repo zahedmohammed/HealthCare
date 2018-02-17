@@ -25,6 +25,7 @@ public class Sender {
     public Sender(AmqpTemplate template,
                   @Value("${fx.exchange}") String exchange,
                   @Value("${fx.gaas.response.queue.routingkey}") String routingKey) {
+
         this.template = template;
         this.exchange = exchange;
         this.routingKey = routingKey;
