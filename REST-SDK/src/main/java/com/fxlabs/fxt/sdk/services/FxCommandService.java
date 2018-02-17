@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Intesar Shannan Mohammed
  */
 @Service
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:/fx-sdk.properties")
 @PropertySource(ignoreResourceNotFound = true, value = "file:fx.properties")
 @PropertySource(ignoreResourceNotFound = true, value = "file:${user.home}/fxt/fx.properties")
 public class FxCommandService {
