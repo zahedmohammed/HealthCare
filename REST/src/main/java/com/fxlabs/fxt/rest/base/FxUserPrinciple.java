@@ -32,7 +32,7 @@ public class FxUserPrinciple implements UserDetails {
     //
     @Override
     public String getUsername() {
-        return user.getId();
+        return user.getEmail();
     }
 
     @Override
@@ -76,6 +76,10 @@ public class FxUserPrinciple implements UserDetails {
 
     public Org getOrg() {
         return org;
+    }
+
+    public String getUserId() {
+        return user.getId();
     }
 
 }
