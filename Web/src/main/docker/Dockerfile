@@ -2,8 +2,10 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ADD Web.jar fxcp.jar
+ADD Web.jar control-plane.jar
 
-RUN bash -c 'touch /fxcp.jar'
+RUN bash -c 'touch /control-plane.jar'
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/fxcp.jar"]
+EXPOSE 8080
+
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/control-plane.jar"]

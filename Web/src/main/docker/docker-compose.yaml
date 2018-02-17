@@ -3,7 +3,7 @@ version: '3'
 # volumes
 services:
   fx-cp:
-    image: "fxlabs/fxcp:latest"
+    image: "fxlabs/control-plane:latest"
     environment:
       # RabbitMQ
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
