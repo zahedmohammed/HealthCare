@@ -57,7 +57,7 @@ task buildDocker(type: Docker, dependsOn: build) {
 
     push = false
     tag = 'fxlabs/git-sync-bot'
-    tagVersion = "latest"
+    tagVersion = getDate()
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
@@ -67,3 +67,6 @@ task buildDocker(type: Docker, dependsOn: build) {
     }
 }
 
+def getDate() {
+    new Date().format('yyyyMMddHHmm')
+}

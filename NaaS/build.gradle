@@ -51,7 +51,7 @@ task buildDocker(type: Docker, dependsOn: build) {
 
     push = false
     tag = 'fxlabs/mail-bot'
-    tagVersion = "latest"
+    tagVersion = getDate()
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
@@ -59,4 +59,8 @@ task buildDocker(type: Docker, dependsOn: build) {
             into 'build/docker'
         }
     }
+}
+
+def getDate() {
+    new Date().format('yyyyMMddHHmm')
 }
