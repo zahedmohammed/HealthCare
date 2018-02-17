@@ -37,19 +37,19 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
     private UsersPasswordRepository usersPasswordRepository;
     private UsersPasswordConverter usersPasswordConverter;
     private OrgUsersConverter orgUsersConverter;
-    private TextEncryptor encryptor;
+    //private TextEncryptor encryptor;
 
     @Autowired
     public UsersServiceImpl(UsersRepository repository, UsersConverter converter, PasswordEncoder passwordEncoder,
                             OrgRepository orgRepository, OrgUsersRepository orgUsersRepository, UsersPasswordRepository usersPasswordRepository,
-                            UsersPasswordConverter usersPasswordConverter, TextEncryptor encryptor, OrgUsersConverter orgUsersConverter) {
+                            UsersPasswordConverter usersPasswordConverter, /*TextEncryptor encryptor,*/ OrgUsersConverter orgUsersConverter) {
         super(repository, converter);
         this.passwordEncoder = passwordEncoder;
         this.orgRepository = orgRepository;
         this.orgUsersRepository = orgUsersRepository;
         this.usersPasswordRepository = usersPasswordRepository;
         this.usersPasswordConverter = usersPasswordConverter;
-        this.encryptor = encryptor;
+        //this.encryptor = encryptor;
         this.orgUsersConverter  = orgUsersConverter;
     }
 

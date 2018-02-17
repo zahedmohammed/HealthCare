@@ -55,10 +55,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(11);
     }
 
-    @Bean
+    /*@Bean
     public TextEncryptor encryptor() {
         return Encryptors.text("password", "66782d70617373776f7264"); //fx-password
-    }
+    }*/
 
     /*@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

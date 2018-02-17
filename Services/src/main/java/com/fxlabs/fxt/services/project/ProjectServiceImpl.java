@@ -39,7 +39,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private ProjectRepository projectRepository;
     private ProjectGitAccountRepository projectGitAccountRepository;
     private OrgUsersRepository orgUsersRepository;
-    private TextEncryptor encryptor;
+    //private TextEncryptor encryptor;
     private OrgRepository orgRepository;
     private UsersRepository usersRepository;
     private ProjectUsersRepository projectUsersRepository;
@@ -50,14 +50,14 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               ProjectGitAccountRepository projectGitAccountRepository, OrgUsersRepository orgUsersRepository,
-                              TextEncryptor encryptor, OrgRepository orgRepository, UsersRepository usersRepository,
+                              /*TextEncryptor encryptor,*/ OrgRepository orgRepository, UsersRepository usersRepository,
                               ProjectUsersRepository projectUsersRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor) {
         super(repository, converter);
         this.projectRepository = repository;
         this.projectFileService = projectFileService;
         this.projectGitAccountRepository = projectGitAccountRepository;
         this.orgUsersRepository = orgUsersRepository;
-        this.encryptor = encryptor;
+        //this.encryptor = encryptor;
         this.orgRepository = orgRepository;
         this.usersRepository = usersRepository;
         this.projectUsersRepository = projectUsersRepository;
