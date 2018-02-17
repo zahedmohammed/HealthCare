@@ -115,8 +115,19 @@ task installAngular(type: Exec) {
     }
 }
 
+task buildDockerLatest(type: Docker, dependsOn: build) {
+    push = false
+    tag = 'fxlabs/control-plane'
+    tagVersion = "latest"
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from 'build/libs/Web.jar'
+            into 'build/docker'
+        }
+    }
+}
 task buildDocker(type: Docker, dependsOn: build) {
-
     push = false
     tag = 'fxlabs/control-plane'
     tagVersion = getDate()

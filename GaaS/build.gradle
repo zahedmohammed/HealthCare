@@ -53,8 +53,20 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-task buildDocker(type: Docker, dependsOn: build) {
+task buildDockerLatest(type: Docker, dependsOn: build) {
+    push = false
+    tag = 'fxlabs/git-sync-bot'
+    tagVersion = "latest"
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from 'build/libs/GaaS.jar'
+            into 'build/docker'
+        }
+    }
+}
 
+task buildDocker(type: Docker, dependsOn: build) {
     push = false
     tag = 'fxlabs/git-sync-bot'
     tagVersion = getDate()
