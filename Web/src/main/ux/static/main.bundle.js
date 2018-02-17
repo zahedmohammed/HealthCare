@@ -171,6 +171,7 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__components_edit_project_edit_project_component__ = __webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__components_message_list_message_list_component__ = __webpack_require__("../../../../../src/app/components/message-list/message-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__components_message_detail_message_detail_component__ = __webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__components_run_detail_run_detail_component__ = __webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -219,6 +220,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 // hmr
+
 
 
 
@@ -328,6 +330,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_34__components_edit_project_edit_project_component__["a" /* EditProjectComponent */],
                 __WEBPACK_IMPORTED_MODULE_35__components_message_list_message_list_component__["a" /* MessageListComponent */],
                 __WEBPACK_IMPORTED_MODULE_36__components_message_detail_message_detail_component__["a" /* MessageDetailComponent */],
+                __WEBPACK_IMPORTED_MODULE_37__components_run_detail_run_detail_component__["a" /* RunDetailComponent */],
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]]
         }),
@@ -364,7 +367,7 @@ var CHARTCONFIG = {
 /***/ "../../../../../src/app/components/edit-project/edit-project.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\">Edit Project</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\">\n          <div class=\"form-group\">\n            <label for=\"name\">Name</label>\n            <input type=\"email\" class=\"form-control\" id=\"name\" placeholder=\"Project name\">\n          </div>\n          <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n          <div class=\"form-group\">\n            <label for=\"repo\">Repository location</label> <span class=\"title\"> (FxMaster will auto pull new commits.)</span>\n            <input type=\"email\" class=\"form-control\" id=\"repo\" placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n          </div>\n          <div class=\"form-group\">\n            <label for=\"username\">Username</label>\n            <input type=\"email\" class=\"form-control\" id=\"username\" placeholder=\"Git repository's access-key or username\">\n          </div>\n          <div class=\"form-group\">\n            <label for=\"pass\">Password</label>\n            <input type=\"password\" class=\"form-control\" id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n          </div>\n\n          <button mat-raised-button color=\"primary\" class=\"btn-w-md no-margin-left\">Save Project</button>\n          <div class=\"divider\"></div>\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a> / {{project.name}}</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.name\" disabled name=\"name\" id=\"name\"\n                     placeholder=\"Project name\">\n            </div>\n          </div>\n          <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Git Repository\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                     placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"username\" class=\"col-md-2 control-label\">Username</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.username\" name=\"username\"\n                     id=\"username\" placeholder=\"Git repository's access-key or username\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"pass\" class=\"col-md-2 control-label\">Password</label>\n            <div class=\"col-md-10\">\n              <input type=\"password\" class=\"form-control\" [(ngModel)]=\"project.password\" name=\"password\"\n                     id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n            </div>\n          </div>\n\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -392,6 +395,8 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EditProjectComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -402,18 +407,77 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var EditProjectComponent = (function () {
-    function EditProjectComponent() {
+    function EditProjectComponent(projectService, route, router) {
+        this.projectService = projectService;
+        this.route = route;
+        this.router = router;
+        this.showSpinner = false;
     }
     EditProjectComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            console.log(params);
+            if (params['id']) {
+                _this.getById(params['id']);
+            }
+        });
+    };
+    EditProjectComponent.prototype.getById = function (id) {
+        var _this = this;
+        this.showSpinner = true;
+        this.projectService.getById(id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.project = results['data'];
+            console.log(_this.project);
+        }, function (error) {
+            console.log("Unable to fetch projects");
+        });
+    };
+    EditProjectComponent.prototype.update = function () {
+        var _this = this;
+        console.log(this.project);
+        this.projectService.update(this.project).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/projects']);
+        }, function (error) {
+            console.log("Unable to update project");
+        });
+    };
+    EditProjectComponent.prototype.delete = function () {
+        var _this = this;
+        console.log(this.project);
+        this.projectService.delete(this.project).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/projects']);
+        }, function (error) {
+            console.log("Unable to delete project");
+        });
     };
     EditProjectComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-edit-project',
             template: __webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.scss")]
+            styles: [__webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], EditProjectComponent);
     return EditProjectComponent;
 }());
@@ -425,7 +489,7 @@ var EditProjectComponent = (function () {
 /***/ "../../../../../src/app/components/jobs-list/jobs-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">Jobs</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Env</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Next-Fire</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Action</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let job of jobs\">\n          <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/runs', job.id]\">{{job.name}}</a></td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.environment}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.regions}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.nextFire | date:'short'}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" (click)=\"runJob(job.id)\">Run</a></td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">Jobs</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Env</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Next-Fire</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Action</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let job of jobs\">\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.project.org.name}}/{{job.project.name}}/{{job.name}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.environment}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.regions}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.nextFire | date:'short'}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/runs', job.id]\">History</a> &nbsp;\n            <a href=\"javascript:;\" (click)=\"runJob(job.id)\">Run</a>\n          </td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -453,8 +517,9 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return JobslistComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_jobs_service__ = __webpack_require__("../../../../../src/app/services/jobs.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_run_service__ = __webpack_require__("../../../../../src/app/services/run.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_jobs_service__ = __webpack_require__("../../../../../src/app/services/jobs.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_run_service__ = __webpack_require__("../../../../../src/app/services/run.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -467,11 +532,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 var JobslistComponent = (function () {
-    function JobslistComponent(jobsService, runService) {
+    function JobslistComponent(jobsService, runService, router) {
         this.jobsService = jobsService;
         this.runService = runService;
+        this.router = router;
         this.showSpinner = false;
     }
     JobslistComponent.prototype.ngOnInit = function () {
@@ -487,16 +554,25 @@ var JobslistComponent = (function () {
         });
     };
     JobslistComponent.prototype.runJob = function (id) {
-        this.runService.run(id);
+        var _this = this;
+        this.runService.run(id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (!results)
+                return;
+            //this.jobs = results['data'];
+            _this.router.navigate(['/app/runs', id]);
+        }, function (error) {
+            console.log("Unable to fetch jobs");
+        });
     };
     JobslistComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-jobs-list',
             template: __webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_1__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], JobslistComponent);
     return JobslistComponent;
 }());
@@ -508,7 +584,7 @@ var JobslistComponent = (function () {
 /***/ "../../../../../src/app/components/message-detail/message-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  message-detail works!\n</p>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\"> <a href=\"javascript:;\" [routerLink]=\"['/app/messages']\">Alerts</a> / {{item.subject}}\n        </h2>\n\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <div class=\"item-card card__horizontal1\">\n                <div class=\"card__body card-white\">\n                    <div class=\"card__title\">\n                        <h4>{{item.subject}}</h4>\n                        <h6>{{item.type}}</h6>\n                    </div>\n                    <div class=\"card__price\">\n                        <span>Date: {{item.createdDate | date:'short'}}</span>\n                        <span>Task:  {{item.taskType}}</span>\n                        <span>Status: {{item.status}}</span>\n\n                    </div>\n                    <div class=\"divider divider-solid divider-lg\"></div>\n                    <p class=\"card__desc\" style=\"white-space: pre;\">{{item.message}}</p>\n                </div>\n            </div>\n        </div>\n    </article>\n</section>"
 
 /***/ }),
 
@@ -536,6 +612,8 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessageDetailComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_message_service__ = __webpack_require__("../../../../../src/app/services/message.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -546,18 +624,53 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var MessageDetailComponent = (function () {
-    function MessageDetailComponent() {
+    function MessageDetailComponent(messageService, route) {
+        this.messageService = messageService;
+        this.route = route;
+        this.showSpinner = false;
     }
     MessageDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            console.log(params);
+            if (params['id']) {
+                _this.getById(params['id']);
+            }
+        });
+    };
+    MessageDetailComponent.prototype.getById = function (id) {
+        var _this = this;
+        this.showSpinner = true;
+        this.messageService.getById(id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.item = results['data'];
+            _this.msg = _this.item.message.replace(new RegExp('\n', 'g'), "<br />");
+            console.log(_this.item);
+        }, function (error) {
+            console.log("Unable to fetch regions");
+        });
+    };
+    MessageDetailComponent.prototype.filterNl = function (txt) {
+        if (txt) {
+            return txt.replace(/(?:\r\n|\r|\n)/g, '<br />');
+        }
+        return txt;
     };
     MessageDetailComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-message-detail',
             template: __webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.scss")]
+            styles: [__webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_message_service__["a" /* MessageService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_message_service__["a" /* MessageService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
     ], MessageDetailComponent);
     return MessageDetailComponent;
 }());
@@ -569,7 +682,7 @@ var MessageDetailComponent = (function () {
 /***/ "../../../../../src/app/components/message-list/message-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">Alerts\n    </h2>\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Subject</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Type</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">State</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Date</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let item of items\">\n          <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/message', item.id]\">{{item.subject}}</a></td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.severity}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.state}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.createdDate | date:'short'}}</td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">Alerts\n    </h2>\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Subject</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Task</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Type</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Create-Date</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let item of items\">\n          <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/message', item.id]\">{{item.subject}}</a></td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.taskType}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.type}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.createdDate | date:'short'}}</td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -647,7 +760,7 @@ var MessageListComponent = (function () {
 /***/ "../../../../../src/app/components/new-project/new-project.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Project</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\">\n                    <div class=\"form-group\">\n                        <label for=\"name\">Name</label>\n                        <input type=\"email\" class=\"form-control\" id=\"name\" placeholder=\"Project name\">\n                    </div>\n                    <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n                    <div class=\"form-group\">\n                        <label for=\"repo\">Repository location</label> <span class=\"title\"> (FxMaster will auto pull new commits.)</span>\n                        <input type=\"email\" class=\"form-control\" id=\"repo\" placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"username\">Username</label>\n                        <input type=\"email\" class=\"form-control\" id=\"username\" placeholder=\"Git repository's access-key or username\">\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"pass\">Password</label>\n                        <input type=\"password\" class=\"form-control\" id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n                    </div>\n\n                    <button mat-raised-button color=\"primary\" class=\"btn-w-md no-margin-left\">Add Project</button>\n                    <div class=\"divider\"></div>\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Project</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\" #heroForm=\"ngForm\">\n                    <div class=\"form-group row\">\n                        <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.name\" name=\"name\" id=\"name\"\n                                   placeholder=\"Project name\">\n                        </div>\n                    </div>\n                    <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Git Repository\n                        </label>\n                        <div class=\"col-md-10\">\n                            <input type=\"url\" class=\"form-control\" [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                                   placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"username\" class=\"col-md-2 control-label\">Username</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.username\" name=\"username\"\n                                   id=\"username\" placeholder=\"Git repository's access-key or username\">\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"pass\" class=\"col-md-2 control-label\">Password</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"password\" class=\"form-control\" [(ngModel)]=\"project.password\" name=\"password\"\n                                   id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n                        </div>\n                    </div>\n\n\n                    <div class=\"divider divider-md\"></div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                                    class=\"btn-w-md no-margin-left\">Add\n                            </button>\n                            <span class=\"space space-md\"></span>\n                            <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n                            </button>\n                        </div>\n                    </div>\n\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -675,7 +788,9 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NewProjectComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -687,24 +802,42 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
 var NewProjectComponent = (function () {
-    function NewProjectComponent(projectService) {
+    function NewProjectComponent(projectService, route, router) {
         this.projectService = projectService;
-        this.project = new Object();
+        this.route = route;
+        this.router = router;
+        this.showSpinner = false;
+        this.project = new __WEBPACK_IMPORTED_MODULE_3__models_project_model__["a" /* Project */]('', '', '', '', 'GIT');
     }
     NewProjectComponent.prototype.ngOnInit = function () {
     };
-    NewProjectComponent.prototype.save = function () {
+    NewProjectComponent.prototype.create = function () {
+        var _this = this;
         console.log(this.project);
+        this.showSpinner = true;
+        this.projectService.create(this.project).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/projects']);
+        }, function (error) {
+            console.log("Unable to fetch regions");
+        });
     };
     NewProjectComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-new-project',
             template: __webpack_require__("../../../../../src/app/components/new-project/new-project.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/new-project/new-project.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], NewProjectComponent);
     return NewProjectComponent;
 }());
@@ -716,7 +849,7 @@ var NewProjectComponent = (function () {
 /***/ "../../../../../src/app/components/projects-list/projects-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\">Projects\n            <button mat-raised-button color=\"primary\" class=\"btn-w-md pull-right\" [routerLink]=\"['/app/new-project']\">New Project</button><div class=\"divider divider-sm\"></div>\n        </h2>\n\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Type</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let project of projects\">\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/project', project.id]\">{{project.org.name}}/{{project.name}}</a></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.projectType}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.visibility}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\">Projects\n            <button mat-raised-button color=\"primary\" class=\"btn-w-md pull-right\" [routerLink]=\"['/app/new-project']\">New Project</button><div class=\"divider divider-sm\"></div>\n        </h2>\n\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Repository</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Create-Date</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let project of projects\">\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.org.name}}/{{project.name}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/project', project.id]\">{{project.projectType}}</a></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.visibility}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.createdDate | date:'shortDate'}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -795,7 +928,7 @@ var ProjectlistComponent = (function () {
 /***/ "../../../../../src/app/components/regions-list/regions-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">Bot Regions</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Location</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let item of list\">\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.org.name}}/{{item.name}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.region}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.visibility}}</td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">Regions (Bots)</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Location</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let item of list\">\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.org.name}}/{{item.name}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.region}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.visibility}}</td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -871,10 +1004,115 @@ var RegionsListComponent = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/run-detail/run-detail.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<section class=\"container-fluid with-maxwidth-lg1 no-breadcrumbs chapter\">\n    <article class=\"article\">\n        <h2 class=\"article-title\"> <a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\">Jobs</a> / {{run.job.name}} / <a href=\"javascript:;\" [routerLink]=\"['/app/runs']\">Runs</a> / {{run.runId}}\n        </h2>\n    </article>\n\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{run.job.name}} / ({{run.task.status}})</h4>\n                    <h6>Summary</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{run.task.totalTestCompleted}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{run.task.failedTests}}</span>\n                    <span>Time: {{run.task.totalTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{run.task.description}}</p>\n            </div>\n        </div>\n    </div>\n\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\" *ngFor=\"let item of list\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{item.testSuite}}</h4>\n                    <h6>Test-Suite</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{item.totalPassed}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{item.totalFailed}}</span>\n                    <span>Time: {{item.requestTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{item.logs}}</p>\n            </div>\n        </div>\n    </div>\n</section>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/run-detail/run-detail.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/run-detail/run-detail.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RunDetailComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_run_service__ = __webpack_require__("../../../../../src/app/services/run.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var RunDetailComponent = (function () {
+    function RunDetailComponent(runService, route) {
+        this.runService = runService;
+        this.route = route;
+        this.showSpinner = false;
+    }
+    RunDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            console.log(params);
+            if (params['id']) {
+                _this.getRunById(params['id']);
+                _this.getTestSuiteResponsesByRunId(params['id']);
+            }
+        });
+    };
+    RunDetailComponent.prototype.getRunById = function (id) {
+        var _this = this;
+        this.showSpinner = true;
+        this.runService.getDetails(id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.run = results['data'];
+        }, function (error) {
+            console.log("Unable to fetch regions");
+        });
+    };
+    RunDetailComponent.prototype.getTestSuiteResponsesByRunId = function (id) {
+        var _this = this;
+        this.showSpinner = true;
+        this.runService.getTestSuiteResponses(id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.list = results['data'];
+        }, function (error) {
+            console.log("Unable to fetch regions");
+        });
+    };
+    RunDetailComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-run-detail',
+            template: __webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */]]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
+    ], RunDetailComponent);
+    return RunDetailComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/run-list/run-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">Job Runs</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Completed/Fail</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Time</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let item of list\">\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.job.name}}/{{item.runId}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.job.regions}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.status}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTime}}</td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
+module.exports = "\n<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\">Jobs</a> / {{list[0].job.name}} / Runs</h2>\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Suites</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Tests</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time (ms)</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let item of list\">\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\"\n                                                                     [routerLink]=\"['/app/run', item.id]\">{{item.job.name}}/{{item.runId}}</a>\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.job.regions}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.status}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTests}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTestCompleted}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (item.task.totalTestCompleted + item.task.failedTests) * 100 ) /  item.task.totalTestCompleted}}%\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTime}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -995,7 +1233,7 @@ var APPCONFIG = makeAppConfig();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = " <div class=\"container-fluid no-breadcrumbs page-dashboard\">\n\n  <div class=\"box box-default\">\n    <div class=\"box-body\">\n      <div myECharts [EChartsOptions]=\"trafficChart\" style=\"height: 450px;\"></div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n     <!-- Stats -->\n    <div class=\"col-xl-3 col-sm-6\">\n      <div class=\"box box-default\">\n        <div class=\"box-top\">\n          <i class=\"material-icons color-success\">airplanemode_active</i>\n        </div>\n        <div class=\"box-info\">\n          <span>Growth</span>\n        </div>\n        <div class=\"box-bottom\">\n          <span>35 <span class=\"size-h4\">%</span></span>\n        </div>\n      </div>\n    </div>\n    <div class=\"col-xl-3 col-sm-6\">\n      <div class=\"box box-default\">\n        <div class=\"box-top\">\n          <i class=\"material-icons color-info\">supervisor_account</i>\n        </div>\n        <div class=\"box-info\">\n          <span>New Users</span>\n        </div>\n        <div class=\"box-bottom\">\n          <span>42 <span class=\"size-h4\">%</span></span>\n        </div>\n      </div>\n    </div>\n    <div class=\"col-xl-3 col-sm-6\">\n      <div class=\"box box-default\">\n        <div class=\"box-top\">\n          <i class=\"material-icons color-warning\">attach_money</i>\n        </div>\n        <div class=\"box-info\">\n          <span>Profit</span>\n        </div>\n        <div class=\"box-bottom\">\n          <span>37 <span class=\"size-h4\">k</span></span>\n        </div>\n      </div>\n    </div>\n    <div class=\"col-xl-3 col-sm-6\">\n      <div class=\"box box-default\">\n        <div class=\"box-top\">\n          <i class=\"material-icons color-danger\">shopping_cart</i>\n        </div>\n        <div class=\"box-info\">\n          <span>Sales</span>\n        </div>\n        <div class=\"box-bottom\">\n          <span>25 <span class=\"size-h4\">k</span></span>\n        </div>\n      </div>\n    </div>\n    <!-- end stats -->      \n  </div>\n\n\n  <div class=\"box box-default\">\n    <div class=\"box-body padding-lg\">\n      <div class=\"row\">\n        <div class=\"col-xl-4\">\n          <div class=\"box box-transparent\">\n            <div class=\"box-heading\">Platform</div>\n            <div class=\"divider divider-md\"></div>\n            <div class=\"box-body\">\n              <div class=\"vprogressbar-container brand-success\">\n                <ul class=\"vprogressbar clearfix\">\n                  <li><span class=\"vprogressbar-percent bg-color-info-alt\" style=\"height: 65%; opacity: 0.85;\"></span></li>\n                  <li><span class=\"vprogressbar-percent bg-color-success\" style=\"height: 50%; opacity: 0.85;\"></span></li>\n                  <li><span class=\"vprogressbar-percent bg-color-warning\" style=\"height: 40%; opacity: 0.85;\"></span></li>\n                  <li><span class=\"vprogressbar-percent bg-color-primary\" style=\"height: 80%; opacity: 0.85;\"></span></li>\n                </ul>\n                <ul class=\"vprogressbar-legend\">\n                  <li><span class=\"vpointer bg-color-info-alt\"></span> Direct</li>\n                  <li><span class=\"vpointer bg-color-success\"></span> Instagram</li>\n                  <li><span class=\"vpointer bg-color-warning\"></span> Twitter</li>\n                  <li><span class=\"vpointer bg-color-primary\"></span> Facebook</li>\n                </ul>\n                <div class=\"vprogressbar-info\">\n                  <span>Source of Acquisition</span>\n                </div>\n              </div>\n            </div>\n          </div>               \n        </div>\n        <div class=\"col-xl-4\">\n          <div class=\"box box-transparent\">\n            <div class=\"box-heading\">Nationality</div>\n            <div class=\"divider divider-md\"></div>\n            <div class=\"box-body\">\n              <div myECharts [EChartsOptions]=\"donutChart\" style=\"height: 300px;\"></div>\n            </div>\n          </div>      \n        </div>\n        <div class=\"col-xl-4\">\n          <section class=\"box box-transparent\">\n            <div class=\"box-heading\">Budget vs Spending</div>\n            <div class=\"divider divider-md\"></div>\n            <div class=\"box-body\">\n              <div myECharts [EChartsOptions]=\"radarChart\" style=\"height: 300px;\"></div>\n            </div>\n          </section>\n        </div>    \n      </div>\n    </div>\n  </div>\n\n</div>"
+module.exports = "<section class=\"chapter page-terms\">\n\n    <section class=\"hero\">\n        <div class=\"hero-content\">\n            <h1 class=\"hero-title\">Dashboard</h1>\n        </div>\n        <p class=\"text-muted\">System Snapshot</p>\n    </section>\n\n    <article class=\"article padding-lg-v article-dark article-bordered\">\n\n\n        <div class=\"container-fluid no-breadcrumbs page-dashboard\">\n\n            <!--\n           <div class=\"box box-default\">\n             <div class=\"box-body\">\n               <div myECharts [EChartsOptions]=\"trafficChart\" style=\"height: 450px;\"></div>\n             </div>\n           </div>\n            -->\n\n            <div class=\"row\">\n                <!-- Stats -->\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-success\">code</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Projects</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>35 </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-info\">alarm</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Jobs</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>42 </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-warning\">check</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Test Executions</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>37 </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-danger\">attach_money</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Balance</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>25 </span>\n                        </div>\n                    </div>\n                </div>\n                <!-- end stats -->\n            </div>\n\n            <!--\n            <div class=\"box box-default\">\n              <div class=\"box-body padding-lg\">\n                <div class=\"row\">\n                  <div class=\"col-xl-4\">\n                    <div class=\"box box-transparent\">\n                      <div class=\"box-heading\">Platform</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div class=\"vprogressbar-container brand-success\">\n                          <ul class=\"vprogressbar clearfix\">\n                            <li><span class=\"vprogressbar-percent bg-color-info-alt\" style=\"height: 65%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-success\" style=\"height: 50%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-warning\" style=\"height: 40%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-primary\" style=\"height: 80%; opacity: 0.85;\"></span></li>\n                          </ul>\n                          <ul class=\"vprogressbar-legend\">\n                            <li><span class=\"vpointer bg-color-info-alt\"></span> Direct</li>\n                            <li><span class=\"vpointer bg-color-success\"></span> Instagram</li>\n                            <li><span class=\"vpointer bg-color-warning\"></span> Twitter</li>\n                            <li><span class=\"vpointer bg-color-primary\"></span> Facebook</li>\n                          </ul>\n                          <div class=\"vprogressbar-info\">\n                            <span>Source of Acquisition</span>\n                          </div>\n                        </div>\n                      </div>\n                    </div>\n                  </div>\n                  <div class=\"col-xl-4\">\n                    <div class=\"box box-transparent\">\n                      <div class=\"box-heading\">Nationality</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div myECharts [EChartsOptions]=\"donutChart\" style=\"height: 300px;\"></div>\n                      </div>\n                    </div>\n                  </div>\n                  <div class=\"col-xl-4\">\n                    <section class=\"box box-transparent\">\n                      <div class=\"box-heading\">Budget vs Spending</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div myECharts [EChartsOptions]=\"radarChart\" style=\"height: 300px;\"></div>\n                      </div>\n                    </section>\n                  </div>\n                </div>\n              </div>\n            </div>\n            -->\n        </div>\n    </article>\n</section>"
 
 /***/ }),
 
@@ -1399,7 +1637,7 @@ var DashboardComponent = (function () {
 /***/ "../../../../../src/app/layout/customizer/customizer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"quickview-wrapper customizer d-none d-lg-block d-xl-block\" id=\"quickview-customizer\">\n  <a class=\"customizer-close\" href=\"javascript:;\" myToggleQuickview=\"customizer\"><span class=\"material-icons\">close</span></a>\n  <a class=\"customizer-toggle\" href=\"javascript:;\" myToggleQuickview=\"customizer\"><span class=\"material-icons\">settings</span></a>\n\n  <div class=\"quickview-inner\" mySlimScroll>\n    <div>\n      <p class=\"customizer-header\">Customizer</p>\n      <p class=\"small no-margin\">Customize and preview in real time.</p>\n\n      <div class=\"divider divider-lg divider-solid\"></div>\n      <h4 class=\"section-header\">Layout Options</h4>\n      <div class=\"divider divider-sm\"></div>\n      <mat-list>\n        <mat-list-item>\n          <p>Fixed Header</p>\n          <mat-slide-toggle class=\"mat-secondary\" [(ngModel)]=\"AppConfig.fixedHeader\"></mat-slide-toggle>\n        </mat-list-item>\n        <mat-list-item>\n          <p>Collapsed Sidebar</p>\n          <mat-slide-toggle class=\"mat-secondary\" [(ngModel)]=\"AppConfig.navCollapsed\" (change)=\"onLayoutChange()\"></mat-slide-toggle>\n        </mat-list-item>\n        <mat-list-item>\n          <p>Full Width Header</p>\n          <mat-slide-toggle class=\"mat-secondary\" [(ngModel)]=\"AppConfig.navBehind\"></mat-slide-toggle>\n        </mat-list-item>\n        <mat-list-item>\n          <p>Boxed Layout</p>\n          <mat-slide-toggle class=\"mat-secondary\" [(ngModel)]=\"AppConfig.layoutBoxed\" (change)=\"onLayoutChange()\"></mat-slide-toggle>\n        </mat-list-item>\n        <mat-list-item>\n          <p>Sidebar Width</p>\n          <mat-select class=\"no-margin\" style=\"width: 80px;\" [(ngModel)]=\"AppConfig.sidebarWidth\" (change)=\"onLayoutChange()\">\n            <mat-option value=\"small\">small</mat-option>\n            <mat-option value=\"middle\" >middle</mat-option>\n            <mat-option value=\"large\" >large</mat-option>\n          </mat-select>\n        </mat-list-item>\n      </mat-list>\n\n\n      <div class=\"divider divider-lg divider-solid\"></div>\n      <h4 class=\"section-header\">Color Options</h4>\n      <p class=\"small no-margin\">Tip: Additionally, you can active \"Full Width Header\" above</p>\n      <div class=\"divider\"></div>\n      <div class=\"row\">\n        <div class=\"col-4\">\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"11\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-dark item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"12\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"13\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"14\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"15\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"16\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n        </div>\n\n        <div class=\"col-4\">\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"21\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"22\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"23\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"24\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"25\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"26\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-dark\"></span> \n            </span>\n          </label>                 \n        </div>\n        <div class=\"col-4\">\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"31\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-dark item-header\"></span>\n              <span class=\"bg-color-dark item-header\"></span>\n              <span class=\"bg-color-light\"></span> \n            </span>\n          </label> \n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"32\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-light\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"33\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-light\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"34\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-light\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"35\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-light\"></span> \n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"36\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-light\"></span> \n            </span>\n          </label>                 \n        </div>\n      </div>\n\n\n\n      <div class=\"divider divider-lg divider-solid\"></div>\n      <h4 class=\"section-header\">Theme Options</h4>\n      <div class=\"divider\"></div>\n\n      <div class=\"row no-margin theme-options clearfix\">\n        <div class=\"col-4\">\n          <label class=\"theme-option-check\">\n            <input type=\"radio\" name=\"theme\" value=\"dark\" [(ngModel)]=\"AppConfig.theme\">\n            <span class=\"theme-option-item bg-color-dark\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span>Dark</span>\n            </span>\n          </label>\n        </div>\n        <div class=\"col-4\">\n          <label class=\"theme-option-check\">\n            <input type=\"radio\" name=\"theme\" value=\"gray\" [(ngModel)]=\"AppConfig.theme\">\n            <span class=\"theme-option-item bg-color-gray\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span>Gray</span>\n            </span>\n          </label>\n        </div>\n        <div class=\"col-4\">\n          <label class=\"theme-option-check\">\n            <input type=\"radio\" name=\"theme\" value=\"light\" [(ngModel)]=\"AppConfig.theme\">\n            <span class=\"theme-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span>Light</span>\n            </span>\n          </label>\n        </div>\n      </div>\n      <div class=\"divider divider-lg divider-solid\"></div>\n      <div class=\"text-right\">\n        <a target=\"_blank\" [href]=\"AppConfig.productLink\">Download it Now</a>\n      </div>\n\n    </div>\n  </div>\n</section>"
+module.exports = "<section class=\"quickview-wrapper customizer d-none d-lg-block d-xl-block\" id=\"quickview-customizer\">\n  <a class=\"customizer-close\" href=\"javascript:;\" myToggleQuickview=\"customizer\"><span class=\"material-icons\">close</span></a>\n  <a class=\"customizer-toggle\" href=\"javascript:;\" myToggleQuickview=\"customizer\"><span class=\"material-icons\">settings</span></a>\n\n  <div class=\"quickview-inner\" mySlimScroll>\n    <div>\n      <p class=\"customizer-header\">Account</p>\n      <p class=\"small no-margin\"></p>\n      <br/>\n      <br/>\n      <div class=\"divider divider-lg divider-solid\"></div>\n      <a href=\"/logout\">Sign out</a>\n\n      <br/>\n      <br/>\n      <br/>\n      <!--<h4 class=\"section-header\">Layout Options</h4>\n      <div class=\"divider divider-sm\"></div>\n      <mat-list>\n        <mat-list-item>\n          <p>Fixed Header</p>\n          <mat-slide-toggle class=\"mat-secondary\" [(ngModel)]=\"AppConfig.fixedHeader\"></mat-slide-toggle>\n        </mat-list-item>\n        <mat-list-item>\n          <p>Collapsed Sidebar</p>\n          <mat-slide-toggle class=\"mat-secondary\" [(ngModel)]=\"AppConfig.navCollapsed\" (change)=\"onLayoutChange()\"></mat-slide-toggle>\n        </mat-list-item>\n        <mat-list-item>\n          <p>Full Width Header</p>\n          <mat-slide-toggle class=\"mat-secondary\" [(ngModel)]=\"AppConfig.navBehind\"></mat-slide-toggle>\n        </mat-list-item>\n        <mat-list-item>\n          <p>Boxed Layout</p>\n          <mat-slide-toggle class=\"mat-secondary\" [(ngModel)]=\"AppConfig.layoutBoxed\" (change)=\"onLayoutChange()\"></mat-slide-toggle>\n        </mat-list-item>\n        <mat-list-item>\n          <p>Sidebar Width</p>\n          <mat-select class=\"no-margin\" style=\"width: 80px;\" [(ngModel)]=\"AppConfig.sidebarWidth\" (change)=\"onLayoutChange()\">\n            <mat-option value=\"small\">small</mat-option>\n            <mat-option value=\"middle\" >middle</mat-option>\n            <mat-option value=\"large\" >large</mat-option>\n          </mat-select>\n        </mat-list-item>\n      </mat-list>-->\n\n\n      <!--<div class=\"divider divider-lg divider-solid\"></div>\n      <h4 class=\"section-header\">Color Options</h4>\n      <p class=\"small no-margin\">Tip: Additionally, you can active \"Full Width Header\" above</p>\n      <div class=\"divider\"></div>\n      <div class=\"row\">\n        <div class=\"col-4\">\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"11\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-dark item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"12\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"13\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"14\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"15\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"16\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n        </div>\n\n        <div class=\"col-4\">\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"21\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-light item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"22\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"23\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"24\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"25\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"26\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-dark\"></span>\n            </span>\n          </label>\n        </div>\n        <div class=\"col-4\">\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"31\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-dark item-header\"></span>\n              <span class=\"bg-color-dark item-header\"></span>\n              <span class=\"bg-color-light\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"32\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-primary item-header\"></span>\n              <span class=\"bg-color-light\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"33\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-success item-header\"></span>\n              <span class=\"bg-color-light\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"34\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-info item-header\"></span>\n              <span class=\"bg-color-light\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"35\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-warning item-header\"></span>\n              <span class=\"bg-color-light\"></span>\n            </span>\n          </label>\n          <label class=\"color-option-check\">\n            <input type=\"radio\" name=\"color\" value=\"36\" [(ngModel)]=\"AppConfig.colorOption\">\n            <span class=\"color-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-danger item-header\"></span>\n              <span class=\"bg-color-light\"></span>\n            </span>\n          </label>\n        </div>\n      </div>-->\n\n\n\n      <!--<div class=\"divider divider-lg divider-solid\"></div>\n      <h4 class=\"section-header\">Theme</h4>\n      <div class=\"divider\"></div>-->\n\n      <div class=\"row no-margin theme-options clearfix\">\n        <div class=\"col-4\">\n          <label class=\"theme-option-check\">\n            <input type=\"radio\" name=\"theme\" value=\"dark\" [(ngModel)]=\"AppConfig.theme\">\n            <span class=\"theme-option-item bg-color-dark\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span>Night Mode</span>\n            </span>\n          </label>\n        </div>\n        <!--<div class=\"col-4\">\n          <label class=\"theme-option-check\">\n            <input type=\"radio\" name=\"theme\" value=\"gray\" [(ngModel)]=\"AppConfig.theme\">\n            <span class=\"theme-option-item bg-color-gray\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span>Gray</span>\n            </span>\n          </label>\n        </div>-->\n        <div class=\"col-4\">\n          <label class=\"theme-option-check\">\n            <input type=\"radio\" name=\"theme\" value=\"light\" [(ngModel)]=\"AppConfig.theme\">\n            <span class=\"theme-option-item bg-color-page\">\n              <span class=\"overlay\"><span class=\"material-icons\">check</span></span>\n              <span>Standard</span>\n            </span>\n          </label>\n        </div>\n      </div>\n      <!--<div class=\"divider divider-lg divider-solid\"></div>\n      <div class=\"text-right\">\n        <a target=\"_blank\" [href]=\"AppConfig.productLink\">Download it Now</a>\n      </div>-->\n\n    </div>\n  </div>\n</section>"
 
 /***/ }),
 
@@ -1542,7 +1780,7 @@ var AppFooterComponent = (function () {
 /***/ "../../../../../src/app/layout/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"app-header\">\n  <div class=\"app-header-inner\"\n     [ngClass]=\"{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-dark': AppConfig.colorOption === '31',\n                 'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-info': ['24','34'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}\">\n\n    <div class=\"d-lg-none d-xl-none float-left\">\n      <button mat-button myToggleOffcanvasNav class=\"md-button header-icon toggle-sidebar-btn\">\n        <i class=\"material-icons\">menu</i>\n      </button>\n    </div>\n\n\n    <div class=\"brand d-none d-lg-inline-block d-xl-inline-block\">\n      <h2><a [routerLink]=\"['/']\">{{AppConfig.productName}}</a></h2>\n    </div>\n\n    <div class=\"top-nav-left d-none d-lg-inline-block d-xl-inline-block\">\n      <ul class=\"list-unstyled list-inline\">\n        <!--<li class=\"list-inline-item\"><button mat-button class=\"md-button header-btn\" myOpenSearchOverlay><i class=\"material-icons\">search</i></button></li>-->\n        <li class=\"list-inline-item\">\n          <button mat-button class=\"md-button header-btn\" [matMenuTriggerFor]=\"appNotification\">\n            <i class=\"material-icons\" [routerLink]=\"['/app/messages']\">notifications_none</i>\n            <span class=\"badge\">3</span>\n          </button>\n          <!--<mat-menu #appNotification=\"matMenu\" x-position=\"after\" y-position=\"below\" overlapTrigger=\"false\">\n            <mat-list dense>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>mail_outline</mat-icon>\n                <h4 mat-line>New mail from David</h4>\n                <p mat-line class=\"text-muted\">5 minutes ago</p>\n              </mat-list-item>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>chat_bubble_outline</mat-icon>\n                <h4 mat-line>Message from Jane</h4>\n                <p mat-line class=\"text-muted\">15 minutes ago</p>\n              </mat-list-item>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>person_outline</mat-icon>\n                <h4 mat-line>New member John joined</h4>\n                <p mat-line class=\"text-muted\">1 hour ago</p>\n              </mat-list-item>\n            </mat-list>\n          </mat-menu>-->\n        </li>\n      </ul>\n    </div>\n\n    <!--<div class=\"top-nav-right\">\n      <ul class=\"list-unstyled float-right\">\n        <li>\n          <button mat-button class=\"md-button header-btn\" [routerLink]=\"['/app/page/about']\">\n            <img src=\"assets/images/g1.jpg\" alt=\"\" class=\"rounded img30_30\">\n          </button>\n        </li>\n        <li><button mat-button class=\"md-button header-btn d-lg-none d-xl-none\" myOpenSearchOverlay><i class=\"material-icons\">search</i></button></li>\n        <li><button mat-button class=\"md-button header-btn\"><i class=\"material-icons\">more_vert</i></button></li>\n      </ul>\n    </div>-->\n\n  </div>\n</section>\n"
+module.exports = "<section class=\"app-header\">\n  <div class=\"app-header-inner\"\n     [ngClass]=\"{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-dark': AppConfig.colorOption === '31',\n                 'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-info': ['24','34'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}\">\n\n    <div class=\"d-lg-none d-xl-none float-left\">\n      <button mat-button myToggleOffcanvasNav class=\"md-button header-icon toggle-sidebar-btn\">\n        <i class=\"material-icons\">menu</i>\n      </button>\n    </div>\n\n\n    <div class=\"brand d-none d-lg-inline-block d-xl-inline-block\">\n      <h2><a [routerLink]=\"['/']\">{{AppConfig.productName}}</a></h2>\n    </div>\n\n    <div class=\"top-nav-left d-none d-lg-inline-block d-xl-inline-block\">\n      <ul class=\"list-unstyled list-inline\">\n        <!--<li class=\"list-inline-item\"><button mat-button class=\"md-button header-btn\" myOpenSearchOverlay><i class=\"material-icons\">search</i></button></li>-->\n        <li class=\"list-inline-item\" [routerLink]=\"['/app/messages']\">\n          <button mat-button class=\"md-button header-btn\" [matMenuTriggerFor]=\"appNotification\">\n            <i class=\"material-icons\" >notifications_none</i>\n            <!--<span class=\"badge\">3</span>-->\n          </button>\n          <!--<mat-menu #appNotification=\"matMenu\" x-position=\"after\" y-position=\"below\" overlapTrigger=\"false\">\n            <mat-list dense>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>mail_outline</mat-icon>\n                <h4 mat-line>New mail from David</h4>\n                <p mat-line class=\"text-muted\">5 minutes ago</p>\n              </mat-list-item>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>chat_bubble_outline</mat-icon>\n                <h4 mat-line>Message from Jane</h4>\n                <p mat-line class=\"text-muted\">15 minutes ago</p>\n              </mat-list-item>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>person_outline</mat-icon>\n                <h4 mat-line>New member John joined</h4>\n                <p mat-line class=\"text-muted\">1 hour ago</p>\n              </mat-list-item>\n            </mat-list>\n          </mat-menu>-->\n        </li>\n      </ul>\n    </div>\n\n    <!--<div class=\"top-nav-right\">\n      <ul class=\"list-unstyled float-right\">\n        <li>\n          <button mat-button class=\"md-button header-btn\" [routerLink]=\"['/app/page/about']\">\n            <img src=\"assets/images/g1.jpg\" alt=\"\" class=\"rounded img30_30\">\n          </button>\n        </li>\n        <li><button mat-button class=\"md-button header-btn d-lg-none d-xl-none\" myOpenSearchOverlay><i class=\"material-icons\">search</i></button></li>\n        <li><button mat-button class=\"md-button header-btn\"><i class=\"material-icons\">more_vert</i></button></li>\n      </ul>\n    </div>-->\n\n  </div>\n</section>\n"
 
 /***/ }),
 
@@ -1588,14 +1826,18 @@ var AppHeaderComponent = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LayoutRoutingModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_component__ = __webpack_require__("../../../../../src/app/layout/layout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_jobs_list_jobs_list_component__ = __webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_run_list_run_list_component__ = __webpack_require__("../../../../../src/app/components/run-list/run-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_projects_list_projects_list_component__ = __webpack_require__("../../../../../src/app/components/projects-list/projects-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_new_project_new_project_component__ = __webpack_require__("../../../../../src/app/components/new-project/new-project.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_edit_project_edit_project_component__ = __webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_regions_list_regions_list_component__ = __webpack_require__("../../../../../src/app/components/regions-list/regions-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_message_list_message_list_component__ = __webpack_require__("../../../../../src/app/components/message-list/message-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_message_detail_message_detail_component__ = __webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_jobs_list_jobs_list_component__ = __webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_run_list_run_list_component__ = __webpack_require__("../../../../../src/app/components/run-list/run-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_run_detail_run_detail_component__ = __webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_projects_list_projects_list_component__ = __webpack_require__("../../../../../src/app/components/projects-list/projects-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_new_project_new_project_component__ = __webpack_require__("../../../../../src/app/components/new-project/new-project.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_edit_project_edit_project_component__ = __webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_regions_list_regions_list_component__ = __webpack_require__("../../../../../src/app/components/regions-list/regions-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_message_list_message_list_component__ = __webpack_require__("../../../../../src/app/components/message-list/message-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_message_detail_message_detail_component__ = __webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.ts");
+
+
 
 
 
@@ -1614,15 +1856,16 @@ var routes = [
             { path: '', redirectTo: '/app/jobs', pathMatch: 'full' },
             //{ path: 'jobs', component: JobslistComponent },
             //{ path: 'projects', component: ProjectlistComponent },
-            //{ path: 'dashboard', component: DashboardComponent },
-            { path: 'jobs', component: __WEBPACK_IMPORTED_MODULE_2__components_jobs_list_jobs_list_component__["a" /* JobslistComponent */] },
-            { path: 'runs/:id', component: __WEBPACK_IMPORTED_MODULE_3__components_run_list_run_list_component__["a" /* RunListComponent */] },
-            { path: 'projects', component: __WEBPACK_IMPORTED_MODULE_4__components_projects_list_projects_list_component__["a" /* ProjectlistComponent */] },
-            { path: 'new-project', component: __WEBPACK_IMPORTED_MODULE_5__components_new_project_new_project_component__["a" /* NewProjectComponent */] },
-            { path: 'project/:id', component: __WEBPACK_IMPORTED_MODULE_6__components_edit_project_edit_project_component__["a" /* EditProjectComponent */] },
-            { path: 'messages', component: __WEBPACK_IMPORTED_MODULE_8__components_message_list_message_list_component__["a" /* MessageListComponent */] },
-            { path: 'message/:id', component: __WEBPACK_IMPORTED_MODULE_9__components_message_detail_message_detail_component__["a" /* MessageDetailComponent */] },
-            { path: 'regions', component: __WEBPACK_IMPORTED_MODULE_7__components_regions_list_regions_list_component__["a" /* RegionsListComponent */] },
+            { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_2__dashboard_dashboard_component__["a" /* DashboardComponent */] },
+            { path: 'jobs', component: __WEBPACK_IMPORTED_MODULE_3__components_jobs_list_jobs_list_component__["a" /* JobslistComponent */] },
+            { path: 'runs/:id', component: __WEBPACK_IMPORTED_MODULE_4__components_run_list_run_list_component__["a" /* RunListComponent */] },
+            { path: 'run/:id', component: __WEBPACK_IMPORTED_MODULE_5__components_run_detail_run_detail_component__["a" /* RunDetailComponent */] },
+            { path: 'projects', component: __WEBPACK_IMPORTED_MODULE_6__components_projects_list_projects_list_component__["a" /* ProjectlistComponent */] },
+            { path: 'new-project', component: __WEBPACK_IMPORTED_MODULE_7__components_new_project_new_project_component__["a" /* NewProjectComponent */] },
+            { path: 'project/:id', component: __WEBPACK_IMPORTED_MODULE_8__components_edit_project_edit_project_component__["a" /* EditProjectComponent */] },
+            { path: 'messages', component: __WEBPACK_IMPORTED_MODULE_10__components_message_list_message_list_component__["a" /* MessageListComponent */] },
+            { path: 'message/:id', component: __WEBPACK_IMPORTED_MODULE_11__components_message_detail_message_detail_component__["a" /* MessageDetailComponent */] },
+            { path: 'regions', component: __WEBPACK_IMPORTED_MODULE_9__components_regions_list_regions_list_component__["a" /* RegionsListComponent */] },
         ]
     }
 ];
@@ -1634,7 +1877,7 @@ var LayoutRoutingModule = __WEBPACK_IMPORTED_MODULE_0__angular_router__["g" /* R
 /***/ "../../../../../src/app/layout/layout.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<my-app-sidenav></my-app-sidenav>\n\n<section id=\"page-container\" class=\"app-page-container\">\n  <my-app-header></my-app-header>\n\n  <div class=\"app-content-wrapper\">\n    <div class=\"app-content\">\n      <div class=\"full-height\">\n        <router-outlet></router-outlet>\n      </div>\n    </div>\n\n    <my-app-footer></my-app-footer>\n  </div>\n</section>\n\n<!--<my-app-customizer></my-app-customizer>-->\n\n<my-app-search-overlay></my-app-search-overlay>\n"
+module.exports = "\n<my-app-sidenav></my-app-sidenav>\n\n<section id=\"page-container\" class=\"app-page-container\">\n  <my-app-header></my-app-header>\n\n  <div class=\"app-content-wrapper\">\n    <div class=\"app-content\">\n      <div class=\"full-height\">\n        <router-outlet></router-outlet>\n      </div>\n    </div>\n\n    <my-app-footer></my-app-footer>\n  </div>\n</section>\n\n<my-app-customizer></my-app-customizer>\n\n<my-app-search-overlay></my-app-search-overlay>\n"
 
 /***/ }),
 
@@ -2220,7 +2463,7 @@ var HighlightActiveItemsDirective = (function () {
 /***/ "../../../../../src/app/layout/sidenav/sidenav-menu/sidenav-menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"nav\" myAccordionNav myAppendSubmenuIcon mySlimScroll myHighlightActiveItems>\n  <!-- <li class=\"nav-header\"><span>Navigation</span></li> -->\n  <!-- <li><a mat-button [routerLink]=\"['/app/dashboard']\"><i class=\"nav-icon material-icons\">home</i><span class=\"nav-text\">Dashboard</span></a></li> -->\n  <!-- <li><a mat-button href=\"javascript:;\" myToggleQuickview=\"customizer\"><i class=\"nav-icon material-icons\">settings</i><span class=\"nav-text\">Customizer</span></a></li> -->\n\n  <li>\n    <a mat-button [routerLink]=\"['/app/projects']\"><i class=\"nav-icon material-icons\">code</i><span class=\"nav-text\">Projects</span></a>\n  </li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/jobs']\"><i class=\"nav-icon material-icons\">alarm</i><span class=\"nav-text\">Jobs</span></a>\n  </li>\n\n  \n  <!-- <li>\n    <a mat-button href=\"#/app/ui\"><i class=\"nav-icon material-icons\">bubble_chart</i><span class=\"nav-text\">UI Kit</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/typography']\"><span>Typography</span></a></li>\n     <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/buttons']\"><span>Buttons</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/icons']\"><span>Icons</span><span class=\"badge badge-pill badge-info\">2</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/cards']\"><span>Cards</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/icon-boxes']\"><span>Icon Boxes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/components']\"><span>Components</span><span class=\"badge badge-pill badge-danger\">12</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/hover']\"><span>Hover</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/feature-callouts']\"><span>Feature Callouts</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/lists']\"><span>Lists</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/sashes']\"><span>Sashes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/testimonials']\"><span>Testimonials</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/pricing-tables']\"><span>Pricing Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/call-to-actions']\"><span>Call to Actions</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/timeline']\"><span>Timeline</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/boxes']\"><span>Boxes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/grids']\"><span>Grids</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/color']\"><span>Color</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/form\"><i class=\"nav-icon material-icons\">format_color_text</i><span class=\"nav-text\">Forms</span></a>\n    <ul> -->\n      <!-- <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/input']\"><span>Input</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/checkbox']\"><span>Checkbox</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/radio-button']\"><span>Radio Button</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/chips']\"><span>Chips</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/select']\"><span>Select</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/slide-toggle']\"><span>Slide Toggle</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/slider']\"><span>Slider</span></a></li> -->\n      <!-- <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/components']\"><span>Components</span><span class=\"badge badge-pill badge-info\">10</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/layouts']\"><span>Form Layouts</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/validation']\"><span>Form Validation</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/table\"><i class=\"nav-icon material-icons\">list</i><span class=\"nav-text\">Tables</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/static']\"><span>Static Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/responsive']\"><span>Responsive Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/data-table']\"><span>Data Tables</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/chart\"><i class=\"nav-icon material-icons\">equalizer</i><span class=\"nav-text\">Charts</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/line']\">Line &amp; Area</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/bar']\">Bar</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/pie']\">Pie</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/scatter']\">Scatter</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/radar']\">Radar</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/funnel']\">Funnel</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/more']\">More</a></li>\n    </ul>\n  </li> -->\n  <li class=\"nav-divider\"></li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/regions']\"><i class=\"nav-icon material-icons\">cloud_queue</i><span class=\"nav-text\">Regions</span></a>\n  </li>\n  <!-- <li>\n    <a mat-button href=\"#/app/page\"><i class=\"nav-icon material-icons\">content_copy</i><span class=\"nav-text\">Pages</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/about']\">About</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/services']\">Services</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/contact']\">Contact</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/careers']\">Careers</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/blog']\">Blog</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/faqs']\">FAQs</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/terms']\">Terms of Service</a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/extra\"><i class=\"nav-icon material-icons\">more_horiz</i><span class=\"nav-text\">Extra Pages</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/login']\"><span>Login</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/sign-up']\"><span>Sign Up</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/forgot-password']\"><span>Forgot Password</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/confirm-email']\"><span>Confirm Email</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/lock-screen']\"><span>Lock Screen</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/404']\"><span>404 Error</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/500']\"><span>500 Error</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/maintenance']\"><span>Maintenance</span></a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/app/pglayout\"><i class=\"nav-icon material-icons\">view_array</i><span class=\"nav-text\">Page Layouts</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/full-width']\"><span>Full Width</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/centered']\"><span>Centered</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/fullscreen']\"><span>Fullscreen</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/with-tabs']\"><span>With Tabs</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/ecommerce\"><i class=\"nav-icon material-icons\">shopping_cart</i><span class=\"nav-text\">eCommerce</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/products']\"><span>Products</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/horizontal-products']\"><span>Products (Horizontal)</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/invoice']\"><span>Invoice</span></a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/app/menu\"><i class=\"nav-icon material-icons\">sort</i><span class=\"nav-text\">Menu Levels</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" href=\"javascript:;\"><span>Level 1</span></a></li>\n      <li>\n        <a mat-button class=\"md-button prepend-icon\" href=\"javascript:;\"><span>Level 1</span></a>\n        <ul>\n          <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 2</span></a></li>\n          <li>\n            <a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 2</span></a>\n            <ul>\n              <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 3</span></a></li>\n              <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 3</span></a></li>\n            </ul>\n          </li>\n        </ul>\n      </li>\n    </ul>\n  </li>\n  <li class=\"nav-divider\"></li>\n  <li class=\"li-small\"><a mat-button [routerLink]=\"['/app/form/components']\"><i class=\"nav-icon nav-dot material-icons color-info\">fiber_manual_record</i><span class=\"nav-text\">Form Components</span></a></li>\n  <li class=\"li-small\"><a mat-button [routerLink]=\"['/app/ui/components']\"><i class=\"nav-icon nav-dot material-icons color-success\">fiber_manual_record</i><span class=\"nav-text\">UI Components</span></a></li>\n  <li class=\"li-small\"><a mat-button href=\"http://iarouse.com/dist-angular-material/landing/\" target=\"_blank\"><i class=\"nav-icon nav-dot material-icons color-danger\">fiber_manual_record</i><span class=\"nav-text\">Material Landing</span></a></li> -->\n</ul>\n"
+module.exports = "<ul class=\"nav\" myAccordionNav myAppendSubmenuIcon mySlimScroll myHighlightActiveItems>\n  <!-- <li class=\"nav-header\"><span>Navigation</span></li> -->\n  <!-- <li><a mat-button [routerLink]=\"['/app/dashboard']\"><i class=\"nav-icon material-icons\">home</i><span class=\"nav-text\">Dashboard</span></a></li> -->\n  <!-- <li><a mat-button href=\"javascript:;\" myToggleQuickview=\"customizer\"><i class=\"nav-icon material-icons\">settings</i><span class=\"nav-text\">Customizer</span></a></li> -->\n\n  <br/>\n  <li><a mat-button [routerLink]=\"['/app/dashboard']\"><i class=\"nav-icon material-icons\">home</i><span class=\"nav-text\">Dashboard</span></a></li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/projects']\"><i class=\"nav-icon material-icons\">code</i><span class=\"nav-text\">Projects</span></a>\n  </li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/jobs']\"><i class=\"nav-icon material-icons\">alarm</i><span class=\"nav-text\">Jobs</span></a>\n  </li>\n\n  \n  <!-- <li>\n    <a mat-button href=\"#/app/ui\"><i class=\"nav-icon material-icons\">bubble_chart</i><span class=\"nav-text\">UI Kit</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/typography']\"><span>Typography</span></a></li>\n     <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/buttons']\"><span>Buttons</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/icons']\"><span>Icons</span><span class=\"badge badge-pill badge-info\">2</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/cards']\"><span>Cards</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/icon-boxes']\"><span>Icon Boxes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/components']\"><span>Components</span><span class=\"badge badge-pill badge-danger\">12</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/hover']\"><span>Hover</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/feature-callouts']\"><span>Feature Callouts</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/lists']\"><span>Lists</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/sashes']\"><span>Sashes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/testimonials']\"><span>Testimonials</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/pricing-tables']\"><span>Pricing Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/call-to-actions']\"><span>Call to Actions</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/timeline']\"><span>Timeline</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/boxes']\"><span>Boxes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/grids']\"><span>Grids</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/color']\"><span>Color</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/form\"><i class=\"nav-icon material-icons\">format_color_text</i><span class=\"nav-text\">Forms</span></a>\n    <ul> -->\n      <!-- <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/input']\"><span>Input</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/checkbox']\"><span>Checkbox</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/radio-button']\"><span>Radio Button</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/chips']\"><span>Chips</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/select']\"><span>Select</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/slide-toggle']\"><span>Slide Toggle</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/slider']\"><span>Slider</span></a></li> -->\n      <!-- <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/components']\"><span>Components</span><span class=\"badge badge-pill badge-info\">10</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/layouts']\"><span>Form Layouts</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/validation']\"><span>Form Validation</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/table\"><i class=\"nav-icon material-icons\">list</i><span class=\"nav-text\">Tables</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/static']\"><span>Static Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/responsive']\"><span>Responsive Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/data-table']\"><span>Data Tables</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/chart\"><i class=\"nav-icon material-icons\">equalizer</i><span class=\"nav-text\">Charts</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/line']\">Line &amp; Area</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/bar']\">Bar</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/pie']\">Pie</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/scatter']\">Scatter</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/radar']\">Radar</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/funnel']\">Funnel</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/more']\">More</a></li>\n    </ul>\n  </li> -->\n  <li class=\"nav-divider\"></li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/regions']\"><i class=\"nav-icon material-icons\">cloud_queue</i><span class=\"nav-text\">Regions</span></a>\n  </li>\n  <!-- <li>\n    <a mat-button href=\"#/app/page\"><i class=\"nav-icon material-icons\">content_copy</i><span class=\"nav-text\">Pages</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/about']\">About</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/services']\">Services</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/contact']\">Contact</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/careers']\">Careers</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/blog']\">Blog</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/faqs']\">FAQs</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/terms']\">Terms of Service</a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/extra\"><i class=\"nav-icon material-icons\">more_horiz</i><span class=\"nav-text\">Extra Pages</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/login']\"><span>Login</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/sign-up']\"><span>Sign Up</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/forgot-password']\"><span>Forgot Password</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/confirm-email']\"><span>Confirm Email</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/lock-screen']\"><span>Lock Screen</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/404']\"><span>404 Error</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/500']\"><span>500 Error</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/maintenance']\"><span>Maintenance</span></a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/app/pglayout\"><i class=\"nav-icon material-icons\">view_array</i><span class=\"nav-text\">Page Layouts</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/full-width']\"><span>Full Width</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/centered']\"><span>Centered</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/fullscreen']\"><span>Fullscreen</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/with-tabs']\"><span>With Tabs</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/ecommerce\"><i class=\"nav-icon material-icons\">shopping_cart</i><span class=\"nav-text\">eCommerce</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/products']\"><span>Products</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/horizontal-products']\"><span>Products (Horizontal)</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/invoice']\"><span>Invoice</span></a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/app/menu\"><i class=\"nav-icon material-icons\">sort</i><span class=\"nav-text\">Menu Levels</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" href=\"javascript:;\"><span>Level 1</span></a></li>\n      <li>\n        <a mat-button class=\"md-button prepend-icon\" href=\"javascript:;\"><span>Level 1</span></a>\n        <ul>\n          <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 2</span></a></li>\n          <li>\n            <a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 2</span></a>\n            <ul>\n              <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 3</span></a></li>\n              <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 3</span></a></li>\n            </ul>\n          </li>\n        </ul>\n      </li>\n    </ul>\n  </li>\n  <li class=\"nav-divider\"></li>\n  <li class=\"li-small\"><a mat-button [routerLink]=\"['/app/form/components']\"><i class=\"nav-icon nav-dot material-icons color-info\">fiber_manual_record</i><span class=\"nav-text\">Form Components</span></a></li>\n  <li class=\"li-small\"><a mat-button [routerLink]=\"['/app/ui/components']\"><i class=\"nav-icon nav-dot material-icons color-success\">fiber_manual_record</i><span class=\"nav-text\">UI Components</span></a></li>\n  <li class=\"li-small\"><a mat-button href=\"http://iarouse.com/dist-angular-material/landing/\" target=\"_blank\"><i class=\"nav-icon nav-dot material-icons color-danger\">fiber_manual_record</i><span class=\"nav-text\">Material Landing</span></a></li> -->\n</ul>\n"
 
 /***/ }),
 
@@ -2340,6 +2583,26 @@ var ToggleOffcanvasNavDirective = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/models/project.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Project; });
+var Project = (function () {
+    function Project(name, url, username, password, projectType) {
+        this.name = name;
+        this.url = url;
+        this.username = username;
+        this.password = password;
+        this.projectType = projectType;
+    }
+    return Project;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/page-layouts/fullscreen/fullscreen.component.html":
 /***/ (function(module, exports) {
 
@@ -2453,6 +2716,9 @@ var MessageService = (function () {
     MessageService.prototype.get = function () {
         return this.http.get(this.url);
     };
+    MessageService.prototype.getById = function (id) {
+        return this.http.get(this.url + "/" + id);
+    };
     MessageService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
@@ -2495,6 +2761,18 @@ var ProjectService = (function () {
      */
     ProjectService.prototype.getProjects = function () {
         return this.http.get(this.serviceUrl);
+    };
+    ProjectService.prototype.getById = function (id) {
+        return this.http.get(this.serviceUrl + "/" + id + "/git-account");
+    };
+    ProjectService.prototype.create = function (project) {
+        return this.http.post(this.serviceUrl + "/add", project);
+    };
+    ProjectService.prototype.update = function (project) {
+        return this.http.put(this.serviceUrl + "/" + project['id'] + "/git-account", project);
+    };
+    ProjectService.prototype.delete = function (project) {
+        return this.http.delete(this.serviceUrl + "/" + project['projectId']);
     };
     ProjectService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
@@ -2574,19 +2852,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var RunService = (function () {
     function RunService(http) {
         this.http = http;
-        this.serviceUrl = '/api/v1/runs/';
+        this.serviceUrl = '/api/v1/runs';
     }
     /**
      * Get the jobs in observable from endpoint
      */
     RunService.prototype.get = function (jobId) {
-        return this.http.get(this.serviceUrl);
+        return this.http.get(this.serviceUrl + "/job/" + jobId);
     };
     RunService.prototype.run = function (jobId) {
         //return this.http.post(
         console.log("JobId: " + jobId);
+        return this.http.post(this.serviceUrl + "/job/" + jobId, null);
     };
     RunService.prototype.getDetails = function (runId) {
+        return this.http.get(this.serviceUrl + "/" + runId);
+    };
+    RunService.prototype.getTestSuiteResponses = function (runId) {
+        return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-responses");
     };
     RunService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),

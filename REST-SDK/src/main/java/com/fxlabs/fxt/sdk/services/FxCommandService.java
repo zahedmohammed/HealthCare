@@ -41,11 +41,11 @@ public class FxCommandService {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    @Value("${fx.master.url}")
+    @Value("${fx.master.url:#{null}}")
     String url;
-    @Value("${fx.master.accessKey}")
+    @Value("${fx.master.accessKey:#{null}}")
     String username;
-    @Value("${fx.master.secretKey}")
+    @Value("${fx.master.secretKey:#{null}}")
     String password;
 
     // Fx server connection details

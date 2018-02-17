@@ -15,8 +15,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       # ElasticSearch
       # Redis
-
-      -
     # inject rabbit-host, port, vhost, user-cp, user-cp-pass
     # inject postgres, port, db, user, pass
     # inject elasticsearch, port,
