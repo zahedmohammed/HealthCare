@@ -1,12 +1,61 @@
 import { Component, OnInit } from '@angular/core';
 import { CHARTCONFIG } from '../charts/charts.config';
+import { ProjectService } from '../services/project.service';
+import { JobsService } from '../services/jobs.service';
 
 @Component({
   selector: 'my-dashboard',
-  templateUrl: './dashboard.component.html'
+  templateUrl: './dashboard.component.html',
+  providers: [ProjectService, JobsService]
 })
 export class DashboardComponent {
   config = CHARTCONFIG;
+  showSpinner: boolean = false;
+  projects;
+  jobs;
+  tests;
+
+  constructor(private projectService: ProjectService, private jobsService: JobsService) {}
+  ngOnInit() {
+      this.getProjectCount();
+      this.getJobCount();
+      this.getTestCount();
+  }
+  getProjectCount() {
+    this.projectService.getCount().subscribe(results => {
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      this.projects = results['data'];
+    }, error => {
+      console.log("Unable to fetch project count");
+    });
+  }
+
+  getJobCount() {
+    this.jobsService.getCountJobs().subscribe(results => {
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      this.jobs = results['data'];
+    }, error => {
+      console.log("Unable to fetch job count");
+    });
+  }
+
+  getTestCount() {
+    this.jobsService.getCountTests().subscribe(results => {
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      this.tests = results['data'];
+    }, error => {
+      console.log("Unable to fetch tests count");
+    });
+  }
 
   getMonData = () => {
     const data = [];

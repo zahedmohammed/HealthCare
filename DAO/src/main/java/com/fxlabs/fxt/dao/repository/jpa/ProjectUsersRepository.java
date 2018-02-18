@@ -15,6 +15,8 @@ public interface ProjectUsersRepository extends JpaRepository<ProjectUsers, Stri
 
     List<ProjectUsers> findByUsersIdAndRole(String owner, ProjectRole role);
 
+    Long countByUsersId(String user);
+
     List<ProjectUsers> findByProjectIdAndRole(String projectId, ProjectRole role);
 
     Optional<ProjectUsers> findByProjectIdAndUsersIdAndRole(String projectId, String usersId, ProjectRole role);

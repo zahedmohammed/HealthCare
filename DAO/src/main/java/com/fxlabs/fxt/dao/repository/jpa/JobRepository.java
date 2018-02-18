@@ -15,6 +15,8 @@ public interface JobRepository extends JpaRepository<Job, String> {
 
     List<Job> findByProjectIdAndInactive(String project, boolean inactive, Pageable pageable);
 
+    Long countByProjectIdAndInactive(String project, boolean inactive);
+
     Stream<Job> findByNextFireBetweenAndInactive(Date start, Date end, boolean inative);
 
     Stream<Job> findByNextFireLessThanAndInactive(Date dt, boolean inactive);

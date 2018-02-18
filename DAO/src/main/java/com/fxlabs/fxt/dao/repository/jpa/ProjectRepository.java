@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  */
 public interface ProjectRepository extends JpaRepository<Project, String> {
 
-    Optional<Project> findByNameAndCreatedBy(String name, String createdBy);
+    Optional<Project> findByName(String name);
 
     Optional<Project> findByNameIgnoreCaseAndOrgIdAndInactive(String name, String orgId, boolean inactive);
 

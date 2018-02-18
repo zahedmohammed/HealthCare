@@ -22,4 +22,8 @@ public interface JobService extends GenericService<Job, String> {
 
     Response<List<com.fxlabs.fxt.dto.project.Job>> findAll(String user, Pageable pageable);
 
+    Response<Long> count(String user, Pageable pageable);
+
+    Response<Long> countTests(String user, Pageable pageable);
+
 }

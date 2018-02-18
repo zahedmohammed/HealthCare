@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.converters.project.JobConverter;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
+import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -28,12 +30,14 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
     private JobRepository jobRepository;
     private ProjectService projectService;
+    private RunRepository runRepository;
 
     @Autowired
-    public JobServiceImpl(JobRepository repository, JobConverter converter, ProjectService projectService) {
+    public JobServiceImpl(JobRepository repository, JobConverter converter, ProjectService projectService, RunRepository runRepository) {
         super(repository, converter);
         this.jobRepository = repository;
         this.projectService = projectService;
+        this.runRepository = runRepository;
     }
 
     /*@Override
@@ -102,6 +106,56 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         });
 
         return new Response<>(converter.convertToDtos(jobs));
+
+    }
+
+    @Override
+    public Response<Long> count(String user, Pageable pageable) {
+        // check user has access to project
+        // find owned projects org --> projects --> jobs
+        // users --> org or users --> projects
+        // least - a project should be visible to owner
+        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
+        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = jobRepository.countByProjectIdAndInactive(p.getId(), false);
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+
+    }
+
+    @Override
+    public Response<Long> countTests(String user, Pageable pageable) {
+        // check user has access to project
+        // find owned projects org --> projects --> jobs
+        // users --> org or users --> projects
+        // least - a project should be visible to owner
+        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
+        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = runRepository.countTestsByProject(p.getId());
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
 
     }
 

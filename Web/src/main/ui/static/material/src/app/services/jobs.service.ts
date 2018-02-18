@@ -17,4 +17,12 @@ export class JobsService {
     return this.http.get(this.serviceUrl);
   }
 
+  getCountJobs() {
+    return this.http.get(this.serviceUrl + "/count" );
+  }
+
+  getCountTests() {
+    return this.http.get(this.serviceUrl + "/count-tests" );
+  }
+
 }

@@ -65,7 +65,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     public Response<Project> findByName(String name, String owner) {
-        Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByNameAndCreatedBy(name, owner);
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByName(name);
 
         if (projectOptional.isPresent()) {
             isUserEntitled(projectOptional.get().getId(), owner);
@@ -113,6 +113,11 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 projects.add(pu.getProject());
         });
         return new Response<List<Project>>(converter.convertToDtos(projects));
+    }
+
+    public Response<Long> countProjects(String owner) {
+        Long count = projectUsersRepository.countByUsersId(owner);
+        return new Response<>(count);
     }
 
 

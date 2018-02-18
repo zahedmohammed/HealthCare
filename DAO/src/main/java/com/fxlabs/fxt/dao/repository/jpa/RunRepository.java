@@ -32,5 +32,8 @@ public interface RunRepository extends JpaRepository<Run, String> {
 
     List<Run> findByJobId(String id, Pageable pageable);
 
+    @Query("SELECT SUM(r.task.totalTestCompleted) FROM Run r WHERE r.job.project.id LIKE ?1")
+    Long countTestsByProject(String projectId);
+
 
 }
