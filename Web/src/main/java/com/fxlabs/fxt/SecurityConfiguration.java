@@ -1,6 +1,7 @@
 package com.fxlabs.fxt;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,8 +31,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/personal-sign-up", "/api/v1/users/team-sign-up", "/api/v1/users/enterprise-sign-up").permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers("/api/v1/users/personal-sign-up", "/api/v1/users/team-sign-up", "/api/v1/users/enterprise-sign-up").permitAll() // sign-ups
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAnyRole("SUPER_USER") //Actuator
+                .anyRequest().authenticated()
                     .and()
                     .csrf().disable()
                 .formLogin()
