@@ -82,7 +82,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         String company = users.getCompany();
 
         if (StringUtils.isEmpty(users.getCompany())) {
-            company = tokens[0];
+            company = users.getEmail();
         }
 
         return signUp(users, company, OrgType.PERSONAL, Arrays.asList("ROLE_USER"));
@@ -143,8 +143,14 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
             String tokens[] = StringUtils.split(users.getEmail(), "@");
 
             // check type is either PERSONAL or TEAM
+            Optional<Org> orgOptional = this.orgRepository.findByName(users.getCompany());
+            if (orgOptional.isPresent()) {
+                return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Email/Company name [%s] exists. " +
+                        "Either change email or sign-up as Personal account.", orgName)));
+            }
+
             Org org = new Org();
-            org.setCompany(users.getCompany());
+            org.setCompany(orgName);
             org.setName(orgName);
             org.setBillingEmail(users.getEmail());
             org.setOrgType(orgType);
