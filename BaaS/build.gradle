@@ -73,6 +73,22 @@ task buildDocker(type: Docker, dependsOn: build) {
     }
 }
 
+task buildDockerNightly(type: Docker, dependsOn: build) {
+    push = false
+    tag = 'fxlabs/bot-aas'
+    tagVersion = getNightly()
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from 'build/libs/BaaS.jar'
+            into 'build/docker'
+        }
+    }
+}
+
+def getNightly() {
+    new Date().format('yyyy-MM-dd')
+}
 def getDate() {
-    new Date().format('yyyyMMddHHmm')
+    new Date().format('yyyy-MM-dd-HHmm')
 }
