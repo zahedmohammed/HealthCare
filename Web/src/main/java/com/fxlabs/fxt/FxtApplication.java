@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @author Intesar Shannan Mohammed
  */
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 @EnableJpaRepositories(basePackages = "com.fxlabs.fxt.dao.repository.jpa")
 @ComponentScan(basePackages = {"com.fxlabs.fxt"})
 public class FxtApplication {
