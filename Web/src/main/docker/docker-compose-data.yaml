@@ -11,12 +11,17 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: postgres -c 'shared_buffers=256MB' -c 'max_connections=200'
+    volumes:
+      - stg1_pgdata:/var/lib/postgresql/data
     # create db, user, pass
 
   fx-elasticsearch:
     image: "elasticsearch:5.0.0"
     environment:
       - ES_JAVA_OPTS=${ELASTICSEARCH_MEM}
+    volumes:
+      - stg1_esdata:/usr/share/elasticsearch/data
 
   fx-rabbitmq:
     image: "rabbitmq:3.7.3-management"
@@ -29,3 +34,7 @@ services:
 
     # create vhost, user-cp,
     # TODO user-mail, user-sync, user-bot
+
+volumes:
+  stg1_pgdata:
+  stg1_esdata:

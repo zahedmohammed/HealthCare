@@ -30,7 +30,7 @@ public class HealNextFireTaskProcessor {
      * Calculate next-fire
      */
     public void process() {
-        Date dt = DateUtils.addMinutes(new Date(), -10);
+        Date dt = DateUtils.addMinutes(new Date(), -30);
         Stream<Job> jobs = this.jobRepository.findByNextFireLessThanAndInactive(dt, false);
         jobs.forEach(job -> {
             try {
