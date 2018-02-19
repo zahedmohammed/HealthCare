@@ -2,7 +2,6 @@ package com.fxlabs.fxt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -23,10 +22,9 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                //.paths(PathSelectors.any())
-                //.apis(RequestHandlerSelectors.basePackage("com.fxlabs.fxt.rest.*"))
-                .paths(PathSelectors.ant("/api/v1/*"))
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.fxlabs.fxt.rest"))
+                //.paths(PathSelectors.regex("/api/v1/*"))
                 .build()
                 .apiInfo(apiInfo());
     }
@@ -40,4 +38,5 @@ public class SwaggerConfig {
                 new Contact("founders", "www.fxlabs.io", "founders@fxlabs.io"),
                 "", "", Collections.emptyList());
     }
+
 }

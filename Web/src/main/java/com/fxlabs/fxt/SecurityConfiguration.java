@@ -31,7 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/personal-sign-up", "/api/v1/users/team-sign-up", "/api/v1/users/enterprise-sign-up").permitAll() // sign-ups
+                .antMatchers("/api/v1/users/personal-sign-up", "/api/v1/users/team-sign-up", "/api/v1/users/enterprise-sign-up",
+                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html**", "/webjars/**").permitAll() // sign-ups
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAnyRole("SUPER_USER") //Actuator
                 .anyRequest().authenticated()
                     .and()
