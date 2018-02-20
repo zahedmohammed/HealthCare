@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -40,14 +39,12 @@ public class DataResolver {
             String value = matcher.group(1);
             patterns.add(value);
         }
-
-        if (CollectionUtils.isEmpty(patterns)) {
-            response = data;
-        }
+        
+        response = data;
 
         for (String key : patterns) {
             String val = evaluator.evaluate(key, context, suite);
-            response = StringUtils.replace(data, "{{" + key + "}}", val);
+            response = StringUtils.replace(response, "{{" + key + "}}", val);
         }
 
         logger.debug("Data [{}] response [{}] suite [{}]", data, response, suite);

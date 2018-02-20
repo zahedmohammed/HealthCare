@@ -31,6 +31,12 @@ public class OperandEvaluator {
                 PATH = "$." + tokens[1];
             } else if (tokens.length == 2) {
                 PATH = tokens[1];
+            } else if (tokens.length == 1 && StringUtils.contains(tokens[0], "|")) {
+                String[] pipeTokens = StringUtils.split(tokens[0], "|");
+                KEY = StringUtils.trim(pipeTokens[0]);
+                if (pipeTokens.length == 2) {
+                    PATH = StringUtils.trim(pipeTokens[1]);
+                }
             }
 
             if (StringUtils.contains(PATH, "|")) {
@@ -123,6 +129,7 @@ public class OperandEvaluator {
                 case "@Date":
                     val = new Date().toString();
                     break;
+                    // TODO Date format
                 case "@RandomUUID":
                     val = UUID.randomUUID().toString();
                     break;
