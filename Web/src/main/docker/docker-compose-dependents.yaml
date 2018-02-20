@@ -10,6 +10,10 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
       - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
 
     # inject rabbit-host, port, vhost, user-bot, user-bot-pass
 
@@ -21,6 +25,10 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
       - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
 
     # inject rabbit-host, port, vhost, user-mail, user-mail-pass
 
@@ -32,6 +40,10 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
       - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_DEFAULT_VHOST}
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
 
     # inject rabbit-host, port, vhost, user-sync, user-sync-pass
 
@@ -43,3 +55,7 @@ services:
       - 15672:15672
       - 5672:5672
       - 80:80
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.Name}}/{{.ID}}"
