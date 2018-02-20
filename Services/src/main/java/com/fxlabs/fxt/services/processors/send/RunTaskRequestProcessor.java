@@ -28,6 +28,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 /**
@@ -67,87 +68,99 @@ public class RunTaskRequestProcessor {
 
         runs.forEach(run -> {
 
-            run.getTask().setStatus(TaskStatus.PROCESSING);
-            runRepository.saveAndFlush(run);
-
-            Environment env = validateEnvironment(run);
-            if (env == null) {
-                return;
-            }
-
-            final String region = validateRegion(run);
-            if (region == null) {
-                return;
-            }
-
-            final List<String> suites;
-            String _suite = run.getAttributes().get(RunConstants.SUITES);
-            if (!StringUtils.isEmpty(_suite)) {
-                String[] tokens = org.apache.commons.lang3.StringUtils.split(_suite, ",");
-                suites = Arrays.asList(tokens);
-            } else {
-                suites = null;
-            }
-
-            final List<String> tags;
-            String _tags = run.getAttributes().get(RunConstants.TAGS);
-            if (!StringUtils.isEmpty(_tags)) {
-                String[] tokens = org.apache.commons.lang3.StringUtils.split(_tags, ",");
-                tags = Arrays.asList(tokens);
-            } else {
-                tags = run.getJob().getTags();
-            }
-
-            logger.info("Sending task to region [{}]...", region);
-
-            // TODO - Filter Suites by Overridden-suites, Overridden-Tags, tags.
-            Stream<TestSuite> list;
-            if (suites != null) {
-                list = testSuiteESRepository.findByProjectIdAndNameIn(run.getJob().getProject().getId(), suites);
-            } else if (!CollectionUtils.isEmpty(tags)) {
-                list = testSuiteESRepository.findByProjectIdAndTypeAndTagsIn(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString(), tags);
-            } else {
-                list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
-            }
-
-            list.parallel().forEach(testSuite -> {
-                //logger.info("Request {}", i.incrementAndGet());
-
-                try {
-
-                    // TODO - Replace with the query
-                    //if (suites != null && !CollectionUtils.contains(suites.iterator(), testSuite.getName())) {
-                    //    return;
-                    //}
-
-                    BotTask task = new BotTask();
-                    task.setId(run.getId());
-                    task.setSuiteName(testSuite.getName());
-                    task.setProjectDataSetId(testSuite.getId());
-
-                    task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
-
-                    task.setMethod(convert(testSuite.getMethod()));
-
-                    copyHeaders(task, testSuite);
-
-                    copyRequests(task, testSuite);
-
-                    copyAuth(run, env, task, testSuite);
-
-                    copyAssertions(task, testSuite);
-
-                    task.setEndpoint(env.getBaseUrl() + testSuite.getEndpoint());
-
-                    // init & cleanup copy
-                    copy(testSuite.getInit(), task.getInit(), run, env);
-                    copy(testSuite.getCleanup(), task.getCleanup(), run, env);
-
-                    botClientService.sendTask(task, region);
-                } catch (Exception ex) {
-                    logger.warn(ex.getLocalizedMessage(), ex);
+            try {
+                Environment env = validateEnvironment(run);
+                if (env == null) {
+                    return;
                 }
-            });
+
+                final String region = validateRegion(run);
+                if (region == null) {
+                    return;
+                }
+
+                final List<String> suites;
+                String _suite = run.getAttributes().get(RunConstants.SUITES);
+                if (!StringUtils.isEmpty(_suite)) {
+                    String[] tokens = org.apache.commons.lang3.StringUtils.split(_suite, ",");
+                    suites = Arrays.asList(tokens);
+                } else {
+                    suites = null;
+                }
+
+                final List<String> tags;
+                String _tags = run.getAttributes().get(RunConstants.TAGS);
+                if (!StringUtils.isEmpty(_tags)) {
+                    String[] tokens = org.apache.commons.lang3.StringUtils.split(_tags, ",");
+                    tags = Arrays.asList(tokens);
+                } else {
+                    tags = run.getJob().getTags();
+                }
+
+                logger.info("Sending task to region [{}]...", region);
+
+                // TODO - Filter Suites by Overridden-suites, Overridden-Tags, tags.
+                Stream<TestSuite> list;
+                if (suites != null) {
+                    list = testSuiteESRepository.findByProjectIdAndNameIn(run.getJob().getProject().getId(), suites);
+                } else if (!CollectionUtils.isEmpty(tags)) {
+                    list = testSuiteESRepository.findByProjectIdAndTypeAndTagsIn(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString(), tags);
+                } else {
+                    list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
+                }
+
+                AtomicLong total = new AtomicLong(0);
+
+                list.parallel().forEach(testSuite -> {
+                    //logger.info("Request {}", i.incrementAndGet());
+
+                    try {
+
+                        // TODO - Replace with the query
+                        //if (suites != null && !CollectionUtils.contains(suites.iterator(), testSuite.getName())) {
+                        //    return;
+                        //}
+
+                        BotTask task = new BotTask();
+                        task.setId(run.getId());
+                        task.setSuiteName(testSuite.getName());
+                        task.setProjectDataSetId(testSuite.getId());
+
+                        task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
+
+                        task.setMethod(convert(testSuite.getMethod()));
+
+                        copyHeaders(task, testSuite);
+
+                        copyRequests(task, testSuite);
+
+                        copyAuth(run, env, task, testSuite);
+
+                        copyAssertions(task, testSuite);
+
+                        task.setEndpoint(env.getBaseUrl() + testSuite.getEndpoint());
+
+                        // init & cleanup copy
+                        copy(testSuite.getInit(), task.getInit(), run, env);
+                        copy(testSuite.getCleanup(), task.getCleanup(), run, env);
+
+                        // count tests
+                        if (testSuite.getRequests() != null)
+                            total.getAndAdd(testSuite.getRequests().size());
+
+                        botClientService.sendTask(task, region);
+                    } catch (Exception ex) {
+                        logger.warn(ex.getLocalizedMessage(), ex);
+                    }
+                });
+
+                run.getTask().setStatus(TaskStatus.PROCESSING);
+                run.getTask().setTotalTests(total.get());
+                runRepository.saveAndFlush(run);
+            } catch (RuntimeException ex) {
+                logger.warn(ex.getLocalizedMessage(), ex);
+            }
+
         });
     }
 
@@ -315,7 +328,7 @@ public class RunTaskRequestProcessor {
         }
 
         // get cluster by name
-        Response<Cluster> clusterResponse =  clusterService.findByName(region, run.getJob().getCreatedBy());
+        Response<Cluster> clusterResponse = clusterService.findByName(region, run.getJob().getCreatedBy());
         if (clusterResponse.isErrors()) {
             run.getTask().setStatus(TaskStatus.FAIL);
             run.getTask().setDescription(String.format("Invalid Region: %s", region));

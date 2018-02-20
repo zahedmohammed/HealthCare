@@ -433,6 +433,16 @@ public class FxCommandService {
                 "Loading Test-Suites:",
                 AnsiColor.DEFAULT));
 
+        System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                "Note: Any file with not '.yaml' extension will be ignored.",
+                AnsiColor.DEFAULT));
+        CredUtils.taskLogger.get().append("Note: Any file with not '.yaml' extension will be ignored.").append("\n");
+
+        System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                "Note: All files need to have unique name irrespective of the folder they are in.",
+                AnsiColor.DEFAULT));
+        CredUtils.taskLogger.get().append("Note: All files need to have unique file name irrespective of the folder they are in.").append("\n");
+
 
         File dataFolder = new File(projectDir + "test-suites");
         Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"yaml"}, true);

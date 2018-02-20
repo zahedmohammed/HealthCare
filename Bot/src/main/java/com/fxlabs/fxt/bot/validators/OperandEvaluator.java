@@ -90,31 +90,31 @@ public class OperandEvaluator {
                     }
                     break;
 
-                case "@random":
+                case "@Random":
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);
                     }
                     val = RandomStringUtils.random(count);
                     break;
-                case "@randomAscii":
+                case "@RandomAscii":
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);
                     }
                     val = RandomStringUtils.randomAscii(count);
                     break;
-                case "@randomAlphabetic":
+                case "@RandomAlphabetic":
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);
                     }
                     val = RandomStringUtils.randomAlphabetic(count);
                     break;
-                case "@randomAlphanumeric":
+                case "@RandomAlphanumeric":
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);
                     }
                     val = RandomStringUtils.randomAlphanumeric(count);
                     break;
-                case "@randomNumeric":
+                case "@RandomNumeric":
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);
                     }
@@ -123,7 +123,7 @@ public class OperandEvaluator {
                 case "@Date":
                     val = new Date().toString();
                     break;
-                case "@randomUUID":
+                case "@RandomUUID":
                     val = UUID.randomUUID().toString();
                     break;
 

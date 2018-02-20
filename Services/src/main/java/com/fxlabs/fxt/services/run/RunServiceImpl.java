@@ -96,7 +96,6 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             if (StringUtils.isNotEmpty(tags)) {
                 attributes.put(RunConstants.TAGS, tags);
                 _tags = StringUtils.split(tags, ",");
-
             }
             if (StringUtils.isNotEmpty(suites)) {
                 attributes.put(RunConstants.SUITES, suites);
@@ -108,16 +107,17 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             task.setName(new Date().toString());
             task.setStatus(TaskStatus.WAITING);
             task.setStartTime(new Date());
+            task.setTotalTests(0L);
 
             // TODO - find total tests by Tags
             Long totalTests = 0l;
 
             if (StringUtils.isNotEmpty(tags)) {
-                totalTests = testSuiteESRepository.countByProjectIdAndTypeAndTagsIn(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE.toString(), Arrays.asList(_tags));
-                task.setTotalTests(totalTests);
+                //totalTests = testSuiteESRepository.countByProjectIdAndTypeAndTagsIn(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE.toString(), Arrays.asList(_tags));
+                //task.setTotalTests(totalTests);
             } else {
-                totalTests = testSuiteESRepository.countByProjectIdAndType(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE.toString());
-                task.setTotalTests(totalTests);
+                //totalTests = testSuiteESRepository.countByProjectIdAndType(jobResponse.getData().getProject().getId(), TestSuiteType.SUITE.toString());
+                //task.setTotalTests(totalTests);
             }
 
             if (StringUtils.isNotEmpty(suites)) {
@@ -139,7 +139,6 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         }
 
         //taskProcessor.process(response.getData());
-
         // Copy ProjectDataSets to DataSets.
         return response;
     }

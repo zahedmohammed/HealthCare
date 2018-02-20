@@ -62,8 +62,11 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.Job> save(com.fxlabs.fxt.dto.project.Job job, String user) {
-        Date next = CronUtils.cronNext(job.getCron());
-        job.setNextFire(next);
+        if (CronUtils.isValidCron(job.getCron())) {
+            Date next = CronUtils.cronNext(job.getCron());
+            job.setNextFire(next);
+        }
+
         return super.save(job, user);
     }
 

@@ -50,8 +50,10 @@ public class JobCronTaskProcessor {
             try {
                 logger.info("Scheduling job [{}] name [{}] project [{}]", job.getId(), job.getName(), job.getProject().getId());
 
-                job.setNextFire(CronUtils.cronNext(job.getCron()));
-                jobRepository.saveAndFlush(job);
+                if (CronUtils.isValidCron(job.getCron())) {
+                    job.setNextFire(CronUtils.cronNext(job.getCron()));
+                    jobRepository.saveAndFlush(job);
+                }
 
                 List<ProjectUsers> projectUsers = projectUsersRepository.findByProjectIdAndRole(job.getProject().getId(), ProjectRole.OWNER);
                 if (CollectionUtils.isEmpty(projectUsers)) {

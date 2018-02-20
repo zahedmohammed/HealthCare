@@ -6,33 +6,14 @@ import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.apache.commons.lang3.time.DateUtils;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.Operator;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
-import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.ResultsExtractor;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
-
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -64,22 +45,27 @@ public class MarkCompleteTaskProcessor {
 
         runs.forEach(run -> {
             try {
-                Optional<Long> count = testSuiteResponseESRepository.countByRunId(run.getId());
-                if (count.isPresent() && count.get() >= run.getTask().getTotalTests()) {
+                //Optional<Long> count = testSuiteResponseESRepository.countByRunId(run.getId());
+                Long failed = testSuiteResponseService.failedSum(run.getId());
+                Long passed = testSuiteResponseService.passedSum(run.getId());
+                Long time = testSuiteResponseService.timeSum(run.getId());
+
+                Long count = failed + passed;
+                if (count >= run.getTask().getTotalTests()) {
                     run.getTask().setStatus(TaskStatus.COMPLETED);
-                    // count total-suites
-                    // count total-tests
-                    // count total-fail
-                    // count total-time
-                    run.getTask().setTotalSuiteCompleted(count.get());
-
-                    run.getTask().setFailedTests(testSuiteResponseService.failedSum(run.getId()));
-                    run.getTask().setTotalTestCompleted(testSuiteResponseService.passedSum(run.getId()));
-                    run.getTask().setTotalTime(testSuiteResponseService.timeSum(run.getId()));
-
-                    runRepository.saveAndFlush(run);
-
                 }
+                // count total-suites
+                // count total-tests
+                // count total-fail
+                // count total-time
+                run.getTask().setTotalSuiteCompleted(count);
+
+                run.getTask().setFailedTests(failed);
+                run.getTask().setTotalTestCompleted(passed);
+                run.getTask().setTotalTime(time);
+
+                runRepository.saveAndFlush(run);
+
                 // TODO - Test-Suites
             } catch (RuntimeException ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);

@@ -35,8 +35,10 @@ public class HealNextFireTaskProcessor {
         jobs.forEach(job -> {
             try {
                 logger.info("Healing next-fire for job [{}] name [{}] project [{}]", job.getId(), job.getName(), job.getProject().getId());
-                job.setNextFire(CronUtils.cronNext(job.getCron()));
-                jobRepository.saveAndFlush(job);
+                if (CronUtils.isValidCron(job.getCron())) {
+                    job.setNextFire(CronUtils.cronNext(job.getCron()));
+                    jobRepository.saveAndFlush(job);
+                }
             } catch (RuntimeException ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
