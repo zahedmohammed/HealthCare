@@ -65,7 +65,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     public Response<Project> findByName(String name, String owner) {
-        Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByName(name);
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByNameAndInactive(name, false);
 
         if (projectOptional.isPresent()) {
             isUserEntitled(projectOptional.get().getId(), owner);
