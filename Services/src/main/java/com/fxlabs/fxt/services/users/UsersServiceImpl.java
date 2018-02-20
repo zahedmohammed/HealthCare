@@ -139,6 +139,10 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
                 return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Password should be minimum [%s] chars", 8)));
             }
 
+            if (StringUtils.isEmpty(orgName) || orgName.length() < 3) {
+                return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Company should be minimum [%s] chars", 3)));
+            }
+
             // extract username
             String tokens[] = StringUtils.split(users.getEmail(), "@");
 
@@ -159,6 +163,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
 
             // users
             Users user = new Users();
+            user.setName(users.getName());
             user.setEmail(users.getEmail());
             user.setUsername(tokens[0]);
             user.setPrivileges(roles);
