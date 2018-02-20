@@ -86,7 +86,7 @@ public class GaaSTaskRequestProcessor {
             task.setGitLastCommit(gitAccount.get().getLastCommit());
 
             // Send Project-Users-Owner creds
-            List<ProjectUsers> projectUsersList = projectUsersRepository.findByProjectIdAndRole(project.getId(), ProjectRole.OWNER);
+            List<ProjectUsers> projectUsersList = projectUsersRepository.findByProjectIdAndRoleAndInactive(project.getId(), ProjectRole.OWNER, false);
             if (CollectionUtils.isEmpty(projectUsersList)) {
                 logger.warn("Ignoring Git sync for project with ID [{}] with name [{}] because of no valid owner.", project.getId(), project.getName());
                 return;

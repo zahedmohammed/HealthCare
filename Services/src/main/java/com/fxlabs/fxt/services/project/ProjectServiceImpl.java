@@ -83,6 +83,14 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Project project = projectResponse.getData();
         project.setInactive(true);
 
+        List<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsers = projectUsersRepository.findByProjectId(id);
+        if (!CollectionUtils.isEmpty(projectUsers)) {
+            projectUsers.forEach(pu -> {
+                pu.setInactive(true);
+                projectUsersRepository.save(pu);
+            });
+        }
+
         // TODO - Delete Jobs
         return save(project, user);
     }
@@ -103,7 +111,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public Response<List<Project>> findProjects(String owner, Pageable pageable) {
-        List<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsers = projectUsersRepository.findByUsersIdAndRole(owner, ProjectRole.OWNER);
+        List<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsers = projectUsersRepository.findByUsersIdAndRoleAndInactive(owner, ProjectRole.OWNER, false);
         if (CollectionUtils.isEmpty(projectUsers)) {
             return new Response<>();
         }
@@ -116,7 +124,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     public Response<Long> countProjects(String owner) {
-        Long count = projectUsersRepository.countByUsersId(owner);
+        Long count = projectUsersRepository.countByUsersIdAndInactive(owner, false);
         return new Response<>(count);
     }
 
@@ -271,7 +279,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     public void isUserEntitled(String id, String user) {
-        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersIdAndRole(id, user, ProjectRole.OWNER);
+        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersIdAndRoleAndInactive(id, user, ProjectRole.OWNER, false);
 
         if (!projectUsersOptional.isPresent()) {
             throw new FxException(String.format("User [%s] not entitled to the resource.", user));

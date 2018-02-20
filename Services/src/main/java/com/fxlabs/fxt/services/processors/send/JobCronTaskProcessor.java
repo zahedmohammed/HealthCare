@@ -55,7 +55,7 @@ public class JobCronTaskProcessor {
                     jobRepository.saveAndFlush(job);
                 }
 
-                List<ProjectUsers> projectUsers = projectUsersRepository.findByProjectIdAndRole(job.getProject().getId(), ProjectRole.OWNER);
+                List<ProjectUsers> projectUsers = projectUsersRepository.findByProjectIdAndRoleAndInactive(job.getProject().getId(), ProjectRole.OWNER, false);
                 if (CollectionUtils.isEmpty(projectUsers)) {
                     logger.warn("Skipping job run. No Owners found for the project with name [{}] and id [{}]", job.getProject().getName(), job.getProject().getId());
                     return;

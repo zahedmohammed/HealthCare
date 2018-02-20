@@ -13,11 +13,13 @@ import java.util.Optional;
  */
 public interface ProjectUsersRepository extends JpaRepository<ProjectUsers, String> {
 
-    List<ProjectUsers> findByUsersIdAndRole(String owner, ProjectRole role);
+    List<ProjectUsers> findByUsersIdAndRoleAndInactive(String owner, ProjectRole role, boolean inactive);
 
-    Long countByUsersId(String user);
+    List<ProjectUsers> findByProjectId(String owner);
 
-    List<ProjectUsers> findByProjectIdAndRole(String projectId, ProjectRole role);
+    Long countByUsersIdAndInactive(String user, boolean inactive);
 
-    Optional<ProjectUsers> findByProjectIdAndUsersIdAndRole(String projectId, String usersId, ProjectRole role);
+    List<ProjectUsers> findByProjectIdAndRoleAndInactive(String projectId, ProjectRole role, boolean inactive);
+
+    Optional<ProjectUsers> findByProjectIdAndUsersIdAndRoleAndInactive(String projectId, String usersId, ProjectRole role, boolean inactive);
 }

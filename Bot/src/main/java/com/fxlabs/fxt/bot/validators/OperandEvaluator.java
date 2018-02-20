@@ -100,7 +100,7 @@ public class OperandEvaluator {
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);
                     }
-                    val = RandomStringUtils.random(count);
+                    val = RandomStringUtils.randomAlphanumeric(count);
                     break;
                 case "@RandomAscii":
                     if (StringUtils.isNotEmpty(PATH)) {

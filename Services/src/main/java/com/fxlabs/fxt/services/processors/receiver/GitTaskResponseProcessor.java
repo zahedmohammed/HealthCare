@@ -58,7 +58,7 @@ public class GitTaskResponseProcessor {
             alert.setUsers(users);
 
             // find project-owners
-            List<ProjectUsers> projectUsersList = projectUsersRepository.findByProjectIdAndRole(task.getProjectId(), ProjectRole.OWNER);
+            List<ProjectUsers> projectUsersList = projectUsersRepository.findByProjectIdAndRoleAndInactive(task.getProjectId(), ProjectRole.OWNER, false);
             if (!CollectionUtils.isEmpty(projectUsersList)) {
                 projectUsersList.stream().forEach(pu -> {
                     users.add(pu.getUsers().getId());
