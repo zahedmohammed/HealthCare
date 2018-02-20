@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.TestSuiteType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,11 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             // copy id and version
             testSuite.setId(entity.getId());
             //testSuite.setVersion(entity.getVersion());
+        }
+
+        // type
+        if (testSuite.getType() == null) {
+            testSuite.setType(TestSuiteType.SUITE);
         }
 
         TestSuite ts = converter.convertToEntity(testSuite);
