@@ -279,7 +279,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     public void isUserEntitled(String id, String user) {
-        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersIdAndRoleAndInactive(id, user, ProjectRole.OWNER, false);
+        Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersIdAndRole(id, user, ProjectRole.OWNER);
 
         if (!projectUsersOptional.isPresent()) {
             throw new FxException(String.format("User [%s] not entitled to the resource.", user));

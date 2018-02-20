@@ -21,5 +21,5 @@ public interface ProjectUsersRepository extends JpaRepository<ProjectUsers, Stri
 
     List<ProjectUsers> findByProjectIdAndRoleAndInactive(String projectId, ProjectRole role, boolean inactive);
 
-    Optional<ProjectUsers> findByProjectIdAndUsersIdAndRoleAndInactive(String projectId, String usersId, ProjectRole role, boolean inactive);
+    Optional<ProjectUsers> findByProjectIdAndUsersIdAndRole(String projectId, String usersId, ProjectRole role);
 }
