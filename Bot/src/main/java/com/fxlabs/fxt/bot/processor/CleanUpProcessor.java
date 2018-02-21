@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.bot.processor;
 
 
+import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.validators.OperandEvaluator;
@@ -84,7 +85,7 @@ public class CleanUpProcessor {
         logger.debug("Executing after task [{}]", task.getEndpoint());
         //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
-        Context context = new Context(parentContext);
+        Context context = new Context(parentContext, task.getSuiteName());
         // Data Injection
         String url = dataResolver.resolve(task.getEndpoint(), parentContext, parentSuite);
 
@@ -108,7 +109,7 @@ public class CleanUpProcessor {
             logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
             logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getRequest().size(), task.getAuthType(), url, response.getStatusCode());
-            context.withSuiteData(null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+            context.withSuiteDataForPostProcessor(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
 
             assertionValidator.validate(task.getAssertions(), context);
 
@@ -123,7 +124,7 @@ public class CleanUpProcessor {
                 req = dataResolver.resolve(req, context, parentSuite);
                 logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
-                context.withSuiteData(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+                context.withSuiteDataForPostProcessor(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
                 assertionValidator.validate(task.getAssertions(), context);
                 //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
             });

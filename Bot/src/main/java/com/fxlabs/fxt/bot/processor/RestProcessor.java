@@ -119,10 +119,12 @@ public class RestProcessor {
             // execute init
             if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Suite")) {
                 if (task.getInit() != null) {
-                    task.getInit().stream().forEach(t -> {
+                    //task.getInit().stream().forEach(t -> {
+                    for (BotTask t : task.getInit()) {
                         logger.info("Executing Init-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                         initProcessor.process(t, parentContext);
-                    });
+                    }
+                    //);
                 }
             }
 
@@ -151,7 +153,8 @@ public class RestProcessor {
                 task.setRequest(Collections.singletonList(new String("")));
             }
 
-            task.getRequest().parallelStream().forEach(req -> {
+            //task.getRequest().parallelStream().forEach(req -> {
+            for (String req : task.getRequest()) {
 
                 Context context = new Context(parentContext);
 
@@ -160,10 +163,12 @@ public class RestProcessor {
                 if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getInitExec())
                         || StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Request")) {
                     if (task.getInit() != null) {
-                        task.getInit().stream().forEach(t -> {
+                        //task.getInit().stream().forEach(t -> {
+                        for (BotTask t : task.getInit()) {
                             logger.info("Executing Suite Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                             initProcessor.process(t, context);
-                        });
+                        }
+                        //);
                     }
                 }
 
@@ -184,7 +189,7 @@ public class RestProcessor {
 
                 // validate assertions
 
-                context.withSuiteData(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+                context.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
 
                 assertionValidator.validate(task.getAssertions(), context);
 
@@ -209,10 +214,12 @@ public class RestProcessor {
                 if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getCleanupExec())
                         || StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Request")) {
                     if (task.getCleanup() != null) {
-                        task.getCleanup().stream().forEach(t -> {
+                        for (BotTask t : task.getCleanup()) {
+                            //task.getCleanup().stream().forEach(t -> {
                             logger.info("Executing Cleanup-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                             cleanUpProcessor.process(t, context, StringUtils.EMPTY);
-                        });
+                        }
+                        //);
                     }
                 }
 
@@ -228,14 +235,17 @@ public class RestProcessor {
 
                 // return processed task
                 //sender.sendTask(newTask);
-            });
+            }
+            //);
 
             if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Suite")) {
                 if (task.getCleanup() != null) {
-                    task.getCleanup().stream().forEach(t -> {
+                    //task.getCleanup().stream().forEach(t -> {
+                    for (BotTask t : task.getCleanup()) {
                         logger.info("Executing Cleanup-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                         cleanUpProcessor.process(t, parentContext, StringUtils.EMPTY);
-                    });
+                    }
+                    //);
                 }
             }
 

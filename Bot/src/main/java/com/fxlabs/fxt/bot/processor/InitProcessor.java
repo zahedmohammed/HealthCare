@@ -73,7 +73,7 @@ public class InitProcessor {
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
 
             Context initContext = new Context(context);
-            initContext.withSuiteData(null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+            initContext.withSuiteData(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
             assertionValidator.validate(task.getAssertions(), initContext);
 
             /*if (response != null && response.getStatusCodeValue() != 200) {
@@ -99,7 +99,7 @@ public class InitProcessor {
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
 
                 Context initContext = new Context(context);
-                initContext.withSuiteData(req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+                initContext.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
                 assertionValidator.validate(task.getAssertions(), initContext);
 
                 //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));

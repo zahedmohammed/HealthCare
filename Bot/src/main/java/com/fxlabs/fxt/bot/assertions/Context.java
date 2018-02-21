@@ -16,12 +16,13 @@ public class Context implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String suitename;
-    private AssertionLogger.LogType logType = AssertionLogger.LogType.ERROR;
+    private AssertionLogger.LogType logType = AssertionLogger.LogType.DEBUG;
     // init & cleanup
     private Map<String, String> data = new HashMap<>();
     private Map<String, HttpHeaders> headerData = new HashMap<>();
 
     // suite
+    private String url;
     private String request;
     private String response;
     private String statusCode;
@@ -38,17 +39,26 @@ public class Context implements Serializable {
 
     public Context(Context parent) {
         this.parent = parent;
+        this.logs = parent.logs;
+        this.logType = parent.logType;
+    }
+
+    public Context(Context parent, String suitename) {
+        this.parent = parent;
+        this.suitename = suitename;
+        this.logs = parent.logs;
     }
 
     public Context(String suitename, AssertionLogger logs, String logType) {
         this.suitename = suitename;
         this.logs = logs;
-        if (StringUtils.equalsIgnoreCase(logType, AssertionLogger.LogType.DEBUG.toString())) {
-            this.logType = AssertionLogger.LogType.DEBUG;
+        if (StringUtils.equalsIgnoreCase(logType, AssertionLogger.LogType.ERROR.toString())) {
+            this.logType = AssertionLogger.LogType.ERROR;
         }
     }
 
-    public Context withSuiteData(String request, String response, String statusCode, HttpHeaders headers) {
+    public Context withSuiteData(String url, String request, String response, String statusCode, HttpHeaders headers) {
+        this.url = url;
         this.request = request;
         this.response = response;
         this.statusCode = statusCode;
@@ -67,6 +77,29 @@ public class Context implements Serializable {
         }
 
         // log
+        this.log(suite, String.format("URL [%s]", url));
+        this.log(suite, String.format("Request [%s]", request));
+        this.log(suite, String.format("Response [%s]", response));
+        this.log(suite, String.format("Headers [%s]", headers.toString()));
+        this.log(suite, String.format("StatusCode [%s]", statusCode));
+
+        return this;
+    }
+
+    public Context withSuiteDataForPostProcessor(String url, String request, String response, String statusCode, HttpHeaders headers) {
+        this.url = url;
+        this.request = request;
+        this.response = response;
+        this.statusCode = statusCode;
+        this.headers = headers;
+
+        String suite = this.suitename;
+        if (StringUtils.isEmpty(this.suitename) && this.parent != null) {
+            suite = this.parent.suitename;
+        }
+
+        // log
+        this.log(suite, String.format("URL [%s]", url));
         this.log(suite, String.format("Request [%s]", request));
         this.log(suite, String.format("Response [%s]", response));
         this.log(suite, String.format("Headers [%s]", headers.toString()));
@@ -179,7 +212,7 @@ public class Context implements Serializable {
             } else {
                 this.parent.result = result;
                 // log
-                this.log(this.parent.suitename, String.format("Result [%s]", result));
+                //this.log(this.parent.suitename, String.format("Result [%s]", result));
             }
         } else {
             if (StringUtils.equalsIgnoreCase(this.result, "fail")
@@ -189,7 +222,7 @@ public class Context implements Serializable {
             } else {
                 this.result = result;
                 // log
-                this.log(this.suitename, String.format("Result [%s]", result));
+                //this.log(this.suitename, String.format("Result [%s]", result));
             }
         }
     }
