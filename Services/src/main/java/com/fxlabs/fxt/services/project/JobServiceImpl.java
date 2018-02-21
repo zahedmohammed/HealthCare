@@ -167,7 +167,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         // TODO - user has access to job/project
         Optional<Job> jobOptional = jobRepository.findById(jobId);
         if (!jobOptional.isPresent()) {
-            throw new FxException(String.format("Invalid job id [%s]", jobId));
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, jobId));
         }
         projectService.isUserEntitled(jobOptional.get().getProject().getId(), user);
     }

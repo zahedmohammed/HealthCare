@@ -165,7 +165,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     public void isUserEntitled(String s, String user) {
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> optional = repository.findById(s);
         if (!optional.isPresent() || !org.apache.commons.lang3.StringUtils.equals(optional.get().getCreatedBy(), user)) {
-            throw new FxException(String.format("Invalid cluster id [%s]", s));
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, s));
         }
     }
 }

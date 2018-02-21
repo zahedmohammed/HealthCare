@@ -42,7 +42,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
     public void isUserEntitled(String id, String user) {
         Optional<Environment> environmentOptional = environmentRepository.findById(id);
         if (!environmentOptional.isPresent()) {
-            throw new FxException(String.format("Invalid job id [%s]", id));
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
         }
         projectService.isUserEntitled(environmentOptional.get().getProjectId(), user);
     }

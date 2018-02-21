@@ -61,7 +61,7 @@ public class AlertServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.enti
         // TODO
         Optional<com.fxlabs.fxt.dao.entity.alerts.Alert> optional = alertESRepository.findByIdAndUsersIn(id, user);
         if (!optional.isPresent()) {
-            throw new FxException(String.format("Invalid alert id [%s]", id));
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
         }
     }
 }

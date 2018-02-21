@@ -17,7 +17,6 @@ import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -162,6 +161,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             if (projectOptional.isPresent()) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Project with name [%s] exists", request.getName())));
             }
+
+            // Validate GIT URL
+            if (request.getProjectType() == ProjectType.GIT && StringUtils.isEmpty(request.getUrl())) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Project's GIT URL cannot be empty"));
+            }
+
             // create project, project-git-account
             Project project = new Project();
             NameDto nameDto = new NameDto();
@@ -282,7 +287,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Optional<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsersOptional = projectUsersRepository.findByProjectIdAndUsersIdAndRole(id, user, ProjectRole.OWNER);
 
         if (!projectUsersOptional.isPresent()) {
-            throw new FxException(String.format("User [%s] not entitled to the resource.", user));
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
         }
 
     }

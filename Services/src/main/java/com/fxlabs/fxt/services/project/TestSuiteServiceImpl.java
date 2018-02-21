@@ -69,7 +69,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     public void isUserEntitled(String id, String user) {
         Optional<TestSuite> optional = repository.findById(id);
         if (!optional.isPresent()) {
-            throw new FxException(String.format("Invalid Test-Suite id [%s]", id));
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
         }
         projectService.isUserEntitled(optional.get().getProjectId(), user);
     }
