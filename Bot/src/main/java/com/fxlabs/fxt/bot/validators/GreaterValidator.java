@@ -16,7 +16,7 @@ public class GreaterValidator extends Validator {
             Double op2 = Double.parseDouble(operand2);
 
             if (op1 > op2) {
-                context.setResult("pass");
+                validationPass(operand1, operand2, context, assertion);
             } else {
                 validationFailed(operand1, operand2, context, assertion);
             }

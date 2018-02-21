@@ -77,6 +77,7 @@ public class ValidatorDelegate {
         //logger.info("Validating assertion [{}]", assertion);
         String[] tokens = StringUtils.split(assertion, " ");
 
+        //context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), "Validating " + assertion);
         //logger.info("tokens [{}]", tokens);
         if (tokens == null || tokens.length != 3) {
             skipAssertion(context, assertion);
@@ -140,7 +141,10 @@ public class ValidatorDelegate {
     protected void skipAssertion(Context context, String assertion) {
         context.setResult("fail");
         logger.info("Invalid assertion [{}]", assertion);
-        context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(),
-                String.format("Invalid assertion [%s]", assertion));
+        AssertionLogger logger = null;
+        if (context.getLogs() != null) {
+            context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(),
+                    String.format("Invalid assertion [%s]. e.g. valid [<Operand1> <Operation> <Operand2>] i.e. @Request.name == @Response.name", assertion));
+        }
     }
 }

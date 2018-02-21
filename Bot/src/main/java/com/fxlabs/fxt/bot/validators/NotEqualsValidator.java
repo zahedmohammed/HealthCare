@@ -17,9 +17,9 @@ public class NotEqualsValidator extends Validator {
     @Override
     public void validate(String operand1, String operand2, Context context, String assertion) {
         if (StringUtils.equalsIgnoreCase(operand2, "EMPTY") && StringUtils.isNotEmpty(operand1)) {
-            context.setResult("pass");
+            validationPass(operand1, operand2, context, assertion);
         } else if (!StringUtils.equals(operand1, operand2)) {
-            context.setResult("pass");
+            validationPass(operand1, operand2, context, assertion);
         } else {
             validationFailed(operand1, operand2, context, assertion);
         }

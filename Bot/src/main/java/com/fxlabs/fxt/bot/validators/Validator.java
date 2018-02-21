@@ -14,6 +14,13 @@ public abstract class Validator {
 
     abstract void validate(String operand1, String operand2, Context context, String assertion);
 
+    protected void validationPass(String operand1, String operand2, Context context, String assertion) {
+        context.setResult("pass");
+        logger.info(String.format("Assertion [{}] passed, expected [{}] and found to [{}]", assertion, operand2, operand1));
+        context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(),
+                String.format("Assertion [%s] passed, expected [%s] and found [%s]", assertion, operand2, operand1));
+    }
+
     protected void validationFailed(String operand1, String operand2, Context context, String assertion) {
         context.setResult("fail");
         logger.info(String.format("Assertion [{}] failed, expected value [{}] but found [{}]", assertion, operand2, operand1));

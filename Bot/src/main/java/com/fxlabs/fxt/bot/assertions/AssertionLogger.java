@@ -21,15 +21,19 @@ public class AssertionLogger implements Serializable {
 
     public void append(LogType logType, String suite, String log) {
 
-        FastDateFormat fdf = FastDateFormat.getInstance(DATE_FORMAT, TimeZone.getTimeZone("UTC"));
+        try {
+            //FastDateFormat fdf = FastDateFormat.getInstance(DATE_FORMAT, TimeZone.getTimeZone("UTC"));
 
-        String msg = String.format("%s %s [%s] : %s",
-                fdf.format(new Date()),
-                StringUtils.leftPad(logType.toString(), 6),
-                StringUtils.leftPad(suite, 25),
-                log);
+            String msg = String.format("%s [%s] : %s",
+                    //fdf.format(new Date()),
+                    StringUtils.leftPad(logType.toString(), 6),
+                    StringUtils.leftPad(suite, 25),
+                    log);
 
-        sb.append(msg).append("\n");
+            sb.append(msg).append("\n");
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage());
+        }
         //logger.warn(msg);
     }
 
