@@ -1007,7 +1007,7 @@ var RegionsListComponent = (function () {
 /***/ "../../../../../src/app/components/run-detail/run-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth-lg1 no-breadcrumbs chapter\">\n    <article class=\"article\">\n        <h2 class=\"article-title\"> <a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\">Jobs</a> / {{run.job.name}} / <a href=\"javascript:;\" [routerLink]=\"['/app/runs']\">Runs</a> / {{run.runId}}\n        </h2>\n    </article>\n\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{run.job.name}} / ({{run.task.status}})</h4>\n                    <h6>Summary</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{run.task.totalTestCompleted}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{run.task.failedTests}}</span>\n                    <span>Time: {{run.task.totalTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{run.task.description}}</p>\n            </div>\n        </div>\n    </div>\n\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\" *ngFor=\"let item of list\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{item.testSuite}}</h4>\n                    <h6>Test-Suite</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{item.totalPassed}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{item.totalFailed}}</span>\n                    <span>Time: {{item.requestTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{item.logs}}</p>\n            </div>\n        </div>\n    </div>\n</section>"
+module.exports = "<section class=\"container-fluid with-maxwidth-lg1 no-breadcrumbs chapter\">\n    <article class=\"article\">\n        <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\">Jobs</a> / {{run.job.name}} / <a\n                href=\"javascript:;\" [routerLink]=\"['/app/runs']\">Runs</a> / <a href=\"javascript:;\"\n                                                                               (click)=\"this.getRunById();this.getSummary();\">{{run.runId}} </a>\n        </h2>\n    </article>\n\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>ID: {{run.runId}}</h4>\n                    <h4>Status: {{run.task.status}}</h4>\n                    <h4>Date: {{run.task.startTime | date:'short'}}</h4>\n                    <h4>Total Time: {{run.task.totalTime}}</h4>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{run.task.description}}</p>\n            </div>\n        </div>\n    </div>\n\n\n    <article class=\"article\">\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Suite</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total/Passed</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total Size</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total Time</th>\n                </tr>\n                </thead>\n                <tr *ngFor=\"let s of suites\">\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed == 0\"><span class=\"text-success\"><i\n                            class=\"material-icons\">done</i> </span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed == 0\"><span\n                            class=\"text-success\"> Passed</span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span class=\"text-danger\"><i\n                            class=\"material-icons\">clear</i> </span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span\n                            class=\"text-danger\"> Fail</span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.suiteName}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.tests}}/{{s.tests - s.failed}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.size}} B</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.time}} ms</td>\n                </tr>\n                <tfoot>\n                <tr class=\"bg-color-info1\">\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{total}}/{{total-failed}}</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{size}} B</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{time}} ms</th>\n                </tr>\n                </tfoot>\n            </table>\n        </div>\n    </article>\n\n    <a href=\"javascript:;\" (click)=\"getTestSuiteResponsesByRunId()\"> View Logs </a>\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\" *ngFor=\"let item of list\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{item.testSuite}}</h4>\n                    <h6>Test-Suite</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{item.totalPassed}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{item.totalFailed}}</span>\n                    <span>Time: {{item.requestTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{item.logs}}</p>\n            </div>\n        </div>\n    </div>\n</section>"
 
 /***/ }),
 
@@ -1053,6 +1053,10 @@ var RunDetailComponent = (function () {
     function RunDetailComponent(runService, route) {
         this.runService = runService;
         this.route = route;
+        this.total = 0;
+        this.failed = 0;
+        this.size = 0;
+        this.time = 0;
         this.showSpinner = false;
     }
     RunDetailComponent.prototype.ngOnInit = function () {
@@ -1060,15 +1064,24 @@ var RunDetailComponent = (function () {
         this.route.params.subscribe(function (params) {
             console.log(params);
             if (params['id']) {
-                _this.getRunById(params['id']);
-                _this.getTestSuiteResponsesByRunId(params['id']);
+                _this.id = params['id'];
+                _this.getRunById();
+                _this.getSummary();
             }
         });
     };
-    RunDetailComponent.prototype.getRunById = function (id) {
+    RunDetailComponent.prototype.calSum = function () {
+        for (var i = 0; i < this.suites.length; i++) {
+            this.total += this.suites[i].tests;
+            this.failed += this.suites[i].failed;
+            this.size += this.suites[i].size;
+            this.time += this.suites[i].time;
+        }
+    };
+    RunDetailComponent.prototype.getRunById = function () {
         var _this = this;
         this.showSpinner = true;
-        this.runService.getDetails(id).subscribe(function (results) {
+        this.runService.getDetails(this.id).subscribe(function (results) {
             _this.showSpinner = false;
             if (results['errors']) {
                 // TODO - handle errors
@@ -1079,16 +1092,31 @@ var RunDetailComponent = (function () {
             console.log("Unable to fetch regions");
         });
     };
-    RunDetailComponent.prototype.getTestSuiteResponsesByRunId = function (id) {
+    RunDetailComponent.prototype.getTestSuiteResponsesByRunId = function () {
         var _this = this;
         this.showSpinner = true;
-        this.runService.getTestSuiteResponses(id).subscribe(function (results) {
+        this.runService.getTestSuiteResponses(this.id).subscribe(function (results) {
             _this.showSpinner = false;
             if (results['errors']) {
                 // TODO - handle errors
                 return;
             }
             _this.list = results['data'];
+        }, function (error) {
+            console.log("Unable to fetch regions");
+        });
+    };
+    RunDetailComponent.prototype.getSummary = function () {
+        var _this = this;
+        this.showSpinner = true;
+        this.runService.getSummary(this.id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.suites = results['data'];
+            _this.calSum();
         }, function (error) {
             console.log("Unable to fetch regions");
         });
@@ -1112,7 +1140,7 @@ var RunDetailComponent = (function () {
 /***/ "../../../../../src/app/components/run-list/run-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\">Jobs</a> / {{list[0].job.name}} / Runs</h2>\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Suites</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Tests</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time (ms)</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let item of list\">\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\"\n                                                                     [routerLink]=\"['/app/run', item.id]\">{{item.job.name}}/{{item.runId}}</a>\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.job.regions}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.status}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTests}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTestCompleted}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (item.task.totalTestCompleted + item.task.failedTests) * 100 ) /  item.task.totalTestCompleted}}%\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTime}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
+module.exports = "\n<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\">Jobs</a> / {{list[0].job.name}} / Runs</h2>\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total/Passed</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time (ms)</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let item of list\">\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\"\n                                                                     [routerLink]=\"['/app/run', item.id]\">#{{item.runId}}</a>\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.job.regions}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.status}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTests}}/{{item.task.totalTestCompleted}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (item.task.totalTestCompleted * 100 ) / (item.task.totalTestCompleted + item.task.failedTests) ).toFixed(0) }}%\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTime}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -2932,6 +2960,9 @@ var RunService = (function () {
     };
     RunService.prototype.getTestSuiteResponses = function (runId) {
         return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-responses");
+    };
+    RunService.prototype.getSummary = function (runId) {
+        return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary");
     };
     RunService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),

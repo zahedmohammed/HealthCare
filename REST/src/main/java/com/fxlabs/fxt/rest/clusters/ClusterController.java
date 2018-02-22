@@ -36,7 +36,6 @@ public class ClusterController {
         return clusterService.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-
     @Secured(ROLE_ENTERPRISE_ADMIN)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Cluster> findById(@PathVariable("id") String id) {

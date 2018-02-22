@@ -1,6 +1,8 @@
 <section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter">
     <article class="article">
-        <h2 class="article-title"> <a href="javascript:;" [routerLink]="['/app/jobs']">Jobs</a> / {{run.job.name}} / <a href="javascript:;" [routerLink]="['/app/runs']">Runs</a> / {{run.runId}}
+        <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/jobs']">Jobs</a> / {{run.job.name}} / <a
+                href="javascript:;" [routerLink]="['/app/runs']">Runs</a> / <a href="javascript:;"
+                                                                               (click)="this.getRunById();this.getSummary();">{{run.runId}} </a>
         </h2>
     </article>
 
@@ -9,13 +11,10 @@
         <div class="item-card card__horizontal1">
             <div class="card__body card-white">
                 <div class="card__title">
-                    <h4>{{run.job.name}} / ({{run.task.status}})</h4>
-                    <h6>Summary</h6>
-                </div>
-                <div class="card__price">
-                    <span>Pass: {{run.task.totalTestCompleted}}</span>
-                    <span class="type--strikethrough">Fail: {{run.task.failedTests}}</span>
-                    <span>Time: {{run.task.totalTime}}</span>
+                    <h4>ID: {{run.runId}}</h4>
+                    <h4>Status: {{run.task.status}}</h4>
+                    <h4>Date: {{run.task.startTime | date:'short'}}</h4>
+                    <h4>Total Time: {{run.task.totalTime}}</h4>
                 </div>
                 <div class="divider divider-solid divider-lg"></div>
                 <p class="card__desc" style="white-space: pre;">{{run.task.description}}</p>
@@ -23,6 +22,49 @@
         </div>
     </div>
 
+
+    <article class="article">
+        <div class="box box-default table-box mdl-shadow--2dp">
+            <table class="mdl-data-table">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    <th class="mdl-data-table__cell--non-numeric">Suite</th>
+                    <th class="mdl-data-table__cell--non-numeric">Total/Passed</th>
+                    <th class="mdl-data-table__cell--non-numeric">Total Size</th>
+                    <th class="mdl-data-table__cell--non-numeric">Total Time</th>
+                </tr>
+                </thead>
+                <tr *ngFor="let s of suites">
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span class="text-success"><i
+                            class="material-icons">done</i> </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span
+                            class="text-success"> Passed</span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span class="text-danger"><i
+                            class="material-icons">clear</i> </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
+                            class="text-danger"> Fail</span></td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.suiteName}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.size}} B</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.time}} ms</td>
+                </tr>
+                <tfoot>
+                <tr class="bg-color-info1">
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{size}} B</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{time}} ms</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </article>
+
+    <a href="javascript:;" (click)="getTestSuiteResponsesByRunId()"> View Logs </a>
 
     <div class="box box-default table-box mdl-shadow--2dp">
         <div class="item-card card__horizontal1" *ngFor="let item of list">

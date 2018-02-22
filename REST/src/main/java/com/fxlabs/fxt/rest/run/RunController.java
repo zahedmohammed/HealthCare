@@ -2,6 +2,7 @@ package com.fxlabs.fxt.rest.run;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.run.Run;
+import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.run.RunService;
@@ -48,6 +49,15 @@ public class RunController {
                                                                   @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
         return runService.findByRunId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}/test-suite-summary", method = RequestMethod.GET)
+    public Response<List<Suite>> findStatusByRunId(@PathVariable("id") String id,
+                                                   @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                   @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
+    ) {
+        return runService.findSummaryByRunId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)

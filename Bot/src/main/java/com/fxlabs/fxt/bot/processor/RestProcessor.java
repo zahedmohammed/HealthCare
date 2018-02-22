@@ -6,7 +6,9 @@ import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.run.Suite;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -98,14 +101,25 @@ public class RestProcessor {
         }
 
         BotTask completeTask = new BotTask();
+        final Suite suite = new Suite();
+        AtomicLong totalFailed = new AtomicLong(0L);
+        AtomicLong totalPassed = new AtomicLong(0L);
+        AtomicLong totalTime = new AtomicLong(0L);
+        AtomicLong totalSize = new AtomicLong(0L);
 
         try {
+            suite.setRunId(task.getId());
+            suite.setSuiteName(task.getSuiteName());
+
+            // handle GET requests
+            if (CollectionUtils.isEmpty(task.getRequest())) {
+                task.setRequest(Collections.singletonList(new String("")));
+            }
+
             completeTask.setId(task.getId());
             completeTask.setProjectDataSetId(task.getProjectDataSetId());
             completeTask.setRequestStartTime(new Date());
 
-            AtomicLong totalFailed = new AtomicLong(0L);
-            AtomicLong totalPassed = new AtomicLong(0L);
 
             AssertionLogger logs = new AssertionLogger();
 
@@ -148,13 +162,8 @@ public class RestProcessor {
 
             logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
 
-            // handle GET requests
-            if (CollectionUtils.isEmpty(task.getRequest())) {
-                task.setRequest(Collections.singletonList(new String("")));
-            }
-
-            //task.getRequest().parallelStream().forEach(req -> {
-            for (String req : task.getRequest()) {
+            task.getRequest().parallelStream().forEach(req -> {
+                //for (String req : task.getRequest()) {
 
                 Context context = new Context(parentContext);
 
@@ -182,7 +191,15 @@ public class RestProcessor {
                 //String endpoint = task.getEndpoint();
                 req = dataResolver.resolve(req, parentContext, task.getSuiteName());
                 String url = dataResolver.resolve(task.getEndpoint(), parentContext, task.getSuiteName());
+
+                StopWatch stopWatch = new StopWatch();
+                stopWatch.start();
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
+                stopWatch.stop();
+                totalTime.getAndAdd(stopWatch.getTime(TimeUnit.MILLISECONDS));
+                if (StringUtils.isNotEmpty(response.getBody())) {
+                    totalSize.getAndAdd(response.getBody().getBytes().length);
+                }
 
                 //newTask.setRequestEndTime(new Date());
                 //newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());
@@ -235,8 +252,8 @@ public class RestProcessor {
 
                 // return processed task
                 //sender.sendTask(newTask);
-            }
-            //);
+
+            });
 
             if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Suite")) {
                 if (task.getCleanup() != null) {
@@ -276,6 +293,13 @@ public class RestProcessor {
             completeTask.setRequestEndTime(new Date());
             completeTask.setLogs(completeTask.getLogs() + "\n " + ex.getLocalizedMessage());
         }
+
+        suite.setFailed(totalFailed.get());
+        suite.setTests(totalFailed.get() + totalPassed.get());
+        suite.setSize(totalSize.get());
+        suite.setTime(totalTime.get());
+        this.sender.sendTask(suite);
+
         return completeTask;
     }
 

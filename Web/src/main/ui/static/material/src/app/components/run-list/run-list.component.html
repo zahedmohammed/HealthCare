@@ -10,8 +10,7 @@
                     <th class="mdl-data-table__cell--non-numeric">Name</th>
                     <th class="mdl-data-table__cell--non-numeric">Region</th>
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
-                    <th class="mdl-data-table__cell--non-numeric">Suites</th>
-                    <th class="mdl-data-table__cell--non-numeric">Tests</th>
+                    <th class="mdl-data-table__cell--non-numeric">Total/Passed</th>
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
                     <th class="mdl-data-table__cell--non-numeric">Time (ms)</th>
                 </tr>
@@ -19,14 +18,13 @@
                 <tbody>
                 <tr *ngFor="let item of list">
                     <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
-                                                                     [routerLink]="['/app/run', item.id]">{{item.job.name}}/{{item.runId}}</a>
+                                                                     [routerLink]="['/app/run', item.id]">#{{item.runId}}</a>
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.job.regions}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.status}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTests}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTestCompleted}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTests}}/{{item.task.totalTestCompleted}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
-                        {{ ( (item.task.totalTestCompleted + item.task.failedTests) * 100 ) /  item.task.totalTestCompleted}}%
+                        {{ ( (item.task.totalTestCompleted * 100 ) / (item.task.totalTestCompleted + item.task.failedTests) ).toFixed(0) }}%
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime}}</td>
                 </tr>

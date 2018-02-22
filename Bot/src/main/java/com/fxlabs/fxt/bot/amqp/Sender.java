@@ -2,6 +2,7 @@ package com.fxlabs.fxt.bot.amqp;
 
 import com.fxlabs.fxt.dto.clusters.ClusterPing;
 import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.run.Suite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -35,6 +36,10 @@ public class Sender {
 
     public void sendTask(BotTask task) {
         this.template.convertAndSend(exchange, routingKey, task);
+    }
+
+    public void sendTask(Suite suite) {
+        this.template.convertAndSend(exchange, routingKey, suite);
     }
 
     public void sendTask(ClusterPing task) {

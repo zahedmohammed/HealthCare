@@ -3,9 +3,11 @@ package com.fxlabs.fxt.services.amqp.reciever;
 import com.fxlabs.fxt.dto.clusters.ClusterPing;
 import com.fxlabs.fxt.dto.git.GitTaskResponse;
 import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.services.processors.receiver.ClusterPingTaskResponseProcessor;
 import com.fxlabs.fxt.services.processors.receiver.GitTaskResponseProcessor;
 import com.fxlabs.fxt.services.processors.receiver.RunTaskResponseProcessor;
+import com.fxlabs.fxt.services.processors.receiver.SuiteResponseProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class Receiver {
     private GitTaskResponseProcessor taskResponseProcessor;
 
     @Autowired
+    private SuiteResponseProcessor suiteResponseProcessor;
+
+    @Autowired
     private ClusterPingTaskResponseProcessor clusterPingTaskResponseProcessor;
 
     public void receiveMessage(BotTask task) {
@@ -41,6 +46,11 @@ public class Receiver {
     public void receiveMessage(ClusterPing task) {
         logger.info("Received Task [{}]", task.getBotId());
         clusterPingTaskResponseProcessor.process(task);
+    }
+
+    public void receiveMessage(Suite suite) {
+        logger.info("Received Suite [{}]", suite.getSuiteName());
+        suiteResponseProcessor.process(suite);
     }
 
 

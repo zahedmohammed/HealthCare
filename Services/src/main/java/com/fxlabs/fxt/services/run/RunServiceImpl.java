@@ -1,9 +1,10 @@
 package com.fxlabs.fxt.services.run;
 
 import com.fxlabs.fxt.converters.run.RunConverter;
+import com.fxlabs.fxt.converters.run.SuiteConverter;
 import com.fxlabs.fxt.converters.run.TestSuiteResponseConverter;
-import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
 import com.fxlabs.fxt.dao.entity.run.Run;
+import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
@@ -12,10 +13,7 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Job;
-import com.fxlabs.fxt.dto.run.RunConstants;
-import com.fxlabs.fxt.dto.run.RunTask;
-import com.fxlabs.fxt.dto.run.TaskStatus;
-import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.dto.run.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.project.JobService;
 import com.fxlabs.fxt.services.project.ProjectService;
@@ -26,7 +24,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -42,12 +43,15 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     private TestSuiteResponseConverter testSuiteResponseConverter;
     private TestSuiteESRepository testSuiteESRepository;
     private ProjectService projectService;
+    private SuiteESRepository suiteESRepository;
+    private SuiteConverter suiteConverter;
 
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService,
                           /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository,
                           TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter,
-                          TestSuiteESRepository testSuiteESRepository, ProjectService projectService) {
+                          TestSuiteESRepository testSuiteESRepository, ProjectService projectService,
+                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter) {
         super(repository, converter);
         this.jobService = projectJobService;
         //this.taskProcessor = taskProcessor;
@@ -56,6 +60,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         this.testSuiteResponseConverter = dataSetConverter;
         this.testSuiteESRepository = testSuiteESRepository;
         this.projectService = projectService;
+        this.suiteESRepository = suiteESRepository;
+        this.suiteConverter = suiteConverter;
     }
 
     @Override
@@ -150,6 +156,15 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
         List<TestSuiteResponse> dataSets = testSuiteResponseConverter.convertToDtos(page.getContent());
         return new Response<List<TestSuiteResponse>>(dataSets, page.getTotalElements(), page.getTotalPages());
+    }
+
+    @Override
+    public Response<List<Suite>> findSummaryByRunId(String runId, String user, Pageable pageable) {
+
+        List<com.fxlabs.fxt.dao.entity.run.Suite> list = this.suiteESRepository.findByRunId(runId);
+
+        List<Suite> dataSets = suiteConverter.convertToDtos(list);
+        return new Response<List<Suite>>(dataSets);
     }
 
     @Override

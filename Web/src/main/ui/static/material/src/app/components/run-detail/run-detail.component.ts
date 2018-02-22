@@ -12,6 +12,12 @@ import { RunService } from '../../services/run.service';
 export class RunDetailComponent implements OnInit {
   run;
   list;
+  suites;
+  id;
+  total = 0;
+  failed = 0;
+  size = 0;
+  time = 0;
   showSpinner: boolean = false;
   constructor(private runService: RunService, private route: ActivatedRoute) { }
 
@@ -19,15 +25,25 @@ export class RunDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {
-        this.getRunById(params['id']);
-        this.getTestSuiteResponsesByRunId(params['id']);
+        this.id = params['id'];
+        this.getRunById();
+        this.getSummary();
       }
     });
   }
 
-  getRunById(id: string) {
+  calSum() {
+    for(var i = 0; i < this.suites.length; i++){
+        this.total += this.suites[i].tests;
+        this.failed += this.suites[i].failed;
+        this.size += this.suites[i].size;
+        this.time += this.suites[i].time;
+    }
+  }
+
+  getRunById() {
     this.showSpinner = true;
-    this.runService.getDetails(id).subscribe(results => {
+    this.runService.getDetails(this.id).subscribe(results => {
       this.showSpinner = false;
       if (results['errors']) {
         // TODO - handle errors
@@ -39,9 +55,9 @@ export class RunDetailComponent implements OnInit {
     });
   }
 
-  getTestSuiteResponsesByRunId(id: string) {
+  getTestSuiteResponsesByRunId() {
     this.showSpinner = true;
-    this.runService.getTestSuiteResponses(id).subscribe(results => {
+    this.runService.getTestSuiteResponses(this.id).subscribe(results => {
       this.showSpinner = false;
       if (results['errors']) {
         // TODO - handle errors
@@ -52,5 +68,21 @@ export class RunDetailComponent implements OnInit {
       console.log("Unable to fetch regions");
     });
   }
+
+  getSummary() {
+    this.showSpinner = true;
+    this.runService.getSummary(this.id).subscribe(results => {
+      this.showSpinner = false;
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      this.suites = results['data'];
+      this.calSum();
+    }, error => {
+      console.log("Unable to fetch regions");
+    });
+  }
+
 
 }
