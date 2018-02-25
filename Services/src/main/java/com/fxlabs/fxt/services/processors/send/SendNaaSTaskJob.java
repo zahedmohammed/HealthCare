@@ -15,7 +15,7 @@ public class SendNaaSTaskJob implements Job {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private GaaSTaskRequestProcessor processor;
+    private NaaSTaskRequestProcessor processor;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
