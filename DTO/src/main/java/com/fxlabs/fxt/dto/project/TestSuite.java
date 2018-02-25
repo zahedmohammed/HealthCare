@@ -21,12 +21,13 @@ public class TestSuite extends BaseDto<String> {
 
     private String projectId;
     private String name;
+    private String description;
     private TestSuiteType type;
     private String endpoint;
     private HttpMethod method;
     private String auth;
     private List<String> headers;
-    private List<String> requests;
+    private List<TestCase> testCases;
     private List<String> assertions;
     private List<String> tags;
     private List<String> authors;

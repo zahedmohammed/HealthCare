@@ -65,10 +65,10 @@ public class InitProcessor {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
         }
 
-        logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
+        logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuthType());
 
         AtomicInteger idx = new AtomicInteger(0);
-        if (CollectionUtils.isEmpty(task.getRequest())) {
+        if (CollectionUtils.isEmpty(task.getTestCases())) {
             logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
 
@@ -91,10 +91,10 @@ public class InitProcessor {
                     .withTask(task);
         } else {
             // TODO - Support request array
-            boolean isOneReq = task.getRequest().size() == 1;
-            task.getRequest().parallelStream().forEach(req -> {
+            boolean isOneReq = task.getTestCases().size() == 1;
+            task.getTestCases().parallelStream().forEach(testCase -> {
                 // Data Injection (req)
-                req = dataResolver.resolve(req, context, task.getSuiteName());
+                String req = dataResolver.resolve(testCase.getBody(), context, task.getSuiteName());
                 logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
 

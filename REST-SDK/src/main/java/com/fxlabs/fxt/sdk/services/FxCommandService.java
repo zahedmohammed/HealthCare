@@ -447,6 +447,9 @@ public class FxCommandService {
         File dataFolder = new File(projectDir + "test-suites");
         Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"yaml"}, true);
 
+        // TODO - If duplicate file names reject processing with error.
+        // TODO - Log all non .yaml files name as ignored.
+
         AtomicInteger totalFiles = new AtomicInteger(0);
         files.parallelStream().forEach(file -> {
 

@@ -2,6 +2,7 @@ package com.fxlabs.fxt.dto.run;
 
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.project.Policies;
+import com.fxlabs.fxt.dto.project.TestCase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,7 +34,7 @@ public class BotTask implements Serializable {
     private String password;
 
     private List<String> headers;
-    private List<String> request;
+    private List<TestCase> testCases;
 
     private String response;
 

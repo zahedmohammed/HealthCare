@@ -102,13 +102,13 @@ public class CleanUpProcessor {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
         }
 
-        logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}]", task.getSuiteName(), task.getRequest().size(), task.getAuthType(), url);
+        logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuthType(), url);
 
         AtomicInteger idx = new AtomicInteger(0);
-        if (CollectionUtils.isEmpty(task.getRequest())) {
+        if (CollectionUtils.isEmpty(task.getTestCases())) {
             logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
-            logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getRequest().size(), task.getAuthType(), url, response.getStatusCode());
+            logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuthType(), url, response.getStatusCode());
             context.withSuiteDataForPostProcessor(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
 
             assertionValidator.validate(task.getAssertions(), context);
@@ -119,9 +119,9 @@ public class CleanUpProcessor {
 
         } else {
             // TODO - Support request array
-            task.getRequest().parallelStream().forEach(req -> {
+            task.getTestCases().parallelStream().forEach(testCase -> {
                 // Data Injection (req)
-                req = dataResolver.resolve(req, context, parentSuite);
+                String req = dataResolver.resolve(testCase.getBody(), context, parentSuite);
                 logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
                 context.withSuiteDataForPostProcessor(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());

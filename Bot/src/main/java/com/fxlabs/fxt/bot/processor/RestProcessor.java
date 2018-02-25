@@ -5,6 +5,7 @@ import com.fxlabs.fxt.bot.amqp.Sender;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.assertions.Context;
+import com.fxlabs.fxt.dto.project.TestCase;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.Suite;
 import org.apache.commons.lang3.StringUtils;
@@ -112,8 +113,8 @@ public class RestProcessor {
             suite.setSuiteName(task.getSuiteName());
 
             // handle GET requests
-            if (CollectionUtils.isEmpty(task.getRequest())) {
-                task.setRequest(Collections.singletonList(new String("")));
+            if (CollectionUtils.isEmpty(task.getTestCases())) {
+                task.setTestCases(Collections.singletonList(new TestCase()));
             }
 
             completeTask.setId(task.getId());
@@ -160,9 +161,9 @@ public class RestProcessor {
                 httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
             }
 
-            logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getRequest().size(), task.getAuthType());
+            logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuthType());
 
-            task.getRequest().parallelStream().forEach(req -> {
+            task.getTestCases().parallelStream().forEach(testCase -> {
                 //for (String req : task.getRequest()) {
 
                 Context context = new Context(parentContext);
@@ -186,10 +187,10 @@ public class RestProcessor {
                 //newTask.setRequestStartTime(new Date());
 
                 //logger.info("Request: [{}]", req);
-                HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
+                HttpEntity<String> request = new HttpEntity<>(testCase.getBody(), httpHeaders);
 
                 //String endpoint = task.getEndpoint();
-                req = dataResolver.resolve(req, parentContext, task.getSuiteName());
+                String req = dataResolver.resolve(testCase.getBody(), parentContext, task.getSuiteName());
                 String url = dataResolver.resolve(task.getEndpoint(), parentContext, task.getSuiteName());
 
                 StopWatch stopWatch = new StopWatch();
@@ -280,7 +281,7 @@ public class RestProcessor {
             completeTask.setTotalFailed(totalFailed.get());
             //completeTask.setTotalSkipped(totalSkipped.get());
             completeTask.setTotalPassed(totalPassed.get());
-            completeTask.setTotalTests((long) task.getRequest().size());
+            completeTask.setTotalTests((long) task.getTestCases().size());
 
             completeTask.setLogs(logs.getLogs());
 

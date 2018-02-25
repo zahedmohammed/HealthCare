@@ -14,10 +14,12 @@ import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.project.HttpMethod;
+import com.fxlabs.fxt.dto.project.TestCase;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.RunConstants;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.clusters.ClusterService;
+import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -145,8 +147,8 @@ public class RunTaskRequestProcessor {
                         copy(testSuite.getCleanup(), task.getCleanup(), run, env);
 
                         // count tests
-                        if (testSuite.getRequests() != null)
-                            total.getAndAdd(testSuite.getRequests().size());
+                        if (testSuite.getTestCases() != null)
+                            total.getAndAdd(testSuite.getTestCases().size());
 
                         botClientService.sendTask(task, region);
                     } catch (Exception ex) {
@@ -185,12 +187,17 @@ public class RunTaskRequestProcessor {
 
     private void copyRequests(BotTask task, TestSuite ds) {
         // TODO - JPA lazy-load work-around
-        List<String> requests = new ArrayList<>();
-        if (ds.getRequests() != null)
-            for (String request : ds.getRequests()) {
-                requests.add(request);
+        List<TestCase> testCases = new ArrayList<>();
+        if (ds.getTestCases() != null)
+            for (com.fxlabs.fxt.dao.entity.project.TestCase testCase : ds.getTestCases()) {
+                if (!BooleanUtils.isTrue(testCase.getInactive())) {
+                    TestCase tc = new TestCase();
+                    tc.setId(testCase.getId());
+                    tc.setBody(testCase.getBody());
+                    testCases.add(tc);
+                }
             }
-        task.setRequest(requests);
+        task.setTestCases(testCases);
     }
 
     private void copyAuth(Run run, Environment env, BotTask task, TestSuite ds) {

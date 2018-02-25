@@ -27,6 +27,9 @@ public class TestSuite extends BaseEntity {
 
     private String name;
 
+    @Lob
+    private String description;
+
     @Enumerated(EnumType.STRING)
     private TestSuiteType type;
 
@@ -41,8 +44,11 @@ public class TestSuite extends BaseEntity {
     private List<String> headers;
 
     @ElementCollection
-    @Lob
-    private List<String> requests;
+    @CollectionTable(
+            name = "test_cases",
+            joinColumns = @JoinColumn(name = "test_suite_id")
+    )
+    private List<TestCase> testCases;
 
     @ElementCollection
     private List<String> assertions;
