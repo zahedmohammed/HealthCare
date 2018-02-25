@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author Intesar Shannan Mohammed
  */
@@ -13,11 +15,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class TestCase {
+public class TestCase implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private Integer id;
     private String body;
-    private Boolean inactive;
+    private Boolean inactive = false;
 
 }
 

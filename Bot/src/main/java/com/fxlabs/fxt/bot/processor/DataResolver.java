@@ -30,6 +30,9 @@ public class DataResolver {
 
 
     public String resolve(String data, Context context, String suite) {
+        if (StringUtils.isEmpty(data)) {
+            return org.apache.commons.lang3.StringUtils.EMPTY;
+        }
         String response = null;
         Pattern pattern = Pattern.compile(PATTERN);
         Matcher matcher = pattern.matcher(data);

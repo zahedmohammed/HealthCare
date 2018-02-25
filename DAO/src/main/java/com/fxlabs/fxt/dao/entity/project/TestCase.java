@@ -20,7 +20,7 @@ public class TestCase {
 
     private Integer id;
     private String body;
-    private Boolean inactive;
+    private Boolean inactive = false;
 
 }
 

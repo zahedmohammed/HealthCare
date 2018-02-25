@@ -6,7 +6,7 @@ CREATE TABLE test_cases (
     test_suite_id character varying(255) NOT NULL,
     id integer NOT NULL,
     body text NOT NULL,
-    inactive boolean NOT NULL
+    inactive boolean
 );
 
 --
