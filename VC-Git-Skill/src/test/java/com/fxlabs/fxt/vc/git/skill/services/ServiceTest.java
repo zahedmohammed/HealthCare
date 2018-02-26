@@ -1,14 +1,13 @@
 package com.fxlabs.fxt.vc.git.skill.services;
 
 import com.fxlabs.fxt.dto.vc.VCTask;
-import com.fxlabs.fxt.vc.git.skill.GitService;
 import org.junit.Test;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
-public class GitServiceTest {
+public class ServiceTest {
 
     //@Autowired
-    private GitService service;
+    private VersionControlService service;
 
     @Test
     public void process() throws Exception {
