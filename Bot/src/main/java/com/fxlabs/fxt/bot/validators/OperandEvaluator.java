@@ -96,6 +96,14 @@ public class OperandEvaluator {
                     }
                     break;
 
+                case "@ResponseTime":
+                    val = String.valueOf(context.getResponseTime());
+                    break;
+
+                case "@ResponseSize":
+                    val = String.valueOf(context.getResponseSize());
+                    break;
+
                 case "@Random":
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);

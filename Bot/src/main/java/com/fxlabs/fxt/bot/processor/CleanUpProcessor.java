@@ -1,12 +1,12 @@
 package com.fxlabs.fxt.bot.processor;
 
 
-import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.validators.OperandEvaluator;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -107,9 +108,18 @@ public class CleanUpProcessor {
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getTestCases())) {
             logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
+            stopWatch.stop();
+            Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
+
+            Integer size = 0;
+            if (StringUtils.isNotEmpty(response.getBody())) {
+                size = response.getBody().getBytes().length;
+            }
             logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuthType(), url, response.getStatusCode());
-            context.withSuiteDataForPostProcessor(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+            context.withSuiteDataForPostProcessor(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
 
             assertionValidator.validate(task.getAssertions(), context);
 
@@ -123,8 +133,17 @@ public class CleanUpProcessor {
                 // Data Injection (req)
                 String req = dataResolver.resolve(testCase.getBody(), context, parentSuite);
                 logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
+                StopWatch stopWatch = new StopWatch();
+                stopWatch.start();
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
-                context.withSuiteDataForPostProcessor(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+                stopWatch.stop();
+                Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
+
+                Integer size = 0;
+                if (StringUtils.isNotEmpty(response.getBody())) {
+                    size = response.getBody().getBytes().length;
+                }
+                context.withSuiteDataForPostProcessor(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
                 assertionValidator.validate(task.getAssertions(), context);
                 //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
             });

@@ -197,17 +197,20 @@ public class RestProcessor {
                 stopWatch.start();
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
                 stopWatch.stop();
-                totalTime.getAndAdd(stopWatch.getTime(TimeUnit.MILLISECONDS));
+                Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
+                totalTime.getAndAdd(time);
+
+                Integer size = 0;
                 if (StringUtils.isNotEmpty(response.getBody())) {
-                    totalSize.getAndAdd(response.getBody().getBytes().length);
+                    size = response.getBody().getBytes().length;
                 }
+                totalSize.getAndAdd(size);
 
                 //newTask.setRequestEndTime(new Date());
                 //newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());
 
                 // validate assertions
-
-                context.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+                context.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
 
                 assertionValidator.validate(task.getAssertions(), context);
 

@@ -6,6 +6,7 @@ import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.validators.OperandEvaluator;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -70,10 +72,20 @@ public class InitProcessor {
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getTestCases())) {
             logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
+            stopWatch.stop();
+            Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
+
+            Integer size = 0;
+            if (StringUtils.isNotEmpty(response.getBody())) {
+                size = response.getBody().getBytes().length;
+            }
 
             Context initContext = new Context(context);
-            initContext.withSuiteData(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+            initContext.withSuiteData(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
+
             assertionValidator.validate(task.getAssertions(), initContext);
 
             /*if (response != null && response.getStatusCodeValue() != 200) {
@@ -96,10 +108,19 @@ public class InitProcessor {
                 // Data Injection (req)
                 String req = dataResolver.resolve(testCase.getBody(), context, task.getSuiteName());
                 logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
+                StopWatch stopWatch = new StopWatch();
+                stopWatch.start();
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
+                stopWatch.stop();
+                Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
+
+                Integer size = 0;
+                if (StringUtils.isNotEmpty(response.getBody())) {
+                    size = response.getBody().getBytes().length;
+                }
 
                 Context initContext = new Context(context);
-                initContext.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders());
+                initContext.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
                 assertionValidator.validate(task.getAssertions(), initContext);
 
                 //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
