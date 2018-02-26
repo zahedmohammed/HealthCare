@@ -8,7 +8,7 @@ import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
 import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.entity.users.UsersPassword;
 import com.fxlabs.fxt.dao.repository.jpa.*;
-import com.fxlabs.fxt.dto.git.GitTask;
+import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +58,7 @@ public class GaaSTaskRequestProcessor {
 
     /**
      * List projects of type GIT
-     * Send as GitTask
+     * Send as VCTask
      */
     public void process() {
         Stream<Project> projects = projectRepository.findByProjectTypeAndInactive(ProjectType.GIT, false);
@@ -74,16 +74,16 @@ public class GaaSTaskRequestProcessor {
                 logger.warn("Ignoring Git sync for project with ID [{}] and Name [{}]", project.getId(), project.getName());
                 return;
             }
-            GitTask task = new GitTask();
+            VCTask task = new VCTask();
             task.setProjectId(project.getId());
             task.setProjectName(project.getName());
-            task.setGitUrl(gitAccount.get().getUrl());
-            task.setGitBranch(gitAccount.get().getBranch());
-            task.setGitUsername(gitAccount.get().getUsername());
+            task.setVcUrl(gitAccount.get().getUrl());
+            task.setVcBranch(gitAccount.get().getBranch());
+            task.setVcUsername(gitAccount.get().getUsername());
             if (!StringUtils.isEmpty(gitAccount.get().getPassword())) {
-                task.setGitPassword(gitAccount.get().getPassword());
+                task.setVcPassword(gitAccount.get().getPassword());
             }
-            task.setGitLastCommit(gitAccount.get().getLastCommit());
+            task.setVcLastCommit(gitAccount.get().getLastCommit());
 
             // Send Project-Users-Owner creds
             List<ProjectUsers> projectUsersList = projectUsersRepository.findByProjectIdAndRoleAndInactive(project.getId(), ProjectRole.OWNER, false);

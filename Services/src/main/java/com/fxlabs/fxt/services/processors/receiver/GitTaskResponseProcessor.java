@@ -4,7 +4,7 @@ import com.fxlabs.fxt.dao.entity.users.ProjectRole;
 import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectUsersRepository;
 import com.fxlabs.fxt.dto.alerts.*;
-import com.fxlabs.fxt.dto.git.GitTaskResponse;
+import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.services.alerts.AlertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class GitTaskResponseProcessor {
     @Autowired
     private AlertService alertService;
 
-    public void process(GitTaskResponse task) {
+    public void process(VCTaskResponse task) {
         try {
             logger.info("Task response [{}]...", task.getProjectId());
 

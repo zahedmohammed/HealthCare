@@ -1,7 +1,7 @@
 package com.fxlabs.fxt.services.amqp.reciever;
 
 import com.fxlabs.fxt.dto.clusters.ClusterPing;
-import com.fxlabs.fxt.dto.git.GitTaskResponse;
+import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.services.processors.receiver.ClusterPingTaskResponseProcessor;
@@ -38,7 +38,7 @@ public class Receiver {
         processor.process(task);
     }
 
-    public void receiveMessage(GitTaskResponse task) {
+    public void receiveMessage(VCTaskResponse task) {
         logger.info("Received Task [{}]", task.getProjectId());
         taskResponseProcessor.process(task);
     }
