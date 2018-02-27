@@ -31,14 +31,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/personal-sign-up", "/api/v1/users/team-sign-up", "/api/v1/users/enterprise-sign-up",
-                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html**", "/webjars/**",
+                .antMatchers("/api/v1/users/personal-sign-up",
+                        "/api/v1/users/team-sign-up",
+                        "/api/v1/users/enterprise-sign-up",
+                        "/v2/api-docs",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html**",
+                        "/webjars/**",
                         "/monitoring").permitAll() // sign-ups
+                .antMatchers("/style/**",
+                        "/font-awesome/**",
+                        "/access.html",
+                        "/favicon.png",
+                        "/fx-white-100x100.png").permitAll() // login css
+
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAnyRole("SUPER_USER") //Actuator
                 .anyRequest().authenticated()
                     .and()
                     .csrf().disable()
                 .formLogin()
+                    .loginPage("/access.html")
+                    .loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/")
                     .and()
                 .httpBasic()
                     .and()
