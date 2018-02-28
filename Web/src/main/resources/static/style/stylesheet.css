@@ -7,7 +7,7 @@
  }
  
  /* This is my background */	
-body { background-color: #133651; } 
+body { background-color: white; }
 
 /* H3 is the heading for each form */
 h3 { 
@@ -117,7 +117,7 @@ hr {
 	display: block;
 	padding: 15px;
 	width: 240px;
-	background-color: #666666;
+	background-color: black;
 	margin: 20px auto 0px;
 	text-align: center;
 	text-decoration: none;

@@ -43,7 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/font-awesome/**",
                         "/access.html",
                         "/favicon.png",
-                        "/fx-white-100x100.png").permitAll() // login css
+                        "/fx-white-100x100.png",
+                        "/favicon.ico").permitAll() // login css
 
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAnyRole("SUPER_USER") //Actuator
                 .anyRequest().authenticated()
