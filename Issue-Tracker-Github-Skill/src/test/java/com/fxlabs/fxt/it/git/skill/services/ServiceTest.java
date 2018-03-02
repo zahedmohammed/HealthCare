@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.vc.git.skill.services;
+package com.fxlabs.fxt.it.git.skill.services;
 
 import com.fxlabs.fxt.dto.it.ITTask;
 import com.fxlabs.fxt.dto.vc.VCTask;

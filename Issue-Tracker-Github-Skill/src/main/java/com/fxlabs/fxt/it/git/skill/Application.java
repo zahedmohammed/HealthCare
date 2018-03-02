@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.vc.git.skill;
+package com.fxlabs.fxt.it.git.skill;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

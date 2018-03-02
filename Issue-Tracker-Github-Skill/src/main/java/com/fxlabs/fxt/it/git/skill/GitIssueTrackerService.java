@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.vc.git.skill;
+package com.fxlabs.fxt.it.git.skill;
 
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.it.skill.services.IssueTrackerService;
@@ -7,6 +7,15 @@ import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+
+/**
+ *
+ * @author Intesar Mohammed
+ * @author Mohammed Shoukath Ali
+ *
+ *
+ */
 
 @Component
 public class GitIssueTrackerService implements IssueTrackerService {
