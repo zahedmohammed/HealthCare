@@ -3,10 +3,17 @@ package com.fxlabs.fxt.it.git.skill;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.it.skill.services.IssueTrackerService;
 import com.fxlabs.fxt.it.skill.services.Task;
+import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Label;
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -58,7 +65,36 @@ public class GitIssueTrackerService implements IssueTrackerService {
         ITTaskResponse response = new ITTaskResponse();
 
         try {
-           // TODO Create/Update bugs/ussue in gitbub
+           // TODO Create/Update bugs/issue in gitbub
+//
+//            Issue issue = new Issue();
+//            issue.setTitle("Title_" + Math.random());
+//            issue.setNumber(2);
+//            issue.setState(IssueService.STATE_OPEN);
+//
+//            String body = "Body_" + Math.random();
+//
+//            issue.setBody(body);
+//            List<Label> newLabels = new ArrayList<>();
+//            //add tags to labels
+//            Label label = new Label();
+//            label.setName("Tag_" + Math.random());
+//            newLabels.add(label);
+//
+//            issue.setLabels(newLabels);
+//            //creates an issue remotely
+//
+//            GitHubClient client = new GitHubClient();
+//            client.setOAuth2Token("3cdd07af86c6098a0ddef55b684d46d291e44f1a");
+//
+//            IssueService issueService = new IssueService(client);
+//
+//            issueService.getClient().setOAuth2Token("3cdd07af86c6098a0ddef55b684d46d291e44f1a");
+//
+//                issue = issueService.editIssue("shoukathmd", "My_first_repo", issue);
+//
+//            System.out.print(issue);
+//            //comment.setIssueNumber(issue.getNumber());
 
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
