@@ -84,6 +84,40 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
 import { MessageListComponent } from './components/message-list/message-list.component';
 import { MessageDetailComponent } from './components/message-detail/message-detail.component';
 import { RunDetailComponent } from './components/run-detail/run-detail.component';
+import { IssuesListComponent } from './components/issues/issues-list/issues-list.component';
+import { IssuesNewComponent } from './components/issues/issues-new/issues-new.component';
+import { IssuesEditComponent } from './components/issues/issues-edit/issues-edit.component';
+import { MarketplaceListComponent } from './components/marketplace/marketplace-list/marketplace-list.component';
+import { MarketplaceNewComponent } from './components/marketplace/marketplace-new/marketplace-new.component';
+import { MarketplaceEditComponent } from './components/marketplace/marketplace-edit/marketplace-edit.component';
+import { MonitorAllComponent } from './components/monitor/monitor-all/monitor-all.component';
+import { MonitorNewComponent } from './components/monitor/monitor-new/monitor-new.component';
+import { MonitorEditComponent } from './components/monitor/monitor-edit/monitor-edit.component';
+import { DocListComponent } from './components/doc/doc-list/doc-list.component';
+import { DocNewComponent } from './components/doc/doc-new/doc-new.component';
+import { DocEditComponent } from './components/doc/doc-edit/doc-edit.component';
+import { SupportListComponent } from './components/support/support-list/support-list.component';
+import { SupportNewComponent } from './components/support/support-new/support-new.component';
+import { SupportEditComponent } from './components/support/support-edit/support-edit.component';
+import { AnalyticsListComponent } from './components/analytics/analytics-list/analytics-list.component';
+import { AnalyticsNewComponent } from './components/analytics/analytics-new/analytics-new.component';
+import { AnalyticsEditComponent } from './components/analytics/analytics-edit/analytics-edit.component';
+import { VaultListComponent } from './components/vault/vault-list/vault-list.component';
+import { VaultNewComponent } from './components/vault/vault-new/vault-new.component';
+import { VaultEditComponent } from './components/vault/vault-edit/vault-edit.component';
+import { BillingListComponent } from './components/billing/billing-list/billing-list.component';
+import { BillingNewComponent } from './components/billing/billing-new/billing-new.component';
+import { BillingEditComponent } from './components/billing/billing-edit/billing-edit.component';
+import { OrgListComponent } from './components/org/org-list/org-list.component';
+import { OrgNewComponent } from './components/org/org-new/org-new.component';
+import { OrgEditComponent } from './components/org/org-edit/org-edit.component';
+import { SkillsListComponent } from './components/skills/skills-list/skills-list.component';
+import { SkillsNewComponent } from './components/skills/skills-new/skills-new.component';
+import { SkillsEditComponent } from './components/skills/skills-edit/skills-edit.component';
+import { SkillsVersionControlComponent } from './components/skills/skills-version-control/skills-version-control.component';
+import { SkillsBotDeploymentComponent } from './components/skills/skills-bot-deployment/skills-bot-deployment.component';
+import { SkillsIssueTrackerComponent } from './components/skills/skills-issue-tracker/skills-issue-tracker.component';
+import { SkillsAnalyticsComponent } from './components/skills/skills-analytics/skills-analytics.component';
 
 @NgModule({
   imports: [
@@ -167,6 +201,40 @@ import { RunDetailComponent } from './components/run-detail/run-detail.component
     MessageListComponent,
     MessageDetailComponent,
     RunDetailComponent,
+    IssuesListComponent,
+    IssuesNewComponent,
+    IssuesEditComponent,
+    MarketplaceListComponent,
+    MarketplaceNewComponent,
+    MarketplaceEditComponent,
+    MonitorAllComponent,
+    MonitorNewComponent,
+    MonitorEditComponent,
+    DocListComponent,
+    DocNewComponent,
+    DocEditComponent,
+    SupportListComponent,
+    SupportNewComponent,
+    SupportEditComponent,
+    AnalyticsListComponent,
+    AnalyticsNewComponent,
+    AnalyticsEditComponent,
+    VaultListComponent,
+    VaultNewComponent,
+    VaultEditComponent,
+    BillingListComponent,
+    BillingNewComponent,
+    BillingEditComponent,
+    OrgListComponent,
+    OrgNewComponent,
+    OrgEditComponent,
+    SkillsListComponent,
+    SkillsNewComponent,
+    SkillsEditComponent,
+    SkillsVersionControlComponent,
+    SkillsBotDeploymentComponent,
+    SkillsIssueTrackerComponent,
+    SkillsAnalyticsComponent,
   ],
   bootstrap: [AppComponent]
 })

@@ -172,6 +172,40 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__components_message_list_message_list_component__ = __webpack_require__("../../../../../src/app/components/message-list/message-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__components_message_detail_message_detail_component__ = __webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__components_run_detail_run_detail_component__ = __webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__components_issues_issues_list_issues_list_component__ = __webpack_require__("../../../../../src/app/components/issues/issues-list/issues-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__components_issues_issues_new_issues_new_component__ = __webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__components_issues_issues_edit_issues_edit_component__ = __webpack_require__("../../../../../src/app/components/issues/issues-edit/issues-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__components_marketplace_marketplace_list_marketplace_list_component__ = __webpack_require__("../../../../../src/app/components/marketplace/marketplace-list/marketplace-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__components_marketplace_marketplace_new_marketplace_new_component__ = __webpack_require__("../../../../../src/app/components/marketplace/marketplace-new/marketplace-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__components_marketplace_marketplace_edit_marketplace_edit_component__ = __webpack_require__("../../../../../src/app/components/marketplace/marketplace-edit/marketplace-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__components_monitor_monitor_all_monitor_all_component__ = __webpack_require__("../../../../../src/app/components/monitor/monitor-all/monitor-all.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__components_monitor_monitor_new_monitor_new_component__ = __webpack_require__("../../../../../src/app/components/monitor/monitor-new/monitor-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__components_monitor_monitor_edit_monitor_edit_component__ = __webpack_require__("../../../../../src/app/components/monitor/monitor-edit/monitor-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__components_doc_doc_list_doc_list_component__ = __webpack_require__("../../../../../src/app/components/doc/doc-list/doc-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__components_doc_doc_new_doc_new_component__ = __webpack_require__("../../../../../src/app/components/doc/doc-new/doc-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__components_doc_doc_edit_doc_edit_component__ = __webpack_require__("../../../../../src/app/components/doc/doc-edit/doc-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__components_support_support_list_support_list_component__ = __webpack_require__("../../../../../src/app/components/support/support-list/support-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__components_support_support_new_support_new_component__ = __webpack_require__("../../../../../src/app/components/support/support-new/support-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__components_support_support_edit_support_edit_component__ = __webpack_require__("../../../../../src/app/components/support/support-edit/support-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__components_analytics_analytics_list_analytics_list_component__ = __webpack_require__("../../../../../src/app/components/analytics/analytics-list/analytics-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__components_analytics_analytics_new_analytics_new_component__ = __webpack_require__("../../../../../src/app/components/analytics/analytics-new/analytics-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__components_analytics_analytics_edit_analytics_edit_component__ = __webpack_require__("../../../../../src/app/components/analytics/analytics-edit/analytics-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__components_vault_vault_list_vault_list_component__ = __webpack_require__("../../../../../src/app/components/vault/vault-list/vault-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__components_vault_vault_new_vault_new_component__ = __webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__components_vault_vault_edit_vault_edit_component__ = __webpack_require__("../../../../../src/app/components/vault/vault-edit/vault-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__components_billing_billing_list_billing_list_component__ = __webpack_require__("../../../../../src/app/components/billing/billing-list/billing-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__components_billing_billing_new_billing_new_component__ = __webpack_require__("../../../../../src/app/components/billing/billing-new/billing-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_61__components_billing_billing_edit_billing_edit_component__ = __webpack_require__("../../../../../src/app/components/billing/billing-edit/billing-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__components_org_org_list_org_list_component__ = __webpack_require__("../../../../../src/app/components/org/org-list/org-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__components_org_org_new_org_new_component__ = __webpack_require__("../../../../../src/app/components/org/org-new/org-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__components_org_org_edit_org_edit_component__ = __webpack_require__("../../../../../src/app/components/org/org-edit/org-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__components_skills_skills_list_skills_list_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-list/skills-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__components_skills_skills_new_skills_new_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-new/skills-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_67__components_skills_skills_edit_skills_edit_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-edit/skills-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__components_skills_skills_version_control_skills_version_control_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-version-control/skills-version-control.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__components_skills_skills_bot_deployment_skills_bot_deployment_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-bot-deployment/skills-bot-deployment.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__components_skills_skills_issue_tracker_skills_issue_tracker_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-issue-tracker/skills-issue-tracker.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__components_skills_skills_analytics_skills_analytics_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-analytics/skills-analytics.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -220,6 +254,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 // hmr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -331,6 +399,40 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_35__components_message_list_message_list_component__["a" /* MessageListComponent */],
                 __WEBPACK_IMPORTED_MODULE_36__components_message_detail_message_detail_component__["a" /* MessageDetailComponent */],
                 __WEBPACK_IMPORTED_MODULE_37__components_run_detail_run_detail_component__["a" /* RunDetailComponent */],
+                __WEBPACK_IMPORTED_MODULE_38__components_issues_issues_list_issues_list_component__["a" /* IssuesListComponent */],
+                __WEBPACK_IMPORTED_MODULE_39__components_issues_issues_new_issues_new_component__["a" /* IssuesNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_40__components_issues_issues_edit_issues_edit_component__["a" /* IssuesEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_41__components_marketplace_marketplace_list_marketplace_list_component__["a" /* MarketplaceListComponent */],
+                __WEBPACK_IMPORTED_MODULE_42__components_marketplace_marketplace_new_marketplace_new_component__["a" /* MarketplaceNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_43__components_marketplace_marketplace_edit_marketplace_edit_component__["a" /* MarketplaceEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_44__components_monitor_monitor_all_monitor_all_component__["a" /* MonitorAllComponent */],
+                __WEBPACK_IMPORTED_MODULE_45__components_monitor_monitor_new_monitor_new_component__["a" /* MonitorNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_46__components_monitor_monitor_edit_monitor_edit_component__["a" /* MonitorEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_47__components_doc_doc_list_doc_list_component__["a" /* DocListComponent */],
+                __WEBPACK_IMPORTED_MODULE_48__components_doc_doc_new_doc_new_component__["a" /* DocNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_49__components_doc_doc_edit_doc_edit_component__["a" /* DocEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_50__components_support_support_list_support_list_component__["a" /* SupportListComponent */],
+                __WEBPACK_IMPORTED_MODULE_51__components_support_support_new_support_new_component__["a" /* SupportNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_52__components_support_support_edit_support_edit_component__["a" /* SupportEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_53__components_analytics_analytics_list_analytics_list_component__["a" /* AnalyticsListComponent */],
+                __WEBPACK_IMPORTED_MODULE_54__components_analytics_analytics_new_analytics_new_component__["a" /* AnalyticsNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_55__components_analytics_analytics_edit_analytics_edit_component__["a" /* AnalyticsEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_56__components_vault_vault_list_vault_list_component__["a" /* VaultListComponent */],
+                __WEBPACK_IMPORTED_MODULE_57__components_vault_vault_new_vault_new_component__["a" /* VaultNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_58__components_vault_vault_edit_vault_edit_component__["a" /* VaultEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_59__components_billing_billing_list_billing_list_component__["a" /* BillingListComponent */],
+                __WEBPACK_IMPORTED_MODULE_60__components_billing_billing_new_billing_new_component__["a" /* BillingNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_61__components_billing_billing_edit_billing_edit_component__["a" /* BillingEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_62__components_org_org_list_org_list_component__["a" /* OrgListComponent */],
+                __WEBPACK_IMPORTED_MODULE_63__components_org_org_new_org_new_component__["a" /* OrgNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_64__components_org_org_edit_org_edit_component__["a" /* OrgEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_65__components_skills_skills_list_skills_list_component__["a" /* SkillsListComponent */],
+                __WEBPACK_IMPORTED_MODULE_66__components_skills_skills_new_skills_new_component__["a" /* SkillsNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_67__components_skills_skills_edit_skills_edit_component__["a" /* SkillsEditComponent */],
+                __WEBPACK_IMPORTED_MODULE_68__components_skills_skills_version_control_skills_version_control_component__["a" /* SkillsVersionControlComponent */],
+                __WEBPACK_IMPORTED_MODULE_69__components_skills_skills_bot_deployment_skills_bot_deployment_component__["a" /* SkillsBotDeploymentComponent */],
+                __WEBPACK_IMPORTED_MODULE_70__components_skills_skills_issue_tracker_skills_issue_tracker_component__["a" /* SkillsIssueTrackerComponent */],
+                __WEBPACK_IMPORTED_MODULE_71__components_skills_skills_analytics_skills_analytics_component__["a" /* SkillsAnalyticsComponent */],
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]]
         }),
@@ -360,6 +462,555 @@ var CHARTCONFIG = {
     splitLineColor: 'rgba(0,0,0,.05)',
     splitAreaColor: ['rgba(250,250,250,0.035)', 'rgba(200,200,200,0.1)'],
 };
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-edit/analytics-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  analytics-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-edit/analytics-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-edit/analytics-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AnalyticsEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AnalyticsEditComponent = (function () {
+    function AnalyticsEditComponent() {
+    }
+    AnalyticsEditComponent.prototype.ngOnInit = function () {
+    };
+    AnalyticsEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-analytics-edit',
+            template: __webpack_require__("../../../../../src/app/components/analytics/analytics-edit/analytics-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/analytics/analytics-edit/analytics-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], AnalyticsEditComponent);
+    return AnalyticsEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-list/analytics-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  analytics-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-list/analytics-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-list/analytics-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AnalyticsListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AnalyticsListComponent = (function () {
+    function AnalyticsListComponent() {
+    }
+    AnalyticsListComponent.prototype.ngOnInit = function () {
+    };
+    AnalyticsListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-analytics-list',
+            template: __webpack_require__("../../../../../src/app/components/analytics/analytics-list/analytics-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/analytics/analytics-list/analytics-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], AnalyticsListComponent);
+    return AnalyticsListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-new/analytics-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  analytics-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-new/analytics-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/analytics/analytics-new/analytics-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AnalyticsNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var AnalyticsNewComponent = (function () {
+    function AnalyticsNewComponent() {
+    }
+    AnalyticsNewComponent.prototype.ngOnInit = function () {
+    };
+    AnalyticsNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-analytics-new',
+            template: __webpack_require__("../../../../../src/app/components/analytics/analytics-new/analytics-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/analytics/analytics-new/analytics-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], AnalyticsNewComponent);
+    return AnalyticsNewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-edit/billing-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  billing-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-edit/billing-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-edit/billing-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BillingEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var BillingEditComponent = (function () {
+    function BillingEditComponent() {
+    }
+    BillingEditComponent.prototype.ngOnInit = function () {
+    };
+    BillingEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-billing-edit',
+            template: __webpack_require__("../../../../../src/app/components/billing/billing-edit/billing-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/billing/billing-edit/billing-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], BillingEditComponent);
+    return BillingEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-list/billing-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  billing-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-list/billing-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-list/billing-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BillingListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var BillingListComponent = (function () {
+    function BillingListComponent() {
+    }
+    BillingListComponent.prototype.ngOnInit = function () {
+    };
+    BillingListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-billing-list',
+            template: __webpack_require__("../../../../../src/app/components/billing/billing-list/billing-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/billing/billing-list/billing-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], BillingListComponent);
+    return BillingListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-new/billing-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  billing-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-new/billing-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/billing/billing-new/billing-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BillingNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var BillingNewComponent = (function () {
+    function BillingNewComponent() {
+    }
+    BillingNewComponent.prototype.ngOnInit = function () {
+    };
+    BillingNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-billing-new',
+            template: __webpack_require__("../../../../../src/app/components/billing/billing-new/billing-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/billing/billing-new/billing-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], BillingNewComponent);
+    return BillingNewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-edit/doc-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  doc-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-edit/doc-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-edit/doc-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DocEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var DocEditComponent = (function () {
+    function DocEditComponent() {
+    }
+    DocEditComponent.prototype.ngOnInit = function () {
+    };
+    DocEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-doc-edit',
+            template: __webpack_require__("../../../../../src/app/components/doc/doc-edit/doc-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/doc/doc-edit/doc-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], DocEditComponent);
+    return DocEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-list/doc-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  doc-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-list/doc-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-list/doc-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DocListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var DocListComponent = (function () {
+    function DocListComponent() {
+    }
+    DocListComponent.prototype.ngOnInit = function () {
+    };
+    DocListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-doc-list',
+            template: __webpack_require__("../../../../../src/app/components/doc/doc-list/doc-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/doc/doc-list/doc-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], DocListComponent);
+    return DocListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-new/doc-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  doc-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-new/doc-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/doc/doc-new/doc-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DocNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var DocNewComponent = (function () {
+    function DocNewComponent() {
+    }
+    DocNewComponent.prototype.ngOnInit = function () {
+    };
+    DocNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-doc-new',
+            template: __webpack_require__("../../../../../src/app/components/doc/doc-new/doc-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/doc/doc-new/doc-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], DocNewComponent);
+    return DocNewComponent;
+}());
+
 
 
 /***/ }),
@@ -486,6 +1137,189 @@ var EditProjectComponent = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/issues/issues-edit/issues-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  issues-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/issues/issues-edit/issues-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/issues/issues-edit/issues-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IssuesEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var IssuesEditComponent = (function () {
+    function IssuesEditComponent() {
+    }
+    IssuesEditComponent.prototype.ngOnInit = function () {
+    };
+    IssuesEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-issues-edit',
+            template: __webpack_require__("../../../../../src/app/components/issues/issues-edit/issues-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-edit/issues-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], IssuesEditComponent);
+    return IssuesEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/issues/issues-list/issues-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  issues-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/issues/issues-list/issues-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/issues/issues-list/issues-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IssuesListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var IssuesListComponent = (function () {
+    function IssuesListComponent() {
+    }
+    IssuesListComponent.prototype.ngOnInit = function () {
+    };
+    IssuesListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-issues-list',
+            template: __webpack_require__("../../../../../src/app/components/issues/issues-list/issues-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-list/issues-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], IssuesListComponent);
+    return IssuesListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/issues/issues-new/issues-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  issues-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/issues/issues-new/issues-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/issues/issues-new/issues-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IssuesNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var IssuesNewComponent = (function () {
+    function IssuesNewComponent() {
+    }
+    IssuesNewComponent.prototype.ngOnInit = function () {
+    };
+    IssuesNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-issues-new',
+            template: __webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], IssuesNewComponent);
+    return IssuesNewComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/jobs-list/jobs-list.component.html":
 /***/ (function(module, exports) {
 
@@ -575,6 +1409,189 @@ var JobslistComponent = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], JobslistComponent);
     return JobslistComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-edit/marketplace-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  marketplace-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-edit/marketplace-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-edit/marketplace-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MarketplaceEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MarketplaceEditComponent = (function () {
+    function MarketplaceEditComponent() {
+    }
+    MarketplaceEditComponent.prototype.ngOnInit = function () {
+    };
+    MarketplaceEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-marketplace-edit',
+            template: __webpack_require__("../../../../../src/app/components/marketplace/marketplace-edit/marketplace-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/marketplace/marketplace-edit/marketplace-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], MarketplaceEditComponent);
+    return MarketplaceEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-list/marketplace-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  marketplace-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-list/marketplace-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-list/marketplace-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MarketplaceListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MarketplaceListComponent = (function () {
+    function MarketplaceListComponent() {
+    }
+    MarketplaceListComponent.prototype.ngOnInit = function () {
+    };
+    MarketplaceListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-marketplace-list',
+            template: __webpack_require__("../../../../../src/app/components/marketplace/marketplace-list/marketplace-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/marketplace/marketplace-list/marketplace-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], MarketplaceListComponent);
+    return MarketplaceListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-new/marketplace-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  marketplace-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-new/marketplace-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/marketplace/marketplace-new/marketplace-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MarketplaceNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MarketplaceNewComponent = (function () {
+    function MarketplaceNewComponent() {
+    }
+    MarketplaceNewComponent.prototype.ngOnInit = function () {
+    };
+    MarketplaceNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-marketplace-new',
+            template: __webpack_require__("../../../../../src/app/components/marketplace/marketplace-new/marketplace-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/marketplace/marketplace-new/marketplace-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], MarketplaceNewComponent);
+    return MarketplaceNewComponent;
 }());
 
 
@@ -757,6 +1774,189 @@ var MessageListComponent = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/monitor/monitor-all/monitor-all.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  monitor-all works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/monitor/monitor-all/monitor-all.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/monitor/monitor-all/monitor-all.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MonitorAllComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MonitorAllComponent = (function () {
+    function MonitorAllComponent() {
+    }
+    MonitorAllComponent.prototype.ngOnInit = function () {
+    };
+    MonitorAllComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-monitor-all',
+            template: __webpack_require__("../../../../../src/app/components/monitor/monitor-all/monitor-all.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/monitor/monitor-all/monitor-all.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], MonitorAllComponent);
+    return MonitorAllComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/monitor/monitor-edit/monitor-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  monitor-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/monitor/monitor-edit/monitor-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/monitor/monitor-edit/monitor-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MonitorEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MonitorEditComponent = (function () {
+    function MonitorEditComponent() {
+    }
+    MonitorEditComponent.prototype.ngOnInit = function () {
+    };
+    MonitorEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-monitor-edit',
+            template: __webpack_require__("../../../../../src/app/components/monitor/monitor-edit/monitor-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/monitor/monitor-edit/monitor-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], MonitorEditComponent);
+    return MonitorEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/monitor/monitor-new/monitor-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  monitor-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/monitor/monitor-new/monitor-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/monitor/monitor-new/monitor-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MonitorNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MonitorNewComponent = (function () {
+    function MonitorNewComponent() {
+    }
+    MonitorNewComponent.prototype.ngOnInit = function () {
+    };
+    MonitorNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-monitor-new',
+            template: __webpack_require__("../../../../../src/app/components/monitor/monitor-new/monitor-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/monitor/monitor-new/monitor-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], MonitorNewComponent);
+    return MonitorNewComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/new-project/new-project.component.html":
 /***/ (function(module, exports) {
 
@@ -840,6 +2040,189 @@ var NewProjectComponent = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], NewProjectComponent);
     return NewProjectComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-edit/org-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  org-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-edit/org-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-edit/org-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrgEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var OrgEditComponent = (function () {
+    function OrgEditComponent() {
+    }
+    OrgEditComponent.prototype.ngOnInit = function () {
+    };
+    OrgEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-org-edit',
+            template: __webpack_require__("../../../../../src/app/components/org/org-edit/org-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/org/org-edit/org-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], OrgEditComponent);
+    return OrgEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-list/org-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  org-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-list/org-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-list/org-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrgListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var OrgListComponent = (function () {
+    function OrgListComponent() {
+    }
+    OrgListComponent.prototype.ngOnInit = function () {
+    };
+    OrgListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-org-list',
+            template: __webpack_require__("../../../../../src/app/components/org/org-list/org-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/org/org-list/org-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], OrgListComponent);
+    return OrgListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-new/org-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  org-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-new/org-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/org/org-new/org-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrgNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var OrgNewComponent = (function () {
+    function OrgNewComponent() {
+    }
+    OrgNewComponent.prototype.ngOnInit = function () {
+    };
+    OrgNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-org-new',
+            template: __webpack_require__("../../../../../src/app/components/org/org-new/org-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/org/org-new/org-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], OrgNewComponent);
+    return OrgNewComponent;
 }());
 
 
@@ -1222,6 +2605,799 @@ var RunListComponent = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
     ], RunListComponent);
     return RunListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-analytics/skills-analytics.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  skills-analytics works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-analytics/skills-analytics.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-analytics/skills-analytics.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillsAnalyticsComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SkillsAnalyticsComponent = (function () {
+    function SkillsAnalyticsComponent() {
+    }
+    SkillsAnalyticsComponent.prototype.ngOnInit = function () {
+    };
+    SkillsAnalyticsComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-skills-analytics',
+            template: __webpack_require__("../../../../../src/app/components/skills/skills-analytics/skills-analytics.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/skills/skills-analytics/skills-analytics.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SkillsAnalyticsComponent);
+    return SkillsAnalyticsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-bot-deployment/skills-bot-deployment.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  skills-bot-deployment works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-bot-deployment/skills-bot-deployment.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-bot-deployment/skills-bot-deployment.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillsBotDeploymentComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SkillsBotDeploymentComponent = (function () {
+    function SkillsBotDeploymentComponent() {
+    }
+    SkillsBotDeploymentComponent.prototype.ngOnInit = function () {
+    };
+    SkillsBotDeploymentComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-skills-bot-deployment',
+            template: __webpack_require__("../../../../../src/app/components/skills/skills-bot-deployment/skills-bot-deployment.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/skills/skills-bot-deployment/skills-bot-deployment.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SkillsBotDeploymentComponent);
+    return SkillsBotDeploymentComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-edit/skills-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  skills-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-edit/skills-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-edit/skills-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillsEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SkillsEditComponent = (function () {
+    function SkillsEditComponent() {
+    }
+    SkillsEditComponent.prototype.ngOnInit = function () {
+    };
+    SkillsEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-skills-edit',
+            template: __webpack_require__("../../../../../src/app/components/skills/skills-edit/skills-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/skills/skills-edit/skills-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SkillsEditComponent);
+    return SkillsEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-issue-tracker/skills-issue-tracker.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  skills-issue-tracker works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-issue-tracker/skills-issue-tracker.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-issue-tracker/skills-issue-tracker.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillsIssueTrackerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SkillsIssueTrackerComponent = (function () {
+    function SkillsIssueTrackerComponent() {
+    }
+    SkillsIssueTrackerComponent.prototype.ngOnInit = function () {
+    };
+    SkillsIssueTrackerComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-skills-issue-tracker',
+            template: __webpack_require__("../../../../../src/app/components/skills/skills-issue-tracker/skills-issue-tracker.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/skills/skills-issue-tracker/skills-issue-tracker.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SkillsIssueTrackerComponent);
+    return SkillsIssueTrackerComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-list/skills-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  skills-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-list/skills-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-list/skills-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillsListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SkillsListComponent = (function () {
+    function SkillsListComponent() {
+    }
+    SkillsListComponent.prototype.ngOnInit = function () {
+    };
+    SkillsListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-skills-list',
+            template: __webpack_require__("../../../../../src/app/components/skills/skills-list/skills-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/skills/skills-list/skills-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SkillsListComponent);
+    return SkillsListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-new/skills-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  skills-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-new/skills-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-new/skills-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillsNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SkillsNewComponent = (function () {
+    function SkillsNewComponent() {
+    }
+    SkillsNewComponent.prototype.ngOnInit = function () {
+    };
+    SkillsNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-skills-new',
+            template: __webpack_require__("../../../../../src/app/components/skills/skills-new/skills-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/skills/skills-new/skills-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SkillsNewComponent);
+    return SkillsNewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-version-control/skills-version-control.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  skills-version-control works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-version-control/skills-version-control.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/skills/skills-version-control/skills-version-control.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillsVersionControlComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SkillsVersionControlComponent = (function () {
+    function SkillsVersionControlComponent() {
+    }
+    SkillsVersionControlComponent.prototype.ngOnInit = function () {
+    };
+    SkillsVersionControlComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-skills-version-control',
+            template: __webpack_require__("../../../../../src/app/components/skills/skills-version-control/skills-version-control.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/skills/skills-version-control/skills-version-control.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SkillsVersionControlComponent);
+    return SkillsVersionControlComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-edit/support-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  support-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-edit/support-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-edit/support-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SupportEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SupportEditComponent = (function () {
+    function SupportEditComponent() {
+    }
+    SupportEditComponent.prototype.ngOnInit = function () {
+    };
+    SupportEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-support-edit',
+            template: __webpack_require__("../../../../../src/app/components/support/support-edit/support-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/support/support-edit/support-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SupportEditComponent);
+    return SupportEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-list/support-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  support-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-list/support-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-list/support-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SupportListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SupportListComponent = (function () {
+    function SupportListComponent() {
+    }
+    SupportListComponent.prototype.ngOnInit = function () {
+    };
+    SupportListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-support-list',
+            template: __webpack_require__("../../../../../src/app/components/support/support-list/support-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/support/support-list/support-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SupportListComponent);
+    return SupportListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-new/support-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  support-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-new/support-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/support/support-new/support-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SupportNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SupportNewComponent = (function () {
+    function SupportNewComponent() {
+    }
+    SupportNewComponent.prototype.ngOnInit = function () {
+    };
+    SupportNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-support-new',
+            template: __webpack_require__("../../../../../src/app/components/support/support-new/support-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/support/support-new/support-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SupportNewComponent);
+    return SupportNewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-edit/vault-edit.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  vault-edit works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-edit/vault-edit.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-edit/vault-edit.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VaultEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var VaultEditComponent = (function () {
+    function VaultEditComponent() {
+    }
+    VaultEditComponent.prototype.ngOnInit = function () {
+    };
+    VaultEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-vault-edit',
+            template: __webpack_require__("../../../../../src/app/components/vault/vault-edit/vault-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-edit/vault-edit.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], VaultEditComponent);
+    return VaultEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-list/vault-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  vault-list works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-list/vault-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-list/vault-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VaultListComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var VaultListComponent = (function () {
+    function VaultListComponent() {
+    }
+    VaultListComponent.prototype.ngOnInit = function () {
+    };
+    VaultListComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-vault-list',
+            template: __webpack_require__("../../../../../src/app/components/vault/vault-list/vault-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-list/vault-list.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], VaultListComponent);
+    return VaultListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-new/vault-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  vault-new works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-new/vault-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vault/vault-new/vault-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VaultNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var VaultNewComponent = (function () {
+    function VaultNewComponent() {
+    }
+    VaultNewComponent.prototype.ngOnInit = function () {
+    };
+    VaultNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-vault-new',
+            template: __webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], VaultNewComponent);
+    return VaultNewComponent;
 }());
 
 
@@ -1917,6 +4093,62 @@ var AppHeaderComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_regions_list_regions_list_component__ = __webpack_require__("../../../../../src/app/components/regions-list/regions-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_message_list_message_list_component__ = __webpack_require__("../../../../../src/app/components/message-list/message-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_message_detail_message_detail_component__ = __webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_issues_issues_list_issues_list_component__ = __webpack_require__("../../../../../src/app/components/issues/issues-list/issues-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_issues_issues_new_issues_new_component__ = __webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_issues_issues_edit_issues_edit_component__ = __webpack_require__("../../../../../src/app/components/issues/issues-edit/issues-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_marketplace_marketplace_list_marketplace_list_component__ = __webpack_require__("../../../../../src/app/components/marketplace/marketplace-list/marketplace-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_marketplace_marketplace_new_marketplace_new_component__ = __webpack_require__("../../../../../src/app/components/marketplace/marketplace-new/marketplace-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_marketplace_marketplace_edit_marketplace_edit_component__ = __webpack_require__("../../../../../src/app/components/marketplace/marketplace-edit/marketplace-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_monitor_monitor_all_monitor_all_component__ = __webpack_require__("../../../../../src/app/components/monitor/monitor-all/monitor-all.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_monitor_monitor_new_monitor_new_component__ = __webpack_require__("../../../../../src/app/components/monitor/monitor-new/monitor-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_monitor_monitor_edit_monitor_edit_component__ = __webpack_require__("../../../../../src/app/components/monitor/monitor-edit/monitor-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_doc_doc_list_doc_list_component__ = __webpack_require__("../../../../../src/app/components/doc/doc-list/doc-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_doc_doc_new_doc_new_component__ = __webpack_require__("../../../../../src/app/components/doc/doc-new/doc-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_doc_doc_edit_doc_edit_component__ = __webpack_require__("../../../../../src/app/components/doc/doc-edit/doc-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_support_support_list_support_list_component__ = __webpack_require__("../../../../../src/app/components/support/support-list/support-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_support_support_new_support_new_component__ = __webpack_require__("../../../../../src/app/components/support/support-new/support-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_support_support_edit_support_edit_component__ = __webpack_require__("../../../../../src/app/components/support/support-edit/support-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__components_analytics_analytics_list_analytics_list_component__ = __webpack_require__("../../../../../src/app/components/analytics/analytics-list/analytics-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__components_analytics_analytics_new_analytics_new_component__ = __webpack_require__("../../../../../src/app/components/analytics/analytics-new/analytics-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_analytics_analytics_edit_analytics_edit_component__ = __webpack_require__("../../../../../src/app/components/analytics/analytics-edit/analytics-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_billing_billing_list_billing_list_component__ = __webpack_require__("../../../../../src/app/components/billing/billing-list/billing-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_billing_billing_new_billing_new_component__ = __webpack_require__("../../../../../src/app/components/billing/billing-new/billing-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__components_billing_billing_edit_billing_edit_component__ = __webpack_require__("../../../../../src/app/components/billing/billing-edit/billing-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__components_org_org_list_org_list_component__ = __webpack_require__("../../../../../src/app/components/org/org-list/org-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__components_org_org_new_org_new_component__ = __webpack_require__("../../../../../src/app/components/org/org-new/org-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__components_org_org_edit_org_edit_component__ = __webpack_require__("../../../../../src/app/components/org/org-edit/org-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__components_skills_skills_version_control_skills_version_control_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-version-control/skills-version-control.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__components_skills_skills_bot_deployment_skills_bot_deployment_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-bot-deployment/skills-bot-deployment.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__components_skills_skills_issue_tracker_skills_issue_tracker_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-issue-tracker/skills-issue-tracker.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__components_skills_skills_analytics_skills_analytics_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-analytics/skills-analytics.component.ts");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1947,6 +4179,40 @@ var routes = [
             { path: 'messages', component: __WEBPACK_IMPORTED_MODULE_10__components_message_list_message_list_component__["a" /* MessageListComponent */] },
             { path: 'message/:id', component: __WEBPACK_IMPORTED_MODULE_11__components_message_detail_message_detail_component__["a" /* MessageDetailComponent */] },
             { path: 'regions', component: __WEBPACK_IMPORTED_MODULE_9__components_regions_list_regions_list_component__["a" /* RegionsListComponent */] },
+            { path: 'issues', component: __WEBPACK_IMPORTED_MODULE_12__components_issues_issues_list_issues_list_component__["a" /* IssuesListComponent */] },
+            { path: 'issues/new', component: __WEBPACK_IMPORTED_MODULE_13__components_issues_issues_new_issues_new_component__["a" /* IssuesNewComponent */] },
+            { path: 'issues/:id', component: __WEBPACK_IMPORTED_MODULE_14__components_issues_issues_edit_issues_edit_component__["a" /* IssuesEditComponent */] },
+            { path: 'marketplace', component: __WEBPACK_IMPORTED_MODULE_15__components_marketplace_marketplace_list_marketplace_list_component__["a" /* MarketplaceListComponent */] },
+            { path: 'marketplace/new', component: __WEBPACK_IMPORTED_MODULE_16__components_marketplace_marketplace_new_marketplace_new_component__["a" /* MarketplaceNewComponent */] },
+            { path: 'marketplace/:id', component: __WEBPACK_IMPORTED_MODULE_17__components_marketplace_marketplace_edit_marketplace_edit_component__["a" /* MarketplaceEditComponent */] },
+            { path: 'monitor', component: __WEBPACK_IMPORTED_MODULE_18__components_monitor_monitor_all_monitor_all_component__["a" /* MonitorAllComponent */] },
+            { path: 'monitor/new', component: __WEBPACK_IMPORTED_MODULE_19__components_monitor_monitor_new_monitor_new_component__["a" /* MonitorNewComponent */] },
+            { path: 'monitor/:id', component: __WEBPACK_IMPORTED_MODULE_20__components_monitor_monitor_edit_monitor_edit_component__["a" /* MonitorEditComponent */] },
+            { path: 'doc', component: __WEBPACK_IMPORTED_MODULE_21__components_doc_doc_list_doc_list_component__["a" /* DocListComponent */] },
+            { path: 'doc/new', component: __WEBPACK_IMPORTED_MODULE_22__components_doc_doc_new_doc_new_component__["a" /* DocNewComponent */] },
+            { path: 'doc/:id', component: __WEBPACK_IMPORTED_MODULE_23__components_doc_doc_edit_doc_edit_component__["a" /* DocEditComponent */] },
+            { path: 'support', component: __WEBPACK_IMPORTED_MODULE_24__components_support_support_list_support_list_component__["a" /* SupportListComponent */] },
+            { path: 'support/new', component: __WEBPACK_IMPORTED_MODULE_25__components_support_support_new_support_new_component__["a" /* SupportNewComponent */] },
+            { path: 'support/:id', component: __WEBPACK_IMPORTED_MODULE_26__components_support_support_edit_support_edit_component__["a" /* SupportEditComponent */] },
+            { path: 'analytics', component: __WEBPACK_IMPORTED_MODULE_27__components_analytics_analytics_list_analytics_list_component__["a" /* AnalyticsListComponent */] },
+            { path: 'analytics/new', component: __WEBPACK_IMPORTED_MODULE_28__components_analytics_analytics_new_analytics_new_component__["a" /* AnalyticsNewComponent */] },
+            { path: 'analytics/:id', component: __WEBPACK_IMPORTED_MODULE_29__components_analytics_analytics_edit_analytics_edit_component__["a" /* AnalyticsEditComponent */] },
+            { path: 'support', component: __WEBPACK_IMPORTED_MODULE_24__components_support_support_list_support_list_component__["a" /* SupportListComponent */] },
+            { path: 'support/new', component: __WEBPACK_IMPORTED_MODULE_25__components_support_support_new_support_new_component__["a" /* SupportNewComponent */] },
+            { path: 'support/:id', component: __WEBPACK_IMPORTED_MODULE_26__components_support_support_edit_support_edit_component__["a" /* SupportEditComponent */] },
+            { path: 'vault', component: __WEBPACK_IMPORTED_MODULE_12__components_issues_issues_list_issues_list_component__["a" /* IssuesListComponent */] },
+            { path: 'vault/new', component: __WEBPACK_IMPORTED_MODULE_13__components_issues_issues_new_issues_new_component__["a" /* IssuesNewComponent */] },
+            { path: 'vault/:id', component: __WEBPACK_IMPORTED_MODULE_14__components_issues_issues_edit_issues_edit_component__["a" /* IssuesEditComponent */] },
+            { path: 'billing', component: __WEBPACK_IMPORTED_MODULE_30__components_billing_billing_list_billing_list_component__["a" /* BillingListComponent */] },
+            { path: 'billing/new', component: __WEBPACK_IMPORTED_MODULE_31__components_billing_billing_new_billing_new_component__["a" /* BillingNewComponent */] },
+            { path: 'billing/:id', component: __WEBPACK_IMPORTED_MODULE_32__components_billing_billing_edit_billing_edit_component__["a" /* BillingEditComponent */] },
+            { path: 'org', component: __WEBPACK_IMPORTED_MODULE_33__components_org_org_list_org_list_component__["a" /* OrgListComponent */] },
+            { path: 'org/new', component: __WEBPACK_IMPORTED_MODULE_34__components_org_org_new_org_new_component__["a" /* OrgNewComponent */] },
+            { path: 'org/:id', component: __WEBPACK_IMPORTED_MODULE_35__components_org_org_edit_org_edit_component__["a" /* OrgEditComponent */] },
+            { path: 'skills/version-control', component: __WEBPACK_IMPORTED_MODULE_36__components_skills_skills_version_control_skills_version_control_component__["a" /* SkillsVersionControlComponent */] },
+            { path: 'skills/bot-deployment', component: __WEBPACK_IMPORTED_MODULE_37__components_skills_skills_bot_deployment_skills_bot_deployment_component__["a" /* SkillsBotDeploymentComponent */] },
+            { path: 'skills/issue-tracker', component: __WEBPACK_IMPORTED_MODULE_38__components_skills_skills_issue_tracker_skills_issue_tracker_component__["a" /* SkillsIssueTrackerComponent */] },
+            { path: 'skills/analytics', component: __WEBPACK_IMPORTED_MODULE_39__components_skills_skills_analytics_skills_analytics_component__["a" /* SkillsAnalyticsComponent */] },
         ]
     }
 ];
@@ -2544,7 +4810,7 @@ var HighlightActiveItemsDirective = (function () {
 /***/ "../../../../../src/app/layout/sidenav/sidenav-menu/sidenav-menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"nav\" myAccordionNav myAppendSubmenuIcon mySlimScroll myHighlightActiveItems>\n  <!-- <li class=\"nav-header\"><span>Navigation</span></li> -->\n  <!-- <li><a mat-button [routerLink]=\"['/app/dashboard']\"><i class=\"nav-icon material-icons\">home</i><span class=\"nav-text\">Dashboard</span></a></li> -->\n  <!-- <li><a mat-button href=\"javascript:;\" myToggleQuickview=\"customizer\"><i class=\"nav-icon material-icons\">settings</i><span class=\"nav-text\">Customizer</span></a></li> -->\n\n  <br/>\n  <li><a mat-button [routerLink]=\"['/app/dashboard']\"><i class=\"nav-icon material-icons\">home</i><span class=\"nav-text\">Dashboard</span></a></li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/projects']\"><i class=\"nav-icon material-icons\">code</i><span class=\"nav-text\">Projects</span></a>\n  </li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/jobs']\"><i class=\"nav-icon material-icons\">alarm</i><span class=\"nav-text\">Jobs</span></a>\n  </li>\n\n  \n  <!-- <li>\n    <a mat-button href=\"#/app/ui\"><i class=\"nav-icon material-icons\">bubble_chart</i><span class=\"nav-text\">UI Kit</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/typography']\"><span>Typography</span></a></li>\n     <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/buttons']\"><span>Buttons</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/icons']\"><span>Icons</span><span class=\"badge badge-pill badge-info\">2</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/cards']\"><span>Cards</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/icon-boxes']\"><span>Icon Boxes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/components']\"><span>Components</span><span class=\"badge badge-pill badge-danger\">12</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/hover']\"><span>Hover</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/feature-callouts']\"><span>Feature Callouts</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/lists']\"><span>Lists</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/sashes']\"><span>Sashes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/testimonials']\"><span>Testimonials</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/pricing-tables']\"><span>Pricing Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/call-to-actions']\"><span>Call to Actions</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/timeline']\"><span>Timeline</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/boxes']\"><span>Boxes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/grids']\"><span>Grids</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/color']\"><span>Color</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/form\"><i class=\"nav-icon material-icons\">format_color_text</i><span class=\"nav-text\">Forms</span></a>\n    <ul> -->\n      <!-- <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/input']\"><span>Input</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/checkbox']\"><span>Checkbox</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/radio-button']\"><span>Radio Button</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/chips']\"><span>Chips</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/select']\"><span>Select</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/slide-toggle']\"><span>Slide Toggle</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/slider']\"><span>Slider</span></a></li> -->\n      <!-- <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/components']\"><span>Components</span><span class=\"badge badge-pill badge-info\">10</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/layouts']\"><span>Form Layouts</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/validation']\"><span>Form Validation</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/table\"><i class=\"nav-icon material-icons\">list</i><span class=\"nav-text\">Tables</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/static']\"><span>Static Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/responsive']\"><span>Responsive Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/data-table']\"><span>Data Tables</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/chart\"><i class=\"nav-icon material-icons\">equalizer</i><span class=\"nav-text\">Charts</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/line']\">Line &amp; Area</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/bar']\">Bar</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/pie']\">Pie</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/scatter']\">Scatter</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/radar']\">Radar</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/funnel']\">Funnel</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/more']\">More</a></li>\n    </ul>\n  </li> -->\n  <li class=\"nav-divider\"></li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/regions']\"><i class=\"nav-icon material-icons\">cloud_queue</i><span class=\"nav-text\">Regions</span></a>\n  </li>\n  <!-- <li>\n    <a mat-button href=\"#/app/page\"><i class=\"nav-icon material-icons\">content_copy</i><span class=\"nav-text\">Pages</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/about']\">About</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/services']\">Services</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/contact']\">Contact</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/careers']\">Careers</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/blog']\">Blog</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/faqs']\">FAQs</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/terms']\">Terms of Service</a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/extra\"><i class=\"nav-icon material-icons\">more_horiz</i><span class=\"nav-text\">Extra Pages</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/login']\"><span>Login</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/sign-up']\"><span>Sign Up</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/forgot-password']\"><span>Forgot Password</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/confirm-email']\"><span>Confirm Email</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/lock-screen']\"><span>Lock Screen</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/404']\"><span>404 Error</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/500']\"><span>500 Error</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/maintenance']\"><span>Maintenance</span></a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/app/pglayout\"><i class=\"nav-icon material-icons\">view_array</i><span class=\"nav-text\">Page Layouts</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/full-width']\"><span>Full Width</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/centered']\"><span>Centered</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/fullscreen']\"><span>Fullscreen</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/with-tabs']\"><span>With Tabs</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/ecommerce\"><i class=\"nav-icon material-icons\">shopping_cart</i><span class=\"nav-text\">eCommerce</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/products']\"><span>Products</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/horizontal-products']\"><span>Products (Horizontal)</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/invoice']\"><span>Invoice</span></a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/app/menu\"><i class=\"nav-icon material-icons\">sort</i><span class=\"nav-text\">Menu Levels</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" href=\"javascript:;\"><span>Level 1</span></a></li>\n      <li>\n        <a mat-button class=\"md-button prepend-icon\" href=\"javascript:;\"><span>Level 1</span></a>\n        <ul>\n          <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 2</span></a></li>\n          <li>\n            <a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 2</span></a>\n            <ul>\n              <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 3</span></a></li>\n              <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 3</span></a></li>\n            </ul>\n          </li>\n        </ul>\n      </li>\n    </ul>\n  </li>\n  <li class=\"nav-divider\"></li>\n  <li class=\"li-small\"><a mat-button [routerLink]=\"['/app/form/components']\"><i class=\"nav-icon nav-dot material-icons color-info\">fiber_manual_record</i><span class=\"nav-text\">Form Components</span></a></li>\n  <li class=\"li-small\"><a mat-button [routerLink]=\"['/app/ui/components']\"><i class=\"nav-icon nav-dot material-icons color-success\">fiber_manual_record</i><span class=\"nav-text\">UI Components</span></a></li>\n  <li class=\"li-small\"><a mat-button href=\"http://iarouse.com/dist-angular-material/landing/\" target=\"_blank\"><i class=\"nav-icon nav-dot material-icons color-danger\">fiber_manual_record</i><span class=\"nav-text\">Material Landing</span></a></li> -->\n</ul>\n"
+module.exports = "<ul class=\"nav\" myAccordionNav myAppendSubmenuIcon mySlimScroll myHighlightActiveItems>\n  <!-- <li class=\"nav-header\"><span>Navigation</span></li> -->\n  <!-- <li><a mat-button [routerLink]=\"['/app/dashboard']\"><i class=\"nav-icon material-icons\">home</i><span class=\"nav-text\">Dashboard</span></a></li> -->\n  <!-- <li><a mat-button href=\"javascript:;\" myToggleQuickview=\"customizer\"><i class=\"nav-icon material-icons\">settings</i><span class=\"nav-text\">Customizer</span></a></li> -->\n\n  <br/>\n  <li><a mat-button [routerLink]=\"['/app/dashboard']\"><i class=\"nav-icon material-icons\">home</i><span class=\"nav-text\">Dashboard</span></a></li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/projects']\"><i class=\"nav-icon material-icons\">code</i><span class=\"nav-text\">Projects</span></a>\n  </li>\n  <li>\n    <a mat-button [routerLink]=\"['/app/jobs']\"><i class=\"nav-icon material-icons\">alarm</i><span class=\"nav-text\">Jobs</span></a>\n  </li>\n\n  \n  <!-- <li>\n    <a mat-button href=\"#/app/ui\"><i class=\"nav-icon material-icons\">bubble_chart</i><span class=\"nav-text\">UI Kit</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/typography']\"><span>Typography</span></a></li>\n     <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/buttons']\"><span>Buttons</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/icons']\"><span>Icons</span><span class=\"badge badge-pill badge-info\">2</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/cards']\"><span>Cards</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/icon-boxes']\"><span>Icon Boxes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/components']\"><span>Components</span><span class=\"badge badge-pill badge-danger\">12</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/hover']\"><span>Hover</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/feature-callouts']\"><span>Feature Callouts</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/lists']\"><span>Lists</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/sashes']\"><span>Sashes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/testimonials']\"><span>Testimonials</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/pricing-tables']\"><span>Pricing Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/call-to-actions']\"><span>Call to Actions</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/timeline']\"><span>Timeline</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/boxes']\"><span>Boxes</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/grids']\"><span>Grids</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ui/color']\"><span>Color</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/form\"><i class=\"nav-icon material-icons\">format_color_text</i><span class=\"nav-text\">Forms</span></a>\n    <ul> -->\n      <!-- <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/input']\"><span>Input</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/checkbox']\"><span>Checkbox</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/radio-button']\"><span>Radio Button</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/chips']\"><span>Chips</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/select']\"><span>Select</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/slide-toggle']\"><span>Slide Toggle</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/slider']\"><span>Slider</span></a></li> -->\n      <!-- <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/components']\"><span>Components</span><span class=\"badge badge-pill badge-info\">10</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/layouts']\"><span>Form Layouts</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/form/validation']\"><span>Form Validation</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/table\"><i class=\"nav-icon material-icons\">list</i><span class=\"nav-text\">Tables</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/static']\"><span>Static Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/responsive']\"><span>Responsive Tables</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/table/data-table']\"><span>Data Tables</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/chart\"><i class=\"nav-icon material-icons\">equalizer</i><span class=\"nav-text\">Charts</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/line']\">Line &amp; Area</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/bar']\">Bar</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/pie']\">Pie</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/scatter']\">Scatter</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/radar']\">Radar</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/funnel']\">Funnel</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/chart/more']\">More</a></li>\n    </ul>\n  </li> -->\n  <li class=\"nav-divider\"></li>\n  <li>\n    <a mat-button href=\"#/extra\"><i class=\"nav-icon material-icons\">apps</i><span class=\"nav-text\">Services</span></a>\n    <ul>\n      <li><a mat-button [routerLink]=\"['/app/regions']\"><i class=\"nav-icon material-icons\">cloud_queue</i>&nbsp; &nbsp; <span class=\"nav-text\">  Bot Hub</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/issues']\"><i class=\"nav-icon material-icons\">report_problem</i>&nbsp; &nbsp; <span class=\"nav-text\">  Issue-Tracker Hub</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/marketplace']\"><i class=\"nav-icon material-icons\">shopping_cart</i>&nbsp; &nbsp; <span class=\"nav-text\">  Marketplace</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/monitor']\"><i class=\"nav-icon material-icons\">favorite_border</i>&nbsp; &nbsp; <span class=\"nav-text\">  Monitoring Hub</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/doc']\"><i class=\"nav-icon material-icons\">folder_open</i>&nbsp; &nbsp; <span class=\"nav-text\">  Doc Hub</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/support']\"><i class=\"nav-icon material-icons\">help_outline</i>&nbsp; &nbsp; <span class=\"nav-text\">  Support Hub</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/analytics']\"><i class=\"nav-icon material-icons\">dashboard</i>&nbsp; &nbsp; <span class=\"nav-text\">  Analytics Hub</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/vault']\"><i class=\"nav-icon material-icons\">security</i>&nbsp; &nbsp; <span class=\"nav-text\">  Vault</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/billing']\"><i class=\"nav-icon material-icons\">attach_money</i>&nbsp; &nbsp; <span class=\"nav-text\">  Billing Hub</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/org']\"><i class=\"nav-icon material-icons\">account_circle</i>&nbsp; &nbsp; <span class=\"nav-text\">  Org Management</span></a></li>\n\n    </ul>\n  </li>\n\n  <li class=\"nav-divider\"></li>\n  <li>\n    <a mat-button href=\"#/code\"><i class=\"nav-icon material-icons\">code</i><span class=\"nav-text\">Developer Zone</span></a>\n    <ul>\n      <li><a mat-button [routerLink]=\"['/app/skills/version-control']\"><i class=\"nav-icon material-icons\">code</i>&nbsp; &nbsp; <span class=\"nav-text\">  Version-Control Skills</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/skills/bot-deployment']\"><i class=\"nav-icon material-icons\">code</i>&nbsp; &nbsp; <span class=\"nav-text\">  Bot Deployment Skills</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/skills/issue-tracker']\"><i class=\"nav-icon material-icons\">code</i>&nbsp; &nbsp; <span class=\"nav-text\">  Issue-Tracker Skills</span></a></li>\n      <li><a mat-button [routerLink]=\"['/app/skills/analytics']\"><i class=\"nav-icon material-icons\">code</i>&nbsp; &nbsp; <span class=\"nav-text\">  Analytics Skills</span></a></li>\n    </ul>\n  </li>\n\n\n  <!-- <li>\n    <a mat-button href=\"#/app/page\"><i class=\"nav-icon material-icons\">content_copy</i><span class=\"nav-text\">Pages</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/about']\">About</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/services']\">Services</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/contact']\">Contact</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/careers']\">Careers</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/blog']\">Blog</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/faqs']\">FAQs</a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/page/terms']\">Terms of Service</a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/extra\"><i class=\"nav-icon material-icons\">more_horiz</i><span class=\"nav-text\">Extra Pages</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/login']\"><span>Login</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/sign-up']\"><span>Sign Up</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/forgot-password']\"><span>Forgot Password</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/confirm-email']\"><span>Confirm Email</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/lock-screen']\"><span>Lock Screen</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/404']\"><span>404 Error</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/500']\"><span>500 Error</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/extra/maintenance']\"><span>Maintenance</span></a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/app/pglayout\"><i class=\"nav-icon material-icons\">view_array</i><span class=\"nav-text\">Page Layouts</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/full-width']\"><span>Full Width</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/centered']\"><span>Centered</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/fullscreen']\"><span>Fullscreen</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/pglayout/with-tabs']\"><span>With Tabs</span></a></li>\n    </ul>\n  </li> -->\n  <!-- <li>\n    <a mat-button href=\"#/app/ecommerce\"><i class=\"nav-icon material-icons\">shopping_cart</i><span class=\"nav-text\">eCommerce</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/products']\"><span>Products</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/horizontal-products']\"><span>Products (Horizontal)</span></a></li>\n      <li><a mat-button class=\"md-button prepend-icon\" [routerLink]=\"['/app/ecommerce/invoice']\"><span>Invoice</span></a></li>\n    </ul>\n  </li>\n  <li>\n    <a mat-button href=\"#/app/menu\"><i class=\"nav-icon material-icons\">sort</i><span class=\"nav-text\">Menu Levels</span></a>\n    <ul>\n      <li><a mat-button class=\"md-button prepend-icon\" href=\"javascript:;\"><span>Level 1</span></a></li>\n      <li>\n        <a mat-button class=\"md-button prepend-icon\" href=\"javascript:;\"><span>Level 1</span></a>\n        <ul>\n          <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 2</span></a></li>\n          <li>\n            <a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 2</span></a>\n            <ul>\n              <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 3</span></a></li>\n              <li><a mat-button class=\"md-button\" href=\"javascript:;\"><span>Level 3</span></a></li>\n            </ul>\n          </li>\n        </ul>\n      </li>\n    </ul>\n  </li>\n  <li class=\"nav-divider\"></li>\n  <li class=\"li-small\"><a mat-button [routerLink]=\"['/app/form/components']\"><i class=\"nav-icon nav-dot material-icons color-info\">fiber_manual_record</i><span class=\"nav-text\">Form Components</span></a></li>\n  <li class=\"li-small\"><a mat-button [routerLink]=\"['/app/ui/components']\"><i class=\"nav-icon nav-dot material-icons color-success\">fiber_manual_record</i><span class=\"nav-text\">UI Components</span></a></li>\n  <li class=\"li-small\"><a mat-button href=\"http://iarouse.com/dist-angular-material/landing/\" target=\"_blank\"><i class=\"nav-icon nav-dot material-icons color-danger\">fiber_manual_record</i><span class=\"nav-text\">Material Landing</span></a></li> -->\n</ul>\n"
 
 /***/ }),
 
