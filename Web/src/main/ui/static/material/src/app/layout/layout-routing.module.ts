@@ -95,9 +95,9 @@ const routes: Routes = [
       { path: 'support/new', component: SupportNewComponent },
       { path: 'support/:id', component: SupportEditComponent },
 
-      { path: 'vault', component: IssuesListComponent },
-      { path: 'vault/new', component: IssuesNewComponent },
-      { path: 'vault/:id', component: IssuesEditComponent },
+      { path: 'vault', component: VaultListComponent },
+      { path: 'vault/new', component: VaultNewComponent },
+      { path: 'vault/:id', component: VaultEditComponent },
 
       { path: 'billing', component: BillingListComponent },
       { path: 'billing/new', component: BillingNewComponent },
