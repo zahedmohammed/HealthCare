@@ -202,4 +202,62 @@ public class AmqpConfig {
     MessageListenerAdapter listenerAdapter(Receiver receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
+
+    // ITaaS-Queue
+
+    // GaaS-Response-Queue
+    @Bean(name = "iTaaSResponseQueue")
+    public Queue iTaaSResponseQueue(@Value("${fx.itaas.response.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding iTaaSResponseQueueBinding(@Value("${fx.itaas.response.queue.routingkey}") String routingKey, @Qualifier("iTaaSResponseQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    @Bean
+    SimpleMessageListenerContainer iTaaSContainer(ConnectionFactory connectionFactory,
+                                                 MessageListenerAdapter listenerAdapter,
+                                                 @Value("${fx.itaas.response.queue}") String queueName) {
+
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(queueName);
+        container.setConcurrentConsumers(10);
+        container.setMaxConcurrentConsumers(10);
+        container.setDefaultRequeueRejected(false);
+        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
+    // -- IT Github
+    @Bean(name = "iTaaSGithubQueue")
+    public Queue iTaaSGitHubQueue(@Value("${fx.itaas.github.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding iTaaSGitHubQueueBinding(@Value("${fx.itaas.github.queue.routingkey}") String routingKey, @Qualifier("iTaaSGithubQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- IT Jira
+    @Bean(name = "iTaaSJiraQueue")
+    public Queue iTaaSJiraQueue(@Value("${fx.itaas.jira.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding iTaaSJiraQueueBinding(@Value("${fx.itaas.jira.queue.routingkey}") String routingKey, @Qualifier("iTaaSJiraQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+
 }
