@@ -32,6 +32,6 @@ public interface IssueTrackerService {
      *      2. logs - execution or error logs.
      *  </p>
      */
-    ITTaskResponse process(Task task);
+    ITTaskResponse process(ITTask task);
 }
 

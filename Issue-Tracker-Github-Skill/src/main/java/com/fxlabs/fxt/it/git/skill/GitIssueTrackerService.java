@@ -1,19 +1,11 @@
 package com.fxlabs.fxt.it.git.skill;
 
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
+import com.fxlabs.fxt.it.skill.services.ITTask;
 import com.fxlabs.fxt.it.skill.services.IssueTrackerService;
-import com.fxlabs.fxt.it.skill.services.Task;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Label;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.IssueService;
-import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -60,7 +52,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
      *  </p>
      */
     @Override
-    public ITTaskResponse process(final Task task) {
+    public ITTaskResponse process(final ITTask task) {
 
         ITTaskResponse response = new ITTaskResponse();
 

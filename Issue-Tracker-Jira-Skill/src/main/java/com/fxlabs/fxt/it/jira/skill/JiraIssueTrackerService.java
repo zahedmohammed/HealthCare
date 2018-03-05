@@ -2,8 +2,7 @@ package com.fxlabs.fxt.it.jira.skill;
 
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.it.skill.services.IssueTrackerService;
-import com.fxlabs.fxt.it.skill.services.Task;
-import org.eclipse.jgit.lib.Repository;
+import com.fxlabs.fxt.it.skill.services.ITTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -44,7 +43,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
      *  </p>
      */
     @Override
-    public ITTaskResponse process(final Task task) {
+    public ITTaskResponse process(final ITTask task) {
 
         ITTaskResponse response = new ITTaskResponse();
 
