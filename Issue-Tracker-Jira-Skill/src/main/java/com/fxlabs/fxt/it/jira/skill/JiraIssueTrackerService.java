@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.it.git.skill;
+package com.fxlabs.fxt.it.jira.skill;
 
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.it.skill.services.IssueTrackerService;
