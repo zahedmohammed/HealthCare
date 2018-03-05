@@ -22,6 +22,8 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String SYSTEM_SETTING_BASE = API_BASE + "/system-settings";
     public static final String ALERT_BASE = API_BASE + "/alerts";
     public static final String CLUSTER_BASE = API_BASE + "/clusters";
+    public static final String SKILLS_BASE = API_BASE + "/skills";
+    public static final String SUBSCRIPTION_BASE = API_BASE + "/subscriptions";
 
 
     public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
