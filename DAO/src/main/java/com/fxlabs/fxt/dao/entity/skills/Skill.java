@@ -33,6 +33,7 @@ public class Skill extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SkillType skillType;
 
+    @Column(name = "_key")
     private String key;
 
     @ElementCollection

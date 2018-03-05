@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
@@ -18,8 +19,10 @@ import javax.persistence.Embeddable;
 @EqualsAndHashCode(callSuper = false)
 public class Opt {
 
-    private Integer id;
+    @Column(name = "_order")
+    private Integer order;
     private String label;
+    @Column(name = "_value")
     private String value;
     private Boolean mandatory = false;
 
