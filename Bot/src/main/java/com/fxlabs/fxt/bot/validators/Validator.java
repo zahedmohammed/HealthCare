@@ -12,19 +12,21 @@ public abstract class Validator {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    abstract void validate(String operand1, String operand2, Context context, String assertion);
+    abstract void validate(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs);
 
-    protected void validationPass(String operand1, String operand2, Context context, String assertion) {
+    protected void validationPass(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
         context.setResult("pass");
-        logger.info(String.format("Assertion [{}] passed, expected [{}] and found to [{}]", assertion, operand2, operand1));
-        context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(),
-                String.format("Assertion [%s] passed, expected [%s] and found [%s]", assertion, operand2, operand1));
+        String msg = String.format("Assertion [%s] passed, expected [%s] and found [%s]", assertion, operand2, operand1);
+        logger.info(msg);
+        context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
+        assertionLogs.append(msg);
     }
 
-    protected void validationFailed(String operand1, String operand2, Context context, String assertion) {
+    protected void validationFailed(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
         context.setResult("fail");
-        logger.info(String.format("Assertion [{}] failed, expected value [{}] but found [{}]", assertion, operand2, operand1));
-        context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(),
-                String.format("Assertion [%s] failed, expected [%s] but found [%s]", assertion, operand2, operand1));
+        String msg = String.format("Assertion [{}] failed, expected value [{}] but found [{}]", assertion, operand2, operand1);
+        logger.info(msg);
+        context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), msg);
+        assertionLogs.append(msg);
     }
 }

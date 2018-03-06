@@ -1,17 +1,17 @@
 package com.fxlabs.fxt.services.amqp.reciever;
 
 import com.fxlabs.fxt.dto.clusters.ClusterPing;
+import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.Suite;
-import com.fxlabs.fxt.services.processors.receiver.ClusterPingTaskResponseProcessor;
-import com.fxlabs.fxt.services.processors.receiver.GitTaskResponseProcessor;
-import com.fxlabs.fxt.services.processors.receiver.RunTaskResponseProcessor;
-import com.fxlabs.fxt.services.processors.receiver.SuiteResponseProcessor;
+import com.fxlabs.fxt.services.processors.receiver.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -33,24 +33,32 @@ public class Receiver {
     @Autowired
     private ClusterPingTaskResponseProcessor clusterPingTaskResponseProcessor;
 
+    @Autowired
+    private TestCaseResponseProcessor testCaseResponseProcessor;
+
     public void receiveMessage(BotTask task) {
-        logger.info("Received Task [{}]", task.getId());
+        logger.info("Received BotTask [{}]", task.getId());
         processor.process(task);
     }
 
     public void receiveMessage(VCTaskResponse task) {
-        logger.info("Received Task [{}]", task.getProjectId());
+        logger.info("Received VCTaskResponse [{}]", task.getProjectId());
         taskResponseProcessor.process(task);
     }
 
     public void receiveMessage(ClusterPing task) {
-        logger.info("Received Task [{}]", task.getBotId());
+        logger.info("Received ClusterPing [{}]", task.getBotId());
         clusterPingTaskResponseProcessor.process(task);
     }
 
     public void receiveMessage(Suite suite) {
         logger.info("Received Suite [{}]", suite.getSuiteName());
         suiteResponseProcessor.process(suite);
+    }
+
+    public void receiveMessage(List<TestCaseResponse> testCaseResponses) {
+        logger.info("Received TestCaseResponse count [{}]", testCaseResponses.size());
+        testCaseResponseProcessor.process(testCaseResponses);
     }
 
 

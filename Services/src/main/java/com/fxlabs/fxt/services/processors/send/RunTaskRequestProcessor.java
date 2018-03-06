@@ -111,6 +111,12 @@ public class RunTaskRequestProcessor {
                     list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
                 }
 
+                boolean generateTestCaseResponse = !StringUtils.isEmpty(run.getJob().getIssueTracker());
+                String _project = run.getJob().getProject().getName();
+                String _job = run.getJob().getName();
+                String _env = run.getJob().getEnvironment();
+                String _region = run.getJob().getRegions();
+
                 AtomicLong total = new AtomicLong(0);
 
                 list.parallel().forEach(testSuite -> {
@@ -125,8 +131,13 @@ public class RunTaskRequestProcessor {
 
                         BotTask task = new BotTask();
                         task.setId(run.getId());
+                        task.setProject(_project);
+                        task.setJob(_job);
+                        task.setEnv(_env);
+                        task.setRegion(_region);
                         task.setSuiteName(testSuite.getName());
                         task.setProjectDataSetId(testSuite.getId());
+                        task.setGenerateTestCaseResponse(generateTestCaseResponse);
 
                         task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
 

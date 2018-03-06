@@ -73,7 +73,7 @@ public class ValidatorDelegate {
     @Autowired
     protected OperandEvaluator evaluator;
 
-    public void validate(String assertion, Context context) {
+    public void validate(String assertion, Context context, StringBuilder assertionLogs) {
         //logger.info("Validating assertion [{}]", assertion);
         String[] tokens = StringUtils.split(assertion, " ");
 
@@ -91,43 +91,43 @@ public class ValidatorDelegate {
 
             switch (OPERATOR) {
                 case "==":
-                    equalsValidator.validate(operand1, operand2, context, assertion);
+                    equalsValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "==IgnoreCase":
-                    equalsIgnoreCaseValidator.validate(operand1, operand2, context, assertion);
+                    equalsIgnoreCaseValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "!=":
-                    notEqualsValidator.validate(operand1, operand2, context, assertion);
+                    notEqualsValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case ">":
-                    greaterValidator.validate(operand1, operand2, context, assertion);
+                    greaterValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case ">=":
-                    greaterAndEqualsValidator.validate(operand1, operand2, context, assertion);
+                    greaterAndEqualsValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "<":
-                    lesserValidator.validate(operand1, operand2, context, assertion);
+                    lesserValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "<=":
-                    lesserAndEqualsValidator.validate(operand1, operand2, context, assertion);
+                    lesserAndEqualsValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "=~":
-                    regexValidator.validate(operand1, operand2, context, assertion);
+                    regexValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "!=~":
-                    notRegexValidator.validate(operand1, operand2, context, assertion);
+                    notRegexValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "startsWith":
-                    startsWithValidator.validate(operand1, operand2, context, assertion);
+                    startsWithValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "startsWithIgnoreCase":
-                    startsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion);
+                    startsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "endsWith":
-                    endsWithValidator.validate(operand1, operand2, context, assertion);
+                    endsWithValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 case "endsWithIgnoreCase":
-                    endsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion);
+                    endsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 default:
                     skipAssertion(context, assertion);

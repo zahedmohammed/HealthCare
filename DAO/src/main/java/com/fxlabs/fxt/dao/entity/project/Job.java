@@ -43,6 +43,8 @@ public class Job extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date nextFire;
 
+    private String issueTracker;
+
     @PrePersist
     @PreUpdate
     public void preCreate() {

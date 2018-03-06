@@ -36,6 +36,8 @@ public class Job extends BaseDto<String> {
 
     private Date nextFire;
 
+    private String issueTracker;
+
 
 }
 

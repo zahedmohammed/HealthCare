@@ -20,12 +20,12 @@ public class AssertionValidator {
     @Autowired
     protected ValidatorDelegate delegate;
 
-    public void validate(List<String> assertions, Context context) {
+    public void validate(List<String> assertions, Context context, StringBuilder assertionLogs) {
         if (CollectionUtils.isEmpty(assertions)) {
             return;
         }
         assertions.parallelStream().forEach(assertion -> {
-            delegate.validate(assertion, context);
+            delegate.validate(assertion, context, assertionLogs);
         });
     }
 }

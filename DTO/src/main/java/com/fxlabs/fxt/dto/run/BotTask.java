@@ -25,6 +25,11 @@ public class BotTask implements Serializable {
 
     private String id;
     private String projectDataSetId;
+    private String project;
+    private String job;
+    private String env;
+    private String region;
+
     private String suiteName;
     private String endpoint;
     private HttpMethod method;
@@ -58,5 +63,7 @@ public class BotTask implements Serializable {
     private List<BotTask> cleanup = new ArrayList<>();
 
     private Policies policies;
+
+    private boolean generateTestCaseResponse;
 
 }

@@ -32,6 +32,8 @@ public class Job implements Serializable {
     private String cron;
     private Date nextFire;
 
+    private String issueTracker;
+
     private boolean inactive;
 
 

@@ -8,6 +8,7 @@ import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.dto.project.TestCase;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.Suite;
+import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -20,8 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -103,6 +106,9 @@ public class RestProcessor {
 
         BotTask completeTask = new BotTask();
         final Suite suite = new Suite();
+        List<TestCaseResponse> testCaseResponses = new ArrayList<>();
+        boolean generateTestCases = task.isGenerateTestCaseResponse();
+
         AtomicLong totalFailed = new AtomicLong(0L);
         AtomicLong totalPassed = new AtomicLong(0L);
         AtomicLong totalTime = new AtomicLong(0L);
@@ -212,7 +218,8 @@ public class RestProcessor {
                 // validate assertions
                 context.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
 
-                assertionValidator.validate(task.getAssertions(), context);
+                StringBuilder assertionLogs = new StringBuilder();
+                assertionValidator.validate(task.getAssertions(), context, assertionLogs);
 
                 //validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
 
@@ -256,6 +263,28 @@ public class RestProcessor {
 
                 // return processed task
                 //sender.sendTask(newTask);
+
+                // Test-Cases Responses
+                if (generateTestCases) {
+                    TestCaseResponse tc = new TestCaseResponse();
+                    tc.setProject(task.getProject());
+                    tc.setJob(task.getJob());
+                    tc.setEnv(task.getEnv());
+                    tc.setRegion(task.getRegion());
+                    tc.setSuite(task.getSuiteName());
+                    tc.setTestCase(String.valueOf(testCase.getId()));
+                    tc.setEndpointEval(url);
+                    tc.setRequestEval(req);
+                    tc.setResponse(response.getBody());
+                    tc.setStatusCode(String.valueOf(response.getStatusCodeValue()));
+                    tc.setResult(context.getResult());
+                    tc.setTime(time);
+                    tc.setSize(size);
+                    tc.setHeaders(response.getHeaders().toString());
+                    tc.setLogs(assertionLogs.toString());
+                    // TODO - Assertions
+                    testCaseResponses.add(tc);
+                }
 
             });
 
@@ -303,6 +332,10 @@ public class RestProcessor {
         suite.setSize(totalSize.get());
         suite.setTime(totalTime.get());
         this.sender.sendTask(suite);
+
+        if (generateTestCases) {
+            this.sender.sendTestCases(testCaseResponses);
+        }
 
         return completeTask;
     }

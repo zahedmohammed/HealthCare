@@ -349,6 +349,7 @@ public class FxCommandService {
                     old.setName(job.getName());
                     old.setRegions(job.getRegions());
                     old.setCron(job.getCron());
+                    job.setIssueTracker(job.getIssueTracker());
                     old.setInactive(job.isInactive());
                     found = true;
                     break;
@@ -415,6 +416,7 @@ public class FxCommandService {
 
             job.setRegions(jobProfile.getRegions());
             job.setCron(jobProfile.getCron());
+            job.setIssueTracker(jobProfile.getIssueTracker());
             job.setInactive(jobProfile.isInactive());
             ProjectMinimalDto proj = new ProjectMinimalDto();
             proj.setId(projectId);
