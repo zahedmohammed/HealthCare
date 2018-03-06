@@ -6,6 +6,7 @@ import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
+import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,14 @@ public class TestCaseResponseProcessor {
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private TestCaseResponseESRepository testCaseResponseESRepository;
     private TestCaseResponseConverter converter;
+    private AmqpClientService amqpClientService;
 
     @Autowired
-    public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter) {
+    public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
+                                     AmqpClientService amqpClientService) {
         this.testCaseResponseESRepository = testCaseResponseESRepository;
         this.converter = converter;
+        this.amqpClientService = amqpClientService;
     }
 
     public void process(List<TestCaseResponse> testCaseResponses) {

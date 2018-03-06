@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.amqp.sender;
 
+import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.task.EmailTask;
@@ -37,6 +38,11 @@ public class AmqpClientServiceImpl implements AmqpClientService {
 
     @Override
     public void sendTask(EmailTask task, String region) {
+        this.template.convertAndSend(exchange, region, task);
+    }
+
+    @Override
+    public void sendTask(TestCaseResponse task, String region) {
         this.template.convertAndSend(exchange, region, task);
     }
 }
