@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.it.git.skill;
 
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
+import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.it.skill.services.ITTask;
 import com.fxlabs.fxt.it.skill.services.IssueTrackerService;
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
      *  </p>
      */
     @Override
-    public ITTaskResponse process(final ITTask task) {
+    public ITTaskResponse process(final TestCaseResponse task) {
 
         ITTaskResponse response = new ITTaskResponse();
 

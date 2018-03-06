@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.it.skill.services;
 
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
+import com.fxlabs.fxt.dto.run.TestCaseResponse;
 
 /**
  * @author Mohammed Shoukath Ali
@@ -32,6 +33,6 @@ public interface IssueTrackerService {
      *      2. logs - execution or error logs.
      *  </p>
      */
-    ITTaskResponse process(ITTask task);
+    ITTaskResponse process(TestCaseResponse task);
 }
 

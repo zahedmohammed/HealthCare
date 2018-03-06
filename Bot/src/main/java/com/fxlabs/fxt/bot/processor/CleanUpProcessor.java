@@ -121,7 +121,7 @@ public class CleanUpProcessor {
             logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuthType(), url, response.getStatusCode());
             context.withSuiteDataForPostProcessor(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
 
-            assertionValidator.validate(task.getAssertions(), context);
+            assertionValidator.validate(task.getAssertions(), context, new StringBuilder());
 
             /*if (response != null && response.getStatusCodeValue() != 200) {
                 context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
@@ -144,7 +144,7 @@ public class CleanUpProcessor {
                     size = response.getBody().getBytes().length;
                 }
                 context.withSuiteDataForPostProcessor(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
-                assertionValidator.validate(task.getAssertions(), context);
+                assertionValidator.validate(task.getAssertions(), context, new StringBuilder());
                 //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
             });
 

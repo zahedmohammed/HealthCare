@@ -86,7 +86,7 @@ public class InitProcessor {
             Context initContext = new Context(context);
             initContext.withSuiteData(url, null, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
 
-            assertionValidator.validate(task.getAssertions(), initContext);
+            assertionValidator.validate(task.getAssertions(), initContext, new StringBuilder());
 
             /*if (response != null && response.getStatusCodeValue() != 200) {
                 context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
@@ -121,7 +121,7 @@ public class InitProcessor {
 
                 Context initContext = new Context(context);
                 initContext.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
-                assertionValidator.validate(task.getAssertions(), initContext);
+                assertionValidator.validate(task.getAssertions(), initContext, new StringBuilder());
 
                 //context.getLogs().append(String.format("After StatusCode: [%s]", response.getStatusCode()));
 

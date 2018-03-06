@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.it.skill.services;
 
 import com.fxlabs.fxt.dto.it.ITTask;
+import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.sdk.services.FxCommandService;
 import com.fxlabs.fxt.vc.git.skill.amqp.Sender;
@@ -23,7 +24,7 @@ public class ITDelegate {
     @Autowired
     private FxCommandService service;
 
-    public void process(ITTask task) {
+    public void process(TestCaseResponse task) {
 //        VCTaskResponse response = null;
 //        try {
 //            String path = "/var/lib/fx/" + RandomStringUtils.randomAlphabetic(6);

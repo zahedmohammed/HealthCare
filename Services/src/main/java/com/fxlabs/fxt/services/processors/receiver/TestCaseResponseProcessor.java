@@ -1,7 +1,9 @@
 package com.fxlabs.fxt.services.processors.receiver;
 
 import com.fxlabs.fxt.converters.run.SuiteConverter;
+import com.fxlabs.fxt.converters.run.TestCaseResponseConverter;
 import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
+import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -20,14 +23,27 @@ import java.util.List;
 public class TestCaseResponseProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
+    private TestCaseResponseESRepository testCaseResponseESRepository;
+    private TestCaseResponseConverter converter;
 
     @Autowired
-    public TestCaseResponseProcessor() {
+    public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter) {
+        this.testCaseResponseESRepository = testCaseResponseESRepository;
+        this.converter = converter;
     }
 
     public void process(List<TestCaseResponse> testCaseResponses) {
         try {
+
+            testCaseResponseESRepository.saveAll(converter.convertToEntities(testCaseResponses));
+
             testCaseResponses.forEach(tc -> {
+                if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "fail")) {
+                    // TODO
+                    // Load skill from job
+                    // send the message to skill queue.
+                }
+
                 // TODO
                 // fail-from-na   --> IT-Handler
                 // fail-from-na   --> IT-Handler

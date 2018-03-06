@@ -36,6 +36,10 @@ public class Skill extends BaseEntity {
     @Column(name = "_key")
     private String key;
 
+    private String accessKey;
+    private String secretKey;
+    private String host;
+
     @ElementCollection
     @CollectionTable(
             name = "skill_opts",

@@ -29,7 +29,7 @@ public class TestCaseResponse extends BaseDto<String> {
     private String response;
     private String statusCode;
     private String headers;
-    private String result;
+    private String result; // pass/fail
     private Long time;
     private Integer size;
     private String logs;

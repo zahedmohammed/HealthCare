@@ -26,6 +26,9 @@ public class Skill extends BaseDto<String> {
     private SkillType skillType;
 
     private String key;
+    private String accessKey;
+    private String secretKey;
+    private String host;
 
     private List<Opt> opts;
 
