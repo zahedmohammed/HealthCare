@@ -17,6 +17,7 @@ buildscript {
 
 apply plugin: 'docker'
 apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
@@ -97,4 +98,15 @@ def getNightly() {
 }
 def getDate() {
     new Date().format('yyyy-MM-dd-HHmm')
+}
+
+uploadArchives {
+    repositories{
+        mavenDeployer {
+            repository(url: "http://stg1.fxlabs.io:8081/repository/Fx/") {
+                authentication(userName: "admin", password: "Apple12#4")
+            }
+            version = "0.0.1-SNAPSHOT"
+        }
+    }
 }
