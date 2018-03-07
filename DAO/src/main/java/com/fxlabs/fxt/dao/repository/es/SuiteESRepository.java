@@ -11,5 +11,5 @@ import java.util.List;
  * @author Intesar Shannan Mohammed
  */
 public interface SuiteESRepository extends ElasticsearchRepository<Suite, String> {
-    List<Suite> findByRunId(String runId);
+    List<Suite> findByRunId(String runId, Pageable pageable);
 }

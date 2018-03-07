@@ -161,7 +161,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     @Override
     public Response<List<Suite>> findSummaryByRunId(String runId, String user, Pageable pageable) {
 
-        List<com.fxlabs.fxt.dao.entity.run.Suite> list = this.suiteESRepository.findByRunId(runId);
+        List<com.fxlabs.fxt.dao.entity.run.Suite> list = this.suiteESRepository.findByRunId(runId, pageable);
 
         List<Suite> dataSets = suiteConverter.convertToDtos(list);
         return new Response<List<Suite>>(dataSets);
