@@ -2,6 +2,7 @@ package com.fxlabs.fxt.it.skill.amqp;
 
 
 import com.fxlabs.fxt.dto.it.ITTask;
+import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.it.skill.services.ITDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,8 @@ public class Receiver {
     @Autowired
     private ITDelegate delegate;
 
-    public void receiveMessage(ITTask task) {
-        logger.info("IssueTrackerTask id [{}]", task.getProjectId());
+    public void receiveMessage(TestCaseResponse task) {
+        logger.info("IssueTrackerTask id [{}]", task.getProject());
         delegate.process(task);
     }
 

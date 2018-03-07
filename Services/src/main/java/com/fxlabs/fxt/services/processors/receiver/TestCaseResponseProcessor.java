@@ -10,6 +10,7 @@ import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -27,6 +28,8 @@ public class TestCaseResponseProcessor {
     private TestCaseResponseESRepository testCaseResponseESRepository;
     private TestCaseResponseConverter converter;
     private AmqpClientService amqpClientService;
+    @Value("${fx.itaas.github.queue.routingkey}")
+    private String itaasQueue;
 
     @Autowired
     public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
@@ -43,6 +46,8 @@ public class TestCaseResponseProcessor {
 
             testCaseResponses.forEach(tc -> {
                 if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "fail")) {
+
+                    amqpClientService.sendTask(tc, itaasQueue);
                     // TODO
                     // Load skill from job
                     // send the message to skill queue.

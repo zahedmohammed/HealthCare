@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.vc.git.skill.amqp;
+package com.fxlabs.fxt.it.skill.amqp;
 
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
@@ -26,7 +26,7 @@ public class Sender {
     @Autowired
     public Sender(AmqpTemplate template,
                   @Value("${fx.exchange}") String exchange,
-                  @Value("${fx.gaas.response.queue.routingkey}") String routingKey) {
+                  @Value("${fx.itaas.response.queue.routingkey}") String routingKey) {
 
         this.template = template;
         this.exchange = exchange;

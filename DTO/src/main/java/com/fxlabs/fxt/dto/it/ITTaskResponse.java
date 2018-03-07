@@ -23,6 +23,5 @@ public class ITTaskResponse implements Serializable {
 
     private String path;
 
-    private String vcLastCommit;
 
 }

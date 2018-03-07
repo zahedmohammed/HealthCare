@@ -20,7 +20,7 @@ public class AMQPConfig {
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
                                              MessageListenerAdapter listenerAdapter,
-                                             @Value("${fx.gaas.queue}") String queueName,
+                                             @Value("${fx.itaas.queue}") String queueName,
                                              @Value("${concurrentConsumers}") int concurrentConsumers,
                                              @Value("${maxConcurrentConsumers}") int maxConcurrentConsumers) {
 
