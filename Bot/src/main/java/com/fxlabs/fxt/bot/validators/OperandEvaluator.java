@@ -4,10 +4,12 @@ import com.fxlabs.fxt.bot.assertions.Context;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -58,6 +60,8 @@ public class OperandEvaluator {
             int count = 6;
 
             switch (KEY) {
+                case "@NULL":
+                case "@EMPTY":
                 case "NULL":
                 case "null":
                 case "EMPTY":
@@ -71,6 +75,7 @@ public class OperandEvaluator {
 
                 // TODO
                 case "@Suite_Headers":
+                case "@ResponseHeaders":
                 case "@Headers":
                     val = context.getHeaders(suiteName).get(PATH).get(0);
                     logger.info("Header [{}]", val);
@@ -135,9 +140,14 @@ public class OperandEvaluator {
                     val = RandomStringUtils.randomNumeric(count);
                     break;
                 case "@Date":
-                    val = new Date().toString();
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        val = df.format(new Date());
+                    } else {
+                        val = new Date().toString();
+                    }
                     break;
-                    // TODO Date format
+                // TODO Date format
                 case "@RandomUUID":
                     val = UUID.randomUUID().toString();
                     break;
