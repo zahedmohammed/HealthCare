@@ -46,6 +46,10 @@ dependencies {
     //compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.3.0'
     compile project(":Issue-Tracker-Skill-Kit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+
+// https://mvnrepository.com/artifact/com.atlassian.jira/jira-rest-java-client-core
+    compile group: 'com.atlassian.jira', name: 'jira-rest-java-client-core', version: '4.0.0'
+
 }
 
 task buildDockerLatest(type: Docker, dependsOn: build) {
