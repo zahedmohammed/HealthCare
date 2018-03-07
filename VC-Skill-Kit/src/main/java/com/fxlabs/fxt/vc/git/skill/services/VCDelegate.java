@@ -31,6 +31,7 @@ public class VCDelegate {
     private FxCommandService service;
 
     public void process(VCTask task) {
+        logger.info("VCTask [{}]", task.getProjectName());
         VCTaskResponse response = null;
         try {
             String path = "/var/lib/fx/" + RandomStringUtils.randomAlphabetic(6);
