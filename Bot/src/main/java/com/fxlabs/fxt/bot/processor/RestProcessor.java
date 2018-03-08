@@ -216,7 +216,7 @@ public class RestProcessor {
                 //newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());
 
                 // validate assertions
-                context.withSuiteData(url, req, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
+                context.withSuiteData(url, method.name(), req, httpHeaders, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
 
                 StringBuilder assertionLogs = new StringBuilder();
                 assertionValidator.validate(task.getAssertions(), context, assertionLogs);

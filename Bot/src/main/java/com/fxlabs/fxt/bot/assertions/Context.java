@@ -24,6 +24,8 @@ public class Context implements Serializable {
     // suite
     private String url;
     private String request;
+    private String method;
+    private HttpHeaders requestHeaders;
     private HttpHeaders headers;
     private String response;
     private String statusCode;
@@ -59,9 +61,11 @@ public class Context implements Serializable {
         }
     }
 
-    public Context withSuiteData(String url, String request, String response, String statusCode, HttpHeaders headers, Long time, Integer size) {
+    public Context withSuiteData(String url, String method, String request, HttpHeaders requestHeaders, String response, String statusCode, HttpHeaders headers, Long time, Integer size) {
         this.url = url;
+        this.method = method;
         this.request = request;
+        this.requestHeaders = requestHeaders;
         this.response = response;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -70,6 +74,8 @@ public class Context implements Serializable {
 
         if (parent != null) {
             this.parent.request = request;
+            this.parent.method = method;
+            this.requestHeaders = requestHeaders;
             this.parent.response = response;
             this.parent.statusCode = statusCode;
             this.parent.headers = headers;
@@ -84,9 +90,11 @@ public class Context implements Serializable {
 
         // log
         this.log(suite, String.format("URL [%s]", url));
+        this.log(suite, String.format("Method [%s]", method));
         this.log(suite, String.format("Request [%s]", request));
+        this.log(suite, String.format("Request-Headers [%s]", requestHeaders.toString()));
         this.log(suite, String.format("Response [%s]", response));
-        this.log(suite, String.format("Headers [%s]", headers.toString()));
+        this.log(suite, String.format("Response-Headers [%s]", headers.toString()));
         this.log(suite, String.format("StatusCode [%s]", statusCode));
         this.log(suite, String.format("Time [%s]", time));
         this.log(suite, String.format("Size [%s]", size));
@@ -94,9 +102,11 @@ public class Context implements Serializable {
         return this;
     }
 
-    public Context withSuiteDataForPostProcessor(String url, String request, String response, String statusCode, HttpHeaders headers, Long time, Integer size) {
+    public Context withSuiteDataForPostProcessor(String url, String method, String request, HttpHeaders requestHeaders, String response, String statusCode, HttpHeaders headers, Long time, Integer size) {
         this.url = url;
+        this.method = method;
         this.request = request;
+        this.requestHeaders = requestHeaders;
         this.response = response;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -110,9 +120,11 @@ public class Context implements Serializable {
 
         // log
         this.log(suite, String.format("URL [%s]", url));
+        this.log(suite, String.format("Method [%s]", method));
         this.log(suite, String.format("Request [%s]", request));
+        this.log(suite, String.format("Request-Headers [%s]", requestHeaders.toString()));
         this.log(suite, String.format("Response [%s]", response));
-        this.log(suite, String.format("Headers [%s]", headers.toString()));
+        this.log(suite, String.format("Response-Headers [%s]", headers.toString()));
         this.log(suite, String.format("StatusCode [%s]", statusCode));
         this.log(suite, String.format("Time [%s]", time));
         this.log(suite, String.format("Size [%s]", size));

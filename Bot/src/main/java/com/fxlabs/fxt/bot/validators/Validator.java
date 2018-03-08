@@ -24,7 +24,7 @@ public abstract class Validator {
 
     protected void validationFailed(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
         context.setResult("fail");
-        String msg = String.format("Assertion [{}] failed, expected value [{}] but found [{}]", assertion, operand2, operand1);
+        String msg = String.format("Assertion [%s] failed, expected value [%s] but found [%s]", assertion, operand2, operand1);
         logger.info(msg);
         context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), msg);
         assertionLogs.append(msg);
