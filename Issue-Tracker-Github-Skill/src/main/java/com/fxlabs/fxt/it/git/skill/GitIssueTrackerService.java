@@ -93,7 +93,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
             taskLogger.set(new StringBuilder());
             //TODO Create/Update bugs/issue in gitbub
 
-            RepositoryId repositoryId = RepositoryId.createFromUrl("https://github.com/intesar/Fx-Test-Data");
+            RepositoryId repositoryId = RepositoryId.createFromUrl("https://github.com/shoukathmd/Fx-Test-Data");
 
             if (repositoryId == null) {
                 response.setLogs(taskLogger.get().toString());
@@ -105,8 +105,8 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
             //creates an issue remotely
 
-            IssueService issueService = getIssueService("4bba0ed42c510710209e16a37321d30e64e5f4cd");
-
+           // IssueService issueService = getIssueService("4bba0ed42c510710209e16a37321d30e64e5f4cd");
+            IssueService issueService = getIssueService("3cdd07af86c6098a0ddef55b684d46d291e44f1a");
             if(StringUtils.isNotEmpty(task.getIssueId())){
                 //TODO update issue
 

@@ -13,11 +13,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -34,6 +40,10 @@ public class TestCaseResponseProcessor {
     @Value("${fx.itaas.github.queue.routingkey}")
     private String itaasQueue;
 
+
+    public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
+
+
     @Autowired
     public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
                                      TestCaseResponseRepository testCaseResponseRepository, AmqpClientService amqpClientService) {
@@ -44,6 +54,8 @@ public class TestCaseResponseProcessor {
     }
 
     public void process(List<TestCaseResponse> testCaseResponses) {
+
+        logger.info("TestCaseResponseProcessor and size is [{}]...", testCaseResponses.size());
         try {
 
             Iterable<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> result = testCaseResponseRepository.saveAll(converter.convertToEntities(testCaseResponses));
@@ -54,24 +66,19 @@ public class TestCaseResponseProcessor {
             testCaseResponses.forEach(tc -> {
                 if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "fail")) {
 
+                    getExistingIssueId(tc);
+
                     amqpClientService.sendTask(tc, itaasQueue);
                     // TODO
                     // Load skill from job
                     // send the message to skill queue.
                 }
+                //Check past test data for failure
+                checkPastDataForFailure(tc);
 
-                if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "pass")) {
-                    //TODO
-                    testCaseResponseESRepository.
-                            findByProjectAndJobAndEnvAndSuiteAndEndpointEvalAndRequestEval(tc.getProject(), tc.getJob(),
-                                    tc.getEnv(), tc.getSuite(), tc.getEndpointEval(), tc.getRequestEval());
-
-                    //amqpClientService.sendTask(tc, itaasQueue);
-                    // TODO
-                    // Load skill from job
-                    // send the message to skill queue.
-                }
-
+                // TODO
+                // Load skill from job
+                // send the message to skill queue.
                 // TODO
                 // fail-from-na   --> IT-Handler
                 // fail-from-na   --> IT-Handler
@@ -85,6 +92,49 @@ public class TestCaseResponseProcessor {
 
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    private void getExistingIssueId(TestCaseResponse tc) {
+        List<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> oldtestresult = testCaseResponseESRepository.
+                findByProjectAndJobAndSuiteAndTestCase(tc.getProject(), tc.getJob(), tc.getSuite(), tc.getTestCase(),  PageRequest.of(1, 1, DEFAULT_SORT));
+
+
+        if (!CollectionUtils.isEmpty(oldtestresult) &&
+                org.apache.commons.lang3.StringUtils.equals(oldtestresult.get(0).getResult(), "fail")) {
+
+
+            if (!StringUtils.isEmpty(oldtestresult.get(0).getIssueId())) {
+
+                tc.setIssueId(oldtestresult.get(0).getIssueId());
+            }
+
+
+        }
+    }
+
+    private void checkPastDataForFailure(TestCaseResponse tc) {
+
+        if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "pass")) {
+            //TODO
+            //Load latest
+            List<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> oldtestresult = testCaseResponseESRepository.
+                    findByProjectAndJobAndSuiteAndTestCase(tc.getProject(), tc.getJob(), tc.getSuite(), tc.getTestCase(),  PageRequest.of(1, 1, DEFAULT_SORT));
+
+
+            if (!CollectionUtils.isEmpty(oldtestresult) &&
+                    org.apache.commons.lang3.StringUtils.equals(oldtestresult.get(0).getResult(), "fail")) {
+
+
+                if (!StringUtils.isEmpty(oldtestresult.get(0).getIssueId())) {
+
+                    tc.setIssueId(oldtestresult.get(0).getIssueId());
+
+                    logger.info("TestCaseResponseProcessor updating issue  [{}] in for project [{}]", tc.getIssueId(), tc.getProject());
+                    amqpClientService.sendTask(tc, itaasQueue);
+                }
+            }
+
         }
     }
 }
