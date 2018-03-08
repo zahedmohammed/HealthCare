@@ -10,24 +10,34 @@
   <article class="article padding-lg-v article-dark article-bordered">
     <div class="container-fluid with-maxwidth chapter">
 
-      <div class="box box-default table-box mdl-shadow--2dp">
-        <!--<table class="mdl-data-table">
-          <thead>
-          <tr>
-            <th class="mdl-data-table__cell--non-numeric">Name</th>
-            <th class="mdl-data-table__cell--non-numeric">Location</th>
-            <th class="mdl-data-table__cell--non-numeric">Visibility</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let item of list">
-            <td class="mdl-data-table__cell--non-numeric">{{item.org.name}}/{{item.name}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{item.region}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
-          </tr>
-          </tbody>
-        </table>-->
-      </div>
+          <article class="article">
+            <h2 class="article-title">
+              <button mat-raised-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/vault/new']">New Entry</button><div class="divider divider-sm"></div>
+            </h2>
+
+            <div class="box box-default table-box mdl-shadow--2dp">
+              <table class="mdl-data-table">
+                <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Key</th>
+                  <th class="mdl-data-table__cell--non-numeric">Visibility</th>
+                  <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
+                  <th class="mdl-data-table__cell--non-numeric">Owner</th>
+                  <th class="mdl-data-table__cell--non-numeric"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let key of keys">
+                  <td class="mdl-data-table__cell--non-numeric bold">{{key.org.name}}/{{key.key}}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{key.visibility}}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{key.createdDate | date:'shortDate'}}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{key.createdBy}}</td>
+                  <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/vault', key.id]">Edit</a></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
 
     </div>
   </article>

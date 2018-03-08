@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.clusters;
 
 import com.fxlabs.fxt.converters.clusters.ClusterConverter;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
+import com.fxlabs.fxt.dao.entity.project.ProjectVisibility;
 import com.fxlabs.fxt.dao.entity.users.OrgRole;
 import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
@@ -163,9 +164,12 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public void isUserEntitled(String s, String user) {
-        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> optional = repository.findById(s);
-        if (!optional.isPresent() || !org.apache.commons.lang3.StringUtils.equals(optional.get().getCreatedBy(), user)) {
-            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, s));
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = repository.findById(s);
+        if (!clusterOptional.isPresent()) {
+            throw new FxException(String.format("Resource [%s] not found.", s));
+        }
+        if (clusterOptional.get().getVisibility() == ClusterVisibility.PRIVATE && !org.apache.commons.lang3.StringUtils.equals(clusterOptional.get().getCreatedBy(), user)) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s] with 'PRIVATE' visibility.", user, s));
         }
     }
 }

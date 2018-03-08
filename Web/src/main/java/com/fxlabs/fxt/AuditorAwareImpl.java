@@ -33,7 +33,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
         }
         Optional<String> username = Optional.empty();
         if (authentication.getPrincipal() instanceof FxUserPrinciple) {
-            username = Optional.ofNullable(((FxUserPrinciple) authentication.getPrincipal()).getUsername());
+            username = Optional.ofNullable(((FxUserPrinciple) authentication.getPrincipal()).getUserId());
         } else if (authentication.getPrincipal() instanceof String) {
             username = Optional.ofNullable(authentication.getPrincipal().toString());
         }

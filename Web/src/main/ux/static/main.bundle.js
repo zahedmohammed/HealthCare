@@ -3224,7 +3224,7 @@ var SupportNewComponent = (function () {
 /***/ "../../../../../src/app/components/vault/vault-edit/vault-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  vault-edit works!\n</p>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/vault']\"> Vault </a> / {{entry.key}}</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Key</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"entry.key\" disabled name=\"name\" id=\"name\"\n                     placeholder=\"key\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Value\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"entry.val\" name=\"url\" id=\"repo\"\n                     placeholder=\"value\">\n            </div>\n          </div>\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/vault']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -3252,6 +3252,8 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VaultEditComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_vault_service__ = __webpack_require__("../../../../../src/app/services/vault.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3262,18 +3264,77 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var VaultEditComponent = (function () {
-    function VaultEditComponent() {
+    function VaultEditComponent(vaultService, route, router) {
+        this.vaultService = vaultService;
+        this.route = route;
+        this.router = router;
+        this.showSpinner = false;
     }
     VaultEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            console.log(params);
+            if (params['id']) {
+                _this.getById(params['id']);
+            }
+        });
+    };
+    VaultEditComponent.prototype.getById = function (id) {
+        var _this = this;
+        this.showSpinner = true;
+        this.vaultService.getById(id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.entry = results['data'];
+            console.log(_this.entry);
+        }, function (error) {
+            console.log("Unable to fetch vault");
+        });
+    };
+    VaultEditComponent.prototype.update = function () {
+        var _this = this;
+        console.log(this.entry);
+        this.vaultService.update(this.entry).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/vault']);
+        }, function (error) {
+            console.log("Unable to update vault");
+        });
+    };
+    VaultEditComponent.prototype.delete = function () {
+        var _this = this;
+        console.log(this.entry);
+        this.vaultService.delete(this.entry).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/vault']);
+        }, function (error) {
+            console.log("Unable to delete entry");
+        });
     };
     VaultEditComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-vault-edit',
             template: __webpack_require__("../../../../../src/app/components/vault/vault-edit/vault-edit.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-edit/vault-edit.component.scss")]
+            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-edit/vault-edit.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], VaultEditComponent);
     return VaultEditComponent;
 }());
@@ -3285,7 +3346,7 @@ var VaultEditComponent = (function () {
 /***/ "../../../../../src/app/components/vault/vault-list/vault-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"chapter page-terms\">\n\n  <section class=\"hero\">\n    <div class=\"hero-content\">\n      <h1 class=\"hero-title\">Vault</h1>\n    </div>\n    <p class=\"text-muted\">Securely store & inject sensitive data at real-time in test-suites.</p>\n  </section>\n\n  <article class=\"article padding-lg-v article-dark article-bordered\">\n    <div class=\"container-fluid with-maxwidth chapter\">\n\n      <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <!--<table class=\"mdl-data-table\">\n          <thead>\n          <tr>\n            <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n            <th class=\"mdl-data-table__cell--non-numeric\">Location</th>\n            <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let item of list\">\n            <td class=\"mdl-data-table__cell--non-numeric\">{{item.org.name}}/{{item.name}}</td>\n            <td class=\"mdl-data-table__cell--non-numeric\">{{item.region}}</td>\n            <td class=\"mdl-data-table__cell--non-numeric\">{{item.visibility}}</td>\n          </tr>\n          </tbody>\n        </table>-->\n      </div>\n\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"chapter page-terms\">\n\n  <section class=\"hero\">\n    <div class=\"hero-content\">\n      <h1 class=\"hero-title\">Vault</h1>\n    </div>\n    <p class=\"text-muted\">Securely store & inject sensitive data at real-time in test-suites.</p>\n  </section>\n\n  <article class=\"article padding-lg-v article-dark article-bordered\">\n    <div class=\"container-fluid with-maxwidth chapter\">\n\n          <article class=\"article\">\n            <h2 class=\"article-title\">\n              <button mat-raised-button color=\"primary\" class=\"btn-w-md pull-right\" [routerLink]=\"['/app/vault/new']\">New Entry</button><div class=\"divider divider-sm\"></div>\n            </h2>\n\n            <div class=\"box box-default table-box mdl-shadow--2dp\">\n              <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Key</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Create-Date</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Owner</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let key of keys\">\n                  <td class=\"mdl-data-table__cell--non-numeric bold\">{{key.org.name}}/{{key.key}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.visibility}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.createdDate | date:'shortDate'}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.createdBy}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/vault', key.id]\">Edit</a></td>\n                </tr>\n                </tbody>\n              </table>\n            </div>\n          </article>\n\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -3313,6 +3374,7 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VaultListComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_vault_service__ = __webpack_require__("../../../../../src/app/services/vault.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3323,18 +3385,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var VaultListComponent = (function () {
-    function VaultListComponent() {
+    function VaultListComponent(vaultService) {
+        this.vaultService = vaultService;
+        this.showSpinner = false;
     }
     VaultListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.showSpinner = true;
+        this.vaultService.get().subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.keys = results['data'];
+        }, function (error) {
+            console.log("Unable to fetch keys");
+        });
     };
     VaultListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-vault-list',
             template: __webpack_require__("../../../../../src/app/components/vault/vault-list/vault-list.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-list/vault-list.component.scss")]
+            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-list/vault-list.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_1__services_vault_service__["a" /* VaultService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_vault_service__["a" /* VaultService */]])
     ], VaultListComponent);
     return VaultListComponent;
 }());
@@ -3346,7 +3424,7 @@ var VaultListComponent = (function () {
 /***/ "../../../../../src/app/components/vault/vault-new/vault-new.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  vault-new works!\n</p>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\">New Entry</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Key</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"entry.key\" name=\"name\" id=\"name\"\n                     placeholder=\"Entry key\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Value\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"entry.val\" name=\"url\" id=\"repo\"\n                     placeholder=\"Entry value\">\n            </div>\n          </div>\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Add\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/vault']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -3374,6 +3452,9 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VaultNewComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_vault_service__ = __webpack_require__("../../../../../src/app/services/vault.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_vault_model__ = __webpack_require__("../../../../../src/app/models/vault.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3384,18 +3465,43 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
 var VaultNewComponent = (function () {
-    function VaultNewComponent() {
+    function VaultNewComponent(vaultService, route, router) {
+        this.vaultService = vaultService;
+        this.route = route;
+        this.router = router;
+        this.showSpinner = false;
+        this.entry = new __WEBPACK_IMPORTED_MODULE_3__models_vault_model__["a" /* Vault */]('', '', '', 'PRIVATE');
     }
     VaultNewComponent.prototype.ngOnInit = function () {
+    };
+    VaultNewComponent.prototype.create = function () {
+        var _this = this;
+        console.log(this.entry);
+        this.showSpinner = true;
+        this.vaultService.create(this.entry).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/vault']);
+        }, function (error) {
+            console.log("Unable to save vault entry");
+        });
     };
     VaultNewComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-vault-new',
             template: __webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.scss")]
+            styles: [__webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], VaultNewComponent);
     return VaultNewComponent;
 }());
@@ -4956,6 +5062,25 @@ var Project = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/models/vault.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Vault; });
+var Vault = (function () {
+    function Vault(key, val, description, visibility) {
+        this.key = key;
+        this.val = val;
+        this.description = description;
+        this.visibility = visibility;
+    }
+    return Vault;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/page-layouts/fullscreen/fullscreen.component.html":
 /***/ (function(module, exports) {
 
@@ -5241,6 +5366,61 @@ var RunService = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
     ], RunService);
     return RunService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/vault.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VaultService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var VaultService = (function () {
+    function VaultService(http) {
+        this.http = http;
+        this.serviceUrl = '/api/v1/vault';
+    }
+    /**
+     * Get observable from endpoint
+     */
+    VaultService.prototype.get = function () {
+        return this.http.get(this.serviceUrl);
+    };
+    VaultService.prototype.getById = function (id) {
+        return this.http.get(this.serviceUrl + "/" + id);
+    };
+    VaultService.prototype.create = function (obj) {
+        return this.http.post(this.serviceUrl, obj);
+    };
+    VaultService.prototype.update = function (obj) {
+        return this.http.put(this.serviceUrl + "/" + obj['id'], obj);
+    };
+    VaultService.prototype.delete = function (obj) {
+        return this.http.delete(this.serviceUrl + "/" + obj['id']);
+    };
+    VaultService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], VaultService);
+    return VaultService;
 }());
 
 
