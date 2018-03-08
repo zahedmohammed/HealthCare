@@ -19,6 +19,7 @@ import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.RunConstants;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.clusters.ClusterService;
+import com.fxlabs.fxt.services.util.DataResolver;
 import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,11 +50,12 @@ public class RunTaskRequestProcessor {
     private TestSuiteESRepository testSuiteESRepository;
     private EnvironmentRepository environmentRepository;
     private ClusterService clusterService;
+    private DataResolver dataResolver;
 
     public RunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter,
                                    TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository,
-                                   ClusterService clusterService) {
+                                   ClusterService clusterService, DataResolver dataResolver) {
         this.botClientService = botClientService;
         this.testSuiteRepository = testSuiteRepository;
         this.runRepository = runRepository;
@@ -61,6 +63,7 @@ public class RunTaskRequestProcessor {
         this.testSuiteESRepository = testSuiteESRepository;
         this.environmentRepository = environmentRepository;
         this.clusterService = clusterService;
+        this.dataResolver = dataResolver;
     }
 
     public void process() {
@@ -219,9 +222,7 @@ public class RunTaskRequestProcessor {
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
-                    task.setAuthType(cred.getAuthType());
-                    task.setUsername(cred.getUsername());
-                    task.setPassword(cred.getPassword());
+                    copyCred(task, cred);
                 }
             }
         } else if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "none")) {
@@ -229,12 +230,17 @@ public class RunTaskRequestProcessor {
         } else {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
-                    task.setAuthType(cred.getAuthType());
-                    task.setUsername(cred.getUsername());
-                    task.setPassword(cred.getPassword());
+                    copyCred(task, cred);
                 }
             }
         }
+    }
+
+    private void copyCred(BotTask task, Auth cred) {
+        task.setAuthType(cred.getAuthType());
+        task.setUsername(cred.getUsername());
+        task.setPassword(dataResolver.resolve(cred.getPassword()));
+
     }
 
     private HttpMethod convert(com.fxlabs.fxt.dao.entity.project.HttpMethod httpMethod) {

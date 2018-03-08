@@ -1,35 +1,29 @@
 package com.fxlabs.fxt.services.vault;
 
-import com.fxlabs.fxt.converters.run.RunConverter;
-import com.fxlabs.fxt.converters.run.SuiteConverter;
-import com.fxlabs.fxt.converters.run.TestSuiteResponseConverter;
 import com.fxlabs.fxt.converters.vault.VaultConverter;
-import com.fxlabs.fxt.dao.entity.run.Run;
-import com.fxlabs.fxt.dao.entity.users.*;
+import com.fxlabs.fxt.dao.entity.users.OrgRole;
+import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
+import com.fxlabs.fxt.dao.entity.users.OrgUsers;
 import com.fxlabs.fxt.dao.entity.vault.Vault;
-import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
-import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
-import com.fxlabs.fxt.dao.repository.jpa.*;
+import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.VaultRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.Job;
-import com.fxlabs.fxt.dto.run.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
-import com.fxlabs.fxt.services.project.JobService;
-import com.fxlabs.fxt.services.project.ProjectService;
-import com.fxlabs.fxt.services.run.RunService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -75,6 +69,25 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
 
         }
         return super.save(dto, user);
+    }
+
+    @Override
+    public Response<String> findByName(String name) {
+        if (StringUtils.isEmpty(name)) {
+            return new Response<>(StringUtils.EMPTY);
+        }
+        String[] tokens = name.split("/");
+        String org = tokens[0];
+        String key = tokens[1];
+
+        Optional<Vault> vaultOptional = this.repository.findByOrgNameAndKey(org, key);
+
+        if (!vaultOptional.isPresent()) {
+            return new Response<>(StringUtils.EMPTY);
+        }
+
+        return new Response<>(vaultOptional.get().getVal());
+
     }
 
     @Override

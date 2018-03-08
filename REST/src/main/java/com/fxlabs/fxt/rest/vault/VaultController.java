@@ -35,7 +35,7 @@ public class VaultController {
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<Vault> update(@Valid @RequestBody Vault dto) {
         return service.save(dto, SecurityUtil.getCurrentAuditor());
     }
