@@ -154,7 +154,7 @@ public class RunTaskRequestProcessor {
 
                         copyAssertions(task, testSuite);
 
-                        task.setEndpoint(env.getBaseUrl() + testSuite.getEndpoint());
+                        task.setEndpoint(getBaseUrl(env.getBaseUrl()) + testSuite.getEndpoint());
 
                         // init & cleanup copy
                         copy(testSuite.getInit(), task.getInit(), run, env);
@@ -240,7 +240,10 @@ public class RunTaskRequestProcessor {
         task.setAuthType(cred.getAuthType());
         task.setUsername(dataResolver.resolve(cred.getUsername()));
         task.setPassword(dataResolver.resolve(cred.getPassword()));
+    }
 
+    private String getBaseUrl(String url) {
+        return dataResolver.resolve(url);
     }
 
     private HttpMethod convert(com.fxlabs.fxt.dao.entity.project.HttpMethod httpMethod) {
@@ -295,7 +298,7 @@ public class RunTaskRequestProcessor {
 
             copyAssertions(afterTask, suite1);
 
-            afterTask.setEndpoint(env.getBaseUrl() + suite1.getEndpoint());
+            afterTask.setEndpoint(getBaseUrl(env.getBaseUrl()) + suite1.getEndpoint());
 
             tasks.add(afterTask);
         }
