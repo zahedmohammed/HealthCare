@@ -176,6 +176,8 @@ public class GitIssueTrackerService implements IssueTrackerService {
     private Issue editIssue(Issue issue, IssueService issueService, RepositoryId repositoryId, TestCaseResponse task) throws IOException {
         if (StringUtils.equals(task.getResult(), "pass")) {
             issue.setState(STATE_CLOSED);
+        } else {
+            issue.setState(STATE_OPEN);
         }
         issue.setNumber(Integer.parseInt(task.getIssueId()));
         issue = issueService.editIssue(repositoryId, issue);

@@ -80,9 +80,10 @@ public class TestCaseResponseProcessor {
                 // Load skill from job
                 // send the message to skill queue.
                 // TODO
+
+                // fail-from-na   --> DoneIT-Handler
                 // fail-from-na   --> IT-Handler
-                // fail-from-na   --> IT-Handler
-                // fail-from-pass --> IT-Handler
+                // fail-from-pass --> Done IT-Handler
                 // pass-from-fail --> IT-Handler
                 // fail-from-fail ?
                 // pass-from-pass ?
@@ -101,15 +102,9 @@ public class TestCaseResponseProcessor {
 
 
         if (!CollectionUtils.isEmpty(oldtestresult) &&
-                org.apache.commons.lang3.StringUtils.equals(oldtestresult.get(0).getResult(), "fail")) {
-
-
-            if (!StringUtils.isEmpty(oldtestresult.get(0).getIssueId())) {
+                !StringUtils.isEmpty(oldtestresult.get(0).getIssueId())) {
 
                 tc.setIssueId(oldtestresult.get(0).getIssueId());
-            }
-
-
         }
     }
 
