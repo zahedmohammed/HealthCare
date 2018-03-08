@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ITTaskResponse implements Serializable {
+public class ITGitTaskResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +21,7 @@ public class ITTaskResponse implements Serializable {
     private String logs;
     private boolean success;
 
-    private String testCaseResponseId;
+    private String path;
+
 
 }

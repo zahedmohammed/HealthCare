@@ -27,13 +27,16 @@ public class TestCaseResponse extends BaseDto<String> {
     private String request;
     private String requestEval;
     private String response;
-    private String statusCode;
-    private String headers;
-    private String result; // pass/fail
-    private Long time;
-    private Integer size;
     private String logs;
     private String itKey;
+    private String issueId;
+    private String result; // pass/fail
+    private String statusCode;
+    private String headers;
+    private Long time;
+    private Integer size;
+
+
 
 }
 

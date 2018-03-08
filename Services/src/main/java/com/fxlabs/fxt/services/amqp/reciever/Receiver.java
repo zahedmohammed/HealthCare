@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.amqp.reciever;
 
 import com.fxlabs.fxt.dto.clusters.ClusterPing;
+import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.dto.run.BotTask;
@@ -34,6 +35,9 @@ public class Receiver {
     private ClusterPingTaskResponseProcessor clusterPingTaskResponseProcessor;
 
     @Autowired
+    private IssueTrackerTaskResponseProcessor issueTrackerTaskResponseProcessor;
+
+    @Autowired
     private TestCaseResponseProcessor testCaseResponseProcessor;
 
     public void receiveMessage(BotTask task) {
@@ -59,6 +63,11 @@ public class Receiver {
     public void receiveMessage(List<TestCaseResponse> testCaseResponses) {
         logger.info("Received TestCaseResponse count [{}]", testCaseResponses.size());
         testCaseResponseProcessor.process(testCaseResponses);
+    }
+
+    public void receiveMessage(ITTaskResponse issueTrackerTaskResponse) {
+        logger.info("Received TestCaseResponse count [{}]", issueTrackerTaskResponse.getProjectName());
+        issueTrackerTaskResponseProcessor.process(issueTrackerTaskResponse);
     }
 
 

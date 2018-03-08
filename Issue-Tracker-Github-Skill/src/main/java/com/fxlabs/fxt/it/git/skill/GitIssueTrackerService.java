@@ -2,6 +2,7 @@ package com.fxlabs.fxt.it.git.skill;
 
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
+import com.fxlabs.fxt.it.skill.amqp.Sender;
 import com.fxlabs.fxt.it.skill.services.ITTask;
 import com.fxlabs.fxt.it.skill.services.IssueTrackerService;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -37,6 +39,17 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
     public static final String COLON = "  :  ";
     public static final String LINE_SEPERATOR = "\n";
+
+    /**
+     * Issue open state filter value
+     */
+    public static final String STATE_OPEN = "open"; //$NON-NLS-1$
+
+    /**
+     * Issue closed state filter value
+     */
+    public static final String STATE_CLOSED = "closed"; //$NON-NLS-1$
+
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
@@ -71,7 +84,8 @@ public class GitIssueTrackerService implements IssueTrackerService {
      */
     @Override
     public ITTaskResponse process(final TestCaseResponse task) {
-        System.out.print("In IT GitIssueTrackerService");
+        logger.info("In IT GitIssueTrackerService for project [{}]" , task.getProject());
+
         ITTaskResponse response = new ITTaskResponse();
 
         try {
@@ -93,14 +107,22 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
             IssueService issueService = getIssueService("4bba0ed42c510710209e16a37321d30e64e5f4cd");
 
+            if(StringUtils.isNotEmpty(task.getIssueId())){
+                //TODO update issue
 
-            issue = createIssue(issue, issueService, repositoryId);
+                issue = editIssue(issue, issueService, repositoryId, task);
+
+            } else {
+                issue = createIssue(issue, issueService, repositoryId);
+            }
 
            // response.setIssueId(issue.getNumber());
 
             response.setSuccess(true);
             response.setLogs(taskLogger.get().toString());
-           // response.setIssueId(StringUtils.toissue.getNumber());
+            response.setTestCaseResponseId(task.getId());
+            response.setIssueId(String.valueOf(issue.getNumber()));
+
             return response;
 
         } catch (RuntimeException ex) {
@@ -151,6 +173,16 @@ public class GitIssueTrackerService implements IssueTrackerService {
         return issue;
     }
 
+    private Issue editIssue(Issue issue, IssueService issueService, RepositoryId repositoryId, TestCaseResponse task) throws IOException {
+        if (StringUtils.equals(task.getResult(), "pass")) {
+            issue.setState(STATE_CLOSED);
+        }
+        issue.setNumber(Integer.parseInt(task.getIssueId()));
+        issue = issueService.editIssue(repositoryId, issue);
+
+        return issue;
+    }
+
     private IssueService getIssueService(String password) {
 
         GitHubClient client = new GitHubClient();
@@ -162,23 +194,5 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
         return issueService;
     }
-
-//    private boolean createIssue(Repository repository, String username, String password) {
-//        try {
-//            PullCommand pullCommand = new Git(repository).pull();
-//            if (StringUtils.isNotEmpty(username)) {
-//                pullCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-//            }
-//            return pullCommand.call().isSuccessful();
-//        } catch (GitAPIException ex) {
-//            logger.warn(ex.getLocalizedMessage(), ex);
-//            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
-//        } catch (Exception ex) {
-//            logger.warn(ex.getLocalizedMessage(), ex);
-//            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
-//        }
-//
-//        return false;
-//    }
 
 }

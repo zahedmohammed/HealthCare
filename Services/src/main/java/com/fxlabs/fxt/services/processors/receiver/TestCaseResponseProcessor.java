@@ -4,9 +4,11 @@ import com.fxlabs.fxt.converters.run.SuiteConverter;
 import com.fxlabs.fxt.converters.run.TestCaseResponseConverter;
 import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseRepository;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
+import org.apache.commons.collections.IteratorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class TestCaseResponseProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private TestCaseResponseESRepository testCaseResponseESRepository;
+    private TestCaseResponseRepository testCaseResponseRepository;
     private TestCaseResponseConverter converter;
     private AmqpClientService amqpClientService;
     @Value("${fx.itaas.github.queue.routingkey}")
@@ -33,8 +36,9 @@ public class TestCaseResponseProcessor {
 
     @Autowired
     public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
-                                     AmqpClientService amqpClientService) {
+                                     TestCaseResponseRepository testCaseResponseRepository, AmqpClientService amqpClientService) {
         this.testCaseResponseESRepository = testCaseResponseESRepository;
+        this.testCaseResponseRepository = testCaseResponseRepository;
         this.converter = converter;
         this.amqpClientService = amqpClientService;
     }
@@ -42,12 +46,27 @@ public class TestCaseResponseProcessor {
     public void process(List<TestCaseResponse> testCaseResponses) {
         try {
 
-            testCaseResponseESRepository.saveAll(converter.convertToEntities(testCaseResponses));
+            Iterable<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> result = testCaseResponseRepository.saveAll(converter.convertToEntities(testCaseResponses));
+            result = testCaseResponseESRepository.saveAll(result);
+
+            testCaseResponses = converter.convertToDtos(IteratorUtils.toList(result.iterator()));
 
             testCaseResponses.forEach(tc -> {
                 if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "fail")) {
 
                     amqpClientService.sendTask(tc, itaasQueue);
+                    // TODO
+                    // Load skill from job
+                    // send the message to skill queue.
+                }
+
+                if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "pass")) {
+                    //TODO
+                    testCaseResponseESRepository.
+                            findByProjectAndJobAndEnvAndSuiteAndEndpointEvalAndRequestEval(tc.getProject(), tc.getJob(),
+                                    tc.getEnv(), tc.getSuite(), tc.getEndpointEval(), tc.getRequestEval());
+
+                    //amqpClientService.sendTask(tc, itaasQueue);
                     // TODO
                     // Load skill from job
                     // send the message to skill queue.

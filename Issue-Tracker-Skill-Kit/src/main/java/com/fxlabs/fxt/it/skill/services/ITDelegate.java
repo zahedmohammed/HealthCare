@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.it.skill.services;
 
+import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.it.skill.amqp.Sender;
 import com.fxlabs.fxt.sdk.services.FxCommandService;
@@ -23,9 +24,12 @@ public class ITDelegate {
     private FxCommandService service;
 
     public void process(TestCaseResponse task) {
-        System.out.print("In IT DELEGATE");
 
-        issueTrackerService.process(task);
+        logger.info("TestCaseResponse [{}]", task.getProject());
+
+        ITTaskResponse response = issueTrackerService.process(task);
+
+        sender.sendTask(response);
     }
 
 

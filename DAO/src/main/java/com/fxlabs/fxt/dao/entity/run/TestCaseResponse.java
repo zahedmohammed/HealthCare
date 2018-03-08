@@ -35,6 +35,12 @@ public class TestCaseResponse extends BaseEntity {
     private String response;
     private String logs;
     private String itKey;
+    private String issueId;
+    private String result; // pass/fail
+    private String statusCode;
+    private String headers;
+    private Long time;
+    private Integer size;
 
 }
 
