@@ -238,7 +238,7 @@ public class RunTaskRequestProcessor {
 
     private void copyCred(BotTask task, Auth cred) {
         task.setAuthType(cred.getAuthType());
-        task.setUsername(cred.getUsername());
+        task.setUsername(dataResolver.resolve(cred.getUsername()));
         task.setPassword(dataResolver.resolve(cred.getPassword()));
 
     }
