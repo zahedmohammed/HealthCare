@@ -15,11 +15,25 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="repo" class="col-md-2 control-label">Value
+            <label for="repo" class="col-md-2 control-label">Secret
             </label>
             <div class="col-md-10">
               <input type="url" class="form-control" [(ngModel)]="entry.val" name="url" id="repo"
                      placeholder="value">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="repo" class="col-md-2 control-label">Visibility
+            </label>
+            <div class="col-md-10">
+              <mat-form-field>
+                <mat-select placeholder="Visibility" [(ngModel)]="entry.visibility" name="visibility">
+                  <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
+                    {{visibility}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
 

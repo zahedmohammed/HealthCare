@@ -34,4 +34,6 @@ export class VaultNewComponent implements OnInit {
     });
   }
 
+  visibilities = ['PRIVATE', 'ORG_PUBLIC'];
+
 }

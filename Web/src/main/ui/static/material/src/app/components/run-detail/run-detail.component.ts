@@ -14,6 +14,8 @@ export class RunDetailComponent implements OnInit {
   list;
   suites;
   id;
+  projectId:string = "";
+  jobId:string =  "";
   total = 0;
   failed = 0;
   size = 0;
@@ -25,7 +27,13 @@ export class RunDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {
-        this.id = params['id'];
+       this.projectId = params['id'];
+      }
+      if (params['jobId']) {
+        this.jobId = params['jobId'];
+      }
+      if (params['runId']) {
+        this.id = params['runId'];
         this.getRunById();
         this.getSummary();
       }

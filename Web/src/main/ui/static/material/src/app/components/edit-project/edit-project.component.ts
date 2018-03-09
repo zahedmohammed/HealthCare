@@ -12,7 +12,7 @@ import { Project } from '../../models/project.model';
 export class EditProjectComponent implements OnInit {
 
   showSpinner: boolean = false;
-  project: Project;// = new Project('', '', '', '', 'GIT');
+  project: Project = new Project('', '', '', '', 'GIT');
   constructor(private projectService: ProjectService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {

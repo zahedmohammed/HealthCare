@@ -10,6 +10,8 @@ import { RunService } from '../../services/run.service';
 })
 export class RunListComponent implements OnInit {
   list;
+  projectId:string = "";
+  jobId:string =  "";
   title:string = "";
   showSpinner: boolean = false;
   constructor(private runService: RunService, private route: ActivatedRoute) {
@@ -20,7 +22,11 @@ export class RunListComponent implements OnInit {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {
-        this.getRunByJob(params['id'])
+       this.projectId = params['id'];
+      }
+      if (params['jobId']) {
+        this.jobId = params['jobId'];
+        this.getRunByJob(this.jobId)
       }
     });
   }

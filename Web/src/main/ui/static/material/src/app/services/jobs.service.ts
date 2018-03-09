@@ -13,8 +13,8 @@ export class JobsService {
   /**
    * Get the jobs in observable from endpoint
    */
-  getJobs() {
-    return this.http.get(this.serviceUrl);
+  getJobs(id: string) {
+    return this.http.get(this.serviceUrl + "/project-id/" + id);
   }
 
   getCountJobs() {

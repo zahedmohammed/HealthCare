@@ -2,7 +2,13 @@
 <section class="container-fluid with-maxwidth chapter">
 
     <article class="article">
-        <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/jobs']">Jobs</a> / {{list[0].job.name}} / Runs</h2>
+        <h2 class="article-title">
+            <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
+            / {{projectId}} /
+            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs']"> Jobs </a>
+            /
+            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]">{{jobId}}</a> /
+            Runs</h2>
         <div class="box box-default table-box mdl-shadow--2dp">
             <table class="mdl-data-table">
                 <thead>
@@ -24,8 +30,8 @@
                         {{ ( (item.task.totalTestCompleted * 100 ) / (item.task.totalTestCompleted + item.task.failedTests) ).toFixed(0) }}%
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime}}</td>
-                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
-                                                                     [routerLink]="['/app/run', item.id]">#{{item.runId}}</a>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>
                     </td>
                 </tr>
                 </tbody>

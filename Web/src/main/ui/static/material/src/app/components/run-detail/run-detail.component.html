@@ -1,8 +1,14 @@
 <section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter">
     <article class="article">
-        <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/jobs']">Jobs</a> / {{run.job.name}} / <a
-                href="javascript:;" [routerLink]="['/app/runs']">Runs</a> / <a href="javascript:;"
-                                                                               (click)="this.getRunById();this.getSummary();">{{run.runId}} </a>
+        <h2 class="article-title">
+            <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
+             / {{projectId}} /
+            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs']"> Jobs </a>
+             /
+            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]">{{jobId}}</a>
+             /
+            <a href="javascript:;" [routerLink]="['/app/runs']">Runs</a>
+             / <a href="javascript:;" (click)="this.getRunById();this.getSummary();">{{run.runId}} </a>
         </h2>
     </article>
 

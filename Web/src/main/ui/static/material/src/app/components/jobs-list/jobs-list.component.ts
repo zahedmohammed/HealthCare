@@ -14,12 +14,23 @@ import { RunService } from '../../services/run.service';
 export class JobslistComponent implements OnInit {
 
   jobs;
+  projectId: string = "";
   showSpinner: boolean = false;
-  constructor(private jobsService: JobsService, private runService: RunService, private router: Router) { }
+  constructor(private jobsService: JobsService, private runService: RunService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {   
     this.showSpinner = true;
-    this.jobsService.getJobs().subscribe(results => {
+    this.route.params.subscribe(params => {
+      console.log(params);
+      if (params['id']) {
+        this.projectId = params['id'];
+        this.list(this.projectId);
+      }
+    });
+  }
+
+  list(id: string) {
+    this.jobsService.getJobs(id).subscribe(results => {
       this.showSpinner = false;
       if (!results)
         return;

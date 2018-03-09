@@ -54,21 +54,20 @@ const routes: Routes = [
     path: 'app',
     component: LayoutComponent,
     children: [
-      { path: '', redirectTo: '/app/jobs', pathMatch: 'full' },
-      //{ path: 'jobs', component: JobslistComponent },
-      //{ path: 'projects', component: ProjectlistComponent },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'jobs', component: JobslistComponent },
+      { path: '', redirectTo: '/app/projects', pathMatch: 'full' },
 
-      { path: 'runs/:id', component: RunListComponent },
-      { path: 'run/:id', component: RunDetailComponent },
+      { path: 'dashboard', component: DashboardComponent },
 
       { path: 'projects', component: ProjectlistComponent },
-      { path: 'new-project', component: NewProjectComponent },
-      { path: 'project/:id', component: EditProjectComponent },
+      { path: 'projects/new', component: NewProjectComponent },
+      { path: 'projects/:id', component: EditProjectComponent },
+      { path: 'projects/:id/jobs', component: JobslistComponent },
+      { path: 'projects/:id/jobs/:jobId/runs', component: RunListComponent },
+      { path: 'projects/:id/jobs/:jobId/runs/:runId', component: RunDetailComponent },
 
       { path: 'messages', component: MessageListComponent },
       { path: 'message/:id', component: MessageDetailComponent },
+
       { path: 'regions', component: RegionsListComponent },
 
       { path: 'issues', component: IssuesListComponent },

@@ -2,7 +2,7 @@
 
     <article class="article">
         <h2 class="article-title">Projects
-            <button mat-raised-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/new-project']">New Project</button><div class="divider divider-sm"></div>
+            <button mat-raised-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/projects/new']">New Project</button><div class="divider divider-sm"></div>
         </h2>
 
         <div class="box box-default table-box mdl-shadow--2dp">
@@ -12,7 +12,8 @@
                     <th class="mdl-data-table__cell--non-numeric">Name</th>
                     <th class="mdl-data-table__cell--non-numeric">Visibility</th>
                     <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
-                    <th class="mdl-data-table__cell--non-numeric">Repository</th>
+                    <th class="mdl-data-table__cell--non-numeric">Jobs</th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -20,7 +21,8 @@
                     <td class="mdl-data-table__cell--non-numeric bold">{{project.org.name}}/{{project.name}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{project.visibility}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{project.createdDate | date:'shortDate'}}</td>
-                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/project', project.id]">{{project.projectType}}</a></td>
+                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a></td>
+                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id]">Edit</a></td>
                 </tr>
                 </tbody>
             </table>

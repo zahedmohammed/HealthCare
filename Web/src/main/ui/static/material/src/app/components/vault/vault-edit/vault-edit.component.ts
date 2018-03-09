@@ -12,7 +12,7 @@ import { Vault } from '../../../models/vault.model';
 export class VaultEditComponent implements OnInit {
 
   showSpinner: boolean = false;
-  entry: Vault;// = new Vault('', '', '', 'PRIVATE');
+  entry: Vault = new Vault('', '', '', 'PRIVATE');
   constructor(private vaultService: VaultService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
@@ -68,5 +68,7 @@ export class VaultEditComponent implements OnInit {
       console.log("Unable to delete entry");
     });
   }
+
+  visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 
 }
