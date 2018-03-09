@@ -59,14 +59,18 @@ const routes: Routes = [
       //{ path: 'projects', component: ProjectlistComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'jobs', component: JobslistComponent },
+
       { path: 'runs/:id', component: RunListComponent },
       { path: 'run/:id', component: RunDetailComponent },
+
       { path: 'projects', component: ProjectlistComponent },
       { path: 'new-project', component: NewProjectComponent },
       { path: 'project/:id', component: EditProjectComponent },
+
       { path: 'messages', component: MessageListComponent },
       { path: 'message/:id', component: MessageDetailComponent },
       { path: 'regions', component: RegionsListComponent },
+
       { path: 'issues', component: IssuesListComponent },
       { path: 'issues/new', component: IssuesNewComponent },
       { path: 'issues/:id', component: IssuesEditComponent },

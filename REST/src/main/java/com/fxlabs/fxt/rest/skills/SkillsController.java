@@ -42,7 +42,7 @@ public class SkillsController {
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Skill> add(@RequestBody Skill request) {
         return service.save(request, SecurityUtil.getCurrentAuditor());
     }

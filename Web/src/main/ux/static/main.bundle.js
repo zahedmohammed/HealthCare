@@ -138,31 +138,30 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__layout_layout_component__ = __webpack_require__("../../../../../src/app/layout/layout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__layout_preloader_directive__ = __webpack_require__("../../../../../src/app/layout/preloader.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__layout_header_header_component__ = __webpack_require__("../../../../../src/app/layout/header/header.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__layout_sidenav_sidenav_component__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__layout_sidenav_toggle_offcanvas_nav_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/toggle-offcanvas-nav.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__layout_sidenav_auto_close_mobile_nav_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/auto-close-mobile-nav.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__layout_sidenav_sidenav_menu_sidenav_menu_component__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav-menu/sidenav-menu.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__layout_sidenav_sidenav_menu_accordion_nav_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav-menu/accordion-nav.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__layout_sidenav_sidenav_menu_append_submenu_icon_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav-menu/append-submenu-icon.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__layout_sidenav_sidenav_menu_highlight_active_items_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav-menu/highlight-active-items.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__layout_customizer_customizer_component__ = __webpack_require__("../../../../../src/app/layout/customizer/customizer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__layout_customizer_toggle_quickview_directive__ = __webpack_require__("../../../../../src/app/layout/customizer/toggle-quickview.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__layout_footer_footer_component__ = __webpack_require__("../../../../../src/app/layout/footer/footer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__layout_search_overlay_search_overlay_component__ = __webpack_require__("../../../../../src/app/layout/search-overlay/search-overlay.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__layout_search_overlay_search_overlay_directive__ = __webpack_require__("../../../../../src/app/layout/search-overlay/search-overlay.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__layout_search_overlay_open_search_overlay_directive__ = __webpack_require__("../../../../../src/app/layout/search-overlay/open-search-overlay.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__page_layouts_fullscreen_fullscreen_component__ = __webpack_require__("../../../../../src/app/page-layouts/fullscreen/fullscreen.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__layout_layout_module__ = __webpack_require__("../../../../../src/app/layout/layout.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__angularclass_hmr__ = __webpack_require__("../../../../@angularclass/hmr/dist/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__angularclass_hmr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_28__angularclass_hmr__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__layout_layout_component__ = __webpack_require__("../../../../../src/app/layout/layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__layout_preloader_directive__ = __webpack_require__("../../../../../src/app/layout/preloader.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__layout_header_header_component__ = __webpack_require__("../../../../../src/app/layout/header/header.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__layout_sidenav_sidenav_component__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__layout_sidenav_toggle_offcanvas_nav_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/toggle-offcanvas-nav.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__layout_sidenav_auto_close_mobile_nav_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/auto-close-mobile-nav.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__layout_sidenav_sidenav_menu_sidenav_menu_component__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav-menu/sidenav-menu.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__layout_sidenav_sidenav_menu_accordion_nav_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav-menu/accordion-nav.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__layout_sidenav_sidenav_menu_append_submenu_icon_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav-menu/append-submenu-icon.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__layout_sidenav_sidenav_menu_highlight_active_items_directive__ = __webpack_require__("../../../../../src/app/layout/sidenav/sidenav-menu/highlight-active-items.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__layout_customizer_customizer_component__ = __webpack_require__("../../../../../src/app/layout/customizer/customizer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__layout_customizer_toggle_quickview_directive__ = __webpack_require__("../../../../../src/app/layout/customizer/toggle-quickview.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__layout_footer_footer_component__ = __webpack_require__("../../../../../src/app/layout/footer/footer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__layout_search_overlay_search_overlay_component__ = __webpack_require__("../../../../../src/app/layout/search-overlay/search-overlay.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__layout_search_overlay_search_overlay_directive__ = __webpack_require__("../../../../../src/app/layout/search-overlay/search-overlay.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__layout_search_overlay_open_search_overlay_directive__ = __webpack_require__("../../../../../src/app/layout/search-overlay/open-search-overlay.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__page_layouts_fullscreen_fullscreen_component__ = __webpack_require__("../../../../../src/app/page-layouts/fullscreen/fullscreen.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__layout_layout_module__ = __webpack_require__("../../../../../src/app/layout/layout.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_jobs_list_jobs_list_component__ = __webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_projects_list_projects_list_component__ = __webpack_require__("../../../../../src/app/components/projects-list/projects-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_regions_list_regions_list_component__ = __webpack_require__("../../../../../src/app/components/regions-list/regions-list.component.ts");
@@ -220,8 +219,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+
 
 
 
@@ -254,7 +253,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 // hmr
-
+//import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
 
 
@@ -302,94 +301,79 @@ var AppModule = (function () {
     function AppModule(appRef) {
         this.appRef = appRef;
     }
-    AppModule.prototype.hmrOnInit = function (store) {
-        console.log('HMR store', store);
-    };
-    AppModule.prototype.hmrOnDestroy = function (store) {
-        var cmpLocation = this.appRef.components.map(function (cmp) { return cmp.location.nativeElement; });
-        // recreate elements
-        store.disposeOldHosts = Object(__WEBPACK_IMPORTED_MODULE_28__angularclass_hmr__["createNewHosts"])(cmpLocation);
-        // remove styles
-        Object(__WEBPACK_IMPORTED_MODULE_28__angularclass_hmr__["removeNgStyles"])();
-    };
-    AppModule.prototype.hmrAfterDestroy = function (store) {
-        // display new elements
-        store.disposeOldHosts();
-        delete store.disposeOldHosts;
-    };
     AppModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["K" /* NgModule */])({
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_4__angular_forms__["c" /* FormsModule */],
-                //BrowserAnimationsModule,
-                //NoopAnimationsModule,
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MatAutocompleteModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["b" /* MatButtonModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["c" /* MatButtonToggleModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["d" /* MatCardModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["e" /* MatCheckboxModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["f" /* MatChipsModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["A" /* MatStepperModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["g" /* MatDatepickerModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["h" /* MatDialogModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["i" /* MatExpansionModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["j" /* MatGridListModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["k" /* MatIconModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["l" /* MatInputModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["m" /* MatListModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["n" /* MatMenuModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["o" /* MatNativeDateModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["p" /* MatPaginatorModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["q" /* MatProgressBarModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["r" /* MatProgressSpinnerModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["s" /* MatRadioModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["t" /* MatRippleModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["u" /* MatSelectModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["v" /* MatSidenavModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["x" /* MatSliderModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["w" /* MatSlideToggleModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["y" /* MatSnackBarModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["z" /* MatSortModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["B" /* MatTableModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["C" /* MatTabsModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["D" /* MatToolbarModule */],
-                __WEBPACK_IMPORTED_MODULE_5__angular_material__["E" /* MatTooltipModule */],
-                __WEBPACK_IMPORTED_MODULE_6__app_routing_module__["a" /* AppRoutingModule */],
+                __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__["b" /* NoopAnimationsModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["a" /* MatAutocompleteModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["b" /* MatButtonModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["c" /* MatButtonToggleModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["d" /* MatCardModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["e" /* MatCheckboxModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["f" /* MatChipsModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["A" /* MatStepperModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["g" /* MatDatepickerModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["h" /* MatDialogModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["i" /* MatExpansionModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["j" /* MatGridListModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["k" /* MatIconModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["l" /* MatInputModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["m" /* MatListModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["n" /* MatMenuModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["o" /* MatNativeDateModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["p" /* MatPaginatorModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["q" /* MatProgressBarModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["r" /* MatProgressSpinnerModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["s" /* MatRadioModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["t" /* MatRippleModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["u" /* MatSelectModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["v" /* MatSidenavModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["x" /* MatSliderModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["w" /* MatSlideToggleModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["y" /* MatSnackBarModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["z" /* MatSortModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["B" /* MatTableModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["C" /* MatTabsModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["D" /* MatToolbarModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["E" /* MatTooltipModule */],
+                __WEBPACK_IMPORTED_MODULE_7__app_routing_module__["a" /* AppRoutingModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["b" /* HttpClientModule */],
                 // Sub modules
-                __WEBPACK_IMPORTED_MODULE_26__layout_layout_module__["a" /* LayoutModule */],
-                __WEBPACK_IMPORTED_MODULE_27__shared_shared_module__["a" /* SharedModule */],
+                __WEBPACK_IMPORTED_MODULE_27__layout_layout_module__["a" /* LayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_28__shared_shared_module__["a" /* SharedModule */],
             ],
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */],
+                __WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */],
                 // Layout
-                __WEBPACK_IMPORTED_MODULE_8__layout_layout_component__["a" /* LayoutComponent */],
-                __WEBPACK_IMPORTED_MODULE_9__layout_preloader_directive__["a" /* PreloaderDirective */],
+                __WEBPACK_IMPORTED_MODULE_9__layout_layout_component__["a" /* LayoutComponent */],
+                __WEBPACK_IMPORTED_MODULE_10__layout_preloader_directive__["a" /* PreloaderDirective */],
                 // Header
-                __WEBPACK_IMPORTED_MODULE_10__layout_header_header_component__["a" /* AppHeaderComponent */],
+                __WEBPACK_IMPORTED_MODULE_11__layout_header_header_component__["a" /* AppHeaderComponent */],
                 // Sidenav
-                __WEBPACK_IMPORTED_MODULE_11__layout_sidenav_sidenav_component__["a" /* AppSidenavComponent */],
-                __WEBPACK_IMPORTED_MODULE_12__layout_sidenav_toggle_offcanvas_nav_directive__["a" /* ToggleOffcanvasNavDirective */],
-                __WEBPACK_IMPORTED_MODULE_13__layout_sidenav_auto_close_mobile_nav_directive__["a" /* AutoCloseMobileNavDirective */],
-                __WEBPACK_IMPORTED_MODULE_14__layout_sidenav_sidenav_menu_sidenav_menu_component__["a" /* AppSidenavMenuComponent */],
-                __WEBPACK_IMPORTED_MODULE_15__layout_sidenav_sidenav_menu_accordion_nav_directive__["a" /* AccordionNavDirective */],
-                __WEBPACK_IMPORTED_MODULE_16__layout_sidenav_sidenav_menu_append_submenu_icon_directive__["a" /* AppendSubmenuIconDirective */],
-                __WEBPACK_IMPORTED_MODULE_17__layout_sidenav_sidenav_menu_highlight_active_items_directive__["a" /* HighlightActiveItemsDirective */],
+                __WEBPACK_IMPORTED_MODULE_12__layout_sidenav_sidenav_component__["a" /* AppSidenavComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__layout_sidenav_toggle_offcanvas_nav_directive__["a" /* ToggleOffcanvasNavDirective */],
+                __WEBPACK_IMPORTED_MODULE_14__layout_sidenav_auto_close_mobile_nav_directive__["a" /* AutoCloseMobileNavDirective */],
+                __WEBPACK_IMPORTED_MODULE_15__layout_sidenav_sidenav_menu_sidenav_menu_component__["a" /* AppSidenavMenuComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__layout_sidenav_sidenav_menu_accordion_nav_directive__["a" /* AccordionNavDirective */],
+                __WEBPACK_IMPORTED_MODULE_17__layout_sidenav_sidenav_menu_append_submenu_icon_directive__["a" /* AppendSubmenuIconDirective */],
+                __WEBPACK_IMPORTED_MODULE_18__layout_sidenav_sidenav_menu_highlight_active_items_directive__["a" /* HighlightActiveItemsDirective */],
                 // Customizer
-                __WEBPACK_IMPORTED_MODULE_18__layout_customizer_customizer_component__["a" /* AppCustomizerComponent */],
-                __WEBPACK_IMPORTED_MODULE_19__layout_customizer_toggle_quickview_directive__["a" /* ToggleQuickviewDirective */],
+                __WEBPACK_IMPORTED_MODULE_19__layout_customizer_customizer_component__["a" /* AppCustomizerComponent */],
+                __WEBPACK_IMPORTED_MODULE_20__layout_customizer_toggle_quickview_directive__["a" /* ToggleQuickviewDirective */],
                 // Footer
-                __WEBPACK_IMPORTED_MODULE_20__layout_footer_footer_component__["a" /* AppFooterComponent */],
+                __WEBPACK_IMPORTED_MODULE_21__layout_footer_footer_component__["a" /* AppFooterComponent */],
                 // Search overlay
-                __WEBPACK_IMPORTED_MODULE_21__layout_search_overlay_search_overlay_component__["a" /* AppSearchOverlayComponent */],
-                __WEBPACK_IMPORTED_MODULE_22__layout_search_overlay_search_overlay_directive__["a" /* SearchOverlayDirective */],
-                __WEBPACK_IMPORTED_MODULE_23__layout_search_overlay_open_search_overlay_directive__["a" /* OpenSearchOverlaylDirective */],
+                __WEBPACK_IMPORTED_MODULE_22__layout_search_overlay_search_overlay_component__["a" /* AppSearchOverlayComponent */],
+                __WEBPACK_IMPORTED_MODULE_23__layout_search_overlay_search_overlay_directive__["a" /* SearchOverlayDirective */],
+                __WEBPACK_IMPORTED_MODULE_24__layout_search_overlay_open_search_overlay_directive__["a" /* OpenSearchOverlaylDirective */],
                 //
-                __WEBPACK_IMPORTED_MODULE_24__dashboard_dashboard_component__["a" /* DashboardComponent */],
+                __WEBPACK_IMPORTED_MODULE_25__dashboard_dashboard_component__["a" /* DashboardComponent */],
                 // Pages
-                __WEBPACK_IMPORTED_MODULE_25__page_layouts_fullscreen_fullscreen_component__["a" /* PageLayoutFullscreenComponent */],
+                __WEBPACK_IMPORTED_MODULE_26__page_layouts_fullscreen_fullscreen_component__["a" /* PageLayoutFullscreenComponent */],
                 __WEBPACK_IMPORTED_MODULE_29__components_jobs_list_jobs_list_component__["a" /* JobslistComponent */],
                 __WEBPACK_IMPORTED_MODULE_30__components_projects_list_projects_list_component__["a" /* ProjectlistComponent */],
                 __WEBPACK_IMPORTED_MODULE_31__components_regions_list_regions_list_component__["a" /* RegionsListComponent */],
@@ -434,7 +418,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_70__components_skills_skills_issue_tracker_skills_issue_tracker_component__["a" /* SkillsIssueTrackerComponent */],
                 __WEBPACK_IMPORTED_MODULE_71__components_skills_skills_analytics_skills_analytics_component__["a" /* SkillsAnalyticsComponent */],
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]]
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ApplicationRef */]])
     ], AppModule);
@@ -1140,7 +1124,7 @@ var EditProjectComponent = (function () {
 /***/ "../../../../../src/app/components/issues/issues-edit/issues-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  issues-edit works!\n</p>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\">Bot</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Bot Name</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"subscription.name\" disabled name=\"name\" id=\"name\"\n                     placeholder=\"Bot name\">\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"skill\" class=\"col-md-2 control-label\">Issue Tracker Type\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"subscription.skill.name\" disabled name=\"skill\" id=\"skill\"\n                     placeholder=\"Bot Type\">\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Issue Tracker URL\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"subscription.prop1\" name=\"url\" id=\"repo\"\n                     placeholder=\"Issue Tracker URL\">\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Visibility\n            </label>\n            <div class=\"col-md-10\">\n              <mat-form-field>\n                <mat-select placeholder=\"Visibility\" [(ngModel)]=\"subscription.visibility\" name=\"visibility\">\n                  <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                    {{visibility}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/issues']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -1168,6 +1152,10 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IssuesEditComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__ = __webpack_require__("../../../../../src/app/services/skill-subscription.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_skill_service__ = __webpack_require__("../../../../../src/app/services/skill.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_subscription_model__ = __webpack_require__("../../../../../src/app/models/subscription.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1178,18 +1166,94 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
 var IssuesEditComponent = (function () {
-    function IssuesEditComponent() {
+    function IssuesEditComponent(skillSubscriptionService, skillService, route, router) {
+        this.skillSubscriptionService = skillSubscriptionService;
+        this.skillService = skillService;
+        this.route = route;
+        this.router = router;
+        this.showSpinner = false;
+        this.subscription = new __WEBPACK_IMPORTED_MODULE_4__models_subscription_model__["a" /* Subscription */]('', '', '', '', 'PRIVATE');
+        this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     IssuesEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            console.log(params);
+            if (params['id']) {
+                _this.getById(params['id']);
+            }
+        });
+        //this.listSkills();
+    };
+    IssuesEditComponent.prototype.getById = function (id) {
+        var _this = this;
+        this.showSpinner = true;
+        this.skillSubscriptionService.getById(id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.subscription = results['data'];
+            console.log(_this.subscription);
+        }, function (error) {
+            console.log("Unable to fetch vault");
+        });
+    };
+    IssuesEditComponent.prototype.update = function () {
+        var _this = this;
+        console.log(this.subscription);
+        this.skillSubscriptionService.update(this.subscription).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/issues']);
+        }, function (error) {
+            console.log("Unable to update vault");
+        });
+    };
+    IssuesEditComponent.prototype.delete = function () {
+        var _this = this;
+        console.log(this.subscription);
+        this.skillSubscriptionService.delete(this.subscription).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/issues']);
+        }, function (error) {
+            console.log("Unable to delete subscription");
+        });
+    };
+    IssuesEditComponent.prototype.listSkills = function () {
+        var _this = this;
+        console.log('listing skills');
+        this.skillService.get().subscribe(function (results) {
+            if (results['errors']) {
+                console.log(results);
+                return;
+            }
+            _this.skills = results['data'];
+        });
     };
     IssuesEditComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-issues-edit',
             template: __webpack_require__("../../../../../src/app/components/issues/issues-edit/issues-edit.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-edit/issues-edit.component.scss")]
+            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-edit/issues-edit.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__["a" /* SkillSubscriptionService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__["a" /* SkillSubscriptionService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], IssuesEditComponent);
     return IssuesEditComponent;
 }());
@@ -1201,7 +1265,7 @@ var IssuesEditComponent = (function () {
 /***/ "../../../../../src/app/components/issues/issues-list/issues-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"chapter page-terms\">\n\n  <section class=\"hero\">\n    <div class=\"hero-content\">\n      <h1 class=\"hero-title\">Issue-Tracker Hub</h1>\n    </div>\n    <p class=\"text-muted\">Auto file/close bugs in issue-tracker systems.</p>\n  </section>\n\n  <article class=\"article padding-lg-v article-dark article-bordered\">\n    <div class=\"container-fluid with-maxwidth chapter\">\n\n      <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <!--<table class=\"mdl-data-table\">\n          <thead>\n          <tr>\n            <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n            <th class=\"mdl-data-table__cell--non-numeric\">Location</th>\n            <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let item of list\">\n            <td class=\"mdl-data-table__cell--non-numeric\">{{item.org.name}}/{{item.name}}</td>\n            <td class=\"mdl-data-table__cell--non-numeric\">{{item.region}}</td>\n            <td class=\"mdl-data-table__cell--non-numeric\">{{item.visibility}}</td>\n          </tr>\n          </tbody>\n        </table>-->\n      </div>\n\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"chapter page-terms\">\n\n    <section class=\"hero\">\n        <div class=\"hero-content\">\n            <h1 class=\"hero-title\">Issue-Tracker Hub</h1>\n        </div>\n        <p class=\"text-muted\">AI Bot can auto file/close bugs in issue-tracker systems.</p>\n    </section>\n\n    <article class=\"article padding-lg-v article-dark article-bordered\">\n        <div class=\"container-fluid with-maxwidth chapter\">\n            <article class=\"article\">\n                <h2 class=\"article-title\">\n                    <button mat-raised-button color=\"primary\" class=\"btn-w-md pull-right\"\n                            [routerLink]=\"['/app/issues/new']\">Launch Bot\n                    </button>\n                    <div class=\"divider divider-sm\"></div>\n                </h2>\n                <br/>\n\n                <div class=\"box box-default table-box mdl-shadow--2dp\">\n                    <table class=\"mdl-data-table\">\n                        <thead>\n                        <tr>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Type</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Create-Date</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Owner</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                        </tr>\n                        </thead>\n                        <tbody>\n                        <tr *ngFor=\"let key of keys\">\n                            <td class=\"mdl-data-table__cell--non-numeric bold\">{{key.org.name}}/{{key.name}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric bold\">{{key.skill.name}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{key.visibility}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{key.createdDate | date:'shortDate'}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{key.createdBy}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\"\n                                                                             [routerLink]=\"['/app/issues', key.id]\">Edit</a>\n                            </td>\n                        </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </article>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -1229,6 +1293,7 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IssuesListComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_skill_subscription_service__ = __webpack_require__("../../../../../src/app/services/skill-subscription.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1239,18 +1304,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var IssuesListComponent = (function () {
-    function IssuesListComponent() {
+    function IssuesListComponent(skillSubscriptionService) {
+        this.skillSubscriptionService = skillSubscriptionService;
+        this.showSpinner = false;
     }
     IssuesListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.showSpinner = true;
+        this.skillSubscriptionService.get().subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.keys = results['data'];
+        }, function (error) {
+            console.log("Unable to fetch Subscriptions");
+        });
     };
     IssuesListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-issues-list',
             template: __webpack_require__("../../../../../src/app/components/issues/issues-list/issues-list.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-list/issues-list.component.scss")]
+            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-list/issues-list.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_1__services_skill_subscription_service__["a" /* SkillSubscriptionService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_skill_subscription_service__["a" /* SkillSubscriptionService */]])
     ], IssuesListComponent);
     return IssuesListComponent;
 }());
@@ -1262,7 +1343,7 @@ var IssuesListComponent = (function () {
 /***/ "../../../../../src/app/components/issues/issues-new/issues-new.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  issues-new works!\n</p>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Bot</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\" #heroForm=\"ngForm\">\n\n                    <div class=\"form-group row\">\n                        <label for=\"name\" class=\"col-md-2 control-label\">Bot Name</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"entry.name\" name=\"name\" id=\"name\"\n                                   placeholder=\"Bot name\">\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Issue Tracker Type\n                        </label>\n                        <div class=\"col-md-10\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Type\" [(ngModel)]=\"entry.skill\" name=\"skill\">\n                                    <mat-option *ngFor=\"let skill of skills\" [value]=\"skill\">\n                                        {{skill.name}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Issue Tracker URL\n                        </label>\n                        <div class=\"col-md-10\">\n                            <input type=\"url\" class=\"form-control\" [(ngModel)]=\"entry.prop1\" name=\"url\" id=\"repo\"\n                                   placeholder=\"Issue Tracker URL\">\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Visibility\n                        </label>\n                        <div class=\"col-md-10\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Visibility\" [(ngModel)]=\"entry.visibility\" name=\"visibility\">\n                                    <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                                        {{visibility}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n\n                    <div class=\"divider divider-md\"></div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                                    class=\"btn-w-md no-margin-left\">Launch\n                            </button>\n                            <span class=\"space space-md\"></span>\n                            <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/issues']\">\n                                Cancel\n                            </button>\n                        </div>\n                    </div>\n\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -1290,6 +1371,10 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IssuesNewComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__ = __webpack_require__("../../../../../src/app/services/skill-subscription.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_skill_service__ = __webpack_require__("../../../../../src/app/services/skill.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_subscription_model__ = __webpack_require__("../../../../../src/app/models/subscription.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1300,18 +1385,58 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
 var IssuesNewComponent = (function () {
-    function IssuesNewComponent() {
+    function IssuesNewComponent(skillSubscriptionService, skillService, route, router) {
+        this.skillSubscriptionService = skillSubscriptionService;
+        this.skillService = skillService;
+        this.route = route;
+        this.router = router;
+        this.showSpinner = false;
+        this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_subscription_model__["a" /* Subscription */]('', '', '', '', 'PRIVATE');
+        this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     IssuesNewComponent.prototype.ngOnInit = function () {
+        this.listSkills();
+    };
+    IssuesNewComponent.prototype.listSkills = function () {
+        var _this = this;
+        console.log('listing skills');
+        this.skillService.get().subscribe(function (results) {
+            if (results['errors']) {
+                console.log(results);
+                return;
+            }
+            _this.skills = results['data'];
+        });
+    };
+    IssuesNewComponent.prototype.create = function () {
+        var _this = this;
+        console.log(this.entry);
+        this.showSpinner = true;
+        this.skillSubscriptionService.create(this.entry).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/issues']);
+        }, function (error) {
+            console.log("Unable to save subscription entry");
+        });
     };
     IssuesNewComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-issues-new',
             template: __webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.scss")]
+            styles: [__webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__["a" /* SkillSubscriptionService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */]]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__["a" /* SkillSubscriptionService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], IssuesNewComponent);
     return IssuesNewComponent;
 }());
@@ -3346,7 +3471,7 @@ var VaultEditComponent = (function () {
 /***/ "../../../../../src/app/components/vault/vault-list/vault-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"chapter page-terms\">\n\n  <section class=\"hero\">\n    <div class=\"hero-content\">\n      <h1 class=\"hero-title\">Vault</h1>\n    </div>\n    <p class=\"text-muted\">Securely store & inject sensitive data at real-time in test-suites.</p>\n  </section>\n\n  <article class=\"article padding-lg-v article-dark article-bordered\">\n    <div class=\"container-fluid with-maxwidth chapter\">\n\n          <article class=\"article\">\n            <h2 class=\"article-title\">\n              <button mat-raised-button color=\"primary\" class=\"btn-w-md pull-right\" [routerLink]=\"['/app/vault/new']\">New Entry</button><div class=\"divider divider-sm\"></div>\n            </h2>\n\n            <div class=\"box box-default table-box mdl-shadow--2dp\">\n              <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Key</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Create-Date</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Owner</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let key of keys\">\n                  <td class=\"mdl-data-table__cell--non-numeric bold\">{{key.org.name}}/{{key.key}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.visibility}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.createdDate | date:'shortDate'}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.createdBy}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/vault', key.id]\">Edit</a></td>\n                </tr>\n                </tbody>\n              </table>\n            </div>\n          </article>\n\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"chapter page-terms\">\n\n  <section class=\"hero\">\n    <div class=\"hero-content\">\n      <h1 class=\"hero-title\">Vault</h1>\n    </div>\n    <p class=\"text-muted\">Securely store & inject sensitive data at real-time in test-suites.</p>\n  </section>\n\n  <article class=\"article padding-lg-v article-dark article-bordered\">\n    <div class=\"container-fluid with-maxwidth chapter\">\n\n          <article class=\"article\">\n            <h2 class=\"article-title\">\n              <button mat-raised-button color=\"primary\" class=\"btn-w-md pull-right\" [routerLink]=\"['/app/vault/new']\">New Entry</button><div class=\"divider divider-sm\"></div>\n            </h2>\n            <br/>\n\n            <div class=\"box box-default table-box mdl-shadow--2dp\">\n              <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Key</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Create-Date</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\">Owner</th>\n                  <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let key of keys\">\n                  <td class=\"mdl-data-table__cell--non-numeric bold\">{{key.org.name}}/{{key.key}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.visibility}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.createdDate | date:'shortDate'}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{key.createdBy}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/vault', key.id]\">Edit</a></td>\n                </tr>\n                </tbody>\n              </table>\n            </div>\n          </article>\n\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -4143,7 +4268,7 @@ var AppFooterComponent = (function () {
 /***/ "../../../../../src/app/layout/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"app-header\">\n  <div class=\"app-header-inner\"\n     [ngClass]=\"{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-dark': AppConfig.colorOption === '31',\n                 'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-info': ['24','34'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}\">\n\n    <div class=\"d-lg-none d-xl-none float-left\">\n      <button mat-button myToggleOffcanvasNav class=\"md-button header-icon toggle-sidebar-btn\">\n        <i class=\"material-icons\">menu</i>\n      </button>\n    </div>\n\n\n    <div class=\"brand d-none d-lg-inline-block d-xl-inline-block\">\n      <!--<h2><a [routerLink]=\"['/']\">{{AppConfig.productName}}</a></h2>-->\n      <img src=\"/fx-white-100x100.png\" class=\"logo\" height=\"65\" [routerLink]=\"['/']\"/>\n    </div>\n\n    <div class=\"top-nav-left d-none d-lg-inline-block d-xl-inline-block\">\n      <ul class=\"list-unstyled list-inline\">\n        <!--<li class=\"list-inline-item\"><button mat-button class=\"md-button header-btn\" myOpenSearchOverlay><i class=\"material-icons\">search</i></button></li>-->\n        <li class=\"list-inline-item\" [routerLink]=\"['/app/messages']\">\n          <button mat-button class=\"md-button header-btn\" [matMenuTriggerFor]=\"appNotification\">\n            <i class=\"material-icons\" >notifications_none</i>\n            <!--<span class=\"badge\">3</span>-->\n          </button>\n          <!--<mat-menu #appNotification=\"matMenu\" x-position=\"after\" y-position=\"below\" overlapTrigger=\"false\">\n            <mat-list dense>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>mail_outline</mat-icon>\n                <h4 mat-line>New mail from David</h4>\n                <p mat-line class=\"text-muted\">5 minutes ago</p>\n              </mat-list-item>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>chat_bubble_outline</mat-icon>\n                <h4 mat-line>Message from Jane</h4>\n                <p mat-line class=\"text-muted\">15 minutes ago</p>\n              </mat-list-item>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>person_outline</mat-icon>\n                <h4 mat-line>New member John joined</h4>\n                <p mat-line class=\"text-muted\">1 hour ago</p>\n              </mat-list-item>\n            </mat-list>\n          </mat-menu>-->\n        </li>\n      </ul>\n    </div>\n\n    <!--<div class=\"top-nav-right\">\n      <ul class=\"list-unstyled float-right\">\n        <li>\n          <button mat-button class=\"md-button header-btn\" [routerLink]=\"['/app/page/about']\">\n            <img src=\"assets/images/g1.jpg\" alt=\"\" class=\"rounded img30_30\">\n          </button>\n        </li>\n        <li><button mat-button class=\"md-button header-btn d-lg-none d-xl-none\" myOpenSearchOverlay><i class=\"material-icons\">search</i></button></li>\n        <li><button mat-button class=\"md-button header-btn\"><i class=\"material-icons\">more_vert</i></button></li>\n      </ul>\n    </div>-->\n\n  </div>\n</section>\n"
+module.exports = "<section class=\"app-header\">\n  <div class=\"app-header-inner\"\n     [ngClass]=\"{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-dark': AppConfig.colorOption === '31',\n                 'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-info': ['24','34'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,\n                 'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}\">\n\n    <div class=\"d-lg-none d-xl-none float-left\">\n      <button mat-button myToggleOffcanvasNav class=\"md-button header-icon toggle-sidebar-btn\">\n        <i class=\"material-icons\">menu</i>\n      </button>\n    </div>\n\n\n    <div class=\"brand d-none d-lg-inline-block d-xl-inline-block\">\n      <!--<h2><a [routerLink]=\"['/']\">{{AppConfig.productName}}</a></h2>-->\n      <img src=\"/fx-white-100x100.png\" class=\"logo\" height=\"65\" [routerLink]=\"['/']\"/>\n    </div>\n\n    <div class=\"top-nav-left d-none d-lg-inline-block d-xl-inline-block\">\n      <ul class=\"list-unstyled list-inline\">\n        <!--<li class=\"list-inline-item\"><button mat-button class=\"md-button header-btn\" myOpenSearchOverlay><i class=\"material-icons\">search</i></button></li>-->\n        <li class=\"list-inline-item\" [routerLink]=\"['/app/messages']\">\n          <!--<button mat-button class=\"md-button header-btn\" [matMenuTriggerFor]=\"appNotification\">-->\n            <i class=\"material-icons\" >notifications_none</i>\n            <!--<span class=\"badge\">3</span>-->\n          <!--</button>-->\n          <!--<mat-menu #appNotification=\"matMenu\" x-position=\"after\" y-position=\"below\" overlapTrigger=\"false\">\n            <mat-list dense>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>mail_outline</mat-icon>\n                <h4 mat-line>New mail from David</h4>\n                <p mat-line class=\"text-muted\">5 minutes ago</p>\n              </mat-list-item>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>chat_bubble_outline</mat-icon>\n                <h4 mat-line>Message from Jane</h4>\n                <p mat-line class=\"text-muted\">15 minutes ago</p>\n              </mat-list-item>\n              <mat-list-item>\n                <mat-icon mat-list-avatar>person_outline</mat-icon>\n                <h4 mat-line>New member John joined</h4>\n                <p mat-line class=\"text-muted\">1 hour ago</p>\n              </mat-list-item>\n            </mat-list>\n          </mat-menu>-->\n        </li>\n      </ul>\n    </div>\n\n    <!--<div class=\"top-nav-right\">\n      <ul class=\"list-unstyled float-right\">\n        <li>\n          <button mat-button class=\"md-button header-btn\" [routerLink]=\"['/app/page/about']\">\n            <img src=\"assets/images/g1.jpg\" alt=\"\" class=\"rounded img30_30\">\n          </button>\n        </li>\n        <li><button mat-button class=\"md-button header-btn d-lg-none d-xl-none\" myOpenSearchOverlay><i class=\"material-icons\">search</i></button></li>\n        <li><button mat-button class=\"md-button header-btn\"><i class=\"material-icons\">more_vert</i></button></li>\n      </ul>\n    </div>-->\n\n  </div>\n</section>\n"
 
 /***/ }),
 
@@ -5062,6 +5187,26 @@ var Project = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/models/subscription.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Subscription; });
+var Subscription = (function () {
+    function Subscription(skill, name, description, prop1, visibility) {
+        this.skill = skill;
+        this.name = name;
+        this.description = description;
+        this.prop1 = prop1;
+        this.visibility = visibility;
+    }
+    return Subscription;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/models/vault.model.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5372,6 +5517,116 @@ var RunService = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/skill-subscription.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillSubscriptionService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var SkillSubscriptionService = (function () {
+    function SkillSubscriptionService(http) {
+        this.http = http;
+        this.serviceUrl = '/api/v1/subscriptions';
+    }
+    /**
+     * Get observable from endpoint
+     */
+    SkillSubscriptionService.prototype.get = function () {
+        return this.http.get(this.serviceUrl);
+    };
+    SkillSubscriptionService.prototype.getById = function (id) {
+        return this.http.get(this.serviceUrl + "/" + id);
+    };
+    SkillSubscriptionService.prototype.create = function (obj) {
+        return this.http.post(this.serviceUrl, obj);
+    };
+    SkillSubscriptionService.prototype.update = function (obj) {
+        return this.http.put(this.serviceUrl + "/" + obj['id'], obj);
+    };
+    SkillSubscriptionService.prototype.delete = function (obj) {
+        return this.http.delete(this.serviceUrl + "/" + obj['id']);
+    };
+    SkillSubscriptionService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], SkillSubscriptionService);
+    return SkillSubscriptionService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/skill.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SkillService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var SkillService = (function () {
+    function SkillService(http) {
+        this.http = http;
+        this.serviceUrl = '/api/v1/skills';
+    }
+    /**
+     * Get observable from endpoint
+     */
+    SkillService.prototype.get = function () {
+        return this.http.get(this.serviceUrl);
+    };
+    SkillService.prototype.getById = function (id) {
+        return this.http.get(this.serviceUrl + "/" + id);
+    };
+    SkillService.prototype.create = function (obj) {
+        return this.http.post(this.serviceUrl, obj);
+    };
+    SkillService.prototype.update = function (obj) {
+        return this.http.put(this.serviceUrl + "/" + obj['id'], obj);
+    };
+    SkillService.prototype.delete = function (obj) {
+        return this.http.delete(this.serviceUrl + "/" + obj['id']);
+    };
+    SkillService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], SkillService);
+    return SkillService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/vault.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5613,7 +5868,7 @@ module.exports = __webpack_require__.p + "2.469e003e44a67c7ef137.png";
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
-    production: false,
+    production: true,
     hmr: false
 };
 

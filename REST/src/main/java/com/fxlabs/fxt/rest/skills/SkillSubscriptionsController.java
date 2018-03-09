@@ -42,14 +42,14 @@ public class SkillSubscriptionsController {
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<SkillSubscription> add(@RequestBody SkillSubscription request) {
         return service.save(request, SecurityUtil.getCurrentAuditor());
     }
 
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public Response<SkillSubscription> update(@Valid @RequestBody SkillSubscription dto) {
         return service.save(dto, SecurityUtil.getCurrentAuditor());
     }

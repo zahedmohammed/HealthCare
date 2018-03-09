@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   MatAutocompleteModule,
@@ -74,7 +74,7 @@ import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
 
 // hmr
-import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
+//import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 import { JobslistComponent } from './components/jobs-list/jobs-list.component';
 import { ProjectlistComponent } from './components/projects-list/projects-list.component';
 import { RegionsListComponent } from './components/regions-list/regions-list.component';
@@ -124,8 +124,8 @@ import { SkillsAnalyticsComponent } from './components/skills/skills-analytics/s
     BrowserModule,
     HttpModule,
     FormsModule,
-    //BrowserAnimationsModule,
-    //NoopAnimationsModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
@@ -241,19 +241,4 @@ import { SkillsAnalyticsComponent } from './components/skills/skills-analytics/s
 
 export class AppModule {
   constructor(public appRef: ApplicationRef) {}
-  hmrOnInit(store) {
-    console.log('HMR store', store);
-  }
-  hmrOnDestroy(store) {
-    const cmpLocation = this.appRef.components.map((cmp) => cmp.location.nativeElement);
-    // recreate elements
-    store.disposeOldHosts = createNewHosts(cmpLocation);
-    // remove styles
-    removeNgStyles();
-  }
-  hmrAfterDestroy(store) {
-    // display new elements
-    store.disposeOldHosts();
-    delete store.disposeOldHosts;
-  }
 }
