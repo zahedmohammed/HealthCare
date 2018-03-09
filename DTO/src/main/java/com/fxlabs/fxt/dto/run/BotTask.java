@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Data
 @AllArgsConstructor
@@ -27,6 +28,7 @@ public class BotTask implements Serializable {
     private String projectDataSetId;
     private String project;
     private String job;
+    private String jobId;
     private String env;
     private String region;
 

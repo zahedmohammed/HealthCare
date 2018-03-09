@@ -36,6 +36,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Component
 @Transactional
@@ -117,6 +118,7 @@ public class RunTaskRequestProcessor {
                 boolean generateTestCaseResponse = !StringUtils.isEmpty(run.getJob().getIssueTracker());
                 String _project = run.getJob().getProject().getName();
                 String _job = run.getJob().getName();
+                String _jobId = run.getJob().getId();
                 String _env = run.getJob().getEnvironment();
                 String _region = run.getJob().getRegions();
 
@@ -136,6 +138,7 @@ public class RunTaskRequestProcessor {
                         task.setId(run.getId());
                         task.setProject(_project);
                         task.setJob(_job);
+                        task.setJobId(_jobId);
                         task.setEnv(_env);
                         task.setRegion(_region);
                         task.setSuiteName(testSuite.getName());

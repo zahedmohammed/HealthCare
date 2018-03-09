@@ -93,7 +93,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
             taskLogger.set(new StringBuilder());
             //TODO Create/Update bugs/issue in gitbub
 
-            RepositoryId repositoryId = RepositoryId.createFromUrl("https://github.com/shoukathmd/Fx-Test-Data");
+            RepositoryId repositoryId = RepositoryId.createFromUrl(task.getIssueTrackerHost());
 
             if (repositoryId == null) {
                 response.setLogs(taskLogger.get().toString());
@@ -106,7 +106,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
             //creates an issue remotely
 
            // IssueService issueService = getIssueService("4bba0ed42c510710209e16a37321d30e64e5f4cd");
-            IssueService issueService = getIssueService("3cdd07af86c6098a0ddef55b684d46d291e44f1a");
+            IssueService issueService = getIssueService("mdshannan@gmail.com", "Abbh12#$");
             if(StringUtils.isNotEmpty(task.getIssueId())){
                 //TODO update issue
 
@@ -185,14 +185,13 @@ public class GitIssueTrackerService implements IssueTrackerService {
         return issue;
     }
 
-    private IssueService getIssueService(String password) {
+    private IssueService getIssueService(String username, String password) {
 
         GitHubClient client = new GitHubClient();
-
+        client.setCredentials(username, password);
         IssueService issueService = new IssueService(client);
-
         //issueService.getClient().setOAuth2Token("3cdd07af86c6098a0ddef55b684d46d291e44f1a");
-        issueService.getClient().setOAuth2Token(password);
+        //issueService.getClient().setOAuth2Token(password);
 
         return issueService;
     }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 
 @Data
@@ -18,6 +19,7 @@ public class TestCaseResponse extends BaseDto<String> {
 
     private String project;
     private String job;
+    private String jobId;
     private String env;
     private String region;
     private String suite;
@@ -35,6 +37,7 @@ public class TestCaseResponse extends BaseDto<String> {
     private String headers;
     private Long time;
     private Integer size;
+    private String issueTrackerHost;
 
 
 

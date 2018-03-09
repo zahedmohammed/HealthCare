@@ -24,6 +24,7 @@ public class TestCaseResponse extends BaseEntity {
 
     private String project;
     private String job;
+    private String jobId;
     private String env;
     private String region;
     private String suite;

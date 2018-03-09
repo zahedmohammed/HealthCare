@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Component
 public class RestProcessor {
@@ -269,6 +270,7 @@ public class RestProcessor {
                     TestCaseResponse tc = new TestCaseResponse();
                     tc.setProject(task.getProject());
                     tc.setJob(task.getJob());
+                    tc.setJobId(task.getJobId());
                     tc.setEnv(task.getEnv());
                     tc.setRegion(task.getRegion());
                     tc.setSuite(task.getSuiteName());
