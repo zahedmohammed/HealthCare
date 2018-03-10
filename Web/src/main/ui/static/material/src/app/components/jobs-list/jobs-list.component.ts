@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { JobsService } from '../../services/jobs.service';
 import { RunService } from '../../services/run.service';
+import { ProjectService } from '../../services/project.service';
+import { Base } from '../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 
 
@@ -9,14 +11,15 @@ import { RunService } from '../../services/run.service';
   selector: 'app-jobs-list',
   templateUrl: './jobs-list.component.html',
   styleUrls: ['./jobs-list.component.scss'],
-  providers: [JobsService, RunService]
+  providers: [JobsService, RunService, ProjectService]
 })
 export class JobslistComponent implements OnInit {
 
   jobs;
   projectId: string = "";
+  project: Base = new Base();
   showSpinner: boolean = false;
-  constructor(private jobsService: JobsService, private runService: RunService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {   
     this.showSpinner = true;
@@ -25,7 +28,16 @@ export class JobslistComponent implements OnInit {
       if (params['id']) {
         this.projectId = params['id'];
         this.list(this.projectId);
+        this.loadProject(this.projectId);
       }
+    });
+  }
+
+  loadProject(id: string) {
+    this.projectService.getById(id).subscribe(results => {
+        if (!results)
+            return;
+        this.project = results['data'];
     });
   }
 

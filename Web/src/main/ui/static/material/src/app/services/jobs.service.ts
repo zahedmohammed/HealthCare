@@ -10,6 +10,10 @@ export class JobsService {
   constructor(private http: HttpClient) {
   }
 
+  getById(id: string) {
+    return this.http.get(this.serviceUrl + "/" + id);
+  }
+
   /**
    * Get the jobs in observable from endpoint
    */

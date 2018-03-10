@@ -10,6 +10,10 @@ private serviceUrl = '/api/v1/runs';
 constructor(private http: HttpClient) {
   }
 
+  getById(id: string) {
+    return this.http.get(this.serviceUrl + "/" + id);
+  }
+
   /**
    * Get the jobs in observable from endpoint
    */
@@ -34,4 +38,5 @@ constructor(private http: HttpClient) {
   getSummary(runId:string) {
    return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary");
   }
+
  }

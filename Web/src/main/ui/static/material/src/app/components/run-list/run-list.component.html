@@ -4,10 +4,10 @@
     <article class="article">
         <h2 class="article-title">
             <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
-            / {{projectId}} /
+            / {{project.name}} /
             <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs']"> Jobs </a>
             /
-            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]">{{jobId}}</a> /
+            <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}<!--</a>--> /
             Runs</h2>
         <div class="box box-default table-box mdl-shadow--2dp">
             <table class="mdl-data-table">

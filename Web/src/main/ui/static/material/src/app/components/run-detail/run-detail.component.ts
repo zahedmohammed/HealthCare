@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { JobsService } from '../../services/jobs.service';
 import { RunService } from '../../services/run.service';
+import { ProjectService } from '../../services/project.service';
+import { Base } from '../../models/base.model';
+import { Run } from '../../models/run.model';
 
 
 @Component({
   selector: 'app-run-detail',
   templateUrl: './run-detail.component.html',
   styleUrls: ['./run-detail.component.scss'],
-  providers: [RunService]
+  providers: [JobsService, RunService, ProjectService]
 })
 export class RunDetailComponent implements OnInit {
-  run;
+  run:Run = new Run();
   list;
   suites;
   id;
@@ -20,23 +24,43 @@ export class RunDetailComponent implements OnInit {
   failed = 0;
   size = 0;
   time = 0;
+  project: Base = new Base();
+  job: Base = new Base();
   showSpinner: boolean = false;
-  constructor(private runService: RunService, private route: ActivatedRoute) { }
+  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {
        this.projectId = params['id'];
+       this.loadProject(this.projectId);
       }
       if (params['jobId']) {
         this.jobId = params['jobId'];
+        this.loadJob(this.jobId);
       }
       if (params['runId']) {
         this.id = params['runId'];
         this.getRunById();
         this.getSummary();
       }
+    });
+  }
+
+  loadProject(id: string) {
+    this.projectService.getById(id).subscribe(results => {
+        if (!results)
+            return;
+        this.project = results['data'];
+    });
+  }
+
+  loadJob(id: string) {
+    this.jobsService.getById(id).subscribe(results => {
+        if (!results)
+            return;
+        this.job = results['data'];
     });
   }
 

@@ -2,13 +2,13 @@
     <article class="article">
         <h2 class="article-title">
             <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
-             / {{projectId}} /
+            / {{project.name}} /
             <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs']"> Jobs </a>
-             /
-            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]">{{jobId}}</a>
-             /
-            <a href="javascript:;" [routerLink]="['/app/runs']">Runs</a>
-             / <a href="javascript:;" (click)="this.getRunById();this.getSummary();">{{run.runId}} </a>
+            /
+            <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}<!--</a>-->
+            /
+            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs']"> Runs </a>
+            / {{run.runId}}
         </h2>
     </article>
 

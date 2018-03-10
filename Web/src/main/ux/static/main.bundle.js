@@ -45,7 +45,7 @@ var AppRoutes = [
     { path: 'fullscreen', component: __WEBPACK_IMPORTED_MODULE_2__page_layouts_fullscreen_fullscreen_component__["a" /* PageLayoutFullscreenComponent */] },
     { path: '**', redirectTo: '/app/jobs', pathMatch: 'full' },
 ];
-var AppRoutingModule = __WEBPACK_IMPORTED_MODULE_0__angular_router__["g" /* RouterModule */].forRoot(AppRoutes, { useHash: true });
+var AppRoutingModule = __WEBPACK_IMPORTED_MODULE_0__angular_router__["g" /* RouterModule */].forRoot(AppRoutes, { useHash: false });
 
 
 /***/ }),
@@ -1451,7 +1451,7 @@ var IssuesNewComponent = (function () {
 /***/ "../../../../../src/app/components/jobs-list/jobs-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">\n      <a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects</a>\n      / {{projectId}} / Jobs</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Env</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Next-Fire</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Action</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let job of jobs\">\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.project.org.name}}/{{job.project.name}}/{{job.name}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.environment}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.regions}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.nextFire | date:'short'}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', job.id, 'runs']\">Past-runs</a> &nbsp;\n            <a href=\"javascript:;\" (click)=\"runJob(job.id)\">Run-now</a>\n          </td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">\n      <a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects</a>\n      / {{project.name}} / Jobs</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Env</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Next-Fire</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Action</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let job of jobs\">\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.project.org.name}}/{{job.project.name}}/{{job.name}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.environment}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.regions}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.nextFire | date:'short'}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', job.id, 'runs']\">Past-runs</a> &nbsp;\n            <a href=\"javascript:;\" (click)=\"runJob(job.id)\">Run-now</a>\n          </td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -1482,6 +1482,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_jobs_service__ = __webpack_require__("../../../../../src/app/services/jobs.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_run_service__ = __webpack_require__("../../../../../src/app/services/run.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_base_model__ = __webpack_require__("../../../../../src/app/models/base.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1495,14 +1497,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 var JobslistComponent = (function () {
-    function JobslistComponent(jobsService, runService, route, router) {
+    function JobslistComponent(jobsService, runService, projectService, route, router) {
         this.jobsService = jobsService;
         this.runService = runService;
+        this.projectService = projectService;
         this.route = route;
         this.router = router;
         this.projectId = "";
+        this.project = new __WEBPACK_IMPORTED_MODULE_5__models_base_model__["a" /* Base */]();
         this.showSpinner = false;
     }
     JobslistComponent.prototype.ngOnInit = function () {
@@ -1513,7 +1519,16 @@ var JobslistComponent = (function () {
             if (params['id']) {
                 _this.projectId = params['id'];
                 _this.list(_this.projectId);
+                _this.loadProject(_this.projectId);
             }
+        });
+    };
+    JobslistComponent.prototype.loadProject = function (id) {
+        var _this = this;
+        this.projectService.getById(id).subscribe(function (results) {
+            if (!results)
+                return;
+            _this.project = results['data'];
         });
     };
     JobslistComponent.prototype.list = function (id) {
@@ -1544,9 +1559,9 @@ var JobslistComponent = (function () {
             selector: 'app-jobs-list',
             template: __webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], JobslistComponent);
     return JobslistComponent;
 }());
@@ -2530,7 +2545,7 @@ var RegionsListComponent = (function () {
 /***/ "../../../../../src/app/components/run-detail/run-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth-lg1 no-breadcrumbs chapter\">\n    <article class=\"article\">\n        <h2 class=\"article-title\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a>\n             / {{projectId}} /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs']\"> Jobs </a>\n             /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId]\">{{jobId}}</a>\n             /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/runs']\">Runs</a>\n             / <a href=\"javascript:;\" (click)=\"this.getRunById();this.getSummary();\">{{run.runId}} </a>\n        </h2>\n    </article>\n\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>ID: {{run.runId}}</h4>\n                    <h4>Status: {{run.task.status}}</h4>\n                    <h4>Date: {{run.task.startTime | date:'short'}}</h4>\n                    <h4>Total Time: {{run.task.totalTime}}</h4>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{run.task.description}}</p>\n            </div>\n        </div>\n    </div>\n\n\n    <article class=\"article\">\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Suite</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total/Passed</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total Size</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total Time</th>\n                </tr>\n                </thead>\n                <tr *ngFor=\"let s of suites\">\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed == 0\"><span class=\"text-success\"><i\n                            class=\"material-icons\">done</i> </span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed == 0\"><span\n                            class=\"text-success\"> Passed</span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span class=\"text-danger\"><i\n                            class=\"material-icons\">clear</i> </span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span\n                            class=\"text-danger\"> Fail</span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.suiteName}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.tests}}/{{s.tests - s.failed}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.size}} B</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.time}} ms</td>\n                </tr>\n                <tfoot>\n                <tr class=\"bg-color-info1\">\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{total}}/{{total-failed}}</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{size}} B</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{time}} ms</th>\n                </tr>\n                </tfoot>\n            </table>\n        </div>\n    </article>\n\n    <a href=\"javascript:;\" (click)=\"getTestSuiteResponsesByRunId()\"> View Logs </a>\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\" *ngFor=\"let item of list\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{item.testSuite}}</h4>\n                    <h6>Test-Suite</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{item.totalPassed}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{item.totalFailed}}</span>\n                    <span>Time: {{item.requestTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{item.logs}}</p>\n            </div>\n        </div>\n    </div>\n</section>"
+module.exports = "<section class=\"container-fluid with-maxwidth-lg1 no-breadcrumbs chapter\">\n    <article class=\"article\">\n        <h2 class=\"article-title\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a>\n            / {{project.name}} /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs']\"> Jobs </a>\n            /\n            <!--<a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId]\"> -->{{job.name}}<!--</a>-->\n            /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId, 'runs']\"> Runs </a>\n            / {{run.runId}}\n        </h2>\n    </article>\n\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>ID: {{run.runId}}</h4>\n                    <h4>Status: {{run.task.status}}</h4>\n                    <h4>Date: {{run.task.startTime | date:'short'}}</h4>\n                    <h4>Total Time: {{run.task.totalTime}}</h4>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{run.task.description}}</p>\n            </div>\n        </div>\n    </div>\n\n\n    <article class=\"article\">\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Suite</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total/Passed</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total Size</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total Time</th>\n                </tr>\n                </thead>\n                <tr *ngFor=\"let s of suites\">\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed == 0\"><span class=\"text-success\"><i\n                            class=\"material-icons\">done</i> </span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed == 0\"><span\n                            class=\"text-success\"> Passed</span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span class=\"text-danger\"><i\n                            class=\"material-icons\">clear</i> </span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span\n                            class=\"text-danger\"> Fail</span></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.suiteName}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.tests}}/{{s.tests - s.failed}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.size}} B</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.time}} ms</td>\n                </tr>\n                <tfoot>\n                <tr class=\"bg-color-info1\">\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{total}}/{{total-failed}}</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{size}} B</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{time}} ms</th>\n                </tr>\n                </tfoot>\n            </table>\n        </div>\n    </article>\n\n    <a href=\"javascript:;\" (click)=\"getTestSuiteResponsesByRunId()\"> View Logs </a>\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\" *ngFor=\"let item of list\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{item.testSuite}}</h4>\n                    <h6>Test-Suite</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{item.totalPassed}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{item.totalFailed}}</span>\n                    <span>Time: {{item.requestTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{item.logs}}</p>\n            </div>\n        </div>\n    </div>\n</section>"
 
 /***/ }),
 
@@ -2559,7 +2574,11 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RunDetailComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_run_service__ = __webpack_require__("../../../../../src/app/services/run.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_jobs_service__ = __webpack_require__("../../../../../src/app/services/jobs.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_run_service__ = __webpack_require__("../../../../../src/app/services/run.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_base_model__ = __webpack_require__("../../../../../src/app/models/base.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__models_run_model__ = __webpack_require__("../../../../../src/app/models/run.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2572,16 +2591,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
+
 var RunDetailComponent = (function () {
-    function RunDetailComponent(runService, route) {
+    function RunDetailComponent(jobsService, runService, projectService, route) {
+        this.jobsService = jobsService;
         this.runService = runService;
+        this.projectService = projectService;
         this.route = route;
+        this.run = new __WEBPACK_IMPORTED_MODULE_6__models_run_model__["a" /* Run */]();
         this.projectId = "";
         this.jobId = "";
         this.total = 0;
         this.failed = 0;
         this.size = 0;
         this.time = 0;
+        this.project = new __WEBPACK_IMPORTED_MODULE_5__models_base_model__["a" /* Base */]();
+        this.job = new __WEBPACK_IMPORTED_MODULE_5__models_base_model__["a" /* Base */]();
         this.showSpinner = false;
     }
     RunDetailComponent.prototype.ngOnInit = function () {
@@ -2590,15 +2618,33 @@ var RunDetailComponent = (function () {
             console.log(params);
             if (params['id']) {
                 _this.projectId = params['id'];
+                _this.loadProject(_this.projectId);
             }
             if (params['jobId']) {
                 _this.jobId = params['jobId'];
+                _this.loadJob(_this.jobId);
             }
             if (params['runId']) {
                 _this.id = params['runId'];
                 _this.getRunById();
                 _this.getSummary();
             }
+        });
+    };
+    RunDetailComponent.prototype.loadProject = function (id) {
+        var _this = this;
+        this.projectService.getById(id).subscribe(function (results) {
+            if (!results)
+                return;
+            _this.project = results['data'];
+        });
+    };
+    RunDetailComponent.prototype.loadJob = function (id) {
+        var _this = this;
+        this.jobsService.getById(id).subscribe(function (results) {
+            if (!results)
+                return;
+            _this.job = results['data'];
         });
     };
     RunDetailComponent.prototype.calSum = function () {
@@ -2657,9 +2703,9 @@ var RunDetailComponent = (function () {
             selector: 'app-run-detail',
             template: __webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
     ], RunDetailComponent);
     return RunDetailComponent;
 }());
@@ -2671,7 +2717,7 @@ var RunDetailComponent = (function () {
 /***/ "../../../../../src/app/components/run-list/run-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a>\n            / {{projectId}} /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs']\"> Jobs </a>\n            /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId]\">{{jobId}}</a> /\n            Runs</h2>\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total/Passed</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time (ms)</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let item of list\">\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.job.regions}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.status}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTests}}/{{item.task.totalTestCompleted}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (item.task.totalTestCompleted * 100 ) / (item.task.totalTestCompleted + item.task.failedTests) ).toFixed(0) }}%\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTime}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId, 'runs', item.id]\">#{{item.runId}}</a>\n                    </td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
+module.exports = "\n<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a>\n            / {{project.name}} /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs']\"> Jobs </a>\n            /\n            <!--<a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId]\"> -->{{job.name}}<!--</a>--> /\n            Runs</h2>\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Total/Passed</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time (ms)</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let item of list\">\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.job.regions}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.status}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTests}}/{{item.task.totalTestCompleted}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (item.task.totalTestCompleted * 100 ) / (item.task.totalTestCompleted + item.task.failedTests) ).toFixed(0) }}%\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTime}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId, 'runs', item.id]\">#{{item.runId}}</a>\n                    </td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -2700,7 +2746,10 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RunListComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_run_service__ = __webpack_require__("../../../../../src/app/services/run.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_jobs_service__ = __webpack_require__("../../../../../src/app/services/jobs.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_run_service__ = __webpack_require__("../../../../../src/app/services/run.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_base_model__ = __webpack_require__("../../../../../src/app/models/base.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2713,13 +2762,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
 var RunListComponent = (function () {
-    function RunListComponent(runService, route) {
+    function RunListComponent(jobsService, runService, projectService, route) {
+        this.jobsService = jobsService;
         this.runService = runService;
+        this.projectService = projectService;
         this.route = route;
         this.projectId = "";
         this.jobId = "";
         this.title = "";
+        this.project = new __WEBPACK_IMPORTED_MODULE_5__models_base_model__["a" /* Base */]();
+        this.job = new __WEBPACK_IMPORTED_MODULE_5__models_base_model__["a" /* Base */]();
         this.showSpinner = false;
     }
     RunListComponent.prototype.ngOnInit = function () {
@@ -2728,11 +2784,29 @@ var RunListComponent = (function () {
             console.log(params);
             if (params['id']) {
                 _this.projectId = params['id'];
+                _this.loadProject(_this.projectId);
             }
             if (params['jobId']) {
                 _this.jobId = params['jobId'];
+                _this.loadJob(_this.jobId);
                 _this.getRunByJob(_this.jobId);
             }
+        });
+    };
+    RunListComponent.prototype.loadProject = function (id) {
+        var _this = this;
+        this.projectService.getById(id).subscribe(function (results) {
+            if (!results)
+                return;
+            _this.project = results['data'];
+        });
+    };
+    RunListComponent.prototype.loadJob = function (id) {
+        var _this = this;
+        this.jobsService.getById(id).subscribe(function (results) {
+            if (!results)
+                return;
+            _this.job = results['data'];
         });
     };
     RunListComponent.prototype.getRunByJob = function (id) {
@@ -2754,9 +2828,9 @@ var RunListComponent = (function () {
             selector: 'app-run-list',
             template: __webpack_require__("../../../../../src/app/components/run-list/run-list.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/run-list/run-list.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_jobs_service__["a" /* JobsService */], __WEBPACK_IMPORTED_MODULE_3__services_run_service__["a" /* RunService */], __WEBPACK_IMPORTED_MODULE_4__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
     ], RunListComponent);
     return RunListComponent;
 }());
@@ -5199,6 +5273,21 @@ var ToggleOffcanvasNavDirective = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/models/base.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Base; });
+var Base = (function () {
+    function Base() {
+    }
+    return Base;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/models/project.model.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5213,6 +5302,29 @@ var Project = (function () {
         this.projectType = projectType;
     }
     return Project;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/models/run.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Run; });
+/* unused harmony export Task */
+var Run = (function () {
+    function Run() {
+        this.task = new Task();
+    }
+    return Run;
+}());
+
+var Task = (function () {
+    function Task() {
+    }
+    return Task;
 }());
 
 
@@ -5322,6 +5434,9 @@ var JobsService = (function () {
         this.http = http;
         this.serviceUrl = '/api/v1/jobs';
     }
+    JobsService.prototype.getById = function (id) {
+        return this.http.get(this.serviceUrl + "/" + id);
+    };
     /**
      * Get the jobs in observable from endpoint
      */
@@ -5518,6 +5633,9 @@ var RunService = (function () {
         this.http = http;
         this.serviceUrl = '/api/v1/runs';
     }
+    RunService.prototype.getById = function (id) {
+        return this.http.get(this.serviceUrl + "/" + id);
+    };
     /**
      * Get the jobs in observable from endpoint
      */
