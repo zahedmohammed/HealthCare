@@ -15,4 +15,4 @@ const AppRoutes: Routes = [
   { path: '**', redirectTo: '/app/jobs', pathMatch: 'full' },
 ];
 
-export const AppRoutingModule = RouterModule.forRoot(AppRoutes, {useHash: false});
+export const AppRoutingModule = RouterModule.forRoot(AppRoutes, {useHash: true});

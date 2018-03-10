@@ -45,7 +45,7 @@ var AppRoutes = [
     { path: 'fullscreen', component: __WEBPACK_IMPORTED_MODULE_2__page_layouts_fullscreen_fullscreen_component__["a" /* PageLayoutFullscreenComponent */] },
     { path: '**', redirectTo: '/app/jobs', pathMatch: 'full' },
 ];
-var AppRoutingModule = __WEBPACK_IMPORTED_MODULE_0__angular_router__["g" /* RouterModule */].forRoot(AppRoutes, { useHash: false });
+var AppRoutingModule = __WEBPACK_IMPORTED_MODULE_0__angular_router__["g" /* RouterModule */].forRoot(AppRoutes, { useHash: true });
 
 
 /***/ }),
