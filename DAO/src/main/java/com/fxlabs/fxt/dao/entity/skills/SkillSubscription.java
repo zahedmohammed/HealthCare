@@ -45,6 +45,10 @@ public class SkillSubscription extends BaseEntity {
     private String prop4;
     private String prop5;
 
+    @Column(name = "_state")
+    @Enumerated(EnumType.STRING)
+    private SubscriptionState state;
+
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 

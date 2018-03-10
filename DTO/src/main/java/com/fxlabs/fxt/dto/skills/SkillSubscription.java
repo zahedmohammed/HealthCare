@@ -34,6 +34,8 @@ public class SkillSubscription extends BaseDto<String> {
 
     private List<Opt> opts;
 
+    private SubscriptionState state;
+
     private Visibility visibility;
 
 }

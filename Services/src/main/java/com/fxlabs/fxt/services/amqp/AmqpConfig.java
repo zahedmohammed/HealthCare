@@ -205,7 +205,6 @@ public class AmqpConfig {
 
     // ITaaS-Queue
 
-    // GaaS-Response-Queue
     @Bean(name = "iTaaSResponseQueue")
     public Queue iTaaSResponseQueue(@Value("${fx.itaas.response.queue}") String queue) {
         Map<String, Object> args = new HashMap<>();
@@ -256,6 +255,180 @@ public class AmqpConfig {
 
     @Bean
     public Binding iTaaSJiraQueueBinding(@Value("${fx.itaas.jira.queue.routingkey}") String routingKey, @Qualifier("iTaaSJiraQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+
+    // Cloud-as-a-Service-Queue
+
+    @Bean(name = "caaSResponseQueue")
+    public Queue caaSResponseQueue(@Value("${fx.caas.response.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caaSResponseQueueBinding(@Value("${fx.caas.response.queue.routingkey}") String routingKey, @Qualifier("caaSResponseQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    @Bean
+    SimpleMessageListenerContainer caaSContainer(ConnectionFactory connectionFactory,
+                                                  MessageListenerAdapter listenerAdapter,
+                                                  @Value("${fx.caas.response.queue}") String queueName) {
+
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(queueName);
+        container.setConcurrentConsumers(10);
+        container.setMaxConcurrentConsumers(10);
+        container.setDefaultRequeueRejected(false);
+        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
+
+    // -- Cloud-as-a-Service AWS_EC2
+    @Bean(name = "caaSAWSEC2Queue")
+    public Queue caaSAWSEC2Queue(@Value("${fx.caas.aws_ec2.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caaSAWSEC2QueueBinding(@Value("${fx.caas.aws_ec2.queue.routingkey}") String routingKey, @Qualifier("caaSAWSEC2Queue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service AWS_EC2
+    @Bean(name = "caaSAzureQueue")
+    public Queue caaSAzureQueue(@Value("${fx.caas.azure.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasAzureQueueBinding(@Value("${fx.caas.azure.queue.routingkey}") String routingKey, @Qualifier("caaSAzureQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service GCP
+    @Bean(name = "caaSGCPQueue")
+    public Queue caaSGCPQueue(@Value("${fx.caas.gcp.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasGCPQueueBinding(@Value("${fx.caas.gcp.queue.routingkey}") String routingKey, @Qualifier("caaSGCPQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service DO
+    @Bean(name = "caaSDOQueue")
+    public Queue caaSDOQueue(@Value("${fx.caas.do.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasDOQueueBinding(@Value("${fx.caas.do.queue.routingkey}") String routingKey, @Qualifier("caaSDOQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service IBM
+    @Bean(name = "caaSIBMQueue")
+    public Queue caaSIBMQueue(@Value("${fx.caas.ibm.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasIBMQueueBinding(@Value("${fx.caas.ibm.queue.routingkey}") String routingKey, @Qualifier("caaSIBMQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service Rackspace
+    @Bean(name = "caaSRackspaceQueue")
+    public Queue caaSRackspaceQueue(@Value("${fx.caas.rackspace.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasRackspaceQueueBinding(@Value("${fx.caas.rackspace.queue.routingkey}") String routingKey, @Qualifier("caaSRackspaceQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service Oracle
+    @Bean(name = "caaSOracleQueue")
+    public Queue caaSOracleQueue(@Value("${fx.caas.oracle.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasOracleQueueBinding(@Value("${fx.caas.oracle.queue.routingkey}") String routingKey, @Qualifier("caaSOracleQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service vSphere
+    @Bean(name = "caaSVsphereQueue")
+    public Queue caaSVsphereQueue(@Value("${fx.caas.vsphere.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasVsphereQueueBinding(@Value("${fx.caas.vsphere.queue.routingkey}") String routingKey, @Qualifier("caaSVsphereQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service OpenStack
+    @Bean(name = "caaSOSQueue")
+    public Queue caaSOSQueue(@Value("${fx.caas.os.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasOSQueueBinding(@Value("${fx.caas.os.queue.routingkey}") String routingKey, @Qualifier("caaSOSQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service Docker-Swarm
+    @Bean(name = "caaSDSQueue")
+    public Queue caaSDSQueue(@Value("${fx.caas.ds.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasDSQueueBinding(@Value("${fx.caas.ds.queue.routingkey}") String routingKey, @Qualifier("caaSDSQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    // -- Cloud-as-a-Service Kubernetes
+    @Bean(name = "caaSK8Queue")
+    public Queue caaSK8Queue(@Value("${fx.caas.k8.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding caasK8QueueBinding(@Value("${fx.caas.k8.queue.routingkey}") String routingKey, @Qualifier("caaSK8Queue") Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 

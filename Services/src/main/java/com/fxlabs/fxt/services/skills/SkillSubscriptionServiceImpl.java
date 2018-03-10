@@ -1,18 +1,19 @@
 package com.fxlabs.fxt.services.skills;
 
 import com.fxlabs.fxt.converters.skills.SkillSubscriptionConverter;
-import com.fxlabs.fxt.dao.entity.skills.Skill;
+import com.fxlabs.fxt.dao.entity.skills.TaskResult;
+import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
+import com.fxlabs.fxt.dao.entity.skills.TaskType;
 import com.fxlabs.fxt.dao.entity.users.OrgRole;
 import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SkillSubscriptionRepository;
+import com.fxlabs.fxt.dao.repository.jpa.SubscriptionTaskRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
-import com.fxlabs.fxt.dto.base.Message;
-import com.fxlabs.fxt.dto.base.MessageType;
-import com.fxlabs.fxt.dto.base.NameDto;
-import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.skills.SkillSubscription;
+import com.fxlabs.fxt.dto.skills.SubscriptionState;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.apache.commons.lang3.StringUtils;
@@ -38,9 +39,12 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     private SkillSubscriptionConverter converter;
     private UsersRepository usersRepository;
     private OrgUsersRepository orgUsersRepository;
+    private SubscriptionTaskRepository subscriptionTaskRepository;
 
     @Autowired
-    public SkillSubscriptionServiceImpl(SkillSubscriptionRepository repository, SkillSubscriptionConverter converter, UsersRepository usersRepository, OrgUsersRepository orgUsersRepository) {
+    public SkillSubscriptionServiceImpl(SkillSubscriptionRepository repository, SkillSubscriptionConverter converter,
+                                        UsersRepository usersRepository, OrgUsersRepository orgUsersRepository,
+                                        SubscriptionTaskRepository subscriptionTaskRepository) {
         super(repository, converter);
 
         this.repository = repository;
@@ -49,12 +53,21 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         this.usersRepository = usersRepository;
         this.orgUsersRepository = orgUsersRepository;
 
+        this.subscriptionTaskRepository = subscriptionTaskRepository;
+
     }
 
 
     @Override
     public Response<List<SkillSubscription>> findAll(String user, Pageable pageable) {
         Page<com.fxlabs.fxt.dao.entity.skills.SkillSubscription> entities = this.repository.findByCreatedBy(user, pageable);
+        return new Response<>(converter.convertToDtos(entities.getContent()), entities.getTotalElements(), entities.getTotalPages());
+    }
+
+    @Override
+    public Response<List<SkillSubscription>> findBySkillType(String user, String skillType, Pageable pageable) {
+        // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
+        Page<com.fxlabs.fxt.dao.entity.skills.SkillSubscription> entities = this.repository.findBySkillSkillTypeAndCreatedBy(com.fxlabs.fxt.dao.entity.skills.SkillType.valueOf(skillType), user, pageable);
         return new Response<>(converter.convertToDtos(entities.getContent()), entities.getTotalElements(), entities.getTotalPages());
     }
 
@@ -74,6 +87,126 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
             dto.setOrg(org);
 
         }
+        return super.save(dto, user);
+    }
+
+    @Override
+    public Response<SkillSubscription> addITBot(SkillSubscription dto, String user) {
+
+        if (dto.getOrg() == null) {
+            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+            if (CollectionUtils.isEmpty(set)) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
+            }
+
+            OrgUsers orgUsers = null;
+            orgUsers = set.iterator().next();
+            NameDto org = new NameDto();
+            org.setId(orgUsers.getOrg().getId());
+            dto.setOrg(org);
+
+        }
+
+        //TODO validate - name not null and unique
+        dto.setState(SubscriptionState.ACTIVE);
+
+        if (dto.getVisibility() == null)
+            dto.setVisibility(Visibility.PRIVATE);
+
+
+        Response<SkillSubscription> response = super.save(dto, user);
+
+        // Add Task
+        com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
+        task.setResult(TaskResult.SUCCESS);
+        task.setSubscription(converter.convertToEntity(response.getData()));
+        task.setType(TaskType.CREATE);
+        task.setStatus(TaskStatus.COMPLETED);
+        subscriptionTaskRepository.save(task);
+
+        return response;
+    }
+
+    @Override
+    public Response<SkillSubscription> deleteITBot(String id, String user) {
+        // TODO check user is owner or org_admin
+        Response<SkillSubscription> response = findById(id, user);
+        SkillSubscription dto = response.getData();
+        if (!StringUtils.equals(dto.getCreatedBy(), user)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [DELETE] access to the resource.")));
+        }
+        dto.setState(SubscriptionState.INACTIVE);
+
+        // Add Task
+        com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
+        task.setResult(TaskResult.SUCCESS);
+        task.setSubscription(converter.convertToEntity(dto));
+        task.setType(TaskType.DESTROY);
+        task.setStatus(TaskStatus.COMPLETED);
+        subscriptionTaskRepository.save(task);
+
+        return super.save(dto, user);
+    }
+
+    @Override
+    public Response<SkillSubscription> addExecBot(SkillSubscription dto, String user) {
+
+        if (dto.getOrg() == null) {
+            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+            if (CollectionUtils.isEmpty(set)) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
+            }
+
+            OrgUsers orgUsers = null;
+            orgUsers = set.iterator().next();
+            NameDto org = new NameDto();
+            org.setId(orgUsers.getOrg().getId());
+            dto.setOrg(org);
+
+        }
+
+        //TODO validate - name not null and unique
+        dto.setState(SubscriptionState.LAUNCHING);
+
+        if (dto.getVisibility() == null)
+            dto.setVisibility(Visibility.PRIVATE);
+
+
+        Response<SkillSubscription> response = super.save(dto, user);
+
+        // Add Task
+        com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
+        task.setSubscription(converter.convertToEntity(response.getData()));
+        task.setType(TaskType.CREATE);
+        task.setStatus(TaskStatus.PROCESSING);
+        subscriptionTaskRepository.save(task);
+
+        // TODO - send task to queue
+
+        return response;
+    }
+
+    @Override
+    public Response<SkillSubscription> deleteExecBot(String id, String user) {
+
+        // TODO check user is owner or org_admin
+        Response<SkillSubscription> response = findById(id, user);
+        SkillSubscription dto = response.getData();
+        if (!StringUtils.equals(dto.getCreatedBy(), user)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [DELETE] access to the resource.")));
+        }
+
+        dto.setState(SubscriptionState.DELETING);
+
+        // Add Task
+        com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
+        task.setSubscription(converter.convertToEntity(dto));
+        task.setType(TaskType.DESTROY);
+        task.setStatus(TaskStatus.PROCESSING);
+        subscriptionTaskRepository.save(task);
+
+        // TODO - send task to queue
+
         return super.save(dto, user);
     }
 

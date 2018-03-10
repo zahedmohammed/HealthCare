@@ -40,6 +40,12 @@ public class Skill extends BaseEntity {
     private String secretKey;
     private String host;
 
+    private String prop1;
+    private String prop2;
+    private String prop3;
+    private String prop4;
+    private String prop5;
+
     @ElementCollection
     @CollectionTable(
             name = "skill_opts",

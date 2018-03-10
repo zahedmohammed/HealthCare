@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.dao.repository.jpa;
 
 import com.fxlabs.fxt.dao.entity.skills.SkillSubscription;
+import com.fxlabs.fxt.dao.entity.skills.SkillType;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,7 +13,11 @@ import java.util.Optional;
  */
 public interface SkillSubscriptionRepository extends JpaRepository<SkillSubscription, String> {
 
-    org.springframework.data.domain.Page<SkillSubscription> findByCreatedBy(String user, Pageable pageable);
+    Page<SkillSubscription> findByCreatedBy(String user, Pageable pageable);
 
     Optional<SkillSubscription> findByOrgNameAndName(String org, String name);
+
+    Page<SkillSubscription> findBySkillSkillTypeAndCreatedBy(SkillType skillType, String user, Pageable pageable);
+
+
 }
