@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
-import { ProjectService } from '../../services/project.service';
-import { Project } from '../../models/project.model';
+import { ProjectService } from '../../../services/project.service';
+import { Project } from '../../../models/project.model';
 
 @Component({
-  selector: 'app-new-project',
-  templateUrl: './new-project.component.html',
-  styleUrls: ['./new-project.component.scss'],
+  selector: 'app-projects-new',
+  templateUrl: './projects-new.component.html',
+  styleUrls: ['./projects-new.component.scss'],
   providers: [ProjectService]
 })
-export class NewProjectComponent implements OnInit {
+export class ProjectsNewComponent implements OnInit {
 
   showSpinner: boolean = false;
   project: Project = new Project('', '', '', '', 'GIT');

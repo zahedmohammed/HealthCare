@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ProjectService } from '../../services/project.service';
+import { ProjectService } from '../../../services/project.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -7,7 +7,7 @@ import { ProjectService } from '../../services/project.service';
   styleUrls: ['./projects-list.component.scss'],
   providers: [ProjectService]
 })
-export class ProjectlistComponent implements OnInit {
+export class ProjectsListComponent implements OnInit {
   projects;
   projectTitle:string = "Projects";
   showSpinner: boolean = false;

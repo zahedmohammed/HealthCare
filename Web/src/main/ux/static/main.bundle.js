@@ -163,11 +163,11 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__layout_layout_module__ = __webpack_require__("../../../../../src/app/layout/layout.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__components_jobs_list_jobs_list_component__ = __webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_projects_list_projects_list_component__ = __webpack_require__("../../../../../src/app/components/projects-list/projects-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_regions_list_regions_list_component__ = __webpack_require__("../../../../../src/app/components/regions-list/regions-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__components_run_list_run_list_component__ = __webpack_require__("../../../../../src/app/components/run-list/run-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__components_new_project_new_project_component__ = __webpack_require__("../../../../../src/app/components/new-project/new-project.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__components_edit_project_edit_project_component__ = __webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__components_projects_projects_list_projects_list_component__ = __webpack_require__("../../../../../src/app/components/projects/projects-list/projects-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__components_projects_projects_new_projects_new_component__ = __webpack_require__("../../../../../src/app/components/projects/projects-new/projects-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__components_projects_projects_edit_projects_edit_component__ = __webpack_require__("../../../../../src/app/components/projects/projects-edit/projects-edit.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__components_regions_list_regions_list_component__ = __webpack_require__("../../../../../src/app/components/regions-list/regions-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__components_run_list_run_list_component__ = __webpack_require__("../../../../../src/app/components/run-list/run-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__components_message_list_message_list_component__ = __webpack_require__("../../../../../src/app/components/message-list/message-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__components_message_detail_message_detail_component__ = __webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__components_run_detail_run_detail_component__ = __webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.ts");
@@ -375,11 +375,11 @@ var AppModule = (function () {
                 // Pages
                 __WEBPACK_IMPORTED_MODULE_26__page_layouts_fullscreen_fullscreen_component__["a" /* PageLayoutFullscreenComponent */],
                 __WEBPACK_IMPORTED_MODULE_29__components_jobs_list_jobs_list_component__["a" /* JobslistComponent */],
-                __WEBPACK_IMPORTED_MODULE_30__components_projects_list_projects_list_component__["a" /* ProjectlistComponent */],
-                __WEBPACK_IMPORTED_MODULE_31__components_regions_list_regions_list_component__["a" /* RegionsListComponent */],
-                __WEBPACK_IMPORTED_MODULE_32__components_run_list_run_list_component__["a" /* RunListComponent */],
-                __WEBPACK_IMPORTED_MODULE_33__components_new_project_new_project_component__["a" /* NewProjectComponent */],
-                __WEBPACK_IMPORTED_MODULE_34__components_edit_project_edit_project_component__["a" /* EditProjectComponent */],
+                __WEBPACK_IMPORTED_MODULE_30__components_projects_projects_list_projects_list_component__["a" /* ProjectsListComponent */],
+                __WEBPACK_IMPORTED_MODULE_33__components_regions_list_regions_list_component__["a" /* RegionsListComponent */],
+                __WEBPACK_IMPORTED_MODULE_34__components_run_list_run_list_component__["a" /* RunListComponent */],
+                __WEBPACK_IMPORTED_MODULE_31__components_projects_projects_new_projects_new_component__["a" /* ProjectsNewComponent */],
+                __WEBPACK_IMPORTED_MODULE_32__components_projects_projects_edit_projects_edit_component__["a" /* ProjectsEditComponent */],
                 __WEBPACK_IMPORTED_MODULE_35__components_message_list_message_list_component__["a" /* MessageListComponent */],
                 __WEBPACK_IMPORTED_MODULE_36__components_message_detail_message_detail_component__["a" /* MessageDetailComponent */],
                 __WEBPACK_IMPORTED_MODULE_37__components_run_detail_run_detail_component__["a" /* RunDetailComponent */],
@@ -999,131 +999,6 @@ var DocNewComponent = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/edit-project/edit-project.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a> / {{project.name}}</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.name\" disabled name=\"name\" id=\"name\"\n                     placeholder=\"Project name\">\n            </div>\n          </div>\n          <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Git Repository\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                     placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"username\" class=\"col-md-2 control-label\">Username</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.username\" name=\"username\"\n                     id=\"username\" placeholder=\"Git repository's access-key or username\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"pass\" class=\"col-md-2 control-label\">Password</label>\n            <div class=\"col-md-10\">\n              <input type=\"password\" class=\"form-control\" [(ngModel)]=\"project.password\" name=\"password\"\n                     id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n            </div>\n          </div>\n\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/edit-project/edit-project.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/edit-project/edit-project.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EditProjectComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var EditProjectComponent = (function () {
-    function EditProjectComponent(projectService, route, router) {
-        this.projectService = projectService;
-        this.route = route;
-        this.router = router;
-        this.showSpinner = false;
-        this.project = new __WEBPACK_IMPORTED_MODULE_3__models_project_model__["a" /* Project */]('', '', '', '', 'GIT');
-    }
-    EditProjectComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.route.params.subscribe(function (params) {
-            console.log(params);
-            if (params['id']) {
-                _this.getById(params['id']);
-            }
-        });
-    };
-    EditProjectComponent.prototype.getById = function (id) {
-        var _this = this;
-        this.showSpinner = true;
-        this.projectService.getById(id).subscribe(function (results) {
-            _this.showSpinner = false;
-            if (results['errors']) {
-                // TODO - handle errors
-                return;
-            }
-            _this.project = results['data'];
-            console.log(_this.project);
-        }, function (error) {
-            console.log("Unable to fetch projects");
-        });
-    };
-    EditProjectComponent.prototype.update = function () {
-        var _this = this;
-        console.log(this.project);
-        this.projectService.update(this.project).subscribe(function (results) {
-            _this.showSpinner = false;
-            if (results['errors']) {
-                // TODO - handle errors
-                return;
-            }
-            console.log(results);
-            _this.router.navigate(['/app/projects']);
-        }, function (error) {
-            console.log("Unable to update project");
-        });
-    };
-    EditProjectComponent.prototype.delete = function () {
-        var _this = this;
-        console.log(this.project);
-        this.projectService.delete(this.project).subscribe(function (results) {
-            _this.showSpinner = false;
-            if (results['errors']) {
-                // TODO - handle errors
-                return;
-            }
-            console.log(results);
-            _this.router.navigate(['/app/projects']);
-        }, function (error) {
-            console.log("Unable to delete project");
-        });
-    };
-    EditProjectComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'app-edit-project',
-            template: __webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */]]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
-    ], EditProjectComponent);
-    return EditProjectComponent;
-}());
-
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/components/issues/issues-edit/issues-edit.component.html":
 /***/ (function(module, exports) {
 
@@ -1451,7 +1326,7 @@ var IssuesNewComponent = (function () {
 /***/ "../../../../../src/app/components/jobs-list/jobs-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">\n      <a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects</a>\n      / {{project.name}} / Jobs</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Env</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Next-Fire</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Action</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let job of jobs\">\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.project.org.name}}/{{job.project.name}}/{{job.name}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.environment}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.regions}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.nextFire | date:'short'}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', job.id, 'runs']\">Past-runs</a> &nbsp;\n            <a href=\"javascript:;\" (click)=\"runJob(job.id)\">Run-now</a>\n          </td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n    <h2 class=\"article-title\">\n      <a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects</a>\n      / {{project.name}} / Jobs</h2>\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n      <table class=\"mdl-data-table\">\n        <thead>\n        <tr>\n          <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Env</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Next-Fire</th>\n          <th class=\"mdl-data-table__cell--non-numeric\">Action</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let job of jobs\">\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.project.org.name}}/{{job.project.name}}/{{job.name}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.environment}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.regions}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">{{job.nextFire | date:'short'}}</td>\n          <td class=\"mdl-data-table__cell--non-numeric\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', job.id, 'runs']\">History</a> &nbsp;\n            <a href=\"javascript:;\" (click)=\"runJob(job.id)\">Run</a>\n          </td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -2112,95 +1987,6 @@ var MonitorNewComponent = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/new-project/new-project.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Project</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\" #heroForm=\"ngForm\">\n                    <div class=\"form-group row\">\n                        <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.name\" name=\"name\" id=\"name\"\n                                   placeholder=\"Project name\">\n                        </div>\n                    </div>\n                    <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Git Repository\n                        </label>\n                        <div class=\"col-md-10\">\n                            <input type=\"url\" class=\"form-control\" [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                                   placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"username\" class=\"col-md-2 control-label\">Username</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.username\" name=\"username\"\n                                   id=\"username\" placeholder=\"Git repository's access-key or username\">\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"pass\" class=\"col-md-2 control-label\">Password</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"password\" class=\"form-control\" [(ngModel)]=\"project.password\" name=\"password\"\n                                   id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n                        </div>\n                    </div>\n\n\n                    <div class=\"divider divider-md\"></div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                                    class=\"btn-w-md no-margin-left\">Add\n                            </button>\n                            <span class=\"space space-md\"></span>\n                            <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n                            </button>\n                        </div>\n                    </div>\n\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/new-project/new-project.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/new-project/new-project.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NewProjectComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var NewProjectComponent = (function () {
-    function NewProjectComponent(projectService, route, router) {
-        this.projectService = projectService;
-        this.route = route;
-        this.router = router;
-        this.showSpinner = false;
-        this.project = new __WEBPACK_IMPORTED_MODULE_3__models_project_model__["a" /* Project */]('', '', '', '', 'GIT');
-    }
-    NewProjectComponent.prototype.ngOnInit = function () {
-    };
-    NewProjectComponent.prototype.create = function () {
-        var _this = this;
-        console.log(this.project);
-        this.showSpinner = true;
-        this.projectService.create(this.project).subscribe(function (results) {
-            _this.showSpinner = false;
-            if (results['errors']) {
-                // TODO - handle errors
-                return;
-            }
-            console.log(results);
-            _this.router.navigate(['/app/projects']);
-        }, function (error) {
-            console.log("Unable to fetch regions");
-        });
-    };
-    NewProjectComponent = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-            selector: 'app-new-project',
-            template: __webpack_require__("../../../../../src/app/components/new-project/new-project.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/new-project/new-project.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */]]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
-    ], NewProjectComponent);
-    return NewProjectComponent;
-}());
-
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/components/org/org-edit/org-edit.component.html":
 /***/ (function(module, exports) {
 
@@ -2384,14 +2170,14 @@ var OrgNewComponent = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/projects-list/projects-list.component.html":
+/***/ "../../../../../src/app/components/projects/projects-edit/projects-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\">Projects\n            <button mat-raised-button color=\"primary\" class=\"btn-w-md pull-right\" [routerLink]=\"['/app/projects/new']\">New Project</button><div class=\"divider divider-sm\"></div>\n        </h2>\n\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Create-Date</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Jobs</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let project of projects\">\n                    <td class=\"mdl-data-table__cell--non-numeric bold\">{{project.org.name}}/{{project.name}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.visibility}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.createdDate | date:'shortDate'}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects', project.id, 'jobs']\">Jobs</a></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects', project.id]\">Edit</a></td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a> / {{project.name}}</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.name\" disabled name=\"name\" id=\"name\"\n                     placeholder=\"Project name\">\n            </div>\n          </div>\n          <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Git Repository\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                     placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"username\" class=\"col-md-2 control-label\">Username</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.username\" name=\"username\"\n                     id=\"username\" placeholder=\"Git repository's access-key or username\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"pass\" class=\"col-md-2 control-label\">Password</label>\n            <div class=\"col-md-10\">\n              <input type=\"password\" class=\"form-control\" [(ngModel)]=\"project.password\" name=\"password\"\n                     id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n            </div>\n          </div>\n\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/projects-list/projects-list.component.scss":
+/***/ "../../../../../src/app/components/projects/projects-edit/projects-edit.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -2409,11 +2195,136 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/projects-list/projects-list.component.ts":
+/***/ "../../../../../src/app/components/projects/projects-edit/projects-edit.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectlistComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectsEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ProjectsEditComponent = (function () {
+    function ProjectsEditComponent(projectService, route, router) {
+        this.projectService = projectService;
+        this.route = route;
+        this.router = router;
+        this.showSpinner = false;
+        this.project = new __WEBPACK_IMPORTED_MODULE_3__models_project_model__["a" /* Project */]('', '', '', '', 'GIT');
+    }
+    ProjectsEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            console.log(params);
+            if (params['id']) {
+                _this.getById(params['id']);
+            }
+        });
+    };
+    ProjectsEditComponent.prototype.getById = function (id) {
+        var _this = this;
+        this.showSpinner = true;
+        this.projectService.getById(id).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            _this.project = results['data'];
+            console.log(_this.project);
+        }, function (error) {
+            console.log("Unable to fetch projects");
+        });
+    };
+    ProjectsEditComponent.prototype.update = function () {
+        var _this = this;
+        console.log(this.project);
+        this.projectService.update(this.project).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/projects']);
+        }, function (error) {
+            console.log("Unable to update project");
+        });
+    };
+    ProjectsEditComponent.prototype.delete = function () {
+        var _this = this;
+        console.log(this.project);
+        this.projectService.delete(this.project).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/projects']);
+        }, function (error) {
+            console.log("Unable to delete project");
+        });
+    };
+    ProjectsEditComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-projects-edit',
+            template: __webpack_require__("../../../../../src/app/components/projects/projects-edit/projects-edit.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/projects/projects-edit/projects-edit.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */]]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
+    ], ProjectsEditComponent);
+    return ProjectsEditComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/projects/projects-list/projects-list.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\">Projects\n            <button mat-raised-button color=\"primary\" class=\"btn-w-md pull-right\" [routerLink]=\"['/app/projects/new']\">New Project</button><div class=\"divider divider-sm\"></div>\n        </h2>\n\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Visibility</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Create-Date</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Jobs</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let project of projects\">\n                    <td class=\"mdl-data-table__cell--non-numeric bold\">{{project.org.name}}/{{project.name}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.visibility}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{project.createdDate | date:'shortDate'}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects', project.id, 'jobs']\">Jobs</a></td>\n                    <td class=\"mdl-data-table__cell--non-numeric\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects', project.id]\">Edit</a></td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n    </article>\n</section>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/projects/projects-list/projects-list.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/projects/projects-list/projects-list.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectsListComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2427,13 +2338,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var ProjectlistComponent = (function () {
-    function ProjectlistComponent(projectService) {
+var ProjectsListComponent = (function () {
+    function ProjectsListComponent(projectService) {
         this.projectService = projectService;
         this.projectTitle = "Projects";
         this.showSpinner = false;
     }
-    ProjectlistComponent.prototype.ngOnInit = function () {
+    ProjectsListComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.showSpinner = true;
         this.projectService.getProjects().subscribe(function (results) {
@@ -2447,16 +2358,105 @@ var ProjectlistComponent = (function () {
             console.log("Unable to fetch projects");
         });
     };
-    ProjectlistComponent = __decorate([
+    ProjectsListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-projects-list',
-            template: __webpack_require__("../../../../../src/app/components/projects-list/projects-list.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/projects-list/projects-list.component.scss")],
+            template: __webpack_require__("../../../../../src/app/components/projects/projects-list/projects-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/projects/projects-list/projects-list.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_project_service__["a" /* ProjectService */]])
-    ], ProjectlistComponent);
-    return ProjectlistComponent;
+    ], ProjectsListComponent);
+    return ProjectsListComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/projects/projects-new/projects-new.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Project</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\" #heroForm=\"ngForm\">\n                    <div class=\"form-group row\">\n                        <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.name\" name=\"name\" id=\"name\"\n                                   placeholder=\"Project name\">\n                        </div>\n                    </div>\n                    <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Git Repository\n                        </label>\n                        <div class=\"col-md-10\">\n                            <input type=\"url\" class=\"form-control\" [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                                   placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"username\" class=\"col-md-2 control-label\">Username</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.username\" name=\"username\"\n                                   id=\"username\" placeholder=\"Git repository's access-key or username\">\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"pass\" class=\"col-md-2 control-label\">Password</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"password\" class=\"form-control\" [(ngModel)]=\"project.password\" name=\"password\"\n                                   id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n                        </div>\n                    </div>\n\n\n                    <div class=\"divider divider-md\"></div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                                    class=\"btn-w-md no-margin-left\">Add\n                            </button>\n                            <span class=\"space space-md\"></span>\n                            <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n                            </button>\n                        </div>\n                    </div>\n\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/projects/projects-new/projects-new.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/projects/projects-new/projects-new.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectsNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ProjectsNewComponent = (function () {
+    function ProjectsNewComponent(projectService, route, router) {
+        this.projectService = projectService;
+        this.route = route;
+        this.router = router;
+        this.showSpinner = false;
+        this.project = new __WEBPACK_IMPORTED_MODULE_3__models_project_model__["a" /* Project */]('', '', '', '', 'GIT');
+    }
+    ProjectsNewComponent.prototype.ngOnInit = function () {
+    };
+    ProjectsNewComponent.prototype.create = function () {
+        var _this = this;
+        console.log(this.project);
+        this.showSpinner = true;
+        this.projectService.create(this.project).subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.router.navigate(['/app/projects']);
+        }, function (error) {
+            console.log("Unable to fetch regions");
+        });
+    };
+    ProjectsNewComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-projects-new',
+            template: __webpack_require__("../../../../../src/app/components/projects/projects-new/projects-new.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/projects/projects-new/projects-new.component.scss")],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */]]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
+    ], ProjectsNewComponent);
+    return ProjectsNewComponent;
 }());
 
 
@@ -4426,9 +4426,9 @@ var AppHeaderComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_jobs_list_jobs_list_component__ = __webpack_require__("../../../../../src/app/components/jobs-list/jobs-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_run_list_run_list_component__ = __webpack_require__("../../../../../src/app/components/run-list/run-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_run_detail_run_detail_component__ = __webpack_require__("../../../../../src/app/components/run-detail/run-detail.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_projects_list_projects_list_component__ = __webpack_require__("../../../../../src/app/components/projects-list/projects-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_new_project_new_project_component__ = __webpack_require__("../../../../../src/app/components/new-project/new-project.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_edit_project_edit_project_component__ = __webpack_require__("../../../../../src/app/components/edit-project/edit-project.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_projects_projects_list_projects_list_component__ = __webpack_require__("../../../../../src/app/components/projects/projects-list/projects-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_projects_projects_new_projects_new_component__ = __webpack_require__("../../../../../src/app/components/projects/projects-new/projects-new.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_projects_projects_edit_projects_edit_component__ = __webpack_require__("../../../../../src/app/components/projects/projects-edit/projects-edit.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_regions_list_regions_list_component__ = __webpack_require__("../../../../../src/app/components/regions-list/regions-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_message_list_message_list_component__ = __webpack_require__("../../../../../src/app/components/message-list/message-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_message_detail_message_detail_component__ = __webpack_require__("../../../../../src/app/components/message-detail/message-detail.component.ts");
@@ -4513,9 +4513,9 @@ var routes = [
         children: [
             { path: '', redirectTo: '/app/projects', pathMatch: 'full' },
             { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_2__dashboard_dashboard_component__["a" /* DashboardComponent */] },
-            { path: 'projects', component: __WEBPACK_IMPORTED_MODULE_6__components_projects_list_projects_list_component__["a" /* ProjectlistComponent */] },
-            { path: 'projects/new', component: __WEBPACK_IMPORTED_MODULE_7__components_new_project_new_project_component__["a" /* NewProjectComponent */] },
-            { path: 'projects/:id', component: __WEBPACK_IMPORTED_MODULE_8__components_edit_project_edit_project_component__["a" /* EditProjectComponent */] },
+            { path: 'projects', component: __WEBPACK_IMPORTED_MODULE_6__components_projects_projects_list_projects_list_component__["a" /* ProjectsListComponent */] },
+            { path: 'projects/new', component: __WEBPACK_IMPORTED_MODULE_7__components_projects_projects_new_projects_new_component__["a" /* ProjectsNewComponent */] },
+            { path: 'projects/:id', component: __WEBPACK_IMPORTED_MODULE_8__components_projects_projects_edit_projects_edit_component__["a" /* ProjectsEditComponent */] },
             { path: 'projects/:id/jobs', component: __WEBPACK_IMPORTED_MODULE_3__components_jobs_list_jobs_list_component__["a" /* JobslistComponent */] },
             { path: 'projects/:id/jobs/:jobId/runs', component: __WEBPACK_IMPORTED_MODULE_4__components_run_list_run_list_component__["a" /* RunListComponent */] },
             { path: 'projects/:id/jobs/:jobId/runs/:runId', component: __WEBPACK_IMPORTED_MODULE_5__components_run_detail_run_detail_component__["a" /* RunDetailComponent */] },
