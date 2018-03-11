@@ -146,12 +146,15 @@ public class GitIssueTrackerService implements IssueTrackerService {
         issue.setState(IssueService.STATE_OPEN);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("job").append(COLON).append(task.getJob()).append(LINE_SEPERATOR)
-                .append("Result").append(COLON).append(task.getResult()).append(LINE_SEPERATOR)
-                .append("Status Code").append(COLON).append(task.getStatusCode()).append(LINE_SEPERATOR)
-                .append("Headers").append(COLON).append(task.getHeaders()).append(LINE_SEPERATOR)
-                .append("Endpoint").append(COLON).append(task.getEndpointEval()).append(LINE_SEPERATOR)
-                .append("Request").append(COLON).append(LINE_SEPERATOR).append(task.getRequestEval()).append(LINE_SEPERATOR)
+        sb.append("Project").append(COLON).append(task.getProject()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Job").append(COLON).append(task.getJob()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Env").append(COLON).append(task.getEnv()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Region").append(COLON).append(task.getRegion()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Result").append(COLON).append(task.getResult()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Status Code").append(COLON).append(task.getStatusCode()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Headers").append(COLON).append(task.getHeaders()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Endpoint").append(COLON).append(task.getEndpointEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Request").append(COLON).append(LINE_SEPERATOR).append(task.getRequestEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Logs").append(COLON).append(LINE_SEPERATOR).append(task.getLogs()).append(LINE_SEPERATOR);
         String body = sb.toString();
 
