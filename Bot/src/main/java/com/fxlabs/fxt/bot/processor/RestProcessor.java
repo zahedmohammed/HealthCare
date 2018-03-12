@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.bot.processor;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.bot.amqp.Sender;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
@@ -264,6 +266,17 @@ public class RestProcessor {
 
                 // return processed task
                 //sender.sendTask(newTask);
+                String requestedFormatted = getFromattedJsonString(req)
+                        ;
+                if (StringUtils.isEmpty(requestedFormatted)){
+                    requestedFormatted = req;
+                }
+
+                String responseFormatted = getFromattedJsonString(response.getBody());
+
+                if (StringUtils.isEmpty(responseFormatted)){
+                    responseFormatted = response.getBody();
+                }
 
                 // Test-Cases Responses
                 if (generateTestCases) {
@@ -276,8 +289,8 @@ public class RestProcessor {
                     tc.setSuite(task.getSuiteName());
                     tc.setTestCase(String.valueOf(testCase.getId()));
                     tc.setEndpointEval(url);
-                    tc.setRequestEval(req);
-                    tc.setResponse(response.getBody());
+                    tc.setRequestEval(requestedFormatted);
+                    tc.setResponse(responseFormatted);
                     tc.setStatusCode(String.valueOf(response.getStatusCodeValue()));
                     tc.setResult(context.getResult());
                     tc.setTime(time);
@@ -341,6 +354,20 @@ public class RestProcessor {
 
         return completeTask;
     }
+
+
+    private String getFromattedJsonString(String value) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        String result = null;
+        try {
+            result = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
+        return result;
+    }
+
 
 
 }

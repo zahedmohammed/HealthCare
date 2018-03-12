@@ -1,5 +1,7 @@
 package com.fxlabs.fxt.it.git.skill;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.it.skill.amqp.Sender;
@@ -86,7 +88,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
     public ITTaskResponse process(final TestCaseResponse task) {
         logger.info("In IT GitIssueTrackerService for project [{}]" , task.getProject());
 
-        ITTaskResponse response = new ITTaskResponse();
+    ITTaskResponse response = new ITTaskResponse();
 
         try {
 
@@ -106,7 +108,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
             //creates an issue remotely
 
            // IssueService issueService = getIssueService("4bba0ed42c510710209e16a37321d30e64e5f4cd");
-            IssueService issueService = getIssueService("mdshannan@gmail.com", "Abbh12#$");
+            IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
             if(StringUtils.isNotEmpty(task.getIssueId())){
                 //TODO update issue
 
@@ -155,6 +157,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
                 .append("Headers").append(COLON).append(task.getHeaders()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Endpoint").append(COLON).append(task.getEndpointEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Request").append(COLON).append(LINE_SEPERATOR).append(task.getRequestEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+                .append("Response").append(COLON).append(LINE_SEPERATOR).append(task.getResponse()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Logs").append(COLON).append(LINE_SEPERATOR).append(task.getLogs()).append(LINE_SEPERATOR);
         String body = sb.toString();
 
@@ -191,10 +194,20 @@ public class GitIssueTrackerService implements IssueTrackerService {
     private IssueService getIssueService(String username, String password) {
 
         GitHubClient client = new GitHubClient();
-        client.setCredentials(username, password);
-        IssueService issueService = new IssueService(client);
-        //issueService.getClient().setOAuth2Token("3cdd07af86c6098a0ddef55b684d46d291e44f1a");
-        //issueService.getClient().setOAuth2Token(password);
+        IssueService issueService = null;
+        if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
+            client.setCredentials(username, password);
+            issueService = new IssueService(client);
+        }
+
+        if (issueService == null && StringUtils.isEmpty(username) && StringUtils.isNotEmpty(password)) {
+            issueService = new IssueService();
+            issueService.getClient().setOAuth2Token(password);
+        }
+
+        if (issueService == null) {
+            issueService = getIssueService("mdshannan@gmail.com", "Abbh12#$");
+        }
 
         return issueService;
     }
