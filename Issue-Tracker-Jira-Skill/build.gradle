@@ -50,6 +50,13 @@ dependencies {
 // https://mvnrepository.com/artifact/com.atlassian.jira/jira-rest-java-client-core
     compile group: 'com.atlassian.jira', name: 'jira-rest-java-client-core', version: '4.0.0'
 
+    compile "com.atlassian.jira:jira-rest-java-client-core:4.0.0"
+    compile "com.atlassian.fugue:fugue:2.2.1"
+
+//    JIRA_CLIENT_VERSION = 4.0.0
+//    ATLASSIAN_FUGUE_VERSION = 2.2.1
+
+
 }
 
 task buildDockerLatest(type: Docker, dependsOn: build) {
