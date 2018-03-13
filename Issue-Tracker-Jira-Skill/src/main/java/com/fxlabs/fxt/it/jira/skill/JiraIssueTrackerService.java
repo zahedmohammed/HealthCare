@@ -59,20 +59,20 @@ public class JiraIssueTrackerService implements IssueTrackerService {
         ITTaskResponse response = new ITTaskResponse();
         try {
            // TODO Create/Update bugs/ussue in issue tracker JIRA
-
             String url = task.getEndpoint();
-            URI uri = new URI(url);
+            URI uri = new URI(task.getIssueTrackerHost());
 
-            final String JIRA_USERNAME = ""; //get from task
-            final String JIRA_PASSWORD = ""; // get from task
+            final String JIRA_USERNAME = task.getUsername();//  "luqmanshareef@gmail.com"; //get from task
+            final String JIRA_PASSWORD = task.getPassword();// "luqssh123"; // get from task
 
             JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
             JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, JIRA_USERNAME, JIRA_PASSWORD);
 
-            if (task.getResult().equals("FAIL")) {
+            if (task.getResult().equalsIgnoreCase("FAIL")) {
                 // TODO: if it is a test rerun result and there is no issue created already for this test case
                 BasicIssue issue = createIssue(client, task);
                 response.setIssueId(issue.getKey());
+                System.out.println("Issue created........." + issue.getKey());
             }else{
                 // TODO: if there was already an issue, and the TC passed now, update the issue
                 // Find the corresponding issue
@@ -88,29 +88,8 @@ public class JiraIssueTrackerService implements IssueTrackerService {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
-
         return response;
-
     }
-
-//    public JiraRestClient init(){
-//
-//        final String JIRA_URL = "https://luqmans.atlassian.net";
-//        final String JIRA_ADMIN_USERNAME = "luqmanshareef@gmail.com";
-//        final String JIRA_ADMIN_PASSWORD = "luqssh123";
-//        JiraRestClient client = null;
-//
-//        URI uri;
-//        try {
-//            JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-//            uri = new URI(JIRA_URL);
-//            client = factory.createWithBasicHttpAuthentication(uri, JIRA_ADMIN_USERNAME, JIRA_ADMIN_PASSWORD);
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return client;
-//    }
 
     private BasicIssue createIssue(JiraRestClient client, TestCaseResponse task){
         IssueRestClient issueClient = client.getIssueClient();
@@ -131,7 +110,6 @@ public class JiraIssueTrackerService implements IssueTrackerService {
                 .setDescription(desc.toString())
                 .build();
         Promise<BasicIssue> basicIssue = issueClient.createIssue(newIssue);
-        System.out.println(basicIssue.claim().getKey() + " created.");
         return basicIssue.claim();
     }
 
