@@ -7,6 +7,7 @@ import com.fxlabs.fxt.sdk.services.CredUtils;
 import com.fxlabs.fxt.sdk.services.FxCommandService;
 import com.fxlabs.fxt.vc.git.skill.amqp.Sender;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ public class VCDelegate {
                 CredUtils.username.set(task.getProjectUser());
                 CredUtils.password.set(task.getProjectGrant());
                 Project project = service.load(response.getPath());
+                response.setSuccess(!BooleanUtils.isTrue(CredUtils.errors.get()));
                 if (project == null) {
                     response.setSuccess(false);
                 }

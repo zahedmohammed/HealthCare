@@ -106,8 +106,8 @@ public class FxCommandService {
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
             CredUtils.taskLogger.set(new StringBuilder());
 
-            System.out.println("loading Fxfile...");
-            CredUtils.taskLogger.get().append("loading Fxfile...").append("\n");
+            System.out.println("loading Fxfile.yaml...");
+            CredUtils.taskLogger.get().append("loading Fxfile.yaml...").append("\n");
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
@@ -125,6 +125,7 @@ public class FxCommandService {
             if (project == null) {
 
                 CredUtils.taskLogger.get().append(String.format("No project with name [%s] found on FxServer", config.getName())).append("\n");
+                CredUtils.errors.set(Boolean.TRUE);
                 return null;
 
                 /*
@@ -159,6 +160,7 @@ public class FxCommandService {
                     logger.warn(e.getLocalizedMessage());
                     System.out.println(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
                     CredUtils.taskLogger.get().append(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage())).append("\n");
+                    CredUtils.errors.set(Boolean.TRUE);
                 }
 
                 //System.out.println(projectFiles);
@@ -464,6 +466,7 @@ public class FxCommandService {
                 logger.warn(e.getLocalizedMessage());
                 System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
                 CredUtils.taskLogger.get().append(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
+                CredUtils.errors.set(Boolean.TRUE);
             }
 
             try {
@@ -479,6 +482,7 @@ public class FxCommandService {
                         String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()),
                         AnsiColor.DEFAULT));
                 CredUtils.taskLogger.get().append(String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
+                CredUtils.errors.set(Boolean.TRUE);
                 return;
             }
             //logger.info("ds size: [{}]", values.length);
@@ -505,6 +509,7 @@ public class FxCommandService {
                 logger.warn(e.getLocalizedMessage());
                 System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
                 CredUtils.taskLogger.get().append(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
+                CredUtils.errors.set(Boolean.TRUE);
             }
 
             System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
