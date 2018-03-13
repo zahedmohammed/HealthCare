@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { MessageService } from '../../services/message.service';
+import { Message } from '../../models/message.model';
 
 @Component({
   selector: 'app-message-detail',
@@ -9,7 +10,7 @@ import { MessageService } from '../../services/message.service';
   providers: [MessageService]
 })
 export class MessageDetailComponent implements OnInit {
-  item;
+  item: Message = new Message('','','','','','');
   msg;
   showSpinner: boolean = false;
   constructor(private messageService: MessageService, private route: ActivatedRoute) { }

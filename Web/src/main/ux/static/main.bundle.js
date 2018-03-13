@@ -1661,6 +1661,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_message_service__ = __webpack_require__("../../../../../src/app/services/message.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_message_model__ = __webpack_require__("../../../../../src/app/models/message.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1673,10 +1674,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MessageDetailComponent = (function () {
     function MessageDetailComponent(messageService, route) {
         this.messageService = messageService;
         this.route = route;
+        this.item = new __WEBPACK_IMPORTED_MODULE_3__models_message_model__["a" /* Message */]('', '', '', '', '', '');
         this.showSpinner = false;
     }
     MessageDetailComponent.prototype.ngOnInit = function () {
@@ -5282,6 +5285,27 @@ var Base = (function () {
     function Base() {
     }
     return Base;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/models/message.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Message; });
+var Message = (function () {
+    function Message(subject, type, createdDate, taskType, status, message) {
+        this.subject = subject;
+        this.type = type;
+        this.createdDate = createdDate;
+        this.taskType = taskType;
+        this.status = status;
+        this.message = message;
+    }
+    return Message;
 }());
 
 
