@@ -45,11 +45,6 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     //compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.3.0'
 
-    // https://mvnrepository.com/artifact/org.eclipse.mylyn.github/org.eclipse.egit.github.core
-    compile group: 'org.eclipse.mylyn.github', name: 'org.eclipse.egit.github.core', version: '2.1.5'
-
-
-
     compile project(":Cloud-Skill-Kit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
