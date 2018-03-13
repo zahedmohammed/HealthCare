@@ -5,5 +5,5 @@ package com.fxlabs.fxt.dto.project;
  */
 public enum ProjectType {
 
-    GIT, LOCAL
+    GIT, Git, GitHub, BitBucket, GitLab, LOCAL
 }

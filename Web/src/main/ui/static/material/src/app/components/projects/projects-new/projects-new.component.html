@@ -8,33 +8,54 @@
 
                 <form role="form" #heroForm="ngForm">
                     <div class="form-group row">
-                        <label for="name" class="col-md-2 control-label">Name</label>
+                        <label for="name" class="col-md-2 control-label">Name*</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" [(ngModel)]="project.name" name="name" id="name"
+                            <input type="text" class="form-control" required [(ngModel)]="project.name" name="name" id="name"
                                    placeholder="Project name">
                         </div>
                     </div>
                     <div class="divider divider-dashed divider-lg pull-in"></div>
                     <div class="form-group row">
-                        <label for="repo" class="col-md-2 control-label">Git Repository
+                        <label for="repo" class="col-md-2 control-label">Repository Type*
                         </label>
                         <div class="col-md-10">
-                            <input type="url" class="form-control" [(ngModel)]="project.url" name="url" id="repo"
-                                   placeholder="Git repository url e.g. https://github.com/username/Fx-UI.git">
+                            <mat-form-field>
+                                <mat-select placeholder="Repository Type" required [(ngModel)]="project.projectType" name="type">
+                                    <mat-option *ngFor="let projectType of projectTypes" [value]="projectType">
+                                        {{projectType}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            <div class="callout callout-info">
+                                <p>Fx will launch a vBot for every project. The vBot will monitor the project repository's master branch for new commits and will sync back changed files.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="repo" class="col-md-2 control-label">URL*
+                        </label>
+                        <div class="col-md-10">
+                            <input type="url" class="form-control" required [(ngModel)]="project.url" name="url" id="repo"
+                                   placeholder="Repository's URL e.g. https://github.com/username/Fx-UI.git">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="username" class="col-md-2 control-label">Username</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" [(ngModel)]="project.username" name="username"
-                                   id="username" placeholder="Git repository's access-key or username">
+                                   id="username" placeholder="Repository's access-key or username">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="pass" class="col-md-2 control-label">Password</label>
                         <div class="col-md-10">
                             <input type="password" class="form-control" [(ngModel)]="project.password" name="password"
-                                   id="pass" placeholder="Git repository's secret-key or password">
+                                   id="pass" placeholder="Repository's secret-key or password">
                         </div>
                     </div>
 

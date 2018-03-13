@@ -201,7 +201,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
 
             // Git Account
-            if (request.getProjectType() == ProjectType.GIT) {
+            if (request.getProjectType() == ProjectType.GIT || true) {
                 com.fxlabs.fxt.dao.entity.project.ProjectGitAccount account = new com.fxlabs.fxt.dao.entity.project.ProjectGitAccount();
                 account.setUrl(request.getUrl());
                 account.setBranch(request.getBranch());
@@ -239,6 +239,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
         ProjectRequest project = new ProjectRequest();
         project.setName(projectResponse.getData().getName());
+        project.setProjectType(projectResponse.getData().getProjectType());
         project.setId(accountOptional.get().getId());
         project.setProjectId(accountOptional.get().getProjectId());
         project.setUrl(accountOptional.get().getUrl());

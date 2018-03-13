@@ -34,5 +34,7 @@ export class ProjectsNewComponent implements OnInit {
     });
   }
 
+  projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab'];
+
 }
 
