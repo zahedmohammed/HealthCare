@@ -24,7 +24,7 @@ apply plugin: 'io.spring.dependency-management'
 
 
 jar {
-    baseName = 'Cloud-Aws-Skill'
+    baseName = 'Cloud-GCP-Skill'
     version = '0.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.8
@@ -56,12 +56,12 @@ dependencies {
 
 task buildDockerLatest(type: Docker, dependsOn: build) {
     push = false
-    tag = 'fxlabs/cloud-aws-skill-bot'
+    tag = 'fxlabs/cloud-gcp-skill-bot'
     tagVersion = "latest"
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
-            from 'build/libs/Cloud-Aws-Skill.jar'
+            from 'build/libs/Cloud-GCP-Skill.jar'
             into 'build/docker'
         }
     }
@@ -69,12 +69,12 @@ task buildDockerLatest(type: Docker, dependsOn: build) {
 
 task buildDocker(type: Docker, dependsOn: build) {
     push = false
-    tag = 'fxlabs/cloud-aws-skill'
+    tag = 'fxlabs/cloud-gcp-skill'
     tagVersion = getDate()
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
-            from 'build/libs/Cloud-Aws-Skill.jar'
+            from 'build/libs/Cloud-GCP-Skill.jar'
             into 'build/docker'
         }
     }
@@ -82,12 +82,12 @@ task buildDocker(type: Docker, dependsOn: build) {
 
 task buildDockerNightly(type: Docker, dependsOn: build) {
     push = false
-    tag = 'fxlabs/vc-aws-skill'
+    tag = 'fxlabs/cloud-fcp-skill'
     tagVersion = getNightly()
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
-            from 'build/libs/Cloud-Aws-Skill.jar'
+            from 'build/libs/Cloud-GCP-Skill.jar'
             into 'build/docker'
         }
     }
