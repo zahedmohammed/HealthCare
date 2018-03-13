@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.it.git.skill.services;
+package com.fxlabs.fxt.cloud.aws.skill.services;
 
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.it.ITTask;
