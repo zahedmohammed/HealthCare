@@ -4,6 +4,8 @@ import com.atlassian.jira.rest.client.api.IssueRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClientFactory;
 import com.atlassian.jira.rest.client.api.domain.BasicIssue;
+import com.atlassian.jira.rest.client.api.domain.IssueFieldId;
+import com.atlassian.jira.rest.client.api.domain.input.FieldInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
@@ -62,24 +64,28 @@ public class JiraIssueTrackerService implements IssueTrackerService {
             String url = task.getEndpoint();
             URI uri = new URI(task.getIssueTrackerHost());
 
-            final String JIRA_USERNAME = task.getUsername();//  "luqmanshareef@gmail.com"; //get from task
-            final String JIRA_PASSWORD = task.getPassword();// "luqssh123"; // get from task
+            final String JIRA_USERNAME = "luqmanshareef@gmail.com"; //get from task
+            final String JIRA_PASSWORD = "luqssh123"; // get from task
 
             JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
             JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, JIRA_USERNAME, JIRA_PASSWORD);
 
-            if (task.getResult().equalsIgnoreCase("FAIL")) {
-                // TODO: if it is a test rerun result and there is no issue created already for this test case
-                BasicIssue issue = createIssue(client, task);
-                response.setIssueId(issue.getKey());
-                System.out.println("Issue created........." + issue.getKey());
+            if (task.getIssueId() == null){
+                if (task.getResult().equalsIgnoreCase("FAIL")) {
+                    // TODO: if it is a test rerun result and there is no issue created already for this test case
+                    BasicIssue issue = createIssue(client, task);
+                    response.setIssueId(issue.getKey());
+                    System.out.println("Issue created........." + issue.getKey());
+                }
             }else{
-                // TODO: if there was already an issue, and the TC passed now, update the issue
-                // Find the corresponding issue
-//                updateIssue(client, task, issue);
+                if (task.getResult().equalsIgnoreCase("PASS")) {
+//                    IssueRestClient issueClient = client.getIssueClient();
+//                    BasicIssue issue = issueClient.getIssue(task.getIssueId()).claim();
+                    updateIssue(client, task, task.getIssueId());
+                }
             }
             response.setSuccess(true);
-            response.setLogs(taskLogger.get().toString());
+//            response.setLogs(taskLogger.get().toString());
             return response;
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -96,8 +102,8 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 
         String projectKey = "LFP"; // get from task
         StringBuffer summary = new StringBuffer();
-        summary.append(task.getResponse()  );
-        summary.append(task.getResult()  );
+//        summary.append(task.getResponse()  );
+        summary.append( task.getSuite() + " " + task.getResult()  );
 
         StringBuffer desc = new StringBuffer();
         desc.append(task.getTestCase());
@@ -120,9 +126,11 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 
         String projectKey = "";  //get from task
 
+        new FieldInput(IssueFieldId.STATUS_FIELD, "{\\\"name\\\": \\\"Done\\\",\\\"id\\\": \\\"10001\\\",\\\"statusCategory\\\": {\\\"self\\\": \\\"https://luqmans.atlassian.net/rest/api/2/statuscategory/3\\\",\\\"id\\\": 3,\\\"key\\\": \\\"done\\\",\\\"colorName\\\": \\\"green\\\",\\\"name\\\": \\\"Done\\\"}\n");
         IssueInput issueInput = new IssueInputBuilder(projectKey, 10004L)
 //				.setAssigneeName("admin")
                 .setPriorityId(5L)
+                .setFieldInput(new FieldInput(IssueFieldId.STATUS_FIELD, "done"))
 //				.setReporterName("admin")
 //                .setDescription(desc.toString())
                 .build();
