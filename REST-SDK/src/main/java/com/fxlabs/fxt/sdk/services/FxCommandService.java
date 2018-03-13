@@ -104,10 +104,9 @@ public class FxCommandService {
             // create project
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-            CredUtils.taskLogger.set(new StringBuilder());
 
             System.out.println("loading Fxfile.yaml...");
-            CredUtils.taskLogger.get().append("loading Fxfile.yaml...").append("\n");
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", "Loading");
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
@@ -124,7 +123,7 @@ public class FxCommandService {
 
             if (project == null) {
 
-                CredUtils.taskLogger.get().append(String.format("No project with name [%s] found on FxServer", config.getName())).append("\n");
+                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, config.getName(), String.format("No project with name [%s] found on FxServer", config.getName()));
                 CredUtils.errors.set(Boolean.TRUE);
                 return null;
 
@@ -148,7 +147,7 @@ public class FxCommandService {
                 CredUtils.taskLogger.get().append(String.format("Project created with id: [%s]", project.getId())).append("\n");*/
             } else {
                 System.out.println(String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
-                CredUtils.taskLogger.get().append(String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync())).append("\n");
+                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
 
                 projectFiles = getProjectChecksums(project.getId());
 
@@ -159,7 +158,7 @@ public class FxCommandService {
                 } catch (IOException e) {
                     logger.warn(e.getLocalizedMessage());
                     System.out.println(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
-                    CredUtils.taskLogger.get().append(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage())).append("\n");
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, fxfile.getName(), String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
                     CredUtils.errors.set(Boolean.TRUE);
                 }
 
@@ -173,10 +172,8 @@ public class FxCommandService {
                     if (projectResponse.isErrors()) {
                         System.err.println(projectResponse.getMessages());
                     }
-                    System.out.println(String.format("Project id: [%s]", projectResponse.getData().getId()));
-                    CredUtils.taskLogger.get().append(String.format("Project id: [%s]", projectResponse.getData().getId())).append("\n");
-                    System.out.println("Project updated...");
-                    CredUtils.taskLogger.get().append("Project updated...").append("\n");
+                    System.out.println(String.format("Project id: [%s] updated", projectResponse.getData().getId()));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project id: [%s] updated", projectResponse.getData().getId()));
                 }
 
             }
@@ -190,7 +187,7 @@ public class FxCommandService {
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage(), e);
             System.out.println(String.format("Failed with error [%s]", e.getLocalizedMessage()));
-            CredUtils.taskLogger.get().append(String.format("Failed with error [%s]", e.getLocalizedMessage())).append("\n");
+            CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, "", String.format("Failed with error [%s]", e.getLocalizedMessage()));
         }
         return null;
     }
@@ -220,7 +217,7 @@ public class FxCommandService {
         Response<Project> projectResponse = projectRepository.save(project);
 
         logger.info("project created with id [{}]...", project.getId());
-        CredUtils.taskLogger.get().append(String.format("project created with id [%s]...", project.getId())).append("\n");
+        CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, config.getName(), String.format("project created with id [%s]...", project.getId()));
         return projectResponse;
     }
 
@@ -263,7 +260,7 @@ public class FxCommandService {
 
 
         logger.info("project updated with id [{}]...", project.getId());
-        CredUtils.taskLogger.get().append("Project updated...").append("\n");
+        CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), "Project updated...");
         return projectResponse;
     }
 
@@ -325,7 +322,7 @@ public class FxCommandService {
         }
         Response<List<Environment>> response = envRestRepository.saveAll(oldEnvs);
         System.out.println("Env updated...");
-        CredUtils.taskLogger.get().append("Environments updated...").append("\n");
+        CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "environments", "updated...");
         return response;
     }
 
@@ -364,7 +361,7 @@ public class FxCommandService {
             }
         }
         Response<List<Job>> listResponse = jobRestRepository.saveAll(oldJobs);
-        CredUtils.taskLogger.get().append("Jobs updated...").append("\n");
+        CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "jobs", "updated...");
         return listResponse;
     }
 
@@ -440,12 +437,12 @@ public class FxCommandService {
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 "Note: Any file with not '.yaml' extension will be ignored.",
                 AnsiColor.DEFAULT));
-        CredUtils.taskLogger.get().append("Note: Any file with not '.yaml' extension will be ignored.").append("\n");
+        CredUtils.taskLogger.get().append(BotLogger.LogType.WARN, "!.yaml", "Note: Any file with not '.yaml' extension will be ignored.");
 
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 "Note: All files need to have unique name irrespective of the folder they are in.",
                 AnsiColor.DEFAULT));
-        CredUtils.taskLogger.get().append("Note: All files need to have unique file name irrespective of the folder they are in.").append("\n");
+        CredUtils.taskLogger.get().append(BotLogger.LogType.WARN, "Duplicate", "Note: All files need to have unique file name irrespective of the folder they are in.");
 
 
         File dataFolder = new File(projectDir + "test-suites");
@@ -465,7 +462,7 @@ public class FxCommandService {
             } catch (IOException e) {
                 logger.warn(e.getLocalizedMessage());
                 System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.taskLogger.get().append(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
+                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
                 CredUtils.errors.set(Boolean.TRUE);
             }
 
@@ -481,7 +478,7 @@ public class FxCommandService {
                 System.out.println(AnsiOutput.toString(AnsiColor.RED,
                         String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()),
                         AnsiColor.DEFAULT));
-                CredUtils.taskLogger.get().append(String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
+                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()));
                 CredUtils.errors.set(Boolean.TRUE);
                 return;
             }
@@ -508,14 +505,14 @@ public class FxCommandService {
             } catch (Exception e) {
                 logger.warn(e.getLocalizedMessage());
                 System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.taskLogger.get().append(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage())).append("\n");
+                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
                 CredUtils.errors.set(Boolean.TRUE);
             }
 
             System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
                     String.format("Test-Suite: %s [Synced]", file.getName()),
                     AnsiColor.DEFAULT));
-            CredUtils.taskLogger.get().append(String.format("Test-Suite: %s [Synced]", file.getName())).append("\n");
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Synced");
 
             totalFiles.incrementAndGet();
         });
@@ -524,7 +521,7 @@ public class FxCommandService {
                 String.format("\nTotal Suites Loaded: [%s]", totalFiles),
                 AnsiColor.DEFAULT));
         logger.info("test-suites successfully uploaded...");
-        CredUtils.taskLogger.get().append("test-suites successfully uploaded...").append("\n");
+        CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", "test-suites successfully uploaded...");
     }
 
     private boolean isChecksumPresent(List<ProjectFile> projectFiles, File file, String checksum) {
@@ -536,7 +533,7 @@ public class FxCommandService {
                 System.out.println(AnsiOutput.toString(AnsiColor.WHITE,
                         String.format("Test-Suite: %s [Up-to-date]", file.getName()),
                         AnsiColor.DEFAULT));
-                CredUtils.taskLogger.get().append(String.format("Test-Suite: %s [Up-to-date]", file.getName())).append("\n");
+                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Up-to-date");
                 return true;
             }
         }

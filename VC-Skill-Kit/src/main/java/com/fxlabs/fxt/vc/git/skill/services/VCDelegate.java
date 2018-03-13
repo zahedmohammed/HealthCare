@@ -3,6 +3,7 @@ package com.fxlabs.fxt.vc.git.skill.services;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.sdk.services.BotLogger;
 import com.fxlabs.fxt.sdk.services.CredUtils;
 import com.fxlabs.fxt.sdk.services.FxCommandService;
 import com.fxlabs.fxt.vc.git.skill.amqp.Sender;
@@ -52,16 +53,16 @@ public class VCDelegate {
                 CredUtils.url.set(task.getFxUrl());
                 CredUtils.username.set(task.getProjectUser());
                 CredUtils.password.set(task.getProjectGrant());
+
+                CredUtils.taskLogger.set(new BotLogger());
                 Project project = service.load(response.getPath());
+
                 response.setSuccess(!BooleanUtils.isTrue(CredUtils.errors.get()));
-                if (project == null) {
-                    response.setSuccess(false);
-                }
             }
             String driverLogs = new String();
             String gitLogs = new String();
             if (CredUtils.taskLogger.get() != null) {
-                driverLogs = CredUtils.taskLogger.get().toString();
+                driverLogs = CredUtils.taskLogger.get().getLogs();
             }
             if (response.getLogs() != null) {
                 gitLogs = response.getLogs();
