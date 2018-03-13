@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.cloud.gcp.skill;
+package com.fxlabs.fxt.cloud.kubernetes.skill;
 
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class GCPCloudService implements CloudService {
+public class KubernetesCloudService implements CloudService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
@@ -24,7 +24,7 @@ public class GCPCloudService implements CloudService {
     /**
      * <p>
      *  This method does only one thing.
-     *   1. Creates Vm's on GCP
+     *   1. Creates Vm's on Kubernetes
      * </p>
      *
      * @param task
@@ -44,7 +44,7 @@ public class GCPCloudService implements CloudService {
      */
     @Override
     public CloudTaskResponse create(final CloudTask task) {
-        logger.info("In GCPCloud Service for task [{}]" , task.getType().toString());
+        logger.info("In KubernetesCloud Service for task [{}]" , task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
 
@@ -64,11 +64,10 @@ public class GCPCloudService implements CloudService {
         return response;
 
     }
-
     /**
      * <p>
      *  This method does only one thing.
-     *   1. Destroys Vm's on GCP
+     *   1. Destroy Vm's on Kubernetes
      * </p>
      *
      * @param task
@@ -87,10 +86,9 @@ public class GCPCloudService implements CloudService {
      *  </p>
      */
 
-
     @Override
     public CloudTaskResponse destroy(final CloudTask task) {
-        logger.info("In  GCPCloud Service for task [{}]" , task.getType().toString());
+        logger.info("In KubernetesCloud Service for task [{}]" , task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
 

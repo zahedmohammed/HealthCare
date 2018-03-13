@@ -44,7 +44,7 @@ public class AzureCloudService implements CloudService {
      */
     @Override
     public CloudTaskResponse create(final CloudTask task) {
-        logger.info("In IT AzureCloud Service for task [{}]" , task.getType().toString());
+        logger.info("In AzureCloud Service for task [{}]" , task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
 
@@ -91,7 +91,7 @@ public class AzureCloudService implements CloudService {
 
     @Override
     public CloudTaskResponse destroy(final CloudTask task) {
-        logger.info("In IT AzureCloud Service for task [{}]" , task.getType().toString());
+        logger.info("In AzureCloud Service for task [{}]" , task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
 
