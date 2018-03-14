@@ -10,6 +10,10 @@ export class JobsService {
   constructor(private http: HttpClient) {
   }
 
+  get() {
+    return this.http.get(this.serviceUrl);
+  }
+
   getById(id: string) {
     return this.http.get(this.serviceUrl + "/" + id);
   }

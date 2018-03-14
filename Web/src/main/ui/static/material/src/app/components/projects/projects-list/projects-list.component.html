@@ -12,7 +12,7 @@
                     <th class="mdl-data-table__cell--non-numeric">Name</th>
                     <th class="mdl-data-table__cell--non-numeric">Visibility</th>
                     <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
-                    <th class="mdl-data-table__cell--non-numeric">Jobs</th>
+                    <!--<th class="mdl-data-table__cell--non-numeric">Jobs</th>-->
                     <th class="mdl-data-table__cell--non-numeric"></th>
                 </tr>
                 </thead>
@@ -21,7 +21,7 @@
                     <td class="mdl-data-table__cell--non-numeric bold">{{project.org.name}}/{{project.name}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{project.visibility}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{project.createdDate | date:'shortDate'}}</td>
-                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a></td>
+                    <!--<td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a></td>-->
                     <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id]">Edit</a></td>
                 </tr>
                 </tbody>

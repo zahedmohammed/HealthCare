@@ -25,11 +25,11 @@ export class JobslistComponent implements OnInit {
     this.showSpinner = true;
     this.route.params.subscribe(params => {
       console.log(params);
-      if (params['id']) {
-        this.projectId = params['id'];
-        this.list(this.projectId);
-        this.loadProject(this.projectId);
-      }
+      //if (params['id']) {
+        //this.projectId = params['id'];
+        this.list();
+        //this.loadProject(this.projectId);
+      //}
     });
   }
 
@@ -41,8 +41,8 @@ export class JobslistComponent implements OnInit {
     });
   }
 
-  list(id: string) {
-    this.jobsService.getJobs(id).subscribe(results => {
+  list() {
+    this.jobsService.get().subscribe(results => {
       this.showSpinner = false;
       if (!results)
         return;
@@ -58,7 +58,7 @@ export class JobslistComponent implements OnInit {
       if (!results)
         return;
       //this.jobs = results['data'];
-      this.router.navigate(['/app/runs', id]);
+      this.router.navigate(['/app/job/' , id, 'runs']);
     }, error => {
       console.log("Unable to fetch jobs");
     });

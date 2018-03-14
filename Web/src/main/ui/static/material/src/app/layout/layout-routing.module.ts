@@ -75,9 +75,9 @@ const routes: Routes = [
       { path: 'projects', component: ProjectsListComponent },
       { path: 'projects/new', component: ProjectsNewComponent },
       { path: 'projects/:id', component: ProjectsEditComponent },
-      { path: 'projects/:id/jobs', component: JobslistComponent },
-      { path: 'projects/:id/jobs/:jobId/runs', component: RunListComponent },
-      { path: 'projects/:id/jobs/:jobId/runs/:runId', component: RunDetailComponent },
+      { path: 'jobs', component: JobslistComponent },
+      { path: 'jobs/:jobId/runs', component: RunListComponent },
+      { path: 'jobs/:jobId/runs/:runId', component: RunDetailComponent },
 
       { path: 'messages', component: MessageListComponent },
       { path: 'message/:id', component: MessageDetailComponent },

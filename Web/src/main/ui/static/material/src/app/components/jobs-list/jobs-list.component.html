@@ -1,9 +1,8 @@
 <section class="container-fluid with-maxwidth chapter">
 
   <article class="article">
-    <h2 class="article-title">
-      <a href="javascript:;" [routerLink]="['/app/projects']"> Projects</a>
-      / {{project.name}} / Jobs</h2>
+    <h2 class="article-title">Jobs
+    </h2>
     <div class="box box-default table-box mdl-shadow--2dp">
       <table class="mdl-data-table">
         <thead>
@@ -22,7 +21,7 @@
           <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
           <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
           <td class="mdl-data-table__cell--non-numeric">
-            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', job.id, 'runs']">History</a> &nbsp;
+            <a href="javascript:;" [routerLink]="['/app/jobs', job.id, 'runs']">History</a> &nbsp;
             <a href="javascript:;" (click)="runJob(job.id)">Run</a>
           </td>
         </tr>

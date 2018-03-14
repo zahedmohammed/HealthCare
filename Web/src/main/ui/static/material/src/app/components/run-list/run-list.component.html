@@ -3,9 +3,7 @@
 
     <article class="article">
         <h2 class="article-title">
-            <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
-            / {{project.name}} /
-            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs']"> Jobs </a>
+            <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
             /
             <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}<!--</a>--> /
             Runs</h2>
@@ -18,6 +16,7 @@
                     <th class="mdl-data-table__cell--non-numeric">Total/Passed</th>
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
                     <th class="mdl-data-table__cell--non-numeric">Time (ms)</th>
+                    <th class="mdl-data-table__cell--non-numeric">Bytes (ms)</th>
                     <th class="mdl-data-table__cell--non-numeric">Name</th>
                 </tr>
                 </thead>
@@ -30,8 +29,9 @@
                         {{ ( (item.task.totalTestCompleted * 100 ) / (item.task.totalTestCompleted + item.task.failedTests) ).toFixed(0) }}%
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalBytes}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>
+                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>
                     </td>
                 </tr>
                 </tbody>
