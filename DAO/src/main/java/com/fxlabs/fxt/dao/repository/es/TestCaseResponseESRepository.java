@@ -14,4 +14,6 @@ import java.util.List;
 public interface TestCaseResponseESRepository extends ElasticsearchRepository<TestCaseResponse, String> {
 
     List<TestCaseResponse> findByProjectAndJobAndSuiteAndTestCase(String project, String job, String suite, String testCase, Pageable pageable);
+
+    List<TestCaseResponse> findByProjectAndJobIdAndSuiteAndTestCase(String project, String jobId, String suite, String testCase, Pageable pageable);
 }

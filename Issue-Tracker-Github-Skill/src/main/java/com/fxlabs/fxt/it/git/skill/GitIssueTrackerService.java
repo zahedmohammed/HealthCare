@@ -45,19 +45,18 @@ public class GitIssueTrackerService implements IssueTrackerService {
      */
     public static final String STATE_CLOSED = "closed";
 
-   @Autowired
     private String fxIssueTrackerBot;
 
-   @Autowired
-   private String getFxIssueTrackerBotSecretKey;
+    private String fxIssueTrackerBotSecretKey;
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
-    public GitIssueTrackerService( @Value("${FX_ISSUE_TRACKER_BOT}")String fxIssueTrackerBot,  @Value("${FX_ISSUE_TRACKER_BOT_SECRETKEY}") String getFxIssueTrackerBotSecretKey) {
+    @Autowired
+    public GitIssueTrackerService( @Value("${FX_ISSUE_TRACKER_BOT}")String fxIssueTrackerBot,  @Value("${FX_ISSUE_TRACKER_BOT_SECRETKEY}") String fxIssueTrackerBotSecretKey) {
         this.fxIssueTrackerBot = fxIssueTrackerBot;
-        this.getFxIssueTrackerBotSecretKey = getFxIssueTrackerBotSecretKey;
+        this.fxIssueTrackerBotSecretKey = fxIssueTrackerBotSecretKey;
     }
 
     /**
@@ -111,14 +110,12 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
             //creates an issue remotely
 
-            IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
+           // IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
             if(StringUtils.isNotEmpty(task.getIssueId())){
                 //TODO update issue
-
-                Comment comment = addComment(issueService, repositoryId, task);
-
+                issue = editIssue(issue,  repositoryId, task);
             } else {
-                issue = createIssue(issue, issueService, repositoryId);
+                issue = createIssue(issue, repositoryId, task);
             }
 
             response.setSuccess(true);
@@ -139,6 +136,26 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
         return response;
 
+    }
+
+    private Issue editIssue(Issue issue, RepositoryId repositoryId, TestCaseResponse task) throws IOException {
+
+        IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
+
+        int issueNumber = Integer.parseInt(task.getIssueId());
+
+        Issue issue_ = issueService.getIssue(repositoryId, issueNumber);
+
+        if (StringUtils.equals(task.getResult(), "pass")) {
+            issue_.setState(STATE_CLOSED);
+        } else {
+            issue_.setState(STATE_OPEN);
+        }
+        issue = issueService.editIssue(repositoryId, issue_);
+
+        addComment(issueService, repositoryId, task);
+
+        return issue;
     }
 
     private Issue buildIssue(TestCaseResponse task) {
@@ -196,8 +213,11 @@ public class GitIssueTrackerService implements IssueTrackerService {
         return body;
     }
 
-    private Issue createIssue(Issue issue, IssueService issueService, RepositoryId repositoryId) throws IOException {
+    private Issue createIssue(Issue issue, RepositoryId repositoryId, TestCaseResponse task) throws IOException {
+
+        IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
         issue = issueService.createIssue(repositoryId, issue);
+
         return issue;
     }
 
@@ -221,7 +241,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
         }
 
         if (issueService == null) {
-            issueService = getIssueService(fxIssueTrackerBot, getFxIssueTrackerBotSecretKey);
+            issueService = getIssueService(fxIssueTrackerBot, fxIssueTrackerBotSecretKey);
         }
 
         return issueService;

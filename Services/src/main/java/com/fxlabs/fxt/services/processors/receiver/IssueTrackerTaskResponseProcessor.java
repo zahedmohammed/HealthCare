@@ -7,6 +7,7 @@ import com.fxlabs.fxt.dao.entity.users.ProjectRole;
 import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectUsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseRepository;
 import com.fxlabs.fxt.dto.alerts.*;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
@@ -33,10 +34,10 @@ public class IssueTrackerTaskResponseProcessor {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ProjectUsersRepository projectUsersRepository;
+    private TestCaseResponseESRepository testCaseResponseESRepository;
 
     @Autowired
-    private TestCaseResponseESRepository testCaseResponseESRepository;
+    private TestCaseResponseRepository testCaseResponseRepository;
 
     @Autowired
     private TestCaseResponseConverter converter;
@@ -54,7 +55,9 @@ public class IssueTrackerTaskResponseProcessor {
             if (optional.get() != null) {
                 TestCaseResponse response = optional.get();
                 response.setIssueId(task.getIssueId());
+                testCaseResponseRepository.save(response);
                 testCaseResponseESRepository.save(response);
+
             }
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);

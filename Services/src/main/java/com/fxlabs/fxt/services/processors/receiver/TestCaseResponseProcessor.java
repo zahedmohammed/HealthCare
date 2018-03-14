@@ -158,7 +158,7 @@ public class TestCaseResponseProcessor {
 
     private void getExistingIssueId(TestCaseResponse tc) {
         List<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> oldtestresult = testCaseResponseESRepository.
-                findByProjectAndJobAndSuiteAndTestCase(tc.getProject(), tc.getJob(), tc.getSuite(), tc.getTestCase(),  PageRequest.of(1, 1, DEFAULT_SORT));
+                findByProjectAndJobIdAndSuiteAndTestCase(tc.getProject(), tc.getJobId(), tc.getSuite(), tc.getTestCase(),  PageRequest.of(1, 1, DEFAULT_SORT));
 
 
         if (!CollectionUtils.isEmpty(oldtestresult) &&
