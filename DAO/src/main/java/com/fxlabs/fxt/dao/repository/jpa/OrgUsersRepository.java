@@ -3,6 +3,8 @@ package com.fxlabs.fxt.dao.repository.jpa;
 import com.fxlabs.fxt.dao.entity.users.OrgRole;
 import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -16,6 +18,8 @@ public interface OrgUsersRepository extends JpaRepository<OrgUsers, String> {
     Optional<OrgUsers> findByOrgIdAndUsersIdAndStatus(String orgId, String usersId, OrgUserStatus status);
 
     Set<OrgUsers> findByUsersIdAndStatusAndOrgRole(String usersId, OrgUserStatus status, OrgRole orgRole);
+
+    Page<OrgUsers> findByUsersIdAndStatusAndOrgRole(String usersId, OrgUserStatus status, OrgRole orgRole, Pageable pageable);
 
     Optional<OrgUsers> findByUsersIdAndStatusAndOrgNameAndOrgRole(String usersId, OrgUserStatus status, String orgName, OrgRole orgRole);
 

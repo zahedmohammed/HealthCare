@@ -1005,7 +1005,7 @@ var DocNewComponent = (function () {
 /***/ "../../../../../src/app/components/issues/issues-edit/issues-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\">Bug Bot</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Bot Name</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"subscription.name\" disabled name=\"name\" id=\"name\"\n                     placeholder=\"Bot name\">\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"skill\" class=\"col-md-2 control-label\">Issue Tracker Type\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"subscription.skill.name\" disabled name=\"skill\" id=\"skill\"\n                     placeholder=\"Bot Type\">\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Issue Tracker URL\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"subscription.prop1\" name=\"url\" id=\"repo\"\n                     placeholder=\"Issue Tracker URL\">\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Visibility\n            </label>\n            <div class=\"col-md-10\">\n              <mat-form-field>\n                <mat-select placeholder=\"Visibility\" [(ngModel)]=\"subscription.visibility\" name=\"visibility\">\n                  <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                    {{visibility}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/issues']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\">Bug Bot</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\"></label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input required disabled [(ngModel)]=\"subscription.name\" name=\"name\" id=\"name\"\n                       matInput placeholder=\"Bot name\">\n              </mat-input-container>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-form-field>\n                <mat-select placeholder=\"Access level\" [(ngModel)]=\"subscription.visibility\" name=\"Access level\">\n                  <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                    {{visibility}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n          <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n\n          <div class=\"form-group row\">\n            <label class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-form-field>\n                <mat-select placeholder=\"Issue Tracker Type\" disabled [(ngModel)]=\"subscription.skill\" name=\"skill\" id=\"skill\">\n                  <mat-option *ngFor=\"let skill of skills\" [value]=\"skill\">\n                    {{skill.name}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input required [(ngModel)]=\"subscription.prop1\" name=\"url\"\n                       matInput placeholder=\"Issue Tracker URL\">\n              </mat-input-container>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/issues']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -1058,7 +1058,7 @@ var IssuesEditComponent = (function () {
         this.route = route;
         this.router = router;
         this.showSpinner = false;
-        this.subscription = new __WEBPACK_IMPORTED_MODULE_4__models_subscription_model__["a" /* Subscription */]('', '', '', '', 'PRIVATE');
+        this.subscription = new __WEBPACK_IMPORTED_MODULE_4__models_subscription_model__["a" /* Subscription */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     IssuesEditComponent.prototype.ngOnInit = function () {
@@ -1224,7 +1224,7 @@ var IssuesListComponent = (function () {
 /***/ "../../../../../src/app/components/issues/issues-new/issues-new.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Bug Bot</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\" #heroForm=\"ngForm\">\n\n                    <div class=\"form-group row\">\n                        <label for=\"name\" class=\"col-md-2 control-label\">Bot Name</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"entry.name\" name=\"name\" id=\"name\"\n                                   placeholder=\"Bot name\">\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Issue Tracker Type\n                        </label>\n                        <div class=\"col-md-10\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Type\" [(ngModel)]=\"entry.skill\" name=\"skill\">\n                                    <mat-option *ngFor=\"let skill of skills\" [value]=\"skill\">\n                                        {{skill.name}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Issue Tracker URL\n                        </label>\n                        <div class=\"col-md-10\">\n                            <input type=\"url\" class=\"form-control\" [(ngModel)]=\"entry.prop1\" name=\"url\" id=\"repo\"\n                                   placeholder=\"Issue Tracker URL\">\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Visibility\n                        </label>\n                        <div class=\"col-md-10\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Visibility\" [(ngModel)]=\"entry.visibility\" name=\"visibility\">\n                                    <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                                        {{visibility}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n\n                    <div class=\"divider divider-md\"></div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                                    class=\"btn-w-md no-margin-left\">Launch\n                            </button>\n                            <span class=\"space space-md\"></span>\n                            <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/issues']\">\n                                Cancel\n                            </button>\n                        </div>\n                    </div>\n\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Issue-Tracker Bot</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\" #heroForm=\"ngForm\">\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">\n                        </label>\n                        <div class=\"col-md-8\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Owner\" required [(ngModel)]=\"entry.org.id\" name=\"type\">\n                                    <mat-option *ngFor=\"let org of orgs\" [value]=\"org.org.id\">\n                                        {{org.org.name}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"name\" class=\"col-md-2 control-label\"></label>\n                        <div class=\"col-md-8\">\n                            <mat-input-container class=\"full-width\">\n                                <input required [(ngModel)]=\"entry.name\" name=\"name\" id=\"name\"\n                                       matInput placeholder=\"Bot name\">\n                            </mat-input-container>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">\n                        </label>\n                        <div class=\"col-md-8\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Access level\" [(ngModel)]=\"entry.visibility\" name=\"Access level\">\n                                    <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                                        {{visibility}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n                    <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">\n                        </label>\n                        <div class=\"col-md-8\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Issue Tracker Type\" [(ngModel)]=\"entry.skill\" name=\"skill\">\n                                    <mat-option *ngFor=\"let skill of skills\" [value]=\"skill\">\n                                        {{skill.name}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">\n                        </label>\n                        <div class=\"col-md-8\">\n                            <mat-input-container class=\"full-width\">\n                                <input required [(ngModel)]=\"entry.prop1\" name=\"url\" id=\"repo\"\n                                       matInput placeholder=\"Issue Tracker URL\">\n                            </mat-input-container>\n                        </div>\n                    </div>\n\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                                    class=\"btn-w-md no-margin-left\">Launch\n                            </button>\n                            <span class=\"space space-md\"></span>\n                            <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/issues']\">\n                                Cancel\n                            </button>\n                        </div>\n                    </div>\n\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -1255,7 +1255,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__ = __webpack_require__("../../../../../src/app/services/skill-subscription.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_skill_service__ = __webpack_require__("../../../../../src/app/services/skill.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_subscription_model__ = __webpack_require__("../../../../../src/app/models/subscription.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_subscription_model__ = __webpack_require__("../../../../../src/app/models/subscription.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1270,18 +1271,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var IssuesNewComponent = (function () {
-    function IssuesNewComponent(skillSubscriptionService, skillService, route, router) {
+    function IssuesNewComponent(skillSubscriptionService, skillService, orgService, route, router) {
         this.skillSubscriptionService = skillSubscriptionService;
         this.skillService = skillService;
+        this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.showSpinner = false;
-        this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_subscription_model__["a" /* Subscription */]('', '', '', '', 'PRIVATE');
+        this.entry = new __WEBPACK_IMPORTED_MODULE_5__models_subscription_model__["a" /* Subscription */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     IssuesNewComponent.prototype.ngOnInit = function () {
         this.listSkills();
+        this.getOrgs();
     };
     IssuesNewComponent.prototype.listSkills = function () {
         var _this = this;
@@ -1310,14 +1314,28 @@ var IssuesNewComponent = (function () {
             console.log("Unable to save subscription entry");
         });
     };
+    IssuesNewComponent.prototype.getOrgs = function () {
+        var _this = this;
+        this.orgService.get().subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.orgs = results['data'];
+        }, function (error) {
+            console.log("Unable to fetch orgs");
+        });
+    };
     IssuesNewComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-issues-new',
             template: __webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__["a" /* SkillSubscriptionService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__["a" /* SkillSubscriptionService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__["a" /* SkillSubscriptionService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_skill_subscription_service__["a" /* SkillSubscriptionService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], IssuesNewComponent);
     return IssuesNewComponent;
 }());
@@ -2179,7 +2197,7 @@ var OrgNewComponent = (function () {
 /***/ "../../../../../src/app/components/projects/projects-edit/projects-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a> / {{project.name}}</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.name\" disabled name=\"name\" id=\"name\"\n                     placeholder=\"Project name\">\n            </div>\n          </div>\n          <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n          <div class=\"form-group row\">\n            <label for=\"projectType\" class=\"col-md-2 control-label\">Repository Type</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.projectType\" disabled name=\"projectType\" id=\"projectType\"\n                     placeholder=\"Project Type\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Repository URL\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                     placeholder=\"Git repository url e.g. https://github.com/username/Fx-UI.git\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"username\" class=\"col-md-2 control-label\">Username</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.username\" name=\"username\"\n                     id=\"username\" placeholder=\"Git repository's access-key or username\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"pass\" class=\"col-md-2 control-label\">Password</label>\n            <div class=\"col-md-10\">\n              <input type=\"password\" class=\"form-control\" [(ngModel)]=\"project.password\" name=\"password\"\n                     id=\"pass\" placeholder=\"Git repository's secret-key or password\">\n            </div>\n          </div>\n\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/projects']\"> Projects </a> / {{project.name}}</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\"></label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input [(ngModel)]=\"project.name\" disabled name=\"name\" id=\"name\"\n                       matInput placeholder=\"Project name\">\n              </mat-input-container>\n\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-form-field>\n                <mat-select placeholder=\"Access level\" [(ngModel)]=\"project.visibility\" name=\"Access level\">\n                  <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                    {{visibility}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n          <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n          <div class=\"form-group row\">\n            <label class=\"col-md-2 control-label\"></label>\n            <div class=\"col-md-8\">\n              <mat-form-field>\n                <mat-select placeholder=\"Type\" required [(ngModel)]=\"project.projectType\" name=\"type\" id=\"type\">\n                  <mat-option *ngFor=\"let projectType of projectTypes\" [value]=\"projectType\">\n                    {{projectType}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input required [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                       matInput placeholder=\"Repository URL e.g. https://github.com/username/Fx-UI.git\">\n              </mat-input-container>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"username\" class=\"col-md-2 control-label\"></label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input [(ngModel)]=\"project.username\" name=\"username\" id=\"username\"\n                       matInput placeholder=\"Repository access-key or username\">\n              </mat-input-container>\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"pass\" class=\"col-md-2 control-label\"></label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input type=\"password\" [(ngModel)]=\"project.password\" name=\"password\" id=\"pass\"\n                       matInput placeholder=\"Repository secret-key or password\">\n              </mat-input-container>\n            </div>\n          </div>\n\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-8\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -2230,6 +2248,8 @@ var ProjectsEditComponent = (function () {
         this.router = router;
         this.showSpinner = false;
         this.project = new __WEBPACK_IMPORTED_MODULE_3__models_project_model__["a" /* Project */]('', '', '', '', 'GIT');
+        this.projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab'];
+        this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     ProjectsEditComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -2383,7 +2403,7 @@ var ProjectsListComponent = (function () {
 /***/ "../../../../../src/app/components/projects/projects-new/projects-new.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Project</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\" #heroForm=\"ngForm\">\n                    <div class=\"form-group row\">\n                        <label for=\"name\" class=\"col-md-2 control-label\">Name*</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" required [(ngModel)]=\"project.name\" name=\"name\" id=\"name\"\n                                   placeholder=\"Project name\">\n                        </div>\n                    </div>\n                    <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">Repository Type*\n                        </label>\n                        <div class=\"col-md-10\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Repository Type\" required [(ngModel)]=\"project.projectType\" name=\"type\">\n                                    <mat-option *ngFor=\"let projectType of projectTypes\" [value]=\"projectType\">\n                                        {{projectType}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <div class=\"callout callout-info\">\n                                <p>Fx will launch a vBot for every project. The vBot will monitor the project repository's master branch for new commits and will sync back changed files.</p>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">URL*\n                        </label>\n                        <div class=\"col-md-10\">\n                            <input type=\"url\" class=\"form-control\" required [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                                   placeholder=\"Repository's URL e.g. https://github.com/username/Fx-UI.git\">\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"username\" class=\"col-md-2 control-label\">Username</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"project.username\" name=\"username\"\n                                   id=\"username\" placeholder=\"Repository's access-key or username\">\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"pass\" class=\"col-md-2 control-label\">Password</label>\n                        <div class=\"col-md-10\">\n                            <input type=\"password\" class=\"form-control\" [(ngModel)]=\"project.password\" name=\"password\"\n                                   id=\"pass\" placeholder=\"Repository's secret-key or password\">\n                        </div>\n                    </div>\n\n\n                    <div class=\"divider divider-md\"></div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                                    class=\"btn-w-md no-margin-left\">Add\n                            </button>\n                            <span class=\"space space-md\"></span>\n                            <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n                            </button>\n                        </div>\n                    </div>\n\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n\n        <h2 class=\"article-title\">New Project</h2>\n        <div class=\"box box-default\">\n            <div class=\"box-body padding-xl\">\n\n                <form role=\"form\" #heroForm=\"ngForm\">\n                    <div class=\"form-group row\">\n                        <label class=\"col-md-2 control-label\">\n                        </label>\n                        <div class=\"col-md-8\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Owner\" required [(ngModel)]=\"project.orgId\" name=\"owner\">\n                                    <mat-option *ngFor=\"let org of orgs\" [value]=\"org.org.id\">\n                                        {{org.org.name}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"name\" class=\"col-md-2 control-label\"></label>\n                        <div class=\"col-md-8\">\n                            <mat-input-container class=\"full-width\">\n                                <input required [(ngModel)]=\"project.name\" name=\"name\" id=\"name\"\n                                       matInput placeholder=\"Project name\">\n                            </mat-input-container>\n\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">\n                        </label>\n                        <div class=\"col-md-8\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Access level\" [(ngModel)]=\"project.visibility\" name=\"Access level\">\n                                    <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                                        {{visibility}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n                    <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">\n                        </label>\n                        <div class=\"col-md-8\">\n                            <mat-form-field>\n                                <mat-select placeholder=\"Type\" required [(ngModel)]=\"project.projectType\" name=\"type\">\n                                    <mat-option *ngFor=\"let projectType of projectTypes\" [value]=\"projectType\">\n                                        {{projectType}}\n                                    </mat-option>\n                                </mat-select>\n                            </mat-form-field>\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"repo\" class=\"col-md-2 control-label\">\n                        </label>\n                        <div class=\"col-md-8\">\n                            <mat-input-container class=\"full-width\">\n                                <input required [(ngModel)]=\"project.url\" name=\"url\" id=\"repo\"\n                                       matInput placeholder=\"Repository URL e.g. https://github.com/username/Fx-UI.git\">\n                            </mat-input-container>\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"username\" class=\"col-md-2 control-label\"></label>\n                        <div class=\"col-md-8\">\n                            <mat-input-container class=\"full-width\">\n                            <input [(ngModel)]=\"project.username\" name=\"username\" id=\"username\"\n                                   matInput placeholder=\"Repository access-key or username\">\n                            </mat-input-container>\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <label for=\"pass\" class=\"col-md-2 control-label\"></label>\n                        <div class=\"col-md-8\">\n                            <mat-input-container class=\"full-width\">\n                            <input type=\"password\" [(ngModel)]=\"project.password\" name=\"password\" id=\"pass\"\n                                   matInput placeholder=\"Repository secret-key or password\">\n                            </mat-input-container>\n                        </div>\n                    </div>\n\n\n                    <div class=\"divider divider-md\"></div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-8\">\n                            <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                                    class=\"btn-w-md no-margin-left\">Add\n                            </button>\n                            <span class=\"space space-md\"></span>\n                            <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/projects']\">Cancel\n                            </button>\n                        </div>\n                    </div>\n                    <div class=\"form-group row\">\n                        <div class=\"col-md-2\"></div>\n                        <div class=\"col-md-10\">\n                            <div class=\"callout callout-info\">\n                                <p>Fx will launch a vBot for every project. The vBot will monitor the project repository's master branch for new commits and will sync back changed files.</p>\n                            </div>\n                        </div>\n                    </div>\n\n                </form>\n\n            </div>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -2413,7 +2433,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2427,16 +2448,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectsNewComponent = (function () {
-    function ProjectsNewComponent(projectService, route, router) {
+    function ProjectsNewComponent(projectService, orgService, route, router) {
         this.projectService = projectService;
+        this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.showSpinner = false;
-        this.project = new __WEBPACK_IMPORTED_MODULE_3__models_project_model__["a" /* Project */]('', '', '', '', 'GIT');
+        this.project = new __WEBPACK_IMPORTED_MODULE_4__models_project_model__["a" /* Project */]('', '', '', '', 'GIT');
         this.projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab'];
+        this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     ProjectsNewComponent.prototype.ngOnInit = function () {
+        this.getOrgs();
     };
     ProjectsNewComponent.prototype.create = function () {
         var _this = this;
@@ -2454,14 +2479,28 @@ var ProjectsNewComponent = (function () {
             console.log("Unable to fetch regions");
         });
     };
+    ProjectsNewComponent.prototype.getOrgs = function () {
+        var _this = this;
+        this.orgService.get().subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.orgs = results['data'];
+        }, function (error) {
+            console.log("Unable to fetch orgs");
+        });
+    };
     ProjectsNewComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-projects-new',
             template: __webpack_require__("../../../../../src/app/components/projects/projects-new/projects-new.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/projects/projects-new/projects-new.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], ProjectsNewComponent);
     return ProjectsNewComponent;
 }());
@@ -3459,7 +3498,7 @@ var SupportNewComponent = (function () {
 /***/ "../../../../../src/app/components/vault/vault-edit/vault-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/vault']\"> Vault </a> / {{entry.key}}</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Key</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"entry.key\" disabled name=\"name\" id=\"name\"\n                     placeholder=\"key\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Secret\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"entry.val\" name=\"url\" id=\"repo\"\n                     placeholder=\"value\">\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Visibility\n            </label>\n            <div class=\"col-md-10\">\n              <mat-form-field>\n                <mat-select placeholder=\"Visibility\" [(ngModel)]=\"entry.visibility\" name=\"visibility\">\n                  <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                    {{visibility}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/vault']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\"><a href=\"javascript:;\" [routerLink]=\"['/app/vault']\"> Vault </a> / {{entry.key}}</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\"></label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input required [(ngModel)]=\"entry.key\" name=\"name\" id=\"name\"\n                       matInput placeholder=\"Entry key\">\n              </mat-input-container>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-form-field>\n                <mat-select placeholder=\"Access level\" [(ngModel)]=\"entry.visibility\" name=\"visibility\">\n                  <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                    {{visibility}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <label for=\"secret\" class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input required [(ngModel)]=\"entry.val\" name=\"secret\" id=\"secret\"\n                       matInput placeholder=\"Secret\">\n              </mat-input-container>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-8\">\n              <button mat-raised-button color=\"primary\" (click)=\"update(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Save\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" color=\"warn\" class=\"btn-w-md\" (click)=\"delete(); heroForm.reset()\">Delete\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/vault']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -3509,7 +3548,7 @@ var VaultEditComponent = (function () {
         this.route = route;
         this.router = router;
         this.showSpinner = false;
-        this.entry = new __WEBPACK_IMPORTED_MODULE_3__models_vault_model__["a" /* Vault */]('', '', '', 'PRIVATE');
+        this.entry = new __WEBPACK_IMPORTED_MODULE_3__models_vault_model__["a" /* Vault */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     VaultEditComponent.prototype.ngOnInit = function () {
@@ -3663,7 +3702,7 @@ var VaultListComponent = (function () {
 /***/ "../../../../../src/app/components/vault/vault-new/vault-new.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\">New Secret</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\">Key</label>\n            <div class=\"col-md-10\">\n              <input type=\"text\" class=\"form-control\" [(ngModel)]=\"entry.key\" name=\"name\" id=\"name\"\n                     placeholder=\"Entry key\">\n            </div>\n          </div>\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Secret\n            </label>\n            <div class=\"col-md-10\">\n              <input type=\"url\" class=\"form-control\" [(ngModel)]=\"entry.val\" name=\"url\" id=\"repo\"\n                     placeholder=\"Entry value\">\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"repo\" class=\"col-md-2 control-label\">Visibility\n            </label>\n            <div class=\"col-md-10\">\n              <mat-form-field>\n                <mat-select placeholder=\"Visibility\" [(ngModel)]=\"entry.visibility\" name=\"visibility\">\n                  <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                    {{visibility}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n\n          <div class=\"divider divider-md\"></div>\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-10\">\n              <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Add\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/vault']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
+module.exports = "<section class=\"container-fluid with-maxwidth chapter\">\n\n  <article class=\"article\">\n\n    <h2 class=\"article-title\">New Secret</h2>\n    <div class=\"box box-default\">\n      <div class=\"box-body padding-xl\">\n\n        <form role=\"form\" #heroForm=\"ngForm\">\n          <div class=\"form-group row\">\n            <label class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-form-field>\n                <mat-select placeholder=\"Owner\" required [(ngModel)]=\"entry.org.id\" name=\"type\">\n                  <mat-option *ngFor=\"let org of orgs\" [value]=\"org.org.id\">\n                    {{org.org.name}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label for=\"name\" class=\"col-md-2 control-label\"></label>\n            <div class=\"col-md-8\">\n              <mat-input-container class=\"full-width\">\n                <input required [(ngModel)]=\"entry.key\" name=\"name\" id=\"name\"\n                       matInput placeholder=\"Entry key\">\n              </mat-input-container>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <label class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-8\">\n              <mat-form-field>\n                <mat-select placeholder=\"Access level\" [(ngModel)]=\"entry.visibility\" name=\"Access level\">\n                  <mat-option *ngFor=\"let visibility of visibilities\" [value]=\"visibility\">\n                    {{visibility}}\n                  </mat-option>\n                </mat-select>\n              </mat-form-field>\n            </div>\n          </div>\n          <div class=\"divider divider-dashed divider-lg pull-in\"></div>\n\n          <div class=\"form-group row\">\n            <label for=\"secret\" class=\"col-md-2 control-label\">\n            </label>\n            <div class=\"col-md-10\">\n              <mat-input-container class=\"full-width\">\n                <input required [(ngModel)]=\"entry.val\" name=\"secret\" id=\"secret\"\n                       matInput placeholder=\"Secret\">\n              </mat-input-container>\n            </div>\n          </div>\n\n          <div class=\"form-group row\">\n            <div class=\"col-md-2\"></div>\n            <div class=\"col-md-8\">\n              <button mat-raised-button color=\"primary\" (click)=\"create(); heroForm.reset()\"\n                      class=\"btn-w-md no-margin-left\">Add\n              </button>\n              <span class=\"space space-md\"></span>\n              <button mat-raised-button type=\"button\" class=\"btn-w-md\" [routerLink]=\"['/app/vault']\">Cancel\n              </button>\n            </div>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </article>\n</section>\n"
 
 /***/ }),
 
@@ -3693,7 +3732,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_vault_service__ = __webpack_require__("../../../../../src/app/services/vault.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_vault_model__ = __webpack_require__("../../../../../src/app/models/vault.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_vault_model__ = __webpack_require__("../../../../../src/app/models/vault.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3707,16 +3747,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var VaultNewComponent = (function () {
-    function VaultNewComponent(vaultService, route, router) {
+    function VaultNewComponent(vaultService, orgService, route, router) {
         this.vaultService = vaultService;
+        this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.showSpinner = false;
-        this.entry = new __WEBPACK_IMPORTED_MODULE_3__models_vault_model__["a" /* Vault */]('', '', '', 'PRIVATE');
+        this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_vault_model__["a" /* Vault */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     VaultNewComponent.prototype.ngOnInit = function () {
+        this.getOrgs();
     };
     VaultNewComponent.prototype.create = function () {
         var _this = this;
@@ -3734,14 +3777,28 @@ var VaultNewComponent = (function () {
             console.log("Unable to save vault entry");
         });
     };
+    VaultNewComponent.prototype.getOrgs = function () {
+        var _this = this;
+        this.orgService.get().subscribe(function (results) {
+            _this.showSpinner = false;
+            if (results['errors']) {
+                // TODO - handle errors
+                return;
+            }
+            console.log(results);
+            _this.orgs = results['data'];
+        }, function (error) {
+            console.log("Unable to fetch orgs");
+        });
+    };
     VaultNewComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-vault-new',
             template: __webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */]])
     ], VaultNewComponent);
     return VaultNewComponent;
 }());
@@ -5374,15 +5431,18 @@ var Task = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Subscription; });
+/* unused harmony export Org */
 var Subscription = (function () {
-    function Subscription(skill, name, description, prop1, visibility) {
-        this.skill = skill;
-        this.name = name;
-        this.description = description;
-        this.prop1 = prop1;
-        this.visibility = visibility;
+    function Subscription() {
+        this.org = new Org();
     }
     return Subscription;
+}());
+
+var Org = (function () {
+    function Org() {
+    }
+    return Org;
 }());
 
 
@@ -5394,14 +5454,18 @@ var Subscription = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Vault; });
+/* unused harmony export Org */
 var Vault = (function () {
-    function Vault(key, val, description, visibility) {
-        this.key = key;
-        this.val = val;
-        this.description = description;
-        this.visibility = visibility;
+    function Vault() {
+        this.org = new Org();
     }
     return Vault;
+}());
+
+var Org = (function () {
+    function Org() {
+    }
+    return Org;
 }());
 
 
@@ -5578,6 +5642,46 @@ var MessageService = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
     ], MessageService);
     return MessageService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/org.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrgService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var OrgService = (function () {
+    function OrgService(http) {
+        this.http = http;
+        this.serviceUrl = '/api/v1/orgs';
+    }
+    OrgService.prototype.get = function () {
+        return this.http.get(this.serviceUrl);
+    };
+    OrgService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], OrgService);
+    return OrgService;
 }());
 
 

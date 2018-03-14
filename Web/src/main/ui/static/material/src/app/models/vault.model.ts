@@ -1,9 +1,14 @@
 export class Vault {
 
-    constructor(
-    public key: string,
-    public val: string,
-    public description: string,
-    public visibility: string
-    ) {}
+    key: string;
+    val: string;
+    description: string;
+    visibility: string;
+    org: Org = new Org();
+
+}
+
+export class Org {
+    id: string;
+    name: string;
 }

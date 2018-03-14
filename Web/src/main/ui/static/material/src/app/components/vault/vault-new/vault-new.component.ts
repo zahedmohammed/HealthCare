@@ -1,21 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { VaultService } from '../../../services/vault.service';
+import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
 
 @Component({
   selector: 'app-vault-new',
   templateUrl: './vault-new.component.html',
   styleUrls: ['./vault-new.component.scss'],
-  providers: [VaultService]
+  providers: [VaultService, OrgService]
 })
 export class VaultNewComponent implements OnInit {
 
   showSpinner: boolean = false;
-  entry: Vault = new Vault('', '', '', 'PRIVATE');
-  constructor(private vaultService: VaultService, private route: ActivatedRoute, private router: Router) { }
+  orgs;
+  entry: Vault = new Vault();
+  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    this.getOrgs();
   }
 
   create() {
@@ -34,6 +37,19 @@ export class VaultNewComponent implements OnInit {
     });
   }
 
+  getOrgs() {
+    this.orgService.get().subscribe(results => {
+      this.showSpinner = false;
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      console.log(results);
+      this.orgs = results['data'];
+    }, error => {
+      console.log("Unable to fetch orgs");
+    });
+  }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 
 }
