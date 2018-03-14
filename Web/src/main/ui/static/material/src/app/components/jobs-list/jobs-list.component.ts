@@ -58,7 +58,7 @@ export class JobslistComponent implements OnInit {
       if (!results)
         return;
       //this.jobs = results['data'];
-      this.router.navigate(['/app/job/' , id, 'runs']);
+      this.router.navigate(['/app/jobs/' , id, 'runs']);
     }, error => {
       console.log("Unable to fetch jobs");
     });
