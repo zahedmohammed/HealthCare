@@ -2,23 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { SkillSubscriptionService } from '../../../services/skill-subscription.service';
 import { SkillService } from '../../../services/skill.service';
+import { OrgService } from '../../../services/org.service';
 import { Subscription } from '../../../models/subscription.model';
+import { Base } from '../../../models/base.model';
 
 
 @Component({
   selector: 'app-issues-new',
   templateUrl: './issues-new.component.html',
   styleUrls: ['./issues-new.component.scss'],
-  providers: [SkillSubscriptionService, SkillService]
+  providers: [SkillSubscriptionService, SkillService, OrgService]
 })
 export class IssuesNewComponent implements OnInit {
   skills;
   showSpinner: boolean = false;
-  entry: Subscription = new Subscription('', '', '', '', 'PRIVATE');
-  constructor(private skillSubscriptionService: SkillSubscriptionService, private skillService: SkillService, private route: ActivatedRoute, private router: Router) { }
+  orgs;
+  entry: Subscription = new Subscription();
+  constructor(private skillSubscriptionService: SkillSubscriptionService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.listSkills();
+    this.getOrgs();
   }
 
   listSkills() {
@@ -47,6 +51,19 @@ export class IssuesNewComponent implements OnInit {
     });
   }
 
+  getOrgs() {
+    this.orgService.get().subscribe(results => {
+      this.showSpinner = false;
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      console.log(results);
+      this.orgs = results['data'];
+    }, error => {
+      console.log("Unable to fetch orgs");
+    });
+  }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 
 }

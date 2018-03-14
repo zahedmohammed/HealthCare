@@ -8,27 +8,35 @@
 
         <form role="form" #heroForm="ngForm">
           <div class="form-group row">
-            <label for="name" class="col-md-2 control-label">Key</label>
-            <div class="col-md-10">
-              <input type="text" class="form-control" [(ngModel)]="entry.key" name="name" id="name"
-                     placeholder="Entry key">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="repo" class="col-md-2 control-label">Secret
+            <label class="col-md-2 control-label">
             </label>
-            <div class="col-md-10">
-              <input type="url" class="form-control" [(ngModel)]="entry.val" name="url" id="repo"
-                     placeholder="Entry value">
+            <div class="col-md-8">
+              <mat-form-field>
+                <mat-select placeholder="Owner" required [(ngModel)]="entry.org.id" name="type">
+                  <mat-option *ngFor="let org of orgs" [value]="org.org.id">
+                    {{org.org.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="repo" class="col-md-2 control-label">Visibility
+            <label for="name" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.key" name="name" id="name"
+                       matInput placeholder="Entry key">
+              </mat-input-container>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-2 control-label">
             </label>
-            <div class="col-md-10">
+            <div class="col-md-8">
               <mat-form-field>
-                <mat-select placeholder="Visibility" [(ngModel)]="entry.visibility" name="visibility">
+                <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="Access level">
                   <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
                     {{visibility}}
                   </mat-option>
@@ -36,11 +44,22 @@
               </mat-form-field>
             </div>
           </div>
+          <div class="divider divider-dashed divider-lg pull-in"></div>
 
-          <div class="divider divider-md"></div>
+          <div class="form-group row">
+            <label for="secret" class="col-md-2 control-label">
+            </label>
+            <div class="col-md-10">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.val" name="secret" id="secret"
+                       matInput placeholder="Secret">
+              </mat-input-container>
+            </div>
+          </div>
+
           <div class="form-group row">
             <div class="col-md-2"></div>
-            <div class="col-md-10">
+            <div class="col-md-8">
               <button mat-raised-button color="primary" (click)="create(); heroForm.reset()"
                       class="btn-w-md no-margin-left">Add
               </button>

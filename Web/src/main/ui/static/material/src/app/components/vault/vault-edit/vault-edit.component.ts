@@ -12,7 +12,7 @@ import { Vault } from '../../../models/vault.model';
 export class VaultEditComponent implements OnInit {
 
   showSpinner: boolean = false;
-  entry: Vault = new Vault('', '', '', 'PRIVATE');
+  entry: Vault = new Vault();
   constructor(private vaultService: VaultService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {

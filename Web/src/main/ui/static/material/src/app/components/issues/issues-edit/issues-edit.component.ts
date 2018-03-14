@@ -3,6 +3,7 @@ import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { SkillSubscriptionService } from '../../../services/skill-subscription.service';
 import { SkillService } from '../../../services/skill.service';
 import { Subscription } from '../../../models/subscription.model';
+import { Base } from '../../../models/base.model';
 
 @Component({
   selector: 'app-issues-edit',
@@ -13,7 +14,7 @@ import { Subscription } from '../../../models/subscription.model';
 export class IssuesEditComponent implements OnInit {
   skills;
   showSpinner: boolean = false;
-  subscription: Subscription = new Subscription('', '', '', '', 'PRIVATE');
+  subscription: Subscription = new Subscription();
   constructor(private skillSubscriptionService: SkillSubscriptionService, private skillService: SkillService,  private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {

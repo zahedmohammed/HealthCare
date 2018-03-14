@@ -1,10 +1,16 @@
+
 export class Subscription {
 
-    constructor(
-    public skill: string,
-    public name: string,
-    public description: string,
-    public prop1: string,
-    public visibility: string
-    ) {}
+    skill: string;
+    name: string;
+    description: string;
+    prop1: string;
+    visibility: string;
+    org: Org = new Org();
+
+}
+
+export class Org {
+    id: string;
+    name: string;
 }
