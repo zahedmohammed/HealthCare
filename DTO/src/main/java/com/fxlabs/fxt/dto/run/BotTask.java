@@ -60,6 +60,8 @@ public class BotTask implements Serializable {
     private Long totalSkipped = 0L;
     private Long totalTests = 0L;
 
+    private Long totalBytes = 0L;
+
 
     private List<BotTask> init = new ArrayList<>();
     private List<BotTask> cleanup = new ArrayList<>();

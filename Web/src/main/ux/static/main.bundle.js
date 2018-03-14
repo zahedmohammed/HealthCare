@@ -205,6 +205,7 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__components_skills_skills_bot_deployment_skills_bot_deployment_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-bot-deployment/skills-bot-deployment.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__components_skills_skills_issue_tracker_skills_issue_tracker_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-issue-tracker/skills-issue-tracker.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__components_skills_skills_analytics_skills_analytics_component__ = __webpack_require__("../../../../../src/app/components/skills/skills-analytics/skills-analytics.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__services_dashboard_service__ = __webpack_require__("../../../../../src/app/services/dashboard.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -254,6 +255,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 // hmr
 //import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
+
 
 
 
@@ -418,7 +420,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_70__components_skills_skills_issue_tracker_skills_issue_tracker_component__["a" /* SkillsIssueTrackerComponent */],
                 __WEBPACK_IMPORTED_MODULE_71__components_skills_skills_analytics_skills_analytics_component__["a" /* SkillsAnalyticsComponent */],
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]]
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_72__services_dashboard_service__["a" /* DashboardService */]]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ApplicationRef */]])
     ], AppModule);
@@ -3780,7 +3783,7 @@ var APPCONFIG = makeAppConfig();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"chapter page-terms\">\n\n    <section class=\"hero\">\n        <div class=\"hero-content\">\n            <h1 class=\"hero-title\">Dashboard</h1>\n        </div>\n        <p class=\"text-muted\">Fx Control Plane</p>\n    </section>\n\n    <article class=\"article padding-lg-v article-dark article-bordered\">\n\n\n        <div class=\"container-fluid no-breadcrumbs page-dashboard\">\n\n            <!--\n           <div class=\"box box-default\">\n             <div class=\"box-body\">\n               <div myECharts [EChartsOptions]=\"trafficChart\" style=\"height: 450px;\"></div>\n             </div>\n           </div>\n            -->\n\n            <div class=\"row\">\n                <!-- Stats -->\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-success\">code</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Projects</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{projects}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-info\">alarm</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Jobs</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{jobs}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-warning\">check</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Test Executions</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{tests}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-danger\">attach_money</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Balance</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>- </span>\n                        </div>\n                    </div>\n                </div>\n                <!-- end stats -->\n            </div>\n\n            <!--\n            <div class=\"box box-default\">\n              <div class=\"box-body padding-lg\">\n                <div class=\"row\">\n                  <div class=\"col-xl-4\">\n                    <div class=\"box box-transparent\">\n                      <div class=\"box-heading\">Platform</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div class=\"vprogressbar-container brand-success\">\n                          <ul class=\"vprogressbar clearfix\">\n                            <li><span class=\"vprogressbar-percent bg-color-info-alt\" style=\"height: 65%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-success\" style=\"height: 50%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-warning\" style=\"height: 40%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-primary\" style=\"height: 80%; opacity: 0.85;\"></span></li>\n                          </ul>\n                          <ul class=\"vprogressbar-legend\">\n                            <li><span class=\"vpointer bg-color-info-alt\"></span> Direct</li>\n                            <li><span class=\"vpointer bg-color-success\"></span> Instagram</li>\n                            <li><span class=\"vpointer bg-color-warning\"></span> Twitter</li>\n                            <li><span class=\"vpointer bg-color-primary\"></span> Facebook</li>\n                          </ul>\n                          <div class=\"vprogressbar-info\">\n                            <span>Source of Acquisition</span>\n                          </div>\n                        </div>\n                      </div>\n                    </div>\n                  </div>\n                  <div class=\"col-xl-4\">\n                    <div class=\"box box-transparent\">\n                      <div class=\"box-heading\">Nationality</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div myECharts [EChartsOptions]=\"donutChart\" style=\"height: 300px;\"></div>\n                      </div>\n                    </div>\n                  </div>\n                  <div class=\"col-xl-4\">\n                    <section class=\"box box-transparent\">\n                      <div class=\"box-heading\">Budget vs Spending</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div myECharts [EChartsOptions]=\"radarChart\" style=\"height: 300px;\"></div>\n                      </div>\n                    </section>\n                  </div>\n                </div>\n              </div>\n            </div>\n            -->\n        </div>\n    </article>\n</section>"
+module.exports = "<section class=\"chapter page-terms\">\n\n    <section class=\"hero\">\n        <div class=\"hero-content\">\n            <h1 class=\"hero-title\">Dashboard</h1>\n        </div>\n        <p class=\"text-muted\">Fx Control Plane</p>\n    </section>\n\n    <article class=\"article padding-lg-v article-dark article-bordered\">\n\n\n        <div class=\"container-fluid no-breadcrumbs page-dashboard\">\n\n            <!--\n           <div class=\"box box-default\">\n             <div class=\"box-body\">\n               <div myECharts [EChartsOptions]=\"trafficChart\" style=\"height: 450px;\"></div>\n             </div>\n           </div>\n            -->\n\n            <div class=\"row\">\n                <!-- Stats -->\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-info\">code</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Projects</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{projects}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-info\">devices</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Environments</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{envs}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-info\">alarm</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Jobs</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{jobs}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-info\">assignment</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Test-Suites</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{suites}} </span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-warning\">directions_run</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Total Runs</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{runs}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-warning\">check</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Test Executions</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{tests}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-warning\">av_timer</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Total Time</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{time}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-warning\">data_usage</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Total Bytes</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{bytes}} </span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-success\">content_copy</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>vBots</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{projects}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-success\">cloud_queue</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>eBots</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{eBots}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-success\">bug_report</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>iBots</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>{{iBots}} </span>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xl-3 col-sm-6\">\n                    <div class=\"box box-default\">\n                        <div class=\"box-top\">\n                            <i class=\"material-icons color-success\">attach_money</i>\n                        </div>\n                        <div class=\"box-info\">\n                            <span>Balance</span>\n                        </div>\n                        <div class=\"box-bottom\">\n                            <span>- </span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n            <!--\n            <div class=\"box box-default\">\n              <div class=\"box-body padding-lg\">\n                <div class=\"row\">\n                  <div class=\"col-xl-4\">\n                    <div class=\"box box-transparent\">\n                      <div class=\"box-heading\">Platform</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div class=\"vprogressbar-container brand-success\">\n                          <ul class=\"vprogressbar clearfix\">\n                            <li><span class=\"vprogressbar-percent bg-color-info-alt\" style=\"height: 65%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-success\" style=\"height: 50%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-warning\" style=\"height: 40%; opacity: 0.85;\"></span></li>\n                            <li><span class=\"vprogressbar-percent bg-color-primary\" style=\"height: 80%; opacity: 0.85;\"></span></li>\n                          </ul>\n                          <ul class=\"vprogressbar-legend\">\n                            <li><span class=\"vpointer bg-color-info-alt\"></span> Direct</li>\n                            <li><span class=\"vpointer bg-color-success\"></span> Instagram</li>\n                            <li><span class=\"vpointer bg-color-warning\"></span> Twitter</li>\n                            <li><span class=\"vpointer bg-color-primary\"></span> Facebook</li>\n                          </ul>\n                          <div class=\"vprogressbar-info\">\n                            <span>Source of Acquisition</span>\n                          </div>\n                        </div>\n                      </div>\n                    </div>\n                  </div>\n                  <div class=\"col-xl-4\">\n                    <div class=\"box box-transparent\">\n                      <div class=\"box-heading\">Nationality</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div myECharts [EChartsOptions]=\"donutChart\" style=\"height: 300px;\"></div>\n                      </div>\n                    </div>\n                  </div>\n                  <div class=\"col-xl-4\">\n                    <section class=\"box box-transparent\">\n                      <div class=\"box-heading\">Budget vs Spending</div>\n                      <div class=\"divider divider-md\"></div>\n                      <div class=\"box-body\">\n                        <div myECharts [EChartsOptions]=\"radarChart\" style=\"height: 300px;\"></div>\n                      </div>\n                    </section>\n                  </div>\n                </div>\n              </div>\n            </div>\n            -->\n        </div>\n    </article>\n</section>"
 
 /***/ }),
 
@@ -3791,8 +3794,7 @@ module.exports = "<section class=\"chapter page-terms\">\n\n    <section class=\
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__charts_charts_config__ = __webpack_require__("../../../../../src/app/charts/charts.config.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_jobs_service__ = __webpack_require__("../../../../../src/app/services/jobs.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_dashboard_service__ = __webpack_require__("../../../../../src/app/services/dashboard.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3805,13 +3807,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 var DashboardComponent = (function () {
-    function DashboardComponent(projectService, jobsService) {
-        this.projectService = projectService;
-        this.jobsService = jobsService;
+    function DashboardComponent(dashboardService) {
+        this.dashboardService = dashboardService;
         this.config = __WEBPACK_IMPORTED_MODULE_1__charts_charts_config__["a" /* CHARTCONFIG */];
         this.showSpinner = false;
+        this.projects = "-";
+        this.jobs = "-";
+        this.envs = "-";
+        this.runs = "-";
+        this.tests = "-";
+        this.time = "-";
+        this.bytes = "-";
+        this.iBots = "-";
+        this.eBots = "-";
+        this.suites = "-";
         this.getMonData = function () {
             var data = [];
             for (var i = 0; i < 13; i++) {
@@ -4179,53 +4189,56 @@ var DashboardComponent = (function () {
         };
     }
     DashboardComponent.prototype.ngOnInit = function () {
-        this.getProjectCount();
-        this.getJobCount();
-        this.getTestCount();
+        this.get("count-projects", "projects");
+        this.get("count-jobs", "jobs");
+        this.get("count-envs", "envs");
+        this.get("count-suites", "suites");
+        this.get("count-runs", "runs");
+        this.get("count-tests", "tests");
+        this.get("count-time", "time");
+        this.get("count-bytes", "bytes");
+        this.get("count-ibots", "iBots");
+        this.get("count-ebots", "eBots");
     };
-    DashboardComponent.prototype.getProjectCount = function () {
+    DashboardComponent.prototype.get = function (stat, _var) {
         var _this = this;
-        this.projectService.getCount().subscribe(function (results) {
+        this.dashboardService.getStat(stat).subscribe(function (results) {
             if (results['errors']) {
                 // TODO - handle errors
                 return;
             }
-            _this.projects = results['data'];
+            var count = results['data'];
+            if (_var === 'projects')
+                _this.projects = count;
+            else if (_var === 'jobs')
+                _this.jobs = count;
+            else if (_var === 'suites')
+                _this.suites = count;
+            else if (_var === 'envs')
+                _this.envs = count;
+            else if (_var === 'runs')
+                _this.runs = count;
+            else if (_var === 'tests')
+                _this.tests = count;
+            else if (_var === 'time')
+                _this.time = count;
+            else if (_var === 'bytes')
+                _this.bytes = count;
+            else if (_var === 'iBots')
+                _this.iBots = count;
+            else if (_var === 'eBots')
+                _this.eBots = count;
         }, function (error) {
-            console.log("Unable to fetch project count");
-        });
-    };
-    DashboardComponent.prototype.getJobCount = function () {
-        var _this = this;
-        this.jobsService.getCountJobs().subscribe(function (results) {
-            if (results['errors']) {
-                // TODO - handle errors
-                return;
-            }
-            _this.jobs = results['data'];
-        }, function (error) {
-            console.log("Unable to fetch job count");
-        });
-    };
-    DashboardComponent.prototype.getTestCount = function () {
-        var _this = this;
-        this.jobsService.getCountTests().subscribe(function (results) {
-            if (results['errors']) {
-                // TODO - handle errors
-                return;
-            }
-            _this.tests = results['data'];
-        }, function (error) {
-            console.log("Unable to fetch tests count");
+            console.log("Unable to fetch stat");
         });
     };
     DashboardComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'my-dashboard',
             template: __webpack_require__("../../../../../src/app/dashboard/dashboard.component.html"),
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__services_jobs_service__["a" /* JobsService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_dashboard_service__["a" /* DashboardService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__services_jobs_service__["a" /* JobsService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_dashboard_service__["a" /* DashboardService */]])
     ], DashboardComponent);
     return DashboardComponent;
 }());
@@ -5427,6 +5440,46 @@ var PageLayoutFullscreenComponent = (function () {
         })
     ], PageLayoutFullscreenComponent);
     return PageLayoutFullscreenComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/dashboard.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var DashboardService = (function () {
+    function DashboardService(http) {
+        this.http = http;
+        this.serviceUrl = '/api/v1/dashboard';
+    }
+    DashboardService.prototype.getStat = function (name) {
+        return this.http.get(this.serviceUrl + "/" + name);
+    };
+    DashboardService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], DashboardService);
+    return DashboardService;
 }());
 
 

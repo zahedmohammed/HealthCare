@@ -4,14 +4,18 @@ import com.fxlabs.fxt.converters.project.EnvironmentConverter;
 import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -37,6 +41,30 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         return new Response<>(converter.convertToDtos(environments));
     }
 
+    @Override
+    public Response<Long> count(String user, Pageable pageable) {
+        // check user has access to project
+        // find owned projects org --> projects --> jobs
+        // users --> org or users --> projects
+        // least - a project should be visible to owner
+        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
+        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = environmentRepository.countByProjectIdAndInactive(p.getId(), false);
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+
+    }
 
     @Override
     public void isUserEntitled(String id, String user) {

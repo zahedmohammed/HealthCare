@@ -162,6 +162,14 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return super.delete(clusterId, user);
     }
 
+
+    @Override
+    public Response<Long> countBotRegions(String user) {
+        // Find all public
+        Long count = this.clusterRepository.countByVisibility(ClusterVisibility.PUBLIC);
+        return new Response<>(count);
+    }
+
     @Override
     public void isUserEntitled(String s, String user) {
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = repository.findById(s);

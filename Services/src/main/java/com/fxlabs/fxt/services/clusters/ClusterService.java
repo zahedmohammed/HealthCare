@@ -23,4 +23,6 @@ public interface ClusterService extends GenericService<Cluster, String> {
     Response<Cluster> findById(String id, String user);
 
     Response<Cluster> delete(String s, String user);
+
+    Response<Long> countBotRegions(String user);
 }

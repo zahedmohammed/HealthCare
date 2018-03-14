@@ -13,6 +13,7 @@ import com.fxlabs.fxt.dao.repository.jpa.SubscriptionTaskRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
 import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.skills.SkillSubscription;
+import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.dto.skills.SubscriptionState;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
@@ -227,6 +228,13 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         return new Response<>(converter.convertToDto(optional.get()));
 
+    }
+
+    @Override
+    public Response<Long> countBySkillType(String user, SkillType skillType) {
+        // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
+        Long count = this.repository.countBySkillSkillTypeAndCreatedBy(com.fxlabs.fxt.dao.entity.skills.SkillType.valueOf(skillType.name()), user);
+        return new Response<>(count);
     }
 
 

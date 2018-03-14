@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.skills;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.skills.Skill;
 import com.fxlabs.fxt.dto.skills.SkillSubscription;
+import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +25,6 @@ public interface SkillSubscriptionService extends GenericService<SkillSubscripti
     Response<SkillSubscription> addExecBot(SkillSubscription dto, String user);
 
     Response<SkillSubscription> deleteExecBot(String id, String user);
+
+    Response<Long> countBySkillType(String user, SkillType skillType);
 }

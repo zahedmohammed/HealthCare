@@ -138,31 +138,6 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     }
 
     @Override
-    public Response<Long> countTests(String user, Pageable pageable) {
-        // check user has access to project
-        // find owned projects org --> projects --> jobs
-        // users --> org or users --> projects
-        // least - a project should be visible to owner
-        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
-        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
-            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
-        }
-
-        AtomicLong al = new AtomicLong(0);
-
-        projectsResponse.getData().stream().forEach(p -> {
-            Long count = runRepository.countTestsByProject(p.getId());
-            if (count != null) {
-                al.getAndAdd(count);
-            }
-
-        });
-
-        return new Response<>(al.get());
-
-    }
-
-    @Override
     public void isUserEntitled(String jobId, String user) {
         // TODO - user has access to job/project
         Optional<Job> jobOptional = jobRepository.findById(jobId);

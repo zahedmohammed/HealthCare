@@ -13,4 +13,6 @@ public interface TestSuiteResponseService extends GenericService<TestSuiteRespon
     public Long failedSum(String runId);
 
     public Long timeSum(String runId);
+
+    Long byteSum(String runId);
 }

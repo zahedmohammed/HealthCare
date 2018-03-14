@@ -24,6 +24,4 @@ public interface JobService extends GenericService<Job, String> {
 
     Response<Long> count(String user, Pageable pageable);
 
-    Response<Long> countTests(String user, Pageable pageable);
-
 }

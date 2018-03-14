@@ -88,6 +88,7 @@ public class RunTaskResponseProcessor {
         ds.setRequestStartTime(task.getRequestStartTime());
         ds.setRequestEndTime(task.getRequestEndTime());
         ds.setRequestTime(task.getRequestTime());
+        ds.setTotalBytes(task.getTotalBytes());
 
         ds.setTotalPassed(task.getTotalPassed());
         ds.setTotalFailed(task.getTotalFailed());

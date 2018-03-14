@@ -60,12 +60,6 @@ public class ProjectController {
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "/count", method = RequestMethod.GET)
-    public Response<Long> count() {
-        return projectService.countProjects(SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Response<Project> add(@RequestBody ProjectRequest request) {
         return projectService.add(request, SecurityUtil.getCurrentAuditor());

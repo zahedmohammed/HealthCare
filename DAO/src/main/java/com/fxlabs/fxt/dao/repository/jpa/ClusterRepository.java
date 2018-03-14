@@ -19,4 +19,6 @@ public interface ClusterRepository extends JpaRepository<Cluster, String> {
 
     List<Cluster> findByVisibility(ClusterVisibility visibility);
 
+    Long countByVisibility(ClusterVisibility visibility);
+
 }

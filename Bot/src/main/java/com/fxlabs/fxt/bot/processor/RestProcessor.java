@@ -333,6 +333,7 @@ public class RestProcessor {
             completeTask.setLogs(logs.getLogs());
 
             completeTask.setRequestEndTime(new Date());
+            completeTask.setTotalBytes(totalSize.get());
             completeTask.setRequestTime(completeTask.getRequestEndTime().getTime() - completeTask.getRequestStartTime().getTime());
             completeTask.setResult("SUITE");
 

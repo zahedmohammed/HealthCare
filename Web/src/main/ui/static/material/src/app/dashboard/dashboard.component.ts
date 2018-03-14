@@ -1,61 +1,73 @@
 import { Component, OnInit } from '@angular/core';
 import { CHARTCONFIG } from '../charts/charts.config';
-import { ProjectService } from '../services/project.service';
-import { JobsService } from '../services/jobs.service';
+import { DashboardService } from '../services/dashboard.service';
 
 @Component({
   selector: 'my-dashboard',
   templateUrl: './dashboard.component.html',
-  providers: [ProjectService, JobsService]
+  providers: [DashboardService]
 })
 export class DashboardComponent {
   config = CHARTCONFIG;
   showSpinner: boolean = false;
-  projects;
-  jobs;
-  tests;
+  projects = "-";
+  jobs = "-";
+  envs = "-"
+  runs = "-"
+  tests = "-";
+  time = "-";
+  bytes = "-";
+  iBots = "-";
+  eBots = "-";
+  suites = "-";
 
-  constructor(private projectService: ProjectService, private jobsService: JobsService) {}
+  constructor(private dashboardService: DashboardService) {}
   ngOnInit() {
-      this.getProjectCount();
-      this.getJobCount();
-      this.getTestCount();
+      this.get("count-projects", "projects");
+      this.get("count-jobs", "jobs");
+      this.get("count-envs", "envs");
+      this.get("count-suites", "suites");
+      this.get("count-runs", "runs");
+      this.get("count-tests", "tests");
+      this.get("count-time", "time");
+      this.get("count-bytes", "bytes");
+      this.get("count-ibots", "iBots");
+      this.get("count-ebots", "eBots");
   }
-  getProjectCount() {
-    this.projectService.getCount().subscribe(results => {
+
+
+  get(stat: string, _var: string) {
+    this.dashboardService.getStat(stat).subscribe(results => {
       if (results['errors']) {
         // TODO - handle errors
         return;
       }
-      this.projects = results['data'];
+      var count = results['data'];
+      if (_var === 'projects')
+        this.projects = count;
+      else if (_var === 'jobs')
+        this.jobs = count;
+      else if (_var === 'suites')
+        this.suites = count;
+      else if (_var === 'envs')
+        this.envs = count;
+      else if (_var === 'runs')
+        this.runs = count;
+      else if (_var === 'tests')
+        this.tests = count;
+      else if (_var === 'time')
+        this.time = count;
+      else if (_var === 'bytes')
+        this.bytes = count;
+      else if (_var === 'iBots')
+        this.iBots = count;
+      else if (_var === 'eBots')
+        this.eBots = count;
     }, error => {
-      console.log("Unable to fetch project count");
+      console.log("Unable to fetch stat");
     });
   }
 
-  getJobCount() {
-    this.jobsService.getCountJobs().subscribe(results => {
-      if (results['errors']) {
-        // TODO - handle errors
-        return;
-      }
-      this.jobs = results['data'];
-    }, error => {
-      console.log("Unable to fetch job count");
-    });
-  }
-
-  getTestCount() {
-    this.jobsService.getCountTests().subscribe(results => {
-      if (results['errors']) {
-        // TODO - handle errors
-        return;
-      }
-      this.tests = results['data'];
-    }, error => {
-      console.log("Unable to fetch tests count");
-    });
-  }
 
   getMonData = () => {
     const data = [];

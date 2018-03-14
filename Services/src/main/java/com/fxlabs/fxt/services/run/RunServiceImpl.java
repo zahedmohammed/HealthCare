@@ -13,6 +13,7 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Job;
+import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.run.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.project.JobService;
@@ -23,11 +24,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -38,6 +41,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
     private JobService jobService;
     //private RunTaskRequestProcessor taskProcessor;
+    private RunRepository repository;
     private TestSuiteRepository testSuiteRepository;
     private TestSuiteResponseRepository testSuiteResponseRepository;
     private TestSuiteResponseConverter testSuiteResponseConverter;
@@ -53,6 +57,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
                           TestSuiteESRepository testSuiteESRepository, ProjectService projectService,
                           SuiteESRepository suiteESRepository, SuiteConverter suiteConverter) {
         super(repository, converter);
+        this.repository = repository;
         this.jobService = projectJobService;
         //this.taskProcessor = taskProcessor;
         this.testSuiteRepository = projectDataSetRepository;
@@ -166,6 +171,106 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         List<Suite> dataSets = suiteConverter.convertToDtos(list);
         return new Response<List<Suite>>(dataSets);
     }
+
+    @Override
+    public Response<Long> count(String user, Pageable pageable) {
+        // check user has access to project
+        // find owned projects org --> projects --> jobs
+        // users --> org or users --> projects
+        // least - a project should be visible to owner
+        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
+        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = repository.countByJobProjectId(p.getId());
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+    }
+
+    @Override
+    public Response<Long> countTests(String user, Pageable pageable) {
+        // check user has access to project
+        // find owned projects org --> projects --> jobs
+        // users --> org or users --> projects
+        // least - a project should be visible to owner
+        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
+        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = repository.countTestsByProject(p.getId());
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+
+    }
+
+    @Override
+    public Response<Long> countBytes(String user, Pageable pageable) {
+        // check user has access to project
+        // find owned projects org --> projects --> jobs
+        // users --> org or users --> projects
+        // least - a project should be visible to owner
+        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
+        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = repository.countBytesByProject(p.getId());
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+
+    }
+
+    @Override
+    public Response<Long> countTime(String user, Pageable pageable) {
+        // check user has access to project
+        // find owned projects org --> projects --> jobs
+        // users --> org or users --> projects
+        // least - a project should be visible to owner
+        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
+        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = repository.countTimeByProject(p.getId());
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+
+    }
+
 
     @Override
     public void isUserEntitled(String s, String user) {

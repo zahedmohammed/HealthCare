@@ -131,6 +131,7 @@ import { SkillsVersionControlComponent } from './components/skills/skills-versio
 import { SkillsBotDeploymentComponent } from './components/skills/skills-bot-deployment/skills-bot-deployment.component';
 import { SkillsIssueTrackerComponent } from './components/skills/skills-issue-tracker/skills-issue-tracker.component';
 import { SkillsAnalyticsComponent } from './components/skills/skills-analytics/skills-analytics.component';
+import { DashboardService } from './services/dashboard.service';
 
 @NgModule({
   imports: [
@@ -249,7 +250,8 @@ import { SkillsAnalyticsComponent } from './components/skills/skills-analytics/s
     SkillsIssueTrackerComponent,
     SkillsAnalyticsComponent,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [DashboardService]
 })
 
 export class AppModule {

@@ -19,4 +19,6 @@ public interface TestSuiteRepository extends JpaRepository<TestSuite, String> {
     TestSuite findByProjectIdAndTypeAndName(String projectId, TestSuiteType type, String name);
 
     Optional<TestSuite> findByProjectIdAndName(String projectId, String name);
+
+    Long countByProjectIdAndInactive(String project, boolean inactive);
 }

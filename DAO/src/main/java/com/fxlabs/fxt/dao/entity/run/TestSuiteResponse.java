@@ -37,6 +37,7 @@ public class TestSuiteResponse extends BaseEntity {
     private Long totalPassed = 0L;
     private Long totalFailed = 0L;
     private Long totalSkipped = 0L;
+    private Long totalBytes = 0L;
     private String status;
 
 }

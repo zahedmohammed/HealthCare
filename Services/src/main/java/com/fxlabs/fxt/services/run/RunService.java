@@ -21,4 +21,12 @@ public interface RunService extends GenericService<Run, String> {
     Response<List<TestSuiteResponse>> findByRunId(String runId, String user, Pageable pageable);
 
     Response<List<Suite>> findSummaryByRunId(String runId, String user, Pageable pageable);
+
+    Response<Long> count(String user, Pageable pageable);
+
+    Response<Long> countTests(String user, Pageable pageable);
+
+    Response<Long> countTime(String user, Pageable pageable);
+
+    Response<Long> countBytes(String user, Pageable pageable);
 }

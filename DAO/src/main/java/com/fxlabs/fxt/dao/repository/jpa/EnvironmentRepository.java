@@ -11,4 +11,6 @@ import java.util.List;
 public interface EnvironmentRepository extends JpaRepository<Environment, String> {
 
     List<Environment> findByProjectId(String projectId);
+
+    Long countByProjectIdAndInactive(String project, boolean inactive);
 }

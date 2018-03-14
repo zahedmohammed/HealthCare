@@ -19,5 +19,7 @@ public interface SkillSubscriptionRepository extends JpaRepository<SkillSubscrip
 
     Page<SkillSubscription> findBySkillSkillTypeAndCreatedBy(SkillType skillType, String user, Pageable pageable);
 
+    Long countBySkillSkillTypeAndCreatedBy(SkillType skillType, String user);
+
 
 }

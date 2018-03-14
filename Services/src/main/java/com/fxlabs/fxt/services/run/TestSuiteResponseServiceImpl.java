@@ -41,18 +41,27 @@ public class TestSuiteResponseServiceImpl extends GenericServiceImpl<TestSuiteRe
         this.elasticsearchTemplate = elasticsearchTemplate;
     }
 
+    @Override
     public Long passedSum(String runId) {
         String FIELD = "totalPassed";
         return calcSum(runId, FIELD);
     }
 
+    @Override
     public Long failedSum(String runId) {
         String FIELD = "totalFailed";
         return calcSum(runId, FIELD);
     }
 
+    @Override
     public Long timeSum(String runId) {
         String FIELD = "requestTime";
+        return calcSum(runId, FIELD);
+    }
+
+    @Override
+    public Long byteSum(String runId) {
+        String FIELD = "totalBytes";
         return calcSum(runId, FIELD);
     }
 

@@ -49,6 +49,7 @@ public class MarkCompleteTaskProcessor {
                 Long failed = testSuiteResponseService.failedSum(run.getId());
                 Long passed = testSuiteResponseService.passedSum(run.getId());
                 Long time = testSuiteResponseService.timeSum(run.getId());
+                Long bytes = testSuiteResponseService.byteSum(run.getId());
 
                 Long count = failed + passed;
                 if (count >= run.getTask().getTotalTests()) {
@@ -58,11 +59,13 @@ public class MarkCompleteTaskProcessor {
                 // count total-tests
                 // count total-fail
                 // count total-time
+                // count total-bytes
                 run.getTask().setTotalSuiteCompleted(count);
 
                 run.getTask().setFailedTests(failed);
                 run.getTask().setTotalTestCompleted(passed);
                 run.getTask().setTotalTime(time);
+                run.getTask().setTotalBytes(bytes);
 
                 runRepository.saveAndFlush(run);
 

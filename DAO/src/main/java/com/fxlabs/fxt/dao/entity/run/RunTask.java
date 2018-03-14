@@ -39,6 +39,7 @@ public class RunTask {
     private Long failedTests = 0L;
     private Long skippedTests = 0L;
     private Long totalTime = 0L;
+    private Long totalBytes = 0L;
 
 }
 
