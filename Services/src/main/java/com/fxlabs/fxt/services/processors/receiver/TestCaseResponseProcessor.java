@@ -76,6 +76,10 @@ public class TestCaseResponseProcessor {
         logger.info("TestCaseResponseProcessor and size is [{}]...", testCaseResponses.size());
         try {
 
+            if (CollectionUtils.isEmpty(testCaseResponses)){
+                return;
+            }
+
             Iterable<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> result = testCaseResponseRepository.saveAll(converter.convertToEntities(testCaseResponses));
             result = testCaseResponseESRepository.saveAll(result);
 

@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.bot.processor;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.bot.amqp.Sender;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
@@ -23,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -358,12 +358,19 @@ public class RestProcessor {
 
 
     private String getFromattedJsonString(String value) {
+
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
         ObjectMapper mapper = new ObjectMapper();
 
         String result = null;
+
         try {
-            result = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
-        } catch (JsonProcessingException e) {
+            Object jsonObject = mapper.readValue(value, Object.class);
+            result = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
+           // result = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
+        } catch (IOException e) {
             return null;
         }
         return result;
