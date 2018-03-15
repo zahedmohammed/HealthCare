@@ -14,24 +14,24 @@ export class SkillSubscriptionService {
   /**
    * Get observable from endpoint
    */
-  get() {
-      return this.http.get(this.serviceUrl);
+  get(type: string) {
+      return this.http.get(this.serviceUrl + "/skill-type/" + type);
   }
 
   getById(id: string) {
     return this.http.get(this.serviceUrl + "/" + id);
   }
 
-  create(obj: Subscription) {
-    return this.http.post(this.serviceUrl, obj);
+  createITBot(obj: Subscription) {
+    return this.http.post(this.serviceUrl + "/issue-tracker-bot", obj);
   }
 
   update(obj: Subscription) {
     return this.http.put(this.serviceUrl + "/" + obj['id'], obj);
   }
 
-  delete(obj: Subscription) {
-    return this.http.delete(this.serviceUrl + "/" + obj['id']);
+  deleteITBot(obj: Subscription) {
+    return this.http.delete(this.serviceUrl + "/issue-tracker-bot/" + obj['id']);
   }
 
 }

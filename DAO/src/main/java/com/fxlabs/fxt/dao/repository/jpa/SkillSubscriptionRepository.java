@@ -17,7 +17,7 @@ public interface SkillSubscriptionRepository extends JpaRepository<SkillSubscrip
 
     Optional<SkillSubscription> findByOrgNameAndName(String org, String name);
 
-    Page<SkillSubscription> findBySkillSkillTypeAndCreatedBy(SkillType skillType, String user, Pageable pageable);
+    Page<SkillSubscription> findBySkillSkillTypeAndInactiveAndCreatedBy(SkillType skillType, boolean inactive, String user, Pageable pageable);
 
     Long countBySkillSkillTypeAndCreatedBy(SkillType skillType, String user);
 

@@ -16,7 +16,7 @@ public interface SkillSubscriptionService extends GenericService<SkillSubscripti
 
     Response<SkillSubscription> findByName(String name);
 
-    Response<List<SkillSubscription>> findBySkillType(String user, String skillType, Pageable pageable);
+    Response<List<SkillSubscription>> findBySkillType(String skillType, String user, Pageable pageable);
 
     Response<SkillSubscription> addITBot(SkillSubscription dto, String user);
 

@@ -26,6 +26,7 @@ public class SubscriptionTask extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TaskType type;
 
+    @Column(name = "_result")
     @Enumerated(EnumType.STRING)
     private TaskResult result;
 

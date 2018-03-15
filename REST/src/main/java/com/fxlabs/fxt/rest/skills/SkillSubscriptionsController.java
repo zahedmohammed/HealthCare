@@ -79,13 +79,13 @@ public class SkillSubscriptionsController {
     }
 
 
-    /*@Secured(ROLE_USER)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public Response<SkillSubscription> update(@Valid @RequestBody SkillSubscription dto) {
+    public Response<SkillSubscription> update(@RequestBody SkillSubscription dto) {
         return service.save(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    /*@Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<SkillSubscription> delete(@PathVariable("id") String id) {
         return service.delete(id, SecurityUtil.getCurrentAuditor());

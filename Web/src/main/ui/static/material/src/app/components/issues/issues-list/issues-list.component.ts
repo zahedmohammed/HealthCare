@@ -14,7 +14,7 @@ export class IssuesListComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.skillSubscriptionService.get().subscribe(results => {
+    this.skillSubscriptionService.get("ISSUE_TRACKER").subscribe(results => {
       this.showSpinner = false;
       if (results['errors']) {
         // TODO - handle errors

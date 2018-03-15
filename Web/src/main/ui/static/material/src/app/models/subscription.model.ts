@@ -1,16 +1,16 @@
 
 export class Subscription {
 
-    skill: string;
+    skill: Dto = new Dto();
     name: string;
     description: string;
     prop1: string;
     visibility: string;
-    org: Org = new Org();
+    org: Dto = new Dto();
 
 }
 
-export class Org {
+export class Dto {
     id: string;
     name: string;
 }

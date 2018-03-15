@@ -66,9 +66,9 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     }
 
     @Override
-    public Response<List<SkillSubscription>> findBySkillType(String user, String skillType, Pageable pageable) {
+    public Response<List<SkillSubscription>> findBySkillType(String skillType, String user, Pageable pageable) {
         // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
-        Page<com.fxlabs.fxt.dao.entity.skills.SkillSubscription> entities = this.repository.findBySkillSkillTypeAndCreatedBy(com.fxlabs.fxt.dao.entity.skills.SkillType.valueOf(skillType), user, pageable);
+        Page<com.fxlabs.fxt.dao.entity.skills.SkillSubscription> entities = this.repository.findBySkillSkillTypeAndInactiveAndCreatedBy(com.fxlabs.fxt.dao.entity.skills.SkillType.valueOf(skillType), false, user, pageable);
         return new Response<>(converter.convertToDtos(entities.getContent()), entities.getTotalElements(), entities.getTotalPages());
     }
 
@@ -137,6 +137,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [DELETE] access to the resource.")));
         }
         dto.setState(SubscriptionState.INACTIVE);
+        dto.setInactive(true);
 
         // Add Task
         com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();

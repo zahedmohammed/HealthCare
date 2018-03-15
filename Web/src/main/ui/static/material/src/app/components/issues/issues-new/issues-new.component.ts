@@ -38,7 +38,7 @@ export class IssuesNewComponent implements OnInit {
   create() {
     console.log(this.entry);
     this.showSpinner = true;
-    this.skillSubscriptionService.create(this.entry).subscribe(results => {
+    this.skillSubscriptionService.createITBot(this.entry).subscribe(results => {
       this.showSpinner = false;
       if (results['errors']) {
         // TODO - handle errors

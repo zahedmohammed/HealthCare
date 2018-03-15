@@ -8,6 +8,19 @@
 
         <form role="form" #heroForm="ngForm">
           <div class="form-group row">
+            <label class="col-md-2 control-label">
+            </label>
+            <div class="col-md-8">
+              <mat-form-field>
+                <mat-select placeholder="Owner" disabled required [(ngModel)]="project.orgId" name="owner">
+                  <mat-option *ngFor="let org of orgs" [value]="org.org.id">
+                    {{org.org.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group row">
             <label for="name" class="col-md-2 control-label"></label>
             <div class="col-md-8">
               <mat-input-container class="full-width">
@@ -86,6 +99,15 @@
               <span class="space space-md"></span>
               <button mat-raised-button type="button" class="btn-w-md" [routerLink]="['/app/projects']">Cancel
               </button>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+              <div class="callout callout-info">
+                <p>The vBot will monitor the project repository's master branch for new commits and will automatically sync back changed files.</p>
+              </div>
             </div>
           </div>
 
