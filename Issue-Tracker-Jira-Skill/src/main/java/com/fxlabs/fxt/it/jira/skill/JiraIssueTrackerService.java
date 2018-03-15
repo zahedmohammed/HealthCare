@@ -10,23 +10,42 @@ import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 import com.atlassian.util.concurrent.Promise;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fxlabs.fxt.dto.base.Message;
+import com.fxlabs.fxt.dto.base.MessageType;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.it.skill.services.IssueTrackerService;
 import com.fxlabs.fxt.it.skill.services.ITTask;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @Component
 public class JiraIssueTrackerService implements IssueTrackerService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
-
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
+    private String fxIssueTrackerBot;
+    private String fxIssueTrackerBotSecretKey;
+
+    @Autowired
+    public JiraIssueTrackerService(@Value("${FX_ISSUE_TRACKER_BOT}")String fxIssueTrackerBot, @Value("${FX_ISSUE_TRACKER_BOT_SECRETKEY}") String fxIssueTrackerBotSecretKey) {
+        this.fxIssueTrackerBot = fxIssueTrackerBot;
+        this.fxIssueTrackerBotSecretKey = fxIssueTrackerBotSecretKey;
+    }
 
     /**
      * <p>
@@ -60,32 +79,24 @@ public class JiraIssueTrackerService implements IssueTrackerService {
     public ITTaskResponse process(final TestCaseResponse task) {
         ITTaskResponse response = new ITTaskResponse();
         try {
-           // TODO Create/Update bugs/ussue in issue tracker JIRA
+           // Create/Update bugs/issue in issue tracker JIRA
             String url = task.getEndpoint();
             URI uri = new URI(task.getIssueTrackerHost());
 
-            final String JIRA_USERNAME = "luqmanshareef@gmail.com"; //get from task
-            final String JIRA_PASSWORD = "luqssh123"; // get from task
-
             JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-            JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, JIRA_USERNAME, JIRA_PASSWORD);
+            JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, fxIssueTrackerBot, fxIssueTrackerBotSecretKey);
 
-            if (task.getIssueId() == null){
-                if (task.getResult().equalsIgnoreCase("FAIL")) {
-                    // TODO: if it is a test rerun result and there is no issue created already for this test case
-                    BasicIssue issue = createIssue(client, task);
-                    response.setIssueId(issue.getKey());
-                    System.out.println("Issue created........." + issue.getKey());
-                }
+            if (StringUtils.isEmpty(task.getIssueId())){
+                BasicIssue issue = createIssue(client, task);
+                response.setIssueId(issue.getKey());
             }else{
-                if (task.getResult().equalsIgnoreCase("PASS")) {
-//                    IssueRestClient issueClient = client.getIssueClient();
-//                    BasicIssue issue = issueClient.getIssue(task.getIssueId()).claim();
-                    updateIssue(client, task, task.getIssueId());
-                }
+                updateIssue(client, task, task.getIssueId());
             }
             response.setSuccess(true);
 //            response.setLogs(taskLogger.get().toString());
+            response.setSuccess(true);
+//            response.setLogs(taskLogger.get().toString());
+            response.setTestCaseResponseId(task.getId());
             return response;
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -100,14 +111,14 @@ public class JiraIssueTrackerService implements IssueTrackerService {
     private BasicIssue createIssue(JiraRestClient client, TestCaseResponse task){
         IssueRestClient issueClient = client.getIssueClient();
 
-        String projectKey = "LFP"; // get from task
         StringBuffer summary = new StringBuffer();
-//        summary.append(task.getResponse()  );
-        summary.append( task.getSuite() + " " + task.getResult()  );
+        summary.append(task.getSuite());
+        String projectKey = "LFP"; // get from task
 
         StringBuffer desc = new StringBuffer();
-        desc.append(task.getTestCase());
-        desc.append(task.getResult());
+        desc.append("Request: \n" + task.getRequestEval());
+        desc.append("\n");
+        desc.append("Response: \n" + task.getResponse());
 
         IssueInput newIssue = new IssueInputBuilder(projectKey, 10004L, summary.toString())
 //				.setAssigneeName("admin")
@@ -116,29 +127,32 @@ public class JiraIssueTrackerService implements IssueTrackerService {
                 .setDescription(desc.toString())
                 .build();
         Promise<BasicIssue> basicIssue = issueClient.createIssue(newIssue);
+        System.out.println("Issue created.......... " + basicIssue.claim().getKey());
         return basicIssue.claim();
     }
 
     private BasicIssue updateIssue(JiraRestClient client, TestCaseResponse task, String issueKey){
 
         IssueRestClient issueClient = client.getIssueClient();
-        BasicIssue issue = issueClient.getIssue(issueKey).claim(); // get Key from task
+        BasicIssue issue = null; // issueClient.getIssue(issueKey).claim(); // get Key from task
 
-        String projectKey = "";  //get from task
-
-        new FieldInput(IssueFieldId.STATUS_FIELD, "{\\\"name\\\": \\\"Done\\\",\\\"id\\\": \\\"10001\\\",\\\"statusCategory\\\": {\\\"self\\\": \\\"https://luqmans.atlassian.net/rest/api/2/statuscategory/3\\\",\\\"id\\\": 3,\\\"key\\\": \\\"done\\\",\\\"colorName\\\": \\\"green\\\",\\\"name\\\": \\\"Done\\\"}\n");
+        StringBuffer desc = new StringBuffer();
+        desc.append("Rerun results :\n");
+        desc.append("Request: \n" + task.getRequest());
+        desc.append("\n");
+        desc.append("Response: \n" + task.getResponse());
+        String projectKey = "LFP";  //get from task
         IssueInput issueInput = new IssueInputBuilder(projectKey, 10004L)
 //				.setAssigneeName("admin")
                 .setPriorityId(5L)
-                .setFieldInput(new FieldInput(IssueFieldId.STATUS_FIELD, "done"))
+//                .setFieldInput(new FieldInput(IssueFieldId.STATUS_FIELD, "done"))
 //				.setReporterName("admin")
-//                .setDescription(desc.toString())
+                .setDescription(desc.toString())
                 .build();
-
         issueClient.updateIssue(issueKey, issueInput).claim();
 
+        System.out.println("Issue updated.......... " + issueKey);
         return issue;
-
     }
 
 }
