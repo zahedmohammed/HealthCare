@@ -14,7 +14,7 @@ import { OrgUser } from '../../../models/org.model';
 export class ProjectsNewComponent implements OnInit {
 
   showSpinner: boolean = false;
-  project: Project = new Project('', '', '', '', 'GIT');
+  project: Project = new Project();
   orgs;
   constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
 

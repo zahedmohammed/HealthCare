@@ -12,7 +12,7 @@
             </label>
             <div class="col-md-8">
               <mat-form-field>
-                <mat-select placeholder="Owner" disabled required [(ngModel)]="project.orgId" name="owner">
+                <mat-select placeholder="Owner" disabled required [(ngModel)]="project.org.id" name="owner">
                   <mat-option *ngFor="let org of orgs" [value]="org.org.id">
                     {{org.org.name}}
                   </mat-option>

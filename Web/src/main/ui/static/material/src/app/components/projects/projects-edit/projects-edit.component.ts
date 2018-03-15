@@ -14,7 +14,7 @@ export class ProjectsEditComponent implements OnInit {
 
   showSpinner: boolean = false;
   orgs;
-  project: Project = new Project('', '', '', '', 'GIT');
+  project: Project = new Project();
   constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
