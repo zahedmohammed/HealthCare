@@ -207,7 +207,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
                 .append("Endpoint").append(COLON).append(task.getEndpointEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Request").append(COLON).append(LINE_SEPERATOR).append(task.getRequestEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Response").append(COLON).append(LINE_SEPERATOR).append(task.getResponse()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
-                .append("Logs").append(COLON).append(LINE_SEPERATOR).append(task.getLogs()).append(LINE_SEPERATOR);
+                .append("Logs").append(COLON).append(LINE_SEPERATOR).append(getFromattedLogs(task.getLogs())).append(LINE_SEPERATOR);
         String body = sb.toString();
 
         return body;
@@ -245,6 +245,20 @@ public class GitIssueTrackerService implements IssueTrackerService {
         }
 
         return issueService;
+    }
+
+    private String getFromattedLogs(String value) {
+        String result = null;
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+        try {
+            result = value.replaceAll( ",", "\n");
+        }catch (Exception e){
+            return null;
+        }
+
+        return result;
     }
 
 }
