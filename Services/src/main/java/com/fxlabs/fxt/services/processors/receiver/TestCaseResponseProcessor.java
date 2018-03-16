@@ -150,6 +150,9 @@ public class TestCaseResponseProcessor {
         }
 
         tc.setIssueTrackerHost(skillSubRespnse.getData().getProp1());
+        tc.setIssueTrackerProjectName(skillSubRespnse.getData().getProp4());
+        tc.setUsername(skillSubRespnse.getData().getProp2());
+        tc.setPassword(skillSubRespnse.getData().getProp3());
 
         Response<Skill> skillResponse = skillService.findById(skillSubRespnse.getData().getSkill().getId(), skillSubRespnse.getData().getSkill().getCreatedBy());
 

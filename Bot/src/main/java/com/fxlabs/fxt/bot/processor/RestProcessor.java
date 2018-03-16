@@ -266,8 +266,7 @@ public class RestProcessor {
 
                 // return processed task
                 //sender.sendTask(newTask);
-                String requestedFormatted = getFromattedJsonString(req)
-                        ;
+                String requestedFormatted = getFromattedJsonString(req);
                 if (StringUtils.isEmpty(requestedFormatted)){
                     requestedFormatted = req;
                 }

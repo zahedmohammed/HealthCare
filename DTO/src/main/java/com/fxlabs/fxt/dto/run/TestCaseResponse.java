@@ -38,6 +38,7 @@ public class TestCaseResponse extends BaseDto<String> {
     private Long time;
     private Integer size;
     private String issueTrackerHost;
+    private String issueTrackerProjectName;
     private String username;
     private String password;
 
