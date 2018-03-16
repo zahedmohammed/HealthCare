@@ -39,11 +39,11 @@ public class SkillSubscription extends BaseEntity {
     )
     private List<Opt> opts;
 
-    private String prop1;
-    private String prop2;
-    private String prop3;
-    private String prop4;
-    private String prop5;
+    private String prop1; // url
+    private String prop2; // access-key
+    private String prop3; // secret-key
+    private String prop4; // project-name/key/id
+    private String prop5; //
 
     @Column(name = "_state")
     @Enumerated(EnumType.STRING)
