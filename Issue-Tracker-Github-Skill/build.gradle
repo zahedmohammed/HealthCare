@@ -56,7 +56,7 @@ dependencies {
 
 task buildDockerLatest(type: Docker, dependsOn: build) {
     push = false
-    tag = 'fxlabs/issue-tracker-git-skill-bot'
+    tag = 'fxlabs/issue-tracker-github-skill-bot'
     tagVersion = "latest"
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
@@ -69,7 +69,7 @@ task buildDockerLatest(type: Docker, dependsOn: build) {
 
 task buildDocker(type: Docker, dependsOn: build) {
     push = false
-    tag = 'fxlabs/vc-git-skill'
+    tag = 'fxlabs/issue-tracker-github-skill-bot'
     tagVersion = getDate()
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
@@ -82,7 +82,7 @@ task buildDocker(type: Docker, dependsOn: build) {
 
 task buildDockerNightly(type: Docker, dependsOn: build) {
     push = false
-    tag = 'fxlabs/vc-git-skill'
+    tag = 'fxlabs/issue-tracker-github-skill-bot'
     tagVersion = getNightly()
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {

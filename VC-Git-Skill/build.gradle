@@ -68,7 +68,7 @@ task buildDockerLatest(type: Docker, dependsOn: build) {
 
 task buildDocker(type: Docker, dependsOn: build) {
     push = false
-    tag = 'fxlabs/vc-git-skill'
+    tag = 'fxlabs/vc-git-skill-bot'
     tagVersion = getDate()
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
@@ -81,7 +81,7 @@ task buildDocker(type: Docker, dependsOn: build) {
 
 task buildDockerNightly(type: Docker, dependsOn: build) {
     push = false
-    tag = 'fxlabs/vc-git-skill'
+    tag = 'fxlabs/vc-git-skill-bot'
     tagVersion = getNightly()
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
