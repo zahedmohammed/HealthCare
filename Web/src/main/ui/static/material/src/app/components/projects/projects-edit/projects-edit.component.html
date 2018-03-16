@@ -48,7 +48,7 @@
             <label class="col-md-2 control-label"></label>
             <div class="col-md-8">
               <mat-form-field>
-                <mat-select placeholder="Type" required [(ngModel)]="project.projectType" name="type" id="type">
+                <mat-select placeholder="Type" disabled required [(ngModel)]="project.projectType" name="type" id="type">
                   <mat-option *ngFor="let projectType of projectTypes" [value]="projectType">
                     {{projectType}}
                   </mat-option>

@@ -139,25 +139,26 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             OrgUsers orgUsers = null;
-            if (StringUtils.isEmpty(request.getOrgId())) {
-                Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(owner, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+            if (request.getOrg() == null || StringUtils.isEmpty(request.getOrg().getId())) {
+                /*Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(owner, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
                 if (CollectionUtils.isEmpty(set)) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
                 }
 
                 orgUsers = set.iterator().next();
-                request.setOrgId(orgUsers.getOrg().getId());
+                request.setOrgId(orgUsers.getOrg().getId());*/
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid org"));
 
             } else {
                 // check user had write access to Org
-                Optional<com.fxlabs.fxt.dao.entity.users.OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(request.getOrgId(), owner, OrgUserStatus.ACTIVE);
+                Optional<com.fxlabs.fxt.dao.entity.users.OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(request.getOrg().getId(), owner, OrgUserStatus.ACTIVE);
                 if (!orgUsersOptional.isPresent() || orgUsersOptional.get().getOrgRole() == OrgRole.READ) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [WRITE] or [ADMIN] access to the Org [%s]", request.getOrgId())));
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [WRITE] or [ADMIN] access to the Org [%s]", request.getOrg().getId())));
                 }
             }
 
             // check name is not duplicate
-            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndInactive(request.getName(), request.getOrgId(), false);
+            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndInactive(request.getName(), request.getOrg().getId(), false);
             if (projectOptional.isPresent()) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Project with name [%s] exists", request.getName())));
             }
@@ -170,7 +171,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             // create project, project-git-account
             Project project = new Project();
             NameDto nameDto = new NameDto();
-            Optional<com.fxlabs.fxt.dao.entity.users.Org> org = orgRepository.findById(request.getOrgId());
+            Optional<com.fxlabs.fxt.dao.entity.users.Org> org = orgRepository.findById(request.getOrg().getId());
 
             nameDto.setId(org.get().getId());
 
@@ -184,7 +185,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 project.setProjectType(request.getProjectType());
             }
 
-            project.setVisibility(ProjectVisibility.PRIVATE);
+            project.setVisibility(request.getVisibility());
 
             projectResponse = save(project, owner);
             if (projectResponse.isErrors()) {
@@ -237,6 +238,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         if (!accountOptional.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "No account found."));
         }
+        Project _project = findById(projectId, user).getData();
+
+
         ProjectRequest project = new ProjectRequest();
         project.setName(projectResponse.getData().getName());
         project.setProjectType(projectResponse.getData().getProjectType());
@@ -246,6 +250,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setBranch(accountOptional.get().getBranch());
         project.setUsername(accountOptional.get().getUsername());
         project.setPassword(PASSWORD_MASKED);
+        project.setOrg(projectResponse.getData().getOrg());
+        project.setVisibility(_project.getVisibility());
 
         return new Response<ProjectRequest>(project);
     }
@@ -277,6 +283,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         this.projectGitAccountRepository.saveAndFlush(account);
+
+        Project project = findById(request.getProjectId(), user).getData();
+        if (project.getVisibility() != request.getVisibility()) {
+            project.setVisibility(request.getVisibility());
+            save(project, user);
+        }
 
         // Create GaaS Task
         this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));

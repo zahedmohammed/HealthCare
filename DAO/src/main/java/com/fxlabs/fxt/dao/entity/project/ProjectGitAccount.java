@@ -29,5 +29,6 @@ public class ProjectGitAccount extends BaseEntity {
     private String username;
     private String password;
     private String lastCommit;
+
 }
 

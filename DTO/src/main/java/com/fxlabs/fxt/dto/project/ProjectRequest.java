@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class ProjectRequest extends BaseDto<String> {
 
     private String projectId;
-    private String orgId;
+    private NameDto org;
 
     private String url;
     private String branch;
@@ -29,6 +29,7 @@ public class ProjectRequest extends BaseDto<String> {
     private String name;
     private String description;
     private ProjectType projectType;
+    private ProjectVisibility visibility;
 
 
 }
