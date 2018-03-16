@@ -5,7 +5,7 @@ export class Project {
     public username: string;
     public password: string;
     public projectType: string;
-    public org: Dto;
+    public org: Dto = new Dto();
     public visibility: string;
 
 }
