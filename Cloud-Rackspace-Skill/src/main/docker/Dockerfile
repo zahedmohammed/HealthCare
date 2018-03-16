@@ -2,7 +2,7 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ADD Cloud-Rackspace-Skill.jar cloud-rackspace-skill.jar
+ADD Cloud-Rackspace-Skill-0.0.1-SNAPSHOT.jar cloud-rackspace-skill.jar
 
 RUN bash -c 'touch /cloud-rackspace-skill.jar'
 

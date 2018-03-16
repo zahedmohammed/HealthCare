@@ -2,7 +2,7 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ADD VC-Git-Skill.jar vc-git-skill.jar
+ADD VC-Git-Skill-0.0.1-SNAPSHOT.jar vc-git-skill.jar
 
 RUN bash -c 'touch /vc-git-skill.jar'
 

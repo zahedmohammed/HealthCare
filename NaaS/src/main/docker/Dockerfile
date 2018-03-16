@@ -2,7 +2,7 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ADD NaaS.jar mail-bot.jar
+ADD NaaS-0.0.1-SNAPSHOT.jar mail-bot.jar
 
 RUN bash -c 'touch /mail-bot.jar'
 

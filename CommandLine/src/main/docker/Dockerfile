@@ -2,7 +2,7 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ADD CommandLine.jar cli.jar
+ADD CommandLine-0.0.1-SNAPSHOT.jar cli.jar
 
 RUN bash -c 'touch /cli.jar'
 

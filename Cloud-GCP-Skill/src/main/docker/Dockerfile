@@ -2,7 +2,7 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ADD Cloud-GCP-Skill.jar cloud-gcp-skill.jar
+ADD Cloud-GCP-Skill-0.0.1-SNAPSHOT.jar cloud-gcp-skill.jar
 
 RUN bash -c 'touch /cloud-gcp-skill.jar'
 

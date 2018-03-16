@@ -2,7 +2,7 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ADD Cloud-Azure-Skill.jar cloud-azure-skill.jar
+ADD Cloud-Azure-Skill-0.0.1-SNAPSHOT.jar cloud-azure-skill.jar
 
 RUN bash -c 'touch /cloud-azure-skill.jar'
 

@@ -22,10 +22,11 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+version = '0.0.1-SNAPSHOT'
 
 jar {
     baseName = 'Cloud-Aws-Skill'
-    //version = '0.0.1-SNAPSHOT'
+    version = '0.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.8
 
@@ -56,7 +57,7 @@ task buildDockerLatest(type: Docker, dependsOn: build) {
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
-            from 'build/libs/Cloud-Aws-Skill.jar'
+            from 'build/libs/Cloud-Aws-Skill-0.0.1-SNAPSHOT.jar'
             into 'build/docker'
         }
     }
@@ -69,7 +70,7 @@ task buildDocker(type: Docker, dependsOn: build) {
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
-            from 'build/libs/Cloud-Aws-Skill.jar'
+            from 'build/libs/Cloud-Aws-Skill-0.0.1-SNAPSHOT.jar'
             into 'build/docker'
         }
     }
@@ -82,7 +83,7 @@ task buildDockerNightly(type: Docker, dependsOn: build) {
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
-            from 'build/libs/Cloud-Aws-Skill.jar'
+            from 'build/libs/Cloud-Aws-Skill-0.0.1-SNAPSHOT.jar'
             into 'build/docker'
         }
     }
