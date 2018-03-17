@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.TestSuiteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,12 +29,17 @@ public class TestSuiteController {
     }
 
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<TestSuite>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                              @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        //return service.findAll(SecurityUtil.getCurrentAuditor(), new PageRequest(0, 20));
-        return null;
+        return service.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
+    @RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
+    public Response<List<TestSuite>> findAll(@PathVariable("keyword") String keyword,
+                                             @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                             @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.search(keyword, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
 

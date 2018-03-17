@@ -5,7 +5,7 @@ package com.fxlabs.fxt.dto.project;
  */
 public enum TestSuiteType {
 
-    SUITE("Suite"), ABSTRACT("Abstract");
+    SUITE("Suite"), ABSTRACT("Abstract"), DATASET("Dataset"), CONSULTING_SERVICES("Consulting_Services"), AI_SKILLS("AI_Skills");
 
     private final String type;
 

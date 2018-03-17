@@ -55,7 +55,7 @@ public class VCDelegate {
                 CredUtils.password.set(task.getProjectGrant());
 
                 CredUtils.taskLogger.set(new BotLogger());
-                Project project = service.load(response.getPath());
+                Project project = service.load(response.getPath(), task.getProjectId());
 
                 response.setSuccess(!BooleanUtils.isTrue(CredUtils.errors.get()));
             }

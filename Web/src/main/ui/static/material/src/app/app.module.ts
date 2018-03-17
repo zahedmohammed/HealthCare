@@ -132,6 +132,7 @@ import { SkillsBotDeploymentComponent } from './components/skills/skills-bot-dep
 import { SkillsIssueTrackerComponent } from './components/skills/skills-issue-tracker/skills-issue-tracker.component';
 import { SkillsAnalyticsComponent } from './components/skills/skills-analytics/skills-analytics.component';
 import { DashboardService } from './services/dashboard.service';
+import { TestSuiteService } from './services/test-suite.service';
 
 @NgModule({
   imports: [
@@ -251,7 +252,7 @@ import { DashboardService } from './services/dashboard.service';
     SkillsAnalyticsComponent,
   ],
   bootstrap: [AppComponent],
-  providers: [DashboardService]
+  providers: [DashboardService, TestSuiteService]
 })
 
 export class AppModule {

@@ -69,7 +69,7 @@ public class FxCommandService {
             File file = new File(".");
             projectDir = file.getAbsolutePath();
         }
-        Project project = load(projectDir);
+        Project project = load(projectDir, null);
 
         String jobId = locateJobId(jobName, project);
 
@@ -97,7 +97,7 @@ public class FxCommandService {
      * @param projectDir
      * @return
      */
-    public Project load(String projectDir) {
+    public Project load(String projectDir, String projectId) {
         try {
             // read fx server details
 
@@ -119,7 +119,13 @@ public class FxCommandService {
 
             Date lastSync = null;
             List<ProjectFile> projectFiles = null;
-            Project project = getProjectByName(config);
+            Project project = null;
+
+            if (StringUtils.isEmpty(projectId)) {
+                project = getProjectByName(config);
+            } else {
+                project = getProjectById(projectId);
+            }
 
             if (project == null) {
 
@@ -207,6 +213,14 @@ public class FxCommandService {
     private Project getProjectByName(Config config) {
         Project project = projectRepository.findByName(config.getName());
         return project;
+    }
+
+    private Project getProjectById(String id) {
+        Response<Project> project = projectRepository.findById(id);
+        if (project.isErrors() && !CollectionUtils.isEmpty(project.getMessages())) {
+            logger.warn(project.getMessages().get(0).getValue());
+        }
+        return project.getData();
     }
 
     private Response<Project> createProject(Config config) {
@@ -498,8 +512,9 @@ public class FxCommandService {
             testSuite.getProps().put(Project.MD5_HEX, checksum);
             testSuite.getProps().put(Project.FILE_NAME, file.getName());
 
-
-            testSuite.setProjectId(projectId);
+            ProjectMinimalDto proj = new ProjectMinimalDto();
+            proj.setId(projectId);
+            testSuite.setProject(proj);
             try {
                 testSuiteRestRepository.save(testSuite);
             } catch (Exception e) {

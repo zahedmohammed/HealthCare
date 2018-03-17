@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dto.project;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
+import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +20,7 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = false)
 public class TestSuite extends BaseDto<String> {
 
-    private String projectId;
+    private ProjectMinimalDto project;
     private String name;
     private String description;
     private TestSuiteType type;
@@ -36,6 +37,8 @@ public class TestSuite extends BaseDto<String> {
     private List<String> cleanup;
 
     private Policies policies;
+
+    private Boolean publishToMarketplace = false;
 
     private Map<String, String> props = new HashMap<>();
 

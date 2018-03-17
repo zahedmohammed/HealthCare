@@ -42,6 +42,18 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
 
     }
 
+    public Response<Project> findById(String id) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<Void> request = new HttpEntity<>(getHeaders());
+
+        ResponseEntity<Response<Project>> response = restTemplate.exchange(getUrl() + "/" + id, HttpMethod.GET, request, paramTypeRefMap.get(Project.class));
+
+        //logger.info(response.getBody());
+        return response.getBody();
+
+    }
+
     public Response<List<ProjectFile>> findProjectChecksums(String projectId) {
         RestTemplate restTemplate = new RestTemplate();
 

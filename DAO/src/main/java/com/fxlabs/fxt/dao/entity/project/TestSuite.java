@@ -21,9 +21,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class TestSuite extends BaseEntity {
 
-    //@ManyToOne(cascade = CascadeType.REFRESH)
-    //@JoinColumn(name = "project_id")
-    private String projectId;
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     private String name;
 
@@ -67,6 +67,8 @@ public class TestSuite extends BaseEntity {
 
     @Embedded
     private Policies policies;
+
+    private Boolean publishToMarketplace = false;
 
     @PrePersist
     @PreUpdate

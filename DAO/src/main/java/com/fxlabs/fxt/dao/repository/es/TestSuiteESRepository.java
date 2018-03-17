@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.dao.repository.es;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;
@@ -18,6 +20,10 @@ public interface TestSuiteESRepository extends ElasticsearchRepository<TestSuite
     Long countByProjectIdAndType(String projectId, String type);
 
     Long countByProjectId(String projectId);
+
+    Page<TestSuite> findByPublishToMarketplace(Boolean isPublished, Pageable pageable);
+
+    Page<TestSuite> findByPublishToMarketplaceAndNameStartsWithIgnoreCase(Boolean isPublished, String name, Pageable pageable);
 
     Stream<TestSuite> findByProjectIdAndTypeAndTagsIn(String projectId, String type, List<String> tags);
 

@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.converters.project.TestSuiteConverter;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
@@ -10,6 +11,7 @@ import com.fxlabs.fxt.dto.project.TestSuiteType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,31 +31,41 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     private TestSuiteESRepository testSuiteESRepository;
     private ProjectFileService projectFileService;
     private ProjectService projectService;
+    private ProjectRepository projectRepository;
     private TestSuiteRepository repository;
 
     @Autowired
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository,
-                                ProjectFileService projectFileService, ProjectService projectService) {
+                                ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository) {
         super(repository, converter);
         this.repository = repository;
         this.testSuiteESRepository = testSuiteESRepository;
         this.projectFileService = projectFileService;
         this.projectService = projectService;
+        this.projectRepository = projectRepository;
+    }
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.project.TestSuite>> findAll(String user, Pageable pageable) {
+        Page<TestSuite> page = testSuiteESRepository.findByPublishToMarketplace(Boolean.TRUE, pageable);
+        return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+    }
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.project.TestSuite>> search(String keyword, String user, Pageable pageable) {
+        Page<TestSuite> page = testSuiteESRepository.findByPublishToMarketplaceAndNameStartsWithIgnoreCase(Boolean.TRUE, keyword, pageable);
+        return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
-        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProjectId(), testSuite.getName());
+
+        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
         TestSuite entity = null;
         if (testSuiteOptional.isPresent()) {
             entity = testSuiteOptional.get();
-        }
-
-        if (entity != null) {
-            // copy id and version
             testSuite.setId(entity.getId());
-            //testSuite.setVersion(entity.getVersion());
         }
 
         // type
@@ -62,11 +74,17 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
 
         TestSuite ts = converter.convertToEntity(testSuite);
+
+        if (!testSuiteOptional.isPresent()) {
+            Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(testSuite.getProject().getId());
+            ts.setProject(project.get());
+        }
+
         entity = ((TestSuiteRepository) repository).save(ts);
         testSuiteESRepository.save(entity);
 
         // project_file
-        this.projectFileService.saveFromTestSuite(testSuite, ts.getProjectId());
+        this.projectFileService.saveFromTestSuite(testSuite, ts.getProject().getId());
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 
@@ -103,6 +121,6 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         if (!optional.isPresent()) {
             throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
         }
-        projectService.isUserEntitled(optional.get().getProjectId(), user);
+        projectService.isUserEntitled(optional.get().getProject().getId(), user);
     }
 }

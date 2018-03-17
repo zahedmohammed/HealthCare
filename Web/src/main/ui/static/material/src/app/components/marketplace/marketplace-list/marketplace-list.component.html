@@ -1,34 +1,45 @@
 <section class="chapter page-terms">
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1 class="hero-title">Marketplace</h1>
-    </div>
-    <p class="text-muted">Discover - Expert exchange, Skills, Test-Suites, & Services.</p>
-  </section>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Marketplace</h1>
+        </div>
+        <p class="text-muted">Discover - Expert exchange, DataSets, AI Skills, & Professional Services.</p>
+    </section>
 
-  <article class="article padding-lg-v article-dark article-bordered">
-    <div class="container-fluid with-maxwidth chapter">
+    <article class="article padding-lg-v1 article-dark article-bordered">
+        <div class="container-fluid with-maxwidth chapter">
 
-      <div class="box box-default table-box mdl-shadow--2dp">
-        <!--<table class="mdl-data-table">
-          <thead>
-          <tr>
-            <th class="mdl-data-table__cell--non-numeric">Name</th>
-            <th class="mdl-data-table__cell--non-numeric">Location</th>
-            <th class="mdl-data-table__cell--non-numeric">Visibility</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let item of list">
-            <td class="mdl-data-table__cell--non-numeric">{{item.org.name}}/{{item.name}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{item.region}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
-          </tr>
-          </tbody>
-        </table>-->
-      </div>
+            <article class="article">
+                <div class="">
+                    <mat-input-container>
+                        <input #box (keyup.enter)="search(box.value)" name="search"
+                               matInput placeholder="search...">
+                    </mat-input-container>
+                </div>
+                <br/>
+                <div>
+                    <div class="row row-eq-height">
+                        <div class="col-xl-3 col-lg-6" *ngFor="let offer of offers">
+                            <section class="pricing-table">
+                                <header> <h2>{{offer.name}}</h2> </header>
+                                <div class="pricing-plan-details">
+                                    <p>{{offer.description}}</p>
+                                    <p class="pricing-lead"></p>
+                                    <ul>
+                                        <li>Org: {{offer.project.org.name}}</li>
+                                        <li>Type: {{offer.type}}</li>
+                                        <li>Usage: @{{offer.project.org.name}}/{{offer.project.name}}/{{offer.name}}</li>
+                                    </ul>
+                                </div>
+                                <footer><button mat-raised-button class="btn-w-lg">Subscribe</button></footer>
+                            </section>
+                        </div>
 
-    </div>
-  </article>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </article>
+
 </section>
