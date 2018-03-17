@@ -221,7 +221,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         String org = tokens[0];
         String key = tokens[1];
 
-        Optional<com.fxlabs.fxt.dao.entity.skills.SkillSubscription> optional = this.repository.findByOrgNameAndName(org, key);
+        Optional<com.fxlabs.fxt.dao.entity.skills.SkillSubscription> optional = this.repository.findByOrgNameAndNameAndInactive(org, key, false);
 
         if (!optional.isPresent()) {
             return new Response<>().withErrors(true);

@@ -91,6 +91,7 @@ public class TestCaseResponseProcessor {
                     String key =  getKeyForTestCaseResponse(tc);
 
                     if (StringUtils.isEmpty(key)) {
+                        logger.debug("No Issue Tracker Found for project [{}]...", tc.getProject());
                         return;
                     }
                     //Populate issue id
@@ -150,9 +151,9 @@ public class TestCaseResponseProcessor {
         }
 
         tc.setIssueTrackerHost(skillSubRespnse.getData().getProp1());
-        tc.setIssueTrackerProjectName(skillSubRespnse.getData().getProp4());
-        tc.setUsername(skillSubRespnse.getData().getProp2());
-        tc.setPassword(skillSubRespnse.getData().getProp3());
+        tc.setIssueTrackerProjectName(skillSubRespnse.getData().getProp2());
+        tc.setUsername(skillSubRespnse.getData().getProp3());
+        tc.setPassword(skillSubRespnse.getData().getProp4());
 
         Response<Skill> skillResponse = skillService.findById(skillSubRespnse.getData().getSkill().getId(), skillSubRespnse.getData().getSkill().getCreatedBy());
 
