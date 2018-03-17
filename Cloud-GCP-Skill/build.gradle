@@ -11,6 +11,7 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath('se.transmode.gradle:gradle-docker:1.2')
+
     }
 }
 
@@ -47,6 +48,26 @@ dependencies {
 
     compile project(":Cloud-Skill-Kit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    // https://mvnrepository.com/artifact/org.apache.jclouds/jclouds-core
+    testCompile group: 'org.apache.jclouds', name: 'jclouds-core', version: '2.1.0'
+
+    // https://mvnrepository.com/artifact/org.apache.jclouds/jclouds-compute
+    compile group: 'org.apache.jclouds', name: 'jclouds-compute', version: '2.1.0'
+
+    // https://mvnrepository.com/artifact/org.apache.jclouds.common/googlecloud
+    compile group: 'org.apache.jclouds.common', name: 'googlecloud', version: '2.1.0'
+
+    // https://mvnrepository.com/artifact/org.apache.jclouds.labs/google-compute-engine
+    compile group: 'org.apache.jclouds.labs', name: 'google-compute-engine', version: '1.9.3'
+
+    // https://mvnrepository.com/artifact/org.jclouds.driver/jclouds-log4j
+    compile group: 'org.jclouds.driver', name: 'jclouds-log4j', version: '1.6.0'
+
+    // https://mvnrepository.com/artifact/org.jclouds.driver/jclouds-sshj
+    compile group: 'org.jclouds.driver', name: 'jclouds-sshj', version: '1.6.0'
+
+
 }
 
 task buildDockerLatest(type: Docker, dependsOn: build) {
