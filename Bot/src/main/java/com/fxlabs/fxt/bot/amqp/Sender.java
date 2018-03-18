@@ -63,6 +63,7 @@ public class Sender {
     }
 
     public MarketplaceDataTask processMarketplaceRequest(MarketplaceDataTask task) {
-        return this.template.convertSendAndReceiveAsType(exchange, routingKey, task, typeReference);
+        Object obj = this.template.convertSendAndReceive(exchange, routingKey, task);
+        return (MarketplaceDataTask) obj;
     }
 }
