@@ -24,6 +24,7 @@ export class RunDetailComponent implements OnInit {
   failed = 0;
   size = 0;
   time = 0;
+  success = 0;
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
@@ -71,6 +72,8 @@ export class RunDetailComponent implements OnInit {
         this.size += this.suites[i].size;
         this.time += this.suites[i].time;
     }
+    this.success = ( (this.total - this.failed) * 100 ) / this.total;
+    this.success = Math.floor(this.success);
   }
 
   getRunById() {
