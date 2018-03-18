@@ -37,6 +37,8 @@ public class GenericRestRespository<T> {
         });
         paramTypeRefMap.put(Run.class, new ParameterizedTypeReference<Response<Run>>() {
         });
+        paramTypeRefMap.put(Boolean.class, new ParameterizedTypeReference<Response<Boolean>>() {
+        });
 
         paramTypeRefMap.put(Project[].class, new ParameterizedTypeReference<Response<List<Project>>>() {
         });

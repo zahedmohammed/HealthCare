@@ -1,7 +1,9 @@
 package com.fxlabs.fxt.services.amqp.reciever;
 
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.ClusterPing;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
+import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.dto.run.BotTask;
@@ -40,6 +42,9 @@ public class Receiver {
     @Autowired
     private TestCaseResponseProcessor testCaseResponseProcessor;
 
+    @Autowired
+    private MarketPlaceProcessor marketPlaceProcessor;
+
     public void receiveMessage(BotTask task) {
         logger.info("Received BotTask [{}]", task.getId());
         processor.process(task);
@@ -68,6 +73,11 @@ public class Receiver {
     public void receiveMessage(ITTaskResponse issueTrackerTaskResponse) {
         logger.info("Received TestCaseResponse count [{}]", issueTrackerTaskResponse.getProjectName());
         issueTrackerTaskResponseProcessor.process(issueTrackerTaskResponse);
+    }
+
+    public MarketplaceDataTask receiveMessage(MarketplaceDataTask task) {
+        logger.info("Received MarketplaceDataTask task [{}]", task.getProjectId());
+        return marketPlaceProcessor.process(task);
     }
 
 

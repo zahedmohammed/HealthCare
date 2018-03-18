@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.bot.processor;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.bot.amqp.Sender;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
@@ -22,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -137,7 +135,7 @@ public class RestProcessor {
             if (task.getPolicies() != null) {
                 logType = task.getPolicies().getLogger();
             }
-            Context parentContext = new Context(task.getSuiteName(), logs, logType);
+            Context parentContext = new Context(task.getProjectId(), task.getSuiteName(), logs, logType);
 
 
             // execute init
@@ -266,16 +264,8 @@ public class RestProcessor {
 
                 // return processed task
                 //sender.sendTask(newTask);
-                String requestedFormatted = getFromattedJsonString(req);
-                if (StringUtils.isEmpty(requestedFormatted)){
-                    requestedFormatted = req;
-                }
-
-                String responseFormatted = getFromattedJsonString(response.getBody());
-
-                if (StringUtils.isEmpty(responseFormatted)){
-                    responseFormatted = response.getBody();
-                }
+                String formatedRequest = JsonFormatUtil.format(req);
+                String formattedResponse = JsonFormatUtil.format(response.getBody());
 
                 // Test-Cases Responses
                 if (generateTestCases) {
@@ -288,8 +278,8 @@ public class RestProcessor {
                     tc.setSuite(task.getSuiteName());
                     tc.setTestCase(String.valueOf(testCase.getId()));
                     tc.setEndpointEval(url);
-                    tc.setRequestEval(requestedFormatted);
-                    tc.setResponse(responseFormatted);
+                    tc.setRequestEval(formatedRequest);
+                    tc.setResponse(formattedResponse);
                     tc.setStatusCode(String.valueOf(response.getStatusCodeValue()));
                     tc.setResult(context.getResult());
                     tc.setTime(time);
@@ -354,27 +344,5 @@ public class RestProcessor {
 
         return completeTask;
     }
-
-
-    private String getFromattedJsonString(String value) {
-
-        if (StringUtils.isEmpty(value)) {
-            return null;
-        }
-        ObjectMapper mapper = new ObjectMapper();
-
-        String result = null;
-
-        try {
-            Object jsonObject = mapper.readValue(value, Object.class);
-            result = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
-           // result = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
-        } catch (IOException e) {
-            return null;
-        }
-        return result;
-    }
-
-
 
 }

@@ -3,6 +3,7 @@ package com.fxlabs.fxt.rest.project;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
+import com.fxlabs.fxt.dto.project.ProjectImports;
 import com.fxlabs.fxt.dto.project.ProjectRequest;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.ProjectFileService;
@@ -63,6 +64,12 @@ public class ProjectController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Response<Project> add(@RequestBody ProjectRequest request) {
         return projectService.add(request, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}/project-imports", method = RequestMethod.POST)
+    public Response<Boolean> saveImports(@RequestBody ProjectImports request) {
+        return projectService.saveProjectImports(request, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)

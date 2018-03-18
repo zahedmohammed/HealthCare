@@ -1,10 +1,11 @@
-package com.fxlabs.fxt.bot.validators;
+package com.fxlabs.fxt.bot.processor;
 
+import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.Context;
+import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -17,9 +18,15 @@ import java.util.UUID;
  * @author Intesar Shannan Mohammed
  */
 @Component
-public class OperandEvaluator {
+public class DataEvaluator {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private MarketplaceDataProvider marketplaceDataProvider;
+
+    public DataEvaluator(MarketplaceDataProvider marketplaceDataProvider) {
+        this.marketplaceDataProvider = marketplaceDataProvider;
+    }
 
     public String evaluate(String key, Context context, String suite) {
         String val = "";
@@ -159,6 +166,17 @@ public class OperandEvaluator {
                         if (initData != null) {
                             val = initData.toString();
                         }
+                    } else if (StringUtils.startsWith(KEY, "@")) {
+                        // Handle Marketplace request
+                        MarketplaceDataTask response = this.marketplaceDataProvider.get(context.getProjectId(), KEY);
+                        if (StringUtils.isNotEmpty(response.getErrors())) {
+                            context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response.getErrors());
+                        } else if (StringUtils.isNotEmpty(PATH)) {
+                            val = JsonPath.read(response.getEval(), PATH);
+                        } else {
+                            val = response.getEval();
+                        }
+
                     } else {
                         val = key;
                     }

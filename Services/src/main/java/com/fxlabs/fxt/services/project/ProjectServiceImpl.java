@@ -2,15 +2,16 @@ package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.ProjectConverter;
 import com.fxlabs.fxt.dao.entity.users.*;
+import com.fxlabs.fxt.dao.repository.es.ProjectImportsESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectImports;
 import com.fxlabs.fxt.dto.project.ProjectRequest;
 import com.fxlabs.fxt.dto.project.ProjectType;
-import com.fxlabs.fxt.dto.project.ProjectVisibility;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
@@ -25,7 +26,6 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -43,6 +43,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private UsersRepository usersRepository;
     private ProjectUsersRepository projectUsersRepository;
     private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
+    private ProjectImportsRepository projectImportsRepository;
+    private ProjectImportsESRepository projectImportsESRepository;
 
     private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
@@ -50,7 +52,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               ProjectGitAccountRepository projectGitAccountRepository, OrgUsersRepository orgUsersRepository,
                               /*TextEncryptor encryptor,*/ OrgRepository orgRepository, UsersRepository usersRepository,
-                              ProjectUsersRepository projectUsersRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor) {
+                              ProjectUsersRepository projectUsersRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
+                              ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository) {
         super(repository, converter);
         this.projectRepository = repository;
         this.projectFileService = projectFileService;
@@ -61,6 +64,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.usersRepository = usersRepository;
         this.projectUsersRepository = projectUsersRepository;
         this.gaaSTaskRequestProcessor = gaaSTaskRequestProcessor;
+        this.projectImportsRepository = projectImportsRepository;
+        this.projectImportsESRepository = projectImportsESRepository;
     }
 
     public Response<Project> findByName(String name, String owner) {
@@ -294,6 +299,35 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
 
         return new Response<ProjectRequest>();
+    }
+
+    @Override
+    public Response<Boolean> saveProjectImports(ProjectImports projectImports, String user) {
+
+        try {
+            Response<Project> projectResponse = findById(projectImports.getProjectId(), user);
+            if (projectResponse.isErrors()) {
+                return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
+            }
+
+            com.fxlabs.fxt.dao.entity.project.ProjectImports imports = null;
+            Optional<com.fxlabs.fxt.dao.entity.project.ProjectImports> optional = this.projectImportsRepository.findByProjectId(projectImports.getProjectId());
+            if (optional.isPresent()) {
+                imports = optional.get();
+            } else {
+                imports = new com.fxlabs.fxt.dao.entity.project.ProjectImports();
+            }
+            imports.setProjectId(projectImports.getProjectId());
+            imports.setImports(projectImports.getImports());
+            imports = projectImportsRepository.save(imports);
+            projectImportsESRepository.save(imports);
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", ex.getLocalizedMessage()));
+        }
+
+        return new Response<>(true);
+
     }
 
     public void isUserEntitled(String id, String user) {

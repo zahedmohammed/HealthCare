@@ -16,13 +16,10 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectFile extends BaseDto<String> {
+public class ProjectImports extends BaseDto<String> {
 
     private String projectId;
-    private String filename;
-    private String content;
-    private String checksum;
-    private Date modified;
+    private Map<String, String> imports;
 
 
 }

@@ -3,7 +3,6 @@ package com.fxlabs.fxt.bot.processor;
 
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.assertions.Context;
-import com.fxlabs.fxt.bot.validators.OperandEvaluator;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -29,13 +28,13 @@ public class InitProcessor {
 
     private AssertionValidator assertionValidator;
     private RestTemplateUtil restTemplateUtil;
-    private OperandEvaluator operandEvaluator;
+    private DataEvaluator operandEvaluator;
     private DataResolver dataResolver;
     private HeaderUtils headerUtils;
 
     @Autowired
     public InitProcessor(AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
-                         OperandEvaluator operandEvaluator, DataResolver dataResolver, HeaderUtils headerUtils) {
+                         DataEvaluator operandEvaluator, DataResolver dataResolver, HeaderUtils headerUtils) {
         this.assertionValidator = assertionValidator;
         this.restTemplateUtil = restTemplateUtil;
         this.operandEvaluator = operandEvaluator;

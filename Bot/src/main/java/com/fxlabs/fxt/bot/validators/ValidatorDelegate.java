@@ -2,6 +2,7 @@ package com.fxlabs.fxt.bot.validators;
 
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.Context;
+import com.fxlabs.fxt.bot.processor.DataEvaluator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +72,7 @@ public class ValidatorDelegate {
 
 
     @Autowired
-    protected OperandEvaluator evaluator;
+    protected DataEvaluator evaluator;
 
     public void validate(String assertion, Context context, StringBuilder assertionLogs) {
         //logger.info("Validating assertion [{}]", assertion);

@@ -1,29 +1,26 @@
 package com.fxlabs.fxt.dto.project;
 
-import com.fxlabs.fxt.dto.base.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.Map;
+import java.io.Serializable;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ProjectFile extends BaseDto<String> {
+public class MarketplaceDataTask implements Serializable {
+    private static final long serialVersionUID = 1L;
 
+    private String importName;
     private String projectId;
-    private String filename;
-    private String content;
-    private String checksum;
-    private Date modified;
-
+    private String eval;
+    private String errors;
 
 }
-

@@ -27,6 +27,7 @@ public class BotTask implements Serializable {
     private String id;
     private String projectDataSetId;
     private String project;
+    private String projectId;
     private String job;
     private String jobId;
     private String env;

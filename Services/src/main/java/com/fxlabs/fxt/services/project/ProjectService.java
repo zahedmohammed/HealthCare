@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectImports;
 import com.fxlabs.fxt.dto.project.ProjectRequest;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
@@ -30,5 +31,7 @@ public interface ProjectService extends GenericService<Project, String> {
     Response<Project> save(Project dto, String user);
 
     Response<Project> delete(String id, String user);
+
+    Response<Boolean> saveProjectImports(ProjectImports projectImports, String user);
 
 }

@@ -3,6 +3,7 @@ package com.fxlabs.fxt.sdk.rest;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
+import com.fxlabs.fxt.dto.project.ProjectImports;
 import com.fxlabs.fxt.sdk.services.CredUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -62,6 +63,17 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
         ResponseEntity<Response<List<ProjectFile>>> response = restTemplate.exchange(getUrl() + "/" + projectId + "/project-checksums", HttpMethod.GET, request, paramTypeRefMap.get(ProjectFile[].class));
 
         //logger.info(response.getBody());
+        return response.getBody();
+
+    }
+
+    public Response<Boolean> saveImports(ProjectImports projectImports, String projectId) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<ProjectImports> request = new HttpEntity<>(projectImports, getHeaders());
+
+        ResponseEntity<Response<Boolean>> response = restTemplate.exchange(getUrl() + "/" + projectId + "/project-imports", HttpMethod.POST, request, paramTypeRefMap.get(Boolean.class));
+
         return response.getBody();
 
     }

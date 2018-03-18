@@ -50,4 +50,6 @@ export class MarketplaceListComponent implements OnInit {
 
   }
 
+  types = ['ALL', 'Dataset', 'Consulting_Services', 'AI_Skills'];
+
 }

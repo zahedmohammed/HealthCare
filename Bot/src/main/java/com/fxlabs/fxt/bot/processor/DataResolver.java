@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.bot.processor;
 
 import com.fxlabs.fxt.bot.assertions.Context;
-import com.fxlabs.fxt.bot.validators.OperandEvaluator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +20,10 @@ public class DataResolver {
 
     final static String PATTERN = "\\{\\{(.*?)\\}\\}";
     final Logger logger = LoggerFactory.getLogger(getClass());
-    private OperandEvaluator evaluator;
+    private DataEvaluator evaluator;
 
     @Autowired
-    public DataResolver(OperandEvaluator evaluator) {
+    public DataResolver(DataEvaluator evaluator) {
         this.evaluator = evaluator;
     }
 

@@ -4,6 +4,7 @@ import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,9 +36,15 @@ public class Application {
         container.setMaxConcurrentConsumers(maxConcurrentConsumers);
         container.setDefaultRequeueRejected(false);
         container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        //container.setMessageConverter(new Jackson2JsonMessageConverter());
         container.setMessageListener(listenerAdapter);
         return container;
     }
+
+    /*@Bean
+    public org.springframework.amqp.support.converter.MessageConverter jsonConverter() {
+        return new Jackson2JsonMessageConverter();
+    }*/
 
     @Bean
     MessageListenerAdapter listenerAdapter(Receiver receiver) {

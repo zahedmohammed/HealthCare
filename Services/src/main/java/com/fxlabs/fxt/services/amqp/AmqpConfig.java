@@ -7,6 +7,7 @@ import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,11 @@ public class AmqpConfig {
     public TopicExchange exchange(@Value("${fx.exchange}") String exchange) {
         return new TopicExchange(exchange);
     }
+
+    /*@Bean
+    public org.springframework.amqp.support.converter.MessageConverter jsonConverter() {
+        return new Jackson2JsonMessageConverter();
+    }*/
 
     // Bot-Default-Queue
     @Bean(name = "botDefaultQueue")
@@ -70,6 +76,34 @@ public class AmqpConfig {
         return container;
     }
 
+    // Marketplace-Queue
+    @Bean(name = "botMarketplaceQueue")
+    public Queue botMarketplaceQueue(@Value("${fx.marketplace.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding botMarketplaceQueueBinding(@Value("${fx.marketplace.queue.routingkey}") String routingKey, @Qualifier("botMarketplaceQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+    @Bean
+    SimpleMessageListenerContainer marketplaceContainer(ConnectionFactory connectionFactory,
+                                                        MessageListenerAdapter listenerAdapter,
+                                                        @Value("${fx.marketplace.queue}") String queueName) {
+
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(queueName);
+        container.setConcurrentConsumers(10);
+        container.setMaxConcurrentConsumers(10);
+        container.setDefaultRequeueRejected(false);
+        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        container.setMessageListener(listenerAdapter);
+        return container;
+    }
 
     // GaaS-Queue
     @Bean(name = "gaaSQueue")
@@ -219,8 +253,8 @@ public class AmqpConfig {
 
     @Bean
     SimpleMessageListenerContainer iTaaSContainer(ConnectionFactory connectionFactory,
-                                                 MessageListenerAdapter listenerAdapter,
-                                                 @Value("${fx.itaas.response.queue}") String queueName) {
+                                                  MessageListenerAdapter listenerAdapter,
+                                                  @Value("${fx.itaas.response.queue}") String queueName) {
 
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
@@ -232,6 +266,7 @@ public class AmqpConfig {
         container.setMessageListener(listenerAdapter);
         return container;
     }
+
     // -- IT Github
     @Bean(name = "iTaaSGithubQueue")
     public Queue iTaaSGitHubQueue(@Value("${fx.itaas.github.queue}") String queue) {
@@ -275,8 +310,8 @@ public class AmqpConfig {
 
     @Bean
     SimpleMessageListenerContainer caaSContainer(ConnectionFactory connectionFactory,
-                                                  MessageListenerAdapter listenerAdapter,
-                                                  @Value("${fx.caas.response.queue}") String queueName) {
+                                                 MessageListenerAdapter listenerAdapter,
+                                                 @Value("${fx.caas.response.queue}") String queueName) {
 
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);

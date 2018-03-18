@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -26,6 +27,8 @@ public class Config implements Serializable {
     private String name;
 
     private String description;
+
+    private Map<String, String> imports;
 
     private List<String> licenses;
 

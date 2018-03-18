@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.bot.assertions;
 
+import com.fxlabs.fxt.bot.processor.JsonFormatUtil;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ public class Context implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String suitename;
+    private String projectId;
     private AssertionLogger.LogType logType = AssertionLogger.LogType.DEBUG;
     // init & cleanup
     private Map<String, String> data = new HashMap<>();
@@ -53,7 +55,8 @@ public class Context implements Serializable {
         this.logs = parent.logs;
     }
 
-    public Context(String suitename, AssertionLogger logs, String logType) {
+    public Context(String projectId, String suitename, AssertionLogger logs, String logType) {
+        this.projectId = projectId;
         this.suitename = suitename;
         this.logs = logs;
         if (StringUtils.equalsIgnoreCase(logType, AssertionLogger.LogType.ERROR.toString())) {
@@ -62,10 +65,16 @@ public class Context implements Serializable {
     }
 
     public Context withSuiteData(String url, String method, String request, HttpHeaders requestHeaders, String response, String statusCode, HttpHeaders headers, Long time, Integer size) {
+
+        request = JsonFormatUtil.format(request);
+        response = JsonFormatUtil.format(response);
+
         this.url = url;
         this.method = method;
+
         this.request = request;
         this.requestHeaders = requestHeaders;
+
         this.response = response;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -103,6 +112,10 @@ public class Context implements Serializable {
     }
 
     public Context withSuiteDataForPostProcessor(String url, String method, String request, HttpHeaders requestHeaders, String response, String statusCode, HttpHeaders headers, Long time, Integer size) {
+
+        request = JsonFormatUtil.format(request);
+        response = JsonFormatUtil.format(response);
+
         this.url = url;
         this.method = method;
         this.request = request;
@@ -133,6 +146,7 @@ public class Context implements Serializable {
     }
 
     public Context withRequest(String name, String request) {
+        request = JsonFormatUtil.format(request);
         this.data.put(name, request);
         // log
         this.log(name, String.format("Request [%s]", request));
@@ -144,6 +158,7 @@ public class Context implements Serializable {
     }
 
     public Context withResponse(String name, String response) {
+        response = JsonFormatUtil.format(response);
         this.data.put(name, response);
         // log
         this.log(name, String.format("Response [%s]", response));
@@ -272,6 +287,14 @@ public class Context implements Serializable {
             return this.parent.suitename;
         } else {
             return suitename;
+        }
+    }
+
+    public String getProjectId() {
+        if (parent != null) {
+            return this.parent.projectId;
+        } else {
+            return projectId;
         }
     }
 }

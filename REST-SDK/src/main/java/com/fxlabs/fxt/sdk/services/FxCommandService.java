@@ -2,6 +2,7 @@ package com.fxlabs.fxt.sdk.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
@@ -268,9 +269,36 @@ public class FxCommandService {
         Response<Project> projectResponse = projectRepository.update(project);
 
         //System.out.println(project);
-        mergeAndSaveEnvs(config, project.getId());
+        if (!CollectionUtils.isEmpty(config.getEnvironments())) {
+            Response<List<Environment>> envResponses = mergeAndSaveEnvs(config, project.getId());
 
-        mergeAndSaveJobs(config, project.getId());
+            if (envResponses.isErrors()) {
+                for (Message m : envResponses.getMessages()) {
+                    logger.warn(m.getValue());
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, fxfile.getName(), m.getValue());
+                }
+            }
+        }
+
+        if (!CollectionUtils.isEmpty(config.getJobs())) {
+            Response<List<Job>> jobResponses = mergeAndSaveJobs(config, project.getId());
+
+            if (jobResponses.isErrors()) {
+                for (Message m : jobResponses.getMessages()) {
+                    logger.warn(m.getValue());
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, fxfile.getName(), m.getValue());
+                }
+            }
+        }
+
+        Response<Boolean> importResponses = mergeAndSaveImports(config, project.getId());
+
+        if (importResponses.isErrors()) {
+            for (Message m : importResponses.getMessages()) {
+                logger.warn(m.getValue());
+                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, fxfile.getName(), m.getValue());
+            }
+        }
 
 
         logger.info("project updated with id [{}]...", project.getId());
@@ -377,6 +405,13 @@ public class FxCommandService {
         Response<List<Job>> listResponse = jobRestRepository.saveAll(oldJobs);
         CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "jobs", "updated...");
         return listResponse;
+    }
+
+    private Response<Boolean> mergeAndSaveImports(Config config, String projectId) {
+        ProjectImports projectImports = new ProjectImports();
+        projectImports.setProjectId(projectId);
+        projectImports.setImports(config.getImports());
+        return projectRepository.saveImports(projectImports, projectId);
     }
 
     private List<Environment> extractEnvironments(Config config, String projectId) {
@@ -487,7 +522,7 @@ public class FxCommandService {
                 if (isChecksumPresent(projectFiles, file, checksum)) return;
 
                 testSuite = yamlMapper.readValue(file, TestSuite.class);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 logger.warn(e.getLocalizedMessage());
                 System.out.println(AnsiOutput.toString(AnsiColor.RED,
                         String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()),
