@@ -113,7 +113,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 
         StringBuffer summary = new StringBuffer();
         summary.append(task.getSuite());
-        String projectKey = "LFP"; // get from task
+        String projectKey = task.getIssueTrackerProjectName(); //"lFP";//
 
         StringBuffer desc = new StringBuffer();
         desc.append("Request: \n" + task.getRequestEval());
@@ -124,6 +124,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 //				.setAssigneeName("admin")
                 .setPriorityId(5L)
 //				.setReporterName("admin")
+//                .setFieldInput(new FieldInput(IssueFieldId.STATUS_FIELD, "To Do"))
                 .setDescription(desc.toString())
                 .build();
         Promise<BasicIssue> basicIssue = issueClient.createIssue(newIssue);
@@ -141,7 +142,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
         desc.append("Request: \n" + task.getRequest());
         desc.append("\n");
         desc.append("Response: \n" + task.getResponse());
-        String projectKey = "LFP";  //get from task
+        String projectKey = task.getIssueTrackerProjectName();  //"lFP";//
         IssueInput issueInput = new IssueInputBuilder(projectKey, 10004L)
 //				.setAssigneeName("admin")
                 .setPriorityId(5L)
@@ -149,6 +150,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 //				.setReporterName("admin")
                 .setDescription(desc.toString())
                 .build();
+//        Ierator itr = issueInput.getFields().keySet().iterator()
         issueClient.updateIssue(issueKey, issueInput).claim();
 
         System.out.println("Issue updated.......... " + issueKey);
