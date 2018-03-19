@@ -7,28 +7,41 @@
     <p class="text-muted">Manage Org, Users, & Access-Controls</p>
   </section>
 
-  <article class="article padding-lg-v article-dark article-bordered">
+  <article class="article padding-lg-v1 article-dark article-bordered">
     <div class="container-fluid with-maxwidth chapter">
 
-      <div class="box box-default table-box mdl-shadow--2dp">
-        <!--<table class="mdl-data-table">
-          <thead>
-          <tr>
-            <th class="mdl-data-table__cell--non-numeric">Name</th>
-            <th class="mdl-data-table__cell--non-numeric">Location</th>
-            <th class="mdl-data-table__cell--non-numeric">Visibility</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let item of list">
-            <td class="mdl-data-table__cell--non-numeric">{{item.org.name}}/{{item.name}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{item.region}}</td>
-            <td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
-          </tr>
-          </tbody>
-        </table>-->
-      </div>
+      <article class="article">
+        <h2 class="article-title">
+          <button mat-raised-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/orgs/new']">New Org</button><div class="divider divider-sm"></div>
+        </h2>
+        <br/>
 
+        <div class="box box-default table-box mdl-shadow--2dp">
+          <table class="mdl-data-table">
+            <thead>
+            <tr>
+              <th class="mdl-data-table__cell--non-numeric">Name</th>
+              <th class="mdl-data-table__cell--non-numeric">Company</th>
+              <th class="mdl-data-table__cell--non-numeric">Type</th>
+              <th class="mdl-data-table__cell--non-numeric">Contact</th>
+              <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
+              <th class="mdl-data-table__cell--non-numeric"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let org of orgs">
+              <td class="mdl-data-table__cell--non-numeric bold">{{org.name}}</td>
+              <td class="mdl-data-table__cell--non-numeric">{{org.company}}</td>
+              <td class="mdl-data-table__cell--non-numeric">{{org.orgType}}</td>
+              <td class="mdl-data-table__cell--non-numeric">{{org.billingEmail}}</td>
+              <td class="mdl-data-table__cell--non-numeric">{{org.createdDate | date:'shortDate'}}</td>
+              <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/orgs', org.id]">Edit</a></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
     </div>
   </article>
+
 </section>

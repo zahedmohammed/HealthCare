@@ -52,7 +52,7 @@ export class IssuesNewComponent implements OnInit {
   }
 
   getOrgs() {
-    this.orgService.get().subscribe(results => {
+    this.orgService.getByUser().subscribe(results => {
       this.showSpinner = false;
       if (results['errors']) {
         // TODO - handle errors

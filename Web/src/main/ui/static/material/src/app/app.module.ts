@@ -133,6 +133,13 @@ import { SkillsIssueTrackerComponent } from './components/skills/skills-issue-tr
 import { SkillsAnalyticsComponent } from './components/skills/skills-analytics/skills-analytics.component';
 import { DashboardService } from './services/dashboard.service';
 import { TestSuiteService } from './services/test-suite.service';
+import { UsersService } from './services/users.service';
+
+import { UserListComponent } from './components/users/user-list/user-list.component';
+import { UserNewComponent } from './components/users/user-new/user-new.component';
+import { UserEditComponent } from './components/users/user-edit/user-edit.component';
+import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
+import { OrgUsersComponent } from './components/org/org-users/org-users.component';
 
 @NgModule({
   imports: [
@@ -250,9 +257,14 @@ import { TestSuiteService } from './services/test-suite.service';
     SkillsBotDeploymentComponent,
     SkillsIssueTrackerComponent,
     SkillsAnalyticsComponent,
+    UserListComponent,
+    UserNewComponent,
+    UserEditComponent,
+    UserProfileComponent,
+    OrgUsersComponent,
   ],
   bootstrap: [AppComponent],
-  providers: [DashboardService, TestSuiteService]
+  providers: [DashboardService, TestSuiteService, UsersService]
 })
 
 export class AppModule {

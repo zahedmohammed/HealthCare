@@ -7,7 +7,6 @@ import com.fxlabs.fxt.dao.entity.users.OrgUsers;
 import com.fxlabs.fxt.dao.repository.es.OrgUsersESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.users.Org;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -44,6 +42,9 @@ public class OrgUsersServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.e
         Page<OrgUsers> page = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN, pageable);
         return new Response<>(orgUsersConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
+
+
+
     @Override
     public void isUserEntitled(String s, String user) {
         // TODO
