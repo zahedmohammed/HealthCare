@@ -66,38 +66,13 @@ public class AwsCloudService implements CloudService {
      */
     @Override
     public CloudTaskResponse create(final CloudTask task) {
-        logger.info("In IT AwsCloud Service for task [{}]" , task.getType().toString());
+        logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
 
         try {
 
-
-            return response;
-
-        } catch (RuntimeException ex) {
-            logger.warn(ex.getLocalizedMessage(), ex);
-            response.setLogs(taskLogger.get().toString());
-        } catch (Exception ex) {
-            logger.warn(ex.getLocalizedMessage(), ex);
-            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
-        }
-
-        return response;
-
-    }
-
-
-    @Override
-    public CloudTaskResponse destroy(final CloudTask task) {
-        logger.info("In IT AwsCloud Service for task [{}]" , task.getType().toString());
-
-        CloudTaskResponse response = new CloudTaskResponse();
-
-        try {
-
-
-            if(CollectionUtils.isEmpty(task.getOpts())){
+            if (CollectionUtils.isEmpty(task.getOpts())) {
                 // TODO Add appro msgs and send response
                 return response;
             }
@@ -123,12 +98,34 @@ public class AwsCloudService implements CloudService {
             templateBuilder.hardwareId(T2_MICRO);
 
 
-
             taskLogger.get().append("AwsCloudService: image id " + image);
 
             templateBuilder.osFamily(OsFamily.UBUNTU).osVersionMatches("16.04").imageDescriptionMatches("ubuntu-images");
             Template template = templateBuilder.build();
             awsService.createNodesInGroup("fxlabs", 1, template);
+
+            return response;
+
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            response.setLogs(taskLogger.get().toString());
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        }
+
+        return response;
+
+    }
+
+
+    @Override
+    public CloudTaskResponse destroy(final CloudTask task) {
+        logger.info("In IT AwsCloud Service for task [{}]" , task.getType().toString());
+
+        CloudTaskResponse response = new CloudTaskResponse();
+
+        try {
 
             return response;
 
