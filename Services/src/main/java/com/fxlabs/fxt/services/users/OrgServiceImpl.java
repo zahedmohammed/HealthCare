@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dao.repository.jpa.OrgRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.users.Member;
 import com.fxlabs.fxt.dto.users.OrgType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
@@ -56,6 +57,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
     }
 
+    @Override
     public Response<List<com.fxlabs.fxt.dto.users.OrgUsers>> findByAccess(String user, Pageable pageable) {
         Page<OrgUsers> page = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN, pageable);
         return new Response<>(orgUsersConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
@@ -65,7 +67,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     public Response<List<com.fxlabs.fxt.dto.users.Org>> findAll(String user, Pageable pageable) {
         Set<OrgUsers> orgUsers = orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
         List<Org> orgs = new ArrayList<>();
-        orgUsers.parallelStream().forEach(ou -> {
+        orgUsers.forEach(ou -> {
             orgs.add(ou.getOrg());
         });
         return new Response<>(converter.convertToDtos(orgs));
@@ -114,6 +116,48 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         Response<com.fxlabs.fxt.dto.users.Org> response = super.save(dto, user);
 
         return response;
+    }
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.users.OrgUsers>> findOrgUsers(String org, String user, Pageable pageable) {
+        // Check user is has admin access to org.
+        Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndOrgRole(org, user, OrgRole.ADMIN);
+        if (!orgUsersOptional.isPresent()) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, org));
+        }
+
+        Page<OrgUsers> page = this.orgUsersRepository.findByOrgId(org, pageable);
+        return new Response<>(orgUsersConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+    }
+
+    @Override
+    public Response<Boolean> addMember(Member dto, String user) {
+        // Check user is has admin access to org.
+        Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndOrgRole(dto.getOrgId(), user, OrgRole.ADMIN);
+        if (!orgUsersOptional.isPresent()) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, dto.getOrgId()));
+        }
+
+        // check email
+        Optional<Users> usersOptional = this.usersRepository.findByEmail(dto.getEmail());
+        if (!usersOptional.isPresent()) {
+            throw new FxException(String.format("Email [%s] not found.", user, dto.getEmail()));
+        }
+
+        Optional<OrgUsers> orgUsersOptional1 = orgUsersRepository.findByOrgIdAndUsersId(dto.getOrgId(), usersOptional.get().getId());
+        if (!orgUsersOptional1.isPresent()) {
+            throw new FxException(String.format("User [%s] already a member of the org [%s].", dto.getEmail(), dto.getOrgId()));
+        }
+
+        OrgUsers orgUsers = new OrgUsers();
+        orgUsers.setOrg(orgUsersOptional.get().getOrg());
+        orgUsers.setUsers(usersOptional.get());
+        orgUsers.setOrgRole(OrgRole.valueOf(dto.getOrgRole().name()));
+        orgUsers.setStatus(OrgUserStatus.ACTIVE);
+
+        orgUsers = orgUsersRepository.save(orgUsers);
+
+        return new Response<>(true);
     }
 
     @Override

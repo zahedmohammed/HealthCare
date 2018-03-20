@@ -127,12 +127,12 @@ const routes: Routes = [
 
       { path: 'orgs', component: OrgListComponent },
       { path: 'orgs/new', component: OrgNewComponent },
-      { path: 'orgs/users', component: OrgUsersComponent },
+      //{ path: 'orgs/users', component: OrgUsersComponent },
       { path: 'orgs/:id', component: OrgEditComponent },
 
-      { path: 'users', component: UserListComponent },
-      { path: 'users/new', component: UserNewComponent },
-      { path: 'users/:id', component: UserEditComponent },
+      { path: 'orgs/:id/users', component: UserListComponent },
+      { path: 'orgs/:orgId/users/new', component: UserNewComponent },
+      { path: 'orgs/:orgId/users/:id', component: UserEditComponent },
 
       { path: 'skills/version-control', component: SkillsVersionControlComponent },
 

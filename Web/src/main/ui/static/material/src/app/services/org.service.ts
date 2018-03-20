@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
-import { Org } from '../models/org.model';
+import { Org, OrgUser, Member } from '../models/org.model';
 
 
 @Injectable()
@@ -39,5 +39,24 @@ export class OrgService {
     return this.http.delete(this.serviceUrl + "/" + org['id']);
   }
 
+  getOrgUsersById(id: string) {
+    return this.http.get(this.serviceUrl + "/" + id + "/users");
+  }
+
+  getOrgUsers(id: string) {
+    return this.http.get(this.serviceUrl + "/org-user/" + id);
+  }
+
+  createOrgUser(orgUser: OrgUser) {
+    return this.http.post(this.serviceUrl + "/org-user", orgUser);
+  }
+
+  updateOrgUser(orgUser: OrgUser) {
+    return this.http.put(this.serviceUrl + "/org-user/" + orgUser['id'], orgUser);
+  }
+
+  addMember(member: Member) {
+    return this.http.post(this.serviceUrl + "/add-member", member);
+  }
 
 }

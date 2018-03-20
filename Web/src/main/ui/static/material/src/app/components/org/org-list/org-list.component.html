@@ -35,7 +35,10 @@
               <td class="mdl-data-table__cell--non-numeric">{{org.orgType}}</td>
               <td class="mdl-data-table__cell--non-numeric">{{org.billingEmail}}</td>
               <td class="mdl-data-table__cell--non-numeric">{{org.createdDate | date:'shortDate'}}</td>
-              <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/orgs', org.id]">Edit</a></td>
+              <td class="mdl-data-table__cell--non-numeric">
+                <a href="javascript:;" [routerLink]="['/app/orgs', org.id, 'users']">Users</a> &nbsp;
+                <a href="javascript:;" [routerLink]="['/app/orgs', org.id]">Edit</a>
+              </td>
             </tr>
             </tbody>
           </table>
