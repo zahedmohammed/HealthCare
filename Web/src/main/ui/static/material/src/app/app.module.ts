@@ -144,6 +144,8 @@ import { CloudAccountListComponent } from './components/manage/cloud-account-lis
 import { CloudAccountEditComponent } from './components/manage/cloud-account-edit/cloud-account-edit.component';
 import { CloudAccountNewComponent } from './components/manage/cloud-account-new/cloud-account-new.component';
 import { CloudAccountService } from './services/cloud-account.service';
+import { RegionNewComponent } from './components/regions/region-new/region-new.component';
+import { RegionEditComponent } from './components/regions/region-edit/region-edit.component';
 
 @NgModule({
   imports: [
@@ -269,6 +271,8 @@ import { CloudAccountService } from './services/cloud-account.service';
     CloudAccountListComponent,
     CloudAccountEditComponent,
     CloudAccountNewComponent,
+    RegionNewComponent,
+    RegionEditComponent,
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService]

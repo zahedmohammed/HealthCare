@@ -14,6 +14,9 @@ import { ProjectsNewComponent } from '../components/projects/projects-new/projec
 import { ProjectsEditComponent } from '../components/projects/projects-edit/projects-edit.component';
 
 import { RegionsListComponent } from '../components/regions-list/regions-list.component';
+import { RegionEditComponent } from '../components/regions/region-edit/region-edit.component';
+import { RegionNewComponent } from '../components/regions/region-new/region-new.component';
+
 import { MessageListComponent } from '../components/message-list/message-list.component';
 import { MessageDetailComponent } from '../components/message-detail/message-detail.component';
 
@@ -92,6 +95,8 @@ const routes: Routes = [
       { path: 'message/:id', component: MessageDetailComponent },
 
       { path: 'regions', component: RegionsListComponent },
+      { path: 'regions/new', component: RegionNewComponent },
+      { path: 'regions/:id', component: RegionEditComponent },
 
       { path: 'issues', component: IssuesListComponent },
       { path: 'issues/new', component: IssuesNewComponent },
