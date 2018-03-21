@@ -59,6 +59,10 @@ import { UserListComponent } from '../components/users/user-list/user-list.compo
 import { UserNewComponent } from '../components/users/user-new/user-new.component';
 import { UserEditComponent } from '../components/users/user-edit/user-edit.component';
 
+import { CloudAccountListComponent } from '../components/manage/cloud-account-list/cloud-account-list.component';
+import { CloudAccountNewComponent } from '../components/manage/cloud-account-new/cloud-account-new.component';
+import { CloudAccountEditComponent } from '../components/manage/cloud-account-edit/cloud-account-edit.component';
+
 import { SkillsListComponent } from '../components/skills/skills-list/skills-list.component';
 import { SkillsNewComponent } from '../components/skills/skills-new/skills-new.component';
 import { SkillsEditComponent } from '../components/skills/skills-edit/skills-edit.component';
@@ -133,6 +137,10 @@ const routes: Routes = [
       { path: 'orgs/:id/users', component: UserListComponent },
       { path: 'orgs/:orgId/users/new', component: UserNewComponent },
       { path: 'orgs/:orgId/users/:id', component: UserEditComponent },
+
+      { path: 'cloud-accounts', component: CloudAccountListComponent },
+      { path: 'cloud-accounts/new', component: CloudAccountNewComponent },
+      { path: 'cloud-accounts/:id', component: CloudAccountEditComponent },
 
       { path: 'skills/version-control', component: SkillsVersionControlComponent },
 

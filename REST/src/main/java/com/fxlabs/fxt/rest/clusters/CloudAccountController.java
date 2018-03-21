@@ -57,7 +57,7 @@ public class CloudAccountController {
     }
 
     @Secured(ROLE_ENTERPRISE_ADMIN)
-    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<CloudAccount> update(@Valid @RequestBody CloudAccount dto) {
         return cloudAccountService.update(dto, SecurityUtil.getCurrentAuditor());
     }

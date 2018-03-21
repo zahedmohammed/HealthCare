@@ -2,6 +2,8 @@ package com.fxlabs.fxt.dao.repository.jpa;
 
 import com.fxlabs.fxt.dao.entity.clusters.CloudAccount;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -17,7 +19,7 @@ public interface CloudAccountRepository extends JpaRepository<CloudAccount, Stri
 
     Optional<CloudAccount> findByNameAndOrgName(String name, String orgName);
 
-    List<CloudAccount> findByVisibility(ClusterVisibility visibility);
+    Page<CloudAccount> findByCreatedBy(String owner, Pageable pageable);
 
     Long countByVisibility(ClusterVisibility visibility);
 

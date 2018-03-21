@@ -140,6 +140,10 @@ import { UserNewComponent } from './components/users/user-new/user-new.component
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
 import { OrgUsersComponent } from './components/org/org-users/org-users.component';
+import { CloudAccountListComponent } from './components/manage/cloud-account-list/cloud-account-list.component';
+import { CloudAccountEditComponent } from './components/manage/cloud-account-edit/cloud-account-edit.component';
+import { CloudAccountNewComponent } from './components/manage/cloud-account-new/cloud-account-new.component';
+import { CloudAccountService } from './services/cloud-account.service';
 
 @NgModule({
   imports: [
@@ -262,9 +266,12 @@ import { OrgUsersComponent } from './components/org/org-users/org-users.componen
     UserEditComponent,
     UserProfileComponent,
     OrgUsersComponent,
+    CloudAccountListComponent,
+    CloudAccountEditComponent,
+    CloudAccountNewComponent,
   ],
   bootstrap: [AppComponent],
-  providers: [DashboardService, TestSuiteService, UsersService]
+  providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService]
 })
 
 export class AppModule {

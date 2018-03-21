@@ -18,6 +18,7 @@ import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,8 +63,8 @@ public class CloudAccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     @Override
     public Response<List<CloudAccount>> findAll(String user, Pageable pageable) {
         // Find all public
-        List<com.fxlabs.fxt.dao.entity.clusters.CloudAccount> cloudAccounts = this.cloudAccountRepository.findByVisibility(ClusterVisibility.PUBLIC);
-        return new Response<>(converter.convertToDtos(cloudAccounts));
+        Page<com.fxlabs.fxt.dao.entity.clusters.CloudAccount> page = this.cloudAccountRepository.findByCreatedBy(user, pageable);
+        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
