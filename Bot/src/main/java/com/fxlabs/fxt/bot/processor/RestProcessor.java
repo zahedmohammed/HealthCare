@@ -355,7 +355,7 @@ public class RestProcessor {
             String result = value.replaceAll( ",", "\n");
             return result;
         }catch (Exception e){
-            e.getLocalizedMessage();
+            logger.warn(e.getLocalizedMessage());
         }
 
         return value;
