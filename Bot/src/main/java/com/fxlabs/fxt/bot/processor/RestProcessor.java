@@ -266,6 +266,7 @@ public class RestProcessor {
                 //sender.sendTask(newTask);
                 String formatedRequest = JsonFormatUtil.format(req);
                 String formattedResponse = JsonFormatUtil.format(response.getBody());
+                String formattedLogs = getFromattedLogs(assertionLogs.toString());
 
                 // Test-Cases Responses
                 if (generateTestCases) {
@@ -285,7 +286,7 @@ public class RestProcessor {
                     tc.setTime(time);
                     tc.setSize(size);
                     tc.setHeaders(response.getHeaders().toString());
-                    tc.setLogs(assertionLogs.toString());
+                    tc.setLogs(formattedLogs);
                     // TODO - Assertions
                     testCaseResponses.add(tc);
                 }
@@ -343,6 +344,21 @@ public class RestProcessor {
         }
 
         return completeTask;
+    }
+
+    private String getFromattedLogs(String value) {
+
+        if (StringUtils.isEmpty(value)) {
+            return value;
+        }
+        try {
+            String result = value.replaceAll( ",", "\n");
+            return result;
+        }catch (Exception e){
+            e.getLocalizedMessage();
+        }
+
+        return value;
     }
 
 }
