@@ -14,7 +14,7 @@
             <article class="article">
                 <h2 class="article-title">
                     <!--[routerLink]="['/app/regions/new']" -->
-                    <button mat-raised-button color="primary" class="btn-w-md pull-right">Launch Bots
+                    <button mat-raised-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/regions/new']">Launch Bots
                     </button>
                     <div class="divider divider-sm"></div>
                 </h2>
@@ -27,6 +27,7 @@
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Location</th>
                             <th class="mdl-data-table__cell--non-numeric">Visibility</th>
+                            <th class="mdl-data-table__cell--non-numeric">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -34,6 +35,7 @@
                             <td class="mdl-data-table__cell--non-numeric">{{item.org.name}}/{{item.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{item.region}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
+                            <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/regions', item.id]">Edit</a></td>
                         </tr>
                         </tbody>
                     </table>
