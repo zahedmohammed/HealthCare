@@ -6,6 +6,7 @@ import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import org.jclouds.ContextBuilder;
+import org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions;
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.domain.NodeMetadata;
@@ -13,6 +14,7 @@ import org.jclouds.compute.domain.Template;
 import org.jclouds.compute.domain.TemplateBuilder;
 import org.jclouds.compute.options.TemplateOptions;
 import org.jclouds.domain.LoginCredentials;
+import org.jclouds.ec2.domain.InstanceType;
 import org.jclouds.enterprise.config.EnterpriseConfigurationModule;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.sshj.config.SshjSshClientModule;
@@ -40,9 +42,14 @@ import static org.jclouds.compute.config.ComputeServiceProperties.TIMEOUT_SCRIPT
 @Component
 public class AwsCloudService implements CloudService {
 
-    final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String AWS_PKEY = "";
+    final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2_MICRO;
+    private static final String AWS_PKEY = "fxkey";
+    private static final String FXLABS_AWS_DEFAULT_IMAGE = "us-west-1/ami-09d2fb69";
+    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP = "fx-sg";
+    private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
+    private static final String AWS_PRIVATE_KEY_PEM = "";
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
     /**
@@ -105,12 +112,20 @@ public class AwsCloudService implements CloudService {
 
             TemplateOptions options = template.getOptions();
 
-            String username = getAwsImageUsername(opts);
-            String password = getPassword(opts);
+            String awsPrivateKeyName = getAwsPrivateKey(opts);
+            taskLogger.get().append("Settig Keypair " + awsPrivateKeyName);
+            options.as(AWSEC2TemplateOptions.class).keyPair(awsPrivateKeyName);
 
-            if(StringUtils.isEmpty(password)){
-                password = AWS_PKEY;
-            }
+
+            String securityGroup = getSecurityGroup(opts);
+            taskLogger.get().append("Settig Security Group " + securityGroup);
+            options.as(AWSEC2TemplateOptions.class).securityGroupIds(securityGroup);
+
+
+            String username = getAwsImageUsername(opts);
+            String password = getImagePassword(opts);
+
+
             if (!skipBotInstallation(opts)) {
                 taskLogger.get().append("Installing Bot.....");
                 LoginCredentials login = null;
@@ -147,20 +162,21 @@ public class AwsCloudService implements CloudService {
     }
 
     private String getInstanceType(CloudTask task) {
-        String hardware = task.getOpts().get("IMAGE");
+        String hardware = task.getOpts().get("");
         if (StringUtils.isEmpty(hardware)) {
-            hardware = "us-west-1/ami-09d2fb69";
+            hardware = FXLABS_AWS_DEFAULT_INSTANCE_TYPE;
         }
         return hardware;
     }
 
     private String getImage(CloudTask task) {
         //image
-        String image = task.getOpts().get("IMAGE");
-        if(StringUtils.isEmpty(image)){
-            image = "us-west-1/ami-09d2fb69";
+        String value = task.getOpts().get("IMAGE");
+        if(org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)){
+            value = FXLABS_AWS_DEFAULT_IMAGE;
         }
-        return image;
+        return value;
     }
 
 
@@ -229,6 +245,11 @@ public class AwsCloudService implements CloudService {
         return client;
     }
 
+    /**
+     *
+     * @param map
+     * @return botinstall flag
+     */
     private Boolean skipBotInstallation(Map<String, String> map) {
 
         String value = map.get("skip_bot_install");
@@ -241,26 +262,24 @@ public class AwsCloudService implements CloudService {
         return false;
     }
 
+    /**
+     *
+     * @param opts
+     * @return imageusername
+     */
     private String getAwsImageUsername(Map<String, String> opts) {
-        String value = opts.get("image_username");
+        String value = opts.get("IMAGE_USERNAME");
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")) {
             return "";
         }
         return value;
     }
 
-    private String getPassword(Map<String, String> opts){
-        String password = opts.get("vm_password");
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(password, "null")) {
-            return "";
-        }
-        if(StringUtils.isEmpty(password)){
-            return password;
-        }
-
-        return password;
-    }
-
+    /**
+     *
+     * @param opts
+     * @return bot installation
+     */
     private String getBotInstallationScript(Map<String, String> opts) {
         String value = opts.get("SCRIPT");
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")) {
@@ -268,5 +287,66 @@ public class AwsCloudService implements CloudService {
         }
         return value;
     }
+
+    /**
+     *
+     * @param opts
+     * @return keypair
+     */
+    private String getAwsPrivateKey(Map<String, String> opts){
+        String value = opts.get("KEY_PAIR");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+            return AWS_PKEY;
+        }
+        return value;
+    }
+
+    /**
+     *
+     * @param opts
+     * @return imagepassword
+     */
+    private String getImagePassword(Map<String, String> opts){
+
+        String value = opts.get("IMAGE_PASSWORD");
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+            return AWS_PRIVATE_KEY_PEM;
+        }
+        return value;
+    }
+
+    /**
+     *
+     * @param opts
+     * @return security group
+     */
+    private String getSecurityGroup(Map<String, String> opts){
+        String value = opts.get("SECURITY_GROUP");
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+            return FXLABS_AWS_DEFAULT_SECURITY_GROUP;
+        }
+        return value;
+    }
+
+    /**
+     *
+     * @param opts
+     * @return NETWORK
+     */
+    private String getNetwork(Map<String, String> opts){
+        String value = opts.get("NETWORK");
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+            return FXLABS_AWS_DEFAULT_VPC;
+        }
+        return value;
+    }
+
 
 }
