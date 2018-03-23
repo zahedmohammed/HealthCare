@@ -8,14 +8,11 @@ import com.google.inject.Module;
 import org.jclouds.ContextBuilder;
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.ComputeServiceContext;
-import org.jclouds.compute.RunNodesException;
 import org.jclouds.compute.domain.NodeMetadata;
-import org.jclouds.compute.domain.OsFamily;
 import org.jclouds.compute.domain.Template;
 import org.jclouds.compute.domain.TemplateBuilder;
 import org.jclouds.compute.options.TemplateOptions;
 import org.jclouds.domain.LoginCredentials;
-import org.jclouds.ec2.domain.InstanceType;
 import org.jclouds.enterprise.config.EnterpriseConfigurationModule;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.sshj.config.SshjSshClientModule;
@@ -25,14 +22,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.jclouds.compute.config.ComputeServiceProperties.TIMEOUT_SCRIPT_COMPLETE;
-import static org.jclouds.ec2.domain.InstanceType.T2_MICRO;
 
 
 /**
@@ -77,10 +72,12 @@ public class AwsCloudService implements CloudService {
 
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
+        ComputeService awsService = null;
         try {
 
+            taskLogger.set(new StringBuilder());
+
             if (CollectionUtils.isEmpty(task.getOpts())) {
-                // TODO Add appro msgs and send response
                 return response;
             }
 
@@ -90,30 +87,18 @@ public class AwsCloudService implements CloudService {
             String accessKeyId = opts.get("ACCESS_KEY_ID");
             String secretKey = opts.get("SECRET_KEY");
 
-
-            String image = task.getOpts().get("IMAGE");
-            String subscription = task.getOpts().get("SUBSCRIPTION");
-
-            String hardware = task.getOpts().get("HARDWARE");
-            String locationId = task.getOpts().get("LOCATION");
-
-
-            ComputeService awsService = getAwsService(accessKeyId, secretKey);
+            awsService = getAwsService(accessKeyId, secretKey);
 
             TemplateBuilder templateBuilder = awsService.templateBuilder();
 
             //Instance type/size
-            if(StringUtils.isEmpty(hardware)){
-                hardware = InstanceType.T2_MICRO.toString();
-            }
+            String hardware = getInstanceType(task);
             taskLogger.get().append("setting hardware id " + hardware);
             templateBuilder.hardwareId(hardware);
 
-            //image
-            if(StringUtils.isEmpty(image)){
-                image = "us-west-1/ami-09d2fb69";
-            }
+            String image = getImage(task);
             taskLogger.get().append("Setting image id : " + image);
+
             templateBuilder.imageId(image);
 
             Template template = templateBuilder.build();
@@ -151,10 +136,31 @@ public class AwsCloudService implements CloudService {
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } finally {
+            if (awsService != null) {
+                awsService.getContext().close();
+            }
         }
 
         return response;
 
+    }
+
+    private String getInstanceType(CloudTask task) {
+        String hardware = task.getOpts().get("IMAGE");
+        if (StringUtils.isEmpty(hardware)) {
+            hardware = "us-west-1/ami-09d2fb69";
+        }
+        return hardware;
+    }
+
+    private String getImage(CloudTask task) {
+        //image
+        String image = task.getOpts().get("IMAGE");
+        if(StringUtils.isEmpty(image)){
+            image = "us-west-1/ami-09d2fb69";
+        }
+        return image;
     }
 
 
@@ -163,9 +169,25 @@ public class AwsCloudService implements CloudService {
         logger.info("In IT AwsCloud Service for task [{}]" , task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
+        response.setSuccess(false);
+
+        ComputeService awsService = null;
 
         try {
+            taskLogger.set(new StringBuilder());
+            if (CollectionUtils.isEmpty(task.getOpts())) {
+                return response;
+            }
 
+            Map<String, String> opts = task.getOpts();
+            String nodeId = opts.get("node_id");
+
+            String accessKeyId = opts.get("ACCESS_KEY_ID");
+            String secretKey = opts.get("SECRET_KEY");
+            logger.info("Deleting bot [{}]..." , nodeId);
+            taskLogger.get().append("Deleting VM " + nodeId);
+            awsService = getAwsService(accessKeyId, secretKey);
+            response.setSuccess(true);
             return response;
 
         } catch (RuntimeException ex) {
@@ -174,6 +196,10 @@ public class AwsCloudService implements CloudService {
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } finally {
+            if (awsService != null){
+                awsService.getContext().close();
+            }
         }
 
         return response;
