@@ -331,9 +331,7 @@ public class FxCommandService {
                         for (Auth a : old.getAuths()) {
                             if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(credential.getName(), a.getName())) {
                                 // update
-                                a.setAuthType(credential.getAuthType());
-                                a.setUsername(credential.getUsername());
-                                a.setPassword(credential.getPassword());
+                                copyAuth(credential, a);
                                 authFound = true;
                                 break;
                             }
@@ -342,9 +340,7 @@ public class FxCommandService {
                             // new auth
                             Auth cred = new Auth();
                             cred.setName(credential.getName());
-                            cred.setAuthType(credential.getAuthType());
-                            cred.setUsername(credential.getUsername());
-                            cred.setPassword(credential.getPassword());
+                            copyAuth(credential, cred);
                             old.getAuths().add(cred);
                         }
 
@@ -366,6 +362,40 @@ public class FxCommandService {
         System.out.println("Env updated...");
         CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "environments", "updated...");
         return response;
+    }
+
+    private void copyAuth(Auth credential, Auth cred) {
+        cred.setAuthType(credential.getAuthType());
+        cred.setUsername(credential.getUsername());
+        cred.setPassword(credential.getPassword());
+
+        if (credential.getAuthType() != null) {
+            cred.setAuthType(AuthType.valueOf(credential.getAuthType().name()));
+        }
+
+        cred.setUsername(credential.getUsername());
+        cred.setPassword(credential.getPassword());
+        // OAuth 2.0
+        /*if (!StringUtils.isEmpty(credential.getClientId())) {
+            cred.setUsername(credential.getClientId());
+        }
+        if (!StringUtils.isEmpty(credential.getClientSecret())) {
+            cred.setPassword(credential.getClientSecret());
+        }*/
+        cred.setId(credential.getId());
+        cred.setAccessTokenUri(credential.getAccessTokenUri());
+        if (credential.getAuthorizationScheme() != null) {
+            cred.setAuthorizationScheme(AuthenticationScheme.valueOf(credential.getAuthorizationScheme().name()));
+        }
+        if (credential.getClientAuthenticationScheme() != null) {
+            cred.setClientAuthenticationScheme(AuthenticationScheme.valueOf(credential.getClientAuthenticationScheme().name()));
+        }
+        cred.setTokenName(credential.getTokenName());
+        cred.setScope(credential.getScope());
+        cred.setGrantType(credential.getGrantType());
+        cred.setPreEstablishedRedirectUri(credential.getPreEstablishedRedirectUri());
+        cred.setUseCurrentUri(credential.getUseCurrentUri());
+        cred.setUserAuthorizationUri(credential.getUserAuthorizationUri());
     }
 
     private Response<List<Job>> mergeAndSaveJobs(Config config, String projectId) {
@@ -433,9 +463,34 @@ public class FxCommandService {
             for (com.fxlabs.fxt.sdk.beans.Auth credential : environment.getAuths()) {
                 Auth cred = new Auth();
                 cred.setName(credential.getName());
-                cred.setAuthType(credential.getAuthType());
+
+                if (credential.getAuthType() != null) {
+                    cred.setAuthType(AuthType.valueOf(credential.getAuthType().name()));
+                }
+
                 cred.setUsername(credential.getUsername());
                 cred.setPassword(credential.getPassword());
+                // OAuth 2.0
+                if (!StringUtils.isEmpty(credential.getClientId())) {
+                    cred.setUsername(credential.getClientId());
+                }
+                if (!StringUtils.isEmpty(credential.getClientSecret())) {
+                    cred.setPassword(credential.getClientSecret());
+                }
+                cred.setId(credential.getId());
+                cred.setAccessTokenUri(credential.getAccessTokenUri());
+                if (credential.getAuthorizationScheme() != null) {
+                    cred.setAuthorizationScheme(AuthenticationScheme.valueOf(credential.getAuthorizationScheme().name()));
+                }
+                if (credential.getClientAuthenticationScheme() != null) {
+                    cred.setClientAuthenticationScheme(AuthenticationScheme.valueOf(credential.getClientAuthenticationScheme().name()));
+                }
+                cred.setTokenName(credential.getTokenName());
+                cred.setScope(credential.getScope());
+                cred.setGrantType(GrantType.valueOf(credential.getGrantType().name()));
+                cred.setPreEstablishedRedirectUri(credential.getPreEstablishedRedirectUri());
+                cred.setUseCurrentUri(credential.getUseCurrentUri());
+                cred.setUserAuthorizationUri(credential.getUserAuthorizationUri());
 
                 list.add(cred);
             }

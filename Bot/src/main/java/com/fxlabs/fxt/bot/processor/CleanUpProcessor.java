@@ -98,18 +98,14 @@ public class CleanUpProcessor {
 
         headerUtils.copyHeaders(httpHeaders, task.getHeaders(), context, task.getSuiteName());
 
-        if (StringUtils.equalsIgnoreCase(task.getAuthType(), "basic")) {
-            httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
-        }
-
-        logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuthType(), url);
+        logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuth(), url);
 
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getTestCases())) {
             logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
+            ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null, task.getAuth());
             stopWatch.stop();
             Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
 
@@ -117,7 +113,7 @@ public class CleanUpProcessor {
             if (StringUtils.isNotEmpty(response.getBody())) {
                 size = response.getBody().getBytes().length;
             }
-            logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuthType(), url, response.getStatusCode());
+            logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuth(), url, response.getStatusCode());
             context.withSuiteDataForPostProcessor(url, method.name(), null, httpHeaders, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
 
             assertionValidator.validate(task.getAssertions(), context, new StringBuilder());
@@ -134,7 +130,7 @@ public class CleanUpProcessor {
                 logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
-                ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
+                ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req, task.getAuth());
                 stopWatch.stop();
                 Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
 

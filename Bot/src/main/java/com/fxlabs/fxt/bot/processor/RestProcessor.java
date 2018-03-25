@@ -163,12 +163,7 @@ public class RestProcessor {
 
             headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
 
-            // TODO - handle other auth types
-            if (StringUtils.equalsIgnoreCase(task.getAuthType(), "basic")) {
-                httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
-            }
-
-            logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuthType());
+            logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
 
             task.getTestCases().parallelStream().forEach(testCase -> {
                 //for (String req : task.getRequest()) {
@@ -202,7 +197,7 @@ public class RestProcessor {
 
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
-                ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
+                ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req, task.getAuth());
                 stopWatch.stop();
                 Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
                 totalTime.getAndAdd(time);

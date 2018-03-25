@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.converters.project.AuthConverter;
 import com.fxlabs.fxt.converters.project.PoliciesConverter;
 import com.fxlabs.fxt.dao.entity.project.Auth;
 import com.fxlabs.fxt.dao.entity.project.Environment;
@@ -52,11 +53,12 @@ public class RunTaskRequestProcessor {
     private EnvironmentRepository environmentRepository;
     private ClusterService clusterService;
     private DataResolver dataResolver;
+    private AuthConverter authConverter;
 
     public RunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter,
                                    TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository,
-                                   ClusterService clusterService, DataResolver dataResolver) {
+                                   ClusterService clusterService, DataResolver dataResolver, AuthConverter authConverter) {
         this.botClientService = botClientService;
         this.testSuiteRepository = testSuiteRepository;
         this.runRepository = runRepository;
@@ -65,6 +67,7 @@ public class RunTaskRequestProcessor {
         this.environmentRepository = environmentRepository;
         this.clusterService = clusterService;
         this.dataResolver = dataResolver;
+        this.authConverter = authConverter;
     }
 
     public void process() {
@@ -242,9 +245,12 @@ public class RunTaskRequestProcessor {
     }
 
     private void copyCred(BotTask task, Auth cred) {
-        task.setAuthType(cred.getAuthType());
-        task.setUsername(dataResolver.resolve(cred.getUsername()));
-        task.setPassword(dataResolver.resolve(cred.getPassword()));
+
+        task.setAuth(authConverter.convertToDto(cred));
+
+        //task.setAuthType(cred.getAuthType());
+        task.getAuth().setUsername(dataResolver.resolve(cred.getUsername()));
+        task.getAuth().setPassword(dataResolver.resolve(cred.getPassword()));
     }
 
     private String getBaseUrl(String url) {

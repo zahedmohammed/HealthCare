@@ -62,18 +62,14 @@ public class InitProcessor {
 
         headerUtils.copyHeaders(httpHeaders, task.getHeaders(), context, task.getSuiteName());
 
-        if (StringUtils.equalsIgnoreCase(task.getAuthType(), "basic")) {
-            httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(task.getUsername(), task.getPassword()));
-        }
-
-        logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuthType());
+        logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
 
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getTestCases())) {
             logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null);
+            ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null, task.getAuth());
             stopWatch.stop();
             Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
 
@@ -109,7 +105,7 @@ public class InitProcessor {
                 logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
-                ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req);
+                ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req, task.getAuth());
                 stopWatch.stop();
                 Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
 

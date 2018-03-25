@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.dto.run;
 
+import com.fxlabs.fxt.dto.project.Auth;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.project.Policies;
 import com.fxlabs.fxt.dto.project.TestCase;
@@ -37,9 +38,10 @@ public class BotTask implements Serializable {
     private String endpoint;
     private HttpMethod method;
 
-    private String authType;
-    private String username;
-    private String password;
+    private Auth auth;
+    //private String authType;
+    //private String username;
+    //private String password;
 
     private List<String> headers;
     private List<TestCase> testCases;
