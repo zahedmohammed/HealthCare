@@ -23,11 +23,13 @@ export class RegionNewComponent implements OnInit {
 
   showSpinner: boolean = false;
   cloudAccounts;
+  orgs;
   entry: Region = new Region();
   constructor(private regionsService: RegionsService, private cloudAccountService: CloudAccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.getCloudAccounts();
+    this.getOrgs();
   }
 
   create() {
@@ -71,6 +73,20 @@ export class RegionNewComponent implements OnInit {
       this.cloudAccounts = results['data'];
     }, error => {
       console.log("Unable to fetch Cloud Accounts");
+    });
+  }
+
+  getOrgs() {
+    this.orgService.getByUser().subscribe(results => {
+      this.showSpinner = false;
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      console.log(results);
+      this.orgs = results['data'];
+    }, error => {
+      console.log("Unable to fetch orgs");
     });
   }
   visibilities = ['PRIVATE', 'PUBLIC'];
