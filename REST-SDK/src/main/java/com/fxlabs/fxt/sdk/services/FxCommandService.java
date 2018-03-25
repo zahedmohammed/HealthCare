@@ -487,7 +487,9 @@ public class FxCommandService {
                 }
                 cred.setTokenName(credential.getTokenName());
                 cred.setScope(credential.getScope());
-                cred.setGrantType(GrantType.valueOf(credential.getGrantType().name()));
+                if (credential.getGrantType() != null) {
+                    cred.setGrantType(GrantType.valueOf(credential.getGrantType().name()));
+                }
                 cred.setPreEstablishedRedirectUri(credential.getPreEstablishedRedirectUri());
                 cred.setUseCurrentUri(credential.getUseCurrentUri());
                 cred.setUserAuthorizationUri(credential.getUserAuthorizationUri());

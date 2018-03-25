@@ -12,6 +12,7 @@ import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
 import com.fxlabs.fxt.dto.skills.Opt;
+import com.fxlabs.fxt.services.util.DataResolver;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,14 +35,16 @@ public class MarketplaceDataProvider {
     private ProjectImportsRepository projectImportsRepository;
     private TestSuiteESRepository testSuiteESRepository;
     private ProjectRepository projectRepository;
+    private DataResolver dataResolver;
 
     @Autowired
     public MarketplaceDataProvider(ProjectImportsRepository projectImportsRepository, TestSuiteESRepository testSuiteESRepository,
-                                   ProjectRepository projectRepository) {
+                                   ProjectRepository projectRepository, DataResolver dataResolver) {
 
         this.projectImportsRepository = projectImportsRepository;
         this.testSuiteESRepository = testSuiteESRepository;
         this.projectRepository = projectRepository;
+        this.dataResolver = dataResolver;
     }
 
     /**
@@ -57,6 +60,12 @@ public class MarketplaceDataProvider {
         try {
             String name = task.getImportName();
             String projectId = task.getProjectId();
+
+            if (org.apache.commons.lang3.StringUtils.containsIgnoreCase(name, "@Vault")) {
+                String response = handleVault(task);
+                task.setEval(response);
+                return task;
+            }
 
             // TODO project or org should be authorized and subscribe to the data-provider.
             Optional<ProjectImports> projectImportsOptional = projectImportsRepository.findByProjectId(projectId);
@@ -113,6 +122,10 @@ public class MarketplaceDataProvider {
             task.setErrors(ex.getLocalizedMessage());
             return task;
         }
+    }
+
+    private String handleVault(MarketplaceDataTask task) {
+        return dataResolver.resolve(task.getImportName());
     }
 
     // TODO

@@ -159,6 +159,14 @@ public class DataEvaluator {
                     val = UUID.randomUUID().toString();
                     break;
 
+                case "@Vault":
+                    MarketplaceDataTask response_ = this.marketplaceDataProvider.get(context.getProjectId(), "{{" + KEY + "." + PATH + "}}");
+                    if (StringUtils.isNotEmpty(response_.getErrors())) {
+                        context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response_.getErrors());
+                    } else {
+                        val = response_.getEval();
+                    }
+                    break;
 
                 default:
                     if (StringUtils.endsWithIgnoreCase(KEY, "_Request") || StringUtils.endsWithIgnoreCase(KEY, "_Response")) {

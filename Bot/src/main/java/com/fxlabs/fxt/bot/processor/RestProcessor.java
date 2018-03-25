@@ -203,7 +203,7 @@ public class RestProcessor {
                 totalTime.getAndAdd(time);
 
                 Integer size = 0;
-                if (StringUtils.isNotEmpty(response.getBody())) {
+                if (response != null && StringUtils.isNotEmpty(response.getBody())) {
                     size = response.getBody().getBytes().length;
                 }
                 totalSize.getAndAdd(size);
@@ -259,7 +259,7 @@ public class RestProcessor {
 
                 // return processed task
                 //sender.sendTask(newTask);
-                String formatedRequest = JsonFormatUtil.format(req);
+                String formattedRequest = JsonFormatUtil.format(req);
                 String formattedResponse = JsonFormatUtil.format(response.getBody());
                 String formattedLogs = getFromattedLogs(assertionLogs.toString());
 
@@ -274,7 +274,7 @@ public class RestProcessor {
                     tc.setSuite(task.getSuiteName());
                     tc.setTestCase(String.valueOf(testCase.getId()));
                     tc.setEndpointEval(url);
-                    tc.setRequestEval(formatedRequest);
+                    tc.setRequestEval(formattedRequest);
                     tc.setResponse(formattedResponse);
                     tc.setStatusCode(String.valueOf(response.getStatusCodeValue()));
                     tc.setResult(context.getResult());
