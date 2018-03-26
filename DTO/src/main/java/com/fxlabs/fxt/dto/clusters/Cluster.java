@@ -31,5 +31,8 @@ public class Cluster extends BaseDto<String> {
     private String region;
     private String key;
 
+    private Integer min;
+    private Integer max;
+    private Integer live;
 
 }

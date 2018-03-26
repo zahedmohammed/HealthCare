@@ -45,6 +45,11 @@ public class Cluster extends BaseEntity {
 
     private String key;
 
+    private Integer min;
+    private Integer max;
+    private Integer live;
+
+
     @PrePersist
     @PreUpdate
     public void defaults() {

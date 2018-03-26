@@ -9,6 +9,7 @@ export class Region {
     public visibility: string;
     public min: number;
     public max: number;
+    public live: number;
 
 }
 

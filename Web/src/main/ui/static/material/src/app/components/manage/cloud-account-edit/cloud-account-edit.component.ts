@@ -16,6 +16,7 @@ export class CloudAccountEditComponent implements OnInit {
   showSpinner: boolean = false;
   entry: CloudAccount = new CloudAccount();
   orgs;
+  cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
   constructor(private cloudAccountService: CloudAccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
