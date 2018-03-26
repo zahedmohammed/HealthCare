@@ -16,6 +16,7 @@ public class CloudTaskResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
+    private String responseId;
     private Boolean success;
     private String logs;
     private String keys;

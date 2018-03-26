@@ -1,21 +1,24 @@
 package com.fxlabs.fxt.services.skills;
 
 import com.fxlabs.fxt.converters.skills.SkillSubscriptionConverter;
+import com.fxlabs.fxt.dao.entity.skills.SubscriptionTask;
 import com.fxlabs.fxt.dao.entity.skills.TaskResult;
 import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
 import com.fxlabs.fxt.dao.entity.users.OrgRole;
 import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
-import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
-import com.fxlabs.fxt.dao.repository.jpa.SkillSubscriptionRepository;
-import com.fxlabs.fxt.dao.repository.jpa.SubscriptionTaskRepository;
-import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.*;
+import com.fxlabs.fxt.dto.cloud.CloudTask;
+import com.fxlabs.fxt.dto.cloud.CloudTaskType;
+import com.fxlabs.fxt.dto.clusters.Cluster;
+import com.fxlabs.fxt.dto.skills.Skill;
 import com.fxlabs.fxt.dto.skills.SkillSubscription;
 import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.dto.skills.SubscriptionState;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.clusters.ClusterService;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -41,11 +42,13 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     private UsersRepository usersRepository;
     private OrgUsersRepository orgUsersRepository;
     private SubscriptionTaskRepository subscriptionTaskRepository;
+    private SkillRepository skillRepository;
+    private ClusterRepository clusterRepository;
 
     @Autowired
     public SkillSubscriptionServiceImpl(SkillSubscriptionRepository repository, SkillSubscriptionConverter converter,
                                         UsersRepository usersRepository, OrgUsersRepository orgUsersRepository,
-                                        SubscriptionTaskRepository subscriptionTaskRepository) {
+                                        SubscriptionTaskRepository subscriptionTaskRepository, ClusterRepository clusterRepository, SkillRepository skillRepository) {
         super(repository, converter);
 
         this.repository = repository;
@@ -53,7 +56,8 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         this.usersRepository = usersRepository;
         this.orgUsersRepository = orgUsersRepository;
-
+        this.skillRepository = skillRepository;
+        this.clusterRepository = clusterRepository;
         this.subscriptionTaskRepository = subscriptionTaskRepository;
 
     }
@@ -151,7 +155,28 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     }
 
     @Override
-    public Response<SkillSubscription> addExecBot(SkillSubscription dto, String user) {
+    public Response<SkillSubscription> addExecBot(SkillSubscription dto, Cluster cluster, String user) {
+
+        //TODO validate - name not null and unique
+        if (StringUtils.isEmpty(dto.getName())
+                || org.apache.commons.lang3.StringUtils.equalsIgnoreCase(dto.getName(), "null")) {
+            throw new FxException("Name should not empty");
+        }
+
+        if (cluster == null  || StringUtils.isEmpty(cluster.getId())) {
+            throw new FxException("Invalid Cluster");
+        }
+
+        //TODO validate cluster against DB
+
+
+
+
+        Optional<com.fxlabs.fxt.dao.entity.skills.Skill> skillDate = skillRepository.findById(dto.getSkill().getId());
+
+        if (!skillDate.isPresent()) {
+            throw new FxException(String.format("Not a valid skill"));
+        }
 
         if (dto.getOrg() == null) {
             Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
@@ -167,7 +192,6 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         }
 
-        //TODO validate - name not null and unique
         dto.setState(SubscriptionState.LAUNCHING);
 
         if (dto.getVisibility() == null)
@@ -181,7 +205,20 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         task.setSubscription(converter.convertToEntity(response.getData()));
         task.setType(TaskType.CREATE);
         task.setStatus(TaskStatus.PROCESSING);
-        subscriptionTaskRepository.save(task);
+        task = subscriptionTaskRepository.save(task);
+
+
+
+        CloudTask cloudTask = new CloudTask();
+
+        cloudTask.setId(task.getId());
+        cloudTask.setType(CloudTaskType.CREATE);
+        //Opts for AWS ACCESS_KEY_ID SECRET_KEY HARDWARE IMAGE IMAGE_USERNAME SCRIPT KEY_PAIR
+        //IMAGE_PASSWORD SECURITY_GROUP NETWORK
+        // prop1; // url  //prop2; // access-key  // prop3; // secret-key  //prop4; // project-name/key/id
+        Map<String, String> opts = new HashMap<>();
+
+        //opts.put("ACCESS_KEY_ID" , skillDate.get().get)
 
         // TODO - send task to queue
 

@@ -79,6 +79,7 @@ public class AwsCloudService implements CloudService {
 
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
+        response.setId(task.getId());
         ComputeService awsService = null;
         try {
 
@@ -113,13 +114,17 @@ public class AwsCloudService implements CloudService {
             TemplateOptions options = template.getOptions();
 
             String awsPrivateKeyName = getAwsPrivateKey(opts);
-            taskLogger.get().append("Settig Keypair " + awsPrivateKeyName);
+            taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
             options.as(AWSEC2TemplateOptions.class).keyPair(awsPrivateKeyName);
 
 
             String securityGroup = getSecurityGroup(opts);
-            taskLogger.get().append("Settig Security Group " + securityGroup);
+            taskLogger.get().append("Setting Security Group " + securityGroup);
             options.as(AWSEC2TemplateOptions.class).securityGroupIds(securityGroup);
+
+            String network = getNetwork(opts);
+            taskLogger.get().append("Setting Network " + network);
+            options.as(AWSEC2TemplateOptions.class).networks(network);
 
 
             String username = getAwsImageUsername(opts);
@@ -140,9 +145,9 @@ public class AwsCloudService implements CloudService {
                     options.runAsRoot(true).runScript(getBotInstallationScript(opts)).overrideLoginCredentials(login);
                 }
             }
-            NodeMetadata virtualMachine = getOnlyElement(awsService.createNodesInGroup("fxlabs", 1, template));
+            NodeMetadata virtualBot = getOnlyElement(awsService.createNodesInGroup("fxlabs", 1, template));
             response.setSuccess(true);
-            response.setId(virtualMachine.getId());
+            response.setResponseId(virtualBot.getId());
 
             return response;
         } catch (RuntimeException ex) {
@@ -162,7 +167,7 @@ public class AwsCloudService implements CloudService {
     }
 
     private String getInstanceType(CloudTask task) {
-        String hardware = task.getOpts().get("");
+        String hardware = task.getOpts().get("HARDWARE");
         if (StringUtils.isEmpty(hardware)) {
             hardware = FXLABS_AWS_DEFAULT_INSTANCE_TYPE;
         }
@@ -252,11 +257,11 @@ public class AwsCloudService implements CloudService {
      */
     private Boolean skipBotInstallation(Map<String, String> map) {
 
-        String value = map.get("skip_bot_install");
+        String value = map.get("SKIP_BOT_INSTALL");
 
         if (!StringUtils.isEmpty(value)
                 && org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "true")) {
-            return true;
+            return false;
         }
 
         return false;
