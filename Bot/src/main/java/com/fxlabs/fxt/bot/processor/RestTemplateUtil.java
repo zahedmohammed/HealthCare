@@ -10,7 +10,10 @@ import org.springframework.http.*;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.BaseOAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.AccessTokenRequest;
+import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.implicit.ImplicitResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.redirect.AbstractRedirectResourceDetails;
@@ -49,7 +52,8 @@ public class RestTemplateUtil {
 
     private ResponseEntity<String> execOAuth2Request(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
         // execute request
-        DefaultOAuth2ClientContext clientContext = new DefaultOAuth2ClientContext();
+        AccessTokenRequest atr = new DefaultAccessTokenRequest();
+        DefaultOAuth2ClientContext clientContext = new DefaultOAuth2ClientContext(atr);
 
         OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails(auth), clientContext);
 
@@ -67,8 +71,11 @@ public class RestTemplateUtil {
             //headers = response.getHeaders();
         } catch (HttpStatusCodeException statusCodeException) {
             response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
+        } catch (OAuth2AccessDeniedException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            logger.warn(e.getLocalizedMessage());
+            logger.warn(e.getLocalizedMessage(), e);
             return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -100,11 +107,11 @@ public class RestTemplateUtil {
 
 
         details.setId(auth.getId());
-        details.setClientId(auth.getUsername());
-        details.setClientSecret(auth.getPassword());
+        details.setClientId(auth.getClientId());
+        details.setClientSecret(auth.getClientSecret());
 
-        //details.setUsername(auth.getUsername());
-        //details.setPassword(auth.getPassword());
+        details.setUsername(auth.getUsername());
+        details.setPassword(auth.getPassword());
 
         details.setAccessTokenUri(auth.getAccessTokenUri());
 
@@ -118,13 +125,8 @@ public class RestTemplateUtil {
         }
 
         if (auth.getAuthorizationScheme() != null) {
-            details.setClientAuthenticationScheme(org.springframework.security.oauth2.common.AuthenticationScheme.valueOf(auth.getAuthorizationScheme().toString()));
+            details.setAuthenticationScheme(org.springframework.security.oauth2.common.AuthenticationScheme.valueOf(auth.getAuthorizationScheme().toString()));
         }
-
-        //details.setUserAuthorizationUri(auth.getUserAuthorizationUri());
-        //details.setPreEstablishedRedirectUri(auth.getPreEstablishedRedirectUri());
-
-        //details.setUseCurrentUri(false);
 
         return details;
     }
@@ -135,8 +137,8 @@ public class RestTemplateUtil {
 
 
         details.setId(auth.getId());
-        details.setClientId(auth.getUsername());
-        details.setClientSecret(auth.getPassword());
+        details.setClientId(auth.getClientId());
+        details.setClientSecret(auth.getClientSecret());
 
         details.setAccessTokenUri(auth.getAccessTokenUri());
 
@@ -150,13 +152,8 @@ public class RestTemplateUtil {
         }
 
         if (auth.getAuthorizationScheme() != null) {
-            details.setClientAuthenticationScheme(org.springframework.security.oauth2.common.AuthenticationScheme.valueOf(auth.getAuthorizationScheme().toString()));
+            details.setAuthenticationScheme(org.springframework.security.oauth2.common.AuthenticationScheme.valueOf(auth.getAuthorizationScheme().toString()));
         }
-
-        //details.setUserAuthorizationUri(auth.getUserAuthorizationUri());
-        //details.setPreEstablishedRedirectUri(auth.getPreEstablishedRedirectUri());
-
-        //details.setUseCurrentUri(false);
 
         return details;
     }
@@ -167,8 +164,8 @@ public class RestTemplateUtil {
 
 
         details.setId(auth.getId());
-        details.setClientId(auth.getUsername());
-        details.setClientSecret(auth.getPassword());
+        details.setClientId(auth.getClientId());
+        details.setClientSecret(auth.getClientSecret());
 
         details.setAccessTokenUri(auth.getAccessTokenUri());
 
@@ -182,7 +179,7 @@ public class RestTemplateUtil {
         }
 
         if (auth.getAuthorizationScheme() != null) {
-            details.setClientAuthenticationScheme(org.springframework.security.oauth2.common.AuthenticationScheme.valueOf(auth.getAuthorizationScheme().toString()));
+            details.setAuthenticationScheme(org.springframework.security.oauth2.common.AuthenticationScheme.valueOf(auth.getAuthorizationScheme().toString()));
         }
 
         details.setUserAuthorizationUri(auth.getUserAuthorizationUri());

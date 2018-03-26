@@ -251,6 +251,9 @@ public class RunTaskRequestProcessor {
         //task.setAuthType(cred.getAuthType());
         task.getAuth().setUsername(dataResolver.resolve(cred.getUsername()));
         task.getAuth().setPassword(dataResolver.resolve(cred.getPassword()));
+
+        task.getAuth().setClientId(dataResolver.resolve(cred.getClientId()));
+        task.getAuth().setClientSecret(dataResolver.resolve(cred.getClientSecret()));
     }
 
     private String getBaseUrl(String url) {

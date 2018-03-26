@@ -365,31 +365,22 @@ public class FxCommandService {
     }
 
     private void copyAuth(Auth credential, Auth cred) {
+
         cred.setAuthType(credential.getAuthType());
-        cred.setUsername(credential.getUsername());
-        cred.setPassword(credential.getPassword());
-
-        if (credential.getAuthType() != null) {
-            cred.setAuthType(AuthType.valueOf(credential.getAuthType().name()));
-        }
 
         cred.setUsername(credential.getUsername());
         cred.setPassword(credential.getPassword());
+
         // OAuth 2.0
-        /*if (!StringUtils.isEmpty(credential.getClientId())) {
-            cred.setUsername(credential.getClientId());
-        }
-        if (!StringUtils.isEmpty(credential.getClientSecret())) {
-            cred.setPassword(credential.getClientSecret());
-        }*/
+
+        cred.setClientId(credential.getClientId());
+        cred.setClientSecret(credential.getClientSecret());
+
         cred.setId(credential.getId());
         cred.setAccessTokenUri(credential.getAccessTokenUri());
-        if (credential.getAuthorizationScheme() != null) {
-            cred.setAuthorizationScheme(AuthenticationScheme.valueOf(credential.getAuthorizationScheme().name()));
-        }
-        if (credential.getClientAuthenticationScheme() != null) {
-            cred.setClientAuthenticationScheme(AuthenticationScheme.valueOf(credential.getClientAuthenticationScheme().name()));
-        }
+        cred.setAuthorizationScheme(credential.getAuthorizationScheme());
+        cred.setClientAuthenticationScheme(credential.getClientAuthenticationScheme());
+
         cred.setTokenName(credential.getTokenName());
         cred.setScope(credential.getScope());
         cred.setGrantType(credential.getGrantType());
@@ -471,12 +462,9 @@ public class FxCommandService {
                 cred.setUsername(credential.getUsername());
                 cred.setPassword(credential.getPassword());
                 // OAuth 2.0
-                if (!StringUtils.isEmpty(credential.getClientId())) {
-                    cred.setUsername(credential.getClientId());
-                }
-                if (!StringUtils.isEmpty(credential.getClientSecret())) {
-                    cred.setPassword(credential.getClientSecret());
-                }
+                cred.setClientId(credential.getClientId());
+                cred.setClientSecret(credential.getClientSecret());
+
                 cred.setId(credential.getId());
                 cred.setAccessTokenUri(credential.getAccessTokenUri());
                 if (credential.getAuthorizationScheme() != null) {

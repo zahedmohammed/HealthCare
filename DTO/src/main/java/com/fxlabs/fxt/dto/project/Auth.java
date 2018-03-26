@@ -20,10 +20,14 @@ public class Auth implements Serializable {
     private String name;
 
     private AuthType authType; // login authType
-    private String username; // [clientId]
-    private String password; // [clientSecret]
+    private String username;
+    private String password;
 
     // OAuth 2.0 properties
+
+    private String clientId;
+    private String clientSecret;
+
     private String id;
     private String accessTokenUri;
 

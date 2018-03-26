@@ -24,10 +24,11 @@ public class Auth implements Serializable {
     private String username;
     private String password;
 
+    // OAuth 2.0 properties
+
     private String clientId;
     private String clientSecret;
 
-    // OAuth 2.0 properties
     private String id;
     private String accessTokenUri;
 
