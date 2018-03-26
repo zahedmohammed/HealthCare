@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { RegionsService } from '../../../services/regions.service';
 import { OrgService } from '../../../services/org.service';
+import { CloudAccountService } from '../../../services/cloud-account.service';
 import { Region } from '../../../models/regions.model';
 
 
@@ -22,9 +23,10 @@ export class RegionEditComponent implements OnInit {
 
 
   showSpinner: boolean = false;
+  cloudAccounts;
   entry: Region = new Region();
   orgs;
-  constructor(private regionsService: RegionsService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private regionsService: RegionsService, private cloudAccountService: CloudAccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
