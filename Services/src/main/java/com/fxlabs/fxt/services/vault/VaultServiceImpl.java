@@ -68,6 +68,17 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
             dto.setOrg(org);
 
         }
+
+        // empty key
+        if (org.springframework.util.StringUtils.isEmpty(dto.getKey())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid key"));
+        }
+
+        // empty value
+        if (org.springframework.util.StringUtils.isEmpty(dto.getVal())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid val"));
+        }
+
         return super.save(dto, user);
     }
 
