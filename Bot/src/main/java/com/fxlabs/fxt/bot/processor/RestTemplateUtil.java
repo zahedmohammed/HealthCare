@@ -4,9 +4,13 @@ import com.fxlabs.fxt.dto.project.Auth;
 import com.fxlabs.fxt.dto.project.AuthType;
 import com.fxlabs.fxt.dto.project.GrantType;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.BaseOAuth2ProtectedResourceDetails;
@@ -49,6 +53,34 @@ public class RestTemplateUtil {
 
     }
 
+    private ResponseEntity<String> execBasicRequest(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
+        // execute request
+        RestTemplate restTemplate = new RestTemplate(httpClientFactory());
+
+        if (auth != null && (auth.getAuthType() == AuthType.BasicAuth || auth.getAuthType() == AuthType.BASIC)) {
+            httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(auth.getUsername(), auth.getPassword()));
+        }
+
+        //logger.info("Request: [{}]", req);
+        HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
+
+        ResponseEntity<String> response = null;
+        int statusCode = -1;
+        String responseBody = null;
+        HttpHeaders headers = null;
+        try {
+            response = restTemplate.exchange(url, method, request, String.class);
+            //statusCode = response.getStatusCodeValue();
+            //responseBody = response.getBody();
+            //headers = response.getHeaders();
+        } catch (HttpStatusCodeException statusCodeException) {
+            response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage());
+        }
+
+        return response;
+    }
 
     private ResponseEntity<String> execOAuth2Request(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
         // execute request
@@ -56,6 +88,7 @@ public class RestTemplateUtil {
         DefaultOAuth2ClientContext clientContext = new DefaultOAuth2ClientContext(atr);
 
         OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails(auth), clientContext);
+        restTemplate.setRequestFactory(this.httpClientFactory());
 
         //logger.info("Request: [{}]", req);
         HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
@@ -82,7 +115,7 @@ public class RestTemplateUtil {
         return response;
     }
 
-    public OAuth2ProtectedResourceDetails resourceDetails(Auth auth) {
+    private OAuth2ProtectedResourceDetails resourceDetails(Auth auth) {
 
         BaseOAuth2ProtectedResourceDetails details1 = null;
         if (auth.getGrantType() == GrantType.authorization_code) {
@@ -101,7 +134,7 @@ public class RestTemplateUtil {
     }
 
 
-    public OAuth2ProtectedResourceDetails getResourceOwnerPasswordResourceDetails(Auth auth) {
+    private OAuth2ProtectedResourceDetails getResourceOwnerPasswordResourceDetails(Auth auth) {
 
         ResourceOwnerPasswordResourceDetails details = new ResourceOwnerPasswordResourceDetails();
 
@@ -131,7 +164,7 @@ public class RestTemplateUtil {
         return details;
     }
 
-    public OAuth2ProtectedResourceDetails getBaseOAuth2ProtectedResourceDetails(Auth auth) {
+    private OAuth2ProtectedResourceDetails getBaseOAuth2ProtectedResourceDetails(Auth auth) {
 
         BaseOAuth2ProtectedResourceDetails details = new BaseOAuth2ProtectedResourceDetails();
 
@@ -158,7 +191,7 @@ public class RestTemplateUtil {
         return details;
     }
 
-    public OAuth2ProtectedResourceDetails getAbstractRedirectResourceDetails(Auth auth) {
+    private OAuth2ProtectedResourceDetails getAbstractRedirectResourceDetails(Auth auth) {
 
         AbstractRedirectResourceDetails details = new ImplicitResourceDetails();
 
@@ -190,32 +223,15 @@ public class RestTemplateUtil {
         return details;
     }
 
-    private ResponseEntity<String> execBasicRequest(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
-        // execute request
-        RestTemplate restTemplate = new RestTemplate();
+    private HttpComponentsClientHttpRequestFactory httpClientFactory() {
+        CloseableHttpClient httpClient
+                = HttpClients.custom()
+                .setSSLHostnameVerifier(new NoopHostnameVerifier())
+                .build();
+        HttpComponentsClientHttpRequestFactory requestFactory
+                = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setHttpClient(httpClient);
 
-        if (auth != null && (auth.getAuthType() == AuthType.BasicAuth || auth.getAuthType() == AuthType.BASIC)) {
-            httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(auth.getUsername(), auth.getPassword()));
-        }
-
-        //logger.info("Request: [{}]", req);
-        HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
-
-        ResponseEntity<String> response = null;
-        int statusCode = -1;
-        String responseBody = null;
-        HttpHeaders headers = null;
-        try {
-            response = restTemplate.exchange(url, method, request, String.class);
-            //statusCode = response.getStatusCodeValue();
-            //responseBody = response.getBody();
-            //headers = response.getHeaders();
-        } catch (HttpStatusCodeException statusCodeException) {
-            response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
-        } catch (Exception e) {
-            logger.warn(e.getLocalizedMessage());
-        }
-
-        return response;
+        return requestFactory;
     }
 }
