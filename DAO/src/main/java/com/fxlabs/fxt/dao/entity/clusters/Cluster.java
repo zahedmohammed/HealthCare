@@ -25,6 +25,9 @@ public class Cluster extends BaseEntity {
     @JoinColumn(name = "org_id")
     private Org org;
 
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private CloudAccount cloudAccount;
+
     @Enumerated(EnumType.STRING)
     private ClusterDriver driver;
 

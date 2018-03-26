@@ -1,8 +1,7 @@
 export class Region {
 
     public status: string;
-    public cloudAccount: string;
-    public cloudType: string;
+    public cloudAccount: CloudAccount;
     public name: string;
     public key: string;
     public region: string;
@@ -11,6 +10,13 @@ export class Region {
     public min: number;
     public max: number;
 
+}
+
+export class CloudAccount {
+    public name: string;
+    public cloudType: string;
+    public accessKey: string;
+    public secretKey: string;
 }
 
 export class Dto {

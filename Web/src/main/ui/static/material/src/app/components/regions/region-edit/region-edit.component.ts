@@ -81,17 +81,16 @@ export class RegionEditComponent implements OnInit {
     });
   }
 
- getRegions(){
-    if (this.entry.cloudType == 'GCP'){
+  getRegions(){
+    if (this.entry.cloudAccount.cloudType === 'GCP'){
         this.regions = this.GCP_REGIONS;
-    }
-    if (this.entry.cloudType == 'AWS'){
+    } else
+    if (this.entry.cloudAccount.cloudType === 'AWS'){
         this.regions = this.AWS_REGIONS;
-    }
-    if (this.entry.cloudType == 'AZURE'){
+    } else
+    if (this.entry.cloudAccount.cloudType === 'AZURE'){
         this.regions = this.AZURE_REGIONS;
     }
-
   }
 
   getOrgs() {

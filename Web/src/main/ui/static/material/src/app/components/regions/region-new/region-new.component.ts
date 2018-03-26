@@ -49,17 +49,15 @@ export class RegionNewComponent implements OnInit {
   }
 
   getRegions(){
-    alert('getRegions');
-    if (this.entry.cloudType == 'GCP'){
+    if (this.entry.cloudAccount.cloudType === 'GCP'){
         this.regions = this.GCP_REGIONS;
-    }
-    if (this.entry.cloudType == 'AWS'){
+    } else
+    if (this.entry.cloudAccount.cloudType === 'AWS'){
         this.regions = this.AWS_REGIONS;
-    }
-    if (this.entry.cloudType == 'AZURE'){
+    } else
+    if (this.entry.cloudAccount.cloudType === 'AZURE'){
         this.regions = this.AZURE_REGIONS;
     }
-
   }
 
   getCloudAccounts() {

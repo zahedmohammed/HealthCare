@@ -13,7 +13,7 @@
             </label>
             <div class="col-md-8">
               <mat-form-field>
-                <mat-select placeholder="Owner" disabled required [(ngModel)]="entry.org.id" name="owner">
+                <mat-select placeholder="Owner" required [(ngModel)]="entry.org.id" name="owner">
                   <mat-option *ngFor="let org of orgs" [value]="org.org.id">
                     {{org.org.name}}
                   </mat-option>
@@ -29,7 +29,7 @@
             <div class="col-md-8">
               <mat-form-field>
                 <mat-select placeholder="Cloud Account" required [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">
-                  <mat-option *ngFor="let ca of cloudAccounts" [value]="ca.name">
+                  <mat-option *ngFor="let ca of cloudAccounts" [value]="ca">
                     {{ca.name}}
                   </mat-option>
                 </mat-select>
@@ -107,7 +107,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-10">
               <div class="callout callout-info">
-                <p>Commentry...........</p>
+                <p>About bots...</p>
               </div>
             </div>
           </div>
