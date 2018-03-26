@@ -36,5 +36,7 @@ public class SubscriptionTask extends BaseEntity {
 
     private String logs;
 
+    private String clusterId;
+
 }
 

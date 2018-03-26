@@ -25,5 +25,7 @@ public class SubscriptionTask extends BaseDto<String> {
 
     private String logs;
 
+    private String clusterId;
+
 }
 

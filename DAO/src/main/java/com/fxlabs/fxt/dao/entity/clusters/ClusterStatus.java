@@ -4,5 +4,5 @@ package com.fxlabs.fxt.dao.entity.clusters;
  * @author Intesar Shannan Mohammed
  */
 public enum ClusterStatus {
-    ACTIVE, INACTIVE
+    ACTIVE, INACTIVE,  LAUNCHING, FAILED,  DELETING
 }

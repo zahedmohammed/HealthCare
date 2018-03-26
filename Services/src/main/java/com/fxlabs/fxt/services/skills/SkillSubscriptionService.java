@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.skills;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.skills.Skill;
 import com.fxlabs.fxt.dto.skills.SkillSubscription;
 import com.fxlabs.fxt.dto.skills.SkillType;
@@ -22,7 +23,7 @@ public interface SkillSubscriptionService extends GenericService<SkillSubscripti
 
     Response<SkillSubscription> deleteITBot(String id, String user);
 
-    Response<SkillSubscription> addExecBot(SkillSubscription dto, String user);
+    Response<SkillSubscription> addExecBot(Cluster dto, String user);
 
     Response<SkillSubscription> deleteExecBot(String id, String user);
 

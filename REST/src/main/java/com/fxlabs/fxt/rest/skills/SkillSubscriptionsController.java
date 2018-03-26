@@ -65,12 +65,12 @@ public class SkillSubscriptionsController {
     public Response<SkillSubscription> deleteIssueTrackerBot(@PathVariable("id") String id) {
         return service.deleteITBot(id, SecurityUtil.getCurrentAuditor());
     }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/exec-bot", method = RequestMethod.POST)
-    public Response<SkillSubscription> addExecBot(@RequestBody SkillSubscription request) {
-        return service.addExecBot(request, SecurityUtil.getCurrentAuditor());
-    }
+//
+//    @Secured(ROLE_USER)
+//    @RequestMapping(value = "/exec-bot", method = RequestMethod.POST)
+//    public Response<SkillSubscription> addExecBot(@RequestBody SkillSubscription request) {
+//        return service.addExecBot(request, SecurityUtil.getCurrentAuditor());
+//    }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/exec-bot/{id}", method = RequestMethod.DELETE)

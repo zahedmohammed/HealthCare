@@ -13,10 +13,12 @@ import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
 import com.fxlabs.fxt.dto.clusters.Cluster;
+import com.fxlabs.fxt.dto.clusters.ClusterCloud;
 import com.fxlabs.fxt.dto.skills.Skill;
 import com.fxlabs.fxt.dto.skills.SkillSubscription;
 import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.dto.skills.SubscriptionState;
+import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.clusters.ClusterService;
 import com.fxlabs.fxt.services.exceptions.FxException;
@@ -42,21 +44,20 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     private UsersRepository usersRepository;
     private OrgUsersRepository orgUsersRepository;
     private SubscriptionTaskRepository subscriptionTaskRepository;
-    private SkillRepository skillRepository;
     private ClusterRepository clusterRepository;
+    private AmqpClientService amqpClientService;
 
     @Autowired
     public SkillSubscriptionServiceImpl(SkillSubscriptionRepository repository, SkillSubscriptionConverter converter,
                                         UsersRepository usersRepository, OrgUsersRepository orgUsersRepository,
-                                        SubscriptionTaskRepository subscriptionTaskRepository, ClusterRepository clusterRepository, SkillRepository skillRepository) {
+                                        AmqpClientService amqpClientService,SubscriptionTaskRepository subscriptionTaskRepository, ClusterRepository clusterRepository) {
         super(repository, converter);
 
         this.repository = repository;
         this.converter = converter;
-
+        this.amqpClientService = amqpClientService;
         this.usersRepository = usersRepository;
         this.orgUsersRepository = orgUsersRepository;
-        this.skillRepository = skillRepository;
         this.clusterRepository = clusterRepository;
         this.subscriptionTaskRepository = subscriptionTaskRepository;
 
@@ -155,28 +156,13 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     }
 
     @Override
-    public Response<SkillSubscription> addExecBot(SkillSubscription dto, Cluster cluster, String user) {
+    public Response<SkillSubscription> addExecBot(Cluster dto, String user) {
 
         //TODO validate - name not null and unique
-        if (StringUtils.isEmpty(dto.getName())
-                || org.apache.commons.lang3.StringUtils.equalsIgnoreCase(dto.getName(), "null")) {
-            throw new FxException("Name should not empty");
-        }
-
-        if (cluster == null  || StringUtils.isEmpty(cluster.getId())) {
+        if (dto == null || StringUtils.isEmpty(dto.getId())) {
             throw new FxException("Invalid Cluster");
         }
 
-        //TODO validate cluster against DB
-
-
-
-
-        Optional<com.fxlabs.fxt.dao.entity.skills.Skill> skillDate = skillRepository.findById(dto.getSkill().getId());
-
-        if (!skillDate.isPresent()) {
-            throw new FxException(String.format("Not a valid skill"));
-        }
 
         if (dto.getOrg() == null) {
             Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
@@ -192,37 +178,32 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         }
 
-        dto.setState(SubscriptionState.LAUNCHING);
-
-        if (dto.getVisibility() == null)
-            dto.setVisibility(Visibility.PRIVATE);
-
-
-        Response<SkillSubscription> response = super.save(dto, user);
+//        dto.setState(SubscriptionState.LAUNCHING);
+//        if (dto.getVisibility() == null)
+//            dto.setVisibility(Visibility.PRIVATE);
+//        Response<SkillSubscription> response = super.save(dto, user);
 
         // Add Task
         com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
-        task.setSubscription(converter.convertToEntity(response.getData()));
+       // task.setSubscription(converter.convertToEntity(response.getData()));
         task.setType(TaskType.CREATE);
         task.setStatus(TaskStatus.PROCESSING);
+        task.setClusterId(dto.getId());
         task = subscriptionTaskRepository.save(task);
-
-
 
         CloudTask cloudTask = new CloudTask();
 
         cloudTask.setId(task.getId());
         cloudTask.setType(CloudTaskType.CREATE);
-        //Opts for AWS ACCESS_KEY_ID SECRET_KEY HARDWARE IMAGE IMAGE_USERNAME SCRIPT KEY_PAIR
-        //IMAGE_PASSWORD SECURITY_GROUP NETWORK
-        // prop1; // url  //prop2; // access-key  // prop3; // secret-key  //prop4; // project-name/key/id
+
         Map<String, String> opts = new HashMap<>();
 
-        //opts.put("ACCESS_KEY_ID" , skillDate.get().get)
+        opts.put("ACCESS_KEY_ID" , dto.getCloudAccount().getAccessKey());
+        opts.put("SECRET_KEY", dto.getCloudAccount().getSecretKey());
+        //send task to queue
+        amqpClientService.sendTask(cloudTask,dto.getRegion());
 
-        // TODO - send task to queue
-
-        return response;
+        return new Response<SkillSubscription>();
     }
 
     @Override
