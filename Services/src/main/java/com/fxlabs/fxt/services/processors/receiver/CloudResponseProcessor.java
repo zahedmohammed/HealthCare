@@ -73,7 +73,7 @@ public class CloudResponseProcessor {
 
             com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = optional.get();
             Optional<Cluster> clusterData = clusterRepository.findById(task.getClusterId());
-
+            clusterData.get().setNodeId(response.getResponseId());
            // SkillSubscription subscription = optional.get().getSubscription();
            // subscription.setState(SubscriptionState.FAILED);
 

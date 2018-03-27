@@ -48,6 +48,7 @@ public class Cluster extends BaseEntity {
     private Integer min;
     private Integer max;
     private Integer live;
+    private String nodeId;
 
 
     @PrePersist

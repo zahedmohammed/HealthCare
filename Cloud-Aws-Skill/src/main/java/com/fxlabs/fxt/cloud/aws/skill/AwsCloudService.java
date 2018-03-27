@@ -9,6 +9,7 @@ import org.jclouds.ContextBuilder;
 import org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions;
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.ComputeServiceContext;
+import org.jclouds.compute.RunNodesException;
 import org.jclouds.compute.domain.NodeMetadata;
 import org.jclouds.compute.domain.Template;
 import org.jclouds.compute.domain.TemplateBuilder;
@@ -150,8 +151,9 @@ public class AwsCloudService implements CloudService {
             response.setResponseId(virtualBot.getId());
 
             return response;
-        } catch (RuntimeException ex) {
+        } catch (RunNodesException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage());
             response.setLogs(taskLogger.get().toString());
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);

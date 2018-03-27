@@ -16,6 +16,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import com.fxlabs.fxt.services.skills.SkillSubscriptionService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -43,11 +44,12 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private AmqpAdmin amqpAdmin;
     private TopicExchange topicExchange;
     private OrgUsersRepository orgUsersRepository;
+    private SkillSubscriptionService skillSubscriptionService;
 
     @Autowired
     public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository,
                               ClusterConverter clusterConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
-                              OrgUsersRepository orgUsersRepository) {
+                              OrgUsersRepository orgUsersRepository, SkillSubscriptionService skillSubscriptionService) {
 
         super(clusterRepository, clusterConverter);
 
@@ -57,6 +59,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.amqpAdmin = amqpAdmin;
         this.topicExchange = topicExchange;
         this.orgUsersRepository = orgUsersRepository;
+        this.skillSubscriptionService = skillSubscriptionService;
 
     }
 
@@ -137,6 +140,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         com.fxlabs.fxt.dao.entity.clusters.Cluster cluster = this.clusterRepository.saveAndFlush(converter.convertToEntity(dto));
         this.clusterESRepository.save(cluster);
+        skillSubscriptionService.addExecBot(converter.convertToDto(cluster), cluster.getCreatedBy());
         return new Response<>(converter.convertToDto(cluster));
     }
 

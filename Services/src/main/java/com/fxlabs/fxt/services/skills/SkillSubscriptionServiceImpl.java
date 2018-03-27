@@ -200,8 +200,9 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         opts.put("ACCESS_KEY_ID" , dto.getCloudAccount().getAccessKey());
         opts.put("SECRET_KEY", dto.getCloudAccount().getSecretKey());
+        cloudTask.setOpts(opts);
         //send task to queue
-        amqpClientService.sendTask(cloudTask,dto.getRegion());
+        amqpClientService.sendTask(cloudTask,"fx-caas-aws-ec2");
 
         return new Response<SkillSubscription>();
     }
