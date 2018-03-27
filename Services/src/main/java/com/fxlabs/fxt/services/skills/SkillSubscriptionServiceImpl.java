@@ -222,8 +222,10 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         switch (cloudAccount.getCloudType()){
             case AWS:
                 key = "fx-caas-aws-ec2";
+                break;
             case AZURE:
                 key = "fx-caas-azure";
+                break;
                 default:
                     logger.info("Invalid provider [{}]", cloudAccount.getCloudType());
                 break;
