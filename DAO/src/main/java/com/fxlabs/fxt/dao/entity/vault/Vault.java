@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -26,9 +27,12 @@ public class Vault extends BaseEntity {
     @Column(name = "_key")
     private String key;
 
+    @Lob
+    @Type(type="org.hibernate.type.TextType")
     private String val;
 
     @Lob
+    @Type(type="org.hibernate.type.TextType")
     private String description;
 
     @Enumerated(EnumType.STRING)

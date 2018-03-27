@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import java.util.Date;
@@ -29,7 +31,7 @@ public class TestSuiteResponse extends BaseEntity {
     private Integer tests;
     private String response;
     @Lob
-    //@Type(type = "org.hibernate.type.StringClobType")
+    @Type(type="org.hibernate.type.TextType")
     private String logs;
     private Date requestStartTime;
     private Date requestEndTime;

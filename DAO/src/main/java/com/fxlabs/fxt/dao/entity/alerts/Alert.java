@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -42,6 +43,7 @@ public class Alert extends BaseEntity {
     private String refName;
     private String subject;
     @Lob
+    @Type(type="org.hibernate.type.TextType")
     private String message;
     @Temporal(TemporalType.TIMESTAMP)
     private Date readDate;

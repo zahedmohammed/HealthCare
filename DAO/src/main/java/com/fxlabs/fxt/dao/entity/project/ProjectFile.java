@@ -6,12 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -35,6 +33,7 @@ public class ProjectFile extends BaseEntity {
     private String checksum;
 
     @Lob
+    @Type(type="org.hibernate.type.TextType")
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)

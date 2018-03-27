@@ -261,7 +261,7 @@ public class RestProcessor {
                 //sender.sendTask(newTask);
                 String formattedRequest = JsonFormatUtil.format(req);
                 String formattedResponse = JsonFormatUtil.format(response.getBody());
-                String formattedLogs = getFromattedLogs(assertionLogs.toString());
+                String formattedLogs = JsonFormatUtil.clean(assertionLogs.toString());
 
                 // Test-Cases Responses
                 if (generateTestCases) {
@@ -315,7 +315,7 @@ public class RestProcessor {
             completeTask.setTotalPassed(totalPassed.get());
             completeTask.setTotalTests((long) task.getTestCases().size());
 
-            completeTask.setLogs(logs.getLogs());
+            completeTask.setLogs(JsonFormatUtil.clean(logs.getLogs()));
 
             completeTask.setRequestEndTime(new Date());
             completeTask.setTotalBytes(totalSize.get());
@@ -339,21 +339,6 @@ public class RestProcessor {
         }
 
         return completeTask;
-    }
-
-    private String getFromattedLogs(String value) {
-
-        if (StringUtils.isEmpty(value)) {
-            return value;
-        }
-        try {
-            String result = value.replaceAll( ",", "\n");
-            return result;
-        }catch (Exception e){
-            logger.warn(e.getLocalizedMessage());
-        }
-
-        return value;
     }
 
 }

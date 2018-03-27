@@ -126,6 +126,9 @@ public class RunTaskRequestProcessor {
                 String _env = run.getJob().getEnvironment();
                 String _region = run.getJob().getRegions();
 
+                run.getTask().setStatus(TaskStatus.PROCESSING);
+                runRepository.saveAndFlush(run);
+
                 AtomicLong total = new AtomicLong(0);
 
                 list.parallel().forEach(testSuite -> {
@@ -178,7 +181,6 @@ public class RunTaskRequestProcessor {
                     }
                 });
 
-                run.getTask().setStatus(TaskStatus.PROCESSING);
                 run.getTask().setTotalTests(total.get());
                 runRepository.saveAndFlush(run);
             } catch (RuntimeException ex) {

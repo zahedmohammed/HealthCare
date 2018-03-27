@@ -3,6 +3,7 @@ package com.fxlabs.fxt.rest.base;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.services.exceptions.FxException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,6 +25,12 @@ public class ExceptionTranslator {
         try {
             Object retVal = pjp.proceed();
             return retVal;
+        } catch (FxException e) {
+            logger.warn(e.getLocalizedMessage());
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", e.getLocalizedMessage()));
+        } catch (IllegalArgumentException e) {
+            logger.warn(e.getLocalizedMessage());
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", e.getLocalizedMessage()));
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage(), e);
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", e.getLocalizedMessage()));

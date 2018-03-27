@@ -29,4 +29,8 @@ public class JsonFormatUtil {
         }
         return value;
     }
+
+    public static String clean(String value) {
+        return StringUtils.removeAll(value, "\u0000");
+    }
 }
