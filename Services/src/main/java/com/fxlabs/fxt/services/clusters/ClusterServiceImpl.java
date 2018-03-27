@@ -72,7 +72,13 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public Response<Cluster> findById(String id, String user) {
-        return null;
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findById(id);
+
+        if (!clusterOptional.isPresent() ) {
+            return new Response<>().withErrors(true);
+        }
+        // TODO validate user is entitled to use the cluster.
+        return new Response<Cluster>(converter.convertToDto(clusterOptional.get()));
     }
 
     @Override
