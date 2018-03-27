@@ -10,6 +10,7 @@ import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunTask;
 import com.fxlabs.fxt.dto.run.TaskStatus;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.beans.Config;
 import com.fxlabs.fxt.sdk.rest.*;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -37,21 +39,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:/fx-sdk.properties")
 @PropertySource(ignoreResourceNotFound = true, value = "file:fx.properties")
+@PropertySource(ignoreResourceNotFound = true, value = "file:/opt/fx/fx.properties")
+@PropertySource(ignoreResourceNotFound = true, value = "file:/var/fx/fx.properties")
 @PropertySource(ignoreResourceNotFound = true, value = "file:${user.home}/fxt/fx.properties")
 public class FxCommandService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    @Value("${fx.master.url:#{null}}")
-    String url;
-    @Value("${fx.master.accessKey:#{null}}")
-    String username;
-    @Value("${fx.master.secretKey:#{null}}")
-    String password;
+    @Value("${url:#{null}}")
+    protected String url;
+    @Value("${username:#{null}}")
+    protected String username;
+    @Value("${password:#{null}}")
+    protected String password;
 
     // Fx server connection details
     Set<TestSuiteResponse> dataSets = new HashSet<>();
+
+    @Autowired
+    private UsersRestRepository usersRestRepository;
     @Autowired
     private ProjectRestRepository projectRepository;
     @Autowired
@@ -63,14 +70,43 @@ public class FxCommandService {
     @Autowired
     private EnvRestRepository envRestRepository;
 
-    public void loadAndRun(String projectDir, String jobName, String region, String tags, String envName, String suites) {
+    public Response<Users> login() {
+        return this.usersRestRepository.findByLogin();
+    }
+
+    public void loadAndRun(String projectDir, String projectName, String jobName, String region, String tags, String envName, String suites) {
         Date start = new Date();
         //System.out.println("loading data...");
         if (StringUtils.isEmpty(projectDir)) {
             File file = new File(".");
             projectDir = file.getAbsolutePath();
         }
-        Project project = load(projectDir, null);
+        if (StringUtils.isEmpty(projectName)) {
+            System.out.println(
+                    AnsiOutput.toString(AnsiColor.RED,
+                            String.format("Invalid project %s", projectName)
+                            , AnsiColor.DEFAULT)
+            );
+            return;
+        }
+
+        System.out.println(String.format("locating project %s...", projectName));
+        Response<Project> response = projectRepository.findByOrgAndName(projectName);
+        if (response == null || response.isErrors()) {
+            for (Message m : response.getMessages())
+                System.out.println(
+                        AnsiOutput.toString(AnsiColor.RED,
+                                m.getValue()
+                                , AnsiColor.DEFAULT)
+                );
+            return;
+        }
+
+        Project project = load(projectDir, response.getData().getId());
+
+        if (project == null) {
+            return;
+        }
 
         String jobId = locateJobId(jobName, project);
 
@@ -100,6 +136,16 @@ public class FxCommandService {
      */
     public Project load(String projectDir, String projectId) {
         try {
+
+            if (StringUtils.isEmpty(projectId)) {
+                System.out.println(
+                        AnsiOutput.toString(AnsiColor.RED,
+                                String.format("Invalid project %s", projectId)
+                                , AnsiColor.DEFAULT)
+                );
+                return null;
+            }
+
             // read fx server details
 
             // create project
@@ -122,11 +168,9 @@ public class FxCommandService {
             List<ProjectFile> projectFiles = null;
             Project project = null;
 
-            if (StringUtils.isEmpty(projectId)) {
-                project = getProjectByName(config);
-            } else {
-                project = getProjectById(projectId);
-            }
+
+            project = getProjectById(projectId);
+
 
             if (project == null) {
 
@@ -152,37 +196,37 @@ public class FxCommandService {
 
                 System.out.println(String.format("Project created with id: [%s]", project.getId()));
                 CredUtils.taskLogger.get().append(String.format("Project created with id: [%s]", project.getId())).append("\n");*/
-            } else {
-                System.out.println(String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
+            }
 
-                projectFiles = getProjectChecksums(project.getId());
 
-                String checksum = null;
-                try {
-                    String fxfileContent = FileUtils.readFileToString(fxfile, "UTF-8");
-                    checksum = DigestUtils.md5Hex(fxfileContent);
-                } catch (IOException e) {
-                    logger.warn(e.getLocalizedMessage());
-                    System.out.println(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
-                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, fxfile.getName(), String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
-                    CredUtils.errors.set(Boolean.TRUE);
+            System.out.println(String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
+
+            projectFiles = getProjectChecksums(project.getId());
+
+            String checksum = null;
+            try {
+                String fxfileContent = FileUtils.readFileToString(fxfile, "UTF-8");
+                checksum = DigestUtils.md5Hex(fxfileContent);
+            } catch (IOException e) {
+                logger.warn(e.getLocalizedMessage());
+                System.out.println(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
+                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, fxfile.getName(), String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
+                CredUtils.errors.set(Boolean.TRUE);
+            }
+
+            //System.out.println(projectFiles);
+            //System.out.println(checksum);
+
+            if (!isChecksumPresent(projectFiles, fxfile, checksum)) {
+
+                Response<Project> projectResponse = updateProject(project, config, fxfile, checksum);
+
+                if (projectResponse.isErrors()) {
+                    System.err.println(projectResponse.getMessages());
                 }
-
-                //System.out.println(projectFiles);
-                //System.out.println(checksum);
-
-                if (!isChecksumPresent(projectFiles, fxfile, checksum)) {
-
-                    Response<Project> projectResponse = updateProject(project, config, fxfile, checksum);
-
-                    if (projectResponse.isErrors()) {
-                        System.err.println(projectResponse.getMessages());
-                    }
-                    System.out.println(String.format("Project id: [%s] updated", projectResponse.getData().getId()));
-                    CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project id: [%s] updated", projectResponse.getData().getId()));
-                }
-
+                System.out.println(String.format("Project id: [%s] updated", projectResponse.getData().getId()));
+                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project id: [%s] updated", projectResponse.getData().getId()));
             }
 
             // create dataset
@@ -199,6 +243,7 @@ public class FxCommandService {
         return null;
     }
 
+    @PostConstruct
     private void setCreds() {
         if (StringUtils.isEmpty(CredUtils.username.get())) {
             CredUtils.username.set(this.username);
@@ -209,6 +254,7 @@ public class FxCommandService {
         if (StringUtils.isEmpty(CredUtils.url.get())) {
             CredUtils.url.set(this.url);
         }
+
     }
 
     private Project getProjectByName(Config config) {

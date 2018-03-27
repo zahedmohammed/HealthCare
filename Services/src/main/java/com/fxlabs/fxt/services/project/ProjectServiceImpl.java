@@ -68,8 +68,30 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.projectImportsESRepository = projectImportsESRepository;
     }
 
+    @Override
     public Response<Project> findByName(String name, String owner) {
         Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByNameAndInactive(name, false);
+
+        if (projectOptional.isPresent()) {
+            isUserEntitled(projectOptional.get().getId(), owner);
+            return new Response<Project>(converter.convertToDto(projectOptional.get()));
+        }
+        return new Response<Project>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("No Project found with the name [%s]", name)));
+    }
+
+    @Override
+    public Response<Project> findByOrgAndName(String name, String owner) {
+        if (StringUtils.isEmpty(name)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project name"));
+        }
+        String[] tokens = name.split("/");
+        if (tokens.length != 2) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, String.format("Invalid project name [%s]. Valid e.g. 'org/project'", name)));
+        }
+        String org = tokens[0];
+        String proj = tokens[1];
+
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByOrgNameAndNameAndInactive(org, proj, false);
 
         if (projectOptional.isPresent()) {
             isUserEntitled(projectOptional.get().getId(), owner);
@@ -154,12 +176,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 request.setOrgId(orgUsers.getOrg().getId());*/
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid org"));
 
-            } else {
-                // check user had write access to Org
-                Optional<com.fxlabs.fxt.dao.entity.users.OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(request.getOrg().getId(), owner, OrgUserStatus.ACTIVE);
-                if (!orgUsersOptional.isPresent() || orgUsersOptional.get().getOrgRole() == OrgRole.READ) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [WRITE] or [ADMIN] access to the Org [%s]", request.getOrg().getId())));
-                }
+            }
+
+
+            // check user had write access to Org
+            Optional<com.fxlabs.fxt.dao.entity.users.OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(request.getOrg().getId(), owner, OrgUserStatus.ACTIVE);
+            if (!orgUsersOptional.isPresent() || orgUsersOptional.get().getOrgRole() == OrgRole.READ) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [WRITE] or [ADMIN] access to the Org [%s]", request.getOrg().getId())));
             }
 
             // check name is not duplicate
@@ -169,7 +192,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // Validate GIT URL
-            if (request.getProjectType() == ProjectType.GIT && StringUtils.isEmpty(request.getUrl())) {
+            if (request.getProjectType() == ProjectType.Git && StringUtils.isEmpty(request.getUrl())) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Project's GIT URL cannot be empty"));
             }
 
@@ -185,7 +208,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             project.setName(request.getName());
             project.setDescription(request.getDescription());
             if (request.getProjectType() == null) {
-                project.setProjectType(ProjectType.LOCAL);
+                project.setProjectType(ProjectType.Local);
             } else {
                 project.setProjectType(request.getProjectType());
             }
@@ -207,7 +230,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
 
             // Git Account
-            if (request.getProjectType() == ProjectType.GIT || true) {
+            if (request.getProjectType() != ProjectType.Git || true) {
                 com.fxlabs.fxt.dao.entity.project.ProjectGitAccount account = new com.fxlabs.fxt.dao.entity.project.ProjectGitAccount();
                 account.setUrl(request.getUrl());
                 account.setBranch(request.getBranch());
@@ -220,7 +243,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 this.projectGitAccountRepository.saveAndFlush(account);
 
                 // Create GaaS Task
-                this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
+                if (request.getProjectType() != ProjectType.Local) {
+                    this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
+                }
             }
 
 
@@ -295,8 +320,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             save(project, user);
         }
 
-        // Create GaaS Task
-        this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
+        if (project.getProjectType() != ProjectType.Local) {
+            // Create GaaS Task
+            this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
+        }
 
         return new Response<ProjectRequest>();
     }

@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.services.CredUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ public class GenericRestRespository<T> {
     public final static HashMap<Class, ParameterizedTypeReference> paramTypeRefMap = new HashMap<>();
 
     static {
+        paramTypeRefMap.put(Users.class, new ParameterizedTypeReference<Response<Users>>() {
+        });
         paramTypeRefMap.put(Project.class, new ParameterizedTypeReference<Response<Project>>() {
         });
         paramTypeRefMap.put(Environment.class, new ParameterizedTypeReference<Response<Environment>>() {

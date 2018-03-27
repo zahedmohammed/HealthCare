@@ -20,6 +20,8 @@ public interface ProjectService extends GenericService<Project, String> {
 
     Response<Project> findByName(String name, String owner);
 
+    Response<Project> findByOrgAndName(String name, String owner);
+
     //Response<Project> findProjectById(String id, String owner);
 
     Response<Project> add(ProjectRequest account, String owner);

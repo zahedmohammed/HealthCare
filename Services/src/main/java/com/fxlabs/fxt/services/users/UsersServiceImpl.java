@@ -54,6 +54,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
     }
 
 
+    @Override
     public Response<com.fxlabs.fxt.dto.users.Users> findByEmail(String email) {
         Optional<Users> usersOptional = ((UsersRepository) repository).findByEmail(email);
 
@@ -63,6 +64,17 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         return new Response<com.fxlabs.fxt.dto.users.Users>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid email or password")));
     }
 
+    @Override
+    public Response<com.fxlabs.fxt.dto.users.Users> findById(String id) {
+        Optional<Users> usersOptional = ((UsersRepository) repository).findById(id);
+
+        if (usersOptional.isPresent()) {
+            return new Response<com.fxlabs.fxt.dto.users.Users>(converter.convertToDto(usersOptional.get()));
+        }
+        return new Response<com.fxlabs.fxt.dto.users.Users>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid id")));
+    }
+
+    @Override
     public Response<com.fxlabs.fxt.dto.users.UsersPassword> findActivePassword(String email) {
         Response<com.fxlabs.fxt.dto.users.Users> usersResponse = findByEmail(email);
         if (usersResponse.isErrors()) {
@@ -76,6 +88,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         return new Response<com.fxlabs.fxt.dto.users.UsersPassword>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("No active password found!")));
     }
 
+    @Override
     public Response<Boolean> personalSignUp(com.fxlabs.fxt.dto.users.Users users) {
 
         String tokens[] = StringUtils.split(users.getEmail(), "@");
@@ -88,14 +101,17 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         return signUp(users, company, OrgType.PERSONAL, Arrays.asList("ROLE_USER"));
     }
 
+    @Override
     public Response<Boolean> teamSignUp(com.fxlabs.fxt.dto.users.Users users) {
         return signUp(users, users.getCompany(), OrgType.TEAM, Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
     }
 
+    @Override
     public Response<Boolean> enterpriseSignUp(com.fxlabs.fxt.dto.users.Users users) {
         return signUp(users, users.getCompany(), OrgType.ENTERPRISE, Arrays.asList("ROLE_USER", "ROLE_ADMIN", "ROLE_ENTERPRISE"));
     }
 
+    @Override
     public Response<Boolean> addToOrg(com.fxlabs.fxt.dto.users.OrgUsers orgUsers, String user) {
         // check user is admin of the org.
         Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByUsersIdAndOrgIdAndStatusAndOrgRole(user, orgUsers.getOrg().getId(), OrgUserStatus.ACTIVE, OrgRole.ADMIN);

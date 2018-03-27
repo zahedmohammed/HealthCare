@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.sdk.services;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;
@@ -19,6 +20,15 @@ public class BotLogger implements Serializable {
     final Logger logger = LoggerFactory.getLogger(getClass());
     private StringBuilder sb = new StringBuilder();
 
+    private boolean print;
+
+    public BotLogger() {
+    }
+
+    public BotLogger(boolean print) {
+        this.print = print;
+    }
+
     public void append(LogType logType, String suite, String log) {
 
         try {
@@ -31,6 +41,9 @@ public class BotLogger implements Serializable {
                     log);
 
             sb.append(msg).append("\n");
+            if (BooleanUtils.isTrue(print)) {
+                System.out.println(msg);
+            }
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage());
         }

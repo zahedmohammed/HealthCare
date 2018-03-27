@@ -43,6 +43,16 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
 
     }
 
+    public Response<Project> findByOrgAndName(String name) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<Void> request = new HttpEntity<>(getHeaders());
+
+        ResponseEntity<Response<Project>> response = restTemplate.exchange(getUrl() + "/find-by-name/" + name, HttpMethod.GET, request, paramTypeRefMap.get(Project.class));
+        return response.getBody();
+
+    }
+
     public Response<Project> findById(String id) {
         RestTemplate restTemplate = new RestTemplate();
 

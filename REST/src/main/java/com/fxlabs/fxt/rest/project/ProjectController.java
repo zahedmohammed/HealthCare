@@ -42,6 +42,12 @@ public class ProjectController {
     }
 
     @Secured(ROLE_USER)
+    @RequestMapping(value = "/find-by-name/{org}/{name}", method = RequestMethod.GET)
+    public Response<Project> findByProjectName(@PathVariable("org") String org, @PathVariable("name") String name) {
+        return projectService.findByOrgAndName(org + "/" + name, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Project> update(@Valid @RequestBody Project dto) {
         return projectService.save(dto, SecurityUtil.getCurrentAuditor());

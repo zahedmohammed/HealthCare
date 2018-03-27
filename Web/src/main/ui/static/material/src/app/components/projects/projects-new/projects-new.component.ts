@@ -50,7 +50,7 @@ export class ProjectsNewComponent implements OnInit {
       console.log("Unable to fetch orgs");
     });
   }
-  projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab'];
+  projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 
 }

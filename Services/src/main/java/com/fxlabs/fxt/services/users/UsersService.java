@@ -12,6 +12,8 @@ public interface UsersService extends GenericService<Users, String> {
 
     public Response<Users> findByEmail(String email);
 
+    public Response<Users> findById(String id);
+
     public Response<Boolean> personalSignUp(com.fxlabs.fxt.dto.users.Users users);
 
     public Response<Boolean> teamSignUp(com.fxlabs.fxt.dto.users.Users users);
