@@ -50,7 +50,29 @@ public class AwsCloudService implements CloudService {
     private static final String FXLABS_AWS_DEFAULT_IMAGE = "us-west-1/ami-09d2fb69";
     private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP = "fx-sg";
     private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
-    private static final String AWS_PRIVATE_KEY_PEM = "";
+    private String AWS_PRIVATE_KEY_PEM = "-----BEGIN RSA PRIVATE KEY-----\n" +
+            "MIIEogIBAAKCAQEAo4dmeW4TyJU8VLoxlg24j9rscx27cKL7/2kfVVf7rEwZ0P8i4e7ITz1Lwz4X\n" +
+            "AzO6K7YftCH9XjDtFef0dx+k7hAfHvUuu/+snwINy8aUpB7BOQHjMNiEv1reRAXXtWpZMDMPCfAf\n" +
+            "lG9gREQ7dEUgCbOrxBCn6jkAoGrSwKUCxOn+loXl6uI3lfPYtNyNS1N5nG4zXWrgQ9EOx7NjigDw\n" +
+            "Zdj+YIGmFC18tg0Ka3u4bqyljCsrBtgVF4ryg4sCWHQbVtgdc/UmCVZmUH/IU0AOI0RSB6iQ5Dfe\n" +
+            "kYoH02FqvcVepOl+w+e6RZF5kMMMHkcxCk5L8LL8bjAldYdW0TUcNwIDAQABAoIBAFrLG49CGcPd\n" +
+            "cADO3Ccm+RkOAQgtMtvn8iguEpKM5hQUsKTEc3aj4B12t/DwMVC60JviY5nc4VMBsTDfd3EIZccz\n" +
+            "tkO297qzywEB3+0LFY5F8RwYuy5smM+xwQRdhhWYtWo4fxoSc0YzzGw6whPdKVuZoT2bzc8S1RE8\n" +
+            "HkWNmIsBSCPM2L9ItUreicXtRZpBmyu6O9EuArwAyWUa+lmjv2Ku1dJXbyq4ZCVZl7GCmLSfozXL\n" +
+            "NhElVBI6JJlVPi6wYYbymQDxFscwgX3ADJlhNd4a6qm4jJLyop43O9a4jIPyYm1C0hMCwP4j6Zvh\n" +
+            "2JUmRbstTA8iRSMdRwS1tqnaYtECgYEA3zS3FMX/xQXHHAU8LHGLSdz3ZrA+qBXLqCONQgWHr1mp\n" +
+            "UdLALTGLw/V69B6jaIFCF+wkbgMRFWm9d2aWB7N1lUsCjOkgFdASaqZ8FDydRT87KxkGGAgbi7RV\n" +
+            "uE6np0bWHV8njiZo5t5+FK5orOLS52xf+/7ODM4P2WvXAANje4kCgYEAu44YqFLEShWBXMEGX/7m\n" +
+            "UtFCz36pkjoOHXdH9E2abuiraRbatkEy3yHxi1BE6tqqDLJoNXd5F+XuIkBshbce5j1yk2UZsH1u\n" +
+            "KbsLJs5RzC5fyBUWzwitzm+w7DLr4CbbgsLf8247dgdLn5b1Jjd8vO6rfNXT0udp7CFZ3QXbKb8C\n" +
+            "gYA8+xj92u569I4mcKO0/LxyTKVm78XehD3kzPm9zOb6GEPzL+IDNuMZgYq7AVfhqFbXVFPLnpjf\n" +
+            "QclawrNAnV4FkL28o8B5VSSC8MM7gCfzkEfpCWgpzqU/8N/uf8a8I9VBpwqWgpXsZWMK4W+FtF6s\n" +
+            "jWZX4ZCH3RBldVoDDenzCQKBgG6e6tAssPV5JamNd7Ma5sImBp/XdzB16WlbtybStql/tcnv3uPs\n" +
+            "JJMStCKVH3Dds7p1Z51RcCy2QvQUx20+io0F5RQmZzZ/ZIBcf8FNo1UobPnX5nIKDmlZ2yIVDqZQ\n" +
+            "hNvlEK3FcHC28NWZ9dGqnHna0253t84HC6RoL1Z7Y76FAoGAJdMktiD/QoBAwQA/CnwAEpIT3kGg\n" +
+            "ebyX+nt7yRci1d3rZdz+bx5O4tYyWoVVXo7I1J697wqp8PRSXgStSqOywzclhWbdyENmdNOidloJ\n" +
+            "KbIDQyzPNrmomu15fdqnqdEHA7ovvI2yUKPlmwt/kToEUCTfpoMOcuwPFQkXvBO8uCQ=\n" +
+            "-----END RSA PRIVATE KEY-----";
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
     /**

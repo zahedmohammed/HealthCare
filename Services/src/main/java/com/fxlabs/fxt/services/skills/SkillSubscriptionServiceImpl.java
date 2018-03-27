@@ -12,6 +12,7 @@ import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
+import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.clusters.ClusterCloud;
 import com.fxlabs.fxt.dto.skills.Skill;
@@ -198,13 +199,36 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         Map<String, String> opts = new HashMap<>();
 
-        opts.put("ACCESS_KEY_ID" , dto.getCloudAccount().getAccessKey());
+        CloudAccount cloudAccount = dto.getCloudAccount();
+        String key = getCloudSkillKey(cloudAccount);
+
+        if (StringUtils.isEmpty(key)){
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
+        }
+
+        opts.put("ACCESS_KEY_ID" , cloudAccount.getAccessKey());
         opts.put("SECRET_KEY", dto.getCloudAccount().getSecretKey());
         cloudTask.setOpts(opts);
+
+
         //send task to queue
-        amqpClientService.sendTask(cloudTask,"fx-caas-aws-ec2");
+        amqpClientService.sendTask(cloudTask, key);
 
         return new Response<SkillSubscription>();
+    }
+
+    private String getCloudSkillKey(CloudAccount cloudAccount) {
+        String key = null;
+        switch (cloudAccount.getCloudType()){
+            case AWS:
+                key = "fx-caas-aws-ec2";
+            case AZURE:
+                key = "fx-caas-azure";
+                default:
+                    logger.info("Invalid provider [{}]", cloudAccount.getCloudType());
+                break;
+        }
+        return key;
     }
 
     @Override
