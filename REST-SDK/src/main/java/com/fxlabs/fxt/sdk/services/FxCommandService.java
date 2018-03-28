@@ -824,7 +824,7 @@ public class FxCommandService {
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 "Run summary:",
                 AnsiColor.DEFAULT));
-        System.out.print(
+        System.out.println(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
                         String.format(" Run Id: %s " +
                                         "\n URL: %s" +
