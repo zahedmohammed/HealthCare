@@ -25,6 +25,11 @@ jar {
     baseName = 'Fxt-CLI'
     version = '0.0.1-SNAPSHOT'
 }
+
+bootJar {
+    launchScript()
+}
+
 sourceCompatibility = 1.8
 
 repositories {
