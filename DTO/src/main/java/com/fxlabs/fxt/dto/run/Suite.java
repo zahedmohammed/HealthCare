@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(exclude = {"tests", "failed", "size", "time"})
 public class Suite implements Serializable {
     private static final long serialVersionUID = 1L;
 

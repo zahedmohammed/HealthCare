@@ -2,6 +2,7 @@ package com.fxlabs.fxt.sdk.rest;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.run.Run;
+import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.sdk.services.CredUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,17 @@ public class RunRestRepository extends GenericRestRespository<Run> {
         ResponseEntity<Response<List<TestSuiteResponse>>> response = restTemplate.exchange(getUrl() + "/" + id + "/test-suite-responses", HttpMethod.GET, request, paramTypeRefMap.get(TestSuiteResponse[].class));
 
         //logger.info(response.getBody());
+        return response.getBody();
+
+    }
+
+    public Response<List<Suite>> findTestSuiteSummaryByRunId(String id, Integer page, Integer pageSize) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpEntity<Void> request = new HttpEntity<>(getHeaders());
+
+        ResponseEntity<Response<List<Suite>>> response = restTemplate.exchange(getUrl() + "/" + id + "/test-suite-summary", HttpMethod.GET, request, paramTypeRefMap.get(Suite[].class));
+
         return response.getBody();
 
     }

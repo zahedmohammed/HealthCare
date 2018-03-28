@@ -32,7 +32,7 @@ public class JobConfig {
     @Bean
     public Trigger trigger(@Qualifier("botJobDetail") JobDetail job) {
 
-        int frequencyInSec = 15;
+        int frequencyInSec = 10;
         logger.info("Configuring trigger to fire every {} seconds", frequencyInSec);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_RunRequestProcessor_Trigger")).withDescription("RunRequestProcessor trigger")
@@ -110,12 +110,12 @@ public class JobConfig {
     @Bean
     public Trigger taskCompleteTrigger(@Qualifier("taskCompleteJobDetail") JobDetail job) {
 
-        int frequencyInMins = 1;
-        logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
+        int frequencyInSecs = 15;
+        logger.info("Configuring trigger to fire every {} secs", frequencyInSecs);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_TaskCompleteRequestProcessor_Trigger")).withDescription("TaskCompleteRequestProcessor trigger")
                 .withSchedule(simpleSchedule()
-                        .withIntervalInMinutes(frequencyInMins)
+                        .withIntervalInSeconds(frequencyInSecs)
                         .repeatForever()
                         .withMisfireHandlingInstructionIgnoreMisfires())
                 .build();

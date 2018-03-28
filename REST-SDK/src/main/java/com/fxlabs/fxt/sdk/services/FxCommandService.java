@@ -6,10 +6,7 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
-import com.fxlabs.fxt.dto.run.Run;
-import com.fxlabs.fxt.dto.run.RunTask;
-import com.fxlabs.fxt.dto.run.TaskStatus;
-import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.dto.run.*;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.beans.Config;
 import com.fxlabs.fxt.sdk.rest.*;
@@ -55,7 +52,8 @@ public class FxCommandService {
     protected String password;
 
     // Fx server connection details
-    Set<TestSuiteResponse> dataSets = new HashSet<>();
+    protected Set<TestSuiteResponse> dataSets = new HashSet<>();
+    protected Set<Suite> suiteSet = new HashSet<>();
 
     @Autowired
     private UsersRestRepository usersRestRepository;
@@ -114,6 +112,7 @@ public class FxCommandService {
 
         //System.out.println("running job...");
         dataSets = new HashSet<>();
+        suiteSet = new HashSet<>();
         runJob(jobId, region, tags, envName, suites);
 
         System.out.println(
@@ -124,6 +123,12 @@ public class FxCommandService {
         );
 
         printFailedSuites(dataSets);
+
+        //printSuiteHeader();
+
+        //printSuites(suiteSet);
+
+
 
     }
 
@@ -725,7 +730,10 @@ public class FxCommandService {
         int count = 0;
         boolean isComplete = false;
 
-        while (true) {
+        printSuiteHeader();
+
+        while (!isComplete) {
+            //System.out.println("inside");
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
@@ -739,7 +747,16 @@ public class FxCommandService {
 
             for (TestSuiteResponse ds : response.getData()) {
                 if (dataSets.add(ds)) {
-                    printDataSet(ds);
+                    //printDataSet(ds);
+                }
+            }
+
+            Response<List<Suite>> responses = runRestRepository.findTestSuiteSummaryByRunId(run.getId(), page, pageSize);
+            if (response != null && !CollectionUtils.isEmpty(response.getData())) {
+                for (Suite suite : responses.getData()) {
+                    if (suiteSet.add(suite)) {
+                        printSuite(suite);
+                    }
                 }
             }
 
@@ -752,11 +769,11 @@ public class FxCommandService {
                 } else {
                     if (count++ > 5) page = 0;
                 }
-            } else {
-                break;
+            } else if (run.getTask().getStatus() != TaskStatus.WAITING) {
+                isComplete = true;
             }
 
-            if (isComplete) break;
+            //if (isComplete) break;
 
             run = runRestRepository.findInstance(run.getId());
             if (run.getTask().getStatus() == TaskStatus.COMPLETED || run.getTask().getStatus() == TaskStatus.FAIL) {
@@ -818,6 +835,8 @@ public class FxCommandService {
     }
 
     private void printFailedSuites(Set<TestSuiteResponse> dataSets) {
+
+
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 "\nExecution logs:",
                 AnsiColor.DEFAULT));
@@ -850,6 +869,55 @@ public class FxCommandService {
                             String.format("Test-Suite: %s, Pass: [%s], Fail: %s, Time: %s ms",
                                     ds.getTestSuite(), ds.getTotalPassed(), ds.getTotalFailed(), ds.getRequestTime())
                             , AnsiColor.DEFAULT)
+            );
+        }
+    }
+
+    private void printSuiteHeader() {
+        System.out.println("");
+        System.out.println(
+                AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                        String.format("%s %s %s %s %s %s",
+                                org.apache.commons.lang3.StringUtils.leftPad("Result", 15),
+                                org.apache.commons.lang3.StringUtils.leftPad("Suite", 50),
+                                org.apache.commons.lang3.StringUtils.leftPad("Total/Passed", 20),
+                                org.apache.commons.lang3.StringUtils.leftPad("Success (%)", 20),
+                                org.apache.commons.lang3.StringUtils.leftPad("Time (ms)", 20),
+                                org.apache.commons.lang3.StringUtils.leftPad("Data (B)", 20)),
+                                AnsiColor.DEFAULT)
+                );
+    }
+
+    private void printSuites(Set<Suite> suites) {
+        for (Suite suite : suites) {
+            printSuite(suite);
+        }
+    }
+    private void printSuite(Suite suite) {
+        String result = suite.getFailed() == 0 ? "Passed" : "Failed";
+        if (suite.getFailed() > 0) {
+            System.out.println(
+                    AnsiOutput.toString(AnsiColor.RED,
+                            String.format("%s %s %s %s %s %s",
+                                    org.apache.commons.lang3.StringUtils.leftPad(result, 15),
+                                    org.apache.commons.lang3.StringUtils.leftPad(suite.getSuiteName(), 50),
+                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
+                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
+                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getTime()), 20),
+                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getSize()), 20)),
+                            AnsiColor.DEFAULT)
+            );
+        } else {
+            System.out.println(
+                    AnsiOutput.toString(AnsiColor.GREEN,
+                            String.format("%s %s %s %s %s %s",
+                                    org.apache.commons.lang3.StringUtils.leftPad(result, 15),
+                                    org.apache.commons.lang3.StringUtils.leftPad(suite.getSuiteName(), 50),
+                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
+                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
+                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getTime()), 20),
+                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getSize()), 20)),
+                            AnsiColor.DEFAULT)
             );
         }
     }

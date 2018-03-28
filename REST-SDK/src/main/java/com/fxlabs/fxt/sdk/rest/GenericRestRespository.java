@@ -3,6 +3,7 @@ package com.fxlabs.fxt.sdk.rest;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.Run;
+import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.services.CredUtils;
@@ -54,6 +55,8 @@ public class GenericRestRespository<T> {
         paramTypeRefMap.put(Run[].class, new ParameterizedTypeReference<Response<List<Run>>>() {
         });
         paramTypeRefMap.put(TestSuiteResponse[].class, new ParameterizedTypeReference<Response<List<TestSuiteResponse>>>() {
+        });
+        paramTypeRefMap.put(Suite[].class, new ParameterizedTypeReference<Response<List<Suite>>>() {
         });
         paramTypeRefMap.put(ProjectFile[].class, new ParameterizedTypeReference<Response<List<ProjectFile>>>() {
         });
