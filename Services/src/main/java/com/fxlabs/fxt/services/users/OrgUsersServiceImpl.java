@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -41,6 +42,11 @@ public class OrgUsersServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.e
     public Response<List<com.fxlabs.fxt.dto.users.OrgUsers>> findByAccess(String user, Pageable pageable) {
         Page<OrgUsers> page = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN, pageable);
         return new Response<>(orgUsersConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+    }
+
+    public Response<com.fxlabs.fxt.dto.users.OrgUsers> findByName(String name, String user) {
+        Optional<OrgUsers> optional = this.orgUsersRepository.findByOrgNameAndUsersIdAndStatus(name, user, OrgUserStatus.ACTIVE);
+        return new Response<>(orgUsersConverter.convertToDto(optional.get()));
     }
 
 

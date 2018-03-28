@@ -14,4 +14,6 @@ import java.util.List;
 public interface OrgUsersService extends GenericService<OrgUsers, String> {
 
     Response<List<OrgUsers>> findByAccess(String user, Pageable pageable);
+
+    Response<com.fxlabs.fxt.dto.users.OrgUsers> findByName(String name, String user);
 }

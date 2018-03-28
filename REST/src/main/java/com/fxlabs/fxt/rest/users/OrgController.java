@@ -39,6 +39,13 @@ public class OrgController {
         return orgUsersService.findByAccess(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
+    @RequestMapping(value = "find-by-name/{name}", method = RequestMethod.GET)
+    public Response<OrgUsers> findByName(@PathVariable("name") String name,
+                                               @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                               @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return orgUsersService.findByName(name, SecurityUtil.getCurrentAuditor());
+    }
+
     @RequestMapping(value = "org-user", method = RequestMethod.POST)
     public Response<OrgUsers> createOrgUser(@RequestBody OrgUsers request) {
         return orgUsersService.save(request, SecurityUtil.getCurrentAuditor());
