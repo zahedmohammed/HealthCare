@@ -13,6 +13,7 @@ import com.fxlabs.fxt.sdk.rest.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,12 +123,16 @@ public class FxCommandService {
                         , AnsiColor.DEFAULT)
         );
 
-        printFailedSuites(dataSets);
+        String file = RandomStringUtils.randomAlphanumeric(6);
+        File f = new File(file);
+
+        System.out.println("Log file: " + f.getAbsolutePath());
+
+        printFailedSuites(dataSets, f);
 
         //printSuiteHeader();
 
         //printSuites(suiteSet);
-
 
 
     }
@@ -656,9 +661,12 @@ public class FxCommandService {
             }
 
             System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
-                    String.format("Test-Suite: %s [Synced]", file.getName()),
+                    String.format("Test-Suite: %s [Synced]",
+                            org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50)),
                     AnsiColor.DEFAULT));
-            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Synced");
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO,
+                    org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50),
+                    "Synced");
 
             totalFiles.incrementAndGet();
         });
@@ -677,9 +685,12 @@ public class FxCommandService {
 
             if (projectFileOptional.isPresent()) {
                 System.out.println(AnsiOutput.toString(AnsiColor.WHITE,
-                        String.format("Test-Suite: %s [Up-to-date]", file.getName()),
+                        String.format("Test-Suite: %s [Up-to-date]",
+                                org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50)),
                         AnsiColor.DEFAULT));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Up-to-date");
+                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO,
+                        org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50),
+                        "Up-to-date");
                 return true;
             }
         }
@@ -815,44 +826,53 @@ public class FxCommandService {
                 AnsiColor.DEFAULT));
         System.out.print(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
-                        String.format("Run Id: %s " +
-                                        "\nStatus: %s " +
-                                        "\nDescription: %s" +
-                                        "\nTotal Test-Suites: %s " +
-                                        "\nTotal Test: %s " +
-                                        "\nTotal Failed: %s " +
-                                        "\nProcessing Time: %s ms%s",
+                        String.format(" Run Id: %s " +
+                                        "\n URL: %s" +
+                                        "\n Status: %s " +
+                                        "\n Total Tests: %s " +
+                                        "\n Total Passed: %s " +
+                                        "\n Total Failed: %s " +
+                                        "\n Success: %s " +
+                                        "\n Time: %s ms" +
+                                        "\n Data: %s Bytes",
                                 run.getId(),
+                                CredUtils.url.get() + "/#/app/jobs/" + run.getJob().getId() + "/runs/" + run.getId(),
                                 run.getTask().getStatus(),
-                                run.getTask().getDescription(),
                                 run.getTask().getTotalTests(),
                                 run.getTask().getTotalTestCompleted(),
                                 run.getTask().getFailedTests(),
+                                ((Long) (((run.getTask().getTotalTests() - run.getTask().getFailedTests()) * 100) / run.getTask().getTotalTests())) + "%",
                                 run.getTask().getTotalTime(),
+                                run.getTask().getTotalBytes(),
                                 carriageReturn)
                         , AnsiColor.DEFAULT)
         );
     }
 
-    private void printFailedSuites(Set<TestSuiteResponse> dataSets) {
+    private void printFailedSuites(Set<TestSuiteResponse> dataSets, File f) {
 
-
-        System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+        /*System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 "\nExecution logs:",
-                AnsiColor.DEFAULT));
+                AnsiColor.DEFAULT));*/
+
         dataSets.forEach(suite -> {
             if (!org.apache.commons.lang3.StringUtils.equalsIgnoreCase(suite.getStatus(), "pass") &&
                     !StringUtils.isEmpty(suite.getLogs())) {
-                System.out.println(suite.getTestSuite());
-                printErrorLogs(suite.getLogs());
+                //System.out.println(suite.getTestSuite());
+                printErrorLogs(f, suite.getLogs());
             }
         });
     }
 
-    private void printErrorLogs(String logs) {
-        System.out.println(
+    private void printErrorLogs(File file, String logs) {
+        try {
+            FileUtils.writeStringToFile(file, logs, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*System.out.println(
                 AnsiOutput.toString(AnsiColor.DEFAULT, logs, AnsiColor.DEFAULT)
-        );
+        );*/
     }
 
     private void printDataSet(TestSuiteResponse ds) {
@@ -878,14 +898,14 @@ public class FxCommandService {
         System.out.println(
                 AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                         String.format("%s %s %s %s %s %s",
-                                org.apache.commons.lang3.StringUtils.leftPad("Result", 15),
-                                org.apache.commons.lang3.StringUtils.leftPad("Suite", 50),
-                                org.apache.commons.lang3.StringUtils.leftPad("Total/Passed", 20),
-                                org.apache.commons.lang3.StringUtils.leftPad("Success (%)", 20),
-                                org.apache.commons.lang3.StringUtils.leftPad("Time (ms)", 20),
-                                org.apache.commons.lang3.StringUtils.leftPad("Data (B)", 20)),
-                                AnsiColor.DEFAULT)
-                );
+                                org.apache.commons.lang3.StringUtils.rightPad("Result", 15),
+                                org.apache.commons.lang3.StringUtils.rightPad("Suite", 50),
+                                org.apache.commons.lang3.StringUtils.rightPad("Total/Passed", 20),
+                                org.apache.commons.lang3.StringUtils.rightPad("Success (%)", 20),
+                                org.apache.commons.lang3.StringUtils.rightPad("Time (ms)", 20),
+                                org.apache.commons.lang3.StringUtils.rightPad("Data (B)", 20)),
+                        AnsiColor.DEFAULT)
+        );
     }
 
     private void printSuites(Set<Suite> suites) {
@@ -893,30 +913,31 @@ public class FxCommandService {
             printSuite(suite);
         }
     }
+
     private void printSuite(Suite suite) {
         String result = suite.getFailed() == 0 ? "Passed" : "Failed";
         if (suite.getFailed() > 0) {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.RED,
                             String.format("%s %s %s %s %s %s",
-                                    org.apache.commons.lang3.StringUtils.leftPad(result, 15),
-                                    org.apache.commons.lang3.StringUtils.leftPad(suite.getSuiteName(), 50),
-                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
-                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
-                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getTime()), 20),
-                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getSize()), 20)),
+                                    org.apache.commons.lang3.StringUtils.rightPad(result, 15),
+                                    org.apache.commons.lang3.StringUtils.rightPad(suite.getSuiteName(), 50),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTime()), 20),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getSize()), 20)),
                             AnsiColor.DEFAULT)
             );
         } else {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.GREEN,
                             String.format("%s %s %s %s %s %s",
-                                    org.apache.commons.lang3.StringUtils.leftPad(result, 15),
-                                    org.apache.commons.lang3.StringUtils.leftPad(suite.getSuiteName(), 50),
-                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
-                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
-                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getTime()), 20),
-                                    org.apache.commons.lang3.StringUtils.leftPad(String.valueOf(suite.getSize()), 20)),
+                                    org.apache.commons.lang3.StringUtils.rightPad(result, 15),
+                                    org.apache.commons.lang3.StringUtils.rightPad(suite.getSuiteName(), 50),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTime()), 20),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getSize()), 20)),
                             AnsiColor.DEFAULT)
             );
         }
