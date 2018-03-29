@@ -172,8 +172,14 @@ public class RunTaskRequestProcessor {
                         copy(testSuite.getCleanup(), task.getCleanup(), run, env);
 
                         // count tests
-                        if (testSuite.getTestCases() != null)
+                        if (testSuite.getTestCases() != null) {
                             total.getAndAdd(testSuite.getTestCases().size());
+                        }
+
+                        // repeat value
+                        if (task.getPolicies() != null && task.getPolicies().getRepeat() != null) {
+                            total.getAndAdd(task.getPolicies().getRepeat());
+                        }
 
                         botClientService.sendTask(task, region);
                     } catch (Exception ex) {

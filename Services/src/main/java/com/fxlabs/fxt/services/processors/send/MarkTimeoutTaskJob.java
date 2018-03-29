@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -11,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Intesar Shannan Mohammed
  */
-@Component
-@Transactional
+@DisallowConcurrentExecution
 public class MarkTimeoutTaskJob implements org.quartz.Job {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());

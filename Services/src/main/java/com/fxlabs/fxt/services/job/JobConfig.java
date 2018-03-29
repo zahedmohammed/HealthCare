@@ -39,7 +39,7 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInSeconds(frequencyInSec)
                         .repeatForever()
-                        .withMisfireHandlingInstructionIgnoreMisfires()
+                        .withMisfireHandlingInstructionNextWithRemainingCount()
                 )
                 .build();
     }

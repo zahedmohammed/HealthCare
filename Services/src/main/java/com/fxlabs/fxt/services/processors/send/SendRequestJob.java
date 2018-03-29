@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Intesar Shannan Mohammed
  */
+@DisallowConcurrentExecution
 public class SendRequestJob implements Job {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());

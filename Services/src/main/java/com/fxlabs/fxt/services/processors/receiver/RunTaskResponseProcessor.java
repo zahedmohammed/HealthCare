@@ -83,7 +83,7 @@ public class RunTaskResponseProcessor {
         TestSuite pds = testSuiteOptional.get();
         ds.setTestSuite(pds.getName());
 
-        logger.info("Logs: {}", task.getLogs());
+        //logger.info("Logs: {}", task.getLogs());
         ds.setLogs(task.getLogs());
         ds.setResponse(task.getResponse());
 
