@@ -70,7 +70,7 @@ public class CloudResponseProcessor {
 
             com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = optional.get();
             Optional<Cluster> clusterData = clusterRepository.findById(task.getClusterId());
-            clusterData.get().setNodeId(response.getResponseId());
+
 
            // task.setStatus(TaskStatus.COMPLETED);
             task.setLogs(response.getLogs());
@@ -79,12 +79,14 @@ public class CloudResponseProcessor {
             if (response.getSuccess() && task.getType() == TaskType.CREATE) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.ACTIVE);
+                clusterData.get().setNodeId(response.getResponseId());
                 //subscription.setState(SubscriptionState.ACTIVE);
             }
 
             if (response.getSuccess() && task.getType() == TaskType.DESTROY) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.DELETED);
+                clusterData.get().setInactive(true);
                 //subscription.setState(SubscriptionState.ACTIVE);
             }
             repository.save(task);

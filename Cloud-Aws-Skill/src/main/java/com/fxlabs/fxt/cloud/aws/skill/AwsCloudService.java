@@ -1,35 +1,18 @@
 package com.fxlabs.fxt.cloud.aws.skill;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.auth.*;
+import com.amazonaws.internal.StaticCredentialsProvider;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
+import com.amazonaws.services.ec2.model.InstanceType;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
+import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
-import com.google.common.collect.ImmutableSet;
-import com.google.inject.Module;
 import org.apache.commons.codec.binary.Base64;
-import org.jclouds.ContextBuilder;
-import org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions;
-import org.jclouds.compute.ComputeService;
-import org.jclouds.compute.ComputeServiceContext;
-import org.jclouds.compute.RunNodesException;
-import org.jclouds.compute.domain.NodeMetadata;
-import org.jclouds.compute.domain.Template;
-import org.jclouds.compute.domain.TemplateBuilder;
-import org.jclouds.compute.options.TemplateOptions;
-import org.jclouds.domain.LoginCredentials;
-import org.jclouds.ec2.domain.InstanceType;
-import org.jclouds.enterprise.config.EnterpriseConfigurationModule;
-import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
-import org.jclouds.sshj.config.SshjSshClientModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -38,11 +21,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
-import static com.google.common.collect.Iterables.getOnlyElement;
-import static org.jclouds.compute.config.ComputeServiceProperties.TIMEOUT_SCRIPT_COMPLETE;
 
 
 /**
@@ -57,11 +35,12 @@ public class AwsCloudService implements CloudService {
 
 
     final Logger logger = LoggerFactory.getLogger(getClass());
-    private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2_MICRO;
+    private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Small.toString();
     private static final String AWS_PKEY = "fxlabs";
-    private static final String FXLABS_AWS_DEFAULT_IMAGE = "us-west-1/ami-09d2fb69";
+    private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-09d2fb69";
     private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP = "fx-sg";
     private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-9b6d4ae2";
+    private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
 
     private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
     private String AWS_PRIVATE_KEY_PEM = "-----BEGIN RSA PRIVATE KEY-----\n" +
@@ -88,6 +67,8 @@ public class AwsCloudService implements CloudService {
             "KbIDQyzPNrmomu15fdqnqdEHA7ovvI2yUKPlmwt/kToEUCTfpoMOcuwPFQkXvBO8uCQ=\n" +
             "-----END RSA PRIVATE KEY-----";
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
+
+
 
     /**
      * <p>
@@ -117,122 +98,6 @@ public class AwsCloudService implements CloudService {
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
         response.setId(task.getId());
-        ComputeService awsService = null;
-        try {
-
-            taskLogger.set(new StringBuilder());
-
-            if (CollectionUtils.isEmpty(task.getOpts())) {
-                return response;
-            }
-
-            Map<String, String> opts = task.getOpts();
-
-            // Args
-            String accessKeyId = opts.get("ACCESS_KEY_ID");
-            String secretKey = opts.get("SECRET_KEY");
-
-            awsService = getAwsService(accessKeyId, secretKey);
-
-            TemplateBuilder templateBuilder = awsService.templateBuilder();
-
-            //Instance type/size
-            String hardware = getInstanceType(task);
-            taskLogger.get().append("setting hardware id " + hardware);
-            templateBuilder.hardwareId(hardware);
-
-            String image = getImage(task);
-            taskLogger.get().append("Setting image id : " + image);
-
-            templateBuilder.imageId(image);
-
-            Template template = templateBuilder.build();
-
-            TemplateOptions options = template.getOptions();
-
-            String awsPrivateKeyName = getAwsPrivateKey(opts);
-            taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
-            options.as(AWSEC2TemplateOptions.class).keyPair(awsPrivateKeyName);
-
-
-            String securityGroup = getSecurityGroup(opts);
-            taskLogger.get().append("Setting Security Group " + securityGroup);
-            options.as(AWSEC2TemplateOptions.class).securityGroupIds(securityGroup);
-
-            String network = getNetwork(opts);
-            taskLogger.get().append("Setting Network " + network);
-            options.as(AWSEC2TemplateOptions.class).networks(network);
-
-
-            String username = getAwsImageUsername(opts);
-            String password = getImagePassword(opts);
-
-
-            if (!skipBotInstallation(opts)) {
-                taskLogger.get().append("Installing Bot.....");
-                LoginCredentials login = null;
-
-                if (!StringUtils.isEmpty(username)) {
-                    login = LoginCredentials.builder().user(username).privateKey(password).build();
-                } else {
-                    login = LoginCredentials.builder().privateKey(password).build();
-                }
-
-                if (login != null) {
-                    options.runAsRoot(true).runScript(getBotInstallationScript(opts)).overrideLoginCredentials(login);
-                }
-            }
-            NodeMetadata virtualBot = getOnlyElement(awsService.createNodesInGroup("fxlabs", 1, template));
-            response.setSuccess(true);
-            response.setResponseId(virtualBot.getId());
-
-            response.setLogs(taskLogger.get().toString());
-            return response;
-        } catch (RunNodesException ex) {
-            logger.warn(ex.getLocalizedMessage(), ex);
-            taskLogger.get().append(ex.getLocalizedMessage());
-            response.setLogs(taskLogger.get().toString());
-        } catch (Exception ex) {
-            logger.warn(ex.getLocalizedMessage(), ex);
-            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
-        } finally {
-            if (awsService != null) {
-                awsService.getContext().close();
-            }
-        }
-
-        return response;
-
-    }
-
-    /**
-     * <p>
-     *  This method does only one thing.
-     *   1. Creates Vm's on AWS
-     * </p>
-     *
-     * @param task
-     *  <p>
-     *      Contains public cloud system connection information.
-     *      e.g.
-     *     VM configuaration
-     *  </p>
-     *
-     *
-     * @return
-     *  <p>
-     *      CloudTaskResponse - Should only set these properties.
-     *      1. success - true/false
-     *      2. logs - execution or error logs.
-     *  </p>
-     */
-    //@Override
-    public CloudTaskResponse createAwsSdk(final CloudTask task) {
-        logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
-
-        CloudTaskResponse response = new CloudTaskResponse();
-        response.setSuccess(false);
-        response.setId(task.getId());
         AmazonEC2  awsService = null;
         try {
 
@@ -248,7 +113,9 @@ public class AwsCloudService implements CloudService {
             String accessKeyId = opts.get("ACCESS_KEY_ID");
             String secretKey = opts.get("SECRET_KEY");
 
-            awsService = getAwsEc2Service(accessKeyId, secretKey);
+            String region = getRegion(opts);
+
+            awsService = getAwsEc2Service(accessKeyId, secretKey, region);
 
             //Instance type/size
             String hardware = getInstanceType(task);
@@ -269,19 +136,19 @@ public class AwsCloudService implements CloudService {
             String username = getAwsImageUsername(opts);
             String password = getImagePassword(opts);
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
-                    .withImageId("ami-09d2fb69")
+                    .withImageId(image)
                     .withInstanceType(com.amazonaws.services.ec2.model.InstanceType.T2Small)
                     .withMinCount(1).withMaxCount(1)
                     .withKeyName(awsPrivateKeyName)
                     .withSubnetId("subnet-9c6a08c7")
                     .withSecurityGroupIds(FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID)
-                    .withKeyName(username).withUserData(getECSuserData("Cluster123"));
+                    .withUserData(getECSuserData("Cluster123"));
 
 
 
             RunInstancesResult run_response = awsService.runInstances(runInstancesRequest);
 
-            String instance_id = run_response.getReservation().getReservationId();
+            String instance_id = run_response.getReservation().getInstances().get(0).getInstanceId();
 
             response.setSuccess(true);
             response.setResponseId(instance_id);
@@ -292,12 +159,86 @@ public class AwsCloudService implements CloudService {
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         } finally {
 //            if (awsService != null) {
-//                awsService.close();
+//                awsService.a;
 //            }
         }
 
         return response;
 
+    }
+
+    @Override
+    public CloudTaskResponse destroy(final CloudTask task) {
+        logger.info("In IT AwsCloud Service for task [{}]" , task.getType().toString());
+
+        CloudTaskResponse response = new CloudTaskResponse();
+        response.setSuccess(false);
+        response.setId(task.getId());
+
+       // ComputeService awsService = null;
+        AmazonEC2  awsService = null;
+        try {
+            taskLogger.set(new StringBuilder());
+            if (CollectionUtils.isEmpty(task.getOpts())) {
+                taskLogger.get().append("Node id  is empty ");
+                response.setLogs(taskLogger.get().toString());
+                return response;
+            }
+
+            Map<String, String> opts = task.getOpts();
+            String nodeId = opts.get("NODE_ID");
+
+            if (StringUtils.isEmpty(nodeId)){
+                return response;
+            }
+
+            String accessKeyId = opts.get("ACCESS_KEY_ID");
+            String secretKey = opts.get("SECRET_KEY");
+
+
+            logger.info("Deleting bot [{}]..." , nodeId);
+            taskLogger.get().append("Deleting Bot : " + nodeId);
+
+            AmazonEC2 client = getAmazonEC2Client(accessKeyId, secretKey, getRegion(opts));
+
+
+            TerminateInstancesRequest termRequest = new TerminateInstancesRequest();
+            termRequest.withInstanceIds(nodeId);
+
+            client.terminateInstances(termRequest);
+
+            response.setSuccess(true);
+            response.setLogs(taskLogger.get().toString());
+
+            return response;
+
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            response.setLogs(taskLogger.get().toString());
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } finally {
+//            if (awsService != null){
+//                awsService.getContext().close();
+//            }
+        }
+
+        return response;
+
+    }
+
+    private String getRegion(Map<String, String> opts) {
+        String region =  opts.get("REGION");
+        if (StringUtils.isEmpty(region)) {
+            region = FXLABS_AWS_DEFAULT_REGION;
+        }
+        return region;
+    }
+
+    private AmazonEC2 getAmazonEC2Client(String accessKeyId, String secretKey, String region) {
+        AWSCredentialsProvider credentials = new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKeyId, secretKey));
+        return AmazonEC2ClientBuilder.standard().withRegion(region).withCredentials(credentials).build();
     }
 
     private String getInstanceType(CloudTask task) {
@@ -319,92 +260,41 @@ public class AwsCloudService implements CloudService {
     }
 
 
-    @Override
-    public CloudTaskResponse destroy(final CloudTask task) {
-        logger.info("In IT AwsCloud Service for task [{}]" , task.getType().toString());
 
-        CloudTaskResponse response = new CloudTaskResponse();
-        response.setSuccess(false);
-        response.setId(task.getId());
-
-        ComputeService awsService = null;
-
-        try {
-            taskLogger.set(new StringBuilder());
-            if (CollectionUtils.isEmpty(task.getOpts())) {
-                taskLogger.get().append("Node id  is empty ");
-                response.setLogs(taskLogger.get().toString());
-                return response;
-            }
-
-            Map<String, String> opts = task.getOpts();
-            String nodeId = opts.get("NODE_ID");
-
-            if (StringUtils.isEmpty(nodeId)){
-                return response;
-            }
-
-            String accessKeyId = opts.get("ACCESS_KEY_ID");
-            String secretKey = opts.get("SECRET_KEY");
-            logger.info("Deleting bot [{}]..." , nodeId);
-            taskLogger.get().append("Deleting VM " + nodeId);
-            awsService = getAwsService(accessKeyId, secretKey);
-            awsService.destroyNode(nodeId);
-            response.setSuccess(true);
-            response.setLogs(taskLogger.get().toString());
-            return response;
-
-        } catch (RuntimeException ex) {
-            logger.warn(ex.getLocalizedMessage(), ex);
-            response.setLogs(taskLogger.get().toString());
-        } catch (Exception ex) {
-            logger.warn(ex.getLocalizedMessage(), ex);
-            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
-        } finally {
-            if (awsService != null){
-                awsService.getContext().close();
-            }
-        }
-
-        return response;
-
-    }
-
-
-
-    private  AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey) {
+    private  AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey, String region) {
         AWSCredentials credentials = new BasicAWSCredentials(accessKeyId,secretKey);
 
         AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion("us-west-1")
+                .withRegion(region)
                 .build();
 
         return ec2Client;
     }
 
-    private ComputeService getAwsService(String accessKeyId, String secretKey) {
-
-        Properties properties = new Properties();
-
-        long scriptTimeout = TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES);
-        properties.setProperty(TIMEOUT_SCRIPT_COMPLETE, scriptTimeout + "");
-
-
-        Iterable<Module> modules = ImmutableSet.<Module>of(
-                new SshjSshClientModule(),
-                new SLF4JLoggingModule(),
-                new EnterpriseConfigurationModule());
-
-        ContextBuilder builder = ContextBuilder.newBuilder("aws-ec2")
-                .credentials(accessKeyId, secretKey)
-                .modules(modules)
-                .overrides(properties);
-        System.out.print(builder.getApiMetadata());
-        ComputeService client = builder.buildView(ComputeServiceContext.class).getComputeService();
-
-        return client;
-    }
+//    private ComputeService getAwsService(String accessKeyId, String secretKey) {
+//
+//        Properties properties = new Properties();
+//
+//        long scriptTimeout = TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES);
+//        properties.setProperty(TIMEOUT_SCRIPT_COMPLETE, scriptTimeout + "");
+//
+//
+//        Iterable<Module> modules = ImmutableSet.<Module>of(
+//                new SshjSshClientModule(),
+//                new SLF4JLoggingModule(),
+//                new EnterpriseConfigurationModule());
+//
+//        ContextBuilder builder = ContextBuilder.newBuilder("aws-ec2")
+//                .credentials(accessKeyId, secretKey)
+//                .modules(modules)
+//                .overrides(properties);
+//        System.out.print(builder.getApiMetadata());
+//        ComputeService client = builder.buildView(ComputeServiceContext.class).getComputeService();
+//
+//        return client;
+//    }
 
     /**
      *
@@ -522,6 +412,123 @@ public class AwsCloudService implements CloudService {
         }
         return base64UserData;
     }
+
+
+    /**
+     * <p>
+     *  This method does only one thing.
+     *   1. Creates Vm's on AWS
+     * </p>
+     *
+     * @param task
+     *  <p>
+     *      Contains public cloud system connection information.
+     *      e.g.
+     *     VM configuaration
+     *  </p>
+     *
+     *
+     * @return
+     *  <p>
+     *      CloudTaskResponse - Should only set these properties.
+     *      1. success - true/false
+     *      2. logs - execution or error logs.
+     *  </p>
+     */
+    //@Override
+//    public CloudTaskResponse createJcloud(final CloudTask task) {
+//        logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
+//
+//        CloudTaskResponse response = new CloudTaskResponse();
+//        response.setSuccess(false);
+//        response.setId(task.getId());
+//        ComputeService awsService = null;
+//        try {
+//
+//            taskLogger.set(new StringBuilder());
+//
+//            if (CollectionUtils.isEmpty(task.getOpts())) {
+//                return response;
+//            }
+//
+//            Map<String, String> opts = task.getOpts();
+//
+//            // Args
+//            String accessKeyId = opts.get("ACCESS_KEY_ID");
+//            String secretKey = opts.get("SECRET_KEY");
+//
+//            awsService = getAwsService(accessKeyId, secretKey);
+//
+//            TemplateBuilder templateBuilder = awsService.templateBuilder();
+//
+//            //Instance type/size
+//            String hardware = getInstanceType(task);
+//            taskLogger.get().append("setting hardware id " + hardware);
+//            templateBuilder.hardwareId(hardware);
+//
+//            String image = getImage(task);
+//            taskLogger.get().append("Setting image id : " + image);
+//
+//            templateBuilder.imageId(image);
+//
+//            Template template = templateBuilder.build();
+//
+//            TemplateOptions options = template.getOptions();
+//
+//            String awsPrivateKeyName = getAwsPrivateKey(opts);
+//            taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
+//            options.as(AWSEC2TemplateOptions.class).keyPair(awsPrivateKeyName);
+//
+//
+//            String securityGroup = getSecurityGroup(opts);
+//            taskLogger.get().append("Setting Security Group " + securityGroup);
+//            options.as(AWSEC2TemplateOptions.class).securityGroupIds(securityGroup);
+//
+//            String network = getNetwork(opts);
+//            taskLogger.get().append("Setting Network " + network);
+//            options.as(AWSEC2TemplateOptions.class).networks(network);
+//
+//
+//            String username = getAwsImageUsername(opts);
+//            String password = getImagePassword(opts);
+//
+//
+//            if (!skipBotInstallation(opts)) {
+//                taskLogger.get().append("Installing Bot.....");
+//                LoginCredentials login = null;
+//
+//                if (!StringUtils.isEmpty(username)) {
+//                    login = LoginCredentials.builder().user(username).privateKey(password).build();
+//                } else {
+//                    login = LoginCredentials.builder().privateKey(password).build();
+//                }
+//
+//                if (login != null) {
+//                    options.runAsRoot(true).runScript(getBotInstallationScript(opts)).overrideLoginCredentials(login);
+//                }
+//            }
+//            NodeMetadata virtualBot = getOnlyElement(awsService.createNodesInGroup("fxlabs", 1, template));
+//            response.setSuccess(true);
+//            response.setResponseId(virtualBot.getId());
+//
+//            response.setLogs(taskLogger.get().toString());
+//            return response;
+//        } catch (RunNodesException ex) {
+//            logger.warn(ex.getLocalizedMessage(), ex);
+//            taskLogger.get().append(ex.getLocalizedMessage());
+//            response.setLogs(taskLogger.get().toString());
+//        } catch (Exception ex) {
+//            logger.warn(ex.getLocalizedMessage(), ex);
+//            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+//        } finally {
+//            if (awsService != null) {
+//                awsService.getContext().close();
+//            }
+//        }
+//
+//        return response;
+//
+//    }
 
 
 }

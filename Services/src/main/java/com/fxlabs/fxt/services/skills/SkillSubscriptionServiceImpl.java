@@ -273,11 +273,11 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         opts.put("ACCESS_KEY_ID" , cloudAccount.getAccessKey());
         opts.put("SECRET_KEY", cloudAccount.getSecretKey());
 
-        if (StringUtils.isEmpty(cloudAccount.getNodeId())){
+        if (StringUtils.isEmpty(dto.getNodeId())){
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Node id is empty"));
         }
 
-        opts.put("NODE_ID", cloudAccount.getNodeId());
+        opts.put("NODE_ID", dto.getNodeId());
         cloudTask.setOpts(opts);
 
 
