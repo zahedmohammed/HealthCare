@@ -80,6 +80,7 @@ public class FxCommandService {
             File file = new File(".");
             projectDir = file.getAbsolutePath();
         }
+
         if (StringUtils.isEmpty(projectName)) {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.RED,
@@ -89,7 +90,16 @@ public class FxCommandService {
             return;
         }
 
-        System.out.println(String.format("locating project %s...", projectName));
+        if (StringUtils.isEmpty(jobName)) {
+            System.out.println(
+                    AnsiOutput.toString(AnsiColor.RED,
+                            String.format("Invalid job %s", jobName)
+                            , AnsiColor.DEFAULT)
+            );
+            return;
+        }
+
+        System.out.println(String.format("Locating project %s...", projectName));
         Response<Project> response = projectRepository.findByOrgAndName(projectName);
         if (response == null || response.isErrors()) {
             for (Message m : response.getMessages())
@@ -109,16 +119,18 @@ public class FxCommandService {
 
         String jobId = locateJobId(jobName, project);
 
+        System.out.println("Test-Suite sync done!");
+
         Date loadEnd = new Date();
 
-        //System.out.println("running job...");
+        System.out.println("Starting Job run...");
         dataSets = new HashSet<>();
         suiteSet = new HashSet<>();
         runJob(jobId, region, tags, envName, suites);
 
         System.out.println(
                 AnsiOutput.toString(AnsiColor.DEFAULT,
-                        String.format("Total Time: %s ms",
+                        String.format(" Total Time: %s ms",
                                 (new Date().getTime() - loadEnd.getTime()))
                         , AnsiColor.DEFAULT)
         );
@@ -126,7 +138,9 @@ public class FxCommandService {
         String file = RandomStringUtils.randomAlphanumeric(6);
         File f = new File(file);
 
-        System.out.println("Log file: " + f.getAbsolutePath());
+        System.out.println(" Log file: " + f.getAbsolutePath());
+
+        System.out.println("");
 
         printFailedSuites(dataSets, f);
 
@@ -168,6 +182,15 @@ public class FxCommandService {
                 projectDir += "/";
             }
             File fxfile = FileUtils.getFile(new File(projectDir), "Fxfile.yaml");
+
+            if (fxfile == null) {
+                System.out.println(
+                        AnsiOutput.toString(AnsiColor.RED,
+                                String.format("Invalid project dir %s. Fxfile.yaml not found.", projectDir)
+                                , AnsiColor.DEFAULT)
+                );
+                return null;
+            }
 
             //new File(projectDir + "Fxfile.yml")
             Config config = yamlMapper.readValue(fxfile, Config.class);
@@ -792,6 +815,8 @@ public class FxCommandService {
             }
         }
 
+        printSummary();
+
         run = runRestRepository.findInstance(run.getId());
         printRun(run, "\n");
 
@@ -821,11 +846,12 @@ public class FxCommandService {
 
     private void printRun(Run run, String carriageReturn) {
         System.out.println("");
+        Long per = ((Long) (((run.getTask().getTotalTests() - run.getTask().getFailedTests()) * 100) / run.getTask().getTotalTests()));
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 "Run summary:",
                 AnsiColor.DEFAULT));
         System.out.println(
-                AnsiOutput.toString(AnsiColor.DEFAULT,
+                AnsiOutput.toString(AnsiColor.GREEN,
                         String.format(" Run Id: %s " +
                                         "\n URL: %s" +
                                         "\n Status: %s " +
@@ -841,12 +867,13 @@ public class FxCommandService {
                                 run.getTask().getTotalTests(),
                                 run.getTask().getTotalTestCompleted(),
                                 run.getTask().getFailedTests(),
-                                ((Long) (((run.getTask().getTotalTests() - run.getTask().getFailedTests()) * 100) / run.getTask().getTotalTests())) + "%",
+                                per + "%",
                                 run.getTask().getTotalTime(),
                                 run.getTask().getTotalBytes(),
                                 carriageReturn)
                         , AnsiColor.DEFAULT)
         );
+        System.out.println("");
     }
 
     private void printFailedSuites(Set<TestSuiteResponse> dataSets, File f) {
@@ -906,6 +933,36 @@ public class FxCommandService {
                                 org.apache.commons.lang3.StringUtils.rightPad("Data (B)", 20)),
                         AnsiColor.DEFAULT)
         );
+    }
+
+    private void printSummary() {
+        int tests = 0;
+        int fails = 0;
+        long time = 0;
+        long size = 0L;
+        long per = 0L;
+        for (Suite s : suiteSet) {
+            tests += s.getTests() != null ? s.getTests() : 0;
+            fails += s.getFailed() != null ? s.getFailed() : 0;
+            time += s.getTime() != null ? s.getTime() : 0;
+            size += s.getSize() != null ? s.getSize() : 0;
+        }
+        per = ( (tests - fails) * 100) / tests;
+
+        System.out.println(org.apache.commons.lang3.StringUtils.rightPad("-", 145, "-"));
+        System.out.println(
+                AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                        String.format("%s %s %s %s %s %s",
+                                org.apache.commons.lang3.StringUtils.rightPad("", 15),
+                                org.apache.commons.lang3.StringUtils.rightPad("", 50),
+                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(tests) + "/" + String.valueOf(fails), 20),
+                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(per) + "%", 20),
+                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(time), 20),
+                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(size), 20)),
+                        AnsiColor.DEFAULT)
+        );
+        System.out.println(org.apache.commons.lang3.StringUtils.rightPad("-", 145, "-"));
+
     }
 
     private void printSuites(Set<Suite> suites) {

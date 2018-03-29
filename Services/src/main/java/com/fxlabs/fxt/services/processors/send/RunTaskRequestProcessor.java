@@ -178,7 +178,7 @@ public class RunTaskRequestProcessor {
 
                         // repeat value
                         if (task.getPolicies() != null && task.getPolicies().getRepeat() != null) {
-                            total.getAndAdd(task.getPolicies().getRepeat());
+                            total.getAndAdd(task.getPolicies().getRepeat() - 1);
                         }
 
                         botClientService.sendTask(task, region);

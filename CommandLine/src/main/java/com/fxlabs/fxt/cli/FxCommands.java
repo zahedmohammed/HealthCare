@@ -50,7 +50,7 @@ public class FxCommands {
         service.lsJobs();
     }*/
 
-    @ShellMethod(key = "run", value = "Load project changes into Fx and executes job")
+    @ShellMethod(key = "run", value = "Executes job")
     public void run(
             @ShellOption(value = {"-p", "--project"}, help = "Project name e.g. org/project-name or FxLabs/Common") @Size(min = 3) String project,
             @ShellOption(value = {"-d", "--dir"}, help = "Project directory path e.g. /opt/Project1 or C:/Project1", defaultValue = "") String projectDir,
@@ -60,12 +60,16 @@ public class FxCommands {
             @ShellOption(value = {"-e", "--env"}, help = "Override env for the job e.g. Stg or Dev etc", defaultValue = "") String envName,
             @ShellOption(value = {"-s", "--suites"}, help = "Comma separated test-suite names ", defaultValue = "") String suites) {
 
-        CredUtils.taskLogger.set(new BotLogger());
-        service.loadAndRun(projectDir, project, jobName, region, tags, envName, suites);
+        try {
+            CredUtils.taskLogger.set(new BotLogger());
+            service.loadAndRun(projectDir, project, jobName, region, tags, envName, suites);
+        } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
+        }
 
     }
 
-    @ShellMethod(key = "login", value = "Login to Fx. CLI will try to read credentials from the following locations \n"
+    /*@ShellMethod(key = "login", value = "Login to Fx. CLI will try to read credentials from the following locations \n"
             + "fx.properties" + "\n"
             + "/opt/fx/fx.properties" + "\n"
             + "/var/fx/fx.properties" + "\n"
@@ -92,7 +96,7 @@ public class FxCommands {
 
         tryLogin();
 
-    }
+    }*/
 
     public Availability runAvailability() {
         return connected
@@ -105,12 +109,28 @@ public class FxCommands {
         CredUtils.username.set(null);
         CredUtils.password.set(null);
         connected = false;
+        printLoginHelp();
+    }
+
+    private void printLoginHelp() {
+        String value = "\nFX-CLI will try to read login credentials from the following locations \n"
+                + "fx.properties" + "\n"
+                + "/opt/fx/fx.properties" + "\n"
+                + "/var/fx/fx.properties" + "\n"
+                + "${user.home}/fxt/fx.properties" + "\n\n"
+                + "e.g. file content" + "\n"
+                + "url=https://cloud.fxlabs.io" + "\n"
+                + "username=me@company.com" + "\n"
+                + "password=mypassword\n";
+
+        System.out.println(value);
+        System.exit(0);
     }
 
     @PostConstruct
     private void tryLogin() {
         try {
-            System.out.println ("Reading credentials from fx.properties");
+            System.out.println("Reading credentials from fx.properties");
             Response<Users> response = service.login();
             if (response == null || response.isErrors() || response.getData() == null) {
                 System.out.println(
@@ -141,7 +161,7 @@ public class FxCommands {
                             , AnsiColor.DEFAULT)
             );
         } catch (Exception e) {
-            logger.warn(e.getLocalizedMessage(), e);
+            logger.warn(e.getLocalizedMessage());
             System.out.println(
                     AnsiOutput.toString(AnsiColor.RED,
                             "Login failed!"
