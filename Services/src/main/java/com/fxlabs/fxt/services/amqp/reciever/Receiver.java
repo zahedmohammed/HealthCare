@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.amqp.reciever;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
 import com.fxlabs.fxt.dto.clusters.ClusterPing;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
@@ -45,6 +46,9 @@ public class Receiver {
     @Autowired
     private MarketPlaceProcessor marketPlaceProcessor;
 
+    @Autowired
+    private CloudResponseProcessor cloudResponseProcessor;
+
     public void receiveMessage(BotTask task) {
         logger.info("Received BotTask [{}]", task.getId());
         processor.process(task);
@@ -78,6 +82,11 @@ public class Receiver {
     public MarketplaceDataTask receiveMessage(MarketplaceDataTask task) {
         logger.info("Received MarketplaceDataTask task [{}]", task.getProjectId());
         return marketPlaceProcessor.process(task);
+    }
+
+    public void receiveMessage(CloudTaskResponse task) {
+        logger.info("Received CloudTaskResponse task [{}]", task.getId());
+        cloudResponseProcessor.process(task);
     }
 
 

@@ -1,10 +1,21 @@
 package com.fxlabs.fxt.cloud.aws.skill;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.ec2.AmazonEC2;
+import com.amazonaws.services.ec2.AmazonEC2Client;
+import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
+import com.amazonaws.services.ec2.model.RunInstancesRequest;
+import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
+import org.apache.commons.codec.binary.Base64;
 import org.jclouds.ContextBuilder;
 import org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions;
 import org.jclouds.compute.ComputeService;
@@ -25,6 +36,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -46,9 +58,11 @@ public class AwsCloudService implements CloudService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2_MICRO;
-    private static final String AWS_PKEY = "fxkey";
+    private static final String AWS_PKEY = "fxlabs";
     private static final String FXLABS_AWS_DEFAULT_IMAGE = "us-west-1/ami-09d2fb69";
     private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP = "fx-sg";
+    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-9b6d4ae2";
+
     private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
     private String AWS_PRIVATE_KEY_PEM = "-----BEGIN RSA PRIVATE KEY-----\n" +
             "MIIEogIBAAKCAQEAo4dmeW4TyJU8VLoxlg24j9rscx27cKL7/2kfVVf7rEwZ0P8i4e7ITz1Lwz4X\n" +
@@ -96,7 +110,7 @@ public class AwsCloudService implements CloudService {
      *      2. logs - execution or error logs.
      *  </p>
      */
-    @Override
+   @Override
     public CloudTaskResponse create(final CloudTask task) {
         logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
 
@@ -190,6 +204,102 @@ public class AwsCloudService implements CloudService {
 
     }
 
+    /**
+     * <p>
+     *  This method does only one thing.
+     *   1. Creates Vm's on AWS
+     * </p>
+     *
+     * @param task
+     *  <p>
+     *      Contains public cloud system connection information.
+     *      e.g.
+     *     VM configuaration
+     *  </p>
+     *
+     *
+     * @return
+     *  <p>
+     *      CloudTaskResponse - Should only set these properties.
+     *      1. success - true/false
+     *      2. logs - execution or error logs.
+     *  </p>
+     */
+    //@Override
+    public CloudTaskResponse createAwsSDK(final CloudTask task) {
+        logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
+
+        CloudTaskResponse response = new CloudTaskResponse();
+        response.setSuccess(false);
+        response.setId(task.getId());
+        AmazonEC2  awsService = null;
+        try {
+
+            taskLogger.set(new StringBuilder());
+
+            if (CollectionUtils.isEmpty(task.getOpts())) {
+                return response;
+            }
+
+            Map<String, String> opts = task.getOpts();
+
+            // Args
+            String accessKeyId = opts.get("ACCESS_KEY_ID");
+            String secretKey = opts.get("SECRET_KEY");
+
+            awsService = getAwsEc2Service(accessKeyId, secretKey);
+
+            //Instance type/size
+            String hardware = getInstanceType(task);
+            taskLogger.get().append("setting hardware id " + hardware);
+
+            String image = getImage(task);
+            taskLogger.get().append("Setting image id : " + image);
+
+            String awsPrivateKeyName = getAwsPrivateKey(opts);
+            taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
+
+            String securityGroup = getSecurityGroup(opts);
+            taskLogger.get().append("Setting Security Group " + securityGroup);
+
+            String network = getNetwork(opts);
+            taskLogger.get().append("Setting Network " + network);
+
+            String username = getAwsImageUsername(opts);
+            String password = getImagePassword(opts);
+            RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
+                    .withImageId("ami-09d2fb69")
+                    .withInstanceType(com.amazonaws.services.ec2.model.InstanceType.T2Small)
+                    .withMinCount(1).withMaxCount(1)
+                    .withKeyName(awsPrivateKeyName)
+                    .withSubnetId("subnet-9c6a08c7")
+                    .withNetworkInterfaces()
+                    .withSecurityGroupIds(FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID)
+                    .withKeyName(username).withUserData(getECSuserData("Cluster123"));
+
+
+
+            RunInstancesResult run_response = awsService.runInstances(runInstancesRequest);
+
+            String instance_id = run_response.getReservation().getReservationId();
+
+            response.setSuccess(true);
+            response.setResponseId(instance_id);
+
+            return response;
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } finally {
+//            if (awsService != null) {
+//                awsService.close();
+//            }
+        }
+
+        return response;
+
+    }
+
     private String getInstanceType(CloudTask task) {
         String hardware = task.getOpts().get("HARDWARE");
         if (StringUtils.isEmpty(hardware)) {
@@ -251,7 +361,20 @@ public class AwsCloudService implements CloudService {
 
     }
 
-    private static ComputeService getAwsService(String accessKeyId, String secretKey) {
+
+
+    private  AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey) {
+        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId,secretKey);
+
+        AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion("us-west-1")
+                .build();
+
+        return ec2Client;
+    }
+
+    private ComputeService getAwsService(String accessKeyId, String secretKey) {
 
         Properties properties = new Properties();
 
@@ -375,6 +498,20 @@ public class AwsCloudService implements CloudService {
             return FXLABS_AWS_DEFAULT_VPC;
         }
         return value;
+    }
+
+    private String getECSuserData(String queue) {
+        String userData = "curl -sSL https://get.docker.com/ | sh";
+//        userData = userData + "#!/bin/bash" + "\n";
+//        userData = userData + "echo ECS_CLUSTER=" + queue + " ";
+//        userData = userData + ">> /etc/ecs/ecs.config";
+        String base64UserData = null;
+        try {
+            base64UserData = new String( Base64.encodeBase64( userData.getBytes( "UTF-8" )), "UTF-8" );
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return base64UserData;
     }
 
 
