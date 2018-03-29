@@ -6,6 +6,7 @@ import com.fxlabs.fxt.dao.repository.jpa.ProjectUsersRepository;
 import com.fxlabs.fxt.dto.alerts.*;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.services.alerts.AlertService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,8 @@ public class GitTaskResponseProcessor {
             alert.setStatus(AlertStatus.UNREAD);
             alert.setSubject(task.getProjectName());
 
-            alert.setMessage(task.getLogs());
+            alert.setMessage(StringUtils.removeAll(task.getLogs(), "\u0000"));
+
             List<String> users = new ArrayList<>();
             alert.setUsers(users);
 
