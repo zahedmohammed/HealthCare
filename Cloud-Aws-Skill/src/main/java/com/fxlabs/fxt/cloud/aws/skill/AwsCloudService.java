@@ -110,7 +110,7 @@ public class AwsCloudService implements CloudService {
      *      2. logs - execution or error logs.
      *  </p>
      */
-   @Override
+    @Override
     public CloudTaskResponse create(final CloudTask task) {
         logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
 
@@ -186,6 +186,7 @@ public class AwsCloudService implements CloudService {
             response.setSuccess(true);
             response.setResponseId(virtualBot.getId());
 
+            response.setLogs(taskLogger.get().toString());
             return response;
         } catch (RunNodesException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -226,7 +227,7 @@ public class AwsCloudService implements CloudService {
      *  </p>
      */
     //@Override
-    public CloudTaskResponse createAwsSDK(final CloudTask task) {
+    public CloudTaskResponse createAwsSdk(final CloudTask task) {
         logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
@@ -273,7 +274,6 @@ public class AwsCloudService implements CloudService {
                     .withMinCount(1).withMaxCount(1)
                     .withKeyName(awsPrivateKeyName)
                     .withSubnetId("subnet-9c6a08c7")
-                    .withNetworkInterfaces()
                     .withSecurityGroupIds(FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID)
                     .withKeyName(username).withUserData(getECSuserData("Cluster123"));
 
@@ -285,7 +285,7 @@ public class AwsCloudService implements CloudService {
 
             response.setSuccess(true);
             response.setResponseId(instance_id);
-
+            response.setLogs(taskLogger.get().toString());
             return response;
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -325,24 +325,33 @@ public class AwsCloudService implements CloudService {
 
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
+        response.setId(task.getId());
 
         ComputeService awsService = null;
 
         try {
             taskLogger.set(new StringBuilder());
             if (CollectionUtils.isEmpty(task.getOpts())) {
+                taskLogger.get().append("Node id  is empty ");
+                response.setLogs(taskLogger.get().toString());
                 return response;
             }
 
             Map<String, String> opts = task.getOpts();
-            String nodeId = opts.get("node_id");
+            String nodeId = opts.get("NODE_ID");
+
+            if (StringUtils.isEmpty(nodeId)){
+                return response;
+            }
 
             String accessKeyId = opts.get("ACCESS_KEY_ID");
             String secretKey = opts.get("SECRET_KEY");
             logger.info("Deleting bot [{}]..." , nodeId);
             taskLogger.get().append("Deleting VM " + nodeId);
             awsService = getAwsService(accessKeyId, secretKey);
+            awsService.destroyNode(nodeId);
             response.setSuccess(true);
+            response.setLogs(taskLogger.get().toString());
             return response;
 
         } catch (RuntimeException ex) {

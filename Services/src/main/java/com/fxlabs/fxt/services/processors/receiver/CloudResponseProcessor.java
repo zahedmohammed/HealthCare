@@ -3,10 +3,7 @@ package com.fxlabs.fxt.services.processors.receiver;
 import com.fxlabs.fxt.dao.entity.alerts.Alert;
 import com.fxlabs.fxt.dao.entity.clusters.Cluster;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterStatus;
-import com.fxlabs.fxt.dao.entity.skills.SkillSubscription;
-import com.fxlabs.fxt.dao.entity.skills.SubscriptionState;
-import com.fxlabs.fxt.dao.entity.skills.TaskResult;
-import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
+import com.fxlabs.fxt.dao.entity.skills.*;
 import com.fxlabs.fxt.dao.repository.jpa.ClusterRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SkillSubscriptionRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SubscriptionTaskRepository;
@@ -74,16 +71,20 @@ public class CloudResponseProcessor {
             com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = optional.get();
             Optional<Cluster> clusterData = clusterRepository.findById(task.getClusterId());
             clusterData.get().setNodeId(response.getResponseId());
-           // SkillSubscription subscription = optional.get().getSubscription();
-           // subscription.setState(SubscriptionState.FAILED);
 
-            task.setStatus(TaskStatus.COMPLETED);
+           // task.setStatus(TaskStatus.COMPLETED);
             task.setLogs(response.getLogs());
-            task.setResult(TaskResult.FAILURE);
-            clusterData.get().setStatus(ClusterStatus.FAILED);
-            if (response.getSuccess()) {
+            //task.setResult(TaskResult.FAILURE);
+           // clusterData.get().setStatus(ClusterStatus.FAILED);
+            if (response.getSuccess() && task.getType() == TaskType.CREATE) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.ACTIVE);
+                //subscription.setState(SubscriptionState.ACTIVE);
+            }
+
+            if (response.getSuccess() && task.getType() == TaskType.DESTROY) {
+                task.setResult(TaskResult.SUCCESS);
+                clusterData.get().setStatus(ClusterStatus.DELETED);
                 //subscription.setState(SubscriptionState.ACTIVE);
             }
             repository.save(task);

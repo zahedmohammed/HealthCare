@@ -29,6 +29,8 @@ public class CloudAccount extends BaseDto<String> {
 
     private ClusterCloud cloudType;
 
+    private String nodeId;
+
 
 
 }

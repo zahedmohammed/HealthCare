@@ -15,6 +15,7 @@ import com.fxlabs.fxt.dto.cloud.CloudTaskType;
 import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.clusters.ClusterCloud;
+import com.fxlabs.fxt.dto.clusters.ClusterStatus;
 import com.fxlabs.fxt.dto.skills.Skill;
 import com.fxlabs.fxt.dto.skills.SkillSubscription;
 import com.fxlabs.fxt.dto.skills.SkillType;
@@ -207,7 +208,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         }
 
         opts.put("ACCESS_KEY_ID" , cloudAccount.getAccessKey());
-        opts.put("SECRET_KEY", dto.getCloudAccount().getSecretKey());
+        opts.put("SECRET_KEY", cloudAccount.getSecretKey());
         cloudTask.setOpts(opts);
 
 
@@ -234,27 +235,56 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     }
 
     @Override
-    public Response<SkillSubscription> deleteExecBot(String id, String user) {
+    public Response<SkillSubscription> deleteExecBot(Cluster dto, String user) {
 
         // TODO check user is owner or org_admin
-        Response<SkillSubscription> response = findById(id, user);
-        SkillSubscription dto = response.getData();
+       // Response<SkillSubscription> response = findById(id, user);
+       // SkillSubscription dto = response.getData();
         if (!StringUtils.equals(dto.getCreatedBy(), user)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [DELETE] access to the resource.")));
         }
 
-        dto.setState(SubscriptionState.DELETING);
+        dto.setStatus(ClusterStatus.DELETING);
 
         // Add Task
         com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
-        task.setSubscription(converter.convertToEntity(dto));
+       // task.setSubscription(converter.convertToEntity(dto));
         task.setType(TaskType.DESTROY);
         task.setStatus(TaskStatus.PROCESSING);
-        subscriptionTaskRepository.save(task);
+        task.setClusterId(dto.getId());
+        task = subscriptionTaskRepository.save(task);
 
         // TODO - send task to queue
 
-        return super.save(dto, user);
+        CloudTask cloudTask = new CloudTask();
+
+        cloudTask.setId(task.getId());
+        cloudTask.setType(CloudTaskType.DESTROY);
+
+        Map<String, String> opts = new HashMap<>();
+
+        CloudAccount cloudAccount = dto.getCloudAccount();
+        String key = getCloudSkillKey(cloudAccount);
+
+        if (StringUtils.isEmpty(key)){
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
+        }
+
+        opts.put("ACCESS_KEY_ID" , cloudAccount.getAccessKey());
+        opts.put("SECRET_KEY", cloudAccount.getSecretKey());
+
+        if (StringUtils.isEmpty(cloudAccount.getNodeId())){
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Node id is empty"));
+        }
+
+        opts.put("NODE_ID", cloudAccount.getNodeId());
+        cloudTask.setOpts(opts);
+
+
+        //send task to queue
+        amqpClientService.sendTask(cloudTask, key);
+
+        return new Response<SkillSubscription>();
     }
 
     @Override

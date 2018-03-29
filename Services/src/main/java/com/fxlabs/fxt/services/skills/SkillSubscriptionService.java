@@ -25,7 +25,7 @@ public interface SkillSubscriptionService extends GenericService<SkillSubscripti
 
     Response<SkillSubscription> addExecBot(Cluster dto, String user);
 
-    Response<SkillSubscription> deleteExecBot(String id, String user);
+    Response<SkillSubscription> deleteExecBot(Cluster dto, String user);
 
     Response<Long> countBySkillType(String user, SkillType skillType);
 }

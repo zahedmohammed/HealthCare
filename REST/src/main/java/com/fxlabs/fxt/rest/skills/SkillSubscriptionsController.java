@@ -72,11 +72,11 @@ public class SkillSubscriptionsController {
 //        return service.addExecBot(request, SecurityUtil.getCurrentAuditor());
 //    }
 
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/exec-bot/{id}", method = RequestMethod.DELETE)
-    public Response<SkillSubscription> deleteExecBot(@PathVariable("id") String id) {
-        return service.deleteExecBot(id, SecurityUtil.getCurrentAuditor());
-    }
+//    @Secured(ROLE_USER)
+//    @RequestMapping(value = "/exec-bot/{id}", method = RequestMethod.DELETE)
+//    public Response<SkillSubscription> deleteExecBot(@PathVariable("id") String id) {
+//        return service.deleteExecBot(id, SecurityUtil.getCurrentAuditor());
+//    }
 
 
     @Secured(ROLE_USER)
