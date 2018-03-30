@@ -52,7 +52,10 @@ public class CloudResponseProcessor {
             // -> Update subscription
             // -> Update task
             // -> Generate Alert
-
+            if (StringUtils.isEmpty(response.getId())){
+                logger.warn("Subscription Task id for cloud-task response is {}", response.getId());
+                return;
+            }
 
             Optional<com.fxlabs.fxt.dao.entity.skills.SubscriptionTask> optional = repository.findById(response.getId());
 
@@ -72,18 +75,19 @@ public class CloudResponseProcessor {
             Optional<Cluster> clusterData = clusterRepository.findById(task.getClusterId());
 
 
-           // task.setStatus(TaskStatus.COMPLETED);
+            task.setStatus(TaskStatus.COMPLETED);
             task.setLogs(response.getLogs());
-            //task.setResult(TaskResult.FAILURE);
+            task.setResult(TaskResult.FAILURE);
            // clusterData.get().setStatus(ClusterStatus.FAILED);
-            if (response.getSuccess() && task.getType() == TaskType.CREATE) {
+
+            if (clusterData.isPresent() && response.getSuccess() && task.getType() == TaskType.CREATE) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.ACTIVE);
                 clusterData.get().setNodeId(response.getResponseId());
                 //subscription.setState(SubscriptionState.ACTIVE);
             }
 
-            if (response.getSuccess() && task.getType() == TaskType.DESTROY) {
+            if (clusterData.isPresent() && response.getSuccess() && task.getType() == TaskType.DESTROY) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.DELETED);
                 clusterData.get().setInactive(true);
