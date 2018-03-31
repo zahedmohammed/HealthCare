@@ -50,7 +50,7 @@ public class CloudResponseProcessor {
 
             // TODO - Response [task-id, ids, logs, success]
             // -> Update subscription
-            // -> Update task
+            // -> Update task Done
             // -> Generate Alert
             if (StringUtils.isEmpty(response.getId())){
                 logger.warn("Subscription Task id for cloud-task response is {}", response.getId());
@@ -84,19 +84,18 @@ public class CloudResponseProcessor {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.ACTIVE);
                 clusterData.get().setNodeId(response.getResponseId());
-                //subscription.setState(SubscriptionState.ACTIVE);
+                clusterRepository.save(clusterData.get());
             }
 
             if (clusterData.isPresent() && response.getSuccess() && task.getType() == TaskType.DESTROY) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.DELETED);
                 clusterData.get().setInactive(true);
-                //subscription.setState(SubscriptionState.ACTIVE);
+                clusterRepository.save(clusterData.get());
             }
             repository.save(task);
 
-            clusterRepository.save(clusterData.get());
-           // subscriptionRepository.save(subscription);
+
 
             // TODO
             Alert alert = new Alert();

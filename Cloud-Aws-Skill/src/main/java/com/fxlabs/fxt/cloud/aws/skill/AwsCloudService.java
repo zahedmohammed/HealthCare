@@ -20,6 +20,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -37,9 +40,13 @@ public class AwsCloudService implements CloudService {
     final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Small.toString();
     private static final String AWS_PKEY = "fxlabs";
-    private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-09d2fb69";
+    //private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-09d2fb69";
+    private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-a29b99c2";
+
     private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP = "fx-sg";
-    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-9b6d4ae2";
+    //private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-9b6d4ae2";
+    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = " sg-ed287b94";
+
     private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
 
     private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
@@ -141,10 +148,10 @@ public class AwsCloudService implements CloudService {
                     .withMinCount(1).withMaxCount(1)
                     .withKeyName(awsPrivateKeyName)
                     .withSubnetId("subnet-9c6a08c7")
-                    .withSecurityGroupIds(FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID)
-                    .withUserData(getECSuserData("Cluster123"));
+                    .withSecurityGroupIds(getSecurityGroup(opts));
 
-
+            //getECSuserData(runInstancesRequest, opts);
+            runInstancesRequest.withUserData(getBotConfigScript(opts));
 
             RunInstancesResult run_response = awsService.runInstances(runInstancesRequest);
 
@@ -379,7 +386,7 @@ public class AwsCloudService implements CloudService {
 
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
                 || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-            return FXLABS_AWS_DEFAULT_SECURITY_GROUP;
+            return FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID;
         }
         return value;
     }
@@ -399,20 +406,16 @@ public class AwsCloudService implements CloudService {
         return value;
     }
 
-    private String getECSuserData(String queue) {
-        String userData = "curl -sSL https://get.docker.com/ | sh";
-//        userData = userData + "#!/bin/bash" + "\n";
-//        userData = userData + "echo ECS_CLUSTER=" + queue + " ";
-//        userData = userData + ">> /etc/ecs/ecs.config";
-        String base64UserData = null;
-        try {
-            base64UserData = new String( Base64.encodeBase64( userData.getBytes( "UTF-8" )), "UTF-8" );
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return base64UserData;
-    }
+    private static String getBotConfigScript(Map<String, String> opts){
+        String value = opts.get("COMMAND");
 
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+            return "";
+        }
+
+        return value;
+    }
 
     /**
      * <p>

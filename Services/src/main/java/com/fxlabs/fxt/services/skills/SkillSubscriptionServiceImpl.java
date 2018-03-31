@@ -24,8 +24,10 @@ import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.clusters.ClusterService;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,11 +50,22 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     private SubscriptionTaskRepository subscriptionTaskRepository;
     private ClusterRepository clusterRepository;
     private AmqpClientService amqpClientService;
+    private String fxExecutionBotScriptUrl;
+    private String fxDefaultResponseKey;
+    private String fxUserName;
+    private String fxPassword;
+    private String fxKey;
+    private String fxPort;
+    private String fxHost;
+    private static String SPACE = " ";
+
 
     @Autowired
-    public SkillSubscriptionServiceImpl(SkillSubscriptionRepository repository, SkillSubscriptionConverter converter,
-                                        UsersRepository usersRepository, OrgUsersRepository orgUsersRepository,
-                                        AmqpClientService amqpClientService,SubscriptionTaskRepository subscriptionTaskRepository, ClusterRepository clusterRepository) {
+    public SkillSubscriptionServiceImpl(SkillSubscriptionRepository repository, SkillSubscriptionConverter converter, @Value("${fx.default.response.queue.routingkey}") String fxDefaultResponseKey,
+                                        UsersRepository usersRepository, OrgUsersRepository orgUsersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
+                                        AmqpClientService amqpClientService,SubscriptionTaskRepository subscriptionTaskRepository,
+                                        ClusterRepository clusterRepository, @Value("${spring.rabbitmq.username}") String fxUserName, @Value("${spring.rabbitmq.password}") String fxPassword,
+                                        @Value("${spring.rabbitmq.port}")String fxPort, @Value("${spring.rabbitmq.host}") String fxHost) {
         super(repository, converter);
 
         this.repository = repository;
@@ -62,7 +75,13 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         this.orgUsersRepository = orgUsersRepository;
         this.clusterRepository = clusterRepository;
         this.subscriptionTaskRepository = subscriptionTaskRepository;
-
+        this.fxExecutionBotScriptUrl = fxExecutionBotScriptUrl;
+        this.fxDefaultResponseKey = fxDefaultResponseKey;
+        this.fxUserName = fxUserName;
+        this.fxPassword = fxPassword;
+        this.fxKey = fxKey;
+        this.fxPort = fxPort;
+        this.fxHost = fxHost;
     }
 
 
@@ -209,6 +228,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         opts.put("ACCESS_KEY_ID" , cloudAccount.getAccessKey());
         opts.put("SECRET_KEY", cloudAccount.getSecretKey());
+        opts.put("COMMAND", getUserDataScript(dto.getKey()));
         cloudTask.setOpts(opts);
 
 
@@ -326,6 +346,37 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
             throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
         }
 
+    }
+
+    private String getUserDataScript(String Key) {
+
+        StringBuilder sb = new StringBuilder();
+        ArrayList<String> lines = new ArrayList<String>();
+
+        lines.add("#! /bin/bash");
+        lines.add("/bin/yum -y install curl || /usr/bin/apt-get update && /usr/bin/apt-get -y install curl");
+
+        sb.append("curl -Ls").append(SPACE).append(fxExecutionBotScriptUrl).append(SPACE).append("|").append(SPACE)
+                .append("sh -s").append(SPACE).append(fxHost).append(SPACE).append(fxPort).append(SPACE).append(fxUserName)
+                .append(SPACE).append(fxPassword).append(SPACE).append(Key).append(SPACE).append(fxDefaultResponseKey);
+
+        lines.add(sb.toString());
+        String str = new String(Base64.encodeBase64(join(lines, "\n").getBytes()));
+
+        return str;
+    }
+
+    private String join(Collection<String> s, String delimiter) {
+        StringBuilder builder = new StringBuilder();
+        Iterator<String> iter = s.iterator();
+        while (iter.hasNext()) {
+            builder.append(iter.next());
+            if (!iter.hasNext()) {
+                break;
+            }
+            builder.append(delimiter);
+        }
+        return builder.toString();
     }
 
 
