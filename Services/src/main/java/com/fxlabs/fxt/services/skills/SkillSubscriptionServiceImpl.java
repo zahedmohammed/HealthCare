@@ -361,7 +361,10 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
                 .append(SPACE).append(fxPassword).append(SPACE).append(Key).append(SPACE).append(fxDefaultResponseKey);
 
         lines.add(sb.toString());
-        String str = new String(Base64.encodeBase64(join(lines, "\n").getBytes()));
+        String configScript = join(lines, "\n");
+
+        logger.info("Bot configuaration script [{}]", configScript.toString());
+        String str = new String(Base64.encodeBase64(configScript.getBytes()));
 
         return str;
     }

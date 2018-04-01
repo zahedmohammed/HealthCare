@@ -44,8 +44,8 @@ public class AwsCloudService implements CloudService {
     private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-a29b99c2";
 
     private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP = "fx-sg";
-    //private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-9b6d4ae2";
-    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = " sg-ed287b94";
+    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-9b6d4ae2";
+    //private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = " sg-ed287b94";
 
     private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
 
@@ -148,7 +148,7 @@ public class AwsCloudService implements CloudService {
                     .withMinCount(1).withMaxCount(1)
                     .withKeyName(awsPrivateKeyName)
                     .withSubnetId("subnet-9c6a08c7")
-                    .withSecurityGroupIds(getSecurityGroup(opts));
+                    .withSecurityGroupIds(securityGroup);
 
             //getECSuserData(runInstancesRequest, opts);
             runInstancesRequest.withUserData(getBotConfigScript(opts));
