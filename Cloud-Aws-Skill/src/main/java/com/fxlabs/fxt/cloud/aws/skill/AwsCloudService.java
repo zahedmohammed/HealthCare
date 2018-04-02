@@ -41,11 +41,11 @@ public class AwsCloudService implements CloudService {
     private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Small.toString();
     private static final String AWS_PKEY = "fxlabs";
     //private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-09d2fb69";
-    private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-a29b99c2";
+    private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-925144f2";
 
     private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP = "fx-sg";
-    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-9b6d4ae2";
-    //private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = " sg-ed287b94";
+    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-7e476807";
+    private static final String FXLABS_AWS_DEFAULT_SUBNET_ID = "subnet-ef5b0e88";
 
     private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
 
@@ -147,7 +147,7 @@ public class AwsCloudService implements CloudService {
                     .withInstanceType(com.amazonaws.services.ec2.model.InstanceType.T2Small)
                     .withMinCount(1).withMaxCount(1)
                     .withKeyName(awsPrivateKeyName)
-                    .withSubnetId("subnet-9c6a08c7")
+                    .withSubnetId(getSubnet(opts))
                     .withSecurityGroupIds(securityGroup);
 
             //getECSuserData(runInstancesRequest, opts);
@@ -165,9 +165,7 @@ public class AwsCloudService implements CloudService {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         } finally {
-//            if (awsService != null) {
-//                awsService.a;
-//            }
+            //TODO close any connections if
         }
 
         return response;
@@ -387,6 +385,21 @@ public class AwsCloudService implements CloudService {
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
                 || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
             return FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID;
+        }
+        return value;
+    }
+
+    /**
+     *
+     * @param opts
+     * @return security group
+     */
+    private String getSubnet(Map<String, String> opts){
+        String value = opts.get("SUBNET");
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+            return FXLABS_AWS_DEFAULT_SUBNET_ID;
         }
         return value;
     }
