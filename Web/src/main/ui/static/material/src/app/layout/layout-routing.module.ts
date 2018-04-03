@@ -66,6 +66,10 @@ import { CloudAccountListComponent } from '../components/manage/cloud-account-li
 import { CloudAccountNewComponent } from '../components/manage/cloud-account-new/cloud-account-new.component';
 import { CloudAccountEditComponent } from '../components/manage/cloud-account-edit/cloud-account-edit.component';
 
+import { NotificationListComponent } from '../components/notify/notification-list/notification-list.component';
+import { NotificationNewComponent } from '../components/notify/notification-new/notification-new.component';
+import { NotificationEditComponent } from '../components/notify/notification-edit/notification-edit.component';
+
 import { SkillsListComponent } from '../components/skills/skills-list/skills-list.component';
 import { SkillsNewComponent } from '../components/skills/skills-new/skills-new.component';
 import { SkillsEditComponent } from '../components/skills/skills-edit/skills-edit.component';
@@ -109,6 +113,10 @@ const routes: Routes = [
       { path: 'monitor', component: MonitorAllComponent },
       { path: 'monitor/new', component: MonitorNewComponent },
       { path: 'monitor/:id', component: MonitorEditComponent },
+
+      { path: 'notification-accounts', component: NotificationListComponent },
+      { path: 'notification-accounts/new', component: NotificationNewComponent },
+      { path: 'notification-accounts/:id', component: NotificationEditComponent },
 
       { path: 'doc', component: DocListComponent },
       { path: 'doc/new', component: DocNewComponent },

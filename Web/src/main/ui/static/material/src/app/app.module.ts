@@ -146,6 +146,9 @@ import { CloudAccountNewComponent } from './components/manage/cloud-account-new/
 import { CloudAccountService } from './services/cloud-account.service';
 import { RegionNewComponent } from './components/regions/region-new/region-new.component';
 import { RegionEditComponent } from './components/regions/region-edit/region-edit.component';
+import { NotificationListComponent } from './components/notify/notification-list/notification-list.component';
+import { NotificationEditComponent } from './components/notify/notification-edit/notification-edit.component';
+import { NotificationNewComponent } from './components/notify/notification-new/notification-new.component';
 
 @NgModule({
   imports: [
@@ -273,6 +276,9 @@ import { RegionEditComponent } from './components/regions/region-edit/region-edi
     CloudAccountNewComponent,
     RegionNewComponent,
     RegionEditComponent,
+    NotificationListComponent,
+    NotificationEditComponent,
+    NotificationNewComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService]
