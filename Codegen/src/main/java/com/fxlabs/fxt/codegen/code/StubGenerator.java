@@ -17,6 +17,8 @@ import io.swagger.util.Json;
 import io.swagger.util.Yaml;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ansi.AnsiColor;
+import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -39,17 +41,17 @@ public class StubGenerator {
 
             String swaggerString = Json.pretty(swagger);
 
-            System.out.println(swaggerString);
+            //System.out.println(swaggerString);
 
-            System.out.println("---- consumes ----");
-            System.out.println (swagger.getConsumes());
+            //System.out.println("---- consumes ----");
+            //System.out.println (swagger.getConsumes());
 
-            System.out.println("---- def ----");
+            //System.out.println("---- def ----");
             //System.out.println (swagger.getDefinitions());
             for (String p: swagger.getDefinitions().keySet()) {
                 Model m = swagger.getDefinitions().get(p);
-                System.out.println(p + " -> ");
-                for (String prop : m.getProperties().keySet()) {
+                //System.out.println(p + " -> ");
+                /*for (String prop : m.getProperties().keySet()) {
                     Property property = m.getProperties().get(prop);
                     System.out.println ("  Key: " + prop);
                     System.out.println ("  Name: " + property.getName());
@@ -63,13 +65,13 @@ public class StubGenerator {
                     System.out.println ("  Min: " + getMin(property));
                     System.out.println ("  Max: " + getMax(property));
                     System.out.println (" ----- ");
-                }
+                }*/
             }
 
             List<TestSuiteMin> testSuites = new ArrayList<>();
 
-            System.out.println("---- paths ----");
-            System.out.println (swagger.getPaths());
+            //System.out.println("---- paths ----");
+            //System.out.println (swagger.getPaths());
             for (String p : swagger.getPaths().keySet()) {
                 Path path = swagger.getPaths().get(p);
                 /*System.out.println(p + " -> ");
@@ -124,11 +126,17 @@ public class StubGenerator {
             }
 
             try {
+                System.out.println(
+                        AnsiOutput.toString(AnsiColor.WHITE,
+                                String.format("Writing %s", ts.getName())
+                                , AnsiColor.DEFAULT)
+                );
                 FileUtils.touch(file);
                 yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, ts);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            
         });
     }
 
