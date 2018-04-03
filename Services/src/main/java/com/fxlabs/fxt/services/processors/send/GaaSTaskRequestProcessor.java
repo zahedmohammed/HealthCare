@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
 import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.entity.users.UsersPassword;
 import com.fxlabs.fxt.dao.repository.jpa.*;
+import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import org.slf4j.Logger;
@@ -77,6 +78,10 @@ public class GaaSTaskRequestProcessor {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
             task.setProjectName(project.getName());
+            if (project.getGenPolicy() != null && task.getGenPolicy() != GenPolicy.None) {
+                task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
+                task.setOpenAPISpec(project.getOpenAPISpec());
+            }
             task.setVcUrl(gitAccount.get().getUrl());
             task.setVcBranch(gitAccount.get().getBranch());
             task.setVcUsername(gitAccount.get().getUsername());

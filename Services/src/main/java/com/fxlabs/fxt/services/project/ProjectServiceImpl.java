@@ -213,6 +213,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 project.setProjectType(request.getProjectType());
             }
 
+            project.setGenPolicy(request.getGenPolicy());
+            project.setOpenAPISpec(request.getOpenAPISpec());
+
             project.setVisibility(request.getVisibility());
 
             projectResponse = save(project, owner);
@@ -268,19 +271,28 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         if (!accountOptional.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "No account found."));
         }
-        Project _project = findById(projectId, user).getData();
+
+        Project _project = projectResponse.getData();
 
 
         ProjectRequest project = new ProjectRequest();
-        project.setName(projectResponse.getData().getName());
-        project.setProjectType(projectResponse.getData().getProjectType());
-        project.setId(accountOptional.get().getId());
-        project.setProjectId(accountOptional.get().getProjectId());
-        project.setUrl(accountOptional.get().getUrl());
-        project.setBranch(accountOptional.get().getBranch());
-        project.setUsername(accountOptional.get().getUsername());
+
+        project.setOrg(_project.getOrg());
+
+        project.setName(_project.getName());
+        project.setProjectType(_project.getProjectType());
+
+        com.fxlabs.fxt.dao.entity.project.ProjectGitAccount projectGitAccount = accountOptional.get();
+        project.setId(projectGitAccount.getId());
+        project.setProjectId(projectGitAccount.getProjectId());
+        project.setUrl(projectGitAccount.getUrl());
+        project.setBranch(projectGitAccount.getBranch());
+        project.setUsername(projectGitAccount.getUsername());
         project.setPassword(PASSWORD_MASKED);
-        project.setOrg(projectResponse.getData().getOrg());
+
+        project.setGenPolicy(_project.getGenPolicy());
+        project.setOpenAPISpec(_project.getOpenAPISpec());
+
         project.setVisibility(_project.getVisibility());
 
         return new Response<ProjectRequest>(project);
@@ -315,10 +327,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.projectGitAccountRepository.saveAndFlush(account);
 
         Project project = findById(request.getProjectId(), user).getData();
-        if (project.getVisibility() != request.getVisibility()) {
-            project.setVisibility(request.getVisibility());
-            save(project, user);
-        }
+
+        project.setGenPolicy(request.getGenPolicy());
+        project.setOpenAPISpec(request.getOpenAPISpec());
+
+        project.setVisibility(request.getVisibility());
+        save(project, user);
+
 
         if (project.getProjectType() != ProjectType.Local) {
             // Create GaaS Task

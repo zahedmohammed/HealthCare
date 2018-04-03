@@ -7,11 +7,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
+import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -209,6 +211,30 @@ public class GitService implements VersionControlService {
         }
 
         return false;
+    }
+
+    @Override
+    public String push(String path, String username, String password) {
+        try {
+            taskLogger.get().append("Pushing changes").append("\n");
+            logger.info("Pushing changes");
+            PushCommand pushCommand = Git.open(new File(path)).push();
+            if (StringUtils.isNotEmpty(username)) {
+                pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+            }
+            pushCommand.call();
+            taskLogger.get().append("Push successfull!").append("\n");
+            logger.info("Push successfull!");
+            // TODO hand response
+        } catch (GitAPIException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        }
+
+        return null;
     }
 
     private String head(Repository repository) {

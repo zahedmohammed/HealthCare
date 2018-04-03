@@ -88,5 +88,6 @@ export class ProjectsEditComponent implements OnInit {
 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
+  genPolicies = ['None', 'Create'];
 
 }

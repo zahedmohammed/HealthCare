@@ -19,6 +19,9 @@ public class ProjectRequest extends BaseDto<String> {
     private String projectId;
     private NameDto org;
 
+    private GenPolicy genPolicy;
+    private String openAPISpec;
+
     private String url;
     private String branch;
     private String username;

@@ -16,7 +16,9 @@ export class ProjectsNewComponent implements OnInit {
   showSpinner: boolean = false;
   project: Project = new Project();
   orgs;
-  constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) {
+    this.project.genPolicy = "None";
+  }
 
   ngOnInit() {
     this.getOrgs();
@@ -52,6 +54,7 @@ export class ProjectsNewComponent implements OnInit {
   }
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
+  genPolicies = ['None', 'Create'];
 
 }
 

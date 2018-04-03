@@ -1,5 +1,7 @@
 package com.fxlabs.fxt.vc.git.skill.services;
 
+//import com.fxlabs.fxt.codegen.code.StubGenerator;
+import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.dto.project.Project;
@@ -32,6 +34,9 @@ public class VCDelegate {
     @Autowired
     private FxCommandService service;
 
+    //@Autowired
+    //private StubGenerator stubGenerator;
+
     public void process(VCTask task) {
         logger.info("VCTask [{}]", task.getProjectName());
         VCTaskResponse response = null;
@@ -50,11 +55,24 @@ public class VCDelegate {
             response.setProjectName(task.getProjectName());
 
             if (response.isSuccess() && !StringUtils.equals(response.getVcLastCommit(), task.getVcLastCommit())) {
+
+                CredUtils.taskLogger.set(new BotLogger());
+
+                if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
+                    // TODO Generate tests
+                    try {
+                        //stubGenerator.generate(task.getOpenAPISpec(), path, null, null);
+                        versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
+                    } catch (Exception e) {
+                        logger.warn(e.getLocalizedMessage(), e);
+                        CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, "Push", e.getLocalizedMessage());
+                    }
+                }
+
                 CredUtils.url.set(task.getFxUrl());
                 CredUtils.username.set(task.getProjectUser());
                 CredUtils.password.set(task.getProjectGrant());
 
-                CredUtils.taskLogger.set(new BotLogger());
                 Project project = service.load(response.getPath(), task.getProjectId());
 
                 response.setSuccess(!BooleanUtils.isTrue(CredUtils.errors.get()));

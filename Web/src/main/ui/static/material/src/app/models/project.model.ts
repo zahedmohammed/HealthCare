@@ -7,6 +7,8 @@ export class Project {
     public projectType: string;
     public org: Dto = new Dto();
     public visibility: string;
+    public genPolicy: string;
+    public openAPISpec: string;
 
 }
 

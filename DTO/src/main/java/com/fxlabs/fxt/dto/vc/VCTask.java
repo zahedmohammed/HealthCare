@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.dto.vc;
 
+import com.fxlabs.fxt.dto.project.GenPolicy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,9 @@ public class VCTask implements Serializable {
 
     private String projectId;
     private String projectName;
+
+    private GenPolicy genPolicy;
+    private String openAPISpec;
 
     private String fxUrl;
     private String projectUser;

@@ -34,6 +34,12 @@ public class Project extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProjectVisibility visibility;
 
+    @Enumerated(EnumType.STRING)
+    private GenPolicy genPolicy;
+
+    @Column(name = "open_api_spec_uri")
+    private String openAPISpec;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastSync;
 

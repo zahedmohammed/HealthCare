@@ -69,4 +69,9 @@ public class MercurialService implements VersionControlService {
 
     }
 
+    @Override
+    public String push(String path, String username, String password) {
+        return null;
+    }
+
 }

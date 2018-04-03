@@ -48,8 +48,9 @@ dependencies {
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.10.0.201712302008-r'
 
 
-    compile project(":DTO")
+    //compile project(":DTO")
     compile project(":REST-SDK")
+    //compile project(":Codegen")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

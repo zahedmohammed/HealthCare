@@ -39,5 +39,7 @@ public interface VersionControlService {
      *  </p>
      */
     VCTaskResponse process(Task task, String path);
+
+    String push(String path, String username, String password);
 }
 

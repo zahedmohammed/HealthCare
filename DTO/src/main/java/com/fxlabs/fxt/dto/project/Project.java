@@ -35,6 +35,10 @@ public class Project extends BaseDto<String> {
     private String description;
     private ProjectType projectType;
     private ProjectVisibility visibility;
+
+    private GenPolicy genPolicy;
+    private String openAPISpec;
+
     private Date lastSync;
     private List<String> licenses;
     private Map<String, String> props = new HashMap<>();
