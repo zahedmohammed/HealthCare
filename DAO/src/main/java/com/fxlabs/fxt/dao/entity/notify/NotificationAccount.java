@@ -38,6 +38,9 @@ public class NotificationAccount extends BaseEntity {
     private String accessKey;
     private String secretKey;
 
+    private String token;
+    private String channel;
+
 
     @PrePersist
     @PreUpdate
