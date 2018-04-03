@@ -5,6 +5,7 @@ import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ import java.util.UUID;
 public class DataEvaluator {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
+
+    String PASSWORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~@#%*()-_=+:,.?";
 
     private MarketplaceDataProvider marketplaceDataProvider;
 
@@ -64,7 +67,7 @@ public class DataEvaluator {
                 KEY = "@" + StringUtils.substringAfterLast(KEY, "_");
             }
 
-            int count = 6;
+            int count = 8;
 
             switch (KEY) {
                 case "@NULL":
@@ -122,6 +125,12 @@ public class DataEvaluator {
                     }
                     val = RandomStringUtils.randomAlphanumeric(count);
                     break;
+                case "@Password":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        count = Integer.parseInt(PATH);
+                    }
+                    val = RandomStringUtils.random(count, PASSWORD_CHARS);
+                    break;
                 case "@RandomAscii":
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);
@@ -146,12 +155,32 @@ public class DataEvaluator {
                     }
                     val = RandomStringUtils.randomNumeric(count);
                     break;
+                case "@RandomDecimal":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        count = Integer.parseInt(PATH);
+                    }
+                    val = RandomStringUtils.randomNumeric(count);
+                    break;
+                case "@RandomInteger":
+                    val = String.valueOf(RandomUtils.nextInt());
+                    break;
+                case "@RandomLong":
+                    val = String.valueOf(RandomUtils.nextLong());
+                    break;
                 case "@Date":
                     if (StringUtils.isNotEmpty(PATH)) {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
                         val = df.format(new Date());
                     } else {
-                        val = new Date().toString();
+                        val = String.valueOf(new Date().getTime());
+                    }
+                    break;
+                case "@DateTime":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        val = df.format(new Date());
+                    } else {
+                        val = String.valueOf(new Date().getTime());
                     }
                     break;
                 // TODO Date format

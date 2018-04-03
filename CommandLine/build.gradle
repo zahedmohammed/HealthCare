@@ -48,9 +48,9 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-io/commons-io
     //compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
-
     //compile project(":DTO")
     compile project(":REST-SDK")
+    compile project(":Codegen")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.cli;
 
+import com.fxlabs.fxt.codegen.code.StubGenerator;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.users.Users;
@@ -30,6 +31,9 @@ public class FxCommands {
 
     @Autowired
     private FxCommandService service;
+
+    @Autowired
+    private StubGenerator stubGenerator;
 
     private boolean connected;
 
@@ -63,6 +67,23 @@ public class FxCommands {
         try {
             CredUtils.taskLogger.set(new BotLogger());
             service.loadAndRun(projectDir, project, jobName, region, tags, envName, suites);
+        } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
+        }
+
+    }
+
+    @ShellMethod(key = "gen", value = "Generates Test-Suite stubs for Open ApI & Swagger")
+    public void gen(
+            @ShellOption(value = {"-h", "--url"}, help = "OpenAPI URL e.g. http://myapp.com/v2/swagger.json or myapp-spec.json") @Size(min = 1) String url,
+            @ShellOption(value = {"-d", "--dir"}, help = "Stub generation directory e.g. /opt/MyAppTest") String dir,
+            @ShellOption(value = {"-k", "--auth-header-key"}, help = "Authorization header key e.g. 'Authorization'", defaultValue = "") String key,
+            @ShellOption(value = {"-v", "--auth-header-val"}, help = "Authorization header value e.g. 'my-passowrd'", defaultValue = "") String value) {
+
+        try {
+
+            stubGenerator.generate(url, dir, key, value);
+
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
         }

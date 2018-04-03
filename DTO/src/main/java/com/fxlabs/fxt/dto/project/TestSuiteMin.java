@@ -19,9 +19,8 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class TestSuite extends BaseDto<String> {
+public class TestSuiteMin {
 
-    private ProjectMinimalDto project;
     private String parent;
     private String name;
     private String description;
@@ -35,14 +34,7 @@ public class TestSuite extends BaseDto<String> {
     private List<String> tags = new ArrayList<>();
     private List<String> authors = new ArrayList<>();
 
-    private List<String> init = new ArrayList<>();
-    private List<String> cleanup = new ArrayList<>();
-
-    private Policies policies;
-
-    private Boolean publishToMarketplace = false;
-
-    private Map<String, String> props = new HashMap<>();
+    private boolean inactive;
 
 
 }

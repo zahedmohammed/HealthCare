@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author Intesar Shannan Mohammed
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.fxlabs.fxt.cli", "com.fxlabs.fxt.sdk"})
+@ComponentScan(basePackages = {"com.fxlabs.fxt.cli", "com.fxlabs.fxt.sdk", "com.fxlabs.fxt.codegen"})
 public class Application {
 
     public static void main(String[] args) throws InterruptedException {

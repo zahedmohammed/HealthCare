@@ -37,17 +37,17 @@ public class Response<D> implements Serializable {
     }
 
     public Response withErrors(boolean errors) {
-        this.setErrors(errors);
+        this.errors = errors;
         return this;
     }
 
     public Response withMessage(Message message) {
-        this.getMessages().add(message);
+        this.messages.add(message);
         return this;
     }
 
-    public Response withMessages(List<Message> message) {
-        this.setMessages(message);
+    public Response withMessages(List<Message> messages) {
+        this.messages = messages;
         return this;
     }
 
