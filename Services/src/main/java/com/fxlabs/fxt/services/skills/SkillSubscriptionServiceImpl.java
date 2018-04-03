@@ -229,6 +229,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         opts.put("ACCESS_KEY_ID" , cloudAccount.getAccessKey());
         opts.put("SECRET_KEY", cloudAccount.getSecretKey());
         opts.put("COMMAND", getUserDataScript(dto.getKey()));
+        opts.put("INSTANCE_NAME", dto.getName());
         cloudTask.setOpts(opts);
 
 

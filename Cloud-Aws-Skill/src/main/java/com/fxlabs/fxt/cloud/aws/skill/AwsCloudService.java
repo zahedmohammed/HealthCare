@@ -5,10 +5,7 @@ import com.amazonaws.internal.StaticCredentialsProvider;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
-import com.amazonaws.services.ec2.model.InstanceType;
-import com.amazonaws.services.ec2.model.RunInstancesRequest;
-import com.amazonaws.services.ec2.model.RunInstancesResult;
-import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
+import com.amazonaws.services.ec2.model.*;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
@@ -110,7 +107,9 @@ public class AwsCloudService implements CloudService {
 
             taskLogger.set(new StringBuilder());
 
-            if (CollectionUtils.isEmpty(task.getOpts())) {
+            if (task == null || CollectionUtils.isEmpty(task.getOpts())) {
+                taskLogger.get().append("Options empty for takd id :" +  task.getId());
+                logger.info("Options empty for takd id : [{}]", task.getId());
                 return response;
             }
 
@@ -156,6 +155,14 @@ public class AwsCloudService implements CloudService {
             RunInstancesResult run_response = awsService.runInstances(runInstancesRequest);
 
             String instance_id = run_response.getReservation().getInstances().get(0).getInstanceId();
+
+            String tag = getInstanceTag(opts);
+            if (!StringUtils.isEmpty(tag)) {
+                CreateTagsRequest createTagsRequest = new CreateTagsRequest();
+                createTagsRequest.withResources(run_response.getReservation().getInstances().get(0).getInstanceId()) //
+                        .withTags(new Tag("Name", tag));
+                awsService.createTags(createTagsRequest);
+            }
 
             response.setSuccess(true);
             response.setResponseId(instance_id);
@@ -239,6 +246,15 @@ public class AwsCloudService implements CloudService {
             region = FXLABS_AWS_DEFAULT_REGION;
         }
         return region;
+    }
+
+    private String getInstanceTag(Map<String, String> opts) {
+        String tag =  opts.get("INSTANCE_NAME");
+        if(org.apache.commons.lang3.StringUtils.equalsIgnoreCase(tag, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(tag)){
+            tag = "";
+        }
+        return tag;
     }
 
     private AmazonEC2 getAmazonEC2Client(String accessKeyId, String secretKey, String region) {

@@ -467,5 +467,18 @@ public class AmqpConfig {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
+    // -- Slack Notification as a service
+    @Bean(name = "notificationSlackQueue")
+    public Queue notificationSlackQueue(@Value("${fx.notification.slack.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding notificationSlackQueueBinding(@Value("${fx.notification.slack.queue.routingkey}") String routingKey, @Qualifier("caaSK8Queue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
 
 }
