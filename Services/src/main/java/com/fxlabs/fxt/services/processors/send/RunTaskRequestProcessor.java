@@ -136,6 +136,10 @@ public class RunTaskRequestProcessor {
 
                     try {
 
+                        if (BooleanUtils.isTrue(testSuite.isInactive())) {
+                            return;
+                        }
+
                         // TODO - Replace with the query
                         //if (suites != null && !CollectionUtils.contains(suites.iterator(), testSuite.getName())) {
                         //    return;

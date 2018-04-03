@@ -136,7 +136,7 @@ public class StubGenerator {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
         });
     }
 
