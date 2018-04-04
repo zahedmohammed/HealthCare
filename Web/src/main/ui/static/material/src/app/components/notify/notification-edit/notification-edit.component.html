@@ -2,7 +2,7 @@
 
   <article class="article">
 
-    <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/notification-accounts']"> Notification-Account </a> / {{entry.name}}</h2>
+    <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/notification-accounts']"> Notification-Channel </a> / {{entry.name}}</h2>
     <div class="box box-default">
       <div class="box-body padding-xl">
 
@@ -48,7 +48,7 @@
 
           <div class="divider divider-dashed divider-lg pull-in"></div>
 
-          <div class="form-group row">
+          <div class="form-group row" [hidden]="entry.type !== 'SLACK'">
             <label for="token" class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
@@ -59,7 +59,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row" [hidden]="entry.type !== 'SLACK'">
             <label for="channel" class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
@@ -70,25 +70,13 @@
             </div>
           </div>
 
-
-          <div class="form-group row">
-            <label for="accessKey" class="col-md-2 control-label">
+          <div class="form-group row" [hidden]="entry.type !== 'EMAIL'">
+            <label for="channel" class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
               <mat-input-container class="full-width">
-                <input [(ngModel)]="entry.accessKey" name="accessKey" id="accessKey"
-                       matInput type="text" placeholder="Access-Key/Username">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="secret" class="col-md-2 control-label">
-            </label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input [(ngModel)]="entry.secretKey" name="secret" id="secret"
-                       matInput type="password" placeholder="Secret-Key/Password">
+                <input [(ngModel)]="entry.channel" name="channel" id="email"
+                       matInput type="text" placeholder="To:">
               </mat-input-container>
             </div>
           </div>
