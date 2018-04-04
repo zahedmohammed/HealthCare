@@ -7,12 +7,10 @@ import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
 import com.fxlabs.fxt.dto.notify.NotificationAccount;
-import com.fxlabs.fxt.dto.notify.NotificationType;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.notify.NotificationAccountService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.apache.commons.lang3.time.DateUtils;
-import org.elasticsearch.tasks.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +51,7 @@ public class MarkCompleteTaskProcessor {
 
     @Autowired
     private NotificationAccountService notificationAccountService;
-
+   // fx-notification-slack
     @Value("${fx.notification.slack.queue.routingkey}")
     private String slackNotificationQueue;
 
@@ -130,6 +128,7 @@ public class MarkCompleteTaskProcessor {
                     }
                     opts.put("TOKEN", notificationAccount.getData().getToken());
                     opts.put("MESSAGE", formatSlackMessage(run));
+                    task.setOpts(opts);
                     amqpClientService.sendTask(task, slackNotificationQueue);
                     break;
                 case EMAIL:
@@ -151,12 +150,19 @@ public class MarkCompleteTaskProcessor {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Job Name").append(COLON).append(run.getJob().getName()).append(LINE_SEPERATOR)
+                .append("Description").append(COLON).append(run.getTask().getDescription()).append(LINE_SEPERATOR)
                 .append("Status").append(COLON).append(run.getTask().getStatus().toString()).append(LINE_SEPERATOR)
                 .append("Total Test Cases").append(COLON).append(run.getTask().getTotalTests()).append(LINE_SEPERATOR)
-                .append("Failed").append(COLON).append(run.getTask().getFailedTests()).append(LINE_SEPERATOR)
+                .append("Failed Tests").append(COLON).append(run.getTask().getFailedTests()).append(LINE_SEPERATOR)
+                .append("Skipper Tests").append(COLON).append(run.getTask().getSkippedTests()).append(LINE_SEPERATOR)
+                .append("Total Tests Completed").append(COLON).append(run.getTask().getTotalTestCompleted()).append(LINE_SEPERATOR)
+                .append("Total Bytes").append(COLON).append(run.getTask().getTotalBytes()).append(LINE_SEPERATOR)
+                .append("Total Time").append(COLON).append(run.getTask().getTotalTime()).append(LINE_SEPERATOR)
                 .append("Bytes").append(COLON).append(run.getTask().getTotalBytes()).append(LINE_SEPERATOR)
-                .append("Region").append(run.getJob().getRegions());
+                .append("Region").append(COLON).append(run.getJob().getRegions());
 
         return sb.toString();
     }
 }
+
+

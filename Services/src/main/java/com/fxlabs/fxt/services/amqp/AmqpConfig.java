@@ -476,7 +476,7 @@ public class AmqpConfig {
     }
 
     @Bean
-    public Binding notificationSlackQueueBinding(@Value("${fx.notification.slack.queue.routingkey}") String routingKey, @Qualifier("caaSK8Queue") Queue queue, TopicExchange exchange) {
+    public Binding notificationSlackQueueBinding(@Value("${fx.notification.slack.queue.routingkey}") String routingKey, @Qualifier("notificationSlackQueue") Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
