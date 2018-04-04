@@ -15,7 +15,7 @@ import org.springframework.context.annotation.PropertySource;
  * @author Intesar Shannan Mohammed
  */
 @Configuration
-@PropertySource(ignoreResourceNotFound = true, value = "classpath:/fx-vc-skill.properties")
+@PropertySource(ignoreResourceNotFound = false, value = "classpath:/fx-vc-skill.properties")
 public class AMQPConfig {
 
     @Bean
