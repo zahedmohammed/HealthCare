@@ -4,20 +4,17 @@ import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.vc.git.skill.services.Task;
 import com.fxlabs.fxt.vc.git.skill.services.VersionControlService;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.jgit.api.CloneCommand;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.PullCommand;
-import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,34 +28,30 @@ public class GitService implements VersionControlService {
 
     /**
      * <p>
-     *  This method does only one thing.
-     *   1. Checkout the repository files to the given location.
-     *
-     *   At the end of the execution all the project files should in the given path.
-     *   Or the response should indicate the processing failed by setting the Response.success to false along with the
-     *   error message.
+     * This method does only one thing.
+     * 1. Checkout the repository files to the given location.
+     * <p>
+     * At the end of the execution all the project files should in the given path.
+     * Or the response should indicate the processing failed by setting the Response.success to false along with the
+     * error message.
      * </p>
      *
-     * @param task
-     *  <p>
-     *      Contains Version-Control System connection information.
-     *      e.g.
-     *      url - contains the VC endpoint
-     *      username - VC username/access-key
-     *      password - VC password/secret-key
-     *      branch - Repository branch defaults to master.
-     *  </p>
-     *
-     * @param path
-     *  <p>
-     *      File location where to check-out the version-control project.
-     *  </p>
-     * @return
-     *  <p>
-     *      VCTaskResponse - Should only set these properties.
-     *      1. success - true/false
-     *      2. logs - execution or error logs.
-     *  </p>
+     * @param task <p>
+     *             Contains Version-Control System connection information.
+     *             e.g.
+     *             url - contains the VC endpoint
+     *             username - VC username/access-key
+     *             password - VC password/secret-key
+     *             branch - Repository branch defaults to master.
+     *             </p>
+     * @param path <p>
+     *             File location where to check-out the version-control project.
+     *             </p>
+     * @return <p>
+     * VCTaskResponse - Should only set these properties.
+     * 1. success - true/false
+     * 2. logs - execution or error logs.
+     * </p>
      */
     @Override
     public VCTaskResponse process(final Task task, final String path) {
@@ -216,15 +209,28 @@ public class GitService implements VersionControlService {
     @Override
     public String push(String path, String username, String password) {
         try {
+
             taskLogger.get().append("Pushing changes").append("\n");
             logger.info("Pushing changes");
-            PushCommand pushCommand = Git.open(new File(path)).push();
+            Git git = Git.open(new File(path));
+
+            if(!isUnStagedFiles(git)) {
+                taskLogger.get().append("No un-staged files found.").append("\n");
+                logger.info("No un-staged files found.");
+                return "No un-staged files found.";
+            }
+            // add
+            // commit
+            // push
+            addAndCommit(git, "Fx Bot commit", ".");
+
+            PushCommand pushCommand = git.push();
             if (StringUtils.isNotEmpty(username)) {
                 pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
             }
             pushCommand.call();
-            taskLogger.get().append("Push successfull!").append("\n");
-            logger.info("Push successfull!");
+            taskLogger.get().append("Push successful!").append("\n");
+            logger.info("Push successful!");
             // TODO hand response
         } catch (GitAPIException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -235,6 +241,66 @@ public class GitService implements VersionControlService {
         }
 
         return null;
+    }
+
+    private boolean isUnStagedFiles(Git git) {
+        Status status = null;
+        try {
+            status = git.status().call();
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+            return false;
+        }
+
+        if (!CollectionUtils.isEmpty(status.getConflicting())) {
+            taskLogger.get().append("Conflicting Git files found.").append("\n");
+            return false;
+        }
+
+        if (!CollectionUtils.isEmpty(status.getUntracked())) {
+            return true;
+        }
+
+        if (!CollectionUtils.isEmpty(status.getModified())) {
+            return true;
+        }
+
+
+        if (!CollectionUtils.isEmpty(status.getMissing())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void addAndCommit(Git git, String message, String pathToAdd) {
+        add(git, pathToAdd);
+        commit(git, message);
+    }
+
+    private boolean commit(Git git, String message) {
+        CommitCommand commit = git.commit();
+        try {
+            commit.setMessage(message).call();
+            return true;
+        } catch (GitAPIException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+            return false;
+        }
+    }
+
+    private boolean add(Git git, String pathToAdd) {
+        AddCommand add = git.add();
+        try {
+            add.addFilepattern(pathToAdd).call();
+            return true;
+        } catch (GitAPIException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+            return false;
+        }
     }
 
     private String head(Repository repository) {

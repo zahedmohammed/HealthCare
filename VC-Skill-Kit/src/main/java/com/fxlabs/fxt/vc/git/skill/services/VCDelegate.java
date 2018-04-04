@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.vc.git.skill.services;
 
 //import com.fxlabs.fxt.codegen.code.StubGenerator;
+import com.fxlabs.fxt.codegen.code.StubGenerator;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
@@ -34,8 +35,8 @@ public class VCDelegate {
     @Autowired
     private FxCommandService service;
 
-    //@Autowired
-    //private StubGenerator stubGenerator;
+    @Autowired
+    private StubGenerator stubGenerator;
 
     public void process(VCTask task) {
         logger.info("VCTask [{}]", task.getProjectName());
@@ -61,7 +62,7 @@ public class VCDelegate {
                 if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
                     // TODO Generate tests
                     try {
-                        //stubGenerator.generate(task.getOpenAPISpec(), path, null, null);
+                        stubGenerator.generate(task.getOpenAPISpec(), path, null, null);
                         versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
                     } catch (Exception e) {
                         logger.warn(e.getLocalizedMessage(), e);
