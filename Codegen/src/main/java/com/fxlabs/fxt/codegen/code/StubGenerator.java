@@ -3,18 +3,13 @@ package com.fxlabs.fxt.codegen.code;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fxlabs.fxt.codegen.generators.NameUtil;
-import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import io.swagger.models.*;
 import io.swagger.models.auth.AuthorizationValue;
-import io.swagger.models.parameters.BodyParameter;
-import io.swagger.models.parameters.Parameter;
 import io.swagger.models.properties.*;
 import io.swagger.parser.SwaggerCompatConverter;
 import io.swagger.parser.SwaggerParser;
 import io.swagger.util.Json;
-import io.swagger.util.Yaml;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ansi.AnsiColor;
@@ -48,7 +43,7 @@ public class StubGenerator {
 
             //System.out.println("---- def ----");
             //System.out.println (swagger.getDefinitions());
-            for (String p: swagger.getDefinitions().keySet()) {
+            for (String p : swagger.getDefinitions().keySet()) {
                 Model m = swagger.getDefinitions().get(p);
                 //System.out.println(p + " -> ");
                 /*for (String prop : m.getProperties().keySet()) {
@@ -101,11 +96,10 @@ public class StubGenerator {
             }
 
             //for (TestSuite ts : testSuites) {
-                //System.out.println(ts);
+            //System.out.println(ts);
             //}
 
             printTS(testSuites, dir);
-
 
 
         } catch (Exception e) {
