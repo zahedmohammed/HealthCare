@@ -62,7 +62,7 @@ public class VCDelegate {
                 if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
                     // TODO Generate tests
                     try {
-                        stubGenerator.generate(task.getOpenAPISpec(), path, null, null);
+                        stubGenerator.generate(task.getOpenAPISpec(), path + "/test-suites", null, null);
                         versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
                     } catch (Exception e) {
                         logger.warn(e.getLocalizedMessage(), e);
