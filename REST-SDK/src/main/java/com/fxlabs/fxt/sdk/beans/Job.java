@@ -11,6 +11,8 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
+ *
  */
 
 
@@ -35,6 +37,8 @@ public class Job implements Serializable {
     private String issueTracker;
 
     private boolean inactive;
+
+    private  List<String> notifications;
 
 
 }

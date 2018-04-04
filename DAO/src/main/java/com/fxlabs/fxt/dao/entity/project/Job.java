@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Entity
 @Data
@@ -44,6 +45,9 @@ public class Job extends BaseEntity {
     private Date nextFire;
 
     private String issueTracker;
+
+    @ElementCollection
+    private  List<String> notifications;
 
     @PrePersist
     @PreUpdate

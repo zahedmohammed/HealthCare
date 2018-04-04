@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.amqp.sender;
 
 import com.fxlabs.fxt.dto.cloud.CloudTask;
+import com.fxlabs.fxt.dto.notification.NotificationTask;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.run.BotTask;
@@ -49,6 +50,11 @@ public class AmqpClientServiceImpl implements AmqpClientService {
 
     @Override
     public void sendTask(CloudTask task, String region) {
+        this.template.convertAndSend(exchange, region, task);
+    }
+
+    @Override
+    public void sendTask(NotificationTask task, String region) {
         this.template.convertAndSend(exchange, region, task);
     }
 

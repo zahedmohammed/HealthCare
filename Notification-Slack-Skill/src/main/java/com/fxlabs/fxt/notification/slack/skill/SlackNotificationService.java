@@ -115,26 +115,26 @@ public class SlackNotificationService implements NotificationService {
         return value;
     }
 
-    public static void main(String[] args){
-        SlackSession session = null;
-        try {
-            session = SlackSessionFactory.createWebSocketSlackSession("xoxp-340960826822-339431155488-340132665426-093fffdddc63e0249d90526711bf7007");
-            session.connect();
-            SlackChannel channel = session.findChannelByName("random"); //make sure bot is a member of the channel.
-            session.sendMessage(channel, "hi im a bot");
-        } catch (Exception ex) {
-         System.out.print(ex.getLocalizedMessage());
-        } finally {
-            if (session != null) {
-                try {
-                    session.disconnect();
-                } catch (IOException e) {
-                    System.out.print("Close connection");
-                    System.out.print(e.getLocalizedMessage());
-                }
-            }
-        }
-    }
+//    public static void main(String[] args){
+//        SlackSession session = null;
+//        try {
+//            session = SlackSessionFactory.createWebSocketSlackSession("xoxp-340960826822-339431155488-340132665426-093fffdddc63e0249d90526711bf7007");
+//            session.connect();
+//            SlackChannel channel = session.findChannelByName("random"); //make sure bot is a member of the channel.
+//            session.sendMessage(channel, "hi im a bot");
+//        } catch (Exception ex) {
+//         System.out.print(ex.getLocalizedMessage());
+//        } finally {
+//            if (session != null) {
+//                try {
+//                    session.disconnect();
+//                } catch (IOException e) {
+//                    System.out.print("Close connection");
+//                    System.out.print(e.getLocalizedMessage());
+//                }
+//            }
+//        }
+//    }
 
 
 }

@@ -38,6 +38,8 @@ public class Job extends BaseDto<String> {
 
     private String issueTracker;
 
+    private  List<String> notifications;
+
 
 }
 

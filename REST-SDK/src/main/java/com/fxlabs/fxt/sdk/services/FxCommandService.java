@@ -491,6 +491,7 @@ public class FxCommandService {
                     old.setRegions(job.getRegions());
                     old.setCron(job.getCron());
                     old.setIssueTracker(job.getIssueTracker());
+                    old.setNotifications(job.getNotifications());
                     old.setInactive(job.isInactive());
                     found = true;
                     break;
@@ -583,6 +584,7 @@ public class FxCommandService {
             job.setName(jobProfile.getName());
 
             job.setTags(jobProfile.getTags());
+            job.setNotifications(jobProfile.getNotifications());
 
             job.setEnvironment(jobProfile.getEnvironment());
 

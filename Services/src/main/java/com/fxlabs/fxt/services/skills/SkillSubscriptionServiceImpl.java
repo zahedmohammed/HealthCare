@@ -220,6 +220,10 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         Map<String, String> opts = new HashMap<>();
 
         CloudAccount cloudAccount = dto.getCloudAccount();
+
+        if (cloudAccount == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Cloud account not found"));
+        }
         String key = getCloudSkillKey(cloudAccount);
 
         if (StringUtils.isEmpty(key)){
