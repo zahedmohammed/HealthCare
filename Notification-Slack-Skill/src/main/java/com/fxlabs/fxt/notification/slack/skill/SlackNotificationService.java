@@ -80,10 +80,20 @@ public class SlackNotificationService implements NotificationService {
                 return;
             }
 
+
+            String channel = getChannel(task.getOpts());
+
+            if (StringUtils.isEmpty(channel)){
+                logger.info("Slack channel  not found for task id : [{}]", task.getId());
+                return;
+            }
+
+
+
             session = SlackSessionFactory.createWebSocketSlackSession(token);
             session.connect();
-            SlackChannel channel = session.findChannelByName("general"); //make sure bot is a member of the channel.
-            session.sendMessage(channel, message);
+            SlackChannel channel_ = session.findChannelByName(channel); //make sure bot is a member of the channel.
+            session.sendMessage(channel_, message);
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         } finally {
@@ -115,6 +125,15 @@ public class SlackNotificationService implements NotificationService {
         return value;
     }
 
+
+    private String getChannel(Map<String, String> opts) {
+
+        String value = opts.get("CHANNELS");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")) {
+            return "";
+        }
+        return value;
+    }
 //    public static void main(String[] args){
 //        SlackSession session = null;
 //        try {

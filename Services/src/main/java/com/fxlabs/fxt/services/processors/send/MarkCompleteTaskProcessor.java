@@ -103,43 +103,55 @@ public class MarkCompleteTaskProcessor {
         });
     }
 
-    private void sendNotification(Run run){
-
-        if (CollectionUtils.isEmpty(run.getJob().getNotifications())){
-            logger.debug("No notification for job [{}]", run.getJob().getName());
-            return;
-        }
-
-        for (String address :run.getJob().getNotifications()){
-            Response<NotificationAccount> notificationAccount = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
-
-            if (notificationAccount.isErrors() || notificationAccount.getData() == null) {
-                logger.info("Notification Account not found for name [{}]", address);
+    private void sendNotification(Run run) {
+        try {
+            if (CollectionUtils.isEmpty(run.getJob().getNotifications())) {
+                logger.debug("No notification for job [{}]", run.getJob().getName());
                 return;
             }
-            NotificationTask task = new NotificationTask();
-            task.setId(run.getId());
-            Map<String, String> opts = new HashMap<>();
-            switch (notificationAccount.getData().getType()){
-                case SLACK:
-                    if (StringUtils.isEmpty(notificationAccount.getData().getToken())) {
-                        logger.info("Notification Token not found for account [{}]", notificationAccount.getData().getId());
+
+            for (String address : run.getJob().getNotifications()) {
+
+
+                if (StringUtils.isEmpty(address) || StringUtils.isEmpty(run.getJob().getCreatedBy())) {
+                    logger.info("Ignoring notification invalid data");
+                    continue;
+                }
+
+                Response<NotificationAccount> notificationAccount = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
+
+                if (notificationAccount.isErrors() || notificationAccount.getData() == null) {
+                    logger.info("Notification Account not found for name [{}]", address);
+                    continue;
+                }
+                NotificationTask task = new NotificationTask();
+                task.setId(run.getId());
+                Map<String, String> opts = new HashMap<>();
+                switch (notificationAccount.getData().getType()) {
+                    case SLACK:
+                        if (StringUtils.isEmpty(notificationAccount.getData().getToken())) {
+                            logger.info("Notification Token not found for account [{}]", notificationAccount.getData().getId());
+                            break;
+                        }
+                        opts.put("TOKEN", notificationAccount.getData().getToken());
+                        opts.put("MESSAGE", formatSlackMessage(run));
+                        opts.put("CHANNELS", notificationAccount.getData().getToken());
+                        task.setOpts(opts);
+                        amqpClientService.sendTask(task, slackNotificationQueue);
                         break;
-                    }
-                    opts.put("TOKEN", notificationAccount.getData().getToken());
-                    opts.put("MESSAGE", formatSlackMessage(run));
-                    task.setOpts(opts);
-                    amqpClientService.sendTask(task, slackNotificationQueue);
-                    break;
-                case EMAIL:
-                    logger.info("Notification Account Type email not supported");
-                    break;
+                    case EMAIL:
+                        logger.info("Notification Account Type email not supported");
+                        break;
 
                     default:
                         logger.info("Notification Account type [{}] not supported", notificationAccount.getData().getType());
+                }
+
+
             }
-
-
+        } catch (Exception e) {
+            logger.info("Failed to send notification for Job [{}]", run.getJob().getName());
+            logger.info(e.getLocalizedMessage());
         }
 
     }
@@ -150,7 +162,7 @@ public class MarkCompleteTaskProcessor {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Job Name").append(COLON).append(run.getJob().getName()).append(LINE_SEPERATOR)
-                .append("Description").append(COLON).append(run.getTask().getDescription()).append(LINE_SEPERATOR)
+                .append("Description").append(COLON).append(getValue(run.getTask().getDescription())).append(LINE_SEPERATOR)
                 .append("Status").append(COLON).append(run.getTask().getStatus().toString()).append(LINE_SEPERATOR)
                 .append("Total Test Cases").append(COLON).append(run.getTask().getTotalTests()).append(LINE_SEPERATOR)
                 .append("Failed Tests").append(COLON).append(run.getTask().getFailedTests()).append(LINE_SEPERATOR)
@@ -162,6 +174,17 @@ public class MarkCompleteTaskProcessor {
                 .append("Region").append(COLON).append(run.getJob().getRegions());
 
         return sb.toString();
+    }
+
+
+    private static String getValue(String value){
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+            return "";
+        }
+
+        return value;
     }
 }
 
