@@ -39,17 +39,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 @PropertySource(ignoreResourceNotFound = true, value = "file:fx.properties")
 @PropertySource(ignoreResourceNotFound = true, value = "file:/opt/fx/fx.properties")
 @PropertySource(ignoreResourceNotFound = true, value = "file:/var/fx/fx.properties")
-@PropertySource(ignoreResourceNotFound = true, value = "file:${user.home}/fxt/fx.properties")
+@PropertySource(ignoreResourceNotFound = true, value = "file:\\C:\\opt\\fx\\fx.properties")
+@PropertySource(ignoreResourceNotFound = true, value = "file:${user.home}/fx/fx.properties")
 public class FxCommandService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    @Value("${url:#{null}}")
+    @Value("${fx_url:#{null}}")
     protected String url;
-    @Value("${username:#{null}}")
+    @Value("${fx_username:#{null}}")
     protected String username;
-    @Value("${password:#{null}}")
+    @Value("${fx_password:#{null}}")
     protected String password;
 
     // Fx server connection details
