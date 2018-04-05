@@ -141,9 +141,9 @@ public class FxCommands {
                 + "C:\\opt\\fx\\fx.properties" + "\n"
                 + "${user.home}/fx/fx.properties" + "\n\n"
                 + "e.g. file content" + "\n"
-                + "url=https://cloud.fxlabs.io" + "\n"
-                + "username=me@company.com" + "\n"
-                + "password=mypassword\n";
+                + "fx_url=https://cloud.fxlabs.io" + "\n"
+                + "fx_username=me@company.com" + "\n"
+                + "fx_password=mypassword\n";
 
         System.out.println(value);
         System.exit(0);
