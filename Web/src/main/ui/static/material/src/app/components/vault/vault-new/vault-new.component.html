@@ -73,9 +73,10 @@
             <div class="col-md-2"></div>
             <div class="col-md-10">
               <div class="callout callout-info">
-                <p>Secret's can be injected into projects Fxfile's 'baseUrl', 'username', & 'password' properties.
+                <p>Secret's can be injected into projects Fxfile's 'baseUrl', 'username', 'password', & test-suite files.
                   This helps you from not exposing sensitive environment details in version-control system.</p>
                 <p> e.g. <code ngNonBindable>password: '{{@Vault.FxLabs/MyPassword}}'</code></p>
+                <p> Where 'FxLabs/MyPassword' is the secret name.</p>
               </div>
             </div>
           </div>
