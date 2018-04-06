@@ -116,13 +116,18 @@ public class StubGenerator {
 
             File file = new File(dir + "/" + ts.getParent(), ts.getName() + ".yaml");
             if (file.exists()) {
+                System.out.println(
+                        AnsiOutput.toString(AnsiColor.WHITE,
+                                String.format("%s [Skipping]", ts.getName())
+                                , AnsiColor.DEFAULT)
+                );
                 return;
             }
 
             try {
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.WHITE,
-                                String.format("Writing %s", ts.getName())
+                                String.format("%s [Writing]", ts.getName())
                                 , AnsiColor.DEFAULT)
                 );
                 FileUtils.touch(file);
