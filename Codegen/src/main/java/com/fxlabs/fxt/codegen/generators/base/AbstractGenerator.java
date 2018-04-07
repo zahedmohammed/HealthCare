@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.codegen.generators.base;
 
 import com.fxlabs.fxt.codegen.code.StubHandler;
+import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.project.TestCase;
@@ -30,6 +31,9 @@ public abstract class AbstractGenerator implements Generator {
 
     @Autowired
     protected StubHandler stubHandler;
+
+    @Autowired
+    protected JSONFactory factory;
 
     @PostConstruct
     public void register() {

@@ -3,6 +3,7 @@ package com.fxlabs.fxt.codegen.code;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import io.swagger.models.*;
 import io.swagger.models.auth.AuthorizationValue;
@@ -28,11 +29,16 @@ public class StubGenerator {
     @Autowired
     private StubHandler stubHandler;
 
+    @Autowired
+    private JSONFactory factory;
+
     public void generate(String spec, String dir, String headerKey, String headerVal) {
 
         try {
 
             Swagger swagger = build(spec, headerKey, headerVal);
+
+            factory.init(swagger);
 
             String swaggerString = Json.pretty(swagger);
 
@@ -78,6 +84,7 @@ public class StubGenerator {
                 for (HttpMethod m : path.getOperationMap().keySet()) {
                     Operation op = path.getOperationMap().get(m);
 
+                    //System.out.println (p + " " + op.getOperationId());
                     testSuites.addAll(this.stubHandler.handle(p, m, op));
                     /*System.out.println (op.getOperationId());
                     System.out.println (op.getConsumes());
@@ -112,9 +119,13 @@ public class StubGenerator {
         ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
         yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        testSuites.parallelStream().forEach(ts -> {
+        testSuites.stream().forEach(ts -> {
+
+            //System.out.println ("start "  + ts);
+            //System.out.println ("Name "  + ts.getName());
 
             File file = new File(dir + "/" + ts.getParent(), ts.getName() + ".yaml");
+            //System.out.println (file);
             if (file.exists()) {
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.WHITE,
@@ -125,18 +136,31 @@ public class StubGenerator {
             }
 
             try {
+
+
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.WHITE,
-                                String.format("%s [Writing]", ts.getName())
-                                , AnsiColor.DEFAULT)
-                );
+                                String.format("%s [Writing]",
+                                        org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 80))
+                                        , AnsiColor.DEFAULT)
+                        );
+
+
                 FileUtils.touch(file);
+
+
                 yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, ts);
+                //System.out.println ("done");
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         });
+
+        System.out.println("--");
+        System.out.println("Total suites written : " + testSuites.size());
+        System.out.println("");
+
     }
 
     private List<String> getEnum(Property p) {

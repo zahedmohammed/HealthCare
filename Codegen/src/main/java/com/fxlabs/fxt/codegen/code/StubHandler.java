@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -28,13 +29,13 @@ public class StubHandler {
     public List<TestSuiteMin> handle(String path, HttpMethod method, Operation op) {
 
         logger.info("{} {}", path, method);
-        List<TestSuiteMin> suites = new ArrayList<>();
+        List<TestSuiteMin> suites = Collections.synchronizedList(new ArrayList<>());
 
         this.generators.parallelStream().forEach(g -> {
             try {
-                List<TestSuiteMin> ts = g.generate(path, method, op);
-                if (ts != null && !CollectionUtils.isEmpty(ts)) {
-                    suites.addAll(ts);
+                List<TestSuiteMin> list = g.generate(path, method, op);
+                if (list != null && !list.isEmpty()) {
+                    suites.addAll(list);
                 }
             } catch (Exception e) {
                 logger.warn(e.getLocalizedMessage(), e);

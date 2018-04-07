@@ -7,15 +7,20 @@ import io.swagger.models.Model;
 import io.swagger.models.Swagger;
 import io.swagger.models.properties.*;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class JSONFactory {
 
-    private ThreadLocal<Map<String, Model>> models = new InheritableThreadLocal<>();
+    private ThreadLocal<Map<String, ObjectNode>> nodes = new InheritableThreadLocal<>();
 
     public void init(Swagger swagger) {
+
+        nodes.set(new HashMap<>());
 
         Map<String, Model> m = new HashMap<>();
         Map<String, JsonNode> jn = new HashMap<>();
@@ -29,10 +34,28 @@ public class JSONFactory {
 
     }
 
-    private Map<String, ObjectNode> initialize(Map<String, Model> map) {
-        Map<String, ObjectNode> nodes = new HashMap<>();
+    public String getValid(String schema) {
+        schema = extractSchema(schema);
+        //System.out.println ("Schema : " + schema);
+        return nodes.get().get(schema).toString();
+    }
+
+    private String extractSchema(String schema) {
+        if (StringUtils.isEmpty(schema)) {
+            return schema;
+        }
+        String[] tokens = schema.split("/");
+        return tokens[tokens.length-1];
+    }
+
+
+
+    private void initialize(Map<String, Model> map) {
+        //Map<String, ObjectNode> nodes = new HashMap<>();
 
         for (String key : map.keySet()) {
+
+            //System.out.println ("Key : " + key);
 
             Model m = map.get(key);
 
@@ -40,14 +63,14 @@ public class JSONFactory {
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = mapper.createObjectNode();
 
-            nodes.put(key, node);
+            nodes.get().put(key, node);
 
             buildNode(node, m.getProperties(), map);
 
 
         }
 
-        return nodes;
+        //return nodes;
     }
 
     private void buildNode(ObjectNode node, Map<String, Property> m, Map<String, Model> map) {
