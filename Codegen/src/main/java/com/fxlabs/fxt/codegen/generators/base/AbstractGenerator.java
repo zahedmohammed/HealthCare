@@ -1,6 +1,7 @@
-package com.fxlabs.fxt.codegen.generators;
+package com.fxlabs.fxt.codegen.generators.base;
 
 import com.fxlabs.fxt.codegen.code.StubHandler;
+import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.project.TestCase;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringJoiner;
 
 public abstract class AbstractGenerator implements Generator {
@@ -34,10 +36,13 @@ public abstract class AbstractGenerator implements Generator {
         this.stubHandler.register(this);
     }
 
-    public TestSuiteMin build(Operation op, String path, String postfix, String description, TestSuiteType testSuiteType,
-                              io.swagger.models.HttpMethod method, String tag, String auth) {
+    public List<TestSuiteMin> build(Operation op, String path, String postfix, String description, TestSuiteType testSuiteType,
+                                    io.swagger.models.HttpMethod method, String tag, String auth) {
 
         TestSuiteMin testSuite = new TestSuiteMin();
+        List<TestSuiteMin> list = new ArrayList<>();
+        list.add(testSuite);
+
 
         // TODO - replace path-params and query-params
 
@@ -58,7 +63,7 @@ public abstract class AbstractGenerator implements Generator {
                 .buildAuth(testSuite, auth)
                 .buildAuthor(testSuite, AUTHOR);
 
-        return testSuite;
+        return list;
 
     }
 

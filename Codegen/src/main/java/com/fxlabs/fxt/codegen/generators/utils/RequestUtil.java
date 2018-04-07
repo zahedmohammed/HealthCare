@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.codegen.generators;
+package com.fxlabs.fxt.codegen.generators.utils;
 
 import io.swagger.models.Operation;
 

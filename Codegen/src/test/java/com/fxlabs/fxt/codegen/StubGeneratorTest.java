@@ -2,10 +2,9 @@ package com.fxlabs.fxt.codegen;
 
 import com.fxlabs.fxt.codegen.code.StubGenerator;
 import com.fxlabs.fxt.codegen.code.StubHandler;
-import com.fxlabs.fxt.codegen.generators.AnonymousInvalidGenerator;
+import com.fxlabs.fxt.codegen.generators.access.AnonymousInvalidGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
