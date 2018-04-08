@@ -15,7 +15,7 @@ import java.util.List;
 @Component(value = "abstractCreateGenerator")
 public class AbstractCreateGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "create_abstract";
+    public static final String POSTFIX = "create_abstract";
     protected static final String AUTH = "";
     protected static final String OPERAND = "200";
 
