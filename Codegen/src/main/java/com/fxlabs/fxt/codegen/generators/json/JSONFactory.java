@@ -9,8 +9,11 @@ import io.swagger.models.properties.*;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -45,9 +48,8 @@ public class JSONFactory {
             return schema;
         }
         String[] tokens = schema.split("/");
-        return tokens[tokens.length-1];
+        return tokens[tokens.length - 1];
     }
-
 
 
     private void initialize(Map<String, Model> map) {
@@ -58,6 +60,8 @@ public class JSONFactory {
             //System.out.println ("Key : " + key);
 
             Model m = map.get(key);
+
+            System.out.println(key);
 
 
             ObjectMapper mapper = new ObjectMapper();
@@ -73,11 +77,31 @@ public class JSONFactory {
         //return nodes;
     }
 
+    private String[] skippedProps = {
+            "id",
+            "createdBy", "created_by",
+            "createdDate", "created_date",
+            "lastModifiedBy", "last_modified_by",
+            "modifiedBy", "modified_by",
+            "lastModifiedDate", "last_modified_date",
+            "modifiedDate", "modified_date",
+            "version"
+    };
+
+    List<String> skip = Arrays.asList(skippedProps);
+
     private void buildNode(ObjectNode node, Map<String, Property> m, Map<String, Model> map) {
 
         for (String p : m.keySet()) {
 
+            //System.out.println(p + "...");
+
             Property prop = m.get(p);
+
+            // skip properties
+            if (CollectionUtils.containsInstance(skip, p) && !BooleanUtils.isTrue(prop.getRequired())) {
+                continue;
+            }
 
             if (prop instanceof ArrayProperty) {
                 // TODO ( (ArrayProperty) prop).g
@@ -168,7 +192,6 @@ public class JSONFactory {
                 } else {
                     System.err.println(String.format("Invalid Ref [%s], eval [%s] ", type, ref));
                 }
-
 
             } else {
                 node.putNull(p);
