@@ -92,6 +92,11 @@ public class JSONFactory {
 
     private void buildNode(ObjectNode node, Map<String, Property> m, Map<String, Model> map) {
 
+        if (node==null || m == null || map == null){
+//            System.out.println("m is null");
+            return;
+        }
+
         for (String p : m.keySet()) {
 
             //System.out.println(p + "...");
