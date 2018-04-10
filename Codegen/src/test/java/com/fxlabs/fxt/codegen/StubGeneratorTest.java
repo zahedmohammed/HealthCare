@@ -9,15 +9,15 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootConfiguration
-@ContextConfiguration(classes = {StubGenerator.class, StubHandler.class, AnonymousInvalidGenerator.class})
+//@RunWith(SpringRunner.class)
+//@SpringBootConfiguration
+//@ContextConfiguration(classes = {StubGenerator.class, StubHandler.class, AnonymousInvalidGenerator.class})
 public class StubGeneratorTest {
 
     //@Autowired
     //private StubGenerator service;
 
-    @Test
+    //@Test
     public void generate() {
         System.out.println("Testing...");
         StubGenerator service = new StubGenerator();
