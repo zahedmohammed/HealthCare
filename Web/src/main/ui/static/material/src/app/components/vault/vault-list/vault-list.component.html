@@ -23,7 +23,6 @@
                   <th class="mdl-data-table__cell--non-numeric">Key</th>
                   <th class="mdl-data-table__cell--non-numeric">Visibility</th>
                   <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
-                  <th class="mdl-data-table__cell--non-numeric">Owner</th>
                   <th class="mdl-data-table__cell--non-numeric"></th>
                 </tr>
                 </thead>
@@ -32,7 +31,6 @@
                   <td class="mdl-data-table__cell--non-numeric bold">{{key.org.name}}/{{key.key}}</td>
                   <td class="mdl-data-table__cell--non-numeric">{{key.visibility}}</td>
                   <td class="mdl-data-table__cell--non-numeric">{{key.createdDate | date:'shortDate'}}</td>
-                  <td class="mdl-data-table__cell--non-numeric">{{key.createdBy}}</td>
                   <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/vault', key.id]">Edit</a></td>
                 </tr>
                 </tbody>
