@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.codegen.generators;
 
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
+import com.fxlabs.fxt.codegen.generators.utils.ParamUtil;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
@@ -30,6 +31,10 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
             for ( Parameter param : op.getParameters()){
                 if (param instanceof QueryParameter){
                     QueryParameter queryParam = (QueryParameter) param;
+                    if (ParamUtil.isPaginationParam(queryParam.getName())) {
+                        continue;
+                    }
+
                     if ("integer".equals(queryParam.getType())){
                         String postFix = POSTFIX + "_" + queryParam.getName() ;
                         List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
