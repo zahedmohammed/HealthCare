@@ -27,10 +27,15 @@ public class EmptyQueryParamGenerator extends AbstractGenerator {
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
         if (method == io.swagger.models.HttpMethod.GET) {
-            for ( Parameter param : op.getParameters()){
-                if (param instanceof QueryParameter){
+            for (Parameter param : op.getParameters()) {
+
+                if (!param.getRequired()) {
+                    continue;
+                }
+                
+                if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
-                    String postFix = POSTFIX + "_" + queryParam.getName() ;
+                    String postFix = POSTFIX + "_" + queryParam.getName();
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
