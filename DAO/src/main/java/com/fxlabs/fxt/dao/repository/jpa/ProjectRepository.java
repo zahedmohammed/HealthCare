@@ -19,4 +19,6 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
     Optional<Project> findByOrgNameAndNameAndInactive(String orgName, String projectName, boolean inactive);
 
     Stream<Project> findByProjectTypeAndInactive(ProjectType projectType, boolean inactive);
+
+    Stream<Project> findByInactive(boolean inactive);
 }

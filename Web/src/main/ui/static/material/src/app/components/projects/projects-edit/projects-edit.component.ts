@@ -86,7 +86,7 @@ export class ProjectsEditComponent implements OnInit {
     });
   }
 
-  projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Local'];
+  projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
   genPolicies = ['None', 'Create'];
 

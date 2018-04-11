@@ -62,7 +62,7 @@ public class GaaSTaskRequestProcessor {
      * Send as VCTask
      */
     public void process() {
-        Stream<Project> projects = projectRepository.findByProjectTypeAndInactive(ProjectType.Git, false);
+        Stream<Project> projects = projectRepository.findByInactive(false);
         projects.forEach(project -> {
             process(project);
         });

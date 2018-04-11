@@ -192,7 +192,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // Validate GIT URL
-            if (request.getProjectType() == ProjectType.Git && StringUtils.isEmpty(request.getUrl())) {
+            if (request.getProjectType() != ProjectType.Local && StringUtils.isEmpty(request.getUrl())) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Project's GIT URL cannot be empty"));
             }
 
