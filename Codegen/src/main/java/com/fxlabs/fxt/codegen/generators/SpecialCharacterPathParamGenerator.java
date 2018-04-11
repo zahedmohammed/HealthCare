@@ -30,26 +30,27 @@ public class SpecialCharacterPathParamGenerator extends AbstractGenerator {
 
             for (Parameter param : op.getParameters()) {
 
-                if (param instanceof PathParameter) {
-
-                    PathParameter pathParam = (PathParameter) param;
-
-                    if (!"string".equals(pathParam.getType())){
-                        return allTestSuites;
-                    }
-
-                    String postFix = POSTFIX + "_" + pathParam.getName();
-                    List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-
-                    for (TestSuiteMin testSuite : testSuites) {
-
-                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        String _path = path.replace("{" + pathParam.getName() + "}", "!@#$%^&*()");
-                        testSuite.setEndpoint(_path);
-                        
-                    }
-                    allTestSuites.addAll(testSuites);
+                if (!(param instanceof PathParameter)) {
+                    continue;
                 }
+
+                PathParameter pathParam = (PathParameter) param;
+
+                if (!"string".equals(pathParam.getType())) {
+                    continue;
+                }
+
+                String postFix = POSTFIX + "_" + pathParam.getName();
+                List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+
+                for (TestSuiteMin testSuite : testSuites) {
+
+                    buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                    String _path = path.replace("{" + pathParam.getName() + "}", "!@#$%^&*()");
+                    testSuite.setEndpoint(_path);
+
+                }
+                allTestSuites.addAll(testSuites);
             }
         }
         return allTestSuites;

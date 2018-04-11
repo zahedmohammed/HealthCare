@@ -33,12 +33,12 @@ public class InvalidDataTypeForIntQueryParamGenerator extends AbstractGenerator 
             for (Parameter param : op.getParameters()) {
 
                 if (!(param instanceof QueryParameter)) {
-                    return allTestSuites;
+                    continue;
                 }
 
                 QueryParameter queryParam = (QueryParameter) param;
                 if (!"integer".equals(queryParam.getType())) {
-                    return allTestSuites;
+                    continue;
                 }
 
                String postFix = POSTFIX + "_" + queryParam.getName();
