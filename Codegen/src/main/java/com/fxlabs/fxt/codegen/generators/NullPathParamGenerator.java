@@ -28,15 +28,20 @@ public class NullPathParamGenerator extends AbstractGenerator {
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
         if (method == io.swagger.models.HttpMethod.GET) {
-            for ( Parameter param : op.getParameters()){
-                if (param instanceof PathParameter){
+            for (Parameter param : op.getParameters()) {
+                if (param instanceof PathParameter) {
+
+                    if (!param.getRequired()) {
+                        continue;
+                    }
+
                     PathParameter pathParam = (PathParameter) param;
-                    String postFix = POSTFIX + "_" + pathParam.getName() ;
+                    String postFix = POSTFIX + "_" + pathParam.getName();
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        String _path = path.replace("{"+pathParam.getName()+"}","null");
-                        testSuite.setEndpoint(_path );
+                        String _path = path.replace("{" + pathParam.getName() + "}", "null");
+                        testSuite.setEndpoint(_path);
                     }
                     allTestSuites.addAll(testSuites);
                 }
