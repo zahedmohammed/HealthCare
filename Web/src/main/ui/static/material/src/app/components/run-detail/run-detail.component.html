@@ -3,7 +3,8 @@
         <h2 class="article-title">
             <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
             /
-            <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}<!--</a>-->
+            <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}
+            <!--</a>-->
             /
             <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs']"> Runs </a>
             / {{run.runId}}
@@ -40,6 +41,16 @@
                     <th class="mdl-data-table__cell--non-numeric">Time (ms)</th>
                     <th class="mdl-data-table__cell--non-numeric">Bytes</th>
                 </tr>
+                <tr class="bg-color-info1">
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{time}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{size}}</th>
+
+                </tr>
                 </thead>
                 <tr *ngFor="let s of suites">
                     <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span class="text-success"><i
@@ -63,7 +74,7 @@
                 <tr class="bg-color-info1">
                     <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
                     <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
                     <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
                     <th class="mdl-data-table__cell--non-numeric">{{time}}</th>

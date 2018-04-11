@@ -20,6 +20,7 @@ export class DashboardComponent {
   iBots = "-";
   eBots = "-";
   suites = "-";
+  channels = "-";
 
   constructor(private dashboardService: DashboardService) {}
   ngOnInit() {
@@ -33,6 +34,7 @@ export class DashboardComponent {
       this.get("count-bytes", "bytes");
       this.get("count-ibots", "iBots");
       this.get("count-ebots", "eBots");
+      this.get("count-channels", "channels");
   }
 
 
@@ -63,6 +65,8 @@ export class DashboardComponent {
         this.iBots = count;
       else if (_var === 'eBots')
         this.eBots = count;
+      else if (_var === 'channels')
+        this.channels = count;
     }, error => {
       console.log("Unable to fetch stat");
     });

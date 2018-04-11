@@ -18,6 +18,10 @@ private serviceUrl = '/api/v1/skills'
       return this.http.get(this.serviceUrl);
   }
 
+  getByType(type: string) {
+    return this.http.get(this.serviceUrl + "/type/" + type);
+  }
+
   getById(id: string) {
     return this.http.get(this.serviceUrl + "/" + id);
   }

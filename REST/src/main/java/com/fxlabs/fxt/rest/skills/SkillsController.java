@@ -2,6 +2,7 @@ package com.fxlabs.fxt.rest.skills;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.skills.Skill;
+import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.skills.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,14 @@ public class SkillsController {
     public Response<List<Skill>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                          @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return service.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/type/{type}", method = RequestMethod.GET)
+    public Response<List<Skill>> findByType(@PathVariable("type") SkillType skillType,
+                                            @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                            @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.findByType(skillType, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)

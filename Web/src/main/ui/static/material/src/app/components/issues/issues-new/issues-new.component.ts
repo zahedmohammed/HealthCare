@@ -27,7 +27,7 @@ export class IssuesNewComponent implements OnInit {
 
   listSkills() {
     console.log('listing skills');
-    this.skillService.get().subscribe(results => {
+    this.skillService.getByType('ISSUE_TRACKER').subscribe(results => {
       if (results['errors']) {
         console.log(results);
         return ;

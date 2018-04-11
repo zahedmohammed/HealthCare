@@ -92,7 +92,7 @@
                         </label>
                         <div class="col-md-8">
                             <mat-form-field>
-                                <mat-select placeholder="Code generation" [(ngModel)]="project.genPolicy" name="Code generation">
+                                <mat-select placeholder="Auto-Code" [(ngModel)]="project.genPolicy" name="Auto-Code">
                                     <mat-option *ngFor="let gen of genPolicies" [value]="gen">
                                         {{gen}}
                                     </mat-option>

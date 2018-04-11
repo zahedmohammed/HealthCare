@@ -109,6 +109,12 @@ public class DashboardController {
     }
 
     @Secured(ROLE_USER)
+    @RequestMapping(value = "/count-channels", method = RequestMethod.GET)
+    public Response<Long> countChannels() {
+        return skillSubscriptionService.countBySkillType(SecurityUtil.getCurrentAuditor(), SkillType.NOTIFICATION);
+    }
+
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/count-ebots", method = RequestMethod.GET)
     public Response<Long> counteBots() {
         return clusterService.countBotRegions(SecurityUtil.getCurrentAuditor());

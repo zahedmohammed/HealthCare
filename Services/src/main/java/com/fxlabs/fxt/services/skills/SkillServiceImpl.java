@@ -15,6 +15,7 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.users.OrgUsersService;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,12 @@ public class SkillServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.enti
     @Override
     public Response<List<com.fxlabs.fxt.dto.skills.Skill>> findAll(String user, Pageable pageable) {
         Page<Skill> entities = this.repository.findAll(pageable);
+        return new Response<>(converter.convertToDtos(entities.getContent()), entities.getTotalElements(), entities.getTotalPages());
+    }
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.skills.Skill>> findByType(SkillType skillType, String user, Pageable pageable) {
+        Page<Skill> entities = this.repository.findBySkillType(com.fxlabs.fxt.dao.entity.skills.SkillType.valueOf(skillType.name()), pageable);
         return new Response<>(converter.convertToDtos(entities.getContent()), entities.getTotalElements(), entities.getTotalPages());
     }
 
