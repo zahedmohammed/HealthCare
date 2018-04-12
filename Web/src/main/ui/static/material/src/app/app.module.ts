@@ -149,6 +149,8 @@ import { RegionEditComponent } from './components/regions/region-edit/region-edi
 import { NotificationListComponent } from './components/notify/notification-list/notification-list.component';
 import { NotificationEditComponent } from './components/notify/notification-edit/notification-edit.component';
 import { NotificationNewComponent } from './components/notify/notification-new/notification-new.component';
+import { MsgDialogComponent } from './components/dialogs/msg-dialog/msg-dialog.component';
+import { ErrorDialogComponent } from './components/dialogs/error-dialog/error-dialog.component';
 
 @NgModule({
   imports: [
@@ -278,10 +280,13 @@ import { NotificationNewComponent } from './components/notify/notification-new/n
     RegionEditComponent,
     NotificationListComponent,
     NotificationEditComponent,
-    NotificationNewComponent
+    NotificationNewComponent,
+    MsgDialogComponent,
+    ErrorDialogComponent
   ],
   bootstrap: [AppComponent],
-  providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService]
+  providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService],
+  entryComponents: [MsgDialogComponent]
 })
 
 export class AppModule {

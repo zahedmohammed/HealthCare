@@ -36,7 +36,11 @@ constructor(private http: HttpClient) {
   }
 
   getSummary(runId:string) {
-   return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary");
+    return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary");
+  }
+
+  getTestSuiteResponseByName(id:string, name:string) {
+    return this.http.get(this.serviceUrl + "/" + id + "/test-suite-response/" + name);
   }
 
  }

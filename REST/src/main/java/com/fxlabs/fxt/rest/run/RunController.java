@@ -52,6 +52,16 @@ public class RunController {
     }
 
     @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}/test-suite-response/{name}", method = RequestMethod.GET)
+    public Response<List<TestSuiteResponse>> findBySuiteId(@PathVariable("id") String id,
+                                         @PathVariable("name") String name,
+                                         @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                         @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
+    ) {
+        return runService.findByPk(id, name, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}/test-suite-summary", method = RequestMethod.GET)
     public Response<List<Suite>> findStatusByRunId(@PathVariable("id") String id,
                                                    @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,

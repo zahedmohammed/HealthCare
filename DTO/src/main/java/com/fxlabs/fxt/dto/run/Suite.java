@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Suite implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private String id;
     private String runId;
     private String suiteName;
 

@@ -5,6 +5,8 @@ import { RunService } from '../../services/run.service';
 import { ProjectService } from '../../services/project.service';
 import { Base } from '../../models/base.model';
 import { Run } from '../../models/run.model';
+import {VERSION, MatDialog, MatDialogRef} from '@angular/material';
+import { MsgDialogComponent } from '../dialogs/msg-dialog/msg-dialog.component';
 
 
 @Component({
@@ -28,7 +30,8 @@ export class RunDetailComponent implements OnInit {
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
-  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute) { }
+  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
+    private route: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -116,6 +119,36 @@ export class RunDetailComponent implements OnInit {
       this.calSum();
     }, error => {
       console.log("Unable to fetch regions");
+    });
+  }
+
+  getTestSuiteResponseByName(name: string) {
+    this.showSpinner = true;
+    this.runService.getTestSuiteResponseByName(this.id, name).subscribe(results => {
+      this.showSpinner = false;
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      this.list = results['data'];
+      var arrayLength = this.list.length;
+      var msg = '';
+      for (var i = 0; i < arrayLength; i++) {
+        //alert(this.list[i]);
+        msg += this.list[i].logs;
+        //Do something
+      }
+      this.showDialog(msg);
+    }, error => {
+      console.log("Unable to fetch regions");
+    });
+  }
+
+  showDialog(msg) {
+    this.dialog.open(MsgDialogComponent, {
+        width:'100%',
+        height:'90%',
+        data: msg
     });
   }
 

@@ -11,4 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface TestSuiteResponseRepository extends JpaRepository<TestSuiteResponse, String> {
 
     Page<TestSuiteResponse> findByRunId(String id, Pageable pageable);
+
+    Page<TestSuiteResponse> findByRunIdAndTestSuite(String id, String name, Pageable pageable);
 }

@@ -61,7 +61,7 @@
                             class="material-icons">clear</i> </span></td>
                     <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
                             class="text-danger"> Fail</span></td>
-                    <td class="mdl-data-table__cell--non-numeric">{{s.suiteName}}</td>
+                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName}}</a></td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
                         {{ ( ((s.tests - s.failed) * 100 ) / (s.tests) ).toFixed(0) }}%
@@ -86,6 +86,7 @@
         </div>
     </article>
 
+    <!--
     <a href="javascript:;" (click)="getTestSuiteResponsesByRunId()"> View Logs </a>
 
     <div class="box box-default table-box mdl-shadow--2dp">
@@ -105,4 +106,5 @@
             </div>
         </div>
     </div>
+    -->
 </section>
