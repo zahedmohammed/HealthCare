@@ -26,13 +26,14 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
+        int biggerNumber = Integer.MAX_VALUE;
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
         if (method == io.swagger.models.HttpMethod.GET) {
             for ( Parameter param : op.getParameters()){
                 if (param instanceof QueryParameter){
                     QueryParameter queryParam = (QueryParameter) param;
                     if (ParamUtil.isPaginationParam(queryParam.getName())) {
-                        continue;
+                        biggerNumber= 1001;
                     }
 
                     if ("integer".equals(queryParam.getType())){
