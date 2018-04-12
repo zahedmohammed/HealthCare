@@ -38,6 +38,7 @@ export class OrgEditComponent implements OnInit {
       console.log(this.entry);
     }, error => {
       console.log("Unable to fetch org");
+      alert(error);
     });
   }
 
@@ -53,6 +54,7 @@ export class OrgEditComponent implements OnInit {
       this.router.navigate(['/app/orgs']);
     }, error => {
       console.log("Unable to update org");
+      alert(error);
     });
   }
 

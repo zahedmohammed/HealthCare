@@ -39,6 +39,7 @@ export class VaultEditComponent implements OnInit {
       console.log(this.entry);
     }, error => {
       console.log("Unable to fetch vault");
+      alert(error);
     });
   }
 
@@ -54,6 +55,7 @@ export class VaultEditComponent implements OnInit {
       this.router.navigate(['/app/vault']);
     }, error => {
       console.log("Unable to update vault");
+      alert(error);
     });
   }
 
@@ -69,6 +71,7 @@ export class VaultEditComponent implements OnInit {
       this.router.navigate(['/app/vault']);
     }, error => {
       console.log("Unable to delete entry");
+      alert(error);
     });
   }
 
@@ -83,6 +86,7 @@ export class VaultEditComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
 

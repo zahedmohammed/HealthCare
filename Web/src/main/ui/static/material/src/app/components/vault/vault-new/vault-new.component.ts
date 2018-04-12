@@ -34,6 +34,7 @@ export class VaultNewComponent implements OnInit {
       this.router.navigate(['/app/vault']);
     }, error => {
       console.log("Unable to save vault entry");
+      alert(error);
     });
   }
 
@@ -48,6 +49,7 @@ export class VaultNewComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

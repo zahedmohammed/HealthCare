@@ -24,6 +24,7 @@ export class VaultListComponent implements OnInit {
       this.keys = results['data'];
     }, error => {
       console.log("Unable to fetch keys");
+      alert(error);
     });
   }
 

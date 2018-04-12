@@ -36,6 +36,7 @@ export class CloudAccountNewComponent implements OnInit {
       this.router.navigate(['/app/cloud-accounts']);
     }, error => {
       console.log("Unable to save cloud-account entry");
+      alert(error);
     });
   }
 
@@ -50,6 +51,7 @@ export class CloudAccountNewComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

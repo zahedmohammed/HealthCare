@@ -38,6 +38,9 @@ export class JobslistComponent implements OnInit {
         if (!results)
             return;
         this.project = results['data'];
+    }, error => {
+      console.log("Unable to fetch jobs");
+      alert(error);
     });
   }
 
@@ -49,6 +52,7 @@ export class JobslistComponent implements OnInit {
       this.jobs = results['data'];
     }, error => {
       console.log("Unable to fetch jobs");
+      alert(error);
     });
   }
 
@@ -61,6 +65,7 @@ export class JobslistComponent implements OnInit {
       this.router.navigate(['/app/jobs/' , id, 'runs']);
     }, error => {
       console.log("Unable to fetch jobs");
+      alert(error);
     });
   }
 }

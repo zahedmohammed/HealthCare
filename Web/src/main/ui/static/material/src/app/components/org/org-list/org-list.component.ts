@@ -24,6 +24,7 @@ export class OrgListComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
 

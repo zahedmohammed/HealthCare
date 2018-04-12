@@ -66,6 +66,7 @@ export class RunListComponent implements OnInit {
       this.list = results['data'];
     }, error => {
       console.log("Unable to fetch regions");
+      alert(error);
     });
   }
 

@@ -22,7 +22,6 @@ export class NotificationNewComponent implements OnInit {
     this.getOrgs();
   }
 
-
   create() {
     console.log(this.entry);
     this.showSpinner = true;
@@ -36,6 +35,7 @@ export class NotificationNewComponent implements OnInit {
       this.router.navigate(['/app/notification-accounts']);
     }, error => {
       console.log("Unable to save notification-account entry");
+      alert(error);
     });
   }
 
@@ -50,6 +50,7 @@ export class NotificationNewComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

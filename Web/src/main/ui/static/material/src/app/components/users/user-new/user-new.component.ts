@@ -39,6 +39,7 @@ export class UserNewComponent implements OnInit {
       console.log(this.entry);
     }, error => {
       console.log("Unable to fetch org");
+      alert(error);
     });
   }
 
@@ -55,6 +56,7 @@ export class UserNewComponent implements OnInit {
       this.router.navigate(['/app/orgs', this.org.id, 'users']);
     }, error => {
       console.log("Unable to add member");
+      alert(error);
     });
   }
 

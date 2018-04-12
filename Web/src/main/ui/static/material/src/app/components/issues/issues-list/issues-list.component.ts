@@ -23,6 +23,7 @@ export class IssuesListComponent implements OnInit {
       this.keys = results['data'];
     }, error => {
       console.log("Unable to fetch Subscriptions");
+      alert(error);
     });
   }
 }

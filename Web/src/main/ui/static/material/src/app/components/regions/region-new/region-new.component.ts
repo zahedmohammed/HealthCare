@@ -46,6 +46,7 @@ export class RegionNewComponent implements OnInit {
       this.router.navigate(['/app/regions']);
     }, error => {
       console.log("Unable to save Bot entry");
+      alert(error);
     });
   }
 
@@ -72,6 +73,7 @@ export class RegionNewComponent implements OnInit {
       this.cloudAccounts = results['data'];
     }, error => {
       console.log("Unable to fetch Cloud Accounts");
+      alert(error);
     });
   }
 
@@ -86,6 +88,7 @@ export class RegionNewComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
   visibilities = ['PRIVATE', 'PUBLIC'];

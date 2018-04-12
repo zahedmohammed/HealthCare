@@ -141,6 +141,7 @@ export class RunDetailComponent implements OnInit {
       this.showDialog(msg);
     }, error => {
       console.log("Unable to fetch regions");
+      alert(error);
     });
   }
 

@@ -33,6 +33,8 @@ export class IssuesNewComponent implements OnInit {
         return ;
       }
       this.skills = results['data'];
+    }, error => {
+      alert(error);
     });
   }
   create() {
@@ -48,6 +50,7 @@ export class IssuesNewComponent implements OnInit {
       this.router.navigate(['/app/issues']);
     }, error => {
       console.log("Unable to save subscription entry");
+      alert(error);
     });
   }
 
@@ -62,6 +65,7 @@ export class IssuesNewComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

@@ -42,6 +42,7 @@ export class UserEditComponent implements OnInit {
       console.log(this.entry);
     }, error => {
       console.log("Unable to fetch org");
+      alert(error);
     });
   }
 
@@ -57,6 +58,7 @@ export class UserEditComponent implements OnInit {
       console.log(this.entry);
     }, error => {
       console.log("Unable to fetch OrgUser");
+      alert(error);
     });
   }
 
@@ -72,6 +74,7 @@ export class UserEditComponent implements OnInit {
       this.router.navigate(['/app/orgs']);
     }, error => {
       console.log("Unable to update OrgUser");
+      alert(error);
     });
   }
 

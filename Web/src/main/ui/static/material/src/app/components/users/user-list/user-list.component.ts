@@ -40,6 +40,7 @@ export class UserListComponent implements OnInit {
       console.log(this.org);
     }, error => {
       console.log("Unable to fetch org");
+      alert(error);
     });
   }
 
@@ -55,6 +56,7 @@ export class UserListComponent implements OnInit {
       console.log(this.orgUsers);
     }, error => {
       console.log("Unable to fetch orgUsers");
+      alert(error);
     });
   }
 

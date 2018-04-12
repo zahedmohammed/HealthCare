@@ -51,6 +51,7 @@ export class RegionEditComponent implements OnInit {
       console.log(this.entry);
     }, error => {
       console.log("Unable to fetch Bot");
+      alert(error);
     });
   }
 
@@ -66,6 +67,7 @@ export class RegionEditComponent implements OnInit {
       this.router.navigate(['/app/regions']);
     }, error => {
       console.log("Unable to update Bot");
+      alert(error);
     });
   }
 
@@ -81,6 +83,7 @@ export class RegionEditComponent implements OnInit {
       this.router.navigate(['/app/regions']);
     }, error => {
       console.log("Unable to delete entry");
+      alert(error);
     });
   }
 
@@ -107,6 +110,7 @@ export class RegionEditComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
 

@@ -41,6 +41,7 @@ export class NotificationEditComponent implements OnInit {
       console.log(this.entry);
     }, error => {
       console.log("Unable to fetch Notification Account");
+      alert(error);
     });
   }
 
@@ -56,6 +57,7 @@ export class NotificationEditComponent implements OnInit {
       this.router.navigate(['/app/notification-accounts']);
     }, error => {
       console.log("Unable to update notificationAccount");
+      alert(error);
     });
   }
 
@@ -71,6 +73,7 @@ export class NotificationEditComponent implements OnInit {
       this.router.navigate(['/app/notification-accounts']);
     }, error => {
       console.log("Unable to delete entry");
+      alert(error);
     });
   }
 
@@ -85,6 +88,7 @@ export class NotificationEditComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
 

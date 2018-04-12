@@ -39,9 +39,10 @@ export class IssuesEditComponent implements OnInit {
         return;
       }
       this.subscription = results['data'];
-      console.log(this.subscription);
+      //console.log(this.subscription);
     }, error => {
       console.log("Unable to fetch vault");
+      alert(error);
     });
   }
 
@@ -57,6 +58,7 @@ export class IssuesEditComponent implements OnInit {
       this.router.navigate(['/app/issues']);
     }, error => {
       console.log("Unable to update vault");
+      alert(error);
     });
   }
 
@@ -72,6 +74,7 @@ export class IssuesEditComponent implements OnInit {
       this.router.navigate(['/app/issues']);
     }, error => {
       console.log("Unable to delete subscription");
+      alert(error);
     });
   }
 
@@ -96,6 +99,7 @@ export class IssuesEditComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

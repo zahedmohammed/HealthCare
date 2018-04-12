@@ -28,6 +28,7 @@ export class MarketplaceListComponent implements OnInit {
       this.offers = results['data'];
     }, error => {
       console.log("Unable to fetch keys");
+      alert(error);
     });
   }
 
@@ -45,6 +46,7 @@ export class MarketplaceListComponent implements OnInit {
       this.offers = results['data'];
     }, error => {
       console.log("Unable to fetch keys");
+      alert(error);
     });
     console.log(keyword);
 

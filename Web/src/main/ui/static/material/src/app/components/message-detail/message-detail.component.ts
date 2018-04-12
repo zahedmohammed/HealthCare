@@ -37,6 +37,7 @@ export class MessageDetailComponent implements OnInit {
       console.log(this.item);
     }, error => {
       console.log("Unable to fetch regions");
+      alert(error);
     });
   }
 

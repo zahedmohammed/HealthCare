@@ -23,6 +23,7 @@ export class MessageListComponent implements OnInit {
       this.items = results['data'];
     }, error => {
       console.log("Unable to fetch projects");
+      alert(error);
     });
   }
 

@@ -56,6 +56,7 @@ export class CloudAccountEditComponent implements OnInit {
       this.router.navigate(['/app/cloud-accounts']);
     }, error => {
       console.log("Unable to update cloudAccount");
+      alert(error);
     });
   }
 
@@ -71,6 +72,7 @@ export class CloudAccountEditComponent implements OnInit {
       this.router.navigate(['/app/cloud-accounts']);
     }, error => {
       console.log("Unable to delete entry");
+      alert(error);
     });
   }
 
@@ -85,6 +87,7 @@ export class CloudAccountEditComponent implements OnInit {
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
+      alert(error);
     });
   }
 

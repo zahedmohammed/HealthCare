@@ -24,6 +24,7 @@ export class NotificationListComponent implements OnInit {
       this.accounts = results['data'];
     }, error => {
       console.log("Unable to fetch accounts");
+      alert(error);
     });
   }
 

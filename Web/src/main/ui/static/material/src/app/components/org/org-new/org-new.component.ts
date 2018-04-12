@@ -33,6 +33,7 @@ export class OrgNewComponent implements OnInit {
       this.router.navigate(['/app/orgs']);
     }, error => {
       console.log("Unable to save org entry");
+      alert(error);
     });
   }
 

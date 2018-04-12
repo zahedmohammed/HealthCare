@@ -24,6 +24,7 @@ export class ProjectsListComponent implements OnInit {
       this.projects = results['data'];
     }, error => {
       console.log("Unable to fetch projects");
+      alert(error);
     });
   }
 
