@@ -29,10 +29,6 @@ public class EmptyQueryParamGenerator extends AbstractGenerator {
         if (method == io.swagger.models.HttpMethod.GET) {
             for (Parameter param : op.getParameters()) {
 
-                if (!param.getRequired()) {
-                    continue;
-                }
-                
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
                     String postFix = POSTFIX + "_" + queryParam.getName();

@@ -37,7 +37,7 @@ public class EmptyStringPathParamGenerator extends AbstractGenerator {
 
                 PathParameter pathParam = (PathParameter) param;
 
-                if (!"string".equals(pathParam.getType()) && !pathParam.getRequired()) {
+                if (!"string".equals(pathParam.getType()) || !pathParam.getRequired()) {
                     continue;
                 }
 
