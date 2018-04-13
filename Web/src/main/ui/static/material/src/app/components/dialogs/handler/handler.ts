@@ -21,7 +21,7 @@ export class Handler {
   error(error) {
     console.error(error);
     this.dialog.open(ErrorDialogComponent, {
-      data: error
+      data: error['message']
     });
   }
 
