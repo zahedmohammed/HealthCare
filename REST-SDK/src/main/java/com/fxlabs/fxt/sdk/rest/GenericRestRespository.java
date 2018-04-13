@@ -23,6 +23,7 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public class GenericRestRespository<T> {
 
@@ -39,6 +40,12 @@ public class GenericRestRespository<T> {
         });
         paramTypeRefMap.put(Job.class, new ParameterizedTypeReference<Response<Job>>() {
         });
+        paramTypeRefMap.put(DataRecord.class, new ParameterizedTypeReference<Response<DataRecord>>() {
+        });
+        paramTypeRefMap.put(DataSet.class, new ParameterizedTypeReference<Response<DataSet>>() {
+        });
+
+
         paramTypeRefMap.put(Run.class, new ParameterizedTypeReference<Response<Run>>() {
         });
         paramTypeRefMap.put(Boolean.class, new ParameterizedTypeReference<Response<Boolean>>() {
@@ -50,12 +57,17 @@ public class GenericRestRespository<T> {
         });
         paramTypeRefMap.put(TestSuite[].class, new ParameterizedTypeReference<Response<List<TestSuite>>>() {
         });
+        paramTypeRefMap.put(DataSet[].class, new ParameterizedTypeReference<Response<List<DataSet>>>() {
+        });
+        paramTypeRefMap.put(DataRecord[].class, new ParameterizedTypeReference<Response<List<DataRecord>>>() {
+        });
         paramTypeRefMap.put(Job[].class, new ParameterizedTypeReference<Response<List<Job>>>() {
         });
         paramTypeRefMap.put(Run[].class, new ParameterizedTypeReference<Response<List<Run>>>() {
         });
         paramTypeRefMap.put(TestSuiteResponse[].class, new ParameterizedTypeReference<Response<List<TestSuiteResponse>>>() {
         });
+
         paramTypeRefMap.put(Suite[].class, new ParameterizedTypeReference<Response<List<Suite>>>() {
         });
         paramTypeRefMap.put(ProjectFile[].class, new ParameterizedTypeReference<Response<List<ProjectFile>>>() {
@@ -105,7 +117,9 @@ public class GenericRestRespository<T> {
 
         HttpEntity<List<T>> request = new HttpEntity<>(t, this.getHeaders());
 
-        ResponseEntity<Response<List<T>>> response = restTemplate.exchange(getUrl() + "/batch", HttpMethod.POST, request, referenceList);
+        String url = getUrl();
+
+        ResponseEntity<Response<List<T>>> response = restTemplate.exchange(url + "/batch", HttpMethod.POST, request, referenceList);
 
         //logger.info(response.getBody());
         return response.getBody();
