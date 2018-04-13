@@ -4,6 +4,7 @@ import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
 import { Project } from '../../../models/project.model';
 import { OrgUser } from '../../../models/org.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-projects-new',
@@ -16,7 +17,7 @@ export class ProjectsNewComponent implements OnInit {
   showSpinner: boolean = false;
   project: Project = new Project();
   orgs;
-  constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) {
+  constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) {
     this.project.genPolicy = "None";
   }
 
@@ -25,34 +26,32 @@ export class ProjectsNewComponent implements OnInit {
   }
 
   create() {
-    console.log(this.project);
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.projectService.create(this.project).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/projects']);
     }, error => {
-      console.log("Unable to fetch regions");
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
   getOrgs() {
+    this.handler.activateLoader();
     this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
+
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
   genPolicies = ['None', 'Create'];

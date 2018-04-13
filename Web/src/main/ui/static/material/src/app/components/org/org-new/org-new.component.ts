@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { OrgService } from '../../../services/org.service';
 import { Org } from '../../../models/org.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 
 @Component({
@@ -15,25 +16,22 @@ export class OrgNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   entry: Org = new Org();
-  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
   }
 
   create() {
-    console.log(this.entry);
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.orgService.create(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/orgs']);
     }, error => {
-      console.log("Unable to save org entry");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

@@ -3,6 +3,7 @@ import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { VaultService } from '../../../services/vault.service';
 import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-vault-edit',
@@ -15,7 +16,7 @@ export class VaultEditComponent implements OnInit {
   showSpinner: boolean = false;
   entry: Vault = new Vault();
   orgs;
-  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -28,65 +29,58 @@ export class VaultEditComponent implements OnInit {
   }
 
   getById(id: string) {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.vaultService.getById(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.entry = results['data'];
-      console.log(this.entry);
     }, error => {
-      console.log("Unable to fetch vault");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   update() {
-    console.log(this.entry);
+    this.handler.activateLoader();
     this.vaultService.update(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/vault']);
     }, error => {
-      console.log("Unable to update vault");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   delete() {
-    console.log(this.entry);
+    this.handler.activateLoader();
     this.vaultService.delete(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/vault']);
     }, error => {
-      console.log("Unable to delete entry");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getOrgs() {
+    this.handler.activateLoader();
     this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

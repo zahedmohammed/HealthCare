@@ -3,6 +3,7 @@ import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { OrgService } from '../../../services/org.service';
 import { Org, OrgUser } from '../../../models/org.model';
 import { User } from '../../../models/users.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class UserListComponent implements OnInit {
   showSpinner: boolean = false;
   org: Org = new Org();
   orgUsers;
-  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -29,34 +30,30 @@ export class UserListComponent implements OnInit {
   }
 
   getById(id: string) {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.orgService.getById(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.org = results['data'];
-      console.log(this.org);
     }, error => {
-      console.log("Unable to fetch org");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getOrgUsersById(id: string) {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.orgService.getOrgUsersById(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.orgUsers = results['data'];
-      console.log(this.orgUsers);
     }, error => {
-      console.log("Unable to fetch orgUsers");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

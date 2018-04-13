@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../services/message.service';
+import { Handler } from '../dialogs/handler/handler';
 
 @Component({
   selector: 'app-message-list',
@@ -10,20 +11,19 @@ import { MessageService } from '../../services/message.service';
 export class MessageListComponent implements OnInit {
   items;
   showSpinner: boolean = false;
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService, private handler: Handler) { }
 
   ngOnInit() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.messageService.get().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.items = results['data'];
     }, error => {
-      console.log("Unable to fetch projects");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

@@ -3,6 +3,7 @@ import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
 import { Project } from '../../../models/project.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-projects-edit',
@@ -15,7 +16,7 @@ export class ProjectsEditComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   project: Project = new Project();
-  constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -30,60 +31,55 @@ export class ProjectsEditComponent implements OnInit {
   getById(id: string) {
     this.showSpinner = true;
     this.projectService.getById(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.project = results['data'];
-      console.log(this.project);
     }, error => {
-      console.log("Unable to fetch projects");
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   update() {
     console.log(this.project);
     this.projectService.update(this.project).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/projects']);
     }, error => {
-      console.log("Unable to update project");
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   delete() {
     console.log(this.project);
     this.projectService.delete(this.project).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/projects']);
     }, error => {
-      console.log("Unable to delete project");
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getOrgs() {
     this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

@@ -4,6 +4,7 @@ import { RegionsService } from '../../../services/regions.service';
 import { CloudAccountService } from '../../../services/cloud-account.service';
 import { OrgService } from '../../../services/org.service';
 import { Region } from '../../../models/regions.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class RegionNewComponent implements OnInit {
   cloudAccounts;
   orgs;
   entry: Region = new Region();
-  constructor(private regionsService: RegionsService, private cloudAccountService: CloudAccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private regionsService: RegionsService, private cloudAccountService: CloudAccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.getCloudAccounts();
@@ -34,19 +35,16 @@ export class RegionNewComponent implements OnInit {
   }
 
   create() {
-    console.log(this.entry);
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.regionsService.create(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/regions']);
     }, error => {
-      console.log("Unable to save Bot entry");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
@@ -63,32 +61,30 @@ export class RegionNewComponent implements OnInit {
   }
 
   getCloudAccounts() {
+    this.handler.activateLoader();
     this.cloudAccountService.get().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.cloudAccounts = results['data'];
     }, error => {
-      console.log("Unable to fetch Cloud Accounts");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getOrgs() {
+    this.handler.activateLoader();
     this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
   visibilities = ['PRIVATE', 'PUBLIC'];

@@ -3,6 +3,7 @@ import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { VaultService } from '../../../services/vault.service';
 import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-vault-new',
@@ -15,41 +16,37 @@ export class VaultNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   entry: Vault = new Vault();
-  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.getOrgs();
   }
 
   create() {
-    console.log(this.entry);
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.vaultService.create(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/vault']);
     }, error => {
-      console.log("Unable to save vault entry");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getOrgs() {
+    this.handler.activateLoader();
     this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

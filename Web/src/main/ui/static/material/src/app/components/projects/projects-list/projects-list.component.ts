@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProjectService } from '../../../services/project.service';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-projects-list',
@@ -11,20 +12,19 @@ export class ProjectsListComponent implements OnInit {
   projects;
   projectTitle:string = "Projects";
   showSpinner: boolean = false;
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService, private handler: Handler) { }
 
   ngOnInit() {  
-    this.showSpinner = true; 
+    this.handler.activateLoader();
     this.projectService.getProjects().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.projects = results['data'];
     }, error => {
-      console.log("Unable to fetch projects");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

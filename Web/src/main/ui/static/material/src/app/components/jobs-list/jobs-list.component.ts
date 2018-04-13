@@ -5,6 +5,7 @@ import { RunService } from '../../services/run.service';
 import { ProjectService } from '../../services/project.service';
 import { Base } from '../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
+import { Handler } from '../dialogs/handler/handler';
 
 
 @Component({
@@ -19,10 +20,10 @@ export class JobslistComponent implements OnInit {
   projectId: string = "";
   project: Base = new Base();
   showSpinner: boolean = false;
-  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {   
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.route.params.subscribe(params => {
       console.log(params);
       //if (params['id']) {
@@ -34,38 +35,45 @@ export class JobslistComponent implements OnInit {
   }
 
   loadProject(id: string) {
+    this.handler.activateLoader();
     this.projectService.getById(id).subscribe(results => {
-        if (!results)
-            return;
-        this.project = results['data'];
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.project = results['data'];
     }, error => {
-      console.log("Unable to fetch jobs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   list() {
+    this.handler.activateLoader();
     this.jobsService.get().subscribe(results => {
-      this.showSpinner = false;
-      if (!results)
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
+      }
       this.jobs = results['data'];
     }, error => {
-      console.log("Unable to fetch jobs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   runJob(id: string) {
+    this.handler.activateLoader();
     this.runService.run(id).subscribe(results => {
-      this.showSpinner = false;
-      if (!results)
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
+      }
       //this.jobs = results['data'];
       this.router.navigate(['/app/jobs/' , id, 'runs']);
     }, error => {
-      console.log("Unable to fetch jobs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 }

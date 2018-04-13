@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +29,9 @@ public class ExceptionTranslator {
         } catch (FxException e) {
             logger.warn(e.getLocalizedMessage());
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", e.getLocalizedMessage()));
+        } catch (DataIntegrityViolationException e) {
+            logger.warn(e.getLocalizedMessage());
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Resource name or key already exists."));
         } catch (IllegalArgumentException e) {
             logger.warn(e.getLocalizedMessage());
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", e.getLocalizedMessage()));

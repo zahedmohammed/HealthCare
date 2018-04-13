@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { VaultService } from '../../../services/vault.service';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-vault-list',
@@ -11,20 +12,23 @@ export class VaultListComponent implements OnInit {
 
   keys;
   showSpinner: boolean = false;
-  constructor(private vaultService: VaultService) { }
+  constructor(private vaultService: VaultService, private handler: Handler) { }
 
   ngOnInit() {
-    this.showSpinner = true;
+    this.list();
+  }
+
+  list() {
+    this.handler.activateLoader();
     this.vaultService.get().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.keys = results['data'];
     }, error => {
-      console.log("Unable to fetch keys");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

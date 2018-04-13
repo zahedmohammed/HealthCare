@@ -7,6 +7,7 @@ import { Base } from '../../models/base.model';
 import { Run } from '../../models/run.model';
 import {VERSION, MatDialog, MatDialogRef} from '@angular/material';
 import { MsgDialogComponent } from '../dialogs/msg-dialog/msg-dialog.component';
+import { Handler } from '../dialogs/handler/handler';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class RunDetailComponent implements OnInit {
   job: Base = new Base();
   showSpinner: boolean = false;
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
-    private route: ActivatedRoute, private dialog: MatDialog) { }
+    private route: ActivatedRoute, private dialog: MatDialog, private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -54,17 +55,19 @@ export class RunDetailComponent implements OnInit {
 
   loadProject(id: string) {
     this.projectService.getById(id).subscribe(results => {
-        if (!results)
-            return;
-        this.project = results['data'];
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.project = results['data'];
     });
   }
 
   loadJob(id: string) {
     this.jobsService.getById(id).subscribe(results => {
-        if (!results)
-            return;
-        this.job = results['data'];
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.job = results['data'];
     });
   }
 
@@ -80,54 +83,53 @@ export class RunDetailComponent implements OnInit {
   }
 
   getRunById() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.runService.getDetails(this.id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.run = results['data'];
     }, error => {
-      console.log("Unable to fetch regions");
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getTestSuiteResponsesByRunId() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.runService.getTestSuiteResponses(this.id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.list = results['data'];
     }, error => {
-      console.log("Unable to fetch regions");
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getSummary() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.runService.getSummary(this.id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.suites = results['data'];
       this.calSum();
     }, error => {
-      console.log("Unable to fetch regions");
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getTestSuiteResponseByName(name: string) {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.runService.getTestSuiteResponseByName(this.id, name).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.list = results['data'];
@@ -140,8 +142,8 @@ export class RunDetailComponent implements OnInit {
       }
       this.showDialog(msg);
     }, error => {
-      console.log("Unable to fetch regions");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

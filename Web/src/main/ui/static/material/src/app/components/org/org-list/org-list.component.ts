@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrgService } from '../../../services/org.service';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-org-list',
@@ -11,20 +12,19 @@ export class OrgListComponent implements OnInit {
 
   orgs;
   showSpinner: boolean = false;
-  constructor(private orgService: OrgService) { }
+  constructor(private orgService: OrgService, private handler: Handler) { }
 
   ngOnInit() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.orgService.get().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

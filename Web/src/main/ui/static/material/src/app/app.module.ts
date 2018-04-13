@@ -151,6 +151,8 @@ import { NotificationEditComponent } from './components/notify/notification-edit
 import { NotificationNewComponent } from './components/notify/notification-new/notification-new.component';
 import { MsgDialogComponent } from './components/dialogs/msg-dialog/msg-dialog.component';
 import { ErrorDialogComponent } from './components/dialogs/error-dialog/error-dialog.component';
+import { ResponseDialogComponent } from './components/dialogs/response-dialog/response-dialog.component';
+import { Handler } from './components/dialogs/handler/handler';
 
 @NgModule({
   imports: [
@@ -282,11 +284,12 @@ import { ErrorDialogComponent } from './components/dialogs/error-dialog/error-di
     NotificationEditComponent,
     NotificationNewComponent,
     MsgDialogComponent,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    ResponseDialogComponent
   ],
   bootstrap: [AppComponent],
-  providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService],
-  entryComponents: [MsgDialogComponent]
+  providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService, Handler],
+  entryComponents: [MsgDialogComponent, ErrorDialogComponent, ResponseDialogComponent]
 })
 
 export class AppModule {

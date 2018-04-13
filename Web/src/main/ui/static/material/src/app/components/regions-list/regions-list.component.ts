@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RegionsService } from '../../services/regions.service';
+import { Handler } from '../dialogs/handler/handler';
 
 @Component({
   selector: 'app-regions-list',
@@ -11,20 +12,19 @@ export class RegionsListComponent implements OnInit {
   list;
   title:string = "Bot Regions";
   showSpinner: boolean = false;
-  constructor(private regionService: RegionsService) { }
+  constructor(private regionService: RegionsService, private handler: Handler) { }
 
   ngOnInit() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.regionService.get().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.list = results['data'];
     }, error => {
-      console.log("Unable to fetch regions");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

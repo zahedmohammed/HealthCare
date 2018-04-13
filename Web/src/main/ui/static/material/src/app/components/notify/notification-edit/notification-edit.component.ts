@@ -3,6 +3,7 @@ import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { NotificationService } from '../../../services/notification.service';
 import { OrgService } from '../../../services/org.service';
 import { NotificationAccount } from '../../../models/notification-account.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class NotificationEditComponent implements OnInit {
   entry: NotificationAccount = new NotificationAccount();
   orgs;
   types = ['SLACK','EMAIL'];
-  constructor(private notificationService: NotificationService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private notificationService: NotificationService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
     ngOnInit() {
     this.route.params.subscribe(params => {
@@ -30,65 +31,57 @@ export class NotificationEditComponent implements OnInit {
   }
 
   getById(id: string) {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.notificationService.getById(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.entry = results['data'];
-      console.log(this.entry);
     }, error => {
-      console.log("Unable to fetch Notification Account");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   update() {
-    console.log(this.entry);
+    this.handler.activateLoader();
     this.notificationService.update(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/notification-accounts']);
     }, error => {
-      console.log("Unable to update notificationAccount");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   delete() {
-    console.log(this.entry);
+    this.handler.activateLoader();
     this.notificationService.delete(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/notification-accounts']);
     }, error => {
-      console.log("Unable to delete entry");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getOrgs() {
     this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

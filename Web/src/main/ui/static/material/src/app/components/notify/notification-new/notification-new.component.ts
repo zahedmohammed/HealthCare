@@ -3,6 +3,7 @@ import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { NotificationService } from '../../../services/notification.service';
 import { OrgService } from '../../../services/org.service';
 import { NotificationAccount } from '../../../models/notification-account.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-notification-new',
@@ -16,41 +17,38 @@ export class NotificationNewComponent implements OnInit {
   orgs;
   entry: NotificationAccount = new NotificationAccount();
   types = ['SLACK','EMAIL'];
-  constructor(private notificationService: NotificationService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private notificationService: NotificationService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.getOrgs();
   }
 
   create() {
-    console.log(this.entry);
+    this.handler.activateLoader();
     this.showSpinner = true;
     this.notificationService.create(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/notification-accounts']);
     }, error => {
-      console.log("Unable to save notification-account entry");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getOrgs() {
+    this.handler.activateLoader();
     this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

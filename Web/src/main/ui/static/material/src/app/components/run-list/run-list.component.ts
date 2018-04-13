@@ -4,6 +4,7 @@ import { JobsService } from '../../services/jobs.service';
 import { RunService } from '../../services/run.service';
 import { ProjectService } from '../../services/project.service';
 import { Base } from '../../models/base.model';
+import { Handler } from '../dialogs/handler/handler';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class RunListComponent implements OnInit {
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
-  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute) {
+  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute, private handler: Handler) {
 
   }
 
@@ -41,32 +42,33 @@ export class RunListComponent implements OnInit {
 
   loadProject(id: string) {
     this.projectService.getById(id).subscribe(results => {
-        if (!results)
-            return;
-        this.project = results['data'];
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.project = results['data'];
     });
   }
 
   loadJob(id: string) {
     this.jobsService.getById(id).subscribe(results => {
-        if (!results)
-            return;
-        this.job = results['data'];
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.job = results['data'];
     });
   }
 
   getRunByJob(id: string) {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.runService.get(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.list = results['data'];
     }, error => {
-      console.log("Unable to fetch regions");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

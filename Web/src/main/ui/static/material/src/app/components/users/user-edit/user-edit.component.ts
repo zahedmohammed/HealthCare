@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { OrgService } from '../../../services/org.service';
 import { Org, OrgUser } from '../../../models/org.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class UserEditComponent implements OnInit {
   entry: OrgUser = new OrgUser();
   org: Org = new Org();
   orgs;
-  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -33,48 +34,42 @@ export class UserEditComponent implements OnInit {
   getOrgById(id: string) {
     this.showSpinner = true;
     this.orgService.getById(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.org = results['data'];
-      console.log(this.entry);
     }, error => {
-      console.log("Unable to fetch org");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getById(id: string) {
     this.showSpinner = true;
     this.orgService.getOrgUsers(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.entry = results['data'];
-      console.log(this.entry);
     }, error => {
-      console.log("Unable to fetch OrgUser");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   update() {
     console.log(this.entry);
     this.orgService.updateOrgUser(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/orgs']);
     }, error => {
-      console.log("Unable to update OrgUser");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

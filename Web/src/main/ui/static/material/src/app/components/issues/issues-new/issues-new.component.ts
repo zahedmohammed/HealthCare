@@ -5,7 +5,7 @@ import { SkillService } from '../../../services/skill.service';
 import { OrgService } from '../../../services/org.service';
 import { Subscription } from '../../../models/subscription.model';
 import { Base } from '../../../models/base.model';
-
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-issues-new',
@@ -18,7 +18,7 @@ export class IssuesNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   entry: Subscription = new Subscription();
-  constructor(private skillSubscriptionService: SkillSubscriptionService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private skillSubscriptionService: SkillSubscriptionService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.listSkills();
@@ -26,46 +26,43 @@ export class IssuesNewComponent implements OnInit {
   }
 
   listSkills() {
-    console.log('listing skills');
+    this.handler.activateLoader();
     this.skillService.getByType('ISSUE_TRACKER').subscribe(results => {
-      if (results['errors']) {
-        console.log(results);
-        return ;
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
       }
       this.skills = results['data'];
     }, error => {
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
   create() {
-    console.log(this.entry);
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.skillSubscriptionService.createITBot(this.entry).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/issues']);
     }, error => {
-      console.log("Unable to save subscription entry");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   getOrgs() {
+    this.handler.activateLoader();
     this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.orgs = results['data'];
     }, error => {
-      console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

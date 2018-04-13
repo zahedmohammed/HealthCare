@@ -5,6 +5,7 @@ import { SkillService } from '../../../services/skill.service';
 import { OrgService } from '../../../services/org.service';
 import { Subscription } from '../../../models/subscription.model';
 import { Base } from '../../../models/base.model';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-issues-edit',
@@ -17,7 +18,8 @@ export class IssuesEditComponent implements OnInit {
   orgs;
   showSpinner: boolean = false;
   subscription: Subscription = new Subscription();
-  constructor(private skillSubscriptionService: SkillSubscriptionService, private skillService: SkillService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private skillSubscriptionService: SkillSubscriptionService, private skillService: SkillService,
+    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -31,75 +33,73 @@ export class IssuesEditComponent implements OnInit {
   }
 
   getById(id: string) {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.skillSubscriptionService.getById(id).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.subscription = results['data'];
       //console.log(this.subscription);
     }, error => {
       console.log("Unable to fetch vault");
-      alert(error);
+      this.handler.error(error);
     });
   }
 
   update() {
-    console.log(this.subscription);
+    this.handler.activateLoader();
     this.skillSubscriptionService.update(this.subscription).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/issues']);
     }, error => {
       console.log("Unable to update vault");
-      alert(error);
+      this.handler.error(error);
     });
   }
 
   delete() {
-    console.log(this.subscription);
+    this.handler.activateLoader();
     this.skillSubscriptionService.deleteITBot(this.subscription).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
       this.router.navigate(['/app/issues']);
     }, error => {
       console.log("Unable to delete subscription");
-      alert(error);
+      this.handler.error(error);
     });
   }
 
   listSkills() {
-    console.log('listing skills');
+    this.handler.activateLoader();
     this.skillService.get().subscribe(results => {
-      if (results['errors']) {
-        console.log(results);
-        return ;
-      }
-      this.skills = results['data'];
-    });
-  }
-  getOrgs() {
-    this.orgService.getByUser().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
-      console.log(results);
+      this.skills = results['data'];
+    }, error => {
+      console.log("Unable to delete subscription");
+      this.handler.error(error);
+    });
+  }
+
+  getOrgs() {
+    this.handler.activateLoader();
+    this.orgService.getByUser().subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
       this.orgs = results['data'];
     }, error => {
       console.log("Unable to fetch orgs");
-      alert(error);
+      this.handler.error(error);
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

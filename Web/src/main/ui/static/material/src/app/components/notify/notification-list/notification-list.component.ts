@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../../../services/notification.service';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-notification-list',
@@ -11,20 +12,19 @@ export class NotificationListComponent implements OnInit {
 
   accounts;
   showSpinner: boolean = false;
-  constructor(private notificationService: NotificationService) { }
+  constructor(private notificationService: NotificationService, private handler: Handler) { }
 
   ngOnInit() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.notificationService.get().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.accounts = results['data'];
     }, error => {
-      console.log("Unable to fetch accounts");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TestSuiteService } from '../../../services/test-suite.service';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-marketplace-list',
@@ -11,42 +12,39 @@ export class MarketplaceListComponent implements OnInit {
 
   offers;
   showSpinner: boolean = false;
-  constructor(private testSuiteService: TestSuiteService) { }
+  constructor(private testSuiteService: TestSuiteService, private handler: Handler) { }
 
   ngOnInit() {
     this.get();
   }
 
   get() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.testSuiteService.get().subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.offers = results['data'];
     }, error => {
-      console.log("Unable to fetch keys");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
   search(keyword: string) {
     if (!keyword)
       this.get();
-    this.showSpinner = true;
-    console.log(keyword);
+    this.handler.activateLoader();
     this.testSuiteService.search(keyword).subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.offers = results['data'];
     }, error => {
-      console.log("Unable to fetch keys");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
     console.log(keyword);
 

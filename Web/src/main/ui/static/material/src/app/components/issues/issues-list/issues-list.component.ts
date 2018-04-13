@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SkillSubscriptionService } from '../../../services/skill-subscription.service';
+import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-issues-list',
@@ -10,20 +11,19 @@ import { SkillSubscriptionService } from '../../../services/skill-subscription.s
 export class IssuesListComponent implements OnInit {
   keys;
   showSpinner: boolean = false;
-  constructor(private skillSubscriptionService: SkillSubscriptionService) { }
+  constructor(private skillSubscriptionService: SkillSubscriptionService, private handler: Handler) { }
 
   ngOnInit() {
-    this.showSpinner = true;
+    this.handler.activateLoader();
     this.skillSubscriptionService.get("ISSUE_TRACKER").subscribe(results => {
-      this.showSpinner = false;
-      if (results['errors']) {
-        // TODO - handle errors
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.keys = results['data'];
     }, error => {
-      console.log("Unable to fetch Subscriptions");
-      alert(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 }
