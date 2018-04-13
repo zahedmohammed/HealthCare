@@ -12,6 +12,7 @@
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
+              <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Owner" required [(ngModel)]="entry.org.id" name="owner">
                   <mat-option *ngFor="let org of orgs" [value]="org.org.id">
@@ -22,8 +23,36 @@
             </div>
           </div>
 
+          <div class="form-group row">
+            <label class="col-md-2 control-label">
+            </label>
+            <div class="col-md-8">
+              <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
+              <mat-form-field>
+                <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="Access level">
+                  <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
+                    {{visibility}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="divider divider-dashed divider-lg pull-in"></div>
+
 
           <div class="form-group row">
+            <label for="name" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.name" name="name" id="name"
+                       matInput placeholder="Bot name">
+              </mat-input-container>
+
+            </div>
+          </div>
+
+          <div class="form-group row" [hidden]="!entry.name">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
@@ -37,7 +66,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row" [hidden]="!entry.cloudAccount">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
@@ -52,16 +81,7 @@
           </div>
 
 
-          <div class="form-group row">
-            <label for="name" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.name" name="name" id="name"
-                       matInput placeholder="Bot name">
-              </mat-input-container>
 
-            </div>
-          </div>
 
 
           <!--<div class="form-group row">-->
@@ -75,21 +95,7 @@
             <!--</div>-->
           <!--</div>-->
 
-          <div class="form-group row">
-            <label class="col-md-2 control-label">
-            </label>
-            <div class="col-md-8">
-              <mat-form-field>
-                <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="Access level">
-                  <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
-                    {{visibility}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
 
-          <div class="divider divider-dashed divider-lg pull-in"></div>
 
           <div class="divider divider-md"></div>
           <div class="form-group row">
@@ -103,6 +109,7 @@
               </button>
             </div>
           </div>
+
           <div class="form-group row">
             <div class="col-md-2"></div>
             <div class="col-md-10">

@@ -7,20 +7,28 @@
       <div class="box-body padding-xl">
 
         <form role="form" #heroForm="ngForm">
-          <div class="form-group row">
-            <label for="name" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.name" name="name" id="name"
-                       matInput placeholder="Name">
-              </mat-input-container>
-            </div>
-          </div>
 
           <div class="form-group row">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
+              <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
+              <mat-form-field>
+                <mat-select placeholder="Owner" required disabled [(ngModel)]="entry.org.id" name="type">
+                  <mat-option *ngFor="let org of orgs" [value]="org.org.id">
+                    {{org.org.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label class="col-md-2 control-label">
+            </label>
+            <div class="col-md-8">
+              <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="visibility">
                   <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
@@ -31,12 +39,24 @@
             </div>
           </div>
 
+          <div class="divider divider-dashed divider-lg pull-in"></div>
+
+          <div class="form-group row">
+            <label for="name" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+              <mat-input-container class="full-width">
+                <input required disabled [(ngModel)]="entry.name" name="name" id="name"
+                       matInput placeholder="Name">
+              </mat-input-container>
+            </div>
+          </div>
+
           <div class="form-group row">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
               <mat-form-field>
-                <mat-select placeholder="Cloud Type" required [(ngModel)]="entry.cloudType" name="type">
+                <mat-select placeholder="Cloud Type" required disabled [(ngModel)]="entry.cloudType" name="type">
                   <mat-option *ngFor="let type of cloudTypes" [value]="type">
                     {{type}}
                   </mat-option>
@@ -44,9 +64,6 @@
               </mat-form-field>
             </div>
           </div>
-
-
-          <div class="divider divider-dashed divider-lg pull-in"></div>
 
           <div class="form-group row">
             <label for="accessKey" class="col-md-2 control-label">

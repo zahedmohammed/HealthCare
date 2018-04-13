@@ -35,7 +35,7 @@ export class UserNewComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      console.log(this.entry);
+      this.org = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

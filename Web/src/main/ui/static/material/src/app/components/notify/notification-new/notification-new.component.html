@@ -11,6 +11,7 @@
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
+              <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Owner" required [(ngModel)]="entry.org.id" name="type">
                   <mat-option *ngFor="let org of orgs" [value]="org.org.id">
@@ -22,19 +23,10 @@
           </div>
 
           <div class="form-group row">
-            <label for="name" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.name" name="name" id="name"
-                       matInput placeholder="Name">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="form-group row">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
+              <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="Access level">
                   <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
@@ -45,7 +37,20 @@
             </div>
           </div>
 
+          <div class="divider divider-dashed divider-lg pull-in"></div>
+
           <div class="form-group row">
+            <label for="name" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.name" name="name" id="name"
+                       matInput placeholder="Name">
+              </mat-input-container>
+            </div>
+          </div>
+
+
+          <div class="form-group row" [hidden]="!entry.name">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
@@ -60,36 +65,34 @@
           </div>
 
 
-          <div class="divider divider-dashed divider-lg pull-in"></div>
-
-          <div class="form-group row" [hidden]="entry.type !== 'SLACK'">
+          <div class="form-group row" [hidden]="entry.type !== 'SLACK' || !entry.type">
             <label for="token" class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
               <mat-input-container class="full-width">
-                <input [(ngModel)]="entry.token" name="token" id="token"
+                <input required [(ngModel)]="entry.token" name="token" id="token"
                        matInput type="text" placeholder="Token">
               </mat-input-container>
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.type !== 'SLACK'">
+          <div class="form-group row" [hidden]="entry.type !== 'SLACK' || !entry.type">
             <label for="channel" class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
               <mat-input-container class="full-width">
-                <input [(ngModel)]="entry.channel" name="channel" id="channel"
+                <input required [(ngModel)]="entry.channel" name="channel" id="channel"
                        matInput type="text" placeholder="Channel">
               </mat-input-container>
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.type !== 'EMAIL'">
+          <div class="form-group row" [hidden]="entry.type !== 'EMAIL' || !entry.type">
             <label for="channel" class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
               <mat-input-container class="full-width">
-                <input [(ngModel)]="entry.channel" name="channel" id="email"
+                <input required [(ngModel)]="entry.channel" name="channel" id="email"
                        matInput type="text" placeholder="To:">
               </mat-input-container>
             </div>

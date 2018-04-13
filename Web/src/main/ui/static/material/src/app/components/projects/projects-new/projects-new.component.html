@@ -11,6 +11,7 @@
                         <label class="col-md-2 control-label">
                         </label>
                         <div class="col-md-8">
+                            <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
                             <mat-form-field>
                                 <mat-select placeholder="Owner" required [(ngModel)]="project.org.id" name="owner">
                                     <mat-option *ngFor="let org of orgs" [value]="org.org.id">
@@ -21,6 +22,23 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="repo" class="col-md-2 control-label">
+                        </label>
+                        <div class="col-md-8">
+                            <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
+                            <mat-form-field>
+                                <mat-select placeholder="Access level" [(ngModel)]="project.visibility"
+                                            name="Access level">
+                                    <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
+                                        {{visibility}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                    <div class="form-group row">
                         <label for="name" class="col-md-2 control-label"></label>
                         <div class="col-md-8">
                             <mat-input-container class="full-width">
@@ -30,25 +48,12 @@
 
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <label for="repo" class="col-md-2 control-label">
                         </label>
                         <div class="col-md-8">
-                            <mat-form-field>
-                                <mat-select placeholder="Access level" [(ngModel)]="project.visibility" name="Access level">
-                                    <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
-                                        {{visibility}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="divider divider-dashed divider-lg pull-in"></div>
-                    <div class="form-group row">
-                        <label for="repo" class="col-md-2 control-label">
-                        </label>
-                        <div class="col-md-8">
-                            <mat-form-field>
+                            <mat-form-field [hidden]="!project.name">
                                 <mat-select placeholder="Type" required [(ngModel)]="project.projectType" name="type">
                                     <mat-option *ngFor="let projectType of projectTypes" [value]="projectType">
                                         {{projectType}}
@@ -57,7 +62,8 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="form-group row" [hidden]="project.projectType === 'Local'">
+
+                    <div class="form-group row" [hidden]="project.projectType === 'Local' || !project.projectType">
                         <label for="repo" class="col-md-2 control-label">
                         </label>
                         <div class="col-md-8">
@@ -67,27 +73,30 @@
                             </mat-input-container>
                         </div>
                     </div>
-                    <div class="form-group row" [hidden]="project.projectType === 'Local'">
+
+                    <div class="form-group row" [hidden]="project.projectType === 'Local' || !project.projectType">
                         <label for="username" class="col-md-2 control-label"></label>
                         <div class="col-md-8">
                             <mat-input-container class="full-width">
-                            <input [(ngModel)]="project.username" name="username" id="username"
-                                   matInput placeholder="Repository access-key or username">
+                                <input [(ngModel)]="project.username" name="username" id="username"
+                                       matInput placeholder="Repository access-key or username">
                             </mat-input-container>
                         </div>
                     </div>
-                    <div class="form-group row" [hidden]="project.projectType === 'Local'">
+
+                    <div class="form-group row" [hidden]="project.projectType === 'Local' || !project.projectType">
                         <label for="pass" class="col-md-2 control-label"></label>
                         <div class="col-md-8">
                             <mat-input-container class="full-width">
-                            <input type="password" [(ngModel)]="project.password" name="password" id="pass"
-                                   matInput placeholder="Repository secret-key or password">
+                                <input type="password" [(ngModel)]="project.password" name="password" id="pass"
+                                       matInput placeholder="Repository secret-key or password">
                             </mat-input-container>
                         </div>
                     </div>
 
                     <div class="divider divider-md"></div>
-                    <div class="form-group row">
+
+                    <div class="form-group row" [hidden]="project.projectType === 'Local' || !project.projectType">
                         <label for="repo" class="col-md-2 control-label">
                         </label>
                         <div class="col-md-8">
@@ -100,7 +109,8 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="form-group row" [hidden]="project.genPolicy === 'None'">
+
+                    <div class="form-group row" [hidden]="project.genPolicy === 'None' || !project.genPolicy">
                         <label for="spec" class="col-md-2 control-label">
                         </label>
                         <div class="col-md-8">
@@ -120,7 +130,8 @@
                                     class="btn-w-md no-margin-left">Add
                             </button>
                             <span class="space space-md"></span>
-                            <button mat-raised-button type="button" class="btn-w-md" [routerLink]="['/app/projects']">Cancel
+                            <button mat-raised-button type="button" class="btn-w-md" [routerLink]="['/app/projects']">
+                                Cancel
                             </button>
                         </div>
                     </div>
@@ -128,8 +139,10 @@
                         <div class="col-md-2"></div>
                         <div class="col-md-10">
                             <div class="callout callout-info">
-                                <p>Fx will monitor the project repository for new commits and will automatically sync back changed files.</p>
-                                <p>Code generation can automatically create test-suites for API endpoints and will commit the changes back to version-control system.</p>
+                                <p>Fx will monitor the project repository for new commits and will automatically sync
+                                    back changed files.</p>
+                                <p>Code generation can automatically create test-suites for API endpoints and will
+                                    commit the changes back to version-control system.</p>
                             </div>
                         </div>
                     </div>

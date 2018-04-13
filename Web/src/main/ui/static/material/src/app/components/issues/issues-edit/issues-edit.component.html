@@ -12,6 +12,7 @@
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
+              <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Owner" required disabled [(ngModel)]="subscription.org.id" name="type">
                   <mat-option *ngFor="let org of orgs" [value]="org.org.id">
@@ -23,19 +24,10 @@
           </div>
 
           <div class="form-group row">
-            <label for="name" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input required disabled [(ngModel)]="subscription.name" name="name" id="name"
-                       matInput placeholder="Bot name">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="form-group row">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
+              <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Access level" [(ngModel)]="subscription.visibility" name="Access level">
                   <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
@@ -46,6 +38,16 @@
             </div>
           </div>
           <div class="divider divider-dashed divider-lg pull-in"></div>
+
+          <div class="form-group row">
+            <label for="name" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+              <mat-input-container class="full-width">
+                <input required disabled [(ngModel)]="subscription.name" name="name" id="name"
+                       matInput placeholder="Bot name">
+              </mat-input-container>
+            </div>
+          </div>
 
           <div class="form-group row">
             <label class="col-md-2 control-label">
@@ -72,13 +74,13 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row" [hidden]="!subscription.skill.id || subscription.skill.id != '4028b881620688c001620689a0010000'">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
               <mat-input-container class="full-width">
                 <input [(ngModel)]="subscription.prop2"
-                       matInput placeholder="Project Name" name="project_name">
+                       matInput placeholder="Jira project short name" name="project_name">
               </mat-input-container>
             </div>
           </div>
