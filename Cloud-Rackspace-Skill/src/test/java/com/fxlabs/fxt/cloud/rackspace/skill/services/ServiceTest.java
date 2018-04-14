@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.cloud.rackspace.skill.services;
 
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
+import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.it.ITTask;
 import org.junit.Test;
 
