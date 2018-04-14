@@ -9,23 +9,37 @@ import { Handler } from '../dialogs/handler/handler';
   providers: [RegionsService]
 })
 export class RegionsListComponent implements OnInit {
+
   list;
   title:string = "Bot Regions";
   showSpinner: boolean = false;
   constructor(private regionService: RegionsService, private handler: Handler) { }
 
   ngOnInit() {
+    this.get();
+  }
+
+  get() {
     this.handler.activateLoader();
-    this.regionService.get().subscribe(results => {
+    this.regionService.get(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.list = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.get();
   }
 
 }

@@ -60,16 +60,25 @@ export class RunListComponent implements OnInit {
 
   getRunByJob(id: string) {
     this.handler.activateLoader();
-    this.runService.get(id).subscribe(results => {
+    this.runService.get(id, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.list = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.getRunByJob(this.jobId);
   }
 
 }

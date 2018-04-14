@@ -16,6 +16,7 @@ export class UserListComponent implements OnInit {
 
   showSpinner: boolean = false;
   org: Org = new Org();
+  id;
   orgUsers;
   constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
@@ -23,10 +24,19 @@ export class UserListComponent implements OnInit {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {
+        this.id = params['id'];
         this.getById(params['id']);
         this.getOrgUsersById(params['id']);
       }
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.getOrgUsersById(this.id);
   }
 
   getById(id: string) {

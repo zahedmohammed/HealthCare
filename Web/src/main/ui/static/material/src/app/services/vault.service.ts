@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
@@ -7,15 +7,20 @@ import { Vault } from '../models/vault.model';
 
 @Injectable()
 export class VaultService {
+
   private serviceUrl = '/api/v1/vault'
+
   constructor(private http: HttpClient) {
   }
 
   /**
    * Get observable from endpoint
    */
-  get() {
-      return this.http.get(this.serviceUrl);
+  get(page, pageSize) {
+    let params = new HttpParams();
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl, {params});
   }
 
   getById(id: string) {

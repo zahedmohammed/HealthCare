@@ -108,7 +108,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
             }
         });
 
-        return new Response<>(converter.convertToDtos(jobs));
+        return new Response<>(converter.convertToDtos(jobs), new Long(jobs.size()), jobs.size());
 
     }
 

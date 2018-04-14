@@ -50,16 +50,25 @@ export class JobslistComponent implements OnInit {
 
   list() {
     this.handler.activateLoader();
-    this.jobsService.get().subscribe(results => {
+    this.jobsService.get(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.jobs = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.list();
   }
 
   runJob(id: string) {

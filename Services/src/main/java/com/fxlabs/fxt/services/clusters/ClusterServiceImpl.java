@@ -23,6 +23,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,8 +67,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<List<Cluster>> findAll(String user, Pageable pageable) {
         // Find all public
-        List<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusters = this.clusterRepository.findByVisibility(ClusterVisibility.PUBLIC);
-        return new Response<>(converter.convertToDtos(clusters));
+        Page<com.fxlabs.fxt.dao.entity.clusters.Cluster> page = this.clusterRepository.findByVisibility(ClusterVisibility.PUBLIC, pageable);
+        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override

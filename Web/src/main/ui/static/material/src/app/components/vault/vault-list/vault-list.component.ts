@@ -12,6 +12,7 @@ export class VaultListComponent implements OnInit {
 
   keys;
   showSpinner: boolean = false;
+
   constructor(private vaultService: VaultService, private handler: Handler) { }
 
   ngOnInit() {
@@ -20,16 +21,25 @@ export class VaultListComponent implements OnInit {
 
   list() {
     this.handler.activateLoader();
-    this.vaultService.get().subscribe(results => {
+    this.vaultService.get(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.keys = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.list();
   }
 
 }

@@ -16,6 +16,7 @@ import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +49,8 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
 
     @Override
     public Response<List<com.fxlabs.fxt.dto.vault.Vault>> findAll(String user, Pageable pageable) {
-        List<Vault> vaults = this.repository.findByCreatedBy(user, pageable);
-        return new Response<>(converter.convertToDtos(vaults));
+        Page<Vault> page = this.repository.findByCreatedBy(user, pageable);
+        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override

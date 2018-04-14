@@ -14,18 +14,31 @@ export class ProjectsListComponent implements OnInit {
   showSpinner: boolean = false;
   constructor(private projectService: ProjectService, private handler: Handler) { }
 
-  ngOnInit() {  
+  ngOnInit() {
+    this.list();
+  }
+
+  list() {
     this.handler.activateLoader();
-    this.projectService.getProjects().subscribe(results => {
+    this.projectService.getProjects(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.projects = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.list();
   }
 
 }

@@ -69,8 +69,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     @Override
     public Response<List<com.fxlabs.fxt.dto.run.Run>> findByJobId(String jobId, String user, Pageable pageable) {
         jobService.isUserEntitled(jobId, user);
-        List<Run> runs = ((RunRepository) repository).findByJobId(jobId, pageable);
-        return new Response<>(converter.convertToDtos(runs));
+        Page<Run> page = ((RunRepository) repository).findByJobId(jobId, pageable);
+        return new Response<List<com.fxlabs.fxt.dto.run.Run>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override

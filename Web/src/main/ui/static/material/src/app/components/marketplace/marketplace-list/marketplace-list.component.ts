@@ -20,16 +20,25 @@ export class MarketplaceListComponent implements OnInit {
 
   get() {
     this.handler.activateLoader();
-    this.testSuiteService.get().subscribe(results => {
+    this.testSuiteService.get(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.offers = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.get();
   }
 
   search(keyword: string) {

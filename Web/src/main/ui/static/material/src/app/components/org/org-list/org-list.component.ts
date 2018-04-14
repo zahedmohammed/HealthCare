@@ -15,17 +15,30 @@ export class OrgListComponent implements OnInit {
   constructor(private orgService: OrgService, private handler: Handler) { }
 
   ngOnInit() {
+    this.list();
+  }
+
+  list() {
     this.handler.activateLoader();
-    this.orgService.get().subscribe(results => {
+    this.orgService.get(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.orgs = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.list();
   }
 
 }

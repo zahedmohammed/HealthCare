@@ -146,7 +146,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             if (BooleanUtils.isFalse(pu.getProject().isInactive()))
                 projects.add(pu.getProject());
         });
-        return new Response<List<Project>>(converter.convertToDtos(projects));
+        return new Response<List<Project>>(converter.convertToDtos(projects), new Long(projects.size()),  projects.size());
     }
 
     public Response<Long> countProjects(String owner) {

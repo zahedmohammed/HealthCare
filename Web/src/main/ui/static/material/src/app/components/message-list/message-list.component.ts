@@ -14,17 +14,30 @@ export class MessageListComponent implements OnInit {
   constructor(private messageService: MessageService, private handler: Handler) { }
 
   ngOnInit() {
+    this.list();
+  }
+
+  list() {
     this.handler.activateLoader();
-    this.messageService.get().subscribe(results => {
+    this.messageService.get(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.items = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.list();
   }
 
 }

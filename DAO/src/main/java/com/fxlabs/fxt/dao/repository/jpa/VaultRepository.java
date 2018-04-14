@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.repository.jpa;
 
 import com.fxlabs.fxt.dao.entity.vault.Vault;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.swing.text.html.Option;
@@ -12,7 +13,7 @@ import java.util.Optional;
  */
 public interface VaultRepository extends JpaRepository<Vault, String> {
 
-    List<Vault> findByCreatedBy(String user, org.springframework.data.domain.Pageable pageable);
+    Page<Vault> findByCreatedBy(String user, org.springframework.data.domain.Pageable pageable);
 
     Optional<Vault> findByOrgNameAndKey(String org, String key);
 }

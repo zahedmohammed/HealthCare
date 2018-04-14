@@ -15,17 +15,30 @@ export class CloudAccountListComponent implements OnInit {
   constructor(private cloudAccountService: CloudAccountService, private handler: Handler) { }
 
   ngOnInit() {
+    this.list();
+  }
+
+  list() {
     this.handler.activateLoader();
-    this.cloudAccountService.get().subscribe(results => {
+    this.cloudAccountService.get(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.accounts = results['data'];
+      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.list();
   }
 
 }

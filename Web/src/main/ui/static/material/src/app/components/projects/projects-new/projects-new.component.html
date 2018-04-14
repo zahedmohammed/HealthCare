@@ -49,11 +49,11 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" [hidden]="!project.name">
                         <label for="repo" class="col-md-2 control-label">
                         </label>
                         <div class="col-md-8">
-                            <mat-form-field [hidden]="!project.name">
+                            <mat-form-field>
                                 <mat-select placeholder="Type" required [(ngModel)]="project.projectType" name="type">
                                     <mat-option *ngFor="let projectType of projectTypes" [value]="projectType">
                                         {{projectType}}

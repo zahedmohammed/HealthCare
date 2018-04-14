@@ -62,7 +62,7 @@ export class RegionNewComponent implements OnInit {
 
   getCloudAccounts() {
     this.handler.activateLoader();
-    this.cloudAccountService.get().subscribe(results => {
+    this.cloudAccountService.get(0, 100).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

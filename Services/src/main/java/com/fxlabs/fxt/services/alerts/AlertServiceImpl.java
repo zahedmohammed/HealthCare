@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,8 +53,8 @@ public class AlertServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.enti
 
     @Override
     public Response<List<Alert>> findAll(String user, Pageable pageable) {
-        List<com.fxlabs.fxt.dao.entity.alerts.Alert> alertList = alertESRepository.findByUsersIn(user, pageable);
-        return new Response<List<Alert>>(converter.convertToDtos(alertList));
+        Page<com.fxlabs.fxt.dao.entity.alerts.Alert> page = alertESRepository.findByUsersIn(user, pageable);
+        return new Response<List<Alert>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override

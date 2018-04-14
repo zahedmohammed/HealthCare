@@ -3,6 +3,7 @@ package com.fxlabs.fxt.dao.repository.es;
 import com.fxlabs.fxt.dao.entity.alerts.Alert;
 import com.fxlabs.fxt.dao.entity.alerts.AlertType;
 import com.fxlabs.fxt.dao.entity.alerts.AlertStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
@@ -21,5 +22,5 @@ public interface AlertESRepository extends ElasticsearchRepository<Alert, String
 
     public Stream<Alert> findByTypeAndStatus(AlertType type, AlertStatus status);
 
-    public List<Alert> findByUsersIn(String user, Pageable pageable);
+    public Page<Alert> findByUsersIn(String user, Pageable pageable);
 }
