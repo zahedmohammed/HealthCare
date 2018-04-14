@@ -43,10 +43,31 @@ public class DataRecordServiceImpl extends GenericServiceImpl<DataRecord, com.fx
                                  DataRecordRepository repository, ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository) {
         super(repository, converter);
         this.repository = repository;
+        this.converter = converter;
         this.dataRecordESRepository = dataRecordESRepository;
         this.projectFileService = projectFileService;
         this.projectService = projectService;
         this.projectRepository = projectRepository;
+    }
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.DataRecord> save(com.fxlabs.fxt.dto.project.DataRecord dataRecord, String user) {
+
+        DataRecord ts = converter.convertToEntity(dataRecord);
+        DataRecord entity = ((DataRecordRepository) repository).save(ts);
+        dataRecordESRepository.save(entity);
+        return new Response<com.fxlabs.fxt.dto.project.DataRecord>(converter.convertToDto(entity));
+
+    }
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.project.DataRecord>> save(List<com.fxlabs.fxt.dto.project.DataRecord> dtos, String user) {
+
+        List<DataRecord> entities = converter.convertToEntities(dtos);
+        List<DataRecord> entities_ = ((DataRecordRepository) repository).saveAll(entities);
+        dataRecordESRepository.saveAll(entities_);
+        return new Response<List<com.fxlabs.fxt.dto.project.DataRecord>>(converter.convertToDtos(entities_));
+
     }
 
 

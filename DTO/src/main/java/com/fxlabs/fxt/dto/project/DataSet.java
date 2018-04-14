@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class DataSet extends BasicBaseDto {
+public class DataSet extends BaseDto<String> {
     private String name;
     private ProjectMinimalDto project;
 }
