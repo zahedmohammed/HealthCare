@@ -15,7 +15,6 @@ import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +49,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         this.usersPasswordRepository = usersPasswordRepository;
         this.usersPasswordConverter = usersPasswordConverter;
         //this.encryptor = encryptor;
-        this.orgUsersConverter  = orgUsersConverter;
+        this.orgUsersConverter = orgUsersConverter;
     }
 
 
@@ -141,32 +140,23 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
 
         Response<Boolean> response = new Response<>(false);
         try {
-            // check email exists
-            if (StringUtils.isEmpty(users.getEmail()) || !EmailValidator.getInstance().isValid(users.getEmail())) {
-                return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid email [%s]", users.getEmail())));
-            }
-            if (!findByEmail(users.getEmail()).isErrors()) {
-                return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Already in use email [%s]", users.getEmail())));
+
+
+            Response<com.fxlabs.fxt.dto.users.Users> addUserResponse = addUser(users, roles);
+            if (addUserResponse.isErrors() || addUserResponse.getData() == null) {
+                return new Response<>(false).withErrors(true).withMessages(addUserResponse.getMessages());
             }
 
-            // check username exists
-            // check password is not-null and minimum 8 chars.
-            if (StringUtils.isEmpty(users.getPassword()) || users.getPassword().length() < 8) {
-                return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Password should be minimum [%s] chars", 8)));
-            }
+            Users user = converter.convertToEntity(addUserResponse.getData());
 
             if (StringUtils.isEmpty(orgName) || orgName.length() < 3) {
                 return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Company should be minimum [%s] chars", 3)));
             }
 
-            // extract username
-            String tokens[] = StringUtils.split(users.getEmail(), "@");
-
             // check type is either PERSONAL or TEAM
             Optional<Org> orgOptional = this.orgRepository.findByName(users.getCompany());
             if (orgOptional.isPresent()) {
-                return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Email/Company name [%s] exists. " +
-                        "Either change email or sign-up as Personal account.", orgName)));
+                return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Org name [%s] exists.", orgName)));
             }
 
             Org org = new Org();
@@ -174,16 +164,6 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
             org.setName(orgName);
             org.setBillingEmail(users.getEmail());
             org.setOrgType(orgType);
-
-            org = this.orgRepository.save(org);
-
-            // users
-            Users user = new Users();
-            user.setName(users.getName());
-            user.setEmail(users.getEmail());
-            user.setUsername(tokens[0]);
-            user.setPrivileges(roles);
-            user = repository.save(user);
 
             // OrgUsers
             OrgUsers orgUsers = new OrgUsers();
@@ -193,20 +173,50 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
             orgUsers.setStatus(OrgUserStatus.ACTIVE);
             orgUsersRepository.save(orgUsers);
 
-            // UsersPassword
-            UsersPassword usersPassword = new UsersPassword();
-            usersPassword.setUsers(user);
-            usersPassword.setGrantKey(users.getPassword());
-            usersPassword.setPassword(this.passwordEncoder.encode(users.getPassword()));
-            usersPassword.setActive(true);
-            usersPasswordRepository.save(usersPassword);
-
+            org = this.orgRepository.save(org);
 
             return new Response<>(true).withMessage(new Message(MessageType.INFO, "", "Sign-up successful!"));
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", ex.getLocalizedMessage()));
         }
+    }
+
+    public Response<com.fxlabs.fxt.dto.users.Users> addUser(com.fxlabs.fxt.dto.users.Users users, List<String> roles) {
+        // check email exists
+        if (StringUtils.isEmpty(users.getEmail()) || !EmailValidator.getInstance().isValid(users.getEmail())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid email [%s]", users.getEmail())));
+        }
+        if (!findByEmail(users.getEmail()).isErrors()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Already in use email [%s]", users.getEmail())));
+        }
+
+        // check username exists
+        // check password is not-null and minimum 8 chars.
+        if (StringUtils.isEmpty(users.getPassword()) || users.getPassword().length() < 8) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Password should be minimum [%s] chars", 8)));
+        }
+
+        // extract username
+        String tokens[] = StringUtils.split(users.getEmail(), "@");
+
+        // users
+        Users user = new Users();
+        user.setName(users.getName());
+        user.setEmail(users.getEmail());
+        user.setUsername(tokens[0]);
+        user.setPrivileges(roles);
+        user = repository.save(user);
+
+        // UsersPassword
+        UsersPassword usersPassword = new UsersPassword();
+        usersPassword.setUsers(user);
+        usersPassword.setGrantKey(users.getPassword());
+        usersPassword.setPassword(this.passwordEncoder.encode(users.getPassword()));
+        usersPassword.setActive(true);
+        usersPasswordRepository.save(usersPassword);
+
+        return new Response<>(converter.convertToDto(user));
     }
 
     @Override

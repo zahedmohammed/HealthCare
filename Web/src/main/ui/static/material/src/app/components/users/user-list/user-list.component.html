@@ -11,8 +11,8 @@
         <thead>
         <tr>
           <th class="mdl-data-table__cell--non-numeric">Name</th>
-          <th class="mdl-data-table__cell--non-numeric">Username</th>
-          <th class="mdl-data-table__cell--non-numeric">Active</th>
+          <!--<th class="mdl-data-table__cell--non-numeric">Username</th>
+          <th class="mdl-data-table__cell--non-numeric">Active</th>-->
           <th class="mdl-data-table__cell--non-numeric">Role</th>
           <th class="mdl-data-table__cell--non-numeric">Status</th>
           <th class="mdl-data-table__cell--non-numeric">Since</th>
@@ -22,10 +22,10 @@
         <tbody>
         <tr *ngFor="let orgUser of orgUsers">
           <td class="mdl-data-table__cell--non-numeric">{{orgUser.users.name}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{orgUser.users.username}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{!orgUser.users.inactive}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{!orgUser.orgRole}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{!orgUser.status}}</td>
+          <!--<td class="mdl-data-table__cell--non-numeric">{{orgUser.users.username}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{!orgUser.users.inactive}}</td>-->
+          <td class="mdl-data-table__cell--non-numeric">{{orgUser.orgRole}}</td>
+          <td class="mdl-data-table__cell--non-numeric">{{orgUser.status}}</td>
           <td class="mdl-data-table__cell--non-numeric">{{orgUser.createdDate | date:'shortDate'}}</td>
           <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id]">Edit</a></td>
         </tr>

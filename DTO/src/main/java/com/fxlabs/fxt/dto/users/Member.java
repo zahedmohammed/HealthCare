@@ -17,7 +17,11 @@ public class Member extends BaseDto<String> {
 
     private String orgId;
 
+    private String name;
+    private String username;
     private String email;
+    private String password;
+    private String confirmPassword;
 
     private OrgRole orgRole; // USER | ADMIN
 

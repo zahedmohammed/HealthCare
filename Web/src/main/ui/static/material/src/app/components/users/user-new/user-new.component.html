@@ -9,21 +9,58 @@
         <form role="form" #heroForm="ngForm">
 
           <div class="form-group row">
-            <label for="email" class="col-md-2 control-label"></label>
+            <label for="name" class="col-md-2 control-label"></label>
             <div class="col-md-8">
               <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.email" name="email" id="email"
-                       matInput placeholder="User Email">
+                <input required [(ngModel)]="entry.name" name="name" id="name"
+                       matInput placeholder="Name">
               </mat-input-container>
             </div>
           </div>
+
+          <!--<div class="form-group row">
+            <label for="username" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.username" name="username" id="username"
+                       matInput placeholder="Username">
+              </mat-input-container>
+            </div>
+          </div>-->
+
+          <div class="form-group row">
+            <label for="email" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.email" name="email" id="email" type="email"
+                       matInput placeholder="Email">
+              </mat-input-container>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-2 control-label"></label>
+            <div class="col-md-4">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.password" name="pass" id="pass" type="password"
+                       matInput placeholder="Password" min="8">
+              </mat-input-container>
+            </div>
+            <div class="col-md-4">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.confirmPassword" name="pass" id="confirmPassword" type="password"
+                       matInput placeholder="Confirm password" min="8">
+              </mat-input-container>
+            </div>
+          </div>
+
 
           <div class="form-group row">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-8">
               <mat-form-field>
-                <mat-select placeholder="Access level" [(ngModel)]="entry.orgRole" name="roles">
+                <mat-select placeholder="Role" [(ngModel)]="entry.orgRole" name="roles">
                   <mat-option *ngFor="let role of roles" [value]="role">
                     {{role}}
                   </mat-option>

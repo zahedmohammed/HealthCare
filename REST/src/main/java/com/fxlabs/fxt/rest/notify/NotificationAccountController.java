@@ -37,32 +37,32 @@ public class NotificationAccountController {
         return NotificationAccountService.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    @Secured(ROLE_ENTERPRISE_ADMIN)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<NotificationAccount> findById(@PathVariable("id") String id) {
         return NotificationAccountService.findById(id, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_ENTERPRISE_ADMIN)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<NotificationAccount>> create(@Valid @RequestBody List<NotificationAccount> dtos) {
         //return service.save(dtos);
         return null;
     }
 
-    @Secured(ROLE_ENTERPRISE_ADMIN)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<NotificationAccount> create(@Valid @RequestBody NotificationAccount dto) {
         return NotificationAccountService.create(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_ENTERPRISE_ADMIN)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<NotificationAccount> update(@Valid @RequestBody NotificationAccount dto) {
         return NotificationAccountService.update(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_ENTERPRISE_ADMIN)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<NotificationAccount> delete(@PathVariable("id") String id) {
         return NotificationAccountService.delete(id, SecurityUtil.getCurrentAuditor());

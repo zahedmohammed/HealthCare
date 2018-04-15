@@ -66,7 +66,7 @@ export class UserEditComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.router.navigate(['/app/orgs']);
+      this.router.navigate(['/app/orgs', this.org.id, 'users']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

@@ -29,12 +29,14 @@ public class TestSuiteController {
     }
 
 
+    @Secured(ROLE_USER)
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<TestSuite>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                              @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return service.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
     public Response<List<TestSuite>> findAll(@PathVariable("keyword") String keyword,
                                              @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,

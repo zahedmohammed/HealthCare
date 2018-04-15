@@ -50,20 +50,20 @@ public class SkillsController {
         return service.findById(id, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured(ROLE_ENTERPRISE_ADMIN)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Skill> add(@RequestBody Skill request) {
         return service.save(request, SecurityUtil.getCurrentAuditor());
     }
 
 
-    @Secured(ROLE_USER)
+    @Secured(ROLE_ENTERPRISE_ADMIN)
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Skill> update(@Valid @RequestBody Skill dto) {
         return service.save(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured(ROLE_ENTERPRISE_ADMIN)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Skill> delete(@PathVariable("id") String id) {
         return service.delete(id, SecurityUtil.getCurrentAuditor());

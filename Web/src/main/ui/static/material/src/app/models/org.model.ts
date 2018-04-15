@@ -21,6 +21,10 @@ export class Dto {
 
 export class Member {
   public orgId: string;
+  public name: string;
+  public username: string;
+  public password: string;
+  public confirmPassword: string;
   public email: string;
   public orgRole: string;
 }

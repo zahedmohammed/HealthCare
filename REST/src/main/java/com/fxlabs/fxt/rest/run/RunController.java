@@ -34,7 +34,7 @@ public class RunController {
         this.testSuiteResponseService = testSuiteResponseService;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/job/{id}", method = RequestMethod.GET)
     public Response<List<Run>> findByJobId(@PathVariable("id") String id,
                                            @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,

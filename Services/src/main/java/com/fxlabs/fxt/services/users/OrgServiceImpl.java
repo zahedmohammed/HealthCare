@@ -19,10 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -39,11 +36,12 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     private OrgUsersConverter orgUsersConverter;
 
     private UsersRepository usersRepository;
+    private UsersService usersService;
 
     @Autowired
     public OrgServiceImpl(OrgUsersRepository orgUsersRepository, OrgUsersESRepository orgUsersESRepository,
                           OrgUsersConverter orgUsersConverter, OrgRepository orgRepository, OrgConverter orgConverter,
-                          UsersRepository usersRepository) {
+                          UsersRepository usersRepository, UsersService usersService) {
 
         super(orgRepository, orgConverter);
 
@@ -54,6 +52,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         this.orgUsersESRepository = orgUsersESRepository;
         this.orgUsersConverter = orgUsersConverter;
         this.usersRepository = usersRepository;
+        this.usersService = usersService;
 
     }
 
@@ -132,28 +131,38 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
     @Override
     public Response<Boolean> addMember(Member dto, String user) {
+
         // Check user is has admin access to org.
         Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndOrgRole(dto.getOrgId(), user, OrgRole.ADMIN);
         if (!orgUsersOptional.isPresent()) {
             throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, dto.getOrgId()));
         }
 
-        // check email
-        Optional<Users> usersOptional = this.usersRepository.findByEmail(dto.getEmail());
-        if (!usersOptional.isPresent()) {
-            throw new FxException(String.format("Email [%s] not found.", user, dto.getEmail()));
+        // role check
+        if (dto.getOrgRole() == null) {
+            dto.setOrgRole(com.fxlabs.fxt.dto.users.OrgRole.USER);
         }
 
-        Optional<OrgUsers> orgUsersOptional1 = orgUsersRepository.findByOrgIdAndUsersId(dto.getOrgId(), usersOptional.get().getId());
-        if (!orgUsersOptional1.isPresent()) {
-            throw new FxException(String.format("User [%s] already a member of the org [%s].", dto.getEmail(), dto.getOrgId()));
+        com.fxlabs.fxt.dto.users.Users users = new com.fxlabs.fxt.dto.users.Users();
+        users.setName(dto.getName());
+        users.setEmail(dto.getEmail());
+        users.setPassword(dto.getPassword());
+
+        Response<com.fxlabs.fxt.dto.users.Users> addUserResponse = usersService.addUser(users, Arrays.asList("ROLE_USER"));
+
+        if (addUserResponse.isErrors() || addUserResponse.getData() == null) {
+            return new Response<>(false).withErrors(true).withMessages(addUserResponse.getMessages());
         }
+
+        Users u = new Users();
+        u.setId(addUserResponse.getData().getId());
 
         OrgUsers orgUsers = new OrgUsers();
         orgUsers.setOrg(orgUsersOptional.get().getOrg());
-        orgUsers.setUsers(usersOptional.get());
-        orgUsers.setOrgRole(OrgRole.valueOf(dto.getOrgRole().name()));
+        orgUsers.setUsers(u);
         orgUsers.setStatus(OrgUserStatus.ACTIVE);
+
+        orgUsers.setOrgRole(OrgRole.valueOf(dto.getOrgRole().name()));
 
         orgUsers = orgUsersRepository.save(orgUsers);
 
