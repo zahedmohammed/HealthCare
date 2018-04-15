@@ -43,43 +43,10 @@ public class OrgController {
     @Secured(ROLE_USER)
     @RequestMapping(value = "find-by-name/{name}", method = RequestMethod.GET)
     public Response<OrgUsers> findByName(@PathVariable("name") String name,
-                                               @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                               @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                         @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                         @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return orgUsersService.findByName(name, SecurityUtil.getCurrentAuditor());
     }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "org-user", method = RequestMethod.POST)
-    public Response<OrgUsers> createOrgUser(@RequestBody OrgUsers request) {
-        return orgUsersService.save(request, SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "org-user/{id}", method = RequestMethod.PUT)
-    public Response<OrgUsers> updateOrgUser(@RequestBody OrgUsers request) {
-        return orgUsersService.save(request, SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "org-user/{id}", method = RequestMethod.GET)
-    public Response<OrgUsers> findOrgUserById(@PathVariable("id") String id) {
-        return orgUsersService.findById(id, SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/add-member", method = RequestMethod.POST)
-    public Response<Boolean> findOrgUsersById(@RequestBody Member member) {
-        return orgService.addMember(member, SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
-    public Response<List<OrgUsers>> findOrgUsersById(@PathVariable("id") String id,
-                                                     @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return orgService.findOrgUsers(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
-    }
-
 
     @Secured(ROLE_USER)
     @RequestMapping(method = RequestMethod.GET)
@@ -111,6 +78,48 @@ public class OrgController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Org> delete(@PathVariable("id") String id) {
         return orgService.delete(id, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
+    public Response<List<OrgUsers>> findOrgUsersById(@PathVariable("id") String id,
+                                                     @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return orgService.findOrgUsers(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
+    /*@Secured(ROLE_USER)
+    @RequestMapping(value = "org-user", method = RequestMethod.POST)
+    public Response<OrgUsers> createOrgUser(@RequestBody OrgUsers request) {
+        return orgUsersService.save(request, SecurityUtil.getCurrentAuditor());
+    }*/
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{orgId}/users/{userId}", method = RequestMethod.PUT)
+    public Response<Boolean> updateOrgUser(@PathVariable("orgId") String orgId,
+                                            @PathVariable("userId") String userId,
+                                            @RequestBody OrgUsers request) {
+        return orgService.saveUser(userId, request.getUsers(), request, orgId, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "org-user/{id}", method = RequestMethod.GET)
+    public Response<OrgUsers> findOrgUserById(@PathVariable("id") String id) {
+        return orgUsersService.findById(id, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{orgId}/users/add-member", method = RequestMethod.POST)
+    public Response<Boolean> findOrgUsersById(@PathVariable("orgId") String orgId, @RequestBody Member member) {
+        return orgService.addMember(member, orgId, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{orgId}/users/{userId}/reset-password", method = RequestMethod.POST)
+    public Response<Boolean> resetPassword(@PathVariable("orgId") String orgId,
+                                           @PathVariable("userId") String userId,
+                                           @RequestBody Member member) {
+        return orgService.resetPassword(userId, member, orgId, SecurityUtil.getCurrentAuditor());
     }
 
 

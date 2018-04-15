@@ -182,6 +182,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         }
     }
 
+    @Override
     public Response<com.fxlabs.fxt.dto.users.Users> addUser(com.fxlabs.fxt.dto.users.Users users, List<String> roles) {
         // check email exists
         if (StringUtils.isEmpty(users.getEmail()) || !EmailValidator.getInstance().isValid(users.getEmail())) {
@@ -217,6 +218,34 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         usersPasswordRepository.save(usersPassword);
 
         return new Response<>(converter.convertToDto(user));
+    }
+
+    @Override
+    public Response<Boolean> resetPassword(String id, String password, String confirmPassword) {
+
+        try {
+            Optional<UsersPassword> usersPasswordOptional = usersPasswordRepository.findByUsersIdAndActive(id, Boolean.TRUE);
+
+            if (!usersPasswordOptional.isPresent()) {
+                return new Response<>(false).withMessage(new Message(MessageType.ERROR, "", String.format("No record found for user [%s]", id)));
+            }
+
+            // check password is not-null and minimum 8 chars.
+            if (StringUtils.isEmpty(password) || password.length() < 8 || !StringUtils.equals(password, confirmPassword)) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Password should be minimum [%s] chars", 8)));
+            }
+
+            // UsersPassword
+            UsersPassword usersPassword = usersPasswordOptional.get();
+            usersPassword.setPassword(this.passwordEncoder.encode(password));
+            usersPassword.setActive(true);
+            usersPasswordRepository.save(usersPassword);
+
+            return new Response<>(true);
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new Response<>(false).withMessage(new Message(MessageType.ERROR, "", String.format("Error -> [%s]", e.getLocalizedMessage())));
+        }
     }
 
     @Override

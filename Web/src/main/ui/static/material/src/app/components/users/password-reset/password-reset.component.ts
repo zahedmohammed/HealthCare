@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { OrgService } from '../../../services/org.service';
-import { Org, OrgUser } from '../../../models/org.model';
+import { Org, OrgUser, Member } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
 
-
 @Component({
-  selector: 'app-user-edit',
-  templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.scss'],
+  selector: 'app-password-reset',
+  templateUrl: './password-reset.component.html',
+  styleUrls: ['./password-reset.component.scss'],
   providers: [OrgService]
 })
-export class UserEditComponent implements OnInit {
+export class PasswordResetComponent implements OnInit {
 
   entry: OrgUser = new OrgUser();
   org: Org = new Org();
-  orgs;
+  member: Member = new Member();
   constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
@@ -60,7 +59,7 @@ export class UserEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.orgService.updateOrgUser(this.org.id, this.entry.users.id, this.entry).subscribe(results => {
+    this.orgService.resetPassword(this.org.id, this.entry.users.id, this.member).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
@@ -72,7 +71,5 @@ export class UserEditComponent implements OnInit {
     });
   }
 
-  roles = ['ADMIN', 'USER'];
-  statuses = ['ACTIVE', 'INACTIVE'];
 
 }

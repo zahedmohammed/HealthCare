@@ -26,7 +26,8 @@ public interface UsersService extends GenericService<Users, String> {
 
     public Response<UsersPassword> findActivePassword(String email);
 
-
     Response<Users> addUser(com.fxlabs.fxt.dto.users.Users users, List<String> roles);
+
+    Response<Boolean> resetPassword(String id, String password, String confirmPassword);
 
 }

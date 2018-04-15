@@ -153,6 +153,7 @@ import { MsgDialogComponent } from './components/dialogs/msg-dialog/msg-dialog.c
 import { ErrorDialogComponent } from './components/dialogs/error-dialog/error-dialog.component';
 import { ResponseDialogComponent } from './components/dialogs/response-dialog/response-dialog.component';
 import { Handler } from './components/dialogs/handler/handler';
+import { PasswordResetComponent } from './components/users/password-reset/password-reset.component';
 
 @NgModule({
   imports: [
@@ -285,7 +286,8 @@ import { Handler } from './components/dialogs/handler/handler';
     NotificationNewComponent,
     MsgDialogComponent,
     ErrorDialogComponent,
-    ResponseDialogComponent
+    ResponseDialogComponent,
+    PasswordResetComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService, Handler],

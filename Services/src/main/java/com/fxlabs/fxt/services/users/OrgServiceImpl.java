@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dao.repository.jpa.OrgRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.base.UserMinimalDto;
 import com.fxlabs.fxt.dto.users.Member;
 import com.fxlabs.fxt.dto.users.OrgType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
@@ -130,7 +131,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     }
 
     @Override
-    public Response<Boolean> addMember(Member dto, String user) {
+    public Response<Boolean> addMember(Member dto, String orgId, String user) {
 
         // Check user is has admin access to org.
         Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndOrgRole(dto.getOrgId(), user, OrgRole.ADMIN);
@@ -167,6 +168,59 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         orgUsers = orgUsersRepository.save(orgUsers);
 
         return new Response<>(true);
+    }
+
+    @Override
+    public Response<Boolean> resetPassword(String id, Member member, String orgId, String user) {
+
+        // Check user is has admin access to org.
+        Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndOrgRole(orgId, user, OrgRole.ADMIN);
+        if (!orgUsersOptional.isPresent()) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, orgId));
+        }
+
+        // check user-id belongs to org
+        Optional<OrgUsers> usersOptional = this.orgUsersRepository.findByOrgIdAndUsersId(orgId, id);
+        if (!usersOptional.isPresent()) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", id, orgId));
+        }
+
+        return this.usersService.resetPassword(id, member.getPassword(), member.getConfirmPassword());
+    }
+
+    @Override
+    public Response<Boolean> saveUser(String id, UserMinimalDto users, com.fxlabs.fxt.dto.users.OrgUsers orgUser, String orgId, String user) {
+
+        // Check user is has admin access to org.
+        Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndOrgRole(orgId, user, OrgRole.ADMIN);
+        if (!orgUsersOptional.isPresent()) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, orgId));
+        }
+
+        // check user-id belongs to org
+        Optional<OrgUsers> usersOptional = this.orgUsersRepository.findByOrgIdAndUsersId(orgId, id);
+        if (!usersOptional.isPresent()) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", id, orgId));
+        }
+
+        if (!StringUtils.equals(id, users.getId())) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", id, orgId));
+        }
+
+        // save user's name, company etc
+        Response<com.fxlabs.fxt.dto.users.Users> usersResponse = this.usersService.findById(id);
+        usersResponse.getData().setName(users.getName());
+        usersResponse.getData().setCompany(users.getCompany());
+
+        this.usersService.save(usersResponse.getData());
+
+
+        // save OrgUser
+        this.orgUsersRepository.save(orgUsersConverter.convertToEntity(orgUser));
+
+        return new Response<>(true);
+
+
     }
 
     @Override

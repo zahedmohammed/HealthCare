@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.users;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.base.UserMinimalDto;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.users.Member;
 import com.fxlabs.fxt.dto.users.Org;
@@ -26,5 +27,9 @@ public interface OrgService extends GenericService<Org, String> {
 
     Response<List<com.fxlabs.fxt.dto.users.OrgUsers>> findOrgUsers(String org, String user, Pageable pageable);
 
-    Response<Boolean> addMember(Member dto, String user);
+    Response<Boolean> addMember(Member dto, String orgId, String user);
+
+    Response<Boolean> resetPassword(String id, Member member, String orgId, String user);
+
+    Response<Boolean> saveUser(String id, UserMinimalDto users, com.fxlabs.fxt.dto.users.OrgUsers orgUser, String orgId, String user);
 }

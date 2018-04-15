@@ -54,12 +54,16 @@ export class OrgService {
     return this.http.post(this.serviceUrl + "/org-user", orgUser);
   }
 
-  updateOrgUser(orgUser: OrgUser) {
-    return this.http.put(this.serviceUrl + "/org-user/" + orgUser['id'], orgUser);
+  updateOrgUser(orgId: string, id: string, orgUser: OrgUser) {
+    return this.http.put(this.serviceUrl + "/" + orgId + "/users/" + id, orgUser);
   }
 
-  addMember(member: Member) {
-    return this.http.post(this.serviceUrl + "/add-member", member);
+  addMember(orgId: string, member: Member) {
+    return this.http.post(this.serviceUrl + "/" + orgId + "/users/add-member", member);
+  }
+
+  resetPassword(orgId: string, userId: string, member: Member) {
+    return this.http.post(this.serviceUrl + "/" + orgId + "/users/" + userId + "/reset-password", member);
   }
 
 }

@@ -13,7 +13,6 @@ import { Handler } from '../../dialogs/handler/handler';
 })
 export class UserNewComponent implements OnInit {
 
-  showSpinner: boolean = false;
   entry: Member = new Member();
   org: Org = new Org();
 
@@ -45,7 +44,7 @@ export class UserNewComponent implements OnInit {
   create() {
     this.handler.activateLoader();
     this.entry.orgId = this.org.id;
-    this.orgService.addMember(this.entry).subscribe(results => {
+    this.orgService.addMember(this.entry.orgId, this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

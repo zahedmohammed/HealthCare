@@ -3,7 +3,7 @@
   <article class="article">
 
     <h2 class="article-title">
-      <a href="javascript:;" [routerLink]="['/app/orgs']"> / </a> {{org.name}} / User
+      <a href="javascript:;" [routerLink]="['/app/orgs']">/</a> {{org.name}} / Users / {{entry.users.username}}
     </h2>
     <div class="box box-default">
       <div class="box-body padding-xl">
@@ -11,11 +11,21 @@
         <form role="form" #heroForm="ngForm">
 
           <div class="form-group row">
+            <label for="username" class="col-md-2 control-label"></label>
+            <div class="col-md-8">
+              <mat-input-container class="full-width">
+                <input required disabled [(ngModel)]="entry.users.username" name="username" id="username"
+                       matInput placeholder="Username">
+              </mat-input-container>
+            </div>
+          </div>
+
+          <div class="form-group row">
             <label for="name" class="col-md-2 control-label"></label>
             <div class="col-md-8">
               <mat-input-container class="full-width">
-                <input required disabled [(ngModel)]="entry.users.name" name="name" id="name"
-                       matInput placeholder="User">
+                <input required [(ngModel)]="entry.users.name" name="name" id="name"
+                       matInput placeholder="Name">
               </mat-input-container>
             </div>
           </div>

@@ -61,6 +61,7 @@ import { OrgUsersComponent } from '../components/org/org-users/org-users.compone
 import { UserListComponent } from '../components/users/user-list/user-list.component';
 import { UserNewComponent } from '../components/users/user-new/user-new.component';
 import { UserEditComponent } from '../components/users/user-edit/user-edit.component';
+import { PasswordResetComponent } from '../components/users/password-reset/password-reset.component';
 
 import { CloudAccountListComponent } from '../components/manage/cloud-account-list/cloud-account-list.component';
 import { CloudAccountNewComponent } from '../components/manage/cloud-account-new/cloud-account-new.component';
@@ -149,6 +150,7 @@ const routes: Routes = [
 
       { path: 'orgs/:id/users', component: UserListComponent },
       { path: 'orgs/:orgId/users/new', component: UserNewComponent },
+      { path: 'orgs/:orgId/users/:id/password-reset', component: PasswordResetComponent },
       { path: 'orgs/:orgId/users/:id', component: UserEditComponent },
 
       { path: 'cloud-accounts', component: CloudAccountListComponent },

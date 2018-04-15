@@ -27,7 +27,10 @@
           <td class="mdl-data-table__cell--non-numeric">{{orgUser.orgRole}}</td>
           <td class="mdl-data-table__cell--non-numeric">{{orgUser.status}}</td>
           <td class="mdl-data-table__cell--non-numeric">{{orgUser.createdDate | date:'shortDate'}}</td>
-          <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id]">Edit</a></td>
+          <td class="mdl-data-table__cell--non-numeric">
+            <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id, 'password-reset']">Password</a>
+            <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id]">Edit</a>
+          </td>
         </tr>
         </tbody>
       </table>
