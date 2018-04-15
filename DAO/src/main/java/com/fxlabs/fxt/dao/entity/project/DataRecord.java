@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -21,7 +22,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class DataRecord extends BaseEntity{
-
+    @Lob
+    @Type(type="org.hibernate.type.TextType")
     private String record;
     private String dataSet;
     @ManyToOne(cascade = CascadeType.REFRESH)
