@@ -37,29 +37,12 @@ public class GenericSQLInjectionQueryParamGenerator extends AbstractGenerator {
                     QueryParameter queryParam = (QueryParameter) param;
                     String postFix = POSTFIX + "_" + queryParam.getName();
 
-                    String injectionType = "equals_true";
-                    List<TestSuiteMin> testSuites =
-                            buildTestSuitesWithParamValue(op, path, postFix, method, queryParam.getName(), injectionType);
-                    allTestSuites.addAll(testSuites);
+                    List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                    for (TestSuiteMin testSuite : testSuites) {
+                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@Fxlabs/Common/GenericSQLInjections | sample:all }}");
 
-                    injectionType = "equals_true_brackets";
-                    testSuites =
-                            buildTestSuitesWithParamValue(op, path, postFix, method, queryParam.getName(), injectionType);
-                    allTestSuites.addAll(testSuites);
-
-                    injectionType = "simple_select";
-                    testSuites =
-                            buildTestSuitesWithParamValue(op, path, postFix, method, queryParam.getName(), injectionType);
-                    allTestSuites.addAll(testSuites);
-
-                    injectionType = "stacked_queries";
-                    testSuites =
-                            buildTestSuitesWithParamValue(op, path, postFix, method, queryParam.getName(), injectionType);
-                    allTestSuites.addAll(testSuites);
-
-                    injectionType = "union_exploitation";
-                    testSuites =
-                            buildTestSuitesWithParamValue(op, path, postFix, method, queryParam.getName(), injectionType);
+                    }
                     allTestSuites.addAll(testSuites);
                 }
             }
