@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.DataSet;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.TestSuite;
@@ -16,6 +17,8 @@ public interface ProjectFileService extends GenericService<ProjectFile, String> 
     public Response<ProjectFile> saveFromProject(Project dto, String projectId);
 
     public Response<ProjectFile> saveFromTestSuite(TestSuite dto, String projectId);
+
+    public Response<ProjectFile> saveFromDataSet(DataSet dto, String projectId);
 
     public Response<List<ProjectFile>> findByProjectId(String projectId, String user, org.springframework.data.domain.Pageable pageable);
 }

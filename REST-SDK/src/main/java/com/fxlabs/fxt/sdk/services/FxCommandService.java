@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -748,17 +749,9 @@ public class FxCommandService {
         }
         NameDto finalNameDto = nameDto;
         AtomicInteger totalFiles = new AtomicInteger(0);
+
         files.parallelStream().forEach(file -> {
 
-            DataSet dataSet = new DataSet();
-
-            if (StringUtils.isEmpty(dataSet.getName())) {
-                dataSet.setName(FilenameUtils.getBaseName(file.getName()));
-            }
-
-            ProjectMinimalDto proj = new ProjectMinimalDto();
-            proj.setId(projectId);
-            dataSet.setProject(proj);
 
             String testSuiteContent = null;
             final String checksum;
@@ -779,19 +772,52 @@ public class FxCommandService {
 
                 if (isChecksumPresent(projectFiles, file, checksum)) return;
 
+
+                DataSet dataSet = new DataSet();
+
+                if (StringUtils.isEmpty(dataSet.getName())) {
+                    dataSet.setName(FilenameUtils.getBaseName(file.getName()));
+                }
+
+                ProjectMinimalDto proj = new ProjectMinimalDto();
+                proj.setId(projectId);
+                dataSet.setProject(proj);
+
+
+                Response<DataSet> dataSetResponse = null;
+                // set file content
+                Long lastModified = file.lastModified();
+                dataSet.setProps(new HashMap<>());
+                dataSet.getProps().put(Project.FILE_CONTENT, testSuiteContent);
+                dataSet.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
+                dataSet.getProps().put(Project.MD5_HEX, checksum);
+                dataSet.getProps().put(Project.FILE_NAME, file.getName());
+
+                try {
+                    dataSetResponse = dataSetRestRepository.save(dataSet);
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage());
+                    System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.errors.set(Boolean.TRUE);
+                }
+                DataSet dataSet1 = dataSetResponse.getData();
+
                 //dataSet = jsonMapper.readValue(file, DataSet.class);
                 JsonNode rootNode = jsonMapper.readTree(file);
                 if (rootNode.isArray()) {
                     List<String> skip = new ArrayList<>();
-                    rootNode.iterator().forEachRemaining(item -> {skip.add(item.toString());});
+                    rootNode.iterator().forEachRemaining(item -> {
+                        skip.add(item.toString());
+                    });
                     List<List<String>> batch = Lists.partition(skip, 10);
                     for (List<String> list : batch) {
                         // Add your code here
                         List<DataRecord> dataRecords1 = new ArrayList<>();
-                        for (String item :list) {
+                        for (String item : list) {
                             DataRecord record = new DataRecord();
                             record.setRecord(item);
-                            record.setDataSet(dataSet.getName());
+                            record.setDataSet(dataSet1.getId());
                             record.setOrg(finalNameDto);
                             record.setProject(proj);
                             dataRecords1.add(record);
@@ -811,19 +837,6 @@ public class FxCommandService {
             }
             //logger.info("ds size: [{}]", values.length);
 
-
-
-            // set file content
-            Long lastModified = file.lastModified();
-
-            try {
-                dataSetRestRepository.save(dataSet);
-            } catch (Exception e) {
-                logger.warn(e.getLocalizedMessage());
-                System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.errors.set(Boolean.TRUE);
-            }
 
             System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
                     String.format("Test-Suite: %s [Synced]",

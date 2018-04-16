@@ -2,12 +2,15 @@ package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.DataSetConverter;
 import com.fxlabs.fxt.dao.entity.project.DataSet;
+import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.repository.es.DataSetESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.DataRecordRepository;
 import com.fxlabs.fxt.dao.repository.jpa.DataSetRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.DataRecord;
+import com.fxlabs.fxt.dto.project.TestSuiteType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +48,32 @@ public class DataSetServiceImpl extends GenericServiceImpl<DataSet, com.fxlabs.f
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.DataSet> save(com.fxlabs.fxt.dto.project.DataSet dataSet, String user) {
+        Optional<DataSet> dataSetOptional = ((DataSetRepository) repository).findByProjectIdAndName(dataSet.getProject().getId(), dataSet.getName());
 
-        com.fxlabs.fxt.dao.entity.project.DataSet ts = converter.convertToEntity(dataSet);
-        com.fxlabs.fxt.dao.entity.project.DataSet entity = ((DataSetRepository) repository).save(ts);
+        DataSet entity = null;
+        if (dataSetOptional.isPresent()) {
+            entity = dataSetOptional.get();
+            dataSet.setId(entity.getId());
+        }
+
+        DataSet ds = converter.convertToEntity(dataSet);
+
+        if (!dataSetOptional.isPresent()) {
+            Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(dataSet.getProject().getId());
+            ds.setProject(project.get());
+        }
+
+        entity = ((DataSetRepository) repository).save(ds);
         dataSetESRepository.save(entity);
+
+        // project_file
+        this.projectFileService.saveFromDataSet(dataSet, ds.getProject().getId());
+
         return new Response<com.fxlabs.fxt.dto.project.DataSet>(converter.convertToDto(entity));
+//        com.fxlabs.fxt.dao.entity.project.DataSet ts = converter.convertToEntity(dataSet);
+//        com.fxlabs.fxt.dao.entity.project.DataSet entity = ((DataSetRepository) repository).save(ts);
+//        dataSetESRepository.save(entity);
+//        return new Response<com.fxlabs.fxt.dto.project.DataSet>(converter.convertToDto(entity));
 
     }
 

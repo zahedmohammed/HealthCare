@@ -4,6 +4,7 @@ import com.fxlabs.fxt.converters.project.ProjectFileConverter;
 import com.fxlabs.fxt.dao.repository.es.ProjectFileESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectFileRepository;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.DataSet;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.TestSuite;
@@ -54,6 +55,25 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
 
     @Override
     public Response<ProjectFile> saveFromTestSuite(TestSuite dto, String projectId) {
+
+        // set org
+
+        if (dto.getProps().isEmpty()) {
+            return new Response<>();
+        }
+
+        // create project_file
+
+        String fileName = dto.getProps().get(Project.FILE_NAME);
+        String content = dto.getProps().get(Project.FILE_CONTENT);
+        String modified = dto.getProps().get(Project.MODIFIED_DATE);
+        String md5Hex = dto.getProps().get(Project.MD5_HEX);
+
+        return saveProjectFile(projectId, fileName, content, modified, md5Hex);
+    }
+
+    @Override
+    public Response<ProjectFile> saveFromDataSet(DataSet dto, String projectId) {
 
         // set org
 
