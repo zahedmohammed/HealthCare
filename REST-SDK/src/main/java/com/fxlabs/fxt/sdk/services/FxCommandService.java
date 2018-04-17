@@ -818,8 +818,8 @@ public class FxCommandService {
                             DataRecord record = new DataRecord();
                             record.setRecord(item);
                             record.setDataSet(dataSet1.getId());
-                            record.setOrg(finalNameDto);
-                            record.setProject(proj);
+//                            record.setOrg(finalNameDto);
+//                            record.setProject(proj);
                             dataRecords1.add(record);
                         }
                         dataRecordRestRepository.saveAll(dataRecords1);

@@ -28,10 +28,6 @@ public class DataSet extends BaseEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "org_id")
-    private Org org;
-
     private String name;
 //    private String name;
 //    private ProjectMinimalDto project;

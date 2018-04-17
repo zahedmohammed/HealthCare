@@ -13,8 +13,8 @@ import java.util.stream.Stream;
  */
 public interface DataRecordRepository extends JpaRepository<DataRecord, String> {
 
-    Stream<DataRecord> findByProjectId(String projectId);
-
-    Optional<DataRecord> findByProjectIdAndRecord(String projectId, String record);
+//    Stream<DataRecord> findByProjectId(String projectId);
+//
+//    Optional<DataRecord> findByProjectIdAndRecord(String projectId, String record);
 
 }

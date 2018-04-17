@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.entity.project;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
+import com.fxlabs.fxt.dao.entity.base.BasicBaseEntity;
 import com.fxlabs.fxt.dao.entity.users.Org;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,19 +22,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class DataRecord extends BaseEntity{
+public class DataRecord extends BasicBaseEntity{
     @Lob
     @Type(type="org.hibernate.type.TextType")
     private String record;
     private String dataSet;
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "project_id")
-    private Project project;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "org_id")
-    private Org org;
-
 
 }
 

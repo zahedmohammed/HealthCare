@@ -20,8 +20,6 @@ public class DataRecord extends BaseDto<String> {
 
     private String record;
     private String dataSet;
-    private NameDto org;
-    private ProjectMinimalDto project;
 
 }
 

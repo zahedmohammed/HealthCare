@@ -78,6 +78,6 @@ public class DataRecordServiceImpl extends GenericServiceImpl<DataRecord, com.fx
         if (!optional.isPresent()) {
             throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
         }
-        projectService.isUserEntitled(optional.get().getProject().getId(), user);
+        //projectService.isUserEntitled(optional.get().getProject().getId(), user);
     }
 }

@@ -20,15 +20,7 @@ import java.util.Date;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Data
-@EqualsAndHashCode(of = {"id"})
-public class BaseEntity implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    protected String id;
+public class BaseEntity extends BasicBaseEntity implements Serializable {
 
     @Column(name = "created_by")
     @CreatedBy
