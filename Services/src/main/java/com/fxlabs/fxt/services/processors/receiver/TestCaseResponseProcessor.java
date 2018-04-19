@@ -198,7 +198,7 @@ public class TestCaseResponseProcessor {
                 if (StringUtils.isEmpty(key)) {
                     return;
                 }
-                logger.info("TestCaseResponseProcessor updating issue  [{}] in for project [{}]", tc.getIssueId(), tc.getProject());
+                logger.info("TestCaseResponseProcessor updating issue  [{}]  for project [{}]", tc.getIssueId(), tc.getProject());
                 amqpClientService.sendTask(tc, key);
             }
 

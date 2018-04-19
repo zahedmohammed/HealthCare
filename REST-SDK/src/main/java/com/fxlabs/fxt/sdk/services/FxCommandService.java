@@ -269,8 +269,10 @@ public class FxCommandService {
                 if (projectResponse.isErrors()) {
                     System.err.println(projectResponse.getMessages());
                 }
-                System.out.println(String.format("Project id: [%s] updated", projectResponse.getData().getId()));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project id: [%s] updated", projectResponse.getData().getId()));
+                if (projectResponse.getData() != null) {
+                    System.out.println(String.format("Project id: [%s] updated", projectResponse.getData().getId()));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project id: [%s] updated", projectResponse.getData().getId()));
+                }
             }
 
             // create dataset
