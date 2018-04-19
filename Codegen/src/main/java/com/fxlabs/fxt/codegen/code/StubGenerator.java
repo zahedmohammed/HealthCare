@@ -49,9 +49,10 @@ public class StubGenerator {
 
             //System.out.println("---- def ----");
             //System.out.println (swagger.getDefinitions());
-            for (String p : swagger.getDefinitions().keySet()) {
-                Model m = swagger.getDefinitions().get(p);
-                //System.out.println(p + " -> ");
+            if (swagger.getDefinitions()!=null) {
+                for (String p : swagger.getDefinitions().keySet()) {
+                    Model m = swagger.getDefinitions().get(p);
+                    //System.out.println(p + " -> ");
                 /*for (String prop : m.getProperties().keySet()) {
                     Property property = m.getProperties().get(prop);
                     System.out.println ("  Key: " + prop);
@@ -67,6 +68,7 @@ public class StubGenerator {
                     System.out.println ("  Max: " + getMax(property));
                     System.out.println (" ----- ");
                 }*/
+                }
             }
 
             List<TestSuiteMin> testSuites = new ArrayList<>();

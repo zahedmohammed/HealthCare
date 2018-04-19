@@ -28,9 +28,11 @@ public class JSONFactory {
         Map<String, Model> m = new HashMap<>();
         Map<String, JsonNode> jn = new HashMap<>();
 
-        for (String key : swagger.getDefinitions().keySet()) {
-            Model model = swagger.getDefinitions().get(key);
-            m.put(key, model);
+        if (swagger.getDefinitions() != null) {
+            for (String key : swagger.getDefinitions().keySet()) {
+                Model model = swagger.getDefinitions().get(key);
+                m.put(key, model);
+            }
         }
 
         initialize(m);
