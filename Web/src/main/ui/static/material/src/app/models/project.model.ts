@@ -2,6 +2,7 @@ export class Project {
 
     public name: string;
     public url: string;
+    public credsRequired: boolean = false;
     public username: string;
     public password: string;
     public projectType: string;

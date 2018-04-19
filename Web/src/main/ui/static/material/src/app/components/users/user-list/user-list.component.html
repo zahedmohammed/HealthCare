@@ -4,7 +4,8 @@
   <article class="article">
     <h2 class="article-title">
       <a href="javascript:;" [routerLink]="['/app/orgs']"> / </a> {{org.name}} / Users
-      <button mat-raised-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/orgs', org.id, 'users', 'new']">Add Member</button><div class="divider divider-sm"></div>
+      <button mat-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/orgs', org.id, 'users', 'new']">
+        <mat-icon class="material-icons">add</mat-icon> NEW USER</button><div class="divider divider-sm"></div>
     </h2>
     <div class="box box-default table-box mdl-shadow--2dp">
       <table class="mdl-data-table">

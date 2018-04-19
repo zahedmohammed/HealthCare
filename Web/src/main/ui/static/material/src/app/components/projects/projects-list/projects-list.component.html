@@ -1,8 +1,13 @@
 <section class="container-fluid with-maxwidth chapter">
 
     <article class="article">
-        <h2 class="article-title">Projects
-            <button mat-raised-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/projects/new']">New Project</button><div class="divider divider-sm"></div>
+        <h2 class="article-title">.
+            <button mat-button color="primary" class="btn-w-md pull-right" [routerLink]="['/app/projects/new']">
+                <mat-icon class="material-icons">add</mat-icon>
+                NEW PROJECT
+            </button>
+            <span class="space space-md"></span>
+            <span class="space space-md"></span>
         </h2>
 
         <div class="box box-default table-box mdl-shadow--2dp">
@@ -24,7 +29,9 @@
                     <td class="mdl-data-table__cell--non-numeric">{{project.visibility}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{project.createdDate | date:'shortDate'}}</td>
                     <!--<td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a></td>-->
-                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id]">Edit</a></td>
+                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
+                                                                     [routerLink]="['/app/projects', project.id]">Edit</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

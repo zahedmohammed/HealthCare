@@ -1,156 +1,191 @@
 <section class="container-fluid with-maxwidth chapter">
 
-  <article class="article">
+    <article class="article">
 
-    <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a> / {{project.name}}</h2>
-    <div class="box box-default">
-      <div class="box-body padding-xl">
+        <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a> /
+            {{project.name}}</h2>
+        <div class="box box-default">
+            <div class="box-body padding-xl">
 
-        <form role="form" #heroForm="ngForm">
-          <div class="form-group row">
-            <label class="col-md-2 control-label">
-            </label>
-            <div class="col-md-8">
-              <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
-              <mat-form-field>
-                <mat-select placeholder="Owner" disabled required [(ngModel)]="project.org.id" name="owner">
-                  <mat-option *ngFor="let org of orgs" [value]="org.org.id">
-                    {{org.org.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+                <form role="form" #heroForm="ngForm">
+                    <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-6">
+                            <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
+                            <mat-form-field>
+                                <mat-select placeholder="Owner" disabled required [(ngModel)]="project.org.id"
+                                            name="owner">
+                                    <mat-option *ngFor="let org of orgs" [value]="org.org.id">
+                                        {{org.org.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group row">
+                      <label for="repo" class="col-md-2 control-label">
+                      </label>
+                      <div class="col-md-8">
+                        <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
+                        <mat-form-field>
+                          <mat-select placeholder="Access level" [(ngModel)]="project.visibility" name="Access level">
+                            <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
+                              {{visibility}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>-->
+
+                    <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="project.name" disabled name="name" id="name"
+                                       matInput placeholder="Project name">
+                            </mat-input-container>
+
+                        </div>
+                    </div>
+
+                    <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label"></label>
+                        <div class="col-md-6">
+                            <mat-form-field>
+                                <mat-select placeholder="Type" disabled required [(ngModel)]="project.projectType"
+                                            name="type" id="type">
+                                    <mat-option *ngFor="let projectType of projectTypes" [value]="projectType">
+                                        {{projectType}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div [hidden]="project.projectType === 'Local' || !project.projectType">
+                        <div class="form-group row">
+                            <label for="name" class="col-md-1 control-label"></label>
+                            <div class="col-md-4">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="project.url" name="url" id="repo"
+                                           matInput placeholder="Repository URL">
+                                </mat-input-container>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>e.g. https://github.com/username/MyApp.git. Follows the below steps to create a
+                                        new
+                                        repo.
+                                        <br/>Step 1: Fork the <a target="_blank"
+                                                                 href="https://github.com/intesar/Fx-Sample">Sample
+                                            repository <i class="material-icons"
+                                                          style="font-size: 18px;">open_in_new</i></a>
+                                        <br/>Step 2: Update environments and jobs section in Fxfile.yaml.
+                                        <a target="_blank" href="https://github.com/intesar/Fx-Sample"> Learn more <i
+                                                class="material-icons"
+                                                style="font-size: 18px;">open_in_new</i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-1 control-label"></label>
+                            <div class="col-md-4">
+                                <mat-input-container class="full-width">
+                                    <input [(ngModel)]="project.username" name="username"
+                                           matInput placeholder="Repository username or access-key">
+                                </mat-input-container>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>Fx monitors and sync back changed files from the repository. If the repo is
+                                        private FX requires user/pass with read-access.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-1 control-label"></label>
+                            <div class="col-md-4">
+                                <mat-input-container class="full-width">
+                                    <input type="password" [(ngModel)]="project.password" name="password"
+                                           matInput placeholder="Repository password or access-token">
+                                </mat-input-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                    <!-- Auto-Code -->
+
+                    <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select placeholder="Auto-Code" [(ngModel)]="project.genPolicy"
+                                            name="Auto-Code">
+                                    <mat-option *ngFor="let gen of genPolicies" [value]="gen">
+                                        {{gen}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p>Auto-Code detects new APIs and will create & commits quality & security
+                                    test coverage into your repo. Auto-Code requires write access to your
+                                    repository.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" [hidden]="project.genPolicy === 'None' || !project.genPolicy">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
+                                       matInput placeholder="OpenAPI Spec URL">
+                            </mat-input-container>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p> e.g. https://ip/v2/api-docs. Auto-Code requires OpenAPISpec of your application to
+                                    create test/security coverage. How-to generate OpenAPISpec for your Java, .Net
+                                    and other applications.
+                                    <a target="_blank" href="https://swagger.io/open-source-integrations/">
+                                        Learn more <i class="material-icons"
+                                                      style="font-size: 18px;"
+                                                      >open_in_new</i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                    <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <button mat-raised-button color="primary" (click)="update();"
+                                    class="btn-w-md no-margin-left">Save
+                            </button>
+
+                            <button mat-button color="warn" class="btn-w-md" (click)="delete();">Delete</button>
+
+                            <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects']">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
             </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="repo" class="col-md-2 control-label">
-            </label>
-            <div class="col-md-8">
-              <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
-              <mat-form-field>
-                <mat-select placeholder="Access level" [(ngModel)]="project.visibility" name="Access level">
-                  <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
-                    {{visibility}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="divider divider-dashed divider-lg pull-in"></div>
-
-          <div class="form-group row">
-            <label for="name" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input [(ngModel)]="project.name" disabled name="name" id="name"
-                       matInput placeholder="Project name">
-              </mat-input-container>
-
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-form-field>
-                <mat-select placeholder="Type" disabled required [(ngModel)]="project.projectType" name="type" id="type">
-                  <mat-option *ngFor="let projectType of projectTypes" [value]="projectType">
-                    {{projectType}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="form-group row" [hidden]="project.projectType === 'Local' || !project.projectType">
-            <label for="repo" class="col-md-2 control-label">
-            </label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="project.url" name="url" id="repo"
-                       matInput placeholder="Repository URL e.g. https://github.com/username/Fx-UI.git">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="form-group row" [hidden]="project.projectType === 'Local' || !project.projectType">
-            <label for="username" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input [(ngModel)]="project.username" name="username" id="username"
-                       matInput placeholder="Repository access-key or username">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="form-group row" [hidden]="project.projectType === 'Local' || !project.projectType">
-            <label for="pass" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input type="password" [(ngModel)]="project.password" name="password" id="pass"
-                       matInput placeholder="Repository secret-key or password">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="divider divider-md"></div>
-
-          <div class="form-group row" [hidden]="project.projectType === 'Local' || !project.projectType">
-            <label for="repo" class="col-md-2 control-label">
-            </label>
-            <div class="col-md-8">
-              <mat-form-field>
-                <mat-select placeholder="Auto-Code" [(ngModel)]="project.genPolicy" name="Auto-Code">
-                  <mat-option *ngFor="let gen of genPolicies" [value]="gen">
-                    {{gen}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="form-group row" [hidden]="project.genPolicy === 'None' || !project.genPolicy">
-            <label for="spec" class="col-md-2 control-label">
-            </label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
-                       matInput placeholder="OpenAPI Spec URL e.g. https://ip/v2/api-docs">
-              </mat-input-container>
-            </div>
-          </div>
-
-
-          <div class="divider divider-md"></div>
-          <div class="form-group row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-              <button mat-raised-button color="primary" (click)="update();"
-                      class="btn-w-md no-margin-left">Save
-              </button>
-              <span class="space space-md"></span>
-              <button mat-raised-button type="button" color="warn" class="btn-w-md" (click)="delete();">Delete
-              </button>
-              <span class="space space-md"></span>
-              <button mat-raised-button type="button" class="btn-w-md" [routerLink]="['/app/projects']">Cancel
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10">
-              <div class="callout callout-info">
-                <p>Fx will monitor the project repository for new commits and will automatically sync back changed files.</p>
-                <p>Code generation can automatically create test-suites for API endpoints and will commit the changes back to version-control system.</p>
-              </div>
-            </div>
-          </div>
-
-        </form>
-
-      </div>
-    </div>
-  </article>
+        </div>
+    </article>
 </section>

@@ -18,7 +18,7 @@ export class ProjectsNewComponent implements OnInit {
   project: Project = new Project();
   orgs;
   constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) {
-    this.project.genPolicy = "None";
+    //this.project.genPolicy = "None";
   }
 
   ngOnInit() {
@@ -38,6 +38,7 @@ export class ProjectsNewComponent implements OnInit {
       this.handler.error(error);
     });
   }
+
   getOrgs() {
     this.handler.activateLoader();
     this.orgService.getByUser().subscribe(results => {
