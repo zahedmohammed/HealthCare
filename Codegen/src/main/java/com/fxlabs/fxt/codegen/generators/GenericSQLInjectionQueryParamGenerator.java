@@ -26,27 +26,27 @@ public class GenericSQLInjectionQueryParamGenerator extends AbstractGenerator {
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
-        if (method == io.swagger.models.HttpMethod.GET) {
-            for (Parameter param : op.getParameters()) {
+//        if (method == io.swagger.models.HttpMethod.GET) {
+//            for (Parameter param : op.getParameters()) {
+////
+////                if (!param.getRequired()) {
+////                    continue;
+////                }
 //
-//                if (!param.getRequired()) {
-//                    continue;
+//                if (param instanceof QueryParameter) {
+//                    QueryParameter queryParam = (QueryParameter) param;
+//                    String postFix = POSTFIX + "_" + queryParam.getName();
+//
+//                    List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+//                    for (TestSuiteMin testSuite : testSuites) {
+//                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+//                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@Fxlabs/Common/GenericSQLInjections | sample:all }}");
+//
+//                    }
+//                    allTestSuites.addAll(testSuites);
 //                }
-                
-                if (param instanceof QueryParameter) {
-                    QueryParameter queryParam = (QueryParameter) param;
-                    String postFix = POSTFIX + "_" + queryParam.getName();
-
-                    List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-                    for (TestSuiteMin testSuite : testSuites) {
-                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@Fxlabs/Common/GenericSQLInjections | sample:all }}");
-
-                    }
-                    allTestSuites.addAll(testSuites);
-                }
-            }
-        }
+//            }
+//        }
         return allTestSuites;
 
     }
