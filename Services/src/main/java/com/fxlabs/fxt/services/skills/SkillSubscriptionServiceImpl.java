@@ -35,7 +35,7 @@ import java.util.*;
 
 /**
  * @author Intesar Shannan Mohammed
- * @author  Mohammed Shoukath Ali
+ * @author Mohammed Shoukath Ali
  */
 @Service
 @Transactional
@@ -61,9 +61,9 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     @Autowired
     public SkillSubscriptionServiceImpl(SkillSubscriptionRepository repository, SkillSubscriptionConverter converter, @Value("${fx.default.response.queue.routingkey}") String fxDefaultResponseKey,
                                         UsersRepository usersRepository, OrgUsersRepository orgUsersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
-                                        AmqpClientService amqpClientService,SubscriptionTaskRepository subscriptionTaskRepository, SystemSettingRepository systemSettingRepository,
+                                        AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository, SystemSettingRepository systemSettingRepository,
                                         ClusterRepository clusterRepository, @Value("${spring.rabbitmq.username}") String fxUserName, @Value("${spring.rabbitmq.password}") String fxPassword,
-                                        @Value("${spring.rabbitmq.port}")String fxPort, @Value("${spring.rabbitmq.host}") String fxHost) {
+                                        @Value("${spring.rabbitmq.port}") String fxPort, @Value("${spring.rabbitmq.host}") String fxHost) {
         super(repository, converter);
 
         this.repository = repository;
@@ -204,7 +204,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         // Add Task
         com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
-       // task.setSubscription(converter.convertToEntity(response.getData()));
+        // task.setSubscription(converter.convertToEntity(response.getData()));
         task.setType(TaskType.CREATE);
         task.setStatus(TaskStatus.PROCESSING);
         task.setClusterId(dto.getId());
@@ -224,11 +224,11 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         }
         String key = getCloudSkillKey(cloudAccount);
 
-        if (StringUtils.isEmpty(key)){
+        if (StringUtils.isEmpty(key)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
         }
 
-        opts.put("ACCESS_KEY_ID" , cloudAccount.getAccessKey());
+        opts.put("ACCESS_KEY_ID", cloudAccount.getAccessKey());
         opts.put("SECRET_KEY", cloudAccount.getSecretKey());
         opts.put("COMMAND", getUserDataScript(dto.getKey()));
         opts.put("INSTANCE_NAME", dto.getName());
@@ -243,15 +243,15 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
     private String getCloudSkillKey(CloudAccount cloudAccount) {
         String key = null;
-        switch (cloudAccount.getCloudType()){
+        switch (cloudAccount.getCloudType()) {
             case AWS:
                 key = "fx-caas-aws-ec2";
                 break;
             case AZURE:
                 key = "fx-caas-azure";
                 break;
-                default:
-                    logger.info("Invalid provider [{}]", cloudAccount.getCloudType());
+            default:
+                logger.info("Invalid provider [{}]", cloudAccount.getCloudType());
                 break;
         }
         return key;
@@ -261,8 +261,8 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     public Response<SkillSubscription> deleteExecBot(Cluster dto, String user) {
 
         // TODO check user is owner or org_admin
-       // Response<SkillSubscription> response = findById(id, user);
-       // SkillSubscription dto = response.getData();
+        // Response<SkillSubscription> response = findById(id, user);
+        // SkillSubscription dto = response.getData();
         if (!StringUtils.equals(dto.getCreatedBy(), user)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [DELETE] access to the resource.")));
         }
@@ -271,7 +271,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         // Add Task
         com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
-       // task.setSubscription(converter.convertToEntity(dto));
+        // task.setSubscription(converter.convertToEntity(dto));
         task.setType(TaskType.DESTROY);
         task.setStatus(TaskStatus.PROCESSING);
         task.setClusterId(dto.getId());
@@ -289,14 +289,14 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         CloudAccount cloudAccount = dto.getCloudAccount();
         String key = getCloudSkillKey(cloudAccount);
 
-        if (StringUtils.isEmpty(key)){
+        if (StringUtils.isEmpty(key)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
         }
 
-        opts.put("ACCESS_KEY_ID" , cloudAccount.getAccessKey());
+        opts.put("ACCESS_KEY_ID", cloudAccount.getAccessKey());
         opts.put("SECRET_KEY", cloudAccount.getSecretKey());
 
-        if (StringUtils.isEmpty(dto.getNodeId())){
+        if (StringUtils.isEmpty(dto.getNodeId())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Node id is empty"));
         }
 
@@ -368,16 +368,25 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         String fxHost_ = null;
 
-        Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.base.url");
+        Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.host");
         if (systemSettingOptional.isPresent()) {
             fxHost_ = systemSettingOptional.get().getValue();
         } else {
             fxHost_ = fxHost;
         }
 
+        String port_ = null;
+
+        Optional<SystemSetting> portSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.port");
+        if (portSettingOptional.isPresent()) {
+            port_ = systemSettingOptional.get().getValue();
+        } else {
+            port_ = fxPort;
+        }
+        
         String fxUserName_ = null;
 
-        Optional<SystemSetting> userNameSettingOptional = this.systemSettingRepository.findByKey("fx.base.username");
+        Optional<SystemSetting> userNameSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.username");
         if (userNameSettingOptional.isPresent()) {
             fxUserName_ = systemSettingOptional.get().getValue();
         } else {
@@ -386,24 +395,16 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
         String password_ = null;
 
-        Optional<SystemSetting> passwordSettingOptional = this.systemSettingRepository.findByKey("fx.base.password");
+        Optional<SystemSetting> passwordSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.password");
         if (passwordSettingOptional.isPresent()) {
             password_ = systemSettingOptional.get().getValue();
         } else {
             password_ = fxPassword;
         }
 
-        String port_ = null;
-
-        Optional<SystemSetting> portSettingOptional = this.systemSettingRepository.findByKey("fx.base.port");
-        if (portSettingOptional.isPresent()) {
-            port_ = systemSettingOptional.get().getValue();
-        } else {
-            port_ = fxPort;
-        }
 
         StringBuilder sb1 = new StringBuilder();
-        sb1.append(" sudo bash fx_bot_install_script.sh") .append(SPACE)
+        sb1.append(" sudo bash fx_bot_install_script.sh").append(SPACE)
                 .append(fxHost_).append(SPACE)
                 .append(port_).append(SPACE)
                 .append(fxUserName_).append(SPACE)
