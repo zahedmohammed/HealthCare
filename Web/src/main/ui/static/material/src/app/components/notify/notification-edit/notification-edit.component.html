@@ -9,9 +9,9 @@
         <form role="form" #heroForm="ngForm">
 
           <div class="form-group row">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Owner" disabled required [(ngModel)]="entry.org.id" name="type">
@@ -24,9 +24,9 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="visibility">
@@ -41,8 +41,8 @@
           <div class="divider divider-dashed divider-lg pull-in"></div>
 
           <div class="form-group row">
-            <label for="name" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
+            <label for="name" class="col-md-1 control-label"></label>
+            <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required disabled [(ngModel)]="entry.name" name="name" id="name"
                        matInput placeholder="Name">
@@ -51,9 +51,9 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-form-field>
                 <mat-select placeholder="Notification Type" disabled required [(ngModel)]="entry.type" name="type">
                   <mat-option *ngFor="let type of types" [value]="type">
@@ -62,12 +62,17 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>Receive test execution results across Email, Slack and other developer collaboration platforms.</p>
+              </div>
+            </div>
           </div>
 
           <div class="form-group row" [hidden]="entry.type !== 'SLACK'">
-            <label for="token" class="col-md-2 control-label">
+            <label for="token" class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.token" name="token" id="token"
                        matInput type="text" placeholder="Token">
@@ -76,9 +81,9 @@
           </div>
 
           <div class="form-group row" [hidden]="entry.type !== 'SLACK'">
-            <label for="channel" class="col-md-2 control-label">
+            <label for="channel" class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.channel" name="channel" id="channel"
                        matInput type="text" placeholder="Channel">
@@ -87,9 +92,9 @@
           </div>
 
           <div class="form-group row" [hidden]="entry.type !== 'EMAIL'">
-            <label for="channel" class="col-md-2 control-label">
+            <label for="channel" class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.channel" name="channel" id="email"
                        matInput type="text" placeholder="To:">
@@ -98,7 +103,7 @@
           </div>
 
           <div class="form-group row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-8">
               <button mat-raised-button color="primary" (click)="update();"
                       class="btn-w-md no-margin-left">Save

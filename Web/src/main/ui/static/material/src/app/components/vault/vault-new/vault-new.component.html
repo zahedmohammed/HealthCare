@@ -8,9 +8,9 @@
 
         <form role="form" #heroForm="ngForm">
           <div class="form-group row">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Owner" required [(ngModel)]="entry.org.id" name="type">
@@ -23,9 +23,9 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="Access level">
@@ -39,19 +39,28 @@
           <div class="divider divider-dashed divider-lg pull-in"></div>
 
           <div class="form-group row">
-            <label for="name" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
+            <label for="name" class="col-md-1 control-label"></label>
+            <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.key" name="name" id="name"
                        matInput placeholder="Entry key">
               </mat-input-container>
             </div>
+              <div class="col-md-7">
+                  <div class="callout1 text-muted callout-info1">
+                      <p>Store App's username, passwords, url as secret's and safely inject it into projects Fxfile's
+                          'baseUrl', 'username', 'password', & test-suite files.
+                          Vault helps you avoid sensitive environment details in version-control system.</p>
+                      <p> e.g. usage <code ngNonBindable>password: '{{@Vault.FxLabs/MyPassword}}'</code></p>
+                      <p> Where 'FxLabs/MyPassword' is the secret name.</p>
+                  </div>
+              </div>
           </div>
 
           <div class="form-group row">
-            <label for="secret" class="col-md-2 control-label">
+            <label for="secret" class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.val" name="secret" id="secret"
                        matInput type="password" placeholder="Secret">
@@ -60,25 +69,13 @@
           </div>
 
           <div class="form-group row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-8">
               <button mat-raised-button color="primary" (click)="create();"
                       class="btn-w-md no-margin-left">Add
               </button>
               <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/vault']">Cancel
               </button>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10">
-              <div class="callout callout-info">
-                <p>Secret's can be injected into projects Fxfile's 'baseUrl', 'username', 'password', & test-suite files.
-                  This helps you from not exposing sensitive environment details in version-control system.</p>
-                <p> e.g. <code ngNonBindable>password: '{{@Vault.FxLabs/MyPassword}}'</code></p>
-                <p> Where 'FxLabs/MyPassword' is the secret name.</p>
-              </div>
             </div>
           </div>
 

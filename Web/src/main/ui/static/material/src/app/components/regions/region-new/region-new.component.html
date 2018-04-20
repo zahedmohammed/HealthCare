@@ -9,9 +9,9 @@
         <form role="form" #heroForm="ngForm">
 
           <div class="form-group row">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Owner" required [(ngModel)]="entry.org.id" name="owner">
@@ -24,9 +24,9 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
               <mat-form-field>
                 <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="Access level">
@@ -36,26 +36,39 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>
+                </p>
+              </div>
+            </div>
           </div>
 
           <div class="divider divider-dashed divider-lg pull-in"></div>
 
 
           <div class="form-group row">
-            <label for="name" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
+            <label for="name" class="col-md-1 control-label"></label>
+            <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.name" name="name" id="name"
                        matInput placeholder="Bot name">
               </mat-input-container>
-
+            </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>
+                  A bot is light-weight and stateless process and can be deployed across developer laptops & private/public clouds.
+                  Name represents bot region name. You'll use this name to schedule job runs. example usage: 'region: Org/Name'.
+                </p>
+              </div>
             </div>
           </div>
 
           <div class="form-group row" [hidden]="!entry.name">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-form-field>
                 <mat-select placeholder="Cloud Account" required [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">
                   <mat-option *ngFor="let ca of cloudAccounts" [value]="ca">
@@ -64,12 +77,17 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <div class="callout1 text-muted callout-info1">
+              <p>
+                Public or private cloud endpoint.
+              </p>
+            </div>
           </div>
 
           <div class="form-group row" [hidden]="!entry.cloudAccount">
-            <label class="col-md-2 control-label">
+            <label class="col-md-1 control-label">
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
               <mat-form-field>
                 <mat-select placeholder="Region" required [(ngModel)]="entry.region" name="type">
                   <mat-option *ngFor="let r of regions" [value]="r">
@@ -78,11 +96,12 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <div class="callout1 text-muted callout-info1">
+              <p>
+                Cloud region where the bot will be deployed.
+              </p>
+            </div>
           </div>
-
-
-
-
 
           <!--<div class="form-group row">-->
             <!--<label for="min" class="col-md-2 control-label"></label>-->
@@ -99,22 +118,13 @@
 
           <div class="divider divider-md"></div>
           <div class="form-group row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <div class="col-md-8">
               <button mat-raised-button color="primary" (click)="create();"
                       class="btn-w-md no-margin-left">Launch
               </button>
               <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/regions']">Cancel
               </button>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10">
-              <div class="callout callout-info">
-                <p>A bot is light-weight and stateless and can be deployed across developer laptops & private/public clouds.</p>
-              </div>
             </div>
           </div>
 
