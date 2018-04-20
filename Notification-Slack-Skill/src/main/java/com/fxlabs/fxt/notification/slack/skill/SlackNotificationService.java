@@ -12,6 +12,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -81,19 +83,29 @@ public class SlackNotificationService implements NotificationService {
             }
 
 
-            String channel = getChannel(task.getOpts());
+            String channels = getChannel(task.getOpts());
 
-            if (StringUtils.isEmpty(channel)){
+            if (StringUtils.isEmpty(channels)){
                 logger.info("Slack channel  not found for task id : [{}]", task.getId());
                 return;
             }
 
-
+            String[] tokens = org.apache.commons.lang3.StringUtils.split(channels, ",");
+            List<String> channels_ = Arrays.asList(token);
 
             session = SlackSessionFactory.createWebSocketSlackSession(token);
             session.connect();
-            SlackChannel channel_ = session.findChannelByName(channel); //make sure bot is a member of the channel.
-            session.sendMessage(channel_, message);
+
+
+            for (String channel1 : channels_) {
+                SlackChannel channel_ = session.findChannelByName(channel1); //make sure bot is a member of the channel.
+                if (channel_ == null) {
+                    continue;
+                }
+                session.sendMessage(channel_, message);
+            }
+
+
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         } finally {
