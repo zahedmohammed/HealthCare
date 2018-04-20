@@ -1,28 +1,25 @@
 package com.fxlabs.fxt.services.skills;
 
 import com.fxlabs.fxt.converters.skills.SkillSubscriptionConverter;
-import com.fxlabs.fxt.dao.entity.skills.SubscriptionTask;
 import com.fxlabs.fxt.dao.entity.skills.TaskResult;
 import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
 import com.fxlabs.fxt.dao.entity.users.OrgRole;
 import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
+import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
 import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import com.fxlabs.fxt.dto.clusters.Cluster;
-import com.fxlabs.fxt.dto.clusters.ClusterCloud;
 import com.fxlabs.fxt.dto.clusters.ClusterStatus;
-import com.fxlabs.fxt.dto.skills.Skill;
 import com.fxlabs.fxt.dto.skills.SkillSubscription;
 import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.dto.skills.SubscriptionState;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
-import com.fxlabs.fxt.services.clusters.ClusterService;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +35,7 @@ import java.util.*;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author  Mohammed Shoukath Ali
  */
 @Service
 @Transactional
@@ -49,12 +47,12 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     private OrgUsersRepository orgUsersRepository;
     private SubscriptionTaskRepository subscriptionTaskRepository;
     private ClusterRepository clusterRepository;
+    private SystemSettingRepository systemSettingRepository;
     private AmqpClientService amqpClientService;
     private String fxExecutionBotScriptUrl;
     private String fxDefaultResponseKey;
     private String fxUserName;
     private String fxPassword;
-    private String fxKey;
     private String fxPort;
     private String fxHost;
     private static String SPACE = " ";
@@ -63,7 +61,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     @Autowired
     public SkillSubscriptionServiceImpl(SkillSubscriptionRepository repository, SkillSubscriptionConverter converter, @Value("${fx.default.response.queue.routingkey}") String fxDefaultResponseKey,
                                         UsersRepository usersRepository, OrgUsersRepository orgUsersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
-                                        AmqpClientService amqpClientService,SubscriptionTaskRepository subscriptionTaskRepository,
+                                        AmqpClientService amqpClientService,SubscriptionTaskRepository subscriptionTaskRepository, SystemSettingRepository systemSettingRepository,
                                         ClusterRepository clusterRepository, @Value("${spring.rabbitmq.username}") String fxUserName, @Value("${spring.rabbitmq.password}") String fxPassword,
                                         @Value("${spring.rabbitmq.port}")String fxPort, @Value("${spring.rabbitmq.host}") String fxHost) {
         super(repository, converter);
@@ -79,9 +77,9 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         this.fxDefaultResponseKey = fxDefaultResponseKey;
         this.fxUserName = fxUserName;
         this.fxPassword = fxPassword;
-        this.fxKey = fxKey;
         this.fxPort = fxPort;
         this.fxHost = fxHost;
+        this.systemSettingRepository = systemSettingRepository;
     }
 
 
@@ -389,12 +387,48 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
                 .append("fx_bot_install_script.sh");
         lines.add(sb.toString());
 
+        String fxHost_ = null;
+
+        Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.base.url");
+        if (systemSettingOptional.isPresent()) {
+            fxHost_ = systemSettingOptional.get().getValue();
+        } else {
+            fxHost_ = fxHost;
+        }
+
+        String fxUserName_ = null;
+
+        Optional<SystemSetting> userNameSettingOptional = this.systemSettingRepository.findByKey("fx.base.username");
+        if (systemSettingOptional.isPresent()) {
+            fxUserName_ = systemSettingOptional.get().getValue();
+        } else {
+            fxUserName_ = fxUserName;
+        }
+
+        String password_ = null;
+
+        Optional<SystemSetting> passwordSettingOptional = this.systemSettingRepository.findByKey("fx.base.password");
+        if (systemSettingOptional.isPresent()) {
+            password_ = systemSettingOptional.get().getValue();
+        } else {
+            password_ = fxPassword;
+        }
+
+        String port_ = null;
+
+        Optional<SystemSetting> portSettingOptional = this.systemSettingRepository.findByKey("fx.base.port");
+        if (systemSettingOptional.isPresent()) {
+            port_ = systemSettingOptional.get().getValue();
+        } else {
+            port_ = fxPort;
+        }
+
         StringBuilder sb1 = new StringBuilder();
         sb1.append(" sudo bash fx_bot_install_script.sh") .append(SPACE)
-                .append(fxHost).append(SPACE)
-                .append(fxPort).append(SPACE)
-                .append(fxUserName).append(SPACE)
-                .append(fxPassword).append(SPACE)
+                .append(fxHost_).append(SPACE)
+                .append(port_).append(SPACE)
+                .append(fxUserName_).append(SPACE)
+                .append(password_).append(SPACE)
                 .append(key).append(SPACE)
                 .append(fxDefaultResponseKey);
         lines.add(sb1.toString());
