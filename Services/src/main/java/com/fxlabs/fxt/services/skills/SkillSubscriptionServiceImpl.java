@@ -351,27 +351,6 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
     }
 
-//    private String getUserDataScript(String Key) {
-//
-//        StringBuilder sb = new StringBuilder();
-//        ArrayList<String> lines = new ArrayList<String>();
-//
-//        lines.add("#! /bin/bash");
-//        lines.add("/bin/yum -y install curl || /usr/bin/apt-get update && /usr/bin/apt-get -y install curl");
-//
-//        sb.append("curl -Ls").append(SPACE).append(fxExecutionBotScriptUrl).append(SPACE).append("|").append(SPACE)
-//                .append("sh -s").append(SPACE).append(fxHost).append(SPACE).append(fxPort).append(SPACE).append(fxUserName)
-//                .append(SPACE).append(fxPassword).append(SPACE).append(Key).append(SPACE).append(fxDefaultResponseKey);
-//
-//        lines.add(sb.toString());
-//        String configScript = join(lines, "\n");
-//
-//        logger.info("Bot configuaration script [{}]", configScript.toString());
-//        String str = new String(Base64.encodeBase64(configScript.getBytes()));
-//
-//        return str;
-//    }
-
     //    sudo wget https://www.dropbox.com/s/fk303tpqiaj93a9/fx_bot_install_script.sh?dl=1 -O fx_bot_install_script.sh
 //    sudo bash fx_bot_install_script.sh fx-rabbitmq 32771 admin admin123 key-nxEoudkaEQAw fx-default-response-queue
     private String getUserDataScript(String key) {
@@ -399,7 +378,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         String fxUserName_ = null;
 
         Optional<SystemSetting> userNameSettingOptional = this.systemSettingRepository.findByKey("fx.base.username");
-        if (systemSettingOptional.isPresent()) {
+        if (userNameSettingOptional.isPresent()) {
             fxUserName_ = systemSettingOptional.get().getValue();
         } else {
             fxUserName_ = fxUserName;
@@ -408,7 +387,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         String password_ = null;
 
         Optional<SystemSetting> passwordSettingOptional = this.systemSettingRepository.findByKey("fx.base.password");
-        if (systemSettingOptional.isPresent()) {
+        if (passwordSettingOptional.isPresent()) {
             password_ = systemSettingOptional.get().getValue();
         } else {
             password_ = fxPassword;
@@ -417,7 +396,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         String port_ = null;
 
         Optional<SystemSetting> portSettingOptional = this.systemSettingRepository.findByKey("fx.base.port");
-        if (systemSettingOptional.isPresent()) {
+        if (portSettingOptional.isPresent()) {
             port_ = systemSettingOptional.get().getValue();
         } else {
             port_ = fxPort;
