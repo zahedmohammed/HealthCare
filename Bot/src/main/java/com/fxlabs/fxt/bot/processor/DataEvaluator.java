@@ -353,7 +353,6 @@ public class DataEvaluator {
                 val = StringUtils.reverse(text);
                 break;
 
-
         }
 
         return val;
