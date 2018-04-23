@@ -66,7 +66,7 @@ public class InitProcessor {
 
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getTestCases())) {
-            logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
+            logger.debug("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null, task.getAuth());
@@ -102,7 +102,7 @@ public class InitProcessor {
             task.getTestCases().parallelStream().forEach(testCase -> {
                 // Data Injection (req)
                 String req = dataResolver.resolve(testCase.getBody(), context, task.getSuiteName());
-                logger.info("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
+                logger.debug("Executing Suite Init for task [{}] and url [{}]", task.getSuiteName(), url);
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req, task.getAuth());

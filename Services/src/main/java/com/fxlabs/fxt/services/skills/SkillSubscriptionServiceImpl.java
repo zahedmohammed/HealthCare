@@ -383,7 +383,7 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
         } else {
             port_ = fxPort;
         }
-        
+
         String fxUserName_ = null;
 
         Optional<SystemSetting> userNameSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.username");

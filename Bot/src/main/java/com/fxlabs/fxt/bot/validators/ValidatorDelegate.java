@@ -141,7 +141,7 @@ public class ValidatorDelegate {
 
     protected void skipAssertion(Context context, String assertion) {
         context.setResult("fail");
-        logger.info("Invalid assertion [{}]", assertion);
+        logger.debug("Invalid assertion [{}]", assertion);
         AssertionLogger logger = null;
         if (context.getLogs() != null) {
             context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(),

@@ -99,7 +99,7 @@ public class RestProcessor {
     }
 
     private BotTask run(BotTask task) {
-        //logger.info("{}", i.incrementAndGet());
+        //logger.debug("{}", i.incrementAndGet());
         if (task == null || task.getId() == null || task.getEndpoint() == null) {
             logger.warn("Skipping empty task");
             return null;
@@ -143,14 +143,14 @@ public class RestProcessor {
                 if (task.getInit() != null) {
                     //task.getInit().stream().forEach(t -> {
                     for (BotTask t : task.getInit()) {
-                        logger.info("Executing Init-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                        logger.debug("Executing Init-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                         initProcessor.process(t, parentContext);
                     }
                     //);
                 }
             }
 
-            //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
+            //logger.debug("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
             // execute request
             //RestTemplate restTemplate = new RestTemplate();
@@ -163,7 +163,7 @@ public class RestProcessor {
 
             headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
 
-            logger.info("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
+            logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
 
             task.getTestCases().parallelStream().forEach(testCase -> {
                 //for (String req : task.getRequest()) {
@@ -177,7 +177,7 @@ public class RestProcessor {
                     if (task.getInit() != null) {
                         //task.getInit().stream().forEach(t -> {
                         for (BotTask t : task.getInit()) {
-                            logger.info("Executing Suite Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                            logger.debug("Executing Suite Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                             initProcessor.process(t, context);
                         }
                         //);
@@ -188,7 +188,7 @@ public class RestProcessor {
                 //newTask.setId(task.getId());
                 //newTask.setRequestStartTime(new Date());
 
-                //logger.info("Request: [{}]", req);
+                //logger.debug("Request: [{}]", req);
                 HttpEntity<String> request = new HttpEntity<>(testCase.getBody(), httpHeaders);
 
                 //String endpoint = task.getEndpoint();
@@ -222,7 +222,7 @@ public class RestProcessor {
                 //newTask.setLogs(context.getLogs().toString());
                 //newTask.setResult(context.getResult());
 
-                //logger.info("Result: [{}]", newTask.getResult());
+                //logger.debug("Result: [{}]", newTask.getResult());
                 switch (context.getResult()) {
                     case "pass":
                         totalPassed.incrementAndGet();
@@ -240,7 +240,7 @@ public class RestProcessor {
                     if (task.getCleanup() != null) {
                         for (BotTask t : task.getCleanup()) {
                             //task.getCleanup().stream().forEach(t -> {
-                            logger.info("Executing Cleanup-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                            logger.debug("Executing Cleanup-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                             cleanUpProcessor.process(t, context, StringUtils.EMPTY);
                         }
                         //);
@@ -251,7 +251,7 @@ public class RestProcessor {
                 if (!CollectionUtils.isEmpty(context.getInitTasks())) {
                     context.getInitTasks().stream().forEach(initTask -> {
                         initTask.getInit().stream().forEach(t -> {
-                            logger.info("Executing Cleanup-Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                            logger.debug("Executing Cleanup-Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                             cleanUpProcessor.process(t, context, t.getSuiteName());
                         });
                     });
@@ -292,7 +292,7 @@ public class RestProcessor {
                 if (task.getCleanup() != null) {
                     //task.getCleanup().stream().forEach(t -> {
                     for (BotTask t : task.getCleanup()) {
-                        logger.info("Executing Cleanup-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                        logger.debug("Executing Cleanup-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                         cleanUpProcessor.process(t, parentContext, StringUtils.EMPTY);
                     }
                     //);
@@ -302,7 +302,7 @@ public class RestProcessor {
             if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Suite")) {
                 parentContext.getInitTasks().stream().forEach(initTask -> {
                     initTask.getInit().stream().forEach(t -> {
-                        logger.info("Executing Cleanup-Init-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                        logger.debug("Executing Cleanup-Init-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
                         cleanUpProcessor.process(t, parentContext, t.getSuiteName());
                     });
                 });

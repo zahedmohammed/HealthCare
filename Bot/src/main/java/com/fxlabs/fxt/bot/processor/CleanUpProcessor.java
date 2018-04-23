@@ -83,7 +83,7 @@ public class CleanUpProcessor {
             return;
         }
         logger.debug("Executing after task [{}]", task.getEndpoint());
-        //logger.info("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
+        //logger.debug("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
 
         Context context = new Context(parentContext, task.getSuiteName());
         // Data Injection
@@ -98,11 +98,11 @@ public class CleanUpProcessor {
 
         headerUtils.copyHeaders(httpHeaders, task.getHeaders(), context, task.getSuiteName());
 
-        logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuth(), url);
+        logger.debug("Suite [{}] Total tests [{}] auth [{}] url [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuth(), url);
 
         AtomicInteger idx = new AtomicInteger(0);
         if (CollectionUtils.isEmpty(task.getTestCases())) {
-            logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
+            logger.debug("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, null, task.getAuth());
@@ -113,7 +113,7 @@ public class CleanUpProcessor {
             if (StringUtils.isNotEmpty(response.getBody())) {
                 size = response.getBody().getBytes().length;
             }
-            logger.info("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuth(), url, response.getStatusCode());
+            logger.debug("Suite [{}] Total tests [{}] auth [{}] url [{}] status [{}]", task.getSuiteName(), task.getTestCases().size(), task.getAuth(), url, response.getStatusCode());
             context.withSuiteDataForPostProcessor(url, method.name(), null, httpHeaders, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
 
             assertionValidator.validate(task.getAssertions(), context, new StringBuilder());
@@ -127,7 +127,7 @@ public class CleanUpProcessor {
             task.getTestCases().parallelStream().forEach(testCase -> {
                 // Data Injection (req)
                 String req = dataResolver.resolve(testCase.getBody(), context, parentSuite);
-                logger.info("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
+                logger.debug("Executing Suite Cleanup for task [{}] and url [{}]", task.getSuiteName(), url);
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req, task.getAuth());
