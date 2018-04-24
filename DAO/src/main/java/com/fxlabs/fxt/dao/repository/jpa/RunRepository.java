@@ -25,7 +25,7 @@ public interface RunRepository extends JpaRepository<Run, String> {
     Long findMaxRunId(String id);
 
     @Query("SELECT r FROM Run r WHERE r.task.status LIKE ?1")
-    Stream<Run> findByStatus(TaskStatus status);
+    List<Run> findByStatus(TaskStatus status, Pageable pageable);
 
     Stream<Run> findByTaskStatusAndCreatedDateLessThan(TaskStatus status, Date dt);
 

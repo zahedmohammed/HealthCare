@@ -24,6 +24,7 @@ import com.fxlabs.fxt.services.util.DataResolver;
 import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -73,7 +74,7 @@ public class RunTaskRequestProcessor {
     public void process() {
 
         //logger.info("started...");
-        Stream<Run> runs = runRepository.findByStatus(TaskStatus.WAITING);
+        List<Run> runs = runRepository.findByStatus(TaskStatus.WAITING, PageRequest.of(0, 20));
 
         runs.forEach(run -> {
 
@@ -106,7 +107,7 @@ public class RunTaskRequestProcessor {
                     tags = run.getJob().getTags();
                 }
 
-                logger.info("Sending task to region [{}]...", region);
+                logger.info("Sending Job [{}] to region [{}]...", run.getJob().getName(), region);
 
                 // TODO - Filter Suites by Overridden-suites, Overridden-Tags, tags.
                 Stream<TestSuite> list;
@@ -301,7 +302,7 @@ public class RunTaskRequestProcessor {
         }
 
         for (String suite : after) {
-            logger.info("Processing after suite [{}]", suite);
+            logger.debug("Processing after suite [{}]", suite);
 
             TestSuite suite1 = testSuiteRepository.findByProjectIdAndTypeAndName(run.getJob().getProject().getId(), TestSuiteType.ABSTRACT, suite);
 
@@ -310,7 +311,7 @@ public class RunTaskRequestProcessor {
                 continue;
             }
 
-            logger.info("Suite id [{}]", suite1.getId());
+            logger.debug("Suite id [{}]", suite1.getId());
 
             BotTask afterTask = new BotTask();
             afterTask.setSuiteName(suite1.getName());
