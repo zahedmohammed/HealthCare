@@ -42,9 +42,8 @@ public class JobConfig {
                         //.withMisfireHandlingInstructionNowWithExistingCount()
                         //.withMisfireHandlingInstructionNextWithRemainingCount()
                         //.withMisfireHandlingInstructionNextWithExistingCount()
-                        .withMisfireHandlingInstructionFireNow()
+                        //.withMisfireHandlingInstructionFireNow() - Don't use this
                 )
-                .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.MINUTE))
                 .build();
     }
 
