@@ -13,12 +13,12 @@ import java.util.List;
 
 /**
  * @author Mohammed Luqman Shareef
- * @since 4/9/2018
+ * @since 4/24/2018
  */
-@Component(value = "genericSqlInjectionQueryParamGenerator")
-public class GenericSQLInjectionQueryParamGenerator extends AbstractGenerator {
+@Component(value = "mySQLSqlInjectionQueryParamGenerator")
+public class MySQLSQLInjectionQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "query_param_sql_injection_generic";
+    protected static final String POSTFIX = "query_param_sql_injection_MySQL";
     protected static final String AUTH = "BASIC";
     protected static final String OPERAND = "200";
 
@@ -34,7 +34,7 @@ public class GenericSQLInjectionQueryParamGenerator extends AbstractGenerator {
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@GenericSQLInjections | sample:all }}");
+                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@MySQLSQLInjections | sample:all }}");
                     }
                     allTestSuites.addAll(testSuites);
                 }
