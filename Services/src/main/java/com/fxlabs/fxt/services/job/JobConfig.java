@@ -37,9 +37,9 @@ public class JobConfig {
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_RunRequestProcessor_Trigger")).withDescription("RunRequestProcessor trigger")
                 .withSchedule(simpleSchedule()
-                        .withIntervalInSeconds(frequencyInSec)
-                        .repeatForever()
-                        .withMisfireHandlingInstructionNextWithRemainingCount()
+                                .withIntervalInSeconds(frequencyInSec)
+                                .repeatForever()
+                        //.withMisfireHandlingInstructionNextWithRemainingCount()
                 )
                 .build();
     }
@@ -57,9 +57,10 @@ public class JobConfig {
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaaSRequestProcessor_Trigger")).withDescription("GaaSRequestProcessor trigger")
                 .withSchedule(simpleSchedule()
-                        .withIntervalInMinutes(frequencyInMins)
-                        .repeatForever()
-                        .withMisfireHandlingInstructionIgnoreMisfires())
+                                .withIntervalInMinutes(frequencyInMins)
+                                .repeatForever()
+                        //.withMisfireHandlingInstructionIgnoreMisfires()
+                )
                 .build();
     }
 
@@ -78,7 +79,8 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInMinutes(frequencyInMins)
                         .repeatForever()
-                        .withMisfireHandlingInstructionIgnoreMisfires())
+                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                )
                 .build();
     }
 
@@ -97,7 +99,8 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInMinutes(frequencyInMins)
                         .repeatForever()
-                        .withMisfireHandlingInstructionIgnoreMisfires())
+                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                )
                 .build();
     }
 
@@ -117,7 +120,8 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInSeconds(frequencyInSecs)
                         .repeatForever()
-                        .withMisfireHandlingInstructionIgnoreMisfires())
+                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                )
                 .build();
     }
 
@@ -137,7 +141,8 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInMinutes(frequencyInMins)
                         .repeatForever()
-                        .withMisfireHandlingInstructionIgnoreMisfires())
+                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                )
                 .build();
     }
 
@@ -157,7 +162,8 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInMinutes(frequencyInMins)
                         .repeatForever()
-                        .withMisfireHandlingInstructionIgnoreMisfires())
+                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                )
                 .build();
     }
 }
