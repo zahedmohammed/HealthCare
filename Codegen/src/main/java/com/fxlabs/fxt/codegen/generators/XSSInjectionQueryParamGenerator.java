@@ -15,7 +15,7 @@ import java.util.List;
  * @author Mohammed Luqman Shareef
  * @since 4/24/2018
  */
-@Component(value = "genericSqlInjectionQueryParamGenerator")
+@Component(value = "xssInjectionQueryParamGenerator")
 public class XSSInjectionQueryParamGenerator extends AbstractGenerator {
 
     protected static final String POSTFIX = "query_param_sql_injection_xss";
