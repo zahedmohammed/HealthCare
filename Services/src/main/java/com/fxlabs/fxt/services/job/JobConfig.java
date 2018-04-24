@@ -38,7 +38,7 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                                 .withIntervalInSeconds(frequencyInSec)
                                 .repeatForever()
-                        //.withMisfireHandlingInstructionNextWithRemainingCount()
+                        .withMisfireHandlingInstructionNowWithRemainingCount()
                 )
                 .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.MINUTE))
                 .build();
