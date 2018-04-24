@@ -1,5 +1,7 @@
 package com.fxlabs.fxt.bot.processor;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
@@ -209,7 +211,11 @@ public class DataEvaluator {
                         if (StringUtils.isNotEmpty(response.getErrors())) {
                             context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response.getErrors());
                         } else if (StringUtils.isNotEmpty(PATH)) {
-                            val = JsonPath.read(response.getEval(), PATH);
+                            if ( isJsonObject(response.getEval())){
+                                val = JsonPath.read(response.getEval(), PATH);
+                            }else{
+                                val = response.getEval();
+                            }
                         } else {
                             val = response.getEval();
                         }
@@ -217,7 +223,6 @@ public class DataEvaluator {
                     } else {
                         val = key;
                     }
-
             }
 
             if (StringUtils.isNotEmpty(PIPE)) {
@@ -227,9 +232,17 @@ public class DataEvaluator {
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage());
         }
-
-
         return val;
+    }
+
+    private boolean isJsonObject(String str){
+
+        try {
+            JsonParser parser = new ObjectMapper().getFactory().createParser(str);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     /*

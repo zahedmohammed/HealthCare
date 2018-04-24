@@ -1,9 +1,8 @@
 package com.fxlabs.fxt.services.project;
 
-import com.fxlabs.fxt.dao.entity.project.Project;
-import com.fxlabs.fxt.dao.entity.project.ProjectImports;
-import com.fxlabs.fxt.dao.entity.project.TestCase;
-import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import com.fxlabs.fxt.dao.entity.project.*;
+import com.fxlabs.fxt.dao.repository.es.DataRecordESRepository;
+import com.fxlabs.fxt.dao.repository.es.DataSetESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectImportsRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
@@ -21,7 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.xml.crypto.Data;
 import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -34,17 +36,22 @@ public class MarketplaceDataProvider {
 
     private ProjectImportsRepository projectImportsRepository;
     private TestSuiteESRepository testSuiteESRepository;
+    private DataSetESRepository dataSetESRepository;
+    private DataRecordESRepository dataRecordESRepository;
     private ProjectRepository projectRepository;
     private DataResolver dataResolver;
 
     @Autowired
     public MarketplaceDataProvider(ProjectImportsRepository projectImportsRepository, TestSuiteESRepository testSuiteESRepository,
-                                   ProjectRepository projectRepository, DataResolver dataResolver) {
+                                   ProjectRepository projectRepository, DataResolver dataResolver, DataSetESRepository datasetESRepository,
+                                   DataRecordESRepository dataRecordESRepository) {
 
         this.projectImportsRepository = projectImportsRepository;
         this.testSuiteESRepository = testSuiteESRepository;
         this.projectRepository = projectRepository;
         this.dataResolver = dataResolver;
+        this.dataSetESRepository = datasetESRepository;
+        this.dataRecordESRepository = dataRecordESRepository;
     }
 
     /**
@@ -100,23 +107,34 @@ public class MarketplaceDataProvider {
                 return task;
             }
 
-            Optional<TestSuite> testSuiteOptional = testSuiteESRepository.findByProjectIdAndName(projectOptional.get().getId(), testSuite);
+            // pull from data records
+            Optional<DataSet> dataSetOptional = dataSetESRepository.findByProjectIdAndName(projectOptional.get().getId(), testSuite);
 
-            if (!testSuiteOptional.isPresent()) {
+//            dataSetOptional.get().
+//            Optional<TestSuite> testSuiteOptional = testSuiteESRepository.findByProjectIdAndName(projectOptional.get().getId(), testSuite);
+
+            if (!dataSetOptional.isPresent()) {
                 //return new Response<>("").withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("No DataSet found with the name [%s] defined in Fxfile.yaml", module)));
                 task.setErrors(String.format("No DataSet found with the name [%s] defined in Fxfile.yaml", module));
                 return task;
             }
 
-            int size = testSuiteOptional.get().getTestCases().size();
+            DataSet dataSet = dataSetOptional.get();
+            Stream<DataRecord> dataRecordStream = dataRecordESRepository.findByDataSet(dataSet.getId());
 
-            int random = RandomUtils.nextInt(0, size-1);
-            TestCase testCase = testSuiteOptional.get().getTestCases().get(random);
+            Supplier<Stream<DataRecord>> streamSupplier = () -> dataRecordStream;
+
+//            long size =  dataRecordStream.count();//testSuiteOptional.get().getTestCases().size();
+//            int random = (int) RandomUtils.nextLong(0, size-1);
+
+            DataRecord dataRecord = streamSupplier.get().findAny().get();
+//            TestCase testCase = testSuiteOptional.get().getTestCases().get(random);
             // TODO - Ignoring inactive flag.
-            task.setEval(testCase.getBody());
+            task.setEval(dataRecord.getRecord());
             return task;
 
         } catch (RuntimeException ex) {
+            ex.printStackTrace();
             logger.warn(ex.getLocalizedMessage(), ex);
             //return new Response<>("").withErrors(true).withMessage(new Message(MessageType.ERROR, "", ex.getLocalizedMessage()));
             task.setErrors(ex.getLocalizedMessage());
