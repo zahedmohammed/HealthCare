@@ -1,14 +1,15 @@
 package com.fxlabs.fxt.services.job;
 
 import com.fxlabs.fxt.services.processors.send.*;
-import org.quartz.*;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.concurrent.TimeUnit;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -36,13 +37,9 @@ public class JobConfig {
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_RunRequestProcessor_Trigger")).withDescription("RunRequestProcessor trigger")
                 .withSchedule(simpleSchedule()
-                                .withIntervalInSeconds(frequencyInSec)
-                                .repeatForever()
-                        .withMisfireHandlingInstructionNowWithRemainingCount()
-                        //.withMisfireHandlingInstructionNowWithExistingCount()
-                        //.withMisfireHandlingInstructionNextWithRemainingCount()
-                        //.withMisfireHandlingInstructionNextWithExistingCount()
-                        //.withMisfireHandlingInstructionFireNow() - Don't use this
+                        .withIntervalInSeconds(frequencyInSec)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionNextWithExistingCount()
                 )
                 .build();
     }
@@ -60,9 +57,9 @@ public class JobConfig {
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaaSRequestProcessor_Trigger")).withDescription("GaaSRequestProcessor trigger")
                 .withSchedule(simpleSchedule()
-                                .withIntervalInMinutes(frequencyInMins)
-                                .repeatForever()
-                        //.withMisfireHandlingInstructionIgnoreMisfires()
+                        .withIntervalInMinutes(frequencyInMins)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionNextWithExistingCount()
                 )
                 .build();
     }
@@ -82,7 +79,7 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInMinutes(frequencyInMins)
                         .repeatForever()
-                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                        .withMisfireHandlingInstructionNextWithExistingCount()
                 )
                 .build();
     }
@@ -102,7 +99,7 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInMinutes(frequencyInMins)
                         .repeatForever()
-                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                        .withMisfireHandlingInstructionNextWithExistingCount()
                 )
                 .build();
     }
@@ -123,7 +120,7 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInSeconds(frequencyInSecs)
                         .repeatForever()
-                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                        .withMisfireHandlingInstructionNextWithExistingCount()
                 )
                 .build();
     }
@@ -144,7 +141,7 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInMinutes(frequencyInMins)
                         .repeatForever()
-                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                        .withMisfireHandlingInstructionNextWithExistingCount()
                 )
                 .build();
     }
@@ -165,7 +162,7 @@ public class JobConfig {
                 .withSchedule(simpleSchedule()
                         .withIntervalInMinutes(frequencyInMins)
                         .repeatForever()
-                //        .withMisfireHandlingInstructionIgnoreMisfires()
+                        .withMisfireHandlingInstructionNextWithExistingCount()
                 )
                 .build();
     }

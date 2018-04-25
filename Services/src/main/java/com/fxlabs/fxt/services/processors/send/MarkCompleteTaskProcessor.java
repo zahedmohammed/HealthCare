@@ -51,7 +51,7 @@ public class MarkCompleteTaskProcessor {
 
     @Autowired
     private NotificationAccountService notificationAccountService;
-   // fx-notification-slack
+    // fx-notification-slack
     @Value("${fx.notification.slack.queue.routingkey}")
     private String slackNotificationQueue;
 
@@ -62,45 +62,50 @@ public class MarkCompleteTaskProcessor {
      * Calculate total-time, total-completed, total-failed etc
      */
     public void process() {
-        Date dt = DateUtils.addMinutes(new Date(), -30);
-        Stream<Run> runs = runRepository.findByTaskStatusAndCreatedDateGreaterThan(TaskStatus.PROCESSING, dt);
+        try {
+            Date dt = DateUtils.addMinutes(new Date(), -30);
+            Stream<Run> runs = runRepository.findByTaskStatusAndCreatedDateGreaterThan(TaskStatus.PROCESSING, dt);
 
-        runs.forEach(run -> {
-            try {
-                //Optional<Long> count = testSuiteResponseESRepository.countByRunId(run.getId());
-                Long failed = testSuiteResponseService.failedSum(run.getId());
-                Long passed = testSuiteResponseService.passedSum(run.getId());
-                Long time = testSuiteResponseService.timeSum(run.getId());
-                Long bytes = testSuiteResponseService.byteSum(run.getId());
 
-                Long count = failed + passed;
-                if (count >= run.getTask().getTotalTests()) {
-                    run.getTask().setStatus(TaskStatus.COMPLETED);
+            runs.forEach(run -> {
+                try {
+                    //Optional<Long> count = testSuiteResponseESRepository.countByRunId(run.getId());
+                    Long failed = testSuiteResponseService.failedSum(run.getId());
+                    Long passed = testSuiteResponseService.passedSum(run.getId());
+                    Long time = testSuiteResponseService.timeSum(run.getId());
+                    Long bytes = testSuiteResponseService.byteSum(run.getId());
+
+                    Long count = failed + passed;
+                    if (count >= run.getTask().getTotalTests()) {
+                        run.getTask().setStatus(TaskStatus.COMPLETED);
+                    }
+                    // count total-suites
+                    // count total-tests
+                    // count total-fail
+                    // count total-time
+                    // count total-bytes
+                    run.getTask().setTotalSuiteCompleted(count);
+
+                    run.getTask().setFailedTests(failed);
+                    run.getTask().setTotalTestCompleted(passed);
+                    run.getTask().setTotalTime(time);
+                    run.getTask().setTotalBytes(bytes);
+
+                    runRepository.saveAndFlush(run);
+
+                    if (run.getTask().getStatus().equals(TaskStatus.COMPLETED)) {
+                        sendNotification(run);
+                    }
+
+
+                    // TODO - Test-Suites
+                } catch (RuntimeException ex) {
+                    logger.warn(ex.getLocalizedMessage(), ex);
                 }
-                // count total-suites
-                // count total-tests
-                // count total-fail
-                // count total-time
-                // count total-bytes
-                run.getTask().setTotalSuiteCompleted(count);
-
-                run.getTask().setFailedTests(failed);
-                run.getTask().setTotalTestCompleted(passed);
-                run.getTask().setTotalTime(time);
-                run.getTask().setTotalBytes(bytes);
-
-                runRepository.saveAndFlush(run);
-
-                if (run.getTask().getStatus().equals(TaskStatus.COMPLETED)) {
-                    sendNotification(run);
-                }
-
-
-                // TODO - Test-Suites
-            } catch (RuntimeException ex) {
-                logger.warn(ex.getLocalizedMessage(), ex);
-            }
-        });
+            });
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage(), e);
+        }
     }
 
     private void sendNotification(Run run) {
@@ -177,7 +182,7 @@ public class MarkCompleteTaskProcessor {
     }
 
 
-    private static String getValue(String value){
+    private static String getValue(String value) {
 
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
                 || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
