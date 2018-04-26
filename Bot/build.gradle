@@ -26,6 +26,13 @@ jar {
     baseName = 'Bot'
     version = '0.0.1-SNAPSHOT'
 }
+
+def profiles = 'dev'
+
+bootRun {
+    args = ["--spring.profiles.active=" + profiles]
+}
+
 sourceCompatibility = 1.8
 
 repositories {
