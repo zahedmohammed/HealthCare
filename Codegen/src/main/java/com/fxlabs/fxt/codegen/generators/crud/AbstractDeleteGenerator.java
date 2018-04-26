@@ -47,9 +47,9 @@ public class AbstractDeleteGenerator extends AbstractGenerator {
         }
 
         String base = NameUtil.extractBase(path);
-        System.out.println ("Path: " + path);
+        //System.out.println ("Path: " + path);
         String path_ = StringUtils.replace(path, "{" + name + "}", "{{@" + base + "_post_" +AbstractCreateGenerator.POSTFIX + "_Response.id}}");
-        System.out.println ("Eval Path: " + path);
+        //System.out.println ("Eval Path: " + path);
 
         //System.out.println ("AbstractCreate -> " + path + " " + op.getOperationId());
 

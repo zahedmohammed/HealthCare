@@ -1,7 +1,7 @@
 package com.fxlabs.fxt.sdk.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.NameDto;
@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -185,7 +184,7 @@ public class FxCommandService {
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
-           // ObjectMapper jasonMapper = new ObjectMapper();
+            // ObjectMapper jasonMapper = new ObjectMapper();
 
             System.out.println("loading Fxfile.yaml...");
             CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", "Loading");
@@ -278,6 +277,7 @@ public class FxCommandService {
             // create dataset
 
             loadSuites(projectDir, yamlMapper, project.getId(), projectFiles);
+
             try {
                 loadDataRecord(projectDir, project.getId(), projectFiles);
             } catch (Exception e) {
@@ -646,73 +646,87 @@ public class FxCommandService {
         // TODO - Log all non .yaml files name as ignored.
 
         AtomicInteger totalFiles = new AtomicInteger(0);
-        files.parallelStream().forEach(file -> {
-
-            TestSuite testSuite = null;
-            String testSuiteContent = null;
-            final String checksum;
-            try {
-                testSuiteContent = FileUtils.readFileToString(file, "UTF-8");
-            } catch (IOException e) {
-                logger.warn(e.getLocalizedMessage());
-                System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.errors.set(Boolean.TRUE);
-            }
-
-            try {
-                //System.out.println(String.format("File [%s] last-modified [%s] last-sync [%s]", file.getName(), new Date(file.lastModified()), lastSync));
-                checksum = DigestUtils.md5Hex(testSuiteContent);
-
-                if (isChecksumPresent(projectFiles, file, checksum)) return;
-
-                testSuite = yamlMapper.readValue(file, TestSuite.class);
-            } catch (Exception e) {
-                logger.warn(e.getLocalizedMessage());
-                System.out.println(AnsiOutput.toString(AnsiColor.RED,
-                        String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()),
-                        AnsiColor.DEFAULT));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.errors.set(Boolean.TRUE);
-                return;
-            }
-            //logger.info("ds size: [{}]", values.length);
-
-
-            if (StringUtils.isEmpty(testSuite.getName())) {
-                testSuite.setName(FilenameUtils.getBaseName(file.getName()));
-            }
-
-            // set file content
-
-            Long lastModified = file.lastModified();
-            testSuite.setProps(new HashMap<>());
-            testSuite.getProps().put(Project.FILE_CONTENT, testSuiteContent);
-            testSuite.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
-            testSuite.getProps().put(Project.MD5_HEX, checksum);
-            testSuite.getProps().put(Project.FILE_NAME, file.getName());
-
-            ProjectMinimalDto proj = new ProjectMinimalDto();
-            proj.setId(projectId);
-            testSuite.setProject(proj);
-            try {
-                testSuiteRestRepository.save(testSuite);
-            } catch (Exception e) {
-                logger.warn(e.getLocalizedMessage());
-                System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.errors.set(Boolean.TRUE);
-            }
-
-            System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
-                    String.format("Test-Suite: %s [Synced]",
-                            org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50)),
+        if (CollectionUtils.isEmpty(files)) {
+            System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                    String.format("\nNo suites found in : [%s]", dataFolder.getAbsolutePath()),
                     AnsiColor.DEFAULT));
-            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO,
-                    org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50),
-                    "Synced");
+            logger.info("No suites found in : [%s]", dataFolder.getAbsolutePath());
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", String.format("No suites found in : [%s]", dataFolder.getAbsolutePath()));
+            return;
+        }
+        files.stream().forEach(file -> {
 
-            totalFiles.incrementAndGet();
+            try {
+                TestSuite testSuite = null;
+                String testSuiteContent = null;
+                final String checksum;
+                try {
+                    testSuiteContent = FileUtils.readFileToString(file, "UTF-8");
+                } catch (IOException e) {
+                    logger.warn(e.getLocalizedMessage());
+                    System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.errors.set(Boolean.TRUE);
+                }
+
+                try {
+                    //System.out.println(String.format("File [%s] last-modified [%s] last-sync [%s]", file.getName(), new Date(file.lastModified()), lastSync));
+                    checksum = DigestUtils.md5Hex(testSuiteContent);
+
+                    if (isChecksumPresent(projectFiles, file, checksum)) return;
+
+                    testSuite = yamlMapper.readValue(file, TestSuite.class);
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage());
+                    System.out.println(AnsiOutput.toString(AnsiColor.RED,
+                            String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()),
+                            AnsiColor.DEFAULT));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.errors.set(Boolean.TRUE);
+                    return;
+                }
+                //logger.info("ds size: [{}]", values.length);
+
+
+                if (StringUtils.isEmpty(testSuite.getName())) {
+                    testSuite.setName(FilenameUtils.getBaseName(file.getName()));
+                }
+
+                // set file content
+
+                Long lastModified = file.lastModified();
+                testSuite.setProps(new HashMap<>());
+                testSuite.getProps().put(Project.FILE_CONTENT, testSuiteContent);
+                testSuite.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
+                testSuite.getProps().put(Project.MD5_HEX, checksum);
+                testSuite.getProps().put(Project.FILE_NAME, file.getName());
+
+                ProjectMinimalDto proj = new ProjectMinimalDto();
+                proj.setId(projectId);
+                testSuite.setProject(proj);
+                try {
+                    testSuiteRestRepository.save(testSuite);
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage());
+                    System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.errors.set(Boolean.TRUE);
+                }
+
+                System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
+                        String.format("Test-Suite: %s [Synced]",
+                                org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100)),
+                        AnsiColor.DEFAULT));
+
+                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO,
+                        org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100),
+                        "Synced");
+
+                totalFiles.incrementAndGet();
+
+            } catch (Exception e) {
+                logger.warn(e.getLocalizedMessage(), e);
+            }
         });
 
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
@@ -752,103 +766,114 @@ public class FxCommandService {
         NameDto finalNameDto = nameDto;
         AtomicInteger totalFiles = new AtomicInteger(0);
 
-        files.parallelStream().forEach(file -> {
-
-
-            String testSuiteContent = null;
-            final String checksum;
-
-            ObjectMapper jsonMapper = new ObjectMapper();
-            try {
-                testSuiteContent = FileUtils.readFileToString(file, "UTF-8");
-            } catch (IOException e) {
-                logger.warn(e.getLocalizedMessage());
-                System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.errors.set(Boolean.TRUE);
-            }
+        if (CollectionUtils.isEmpty(files)) {
+            System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                    String.format("\nNo data-records found in : [%s]", dataFolder.getAbsolutePath()),
+                    AnsiColor.DEFAULT));
+            logger.info("No data-records found in : [%s]", dataFolder.getAbsolutePath());
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", String.format("No data-records found in : [%s]", dataFolder.getAbsolutePath()));
+            return;
+        }
+        files.stream().forEach(file -> {
 
             try {
-                //System.out.println(String.format("File [%s] last-modified [%s] last-sync [%s]", file.getName(), new Date(file.lastModified()), lastSync));
-                checksum = DigestUtils.md5Hex(testSuiteContent);
+                String testSuiteContent = null;
+                final String checksum;
 
-                if (isChecksumPresent(projectFiles, file, checksum)) return;
-
-
-                DataSet dataSet = new DataSet();
-
-                if (StringUtils.isEmpty(dataSet.getName())) {
-                    dataSet.setName(FilenameUtils.getBaseName(file.getName()));
-                }
-
-                ProjectMinimalDto proj = new ProjectMinimalDto();
-                proj.setId(projectId);
-                dataSet.setProject(proj);
-
-
-                Response<DataSet> dataSetResponse = null;
-                // set file content
-                Long lastModified = file.lastModified();
-                dataSet.setProps(new HashMap<>());
-                dataSet.getProps().put(Project.FILE_CONTENT, testSuiteContent);
-                dataSet.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
-                dataSet.getProps().put(Project.MD5_HEX, checksum);
-                dataSet.getProps().put(Project.FILE_NAME, file.getName());
-
+                ObjectMapper jsonMapper = new ObjectMapper();
                 try {
-                    dataSetResponse = dataSetRestRepository.save(dataSet);
-                } catch (Exception e) {
+                    testSuiteContent = FileUtils.readFileToString(file, "UTF-8");
+                } catch (IOException e) {
                     logger.warn(e.getLocalizedMessage());
-                    System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
-                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                    System.out.println(String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] file content with error [%s]", file.getName(), e.getLocalizedMessage()));
                     CredUtils.errors.set(Boolean.TRUE);
                 }
-                DataSet dataSet1 = dataSetResponse.getData();
 
-                //dataSet = jsonMapper.readValue(file, DataSet.class);
-                JsonNode rootNode = jsonMapper.readTree(file);
-                if (rootNode.isArray()) {
-                    List<String> skip = new ArrayList<>();
-                    rootNode.iterator().forEachRemaining(item -> {
-                        skip.add(item.toString());
-                    });
-                    List<List<String>> batch = Lists.partition(skip, 10);
-                    for (List<String> list : batch) {
-                        // Add your code here
-                        List<DataRecord> dataRecords1 = new ArrayList<>();
-                        for (String item : list) {
-                            DataRecord record = new DataRecord();
-                            record.setRecord(item);
-                            record.setDataSet(dataSet1.getId());
+                try {
+                    //System.out.println(String.format("File [%s] last-modified [%s] last-sync [%s]", file.getName(), new Date(file.lastModified()), lastSync));
+                    checksum = DigestUtils.md5Hex(testSuiteContent);
+
+                    if (isChecksumPresent(projectFiles, file, checksum)) return;
+
+
+                    DataSet dataSet = new DataSet();
+
+                    if (StringUtils.isEmpty(dataSet.getName())) {
+                        dataSet.setName(FilenameUtils.getBaseName(file.getName()));
+                    }
+
+                    ProjectMinimalDto proj = new ProjectMinimalDto();
+                    proj.setId(projectId);
+                    dataSet.setProject(proj);
+
+
+                    Response<DataSet> dataSetResponse = null;
+                    // set file content
+                    Long lastModified = file.lastModified();
+                    dataSet.setProps(new HashMap<>());
+                    dataSet.getProps().put(Project.FILE_CONTENT, testSuiteContent);
+                    dataSet.getProps().put(Project.MODIFIED_DATE, String.valueOf(lastModified));
+                    dataSet.getProps().put(Project.MD5_HEX, checksum);
+                    dataSet.getProps().put(Project.FILE_NAME, file.getName());
+
+                    try {
+                        dataSetResponse = dataSetRestRepository.save(dataSet);
+                    } catch (Exception e) {
+                        logger.warn(e.getLocalizedMessage());
+                        System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                        CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
+                        CredUtils.errors.set(Boolean.TRUE);
+                    }
+                    DataSet dataSet1 = dataSetResponse.getData();
+
+                    //dataSet = jsonMapper.readValue(file, DataSet.class);
+                    JsonNode rootNode = jsonMapper.readTree(file);
+                    if (rootNode.isArray()) {
+                        List<String> skip = new ArrayList<>();
+                        rootNode.iterator().forEachRemaining(item -> {
+                            skip.add(item.toString());
+                        });
+                        List<List<String>> batch = Lists.partition(skip, 10);
+                        for (List<String> list : batch) {
+                            // Add your code here
+                            List<DataRecord> dataRecords1 = new ArrayList<>();
+                            for (String item : list) {
+                                DataRecord record = new DataRecord();
+                                record.setRecord(item);
+                                record.setDataSet(dataSet1.getId());
 //                            record.setOrg(finalNameDto);
 //                            record.setProject(proj);
-                            dataRecords1.add(record);
+                                dataRecords1.add(record);
+                            }
+                            dataRecordRestRepository.saveAll(dataRecords1);
                         }
-                        dataRecordRestRepository.saveAll(dataRecords1);
-                    }
 //
+                    }
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage());
+                    System.out.println(AnsiOutput.toString(AnsiColor.RED,
+                            String.format("DataSet: %s [%s]", file.getName(), e.getLocalizedMessage()),
+                            AnsiColor.DEFAULT));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()));
+                    CredUtils.errors.set(Boolean.TRUE);
+                    return;
                 }
-            } catch (Exception e) {
-                logger.warn(e.getLocalizedMessage());
-                System.out.println(AnsiOutput.toString(AnsiColor.RED,
-                        String.format("DataSet: %s [%s]", file.getName(), e.getLocalizedMessage()),
+                //logger.info("ds size: [{}]", values.length);
+
+
+                System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
+                        String.format("Test-Suite: %s [Synced]",
+                                org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100)),
                         AnsiColor.DEFAULT));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, file.getName(), String.format("Test-Suite: %s [%s]", file.getName(), e.getLocalizedMessage()));
-                CredUtils.errors.set(Boolean.TRUE);
-                return;
+                CredUtils.taskLogger.get().append(BotLogger.LogType.INFO,
+                        org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100),
+                        "Synced");
+
+                totalFiles.incrementAndGet();
+            } catch (Exception e) {
+                logger.warn(e.getLocalizedMessage(), e);
             }
-            //logger.info("ds size: [{}]", values.length);
-
-
-            System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
-                    String.format("Test-Suite: %s [Synced]",
-                            org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50)),
-                    AnsiColor.DEFAULT));
-            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO,
-                    org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50),
-                    "Synced");
-
-            totalFiles.incrementAndGet();
         });
 
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
@@ -866,10 +891,10 @@ public class FxCommandService {
             if (projectFileOptional.isPresent()) {
                 System.out.println(AnsiOutput.toString(AnsiColor.WHITE,
                         String.format("Test-Suite: %s [Up-to-date]",
-                                org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50)),
+                                org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100)),
                         AnsiColor.DEFAULT));
                 CredUtils.taskLogger.get().append(BotLogger.LogType.INFO,
-                        org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 50),
+                        org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100),
                         "Up-to-date");
                 return true;
             }
@@ -1083,7 +1108,7 @@ public class FxCommandService {
                 AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                         String.format("%s %s %s %s %s %s",
                                 org.apache.commons.lang3.StringUtils.rightPad("Result", 15),
-                                org.apache.commons.lang3.StringUtils.rightPad("Suite", 50),
+                                org.apache.commons.lang3.StringUtils.rightPad("Suite", 100),
                                 org.apache.commons.lang3.StringUtils.rightPad("Total/Passed", 20),
                                 org.apache.commons.lang3.StringUtils.rightPad("Success (%)", 20),
                                 org.apache.commons.lang3.StringUtils.rightPad("Time (ms)", 20),
@@ -1104,14 +1129,14 @@ public class FxCommandService {
             time += s.getTime() != null ? s.getTime() : 0;
             size += s.getSize() != null ? s.getSize() : 0;
         }
-        per = ( (tests - fails) * 100) / tests;
+        per = ((tests - fails) * 100) / tests;
 
         System.out.println(org.apache.commons.lang3.StringUtils.rightPad("-", 145, "-"));
         System.out.println(
                 AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                         String.format("%s %s %s %s %s %s",
                                 org.apache.commons.lang3.StringUtils.rightPad("", 15),
-                                org.apache.commons.lang3.StringUtils.rightPad("", 50),
+                                org.apache.commons.lang3.StringUtils.rightPad("", 100),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(tests) + "/" + String.valueOf(fails), 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(per) + "%", 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(time), 20),
@@ -1135,7 +1160,7 @@ public class FxCommandService {
                     AnsiOutput.toString(AnsiColor.RED,
                             String.format("%s %s %s %s %s %s",
                                     org.apache.commons.lang3.StringUtils.rightPad(result, 15),
-                                    org.apache.commons.lang3.StringUtils.rightPad(suite.getSuiteName(), 50),
+                                    org.apache.commons.lang3.StringUtils.rightPad(suite.getSuiteName(), 100),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTime()), 20),
@@ -1147,7 +1172,7 @@ public class FxCommandService {
                     AnsiOutput.toString(AnsiColor.GREEN,
                             String.format("%s %s %s %s %s %s",
                                     org.apache.commons.lang3.StringUtils.rightPad(result, 15),
-                                    org.apache.commons.lang3.StringUtils.rightPad(suite.getSuiteName(), 50),
+                                    org.apache.commons.lang3.StringUtils.rightPad(suite.getSuiteName(), 100),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTime()), 20),

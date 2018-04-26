@@ -34,7 +34,7 @@ public class NameUtil {
             if (StringUtils.isEmpty(token)) {
                 continue;
             }
-            System.out.println("token : " + token);
+            //System.out.println("token : " + token);
 
             if (org.apache.commons.lang3.StringUtils.containsAny(token, "{", "}")) {
                 continue;

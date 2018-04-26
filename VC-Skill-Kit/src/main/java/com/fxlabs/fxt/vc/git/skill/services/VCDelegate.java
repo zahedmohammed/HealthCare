@@ -1,11 +1,13 @@
 package com.fxlabs.fxt.vc.git.skill.services;
 
 //import com.fxlabs.fxt.codegen.code.StubGenerator;
+
+import com.fxlabs.fxt.codegen.code.CodegenThreadUtils;
 import com.fxlabs.fxt.codegen.code.StubGenerator;
 import com.fxlabs.fxt.dto.project.GenPolicy;
+import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
-import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.sdk.services.BotLogger;
 import com.fxlabs.fxt.sdk.services.CredUtils;
 import com.fxlabs.fxt.sdk.services.FxCommandService;
@@ -41,6 +43,7 @@ public class VCDelegate {
     public void process(VCTask task) {
         logger.info("VCTask [{}]", task.getProjectName());
         VCTaskResponse response = null;
+        String gitPushLogs = StringUtils.EMPTY;
         try {
             String path = "/var/lib/fx/" + RandomStringUtils.randomAlphabetic(6);
             Task _task = new Task();
@@ -51,46 +54,60 @@ public class VCDelegate {
             _task.setVcPassword(task.getVcPassword());
             _task.setVcLastCommit(task.getVcLastCommit());
 
+            // 1/4. Pull latest from VC
             response = versionControlService.process(_task, path);
             response.setProjectId(task.getProjectId());
             response.setProjectName(task.getProjectName());
 
             if (response.isSuccess() && !StringUtils.equals(response.getVcLastCommit(), task.getVcLastCommit())) {
 
-                CredUtils.taskLogger.set(new BotLogger());
-
                 if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
                     // TODO Generate tests
                     try {
+                        // 2/4. Auto-Code
+                        CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
                         stubGenerator.generate(task.getOpenAPISpec(), path + "/test-suites", null, null);
-                        versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
+                        // 3/4. Push to VC
+                        gitPushLogs = versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
                     } catch (Exception e) {
                         logger.warn(e.getLocalizedMessage(), e);
-                        CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, "Push", e.getLocalizedMessage());
+                        gitPushLogs = e.getLocalizedMessage();
+                        //CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, "Push", e.getLocalizedMessage());
                     }
                 }
 
+                CredUtils.taskLogger.set(new BotLogger());
                 CredUtils.url.set(task.getFxUrl());
                 CredUtils.username.set(task.getProjectUser());
                 CredUtils.password.set(task.getProjectGrant());
+                CredUtils.errors.set(Boolean.FALSE);
 
+                // 4/4. Push to Control-Plane
                 Project project = service.load(response.getPath(), task.getProjectId());
 
                 response.setSuccess(!BooleanUtils.isTrue(CredUtils.errors.get()));
             }
-            String driverLogs = new String();
-            String gitLogs = new String();
-            if (CredUtils.taskLogger.get() != null) {
-                driverLogs = CredUtils.taskLogger.get().getLogs();
-            }
+
+            String gitPullLogs = new String();
             if (response.getLogs() != null) {
-                gitLogs = response.getLogs();
+                gitPullLogs = response.getLogs();
             }
-            response.setLogs(gitLogs + "\n" + driverLogs);
+
+            String codegenLogs = new String();
+            if (CodegenThreadUtils.taskLogger.get() != null) {
+                codegenLogs = CodegenThreadUtils.taskLogger.get().getLogs();
+            }
+
+            String controlPlanePushLogs = new String();
+            if (CredUtils.taskLogger.get() != null) {
+                controlPlanePushLogs = CredUtils.taskLogger.get().getLogs();
+            }
+
+            response.setLogs(gitPullLogs + "\n" + codegenLogs + "\n" + gitPushLogs + "\n" + controlPlanePushLogs);
             logger.info(response.toString());
 
-
             sender.sendTask(response);
+
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         } finally {

@@ -28,7 +28,7 @@ public class StubHandler {
 
     public List<TestSuiteMin> handle(String path, HttpMethod method, Operation op) {
 
-        logger.info("{} {}", path, method);
+        logger.debug("{} {}", path, method);
         List<TestSuiteMin> suites = Collections.synchronizedList(new ArrayList<>());
 
         this.generators.parallelStream().forEach(g -> {

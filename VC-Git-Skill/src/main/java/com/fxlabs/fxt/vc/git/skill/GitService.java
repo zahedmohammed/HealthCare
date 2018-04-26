@@ -156,7 +156,7 @@ public class GitService implements VersionControlService {
                 cloneCommand.setBranch(branch);
             }
 
-            if (StringUtils.isNotEmpty(username)) {
+            if (StringUtils.isNotEmpty(username) && StringUtils.isNoneEmpty(password)) {
                 cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
             }
 
@@ -240,7 +240,7 @@ public class GitService implements VersionControlService {
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
 
-        return null;
+        return taskLogger.get().toString();
     }
 
     private boolean isUnStagedFiles(Git git) {

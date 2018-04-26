@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.sdk.services;
+package com.fxlabs.fxt.codegen.code;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +18,6 @@ public class BotLogger implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String DATE_FORMAT = "yyyy-MM-dd KK:mm:ss";
     final Logger logger = LoggerFactory.getLogger(getClass());
-
     private StringBuilder sb = new StringBuilder();
 
     private boolean print;

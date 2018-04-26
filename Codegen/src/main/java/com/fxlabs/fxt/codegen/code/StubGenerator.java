@@ -10,7 +10,6 @@ import io.swagger.models.auth.AuthorizationValue;
 import io.swagger.models.properties.*;
 import io.swagger.parser.SwaggerCompatConverter;
 import io.swagger.parser.SwaggerParser;
-import io.swagger.util.Json;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ansi.AnsiColor;
@@ -40,7 +39,7 @@ public class StubGenerator {
 
             factory.init(swagger);
 
-            String swaggerString = Json.pretty(swagger);
+            //String swaggerString = Json.pretty(swagger);
 
             //System.out.println(swaggerString);
 
@@ -49,7 +48,7 @@ public class StubGenerator {
 
             //System.out.println("---- def ----");
             //System.out.println (swagger.getDefinitions());
-            if (swagger.getDefinitions()!=null) {
+            if (swagger.getDefinitions() != null) {
                 for (String p : swagger.getDefinitions().keySet()) {
                     Model m = swagger.getDefinitions().get(p);
                     //System.out.println(p + " -> ");
@@ -134,6 +133,7 @@ public class StubGenerator {
                                 String.format("%s [Skipping]", ts.getName())
                                 , AnsiColor.DEFAULT)
                 );
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Exists");
                 return;
             }
 
@@ -144,8 +144,8 @@ public class StubGenerator {
                         AnsiOutput.toString(AnsiColor.WHITE,
                                 String.format("%s [Writing]",
                                         org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 80))
-                                        , AnsiColor.DEFAULT)
-                        );
+                                , AnsiColor.DEFAULT)
+                );
 
 
                 FileUtils.touch(file);
@@ -153,6 +153,7 @@ public class StubGenerator {
 
                 yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, ts);
                 //System.out.println ("done");
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Written");
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -161,6 +162,7 @@ public class StubGenerator {
 
         System.out.println("--");
         System.out.println("Total suites written : " + testSuites.size());
+        CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Total suites written", "" + testSuites.size());
         System.out.println("");
 
     }
