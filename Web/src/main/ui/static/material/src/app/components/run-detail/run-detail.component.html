@@ -20,6 +20,9 @@
                     <h4>Status: {{run.task.status}}</h4>
                     <h4>Date: {{run.task.startTime | date:'short'}}</h4>
                     <h4>Total Time: {{run.task.totalTime}}</h4>
+                    <h4>Total Tests: {{run.task.totalTests}}</h4>
+                    <h4 color="success">Total Passed: {{run.task.totalTestCompleted}}</h4>
+                    <h4 color="warn">Total Failed: {{run.task.failedTests}}</h4>
                 </div>
                 <div class="divider divider-solid divider-lg"></div>
                 <p class="card__desc" style="white-space: pre;">{{run.task.description}}</p>
@@ -61,7 +64,9 @@
                             class="material-icons">clear</i> </span></td>
                     <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
                             class="text-danger"> Fail</span></td>
-                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName}}</a></td>
+                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
+                                                                     (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName}}</a>
+                    </td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
                         {{ ( ((s.tests - s.failed) * 100 ) / (s.tests) ).toFixed(0) }}%
@@ -84,6 +89,15 @@
                 </tfoot>
             </table>
         </div>
+
+        <mat-paginator [hidden]="length <= pageSize"
+                       [pageSize]="pageSize"
+                       hidePageSize="true"
+                       (page)="change($event)"
+                       [length]="length"
+        >
+        </mat-paginator>
+
     </article>
 
     <!--

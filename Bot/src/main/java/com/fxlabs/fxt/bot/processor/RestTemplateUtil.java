@@ -77,6 +77,7 @@ public class RestTemplateUtil {
             response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage());
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return response;

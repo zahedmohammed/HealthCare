@@ -112,12 +112,13 @@ export class RunDetailComponent implements OnInit {
 
   getSummary() {
     this.handler.activateLoader();
-    this.runService.getSummary(this.id).subscribe(results => {
+    this.runService.getSummary(this.id, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.suites = results['data'];
+      this.length = results['totalElements'];
       this.calSum();
     }, error => {
       this.handler.hideLoader();
@@ -153,6 +154,14 @@ export class RunDetailComponent implements OnInit {
         height:'90%',
         data: msg
     });
+  }
+
+  length = 0;
+  page = 0;
+  pageSize = 100;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.getSummary();
   }
 
 

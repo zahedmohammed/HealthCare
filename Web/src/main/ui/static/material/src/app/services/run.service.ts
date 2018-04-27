@@ -38,8 +38,11 @@ constructor(private http: HttpClient) {
     return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-responses");
   }
 
-  getSummary(runId:string) {
-    return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary");
+  getSummary(runId:string, page, pageSize) {
+    let params = new HttpParams();
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary", {params});
   }
 
   getTestSuiteResponseByName(id:string, name:string) {
