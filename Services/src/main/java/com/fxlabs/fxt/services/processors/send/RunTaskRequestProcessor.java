@@ -177,8 +177,10 @@ public class RunTaskRequestProcessor {
                         copy(testSuite.getCleanup(), task.getCleanup(), run, env);
 
                         // count tests
-                        if (testSuite.getTestCases() != null) {
+                        if (testSuite.getTestCases() != null && !testSuite.getTestCases().isEmpty()) {
                             total.getAndAdd(testSuite.getTestCases().size());
+                        } else {
+                            total.getAndIncrement();
                         }
 
                         // repeat value
