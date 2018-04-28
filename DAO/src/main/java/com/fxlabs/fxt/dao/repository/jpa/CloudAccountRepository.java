@@ -1,10 +1,12 @@
 package com.fxlabs.fxt.dao.repository.jpa;
 
+import com.fxlabs.fxt.dao.entity.clusters.AccountType;
 import com.fxlabs.fxt.dao.entity.clusters.CloudAccount;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,5 +24,10 @@ public interface CloudAccountRepository extends JpaRepository<CloudAccount, Stri
     Page<CloudAccount> findByCreatedBy(String owner, Pageable pageable);
 
     Long countByVisibility(ClusterVisibility visibility);
+
+    List<CloudAccount> findByAccountTypeAndCreatedBy(AccountType type, String createdBy);
+
+    //@Query("SELECT * FROM CloudAccount ca WHERE ca.accountType in ?1 AND ca.createdBy = ?2")
+    List<CloudAccount> findByAccountTypeInAndCreatedBy(List<AccountType> types, String createdBy);
 
 }

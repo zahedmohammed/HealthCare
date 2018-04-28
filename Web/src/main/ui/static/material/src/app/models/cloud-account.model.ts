@@ -5,6 +5,7 @@ export class CloudAccount {
     secretKey: string;
     visibility: string;
     cloudType: string;
+    accountType: string;
     org: Org = new Org();
 
 }

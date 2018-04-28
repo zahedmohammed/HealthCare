@@ -34,28 +34,30 @@ import java.util.Set;
 /**
  * @author Mohammed Luqman Shareef
  * @since 3/20/2018
+ *  @author Mohammed Shoukath Ali
+ * @since 4/28/2018
  */
 @Service
 @Transactional
 public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.entity.notify.NotificationAccount, NotificationAccount, String> implements NotificationAccountService {
 
-    private NotificationAccountRepository NotificationAccountRepository;
-    private NotificationAccountESRepository NotificationAccountESRepository;
-    private NotificationAccountConverter NotificationAccountConverter;
+    private NotificationAccountRepository notificationAccountRepository;
+    private NotificationAccountESRepository notificationAccountESRepository;
+    private NotificationAccountConverter notificationAccountConverter;
     private AmqpAdmin amqpAdmin;
     private TopicExchange topicExchange;
     private OrgUsersRepository orgUsersRepository;
 
     @Autowired
-    public NotificationAccountServiceImpl(NotificationAccountRepository NotificationAccountRepository, NotificationAccountESRepository NotificationAccountESRepository,
-                                          NotificationAccountConverter NotificationAccountConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
+    public NotificationAccountServiceImpl(NotificationAccountRepository notificationAccountRepository, NotificationAccountESRepository notificationAccountESRepository,
+                                          NotificationAccountConverter notificationAccountConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
                                           OrgUsersRepository orgUsersRepository) {
 
-        super(NotificationAccountRepository, NotificationAccountConverter);
+        super(notificationAccountRepository, notificationAccountConverter);
 
-        this.NotificationAccountRepository = NotificationAccountRepository;
-        this.NotificationAccountESRepository = NotificationAccountESRepository;
-        this.NotificationAccountConverter = NotificationAccountConverter;
+        this.notificationAccountRepository = notificationAccountRepository;
+        this.notificationAccountESRepository = notificationAccountESRepository;
+        this.notificationAccountConverter = notificationAccountConverter;
         this.amqpAdmin = amqpAdmin;
         this.topicExchange = topicExchange;
         this.orgUsersRepository = orgUsersRepository;
@@ -65,13 +67,13 @@ public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlab
     @Override
     public Response<List<NotificationAccount>> findAll(String user, Pageable pageable) {
         // Find all public
-        Page<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> page = this.NotificationAccountRepository.findByCreatedBy(user, pageable);
+        Page<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> page = this.notificationAccountRepository.findByCreatedBy(user, pageable);
         return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
     public Response<NotificationAccount> findById(String id, String user) {
-        com.fxlabs.fxt.dao.entity.notify.NotificationAccount NotificationAccount = this.NotificationAccountRepository.findById(id).get();
+        com.fxlabs.fxt.dao.entity.notify.NotificationAccount NotificationAccount = this.notificationAccountRepository.findById(id).get();
         return new Response<>(converter.convertToDto(NotificationAccount));
     }
 
@@ -84,7 +86,7 @@ public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlab
         String[] tokens = StringUtils.split(id, "/");
         String orgName = tokens[0];
         String NotificationAccountName = tokens[1];
-        Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> NotificationAccountOptional = this.NotificationAccountRepository.findByNameAndOrgName(NotificationAccountName, orgName);
+        Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> NotificationAccountOptional = this.notificationAccountRepository.findByNameAndOrgName(NotificationAccountName, orgName);
 
         if (!NotificationAccountOptional.isPresent() || NotificationAccountOptional.get().getVisibility() != NotificationVisibility.PUBLIC) {
             return new Response<>().withErrors(true);
@@ -116,7 +118,7 @@ public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlab
             }
         }
 
-        Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> NotificationAccountOptional = NotificationAccountRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
+        Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> NotificationAccountOptional = notificationAccountRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
         if (NotificationAccountOptional.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Duplicate NotificationAccount name"));
         }
@@ -138,8 +140,8 @@ public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlab
 
         // generate key
 
-        com.fxlabs.fxt.dao.entity.notify.NotificationAccount NotificationAccount = this.NotificationAccountRepository.saveAndFlush(converter.convertToEntity(dto));
-        this.NotificationAccountESRepository.save(NotificationAccount);
+        com.fxlabs.fxt.dao.entity.notify.NotificationAccount NotificationAccount = this.notificationAccountRepository.saveAndFlush(converter.convertToEntity(dto));
+        this.notificationAccountESRepository.save(NotificationAccount);
         return new Response<>(converter.convertToDto(NotificationAccount));
     }
 
@@ -150,9 +152,9 @@ public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlab
     }
 
     @Override
-    public Response<NotificationAccount> delete(String NotificationAccountId, String user) {
+    public Response<NotificationAccount> delete(String notificationAccountId, String user) {
         // validate user is the org admin
-        Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> NotificationAccountOptional = repository.findById(NotificationAccountId);
+        Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> NotificationAccountOptional = repository.findById(notificationAccountId);
         if (!NotificationAccountOptional.isPresent()) {
             return new Response<>().withErrors(true);
         }
@@ -162,7 +164,7 @@ public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlab
 //        args.put("x-message-ttl", 3600000);
 //        Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
 //        amqpAdmin.removeBinding(binding);
-        return super.delete(NotificationAccountId, user);
+        return super.delete(notificationAccountId, user);
     }
 
 
@@ -175,12 +177,19 @@ public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlab
 
     @Override
     public void isUserEntitled(String s, String user) {
-        Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> NotificationAccountOptional = repository.findById(s);
-        if (!NotificationAccountOptional.isPresent()) {
+        Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> notificationAccountOptional = repository.findById(s);
+        if (!notificationAccountOptional.isPresent()) {
             throw new FxException(String.format("Resource [%s] not found.", s));
         }
-        if (NotificationAccountOptional.get().getVisibility() == NotificationVisibility.PRIVATE && !org.apache.commons.lang3.StringUtils.equals(NotificationAccountOptional.get().getCreatedBy(), user)) {
+        if (notificationAccountOptional.get().getVisibility() == NotificationVisibility.PRIVATE && !org.apache.commons.lang3.StringUtils.equals(notificationAccountOptional.get().getCreatedBy(), user)) {
             throw new FxException(String.format("User [%s] not entitled to the resource [%s] with 'PRIVATE' visibility.", user, s));
         }
+    }
+
+    @Override
+    public Response<Long> count(String user) {
+        // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
+        Long count = this.notificationAccountRepository.countByCreatedByAndInactive(user, false);
+        return new Response<>(count);
     }
 }

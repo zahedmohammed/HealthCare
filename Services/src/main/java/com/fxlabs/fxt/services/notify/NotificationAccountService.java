@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * @author Mohammed Luqman Shareef
  * @since 4/3/2018
+ * @author Mohammed Shoukath Ali
  *
  */
 public interface NotificationAccountService extends GenericService<NotificationAccount, String> {
@@ -25,4 +26,7 @@ public interface NotificationAccountService extends GenericService<NotificationA
     Response<NotificationAccount> findById(String id, String user);
 
     Response<NotificationAccount> delete(String s, String user);
+
+    Response<Long> count(String user);
+
 }

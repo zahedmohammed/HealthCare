@@ -3,6 +3,8 @@ import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { SkillSubscriptionService } from '../../../services/skill-subscription.service';
 import { SkillService } from '../../../services/skill.service';
 import { OrgService } from '../../../services/org.service';
+import { CloudAccountService } from '../../../services/cloud-account.service';
+import { CloudAccount } from '../../../models/cloud-account.model';
 import { Subscription } from '../../../models/subscription.model';
 import { Base } from '../../../models/base.model';
 import { Handler } from '../../dialogs/handler/handler';
@@ -16,9 +18,10 @@ import { Handler } from '../../dialogs/handler/handler';
 export class IssuesEditComponent implements OnInit {
   skills;
   orgs;
+  cloudAccounts;
   showSpinner: boolean = false;
   subscription: Subscription = new Subscription();
-  constructor(private skillSubscriptionService: SkillSubscriptionService, private skillService: SkillService,
+  constructor(private skillSubscriptionService: SkillSubscriptionService, private cloudAccountService: CloudAccountService, private skillService: SkillService,
     private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
@@ -27,6 +30,7 @@ export class IssuesEditComponent implements OnInit {
       if (params['id']) {
         this.getById(params['id']);
         this.getOrgs();
+        this.getAccountyForIssueTracker();
       }
     });
     //this.listSkills();
@@ -102,5 +106,23 @@ export class IssuesEditComponent implements OnInit {
       this.handler.error(error);
     });
   }
+
+ getAccountyForIssueTracker() {
+    this.handler.activateLoader();
+    this.cloudAccountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.cloudAccounts = results['data'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+ setCloudAccount(cloudAccount){
+     this.subscription.cloudAccount.accountType =  cloudAccount.accountType;
+ }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 }

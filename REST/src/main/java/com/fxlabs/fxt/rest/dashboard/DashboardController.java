@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.clusters.ClusterService;
+import com.fxlabs.fxt.services.notify.NotificationAccountService;
 import com.fxlabs.fxt.services.project.EnvironmentService;
 import com.fxlabs.fxt.services.project.JobService;
 import com.fxlabs.fxt.services.project.ProjectService;
@@ -22,6 +23,8 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
+ *
  */
 @RestController
 @RequestMapping(DASHBOARD_BASE)
@@ -34,10 +37,12 @@ public class DashboardController {
     private SkillSubscriptionService skillSubscriptionService;
     private ClusterService clusterService;
     private TestSuiteService testSuiteService;
+    private NotificationAccountService notificationAccountService;
 
     @Autowired
     public DashboardController(JobService jobService, RunService runService, ProjectService projectService, EnvironmentService environmentService,
-                               SkillSubscriptionService skillSubscriptionService, ClusterService clusterService, TestSuiteService testSuiteService) {
+                               SkillSubscriptionService skillSubscriptionService, ClusterService clusterService, TestSuiteService testSuiteService,
+                               NotificationAccountService notificationAccountService) {
         this.jobService = jobService;
         this.runService = runService;
         this.projectService = projectService;
@@ -45,6 +50,7 @@ public class DashboardController {
         this.skillSubscriptionService = skillSubscriptionService;
         this.clusterService = clusterService;
         this.testSuiteService = testSuiteService;
+        this.notificationAccountService = notificationAccountService;
     }
 
     @Secured(ROLE_USER)
@@ -105,13 +111,13 @@ public class DashboardController {
     @Secured(ROLE_USER)
     @RequestMapping(value = "/count-ibots", method = RequestMethod.GET)
     public Response<Long> countiBots() {
-        return skillSubscriptionService.countBySkillType(SecurityUtil.getCurrentAuditor(), SkillType.ISSUE_TRACKER);
+        return skillSubscriptionService.count(SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/count-channels", method = RequestMethod.GET)
     public Response<Long> countChannels() {
-        return skillSubscriptionService.countBySkillType(SecurityUtil.getCurrentAuditor(), SkillType.NOTIFICATION);
+        return notificationAccountService.count(SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)

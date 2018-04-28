@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Component
 @Transactional
@@ -134,11 +135,11 @@ public class MarkCompleteTaskProcessor {
                 Map<String, String> opts = new HashMap<>();
                 switch (notificationAccount.getData().getType()) {
                     case SLACK:
-                        if (StringUtils.isEmpty(notificationAccount.getData().getToken())) {
+                        if (notificationAccount.getData().getCloudAccount() == null || StringUtils.isEmpty(notificationAccount.getData().getCloudAccount().getAccessKey())) {
                             logger.info("Notification Token not found for account [{}]", notificationAccount.getData().getId());
                             break;
                         }
-                        opts.put("TOKEN", notificationAccount.getData().getToken());
+                        opts.put("TOKEN", notificationAccount.getData().getCloudAccount().getAccessKey());
                         opts.put("MESSAGE", formatSlackMessage(run));
                         opts.put("CHANNELS", notificationAccount.getData().getToken());
                         task.setOpts(opts);

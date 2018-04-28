@@ -3,6 +3,7 @@ package com.fxlabs.fxt.dto.skills;
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Visibility;
+import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,6 +36,8 @@ public class SkillSubscription extends BaseDto<String> {
     private List<Opt> opts;
 
     private SubscriptionState state;
+
+    private CloudAccount cloudAccount;
 
     private Visibility visibility;
 

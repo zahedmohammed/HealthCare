@@ -15,11 +15,13 @@ public interface SkillSubscriptionRepository extends JpaRepository<SkillSubscrip
 
     Page<SkillSubscription> findByCreatedBy(String user, Pageable pageable);
 
+    Page<SkillSubscription> findByCreatedByAndInactive(String user, boolean inactive, Pageable pageable);
+
     Optional<SkillSubscription> findByOrgNameAndNameAndInactive(String org, String name, boolean inactive);
 
-    Page<SkillSubscription> findBySkillSkillTypeAndInactiveAndCreatedBy(SkillType skillType, boolean inactive, String user, Pageable pageable);
+   // Page<SkillSubscription> findBySkillSkillTypeAndInactiveAndCreatedBy(SkillType skillType, boolean inactive, String user, Pageable pageable);
 
-    Long countBySkillSkillTypeAndCreatedBy(SkillType skillType, String user);
+    Long countByCreatedByAndInactive(String user, boolean inactive);
 
 
 }

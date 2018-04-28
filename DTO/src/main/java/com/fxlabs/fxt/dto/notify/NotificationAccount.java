@@ -2,6 +2,7 @@ package com.fxlabs.fxt.dto.notify;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +27,8 @@ public class NotificationAccount extends BaseDto<String> {
     private String channel;
 
     private NameDto org;
+
+    private CloudAccount cloudAccount;
 
     private NotificationType type;
 

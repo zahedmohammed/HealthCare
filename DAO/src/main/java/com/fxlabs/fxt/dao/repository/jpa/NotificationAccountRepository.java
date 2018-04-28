@@ -22,4 +22,6 @@ public interface NotificationAccountRepository extends JpaRepository<Notificatio
 
     Long countByVisibility(NotificationVisibility visibility);
 
+    Long countByCreatedByAndInactive(String user, boolean inactive);
+
 }

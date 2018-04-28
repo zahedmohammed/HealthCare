@@ -6,6 +6,7 @@ export class NotificationAccount {
     visibility: string;
     type: string;
     token: string;
+    cloudAccount: Dto = new Dto();
     channel: string;
     org: Org = new Org();
 
@@ -14,4 +15,10 @@ export class NotificationAccount {
 export class Org {
     id: string;
     name: string;
+}
+
+export class Dto {
+ id: string;
+ name: string;
+ accountType: string;
 }

@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.entity.notify;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
+import com.fxlabs.fxt.dao.entity.clusters.CloudAccount;
 import com.fxlabs.fxt.dao.entity.users.Org;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,9 @@ public class NotificationAccount extends BaseEntity {
 
     private String name;
     private String region;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private CloudAccount cloudAccount;
 
     @Enumerated(EnumType.STRING)
     private NotificationVisibility visibility;

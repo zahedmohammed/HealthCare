@@ -17,6 +17,8 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
 /**
  * @author Mohammed Luqman Shareef
  * @since 3/20/2018
+ * @author Mohammed Shoukath Ali
+ * @since 4/28/2018
  */
 @RestController
 @RequestMapping(CLOUD_ACCOUNT_BASE)
@@ -35,6 +37,12 @@ public class CloudAccountController {
     public Response<List<CloudAccount>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                            @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return cloudAccountService.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/accounttype/{accountType}" , method = RequestMethod.GET)
+    public Response<List<CloudAccount>> findByAccountType( @PathVariable("accountType") String accountType) {
+        return cloudAccountService.findByAccountType(accountType, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_ENTERPRISE_ADMIN)

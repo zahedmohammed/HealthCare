@@ -152,16 +152,21 @@ public class TestCaseResponseProcessor {
 
         tc.setIssueTrackerHost(skillSubRespnse.getData().getProp1());
         tc.setIssueTrackerProjectName(skillSubRespnse.getData().getProp2());
-        tc.setUsername(skillSubRespnse.getData().getProp3());
-        tc.setPassword(skillSubRespnse.getData().getProp4());
+        tc.setUsername(skillSubRespnse.getData().getCloudAccount().getAccessKey());
+        tc.setPassword(skillSubRespnse.getData().getCloudAccount().getSecretKey());
+        //TODO get key from different source
 
-        Response<Skill> skillResponse = skillService.findById(skillSubRespnse.getData().getSkill().getId(), skillSubRespnse.getData().getSkill().getCreatedBy());
-
-        if (skillResponse.getData() == null || skillResponse.getData().getKey() == null) {
+        if (skillSubRespnse.getData().getCloudAccount() == null) {
             return null;
         }
 
-        return skillResponse.getData().getKey();
+        switch(skillSubRespnse.getData().getCloudAccount().getAccountType()){
+            case GitHub:
+                return itaasQueue;
+        }
+
+
+        return null;
     }
 
     private void getExistingIssueId(TestCaseResponse tc) {

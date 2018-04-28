@@ -15,6 +15,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ import java.util.Set;
 /**
  * @author Mohammed Luqman Shareef
  * @since 3/20/2018
+ *  @author Mohammed Shoukath Ali
+ * @since 4/28/2018
  */
 @Service
 @Transactional
@@ -71,6 +74,15 @@ public class CloudAccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     public Response<CloudAccount> findById(String id, String user) {
         com.fxlabs.fxt.dao.entity.clusters.CloudAccount cloudAccount = this.cloudAccountRepository.findById(id).get();
         return new Response<>(converter.convertToDto(cloudAccount));
+    }
+
+    @Override
+    public Response<List<CloudAccount>> findByAccountType(String accountType, String user) {
+        if (!EnumUtils.isValidEnum(CloudAccountPage.class, accountType)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Not a valid filter.")));
+        }
+        List<com.fxlabs.fxt.dao.entity.clusters.CloudAccount> cloudAccount = this.cloudAccountRepository.findByAccountTypeInAndCreatedBy(CloudAccountPage.valueOf(accountType).getAccountTypes(), user);
+        return new Response<>(converter.convertToDtos(cloudAccount));
     }
 
     @Override

@@ -92,8 +92,9 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     @Override
     public Response<List<SkillSubscription>> findBySkillType(String skillType, String user, Pageable pageable) {
         // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
-        Page<com.fxlabs.fxt.dao.entity.skills.SkillSubscription> entities = this.repository.findBySkillSkillTypeAndInactiveAndCreatedBy(com.fxlabs.fxt.dao.entity.skills.SkillType.valueOf(skillType), false, user, pageable);
+        Page<com.fxlabs.fxt.dao.entity.skills.SkillSubscription> entities = this.repository.findByCreatedByAndInactive(user, false, pageable);
         return new Response<>(converter.convertToDtos(entities.getContent()), entities.getTotalElements(), entities.getTotalPages());
+        // return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Operation not supported.")));
     }
 
     @Override
@@ -330,9 +331,9 @@ public class SkillSubscriptionServiceImpl extends GenericServiceImpl<com.fxlabs.
     }
 
     @Override
-    public Response<Long> countBySkillType(String user, SkillType skillType) {
+    public Response<Long> count(String user) {
         // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
-        Long count = this.repository.countBySkillSkillTypeAndCreatedBy(com.fxlabs.fxt.dao.entity.skills.SkillType.valueOf(skillType.name()), user);
+        Long count = this.repository.countByCreatedByAndInactive(user, false);
         return new Response<>(count);
     }
 

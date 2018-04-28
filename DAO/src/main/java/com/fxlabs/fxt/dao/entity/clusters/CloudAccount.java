@@ -33,6 +33,12 @@ public class CloudAccount extends BaseEntity {
     private ClusterVisibility visibility;
 
     @Enumerated(EnumType.STRING)
+    private AccountType accountType;
+
+//    @Enumerated(EnumType.STRING)
+//    private AccountTypeOption accountTypeOption;
+
+    @Enumerated(EnumType.STRING)
     private ClusterCloud cloudType;
 
     private String accessKey;

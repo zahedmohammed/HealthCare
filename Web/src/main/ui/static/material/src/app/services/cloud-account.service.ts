@@ -38,4 +38,7 @@ export class CloudAccountService {
     return this.http.delete(this.serviceUrl + "/" + obj['id']);
   }
 
+  getAccountByAccountType(accountType: string) {
+    return this.http.get(this.serviceUrl + "/accounttype/" + accountType);
+  }
 }

@@ -56,8 +56,8 @@
             </label>
             <div class="col-md-4">
               <mat-form-field>
-                <mat-select placeholder="Cloud Type" required [(ngModel)]="entry.cloudType" name="type">
-                  <mat-option *ngFor="let type of cloudTypes" [value]="type">
+                <mat-select placeholder="Account Type" required [(ngModel)]="entry.accountType" name="type">
+                  <mat-option *ngFor="let type of accountTypes" [value]="type">
                     {{type}}
                   </mat-option>
                 </mat-select>
@@ -66,24 +66,35 @@
           </div>
 
 
-          <div class="form-group row" [hidden]="!entry.cloudType">
+          <div class="form-group row" [hidden]="entry.accountType === 'EMAIL' || !entry.accountType">
             <label for="accessKey" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="accessKey"
-                       matInput type="text" placeholder="Access-Key/Username">
+                       matInput type="text" placeholder="Access-Key/Username/Token">
               </mat-input-container>
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="!entry.cloudType">
+          <div class="form-group row" [hidden]="entry.accountType === 'SLACK' || entry.accountType === 'EMAIL' || !entry.accountType">
             <label for="secret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
                        matInput type="password" placeholder="Secret-Key/Password">
+              </mat-input-container>
+            </div>
+          </div>
+
+          <div class="form-group row" [hidden]="entry.accountType !== 'EMAIL'">
+            <label for="secret" class="col-md-1 control-label">
+            </label>
+            <div class="col-md-4">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.secret" name="from" id="email"
+                       matInput type="text" placeholder="From:">
               </mat-input-container>
             </div>
           </div>

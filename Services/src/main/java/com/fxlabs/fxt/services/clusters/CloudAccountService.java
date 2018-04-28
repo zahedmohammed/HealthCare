@@ -10,6 +10,8 @@ import java.util.List;
 /**
  * @author Mohammed Luqman Shareef
  * @since 3/20/2018
+ * @author Mohammed Shoukath Ali
+ * @since 4/28/2018
  *
  */
 public interface CloudAccountService extends GenericService<CloudAccount, String> {
@@ -27,4 +29,6 @@ public interface CloudAccountService extends GenericService<CloudAccount, String
     Response<CloudAccount> delete(String s, String user);
 
     Response<Long> countBotRegions(String user);
+
+    public Response<List<CloudAccount>> findByAccountType(String accountType, String user);
 }

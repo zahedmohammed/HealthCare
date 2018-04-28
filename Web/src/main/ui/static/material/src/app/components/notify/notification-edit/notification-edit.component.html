@@ -50,37 +50,49 @@
             </div>
           </div>
 
+          <!--<div class="form-group row">-->
+            <!--<label class="col-md-1 control-label">-->
+            <!--</label>-->
+            <!--<div class="col-md-4">-->
+              <!--<mat-form-field>-->
+                <!--<mat-select placeholder="Notification Type" disabled required [(ngModel)]="entry.type" name="type">-->
+                  <!--<mat-option *ngFor="let type of types" [value]="type">-->
+                    <!--{{type}}-->
+                  <!--</mat-option>-->
+                <!--</mat-select>-->
+              <!--</mat-form-field>-->
+            <!--</div>-->
+            <!--<div class="col-md-7">-->
+              <!--<div class="callout1 text-muted callout-info1">-->
+                <!--<p>Receive test execution results across Email, Slack and other developer collaboration platforms.</p>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
           <div class="form-group row">
+            <!--<label for="token" class="col-md-1 control-label">-->
+            <!--</label>-->
+            <!--<div class="col-md-4">-->
+            <!--<mat-input-container class="full-width">-->
+            <!--<input required [(ngModel)]="entry.token" name="token" id="token"-->
+            <!--matInput type="text" placeholder="Token">-->
+            <!--</mat-input-container>-->
+            <!--</div>-->
             <label class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
               <mat-form-field>
-                <mat-select placeholder="Notification Type" disabled required [(ngModel)]="entry.type" name="type">
-                  <mat-option *ngFor="let type of types" [value]="type">
-                    {{type}}
+                <mat-select placeholder="Account" required [(ngModel)]="entry.cloudAccount.id" name="account">
+                  <mat-option *ngFor="let cloudAccount of cloudAccounts" [value]="cloudAccount.id" (click)="setCloudAccount(cloudAccount);">
+                    {{cloudAccount.name}} ({{cloudAccount.accountType}})
+
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
-            <div class="col-md-7">
-              <div class="callout1 text-muted callout-info1">
-                <p>Receive test execution results across Email, Slack and other developer collaboration platforms.</p>
-              </div>
-            </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.type !== 'SLACK'">
-            <label for="token" class="col-md-1 control-label">
-            </label>
-            <div class="col-md-4">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.token" name="token" id="token"
-                       matInput type="text" placeholder="Token">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="form-group row" [hidden]="entry.type !== 'SLACK'">
+          <div class="form-group row" [hidden]="entry.cloudAccount.accountType !== 'SLACK'">
             <label for="channel" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -91,7 +103,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.type !== 'EMAIL'">
+          <div class="form-group row" [hidden]="entry.cloudAccount.accountType !== 'EMAIL'">
             <label for="channel" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">

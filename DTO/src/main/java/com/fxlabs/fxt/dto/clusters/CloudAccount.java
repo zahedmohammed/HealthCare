@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author Mohammed Luqman Shareef
  * @since 3/20/2018
+ * @author Mohammed Shoukath Ali
  */
 @Data
 @AllArgsConstructor
@@ -25,7 +26,10 @@ public class CloudAccount extends BaseDto<String> {
 
     private NameDto org;
 
+    private AccountType accountType;
+
     private ClusterVisibility visibility;
+
 
     private ClusterCloud cloudType;
 
