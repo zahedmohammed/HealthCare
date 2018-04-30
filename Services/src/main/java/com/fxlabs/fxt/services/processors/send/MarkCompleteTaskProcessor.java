@@ -4,6 +4,8 @@ import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
+import com.fxlabs.fxt.dto.base.Message;
+import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
 import com.fxlabs.fxt.dto.notify.NotificationAccount;
@@ -118,7 +120,6 @@ public class MarkCompleteTaskProcessor {
 
             for (String address : run.getJob().getNotifications()) {
 
-
                 if (StringUtils.isEmpty(address) || StringUtils.isEmpty(run.getJob().getCreatedBy())) {
                     logger.info("Ignoring notification invalid data");
                     continue;
@@ -133,7 +134,7 @@ public class MarkCompleteTaskProcessor {
                 NotificationTask task = new NotificationTask();
                 task.setId(run.getId());
                 Map<String, String> opts = new HashMap<>();
-                switch (notificationAccount.getData().getType()) {
+                switch (notificationAccount.getData().getCloudAccount().getAccountType()) {
                     case SLACK:
                         if (notificationAccount.getData().getCloudAccount() == null || StringUtils.isEmpty(notificationAccount.getData().getCloudAccount().getAccessKey())) {
                             logger.info("Notification Token not found for account [{}]", notificationAccount.getData().getId());
@@ -141,7 +142,7 @@ public class MarkCompleteTaskProcessor {
                         }
                         opts.put("TOKEN", notificationAccount.getData().getCloudAccount().getAccessKey());
                         opts.put("MESSAGE", formatSlackMessage(run));
-                        opts.put("CHANNELS", notificationAccount.getData().getToken());
+                        opts.put("CHANNELS", notificationAccount.getData().getChannel());
                         task.setOpts(opts);
                         amqpClientService.sendTask(task, slackNotificationQueue);
                         break;

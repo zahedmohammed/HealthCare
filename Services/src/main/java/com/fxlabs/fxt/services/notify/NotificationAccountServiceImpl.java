@@ -88,7 +88,7 @@ public class NotificationAccountServiceImpl extends GenericServiceImpl<com.fxlab
         String NotificationAccountName = tokens[1];
         Optional<com.fxlabs.fxt.dao.entity.notify.NotificationAccount> NotificationAccountOptional = this.notificationAccountRepository.findByNameAndOrgName(NotificationAccountName, orgName);
 
-        if (!NotificationAccountOptional.isPresent() || NotificationAccountOptional.get().getVisibility() != NotificationVisibility.PUBLIC) {
+        if (!NotificationAccountOptional.isPresent()) {
             return new Response<>().withErrors(true);
         }
         // TODO validate user is entitled to use the NotificationAccount.

@@ -90,8 +90,8 @@ public class SlackNotificationService implements NotificationService {
                 return;
             }
 
-            String[] tokens = org.apache.commons.lang3.StringUtils.split(channels, ",");
-            List<String> channels_ = Arrays.asList(token);
+            String[] tokensChannel = org.apache.commons.lang3.StringUtils.split(channels, ",");
+            List<String> channels_ = Arrays.asList(tokensChannel);
 
             session = SlackSessionFactory.createWebSocketSlackSession(token);
             session.connect();
