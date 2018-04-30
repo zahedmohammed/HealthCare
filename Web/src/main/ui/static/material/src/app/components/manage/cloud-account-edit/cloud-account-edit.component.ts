@@ -18,7 +18,7 @@ export class CloudAccountEditComponent implements OnInit {
   entry: CloudAccount = new CloudAccount();
   orgs;
   cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
-  accountTypes = [ 'AWS', 'BITBUCKET' , 'GITHUB', 'GIT', 'MERCURIAL' , 'SVN' , 'SLACK'];
+   accountTypes = [ 'AWS', 'Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git' , 'SLACK' , 'EMAIL'];
   constructor(private cloudAccountService: CloudAccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {

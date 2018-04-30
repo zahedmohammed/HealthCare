@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Component
 @Transactional
@@ -142,10 +143,10 @@ public class TestCaseResponseProcessor {
 
         Response<SkillSubscription> skillSubRespnse = skillSubscriptionService.findByName(job.getIssueTracker());
 
-        if (skillSubRespnse.getData() == null || skillSubRespnse.getData().getSkill() == null) {
+        if (skillSubRespnse.getData() == null || skillSubRespnse.getData().getCloudAccount() == null) {
             return null;
         }
-
+        //prop1 will have host url
         if (StringUtils.isEmpty(skillSubRespnse.getData().getProp1())) {
             return null;
         }
@@ -155,10 +156,6 @@ public class TestCaseResponseProcessor {
         tc.setUsername(skillSubRespnse.getData().getCloudAccount().getAccessKey());
         tc.setPassword(skillSubRespnse.getData().getCloudAccount().getSecretKey());
         //TODO get key from different source
-
-        if (skillSubRespnse.getData().getCloudAccount() == null) {
-            return null;
-        }
 
         switch(skillSubRespnse.getData().getCloudAccount().getAccountType()){
             case GitHub:
