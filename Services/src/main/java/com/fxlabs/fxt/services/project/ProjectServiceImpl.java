@@ -209,11 +209,11 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             project.setOrg(nameDto);
             project.setName(request.getName());
             project.setDescription(request.getDescription());
-            if (request.getProjectType() == null) {
-                project.setProjectType(ProjectType.Local);
-            } else {
-                project.setProjectType(request.getProjectType());
-            }
+//            if (request.getProjectType() == null) {
+//                project.setProjectType(ProjectType.Local);
+//            } else {
+//                project.setProjectType(request.getProjectType());
+//            }
 
             project.setGenPolicy(request.getGenPolicy());
             project.setOpenAPISpec(request.getOpenAPISpec());
