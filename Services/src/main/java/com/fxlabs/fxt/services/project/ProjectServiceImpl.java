@@ -292,7 +292,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setUsername(projectGitAccount.getUsername());
         project.setPassword(PASSWORD_MASKED);
         project.setCloudAccount(_project.getCloudAccount());
-        project.getCloudAccount().setSecretKey(PASSWORD_MASKED);
+        if (project.getCloudAccount() != null) {
+            project.getCloudAccount().setSecretKey(PASSWORD_MASKED);
+        }
 
         project.setGenPolicy(_project.getGenPolicy());
         project.setOpenAPISpec(_project.getOpenAPISpec());
