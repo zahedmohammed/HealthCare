@@ -18,6 +18,7 @@ export class CloudAccount {
     public cloudType: string;
     public accessKey: string;
     public secretKey: string;
+    public accountType: string;
 }
 
 export class Dto {

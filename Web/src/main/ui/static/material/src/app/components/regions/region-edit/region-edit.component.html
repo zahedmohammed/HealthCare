@@ -61,15 +61,22 @@
           <div class="form-group row">
             <label class="col-md-1 control-label">
             </label>
+
             <div class="col-md-4">
-              <mat-form-field>
-                <mat-select placeholder="Cloud Account" required disabled [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">
-                  <mat-option *ngFor="let ca of cloudAccounts" [value]="ca">
-                    {{ca.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <mat-input-container class="full-width">
+                <input required disabled [(ngModel)]="entry.cloudAccount.name" name="cloudAccountName" id="cloudAccountName"
+                       matInput placeholder="Bot name">
+              </mat-input-container>
             </div>
+            <!--<div class="col-md-4">-->
+              <!--<mat-form-field>-->
+                <!--<mat-select placeholder="Cloud Account" required disabled [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">-->
+                  <!--<mat-option *ngFor="let ca of cloudAccounts" [value]="ca">-->
+                    <!--{{entry.cloudAccount.name}}-->
+                  <!--</mat-option>-->
+                <!--</mat-select>-->
+              <!--</mat-form-field>-->
+            <!--</div>-->
             <div class="callout1 text-muted callout-info1">
               <p>
                 Public or private cloud endpoint.
@@ -80,14 +87,12 @@
           <div class="form-group row">
             <label class="col-md-1 control-label">
             </label>
+
             <div class="col-md-4">
-              <mat-form-field>
-                <mat-select placeholder="Region" required disabled [(ngModel)]="entry.region" name="type">
-                  <mat-option *ngFor="let r of regions" [value]="r">
-                    {{r}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <mat-input-container class="full-width">
+                <input required disabled [(ngModel)]="entry.region" name="cloudRegion" id="cloudregion"
+                       matInput placeholder="Region">
+              </mat-input-container>
             </div>
             <div class="callout1 text-muted callout-info1">
               <p>

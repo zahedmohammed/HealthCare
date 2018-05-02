@@ -71,7 +71,7 @@
             <div class="col-md-4">
               <mat-form-field>
                 <mat-select placeholder="Cloud Account" required [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">
-                  <mat-option *ngFor="let ca of cloudAccounts" [value]="ca">
+                  <mat-option *ngFor="let ca of cloudAccounts" [value]="ca" (change)="setCloudAccount(cloudAccount);">
                     {{ca.name}}
                   </mat-option>
                 </mat-select>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { RegionsService } from '../../../services/regions.service';
 import { CloudAccountService } from '../../../services/cloud-account.service';
+import { CloudAccount } from '../../../models/cloud-account.model';
 import { OrgService } from '../../../services/org.service';
 import { Region } from '../../../models/regions.model';
 import { Handler } from '../../dialogs/handler/handler';
@@ -30,7 +31,7 @@ export class RegionNewComponent implements OnInit {
   constructor(private regionsService: RegionsService, private cloudAccountService: CloudAccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
-    this.getCloudAccounts();
+    this.getAccountForExecutionBotPage();
     this.getOrgs();
   }
 
@@ -49,13 +50,13 @@ export class RegionNewComponent implements OnInit {
   }
 
   getRegions(){
-    if (this.entry.cloudAccount.cloudType === 'GCP'){
+    if (this.entry.cloudAccount.accountType === 'GCP'){
         this.regions = this.GCP_REGIONS;
     } else
-    if (this.entry.cloudAccount.cloudType === 'AWS'){
+    if (this.entry.cloudAccount.accountType === 'AWS'){
         this.regions = this.AWS_REGIONS;
     } else
-    if (this.entry.cloudAccount.cloudType === 'AZURE'){
+    if (this.entry.cloudAccount.accountType === 'AZURE'){
         this.regions = this.AZURE_REGIONS;
     }
   }
@@ -72,6 +73,24 @@ export class RegionNewComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  getAccountForExecutionBotPage() {
+    this.handler.activateLoader();
+    this.cloudAccountService.getAccountByAccountType('BOT_HUB').subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.cloudAccounts = results['data'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+  setCloudAccount(cloudAccount){
+     this.entry.cloudAccount.accountType =  cloudAccount.accountType;
   }
 
   getOrgs() {
