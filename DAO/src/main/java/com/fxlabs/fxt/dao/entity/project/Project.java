@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.entity.project;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
+import com.fxlabs.fxt.dao.entity.clusters.CloudAccount;
 import com.fxlabs.fxt.dao.entity.users.Org;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,9 @@ public class Project extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private CloudAccount cloudAccount;
 
     @Enumerated(EnumType.STRING)
     private ProjectVisibility visibility;

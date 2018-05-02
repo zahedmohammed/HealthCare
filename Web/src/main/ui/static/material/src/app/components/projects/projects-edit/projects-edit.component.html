@@ -53,19 +53,25 @@
 
                     <div class="form-group row">
                         <label class="col-md-1 control-label"></label>
-                        <div class="col-md-6">
-                            <mat-form-field>
-                                <mat-select placeholder="Type" disabled required [(ngModel)]="project.projectType"
-                                            name="type" id="type">
-                                    <mat-option *ngFor="let projectType of projectTypes" [value]="projectType">
-                                        {{projectType}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required disabled [(ngModel)]="project.cloudAccount.name" name="cloudAccountName" id="cloudAccountName"
+                                       matInput placeholder="AccountName">
+                            </mat-input-container>
                         </div>
+                        <!--<div class="col-md-6">-->
+                            <!--<mat-form-field>-->
+                                <!--<mat-select placeholder="Type" disabled required [(ngModel)]="project.projectType"-->
+                                            <!--name="type" id="type">-->
+                                    <!--<mat-option *ngFor="let projectType of projectTypes" [value]="projectType">-->
+                                        <!--{{projectType}}-->
+                                    <!--</mat-option>-->
+                                <!--</mat-select>-->
+                            <!--</mat-form-field>-->
+                        <!--</div>-->
                     </div>
 
-                    <div [hidden]="project.projectType === 'Local' || !project.projectType">
+                    <div [hidden]="project.cloudAccount.accountType === 'Local' || !project.cloudAccount.accountType">
                         <div class="form-group row">
                             <label for="name" class="col-md-1 control-label"></label>
                             <div class="col-md-4">
@@ -91,32 +97,32 @@
                                 </div>
                             </div>
                         </div>
+                            <!--Removed.Using account for the username/password-->
+                        <!--<div class="form-group row">-->
+                            <!--<label for="name" class="col-md-1 control-label"></label>-->
+                            <!--<div class="col-md-4">-->
+                                <!--<mat-input-container class="full-width">-->
+                                    <!--<input [(ngModel)]="project.username" name="username"-->
+                                           <!--matInput placeholder="Repository username or access-key">-->
+                                <!--</mat-input-container>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-7">-->
+                                <!--<div class="callout1 text-muted callout-info1">-->
+                                    <!--<p>Fx monitors and sync back changed files from the repository. If the repo is-->
+                                        <!--private FX requires user/pass with read-access.</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-1 control-label"></label>
-                            <div class="col-md-4">
-                                <mat-input-container class="full-width">
-                                    <input [(ngModel)]="project.username" name="username"
-                                           matInput placeholder="Repository username or access-key">
-                                </mat-input-container>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="callout1 text-muted callout-info1">
-                                    <p>Fx monitors and sync back changed files from the repository. If the repo is
-                                        private FX requires user/pass with read-access.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-1 control-label"></label>
-                            <div class="col-md-4">
-                                <mat-input-container class="full-width">
-                                    <input type="password" [(ngModel)]="project.password" name="password"
-                                           matInput placeholder="Repository password or access-token">
-                                </mat-input-container>
-                            </div>
-                        </div>
+                        <!--<div class="form-group row">-->
+                            <!--<label for="name" class="col-md-1 control-label"></label>-->
+                            <!--<div class="col-md-4">-->
+                                <!--<mat-input-container class="full-width">-->
+                                    <!--<input type="password" [(ngModel)]="project.password" name="password"-->
+                                           <!--matInput placeholder="Repository password or access-token">-->
+                                <!--</mat-input-container>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
 
                     <div class="divider divider-dashed divider-lg pull-in"></div>

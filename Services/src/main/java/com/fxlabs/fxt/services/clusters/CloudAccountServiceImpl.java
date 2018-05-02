@@ -46,6 +46,7 @@ public class CloudAccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     private AmqpAdmin amqpAdmin;
     private TopicExchange topicExchange;
     private OrgUsersRepository orgUsersRepository;
+    private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
     @Autowired
     public CloudAccountServiceImpl(CloudAccountRepository cloudAccountRepository, CloudAccountESRepository cloudAccountESRepository,
@@ -73,6 +74,7 @@ public class CloudAccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     @Override
     public Response<CloudAccount> findById(String id, String user) {
         com.fxlabs.fxt.dao.entity.clusters.CloudAccount cloudAccount = this.cloudAccountRepository.findById(id).get();
+        cloudAccount.setSecretKey(PASSWORD_MASKED);
         return new Response<>(converter.convertToDto(cloudAccount));
     }
 
@@ -156,6 +158,15 @@ public class CloudAccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     @Override
     public Response<CloudAccount> update(CloudAccount dto, String user) {
         // validate user is the org admin
+        if (org.apache.commons.lang3.StringUtils.equals(PASSWORD_MASKED, dto.getSecretKey())) {
+
+            Optional<com.fxlabs.fxt.dao.entity.clusters.CloudAccount> response = this.cloudAccountRepository.findById(dto.getId());
+
+            if (response.isPresent() && response.get() != null) {
+                dto.setSecretKey(response.get().getSecretKey());
+            }
+
+        }
         return super.save(dto, user);
     }
 

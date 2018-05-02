@@ -2,6 +2,7 @@ package com.fxlabs.fxt.dto.project;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,6 +39,8 @@ public class Project extends BaseDto<String> {
 
     private GenPolicy genPolicy;
     private String openAPISpec;
+
+    private CloudAccount cloudAccount;
 
     private Date lastSync;
     private List<String> licenses;

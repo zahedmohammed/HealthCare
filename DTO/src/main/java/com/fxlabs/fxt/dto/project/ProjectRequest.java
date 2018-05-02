@@ -2,6 +2,7 @@ package com.fxlabs.fxt.dto.project;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +28,7 @@ public class ProjectRequest extends BaseDto<String> {
     private String username;
     private String password;
     private String lastCommit;
+    private CloudAccount cloudAccount;
 
     // data-from-ui
     private String name;

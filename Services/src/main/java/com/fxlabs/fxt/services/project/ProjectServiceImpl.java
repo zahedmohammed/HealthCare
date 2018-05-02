@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.ProjectConverter;
+import com.fxlabs.fxt.dao.entity.clusters.AccountType;
 import com.fxlabs.fxt.dao.entity.users.*;
 import com.fxlabs.fxt.dao.repository.es.ProjectImportsESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
@@ -192,7 +193,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // Validate GIT URL
-            if (request.getProjectType() != ProjectType.Local && StringUtils.isEmpty(request.getUrl())) {
+            if (request.getCloudAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local && StringUtils.isEmpty(request.getUrl())) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Project's GIT URL cannot be empty"));
             }
 
@@ -204,6 +205,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             nameDto.setId(org.get().getId());
 
             //nameDto.setVersion(org.get().getVersion());
+            project.setCloudAccount(request.getCloudAccount());
             project.setOrg(nameDto);
             project.setName(request.getName());
             project.setDescription(request.getDescription());
@@ -237,16 +239,16 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 com.fxlabs.fxt.dao.entity.project.ProjectGitAccount account = new com.fxlabs.fxt.dao.entity.project.ProjectGitAccount();
                 account.setUrl(request.getUrl());
                 account.setBranch(request.getBranch());
-                account.setUsername(request.getUsername());
-                if (!StringUtils.isEmpty(request.getPassword())) {
+                account.setUsername(request.getCloudAccount().getAccessKey());
+                if (!StringUtils.isEmpty(request.getCloudAccount().getSecretKey())) {
                     // TODO - Use encryption
-                    account.setPassword(request.getPassword());
+                    account.setPassword(request.getCloudAccount().getSecretKey());
                 }
                 account.setProjectId(projectResponse.getData().getId());
                 this.projectGitAccountRepository.saveAndFlush(account);
 
                 // Create GaaS Task
-                if (request.getProjectType() != ProjectType.Local) {
+                if (request.getCloudAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
                     this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
                 }
             }
@@ -289,6 +291,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setBranch(projectGitAccount.getBranch());
         project.setUsername(projectGitAccount.getUsername());
         project.setPassword(PASSWORD_MASKED);
+        project.setCloudAccount(_project.getCloudAccount());
+        project.getCloudAccount().setSecretKey(PASSWORD_MASKED);
 
         project.setGenPolicy(_project.getGenPolicy());
         project.setOpenAPISpec(_project.getOpenAPISpec());
