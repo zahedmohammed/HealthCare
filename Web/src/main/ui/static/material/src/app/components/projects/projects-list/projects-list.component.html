@@ -26,8 +26,7 @@
                 <tr *ngFor="let project of projects">
                     <td class="mdl-data-table__cell--non-numeric bold">{{project.org.name}}/{{project.name}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{project.genPolicy}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" [hidden]="!project.cloudAccount">{{project.cloudAccount.accountType}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" [hidden]="!project.projectType">{{project.projectType}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{project.cloudAccount.accountType}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{project.createdDate | date:'shortDate'}}</td>
                     <!--<td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a></td>-->
                     <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
