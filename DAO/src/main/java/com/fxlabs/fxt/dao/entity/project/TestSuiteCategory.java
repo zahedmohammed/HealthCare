@@ -6,14 +6,14 @@ package com.fxlabs.fxt.dao.entity.project;
 public enum TestSuiteCategory {
 
     BUG("Bug"),
-    USE_CASE("UseCase"),
+    USE_CASE("Use_Case"),
     POSITIVE("Positive"),
     NEGATIVE("Negative"),
     WEAK_PASSWORD ("Weak_Password"),
     SECURITY_UNSECURED("Security_UnSecured"),
     SECURITY_DDOS("Security_DDOS"),
     SECURITY_XSS("Security_XSS"),
-    SECURITY_SQL_INJECTION("Security_SQLInjection");
+    SECURITY_SQL_INJECTION("Security_SQL_Injection");
 
     private final String category;
 

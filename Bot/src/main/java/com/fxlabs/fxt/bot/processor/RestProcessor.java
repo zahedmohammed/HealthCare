@@ -6,6 +6,8 @@ import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.dto.project.TestCase;
+import com.fxlabs.fxt.dto.project.TestSuiteCategory;
+import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
@@ -118,6 +120,8 @@ public class RestProcessor {
         try {
             suite.setRunId(task.getId());
             suite.setSuiteName(task.getSuiteName());
+            suite.setCategory(TestSuiteCategory.valueOf(task.getCategory().toUpperCase()));
+            suite.setSeverity(TestSuiteSeverity.valueOf(task.getSeverity().toUpperCase()));
 
             // handle GET requests
             if (CollectionUtils.isEmpty(task.getTestCases())) {

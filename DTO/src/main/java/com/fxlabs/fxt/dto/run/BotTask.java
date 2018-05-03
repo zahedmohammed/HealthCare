@@ -43,6 +43,9 @@ public class BotTask implements Serializable {
     //private String username;
     //private String password;
 
+    private String category;
+    private String severity;
+
     private List<String> headers;
     private List<TestCase> testCases;
 
@@ -72,5 +75,6 @@ public class BotTask implements Serializable {
     private Policies policies;
 
     private boolean generateTestCaseResponse;
+
 
 }

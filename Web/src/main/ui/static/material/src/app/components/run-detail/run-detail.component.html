@@ -72,7 +72,9 @@
                                                                      (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName}}</a>
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.category}} </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{s.severity}} </td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'CRITICAL'"><span class="text-danger">{{s.severity}} </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'MAJOR'"><span class="text-warning">{{s.severity}} </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category != 'CRITICAL' && s.category != 'MAJOR' "><span class="text-success">{{s.severity}} </span></td>
 
                     <td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>
                     <td class="mdl-data-table__cell--non-numeric">

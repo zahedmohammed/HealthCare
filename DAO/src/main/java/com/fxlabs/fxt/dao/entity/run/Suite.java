@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.dao.entity.run;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
+import com.fxlabs.fxt.dao.entity.project.TestSuiteCategory;
+import com.fxlabs.fxt.dao.entity.project.TestSuiteSeverity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +11,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -31,6 +35,13 @@ public class Suite extends BaseEntity {
     private Long size = new Long(0);
     @Column(name = "time_")
     private Long time = new Long(0);
+
+
+    @Enumerated(EnumType.STRING)
+    private TestSuiteCategory category = TestSuiteCategory.BUG ;
+
+    @Enumerated(EnumType.STRING)
+    private TestSuiteSeverity severity = TestSuiteSeverity.MINOR;
 
 }
 
