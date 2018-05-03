@@ -39,6 +39,8 @@
                     <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
                     <th class="mdl-data-table__cell--non-numeric">Suite</th>
+                    <th class="mdl-data-table__cell--non-numeric">Category</th>
+                    <th class="mdl-data-table__cell--non-numeric">Severity</th>
                     <th class="mdl-data-table__cell--non-numeric">Total/Pass</th>
                     <th class="mdl-data-table__cell--non-numeric">Success</th>
                     <th class="mdl-data-table__cell--non-numeric">Time (ms)</th>
@@ -48,6 +50,8 @@
                     <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
                     <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
                     <th class="mdl-data-table__cell--non-numeric">{{time}}</th>
@@ -67,6 +71,9 @@
                     <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
                                                                      (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName}}</a>
                     </td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.category}} </td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.severity}} </td>
+
                     <td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
                         {{ ( ((s.tests - s.failed) * 100 ) / (s.tests) ).toFixed(0) }}%
@@ -80,6 +87,8 @@
                     <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
                     <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
                     <th class="mdl-data-table__cell--non-numeric">{{time}}</th>

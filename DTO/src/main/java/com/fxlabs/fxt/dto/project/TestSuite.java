@@ -44,6 +44,8 @@ public class TestSuite extends BaseDto<String> {
 
     private Map<String, String> props = new HashMap<>();
 
+    private TestSuiteCategory category;
+    private TestSuiteSeverity severity;
 
 }
 

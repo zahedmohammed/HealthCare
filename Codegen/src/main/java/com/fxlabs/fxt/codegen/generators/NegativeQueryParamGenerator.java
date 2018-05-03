@@ -2,6 +2,7 @@ package com.fxlabs.fxt.codegen.generators;
 
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
 import com.fxlabs.fxt.dto.project.TestCase;
+import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
@@ -37,6 +38,7 @@ public class NegativeQueryParamGenerator extends AbstractGenerator {
                         for (TestSuiteMin testSuite : testSuites) {
                             buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
                             testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "-1");
+                            testSuite.setCategory(TestSuiteCategory.NEGATIVE);
                         }
                         allTestSuites.addAll(testSuites);
                     }

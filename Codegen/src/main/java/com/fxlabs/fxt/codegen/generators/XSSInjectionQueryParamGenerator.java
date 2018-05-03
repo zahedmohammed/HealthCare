@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.codegen.generators;
 
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
+import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
@@ -35,6 +36,7 @@ public class XSSInjectionQueryParamGenerator extends AbstractGenerator {
                     for (TestSuiteMin testSuite : testSuites) {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@XSSSQLInjections | sample:all }}");
+                        testSuite.setCategory(TestSuiteCategory.SECURITY_XSS);
                     }
                     allTestSuites.addAll(testSuites);
                 }

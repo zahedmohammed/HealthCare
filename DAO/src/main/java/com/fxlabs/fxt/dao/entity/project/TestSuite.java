@@ -72,6 +72,13 @@ public class TestSuite extends BaseEntity {
 
     private Boolean publishToMarketplace = false;
 
+    @Enumerated(EnumType.STRING)
+    private TestSuiteCategory category = TestSuiteCategory.BUG ;
+
+    @Enumerated(EnumType.STRING)
+    private TestSuiteSeverity severity = TestSuiteSeverity.MINOR;
+
+
     @PrePersist
     @PreUpdate
     public void setDefaults() {

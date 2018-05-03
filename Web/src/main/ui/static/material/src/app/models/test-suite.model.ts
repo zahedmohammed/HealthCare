@@ -6,6 +6,8 @@ export class TestSuite {
     description: string;
     visibility: string;
     project: Project = new Project();
+    category: string;
+    severity: string;
 
 }
 export class Project {

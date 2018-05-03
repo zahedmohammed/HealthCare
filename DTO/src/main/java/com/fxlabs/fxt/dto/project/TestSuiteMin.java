@@ -34,6 +34,9 @@ public class TestSuiteMin {
     private List<String> tags = new ArrayList<>();
     private List<String> authors = new ArrayList<>();
 
+    private TestSuiteCategory category;
+    private TestSuiteSeverity severity;
+
     private boolean inactive;
 
 

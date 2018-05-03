@@ -212,7 +212,11 @@ public class DataEvaluator {
                             context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response.getErrors());
                         } else if (StringUtils.isNotEmpty(PATH)) {
                             if ( isJsonObject(response.getEval())){
-                                val = JsonPath.read(response.getEval(), PATH);
+                                try {
+                                    val = JsonPath.read(response.getEval(), PATH);
+                                }catch (Exception ex){
+                                    val = response.getEval();
+                                }
                             }else{
                                 val = response.getEval();
                             }
@@ -230,6 +234,7 @@ public class DataEvaluator {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             logger.warn(e.getLocalizedMessage());
         }
         return val;

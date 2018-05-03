@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.codegen.generators;
 
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
+import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
@@ -42,6 +43,7 @@ public class NullPathParamGenerator extends AbstractGenerator {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
                         String _path = path.replace("{" + pathParam.getName() + "}", "null");
                         testSuite.setEndpoint(_path);
+                        testSuite.setCategory(TestSuiteCategory.BUG);
                     }
                     allTestSuites.addAll(testSuites);
                 }
