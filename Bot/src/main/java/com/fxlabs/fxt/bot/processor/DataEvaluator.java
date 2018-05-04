@@ -208,7 +208,7 @@ public class DataEvaluator {
                     } else if (StringUtils.startsWith(KEY, "@")) {
                         // Handle Marketplace request
                         MarketplaceDataTask response = this.marketplaceDataProvider.get(context.getProjectId(), KEY);
-                        if (StringUtils.isNotEmpty(response.getErrors())) {
+                        if (response !=null && StringUtils.isNotEmpty(response.getErrors())) {
                             context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response.getErrors());
                         } else if (StringUtils.isNotEmpty(PATH)) {
                             if ( isJsonObject(response.getEval())){

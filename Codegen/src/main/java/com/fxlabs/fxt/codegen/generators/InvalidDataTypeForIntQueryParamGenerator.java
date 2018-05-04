@@ -3,6 +3,7 @@ package com.fxlabs.fxt.codegen.generators;
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
 import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
+import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
@@ -49,7 +50,8 @@ public class InvalidDataTypeForIntQueryParamGenerator extends AbstractGenerator 
                 for (TestSuiteMin testSuite : testSuites) {
                     buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
                     testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + RandomStringUtils.randomAlphanumeric(6));
-                    testSuite.setCategory(TestSuiteCategory.BUG);
+                    testSuite.setCategory(TestSuiteCategory.Bug);
+                    testSuite.setSeverity(TestSuiteSeverity.Major);
                 }
 
                 allTestSuites.addAll(testSuites);

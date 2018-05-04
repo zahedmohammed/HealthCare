@@ -42,6 +42,12 @@ public class TestSuite extends BaseEntity {
 
     private String auth;
 
+    @Enumerated(EnumType.STRING)
+    private TestSuiteCategory category = TestSuiteCategory.Bug ;
+
+    @Enumerated(EnumType.STRING)
+    private TestSuiteSeverity severity = TestSuiteSeverity.Major;
+
     @ElementCollection
     private List<String> headers;
 
@@ -72,11 +78,6 @@ public class TestSuite extends BaseEntity {
 
     private Boolean publishToMarketplace = false;
 
-    @Enumerated(EnumType.STRING)
-    private TestSuiteCategory category = TestSuiteCategory.BUG ;
-
-    @Enumerated(EnumType.STRING)
-    private TestSuiteSeverity severity = TestSuiteSeverity.MINOR;
 
 
     @PrePersist

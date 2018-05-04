@@ -5,15 +5,15 @@ package com.fxlabs.fxt.dao.entity.project;
  */
 public enum TestSuiteCategory {
 
-    BUG("Bug"),
-    USE_CASE("Use_Case"),
-    POSITIVE("Positive"),
-    NEGATIVE("Negative"),
-    WEAK_PASSWORD ("Weak_Password"),
-    SECURITY_UNSECURED("Security_UnSecured"),
-    SECURITY_DDOS("Security_DDOS"),
-    SECURITY_XSS("Security_XSS"),
-    SECURITY_SQL_INJECTION("Security_SQL_Injection");
+    Bug("Bug"),
+    Use_Case("Use_Case"),
+    Positive("Positive"),
+    Negative("Negative"),
+    Weak_Password ("Weak_Password"),
+    Security_UnSecured("Security_UnSecured"),
+    Security_DDOS("Security_DDOS"),
+    Security_XSS("Security_XSS"),
+    Security_SQL_Injection("Security_SQL_Injection");
 
     private final String category;
 

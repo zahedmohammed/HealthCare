@@ -9,6 +9,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Intesar Shannan Mohammed

@@ -78,6 +78,8 @@ public class MarkCompleteTaskProcessor {
                     Long time = testSuiteResponseService.timeSum(run.getId());
                     Long bytes = testSuiteResponseService.byteSum(run.getId());
 
+                    testSuiteResponseService.runStats(run.getId());
+
                     Long count = failed + passed;
                     if (count >= run.getTask().getTotalTests()) {
                         run.getTask().setStatus(TaskStatus.COMPLETED);

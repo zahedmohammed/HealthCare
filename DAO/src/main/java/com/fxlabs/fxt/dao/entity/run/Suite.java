@@ -38,10 +38,10 @@ public class Suite extends BaseEntity {
 
 
     @Enumerated(EnumType.STRING)
-    private TestSuiteCategory category = TestSuiteCategory.BUG ;
+    private TestSuiteCategory category = TestSuiteCategory.Bug ;
 
     @Enumerated(EnumType.STRING)
-    private TestSuiteSeverity severity = TestSuiteSeverity.MINOR;
+    private TestSuiteSeverity severity = TestSuiteSeverity.Major;
 
 }
 

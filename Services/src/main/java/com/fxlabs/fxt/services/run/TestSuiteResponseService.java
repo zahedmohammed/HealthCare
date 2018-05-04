@@ -3,6 +3,8 @@ package com.fxlabs.fxt.services.run;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.services.base.GenericService;
 
+import java.util.Map;
+
 /**
  * @author Intesar Shannan Mohammed
  */
@@ -15,4 +17,6 @@ public interface TestSuiteResponseService extends GenericService<TestSuiteRespon
     public Long timeSum(String runId);
 
     Long byteSum(String runId);
+
+    public Map<String, Long> runStats(String runId);
 }

@@ -4,6 +4,7 @@ import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
 import com.fxlabs.fxt.codegen.generators.utils.ParamUtil;
 import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
+import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
@@ -43,7 +44,8 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
                         for (TestSuiteMin testSuite : testSuites) {
                             buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
                             testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + Integer.MAX_VALUE);
-                            testSuite.setCategory(TestSuiteCategory.SECURITY_DDOS);
+                            testSuite.setCategory(TestSuiteCategory.Security_DDOS);
+                            testSuite.setSeverity(TestSuiteSeverity.Major);
                         }
                         allTestSuites.addAll(testSuites);
                     }

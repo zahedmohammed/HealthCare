@@ -5,10 +5,10 @@ package com.fxlabs.fxt.dto.project;
  */
 public enum TestSuiteSeverity {
 
-    CRITICAL("Critical"),
-    MAJOR("Major"),
-    MINOR("Minor"),
-    TRIVIAL("Trivial");
+    Critical("Critical"),
+    Major("Major"),
+    Minor("Minor"),
+    Trivial("Trivial");
 
     private final String severity;
 
