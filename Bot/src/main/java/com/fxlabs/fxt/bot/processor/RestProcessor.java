@@ -120,9 +120,12 @@ public class RestProcessor {
         try {
             suite.setRunId(task.getId());
             suite.setSuiteName(task.getSuiteName());
-            suite.setCategory(TestSuiteCategory.valueOf(task.getCategory())); //.toUpperCase()
-            suite.setSeverity(TestSuiteSeverity.valueOf(task.getSeverity())); //.toUpperCase()
-
+            if (task.getCategory() != null) {
+                suite.setCategory(TestSuiteCategory.valueOf(task.getCategory())); //.toUpperCase()
+            }
+            if (task.getSeverity() != null) {
+                suite.setSeverity(TestSuiteSeverity.valueOf(task.getSeverity())); //.toUpperCase()
+            }
             // handle GET requests
             if (CollectionUtils.isEmpty(task.getTestCases())) {
                 task.setTestCases(Collections.singletonList(new TestCase()));

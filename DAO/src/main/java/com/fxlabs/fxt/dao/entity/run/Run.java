@@ -42,7 +42,7 @@ public class Run extends BaseEntity {
     @MapKeyColumn(name = "key")
     @Column(name = "value")
     @CollectionTable(name = "run_stats", joinColumns = @JoinColumn(name = "run_id"))
-    private Map<String, String> stats = new HashMap<>(); // maps from attribute name to value
+    private Map<String, Long> stats = new HashMap<>(); // maps from attribute name to value
 
 }
 

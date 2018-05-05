@@ -42,5 +42,8 @@ public class TestSuiteResponse extends BaseEntity {
     private Long totalBytes = 0L;
     private String status;
 
+    private String category;
+    private String severity;
+
 }
 

@@ -162,9 +162,12 @@ public class RunTaskRequestProcessor {
 
                         task.setMethod(convert(testSuite.getMethod()));
 
-                        task.setCategory(testSuite.getCategory().toString());
-                        task.setSeverity(testSuite.getSeverity().toString());
-
+                        if (testSuite.getCategory() != null) {
+                            task.setCategory(testSuite.getCategory().toString());
+                        }
+                        if (testSuite.getSeverity() != null ) {
+                            task.setSeverity(testSuite.getSeverity().toString());
+                        }
                         copyHeaders(task, testSuite);
 
                         copyRequests(task, testSuite);

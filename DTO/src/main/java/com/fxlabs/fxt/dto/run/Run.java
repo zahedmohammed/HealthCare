@@ -29,7 +29,7 @@ public class Run extends BaseDto<String> {
     // override region, tags, env in reference Job entity.
     private Map<String, String> attributes = new HashMap<>();
 
-    private Map<String, String> stats = new HashMap<>();
+    private Map<String, Long> stats = new HashMap<>();
 
 }
 

@@ -25,6 +25,22 @@
                     <h4 color="warn">Total Failed: {{run.task.failedTests}}</h4>
                 </div>
                 <div class="divider divider-solid divider-lg"></div>
+                <div class="card__title">
+                    <h4>Statistics By Category</h4>
+                    <h4>Security (SQL Injection): {{run.stats.Security_SQL_Injection_Passed}} Passed, {{run.stats.Security_SQL_Injection_Failed}} Failed</h4>
+                    <h4>Security (DDOS): {{run.stats.Security_DDOS_Passed}} Passed, {{run.stats.Security_DDOS_Failed}} Failed</h4>
+                    <h4>Security (XSS): {{run.stats.Security_XSS_Passed}} Passed, {{run.stats.Security_XSS_Failed}} Failed</h4>
+                    <h4>Negative : {{run.stats.Negative_Passed}} Passed, {{run.stats.Negative_Failed}} Failed</h4>
+                    <h4>Functional : {{run.stats.Bug_Passed}} Passed, {{run.stats.Bug_Failed}} Failed</h4>
+                    <br/>
+                    <h4>Statistics By Severity</h4>
+                    <h4>Critical: {{run.stats.Critical_Passed}} Passed, {{run.stats.Critical_Failed}} Failed</h4>
+                    <h4>Major : {{run.stats.Major_Passed}} Passed, {{run.stats.Major_Failed}} Failed</h4>
+                    <h4>Minor: {{run.stats.Minor_Passed}} Passed, {{run.stats.Minor_Failed}} Failed</h4>
+                    <h4>Trivial : {{run.stats.Trivial_Passed}} Passed, {{run.stats.Trivial_Failed}} Failed</h4>
+                </div>
+
+                <div class="divider divider-solid divider-lg"></div>
                 <p class="card__desc" style="white-space: pre;">{{run.task.description}}</p>
             </div>
         </div>

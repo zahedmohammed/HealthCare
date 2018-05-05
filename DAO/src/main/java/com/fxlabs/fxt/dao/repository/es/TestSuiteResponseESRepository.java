@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,6 +16,8 @@ public interface TestSuiteResponseESRepository extends ElasticsearchRepository<T
     //Page<TestSuiteResponse> findByRunId(String id, Pageable pageable);
 
     Optional<Long> countByRunId(String runId);
+
+    List<TestSuiteResponse> findByRunId(String runId);
 
     //@Query("SELECT SUM(totalPassed) FROM TestSuiteResponse WHERE runId like ?1")
     //Optional<Long> sumOfTotalTestsByRunId(String runId);

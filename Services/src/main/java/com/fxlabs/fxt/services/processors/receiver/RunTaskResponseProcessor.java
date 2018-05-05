@@ -82,6 +82,11 @@ public class RunTaskResponseProcessor {
         }
         TestSuite pds = testSuiteOptional.get();
         ds.setTestSuite(pds.getName());
+        if (pds.getCategory() != null)
+            ds.setCategory(pds.getCategory().toString());
+        if (pds.getSeverity() != null)
+        ds.setSeverity(pds.getSeverity().toString());
+
 
         //logger.info("Logs: {}", task.getLogs());
         ds.setLogs(task.getLogs());
