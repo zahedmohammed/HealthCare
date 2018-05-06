@@ -64,7 +64,7 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="form-group row" [hidden]="entry.accountType === 'GitHub' || entry.accountType === 'Slack' || entry.accountType === 'Email' || !entry.accountType || entry.accountType === 'Local'">
+          <div class="form-group row" [hidden]="entry.accountType === 'Microsoft_TFS_Git' || entry.accountType === 'GitHub' || entry.accountType === 'Slack' || entry.accountType === 'Email' || !entry.accountType || entry.accountType === 'Local'">
             <label for="accessKey" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -75,7 +75,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.accountType === 'GitHub' || entry.accountType === 'Slack' || entry.accountType === 'Email' || entry.accountType === 'Local' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType === 'Microsoft_TFS_Git' || entry.accountType === 'GitHub' || entry.accountType === 'Slack' || entry.accountType === 'Email' || entry.accountType === 'Local' || !entry.accountType">
             <label for="secret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -85,7 +85,39 @@
               </mat-input-container>
             </div>
           </div>
-          <!-- GitHub   -->
+          <!-- Microsoft TFS  Start    -->
+          <div class="form-group row" [hidden]="entry.accountType !== 'Microsoft_TFS_Git' || !entry.accountType">
+            <label for="microsoftTfsAccessKey" class="col-md-1 control-label">
+            </label>
+            <div class="col-md-4">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.accessKey" name="accessKey" id="microsoftTfsAccessKey"
+                       matInput type="text" placeholder="Access-Key/Username">
+              </mat-input-container>
+            </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>Team Foundation Server from Microsoft provides a set of collaborative software development tools that integrate with your existing IDE or editor thus enabling your cross-functional team to work effectively on software projects of all sizes.
+                  <br/><a target="_blank"
+                          href="https://www.visualstudio.com/tfs/">Click here to know more<i class="material-icons"
+                                                                                                                      style="font-size: 18px;">open_in_new</i></a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row" [hidden]="entry.accountType !== 'Microsoft_TFS_Git' || !entry.accountType">
+            <label for="microsoftTfsSecret" class="col-md-1 control-label">
+            </label>
+            <div class="col-md-4">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.secretKey" name="secret" id="microsoftTfsSecret"
+                       matInput type="password" placeholder="Secret-Key/Password">
+              </mat-input-container>
+            </div>
+          </div>
+          <!-- Microsoft TFS  End    -->
+          <!-- GitHub Start  -->
           <div class="form-group row" [hidden]="entry.accountType !== 'GitHub' || !entry.accountType">
             <label for="gitHubAccessKey" class="col-md-1 control-label">
             </label>
@@ -97,7 +129,7 @@
             </div>
             <div class="col-md-7">
               <div class="callout1 text-muted callout-info1">
-                <p>GitHub Account username/Password
+                <p>GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
                   <br/><a target="_blank"
                                            href="https://github.com/join?source=header-home">Click here to create account on Github <i class="material-icons"
                                   style="font-size: 18px;">open_in_new</i></a>
@@ -116,6 +148,7 @@
               </mat-input-container>
             </div>
           </div>
+          <!-- GitHub End  -->
 
           <div class="form-group row" [hidden]="entry.accountType !== 'Slack' || !entry.accountType">
             <label for="secret_slack" class="col-md-1 control-label">
@@ -129,7 +162,7 @@
             <div class="col-md-7">
               <div class="callout1 text-muted callout-info1">
                 <p>
-                  Slack token to send notifications. <br/>
+                  Slack is where work happens. It’s a digital workspace that powers your organization — all the pieces and the people — so you can get things done.<br/>
                   <a target="_blank"
                      href="https://api.slack.com/custom-integrations/legacy-tokens">Click here for token<i class="material-icons"
                                                                                                            style="font-size: 18px;">open_in_new</i></a>T
