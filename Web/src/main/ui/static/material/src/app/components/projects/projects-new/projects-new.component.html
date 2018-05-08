@@ -58,7 +58,7 @@
                             <mat-form-field>
                                 <mat-select placeholder="Repository Credentials" required [(ngModel)]="project.cloudAccount" name="type">
                                     <mat-option *ngFor="let ca of cloudAccounts" [value]="ca" (change)="setCloudAccount(cloudAccount);">
-                                        {{ca.name}}
+                                        {{ca.name}} ({{ca.accountType}})
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>

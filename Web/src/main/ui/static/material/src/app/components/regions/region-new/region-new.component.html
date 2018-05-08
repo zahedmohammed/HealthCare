@@ -72,7 +72,7 @@
               <mat-form-field>
                 <mat-select placeholder="Account" required [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">
                   <mat-option *ngFor="let ca of cloudAccounts" [value]="ca" (change)="setCloudAccount(cloudAccount);">
-                    {{ca.name}}
+                    {{ca.name}} ({{ca.accountType}})
                   </mat-option>
                 </mat-select>
               </mat-form-field>
