@@ -46,6 +46,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String DEFAULT_PAGE_SIZE_VALUE = "20";
     public static final String DEFAULT_MAX_PAGE_SIZE_VALUE = "100";
     public static final String DEFAULT_1k_PAGE_SIZE_VALUE = "1000";
+
     public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
 
     protected GenericService<D, ID> service;

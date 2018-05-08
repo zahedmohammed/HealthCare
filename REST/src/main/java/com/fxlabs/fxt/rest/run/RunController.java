@@ -9,6 +9,7 @@ import com.fxlabs.fxt.services.run.RunService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,7 +68,7 @@ public class RunController {
                                                    @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return runService.findSummaryByRunId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize));
+        return runService.findSummaryByRunId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, new Sort(Sort.Direction.DESC, "failed")));
     }
 
     @Secured(ROLE_USER)
