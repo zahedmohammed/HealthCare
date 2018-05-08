@@ -19,7 +19,7 @@ export class CloudAccountNewComponent implements OnInit {
   entry: CloudAccount = new CloudAccount();
   cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
   //accountTypes = [ 'VERSION_CONTROL', 'ISSUE_TRACKER', 'CLOUD', 'NOTIFICATION'];
-  accountTypes = [ 'AWS', 'Git', 'GitHub', 'BitBucket' , 'Microsoft_TFS_Git' , 'Slack' , 'Email' , 'Local' ];
+  accountTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'AWS', 'Slack' , 'Email'];
   constructor(private cloudAccountService: CloudAccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
