@@ -202,7 +202,7 @@ public class RunTaskRequestProcessor {
 
                 run.getTask().setTotalTests(total.get());
                 runRepository.saveAndFlush(run);
-            } catch (RuntimeException ex) {
+            } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
 

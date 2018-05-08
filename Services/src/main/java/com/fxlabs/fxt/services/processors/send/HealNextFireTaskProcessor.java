@@ -39,7 +39,7 @@ public class HealNextFireTaskProcessor {
                     job.setNextFire(CronUtils.cronNext(job.getCron()));
                     jobRepository.saveAndFlush(job);
                 }
-            } catch (RuntimeException ex) {
+            } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
         });

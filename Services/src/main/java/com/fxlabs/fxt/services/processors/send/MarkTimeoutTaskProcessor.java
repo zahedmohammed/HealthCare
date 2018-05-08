@@ -86,7 +86,7 @@ public class MarkTimeoutTaskProcessor {
                     sendNotification(run);
                 }
                 // TODO - Test-Suites
-            } catch (RuntimeException ex) {
+            } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
         });

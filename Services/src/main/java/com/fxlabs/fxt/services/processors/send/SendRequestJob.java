@@ -21,7 +21,7 @@ public class SendRequestJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.info("Job run....");
+        logger.info("SendRequestJob run....");
         processor.process();
     }
 }

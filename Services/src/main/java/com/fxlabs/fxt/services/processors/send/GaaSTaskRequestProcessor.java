@@ -115,7 +115,7 @@ public class GaaSTaskRequestProcessor {
             }
 
             amqpClientService.sendTask(task, gaaSQueue);
-        } catch (RuntimeException ex) {
+        } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         }
     }

@@ -1,8 +1,8 @@
 package com.fxlabs.fxt.services.processors.send;
 
 import com.fxlabs.fxt.dao.entity.alerts.Alert;
-import com.fxlabs.fxt.dao.entity.alerts.AlertType;
 import com.fxlabs.fxt.dao.entity.alerts.AlertStatus;
+import com.fxlabs.fxt.dao.entity.alerts.AlertType;
 import com.fxlabs.fxt.dao.entity.users.Users;
 import com.fxlabs.fxt.dao.repository.es.AlertESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
@@ -56,35 +56,38 @@ public class NaaSTaskRequestProcessor {
     public void process() {
         Stream<Alert> alerts = alertESRepository.findByTypeAndStatus(AlertType.ERROR, AlertStatus.UNREAD);
         alerts.forEach(alert -> {
+            try {
+                EmailTask task = new EmailTask();
 
-            EmailTask task = new EmailTask();
+                task.setSubject(alert.getSubject());
+                StringBuilder sb = new StringBuilder();
+                sb
 
-            task.setSubject(alert.getSubject());
-            StringBuilder sb = new StringBuilder();
-            sb
+                        .append("Component: ").append(alert.getRefType()).append("\n")
+                        .append("Name: ").append(alert.getRefName()).append("\n")
+                        .append("ID: ").append(alert.getRefId()).append("\n")
+                        .append("Type: ").append(alert.getType()).append("\n")
+                        .append("Task-Type: ").append(alert.getTaskType()).append("\n")
+                        //.append("State: ").append(alert.getState()).append("\n")
+                        .append("Logs: ").append(alert.getMessage()).append("\n");
 
-                    .append("Component: ").append(alert.getRefType()).append("\n")
-                    .append("Name: ").append(alert.getRefName()).append("\n")
-                    .append("ID: ").append(alert.getRefId()).append("\n")
-                    .append("Type: ").append(alert.getType()).append("\n")
-                    .append("Task-Type: ").append(alert.getTaskType()).append("\n")
-                    //.append("State: ").append(alert.getState()).append("\n")
-                    .append("Logs: ").append(alert.getMessage()).append("\n");
+                task.setBody(sb.toString());
+                List<String> tos = new ArrayList<>();
 
-            task.setBody(sb.toString());
-            List<String> tos = new ArrayList<>();
-
-            alert.getUsers().stream().forEach(u -> {
-                Optional<Users> usersOptional = usersRepository.findById(u);
-                if (usersOptional.isPresent()) {
-                    tos.add(usersOptional.get().getEmail());
-                }
-            });
+                alert.getUsers().stream().forEach(u -> {
+                    Optional<Users> usersOptional = usersRepository.findById(u);
+                    if (usersOptional.isPresent()) {
+                        tos.add(usersOptional.get().getEmail());
+                    }
+                });
 
 
-            task.setTos(tos);
+                task.setTos(tos);
 
-            amqpClientService.sendTask(task, naaSQueue);
+                amqpClientService.sendTask(task, naaSQueue);
+            } catch (Exception e) {
+                logger.warn(e.getLocalizedMessage(), e);
+            }
 
         });
     }

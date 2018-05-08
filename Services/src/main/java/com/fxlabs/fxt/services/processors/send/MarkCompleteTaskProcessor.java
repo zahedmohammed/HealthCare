@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  * @author Mohammed Shoukath Ali
  */
 @Component
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class MarkCompleteTaskProcessor {
 
     private static final String COLON = " : ";
@@ -106,7 +106,7 @@ public class MarkCompleteTaskProcessor {
 
 
                     // TODO - Test-Suites
-                } catch (RuntimeException ex) {
+                } catch (Exception ex) {
                     logger.warn(ex.getLocalizedMessage(), ex);
                 }
             });

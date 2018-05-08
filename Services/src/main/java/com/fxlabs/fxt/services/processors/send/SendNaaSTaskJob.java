@@ -21,7 +21,7 @@ public class SendNaaSTaskJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.info("Job run....");
+        logger.info("SendNaaSTaskJob run....");
         processor.process();
     }
 }

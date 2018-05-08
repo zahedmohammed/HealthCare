@@ -66,7 +66,7 @@ public class JobCronTaskProcessor {
                     for (Message m : runResponse.getMessages())
                         logger.warn(m.getValue());
                 }
-            } catch (RuntimeException ex) {
+            } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
         });
