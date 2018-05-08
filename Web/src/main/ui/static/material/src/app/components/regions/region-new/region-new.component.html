@@ -65,12 +65,12 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="!entry.name">
+          <div class="form-group row">
             <label class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
               <mat-form-field>
-                <mat-select placeholder="Cloud Account" required [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">
+                <mat-select placeholder="Account" required [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">
                   <mat-option *ngFor="let ca of cloudAccounts" [value]="ca" (change)="setCloudAccount(cloudAccount);">
                     {{ca.name}}
                   </mat-option>
@@ -80,6 +80,11 @@
             <div class="callout1 text-muted callout-info1">
               <p>
                 Public or private cloud endpoint.
+              </p>
+              <p>
+                <a target="_blank"
+                   href="#/app/cloud-accounts">Click here to register account<i class="material-icons"
+                                                                                style="font-size: 18px;">open_in_new</i></a>
               </p>
             </div>
           </div>
