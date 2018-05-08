@@ -83,6 +83,10 @@ public class GitService implements VersionControlService {
                 return response;
             }
 
+            if (StringUtils.isNotEmpty(task.getVcBranch()) && !StringUtils.equals(task.getVcBranch(), "master")) {
+                checkout(repository, task.getVcBranch());
+            }
+
             String commitId = head(repository);
             response.setVcLastCommit(commitId);
 
@@ -195,6 +199,23 @@ public class GitService implements VersionControlService {
                 pullCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
             }
             return pullCommand.call().isSuccessful();
+        } catch (GitAPIException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+        }
+
+        return false;
+    }
+
+    private boolean checkout(Repository repository, String branch) {
+        try {
+            CheckoutCommand command = new Git(repository).checkout();
+            command.setCreateBranch(false);
+            command.setName(branch);
+            command.call();
         } catch (GitAPIException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
