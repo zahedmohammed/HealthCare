@@ -8,7 +8,10 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.*;
+import com.fxlabs.fxt.dto.project.GenPolicy;
+import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectImports;
+import com.fxlabs.fxt.dto.project.ProjectRequest;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
@@ -216,12 +219,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             project.setOrg(nameDto);
             project.setName(request.getName());
             project.setDescription(request.getDescription());
-//            if (request.getProjectType() == null) {
-//                project.setProjectType(ProjectType.Local);
-//            } else {
-//                project.setProjectType(request.getProjectType());
-//            }
-
+            project.setUrl(request.getUrl());
+            project.setBranch(request.getBranch());
             project.setGenPolicy(request.getGenPolicy());
             project.setOpenAPISpec(request.getOpenAPISpec());
 
@@ -240,26 +239,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             // save to db/es
             this.projectUsersRepository.saveAndFlush(projectUsers);
 
-
-            // Git Account
-            if (request.getProjectType() != ProjectType.Git || true) {
-                com.fxlabs.fxt.dao.entity.project.ProjectGitAccount account = new com.fxlabs.fxt.dao.entity.project.ProjectGitAccount();
-                account.setUrl(request.getUrl());
-                account.setBranch(request.getBranch());
-                account.setUsername(request.getCloudAccount().getAccessKey());
-                if (!StringUtils.isEmpty(request.getCloudAccount().getSecretKey())) {
-                    // TODO - Use encryption
-                    account.setPassword(request.getCloudAccount().getSecretKey());
-                }
-                account.setProjectId(projectResponse.getData().getId());
-                this.projectGitAccountRepository.saveAndFlush(account);
-
-                // Create GaaS Task
-                if (request.getCloudAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
-                    this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
-                }
+            // Create GaaS Task
+            if (request.getCloudAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
+                this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
             }
-
 
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -276,11 +259,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
         }
 
-        Optional<com.fxlabs.fxt.dao.entity.project.ProjectGitAccount> accountOptional = projectGitAccountRepository.findByProjectId(projectId);
-        if (!accountOptional.isPresent()) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "No account found."));
-        }
-
         Project _project = projectResponse.getData();
 
 
@@ -291,18 +269,11 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setName(_project.getName());
         project.setProjectType(_project.getProjectType());
 
-        com.fxlabs.fxt.dao.entity.project.ProjectGitAccount projectGitAccount = accountOptional.get();
-        project.setId(projectGitAccount.getId());
-        project.setProjectId(projectGitAccount.getProjectId());
-        project.setUrl(projectGitAccount.getUrl());
-        project.setBranch(projectGitAccount.getBranch());
-        project.setUsername(projectGitAccount.getUsername());
-        project.setPassword(PASSWORD_MASKED);
+        project.setId(_project.getId());
+        project.setProjectId(_project.getId());
+        project.setUrl(_project.getUrl());
+        project.setBranch(_project.getBranch());
         project.setCloudAccount(_project.getCloudAccount());
-        if (project.getCloudAccount() != null) {
-            project.getCloudAccount().setSecretKey(PASSWORD_MASKED);
-        }
-
         project.setGenPolicy(_project.getGenPolicy());
         project.setOpenAPISpec(_project.getOpenAPISpec());
 
@@ -318,40 +289,21 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
         }
 
-        Optional<com.fxlabs.fxt.dao.entity.project.ProjectGitAccount> accountOptional = projectGitAccountRepository.findByProjectId(request.getProjectId());
+        Project project = projectResponse.getData();
 
-        com.fxlabs.fxt.dao.entity.project.ProjectGitAccount account = null;
-
-        if (accountOptional.isPresent()) {
-            account = accountOptional.get();
-        } else {
-            account = new com.fxlabs.fxt.dao.entity.project.ProjectGitAccount();
-            account.setProjectId(request.getProjectId());
-        }
-
-        account.setUrl(request.getUrl());
-        account.setBranch(request.getBranch());
-        account.setUsername(request.getUsername());
-
-        if (!org.apache.commons.lang3.StringUtils.equals(PASSWORD_MASKED, request.getPassword())) {
-            account.setPassword(request.getPassword());
-        }
-
-        this.projectGitAccountRepository.saveAndFlush(account);
-
-        Project project = findById(request.getProjectId(), user).getData();
-
+        project.setName(request.getName());
+        project.setDescription(request.getDescription());
+        project.setUrl(request.getUrl());
+        project.setBranch(request.getBranch());
         project.setGenPolicy(request.getGenPolicy());
         project.setOpenAPISpec(request.getOpenAPISpec());
 
         project.setVisibility(request.getVisibility());
-        save(project, user);
 
+        this.save(project, user);
 
-        if (project.getProjectType() != ProjectType.Local) {
-            // Create GaaS Task
-            this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
-        }
+        // Create GaaS Task
+        this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
 
         return new Response<ProjectRequest>();
     }

@@ -42,6 +42,10 @@ public class Project extends BaseDto<String> {
 
     private CloudAccount cloudAccount;
 
+    private String url;
+    private String branch;
+    private String lastCommit;
+
     private Date lastSync;
     private List<String> licenses;
     private Map<String, String> props = new HashMap<>();

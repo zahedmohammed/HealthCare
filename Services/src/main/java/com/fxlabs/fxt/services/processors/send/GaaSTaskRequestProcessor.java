@@ -70,11 +70,6 @@ public class GaaSTaskRequestProcessor {
 
     public void process(Project project) {
         try {
-            Optional<ProjectGitAccount> gitAccount = projectGitAccountRepository.findByProjectId(project.getId());
-            if (!gitAccount.isPresent()) {
-                logger.warn("Ignoring Git sync for project with ID [{}] and Name [{}]", project.getId(), project.getName());
-                return;
-            }
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
             task.setProjectName(project.getName());
@@ -82,13 +77,16 @@ public class GaaSTaskRequestProcessor {
                 task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
                 task.setOpenAPISpec(project.getOpenAPISpec());
             }
-            task.setVcUrl(gitAccount.get().getUrl());
-            task.setVcBranch(gitAccount.get().getBranch());
-            task.setVcUsername(gitAccount.get().getUsername());
-            if (!StringUtils.isEmpty(gitAccount.get().getPassword())) {
-                task.setVcPassword(gitAccount.get().getPassword());
+            task.setVcUrl(project.getUrl());
+            task.setVcBranch(project.getBranch());
+
+            if (project.getCloudAccount() != null) {
+                task.setVcUsername(project.getCloudAccount().getAccessKey());
+                if (!StringUtils.isEmpty(project.getCloudAccount().getSecretKey())) {
+                    task.setVcPassword(project.getCloudAccount().getSecretKey());
+                }
             }
-            task.setVcLastCommit(gitAccount.get().getLastCommit());
+            task.setVcLastCommit(project.getLastCommit());
 
             // Send Project-Users-Owner creds
             List<ProjectUsers> projectUsersList = projectUsersRepository.findByProjectIdAndRoleAndInactive(project.getId(), ProjectRole.OWNER, false);

@@ -50,6 +50,10 @@ public class Project extends BaseEntity {
     @ElementCollection
     private List<String> licenses;
 
+    private String url;
+    private String branch;
+    private String lastCommit;
+
     //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     //private List<Environment> environments;
 
