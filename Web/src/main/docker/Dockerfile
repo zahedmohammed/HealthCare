@@ -8,4 +8,4 @@ RUN bash -c 'touch /control-plane.jar'
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "$JAVA_OPTS", "-jar","/control-plane.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/control-plane.jar"]
