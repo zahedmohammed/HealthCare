@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.ProjectConverter;
-import com.fxlabs.fxt.dao.entity.clusters.AccountType;
 import com.fxlabs.fxt.dao.entity.users.*;
 import com.fxlabs.fxt.dao.repository.es.ProjectImportsESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
@@ -9,10 +8,7 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.Project;
-import com.fxlabs.fxt.dto.project.ProjectImports;
-import com.fxlabs.fxt.dto.project.ProjectRequest;
-import com.fxlabs.fxt.dto.project.ProjectType;
+import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
@@ -52,7 +48,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               ProjectGitAccountRepository projectGitAccountRepository, OrgUsersRepository orgUsersRepository,
-                              /*TextEncryptor encryptor,*/ OrgRepository orgRepository, UsersRepository usersRepository,
+            /*TextEncryptor encryptor,*/ OrgRepository orgRepository, UsersRepository usersRepository,
                               ProjectUsersRepository projectUsersRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                               ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository) {
         super(repository, converter);
@@ -147,7 +143,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             if (BooleanUtils.isFalse(pu.getProject().isInactive()))
                 projects.add(pu.getProject());
         });
-        return new Response<List<Project>>(converter.convertToDtos(projects), new Long(projects.size()),  projects.size());
+        return new Response<List<Project>>(converter.convertToDtos(projects), new Long(projects.size()), projects.size());
     }
 
     public Response<Long> countProjects(String owner) {
@@ -162,10 +158,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         try {
 
+            // check name
             if (StringUtils.isEmpty(request.getName())) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project name"));
             }
 
+            // check org
             OrgUsers orgUsers = null;
             if (request.getOrg() == null || StringUtils.isEmpty(request.getOrg().getId())) {
                 /*Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(owner, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
@@ -179,6 +177,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
             }
 
+            // check account
+            if (request.getCloudAccount() == null) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
+            }
+
+            // check auto-code
+            if (request.getGenPolicy() == null) {
+                request.setGenPolicy(GenPolicy.None);
+            }
 
             // check user had write access to Org
             Optional<com.fxlabs.fxt.dao.entity.users.OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(request.getOrg().getId(), owner, OrgUserStatus.ACTIVE);

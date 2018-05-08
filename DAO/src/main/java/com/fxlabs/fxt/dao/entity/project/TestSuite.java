@@ -29,7 +29,7 @@ public class TestSuite extends BaseEntity {
     private String name;
 
     @Lob
-    @Type(type="org.hibernate.type.TextType")
+    @Type(type = "org.hibernate.type.TextType")
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -43,7 +43,7 @@ public class TestSuite extends BaseEntity {
     private String auth;
 
     @Enumerated(EnumType.STRING)
-    private TestSuiteCategory category = TestSuiteCategory.Bug ;
+    private TestSuiteCategory category = TestSuiteCategory.Bug;
 
     @Enumerated(EnumType.STRING)
     private TestSuiteSeverity severity = TestSuiteSeverity.Major;
@@ -78,13 +78,17 @@ public class TestSuite extends BaseEntity {
 
     private Boolean publishToMarketplace = false;
 
-
-
     @PrePersist
     @PreUpdate
     public void setDefaults() {
         if (type == null) {
             this.type = TestSuiteType.SUITE;
+        }
+        if (category == null) {
+            this.category = TestSuiteCategory.Bug;
+        }
+        if (severity == null) {
+            this.severity = TestSuiteSeverity.Major;
         }
     }
 

@@ -325,8 +325,14 @@ public class RunTaskRequestProcessor {
             afterTask.setSuiteName(suite1.getName());
             afterTask.setMethod(convert(suite1.getMethod()));
 
-            afterTask.setCategory(suite1.getCategory().toString());
-            afterTask.setSeverity(suite1.getSeverity().toString());
+            if (suite1.getCategory() != null) {
+                afterTask.setCategory(suite1.getCategory().toString());
+            }
+
+            if (suite1.getSeverity() != null) {
+                afterTask.setSeverity(suite1.getSeverity().toString());
+            }
+
             copyHeaders(afterTask, suite1);
 
             copyRequests(afterTask, suite1);

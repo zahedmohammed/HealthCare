@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
+import com.jayway.jsonpath.InvalidJsonException;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -98,8 +99,12 @@ public class DataEvaluator {
                     if (StringUtils.isEmpty(PATH)) {
                         val = context.getRequest(suiteName);
                     } else {
-                        Object objRequest = JsonPath.read(context.getRequest(suiteName), PATH);
-                        val = objRequest.toString();
+                        try {
+                            Object objRequest = JsonPath.read(context.getRequest(suiteName), PATH);
+                            val = objRequest.toString();
+                        } catch (Exception e) {
+                            logger.warn(e.getLocalizedMessage());
+                        }
                     }
                     break;
 
@@ -108,8 +113,12 @@ public class DataEvaluator {
                     if (StringUtils.isEmpty(PATH)) {
                         val = context.getResponse(suiteName);
                     } else {
-                        Object objResponse = JsonPath.read(context.getResponse(suiteName), PATH);
-                        val = objResponse.toString();
+                        try {
+                            Object objResponse = JsonPath.read(context.getResponse(suiteName), PATH);
+                            val = objResponse.toString();
+                        } catch (Exception e) {
+                            logger.warn(e.getLocalizedMessage());
+                        }
                     }
                     break;
 
@@ -208,16 +217,16 @@ public class DataEvaluator {
                     } else if (StringUtils.startsWith(KEY, "@")) {
                         // Handle Marketplace request
                         MarketplaceDataTask response = this.marketplaceDataProvider.get(context.getProjectId(), KEY);
-                        if (response !=null && StringUtils.isNotEmpty(response.getErrors())) {
+                        if (response != null && StringUtils.isNotEmpty(response.getErrors())) {
                             context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response.getErrors());
                         } else if (StringUtils.isNotEmpty(PATH)) {
-                            if ( isJsonObject(response.getEval())){
+                            if (isJsonObject(response.getEval())) {
                                 try {
                                     val = JsonPath.read(response.getEval(), PATH);
-                                }catch (Exception ex){
+                                } catch (Exception ex) {
                                     val = response.getEval();
                                 }
-                            }else{
+                            } else {
                                 val = response.getEval();
                             }
                         } else {
@@ -240,7 +249,7 @@ public class DataEvaluator {
         return val;
     }
 
-    private boolean isJsonObject(String str){
+    private boolean isJsonObject(String str) {
 
         try {
             JsonParser parser = new ObjectMapper().getFactory().createParser(str);
@@ -253,7 +262,7 @@ public class DataEvaluator {
     /*
      * TODO - Nested Pipes
      *  http://localhost:8090/example/v1/hotels/14
-      *  {{@Headers.Location | substringAfterLast /}}
+     *  {{@Headers.Location | substringAfterLast /}}
      */
     private String evaluatePipe(String pipe, String text) {
         String val = text;
