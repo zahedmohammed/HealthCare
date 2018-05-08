@@ -2,7 +2,8 @@
 
   <article class="article">
 
-    <h2 class="article-title">New Cloud-Account</h2>
+    <h2 class="article-title">Accounts</h2>
+    <p class="text-muted">Manage git, cloud, & collaboration endpoint credentials.</p>
     <div class="box box-default">
       <div class="box-body padding-xl">
 
@@ -97,9 +98,9 @@
             </div>
             <div class="col-md-7">
               <div class="callout1 text-muted callout-info1">
-                <p>AWS Cloud (Amazon EC2) is a service that provides secure, resizable compute capacity in the cloud. It is designed to make web-scale cloud computing easier.
-                  <br/><a target="_blank"
-                          href="https://aws.amazon.com/ec2">Click here to know more<i class="material-icons"
+                <p>AWS access keys
+                  <a target="_blank"
+                          href="https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html">&nbsp;learn more<i class="material-icons"
                                                                                              style="font-size: 18px;">open_in_new</i></a>
                 </p>
               </div>
@@ -124,15 +125,14 @@
             <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="bitBucketAccessKey"
-                       matInput type="text" placeholder="Access-Key">
+                       matInput type="text" placeholder="Username/Access-Key">
               </mat-input-container>
             </div>
             <div class="col-md-7">
               <div class="callout1 text-muted callout-info1">
-                <p>Bitbucket is a web-based version control repository hosting service owned by Atlassian, for source code and development projects that
-                  use either Mercurial or Git revision control systems.
-                  <br/><a target="_blank"
-                          href="https://bitbucket.org/product">Click here to know more<i class="material-icons"
+                <p>BitBucket access keys
+                 <a target="_blank"
+                          href="https://bitbucket.org">&nbsp;learn more.<i class="material-icons"
                                                                                       style="font-size: 18px;">open_in_new</i></a>
                 </p>
               </div>
@@ -145,7 +145,7 @@
             <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
-                       matInput type="password" placeholder="Secret-Key">
+                       matInput type="password" placeholder="Password/Secret-Key">
               </mat-input-container>
             </div>
           </div>
@@ -192,14 +192,14 @@
             <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="microsoftTfsAccessKey"
-                       matInput type="text" placeholder="Access-Key/Username">
+                       matInput type="text" placeholder="Username/Accesskey">
               </mat-input-container>
             </div>
             <div class="col-md-7">
               <div class="callout1 text-muted callout-info1">
-                <p>Team Foundation Server from Microsoft provides a set of collaborative software development tools that integrate with your existing IDE or editor thus enabling your cross-functional team to work effectively on software projects of all sizes.
-                  <br/><a target="_blank"
-                          href="https://www.visualstudio.com/tfs/">Click here to know more<i class="material-icons"
+                <p>Microsoft TFS access keys
+                 <a target="_blank"
+                          href="https://www.visualstudio.com/tfs/">&nbsp;learn more.<i class="material-icons"
                                                                                                                       style="font-size: 18px;">open_in_new</i></a>
                 </p>
               </div>
@@ -212,7 +212,7 @@
             <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="microsoftTfsSecret"
-                       matInput type="password" placeholder="Secret-Key/Password">
+                       matInput type="password" placeholder="Password/SecretKey">
               </mat-input-container>
             </div>
           </div>
@@ -224,14 +224,14 @@
             <div class="col-md-4">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitHubAccessKey"
-                       matInput type="text" placeholder="Access-Key/Username">
+                       matInput type="text" placeholder="Username/Access-Key">
               </mat-input-container>
             </div>
             <div class="col-md-7">
               <div class="callout1 text-muted callout-info1">
-                <p>GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
-                  <br/><a target="_blank"
-                                           href="https://github.com/join?source=header-home">Click here to create account on Github <i class="material-icons"
+                <p>GitHub access keys
+                 <a target="_blank"
+                                           href="https://github.com/settings/tokens">&nbsp;learn more. <i class="material-icons"
                                   style="font-size: 18px;">open_in_new</i></a>
                 </p>
               </div>
@@ -262,9 +262,9 @@
             <div class="col-md-7">
               <div class="callout1 text-muted callout-info1">
                 <p>
-                  Slack is where work happens. It’s a digital workspace that powers your organization — all the pieces and the people — so you can get things done.<br/>
+                  Slack access tokens
                   <a target="_blank"
-                     href="https://api.slack.com/custom-integrations/legacy-tokens">Click here for token<i class="material-icons"
+                     href="https://api.slack.com/custom-integrations/legacy-tokens">&nbsp;learn more.<i class="material-icons"
                                                                                                            style="font-size: 18px;">open_in_new</i></a>T
                 </p>
               </div>
