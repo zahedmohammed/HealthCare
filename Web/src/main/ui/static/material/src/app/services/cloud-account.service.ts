@@ -8,7 +8,7 @@ import { CloudAccount } from '../models/cloud-account.model';
 @Injectable()
 export class CloudAccountService {
 
-  private serviceUrl = '/api/v1/cloud-accounts'
+  private serviceUrl = '/api/v1/endpoints'
   constructor(private http: HttpClient) {
   }
 

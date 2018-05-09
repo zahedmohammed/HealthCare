@@ -8,7 +8,7 @@ import { NotificationAccount } from '../models/notification-account.model';
 @Injectable()
 export class NotificationService {
 
-  private serviceUrl = '/api/v1/notification-accounts'
+  private serviceUrl = '/api/v1/notifications'
   constructor(private http: HttpClient) {
   }
 

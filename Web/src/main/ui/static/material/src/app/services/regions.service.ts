@@ -7,7 +7,7 @@ import { Region } from '../models/regions.model';
 
 @Injectable()
 export class RegionsService {
-  private serviceUrl = '/api/v1/clusters';
+  private serviceUrl = '/api/v1/bot-clusters';
   constructor(private http: HttpClient) {
   }
 

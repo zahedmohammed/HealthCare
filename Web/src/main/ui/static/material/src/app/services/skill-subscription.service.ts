@@ -7,7 +7,7 @@ import { Subscription } from '../models/subscription.model';
 
 @Injectable()
 export class SkillSubscriptionService {
-  private serviceUrl = '/api/v1/subscriptions'
+  private serviceUrl = '/api/v1/issue-trackers'
   constructor(private http: HttpClient) {
   }
 

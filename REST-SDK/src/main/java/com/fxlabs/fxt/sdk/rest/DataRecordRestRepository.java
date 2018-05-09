@@ -19,7 +19,7 @@ public class DataRecordRestRepository extends GenericRestRespository<DataRecord>
     }
 
     protected String getUrl() {
-        return CredUtils.url.get() + "/api/v1/data-record";
+        return CredUtils.url.get() + "/api/v1/data-records";
     }
 
 }

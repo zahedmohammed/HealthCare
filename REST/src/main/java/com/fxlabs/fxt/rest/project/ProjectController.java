@@ -79,13 +79,13 @@ public class ProjectController {
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}/git-account", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<ProjectRequest> findGitAccount(@PathVariable("id") String id) {
         return projectService.findGitByProjectId(id, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}/git-account", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<ProjectRequest> saveGitAccount(@RequestBody ProjectRequest request) {
         return projectService.saveGitAccount(request, SecurityUtil.getCurrentAuditor());
     }

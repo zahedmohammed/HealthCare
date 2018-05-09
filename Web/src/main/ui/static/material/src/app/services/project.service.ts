@@ -22,7 +22,7 @@ export class ProjectService {
   }
 
   getById(id: string) {
-    return this.http.get(this.serviceUrl + "/" + id + "/git-account");
+    return this.http.get(this.serviceUrl + "/" + id);
   }
 
   create(project: Project) {
@@ -30,7 +30,7 @@ export class ProjectService {
   }
 
   update(project: Project) {
-    return this.http.put(this.serviceUrl + "/" + project['id'] + "/git-account", project);
+    return this.http.put(this.serviceUrl + "/" + project['id'], project);
   }
 
   delete(project: Project) {

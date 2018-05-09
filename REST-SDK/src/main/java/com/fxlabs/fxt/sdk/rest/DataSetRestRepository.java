@@ -18,7 +18,7 @@ public class DataSetRestRepository extends GenericRestRespository<DataSet> {
     }
 
     protected String getUrl() {
-        return CredUtils.url.get() + "/api/v1/data-set";
+        return CredUtils.url.get() + "/api/v1/data-sets";
     }
 
 }
