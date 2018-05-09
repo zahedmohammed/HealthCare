@@ -243,7 +243,7 @@ public class DataEvaluator {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             logger.warn(e.getLocalizedMessage());
         }
         return val;
