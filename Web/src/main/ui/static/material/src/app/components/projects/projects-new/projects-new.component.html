@@ -56,32 +56,37 @@
                         </label>
                         <div class="col-md-4">
                             <mat-form-field>
-                                <mat-select placeholder="Repository Credentials" required [(ngModel)]="project.cloudAccount" name="type">
-                                    <mat-option *ngFor="let ca of cloudAccounts" [value]="ca" (change)="setCloudAccount(cloudAccount);">
+                                <mat-select placeholder="Repository Credentials" required
+                                            [(ngModel)]="project.cloudAccount" name="type">
+                                    <mat-option *ngFor="let ca of cloudAccounts" [value]="ca"
+                                                (change)="setCloudAccount(cloudAccount);">
                                         {{ca.name}} ({{ca.accountType}})
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="callout1 text-muted callout-info1">
-                            <p>
-                                Register your git credentials in <a href="#/app/cloud-accounts/new">Accounts section</a> if your repository is private or Auto-Code feature is enabled.
-                            </p>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p>
+                                    Register your git credentials in the <a href="#/app/cloud-accounts/new">Accounts
+                                    page</a> if your repository is private or Auto-Code feature is enabled.
+                                </p>
+                            </div>
                         </div>
                     </div>
 
                     <!--<div class="form-group row">-->
-                        <!--<label for="name" class="col-md-1 control-label"></label>-->
-                        <!--<div class="col-md-4">-->
-                            <!--<mat-form-field>-->
-                                <!--<mat-select placeholder="Repository type" required [(ngModel)]="project.projectType"-->
-                                            <!--name="type">-->
-                                    <!--<mat-option *ngFor="let projectType of projectTypes" [value]="projectType">-->
-                                        <!--{{projectType}}-->
-                                    <!--</mat-option>-->
-                                <!--</mat-select>-->
-                            <!--</mat-form-field>-->
-                        <!--</div>-->
+                    <!--<label for="name" class="col-md-1 control-label"></label>-->
+                    <!--<div class="col-md-4">-->
+                    <!--<mat-form-field>-->
+                    <!--<mat-select placeholder="Repository type" required [(ngModel)]="project.projectType"-->
+                    <!--name="type">-->
+                    <!--<mat-option *ngFor="let projectType of projectTypes" [value]="projectType">-->
+                    <!--{{projectType}}-->
+                    <!--</mat-option>-->
+                    <!--</mat-select>-->
+                    <!--</mat-form-field>-->
+                    <!--</div>-->
                     <!--</div>-->
 
                     <div>
@@ -112,28 +117,28 @@
                         </div>
 
                         <!--<div class="form-group row">-->
-                            <!--<label for="name" class="col-md-1 control-label"></label>-->
-                            <!--<div class="col-md-4">-->
-                                <!--<mat-input-container class="full-width">-->
-                                    <!--<input [(ngModel)]="project.username" name="username"-->
-                                           <!--matInput placeholder="Repository username or access-key">-->
-                                <!--</mat-input-container>-->
-                            <!--</div>-->
-                            <!--<div class="col-md-7">-->
-                                <!--<div class="callout1 text-muted callout-info1">-->
-                                    <!--<p>Fx monitors and sync back changed files from the repository. If the repo is private FX requires user/pass with read-access.</p>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                        <!--<label for="name" class="col-md-1 control-label"></label>-->
+                        <!--<div class="col-md-4">-->
+                        <!--<mat-input-container class="full-width">-->
+                        <!--<input [(ngModel)]="project.username" name="username"-->
+                        <!--matInput placeholder="Repository username or access-key">-->
+                        <!--</mat-input-container>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-7">-->
+                        <!--<div class="callout1 text-muted callout-info1">-->
+                        <!--<p>Fx monitors and sync back changed files from the repository. If the repo is private FX requires user/pass with read-access.</p>-->
+                        <!--</div>-->
+                        <!--</div>-->
                         <!--</div>-->
 
                         <!--<div class="form-group row">-->
-                            <!--<label for="name" class="col-md-1 control-label"></label>-->
-                            <!--<div class="col-md-4">-->
-                                <!--<mat-input-container class="full-width">-->
-                                    <!--<input type="password" [(ngModel)]="project.password" name="password"-->
-                                           <!--matInput placeholder="Repository password or access-token">-->
-                                <!--</mat-input-container>-->
-                            <!--</div>-->
+                        <!--<label for="name" class="col-md-1 control-label"></label>-->
+                        <!--<div class="col-md-4">-->
+                        <!--<mat-input-container class="full-width">-->
+                        <!--<input type="password" [(ngModel)]="project.password" name="password"-->
+                        <!--matInput placeholder="Repository password or access-token">-->
+                        <!--</mat-input-container>-->
+                        <!--</div>-->
                         <!--</div>-->
                     </div>
 

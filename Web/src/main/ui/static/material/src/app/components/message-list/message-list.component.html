@@ -1,41 +1,54 @@
-<section class="container-fluid with-maxwidth chapter">
+<section class="chapter page-terms">
 
-    <article class="article">
-        <h2 class="article-title">Alerts
-        </h2>
-
-        <div class="box box-default table-box mdl-shadow--2dp">
-            <table class="mdl-data-table">
-                <thead>
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric">Subject</th>
-                    <th class="mdl-data-table__cell--non-numeric">Task</th>
-                    <th class="mdl-data-table__cell--non-numeric">Type</th>
-                    <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of items">
-                    <td class="mdl-data-table__cell--non-numeric">{{item.subject}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.taskType}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.type}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
-                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
-                                                                     [routerLink]="['/app/message', item.id]">logs</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Activities</h1>
         </div>
+        <p class="text-muted">Track user and bot activities on your projects.</p>
+    </section>
 
-        <mat-paginator [hidden]="length <= pageSize"
-                       [pageSize]="pageSize"
-                       hidePageSize="true"
-                       (page)="change($event)"
-                       [length]="length"
-        >
-        </mat-paginator>
+    <article class="article padding-lg-v article-dark article-bordered">
+        <div class="container-fluid with-maxwidth chapter">
 
+            <article class="article">
+                <h2 class="article-title1">
+                </h2>
+
+                <div class="box box-default table-box mdl-shadow--2dp">
+                    <table class="mdl-data-table">
+                        <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Subject</th>
+                            <th class="mdl-data-table__cell--non-numeric">Task</th>
+                            <th class="mdl-data-table__cell--non-numeric">Type</th>
+                            <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
+                            <th class="mdl-data-table__cell--non-numeric"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of items">
+                            <td class="mdl-data-table__cell--non-numeric">{{item.subject}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.taskType}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.type}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
+                            <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
+                                                                             [routerLink]="['/app/message', item.id]">logs</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <mat-paginator [hidden]="length <= pageSize"
+                               [pageSize]="pageSize"
+                               hidePageSize="true"
+                               (page)="change($event)"
+                               [length]="length"
+                >
+                </mat-paginator>
+
+            </article>
+
+        </div>
     </article>
 </section>

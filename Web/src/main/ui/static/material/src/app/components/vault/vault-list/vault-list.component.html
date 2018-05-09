@@ -11,9 +11,11 @@
         <div class="container-fluid with-maxwidth chapter">
 
             <article class="article">
-                <h2 class="article-title">
-                    <button mat-button color="primary" class="btn-w-md pull-right"
-                            [routerLink]="['/app/vault/new']"><mat-icon class="material-icons">add</mat-icon> NEW SECRET
+                <h2 class="article-title1">
+                    <button mat-button color="primary" class="btn-w-md pull-left"
+                            [routerLink]="['/app/vault/new']">
+                        <mat-icon class="material-icons">add</mat-icon>
+                        NEW SECRET
                     </button>
                     <div class="divider divider-sm"></div>
                 </h2>
@@ -42,10 +44,10 @@
                 </div>
 
                 <mat-paginator [hidden]="length <= pageSize"
-                        [pageSize]="pageSize"
-                        hidePageSize="true"
-                        (page)="change($event)"
-                        [length]="length"
+                               [pageSize]="pageSize"
+                               hidePageSize="true"
+                               (page)="change($event)"
+                               [length]="length"
                 >
                 </mat-paginator>
 

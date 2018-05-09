@@ -1,41 +1,54 @@
-<section class="container-fluid with-maxwidth chapter">
+<section class="chapter page-terms">
 
-  <article class="article">
-    <h2 class="article-title">
-    </h2>
-    <div class="box box-default table-box mdl-shadow--2dp">
-      <table class="mdl-data-table">
-        <thead>
-        <tr>
-          <th class="mdl-data-table__cell--non-numeric">Name</th>
-          <th class="mdl-data-table__cell--non-numeric">Env</th>
-          <th class="mdl-data-table__cell--non-numeric">Region</th>
-          <th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
-          <th class="mdl-data-table__cell--non-numeric"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let job of jobs">
-          <td class="mdl-data-table__cell--non-numeric">{{job.project.org.name}}/{{job.project.name}}/{{job.name}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{job.environment}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
-          <td class="mdl-data-table__cell--non-numeric">
-            <a href="javascript:;" [routerLink]="['/app/jobs', job.id, 'runs']">History</a> &nbsp;
-            <a href="javascript:;" (click)="runJob(job.id)">Run</a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Jobs</h1>
+        </div>
+        <p class="text-muted">Schedule using cron expression or run jobs ad-hoc.</p>
+    </section>
 
-    <mat-paginator [hidden]="length <= pageSize"
-                   [pageSize]="pageSize"
-                   hidePageSize="true"
-                   (page)="change($event)"
-                   [length]="length"
-    >
-    </mat-paginator>
+    <article class="article padding-lg-v article-dark article-bordered">
+        <div class="container-fluid with-maxwidth chapter">
+            <article class="article">
+                <h2 class="article-title1">
+                </h2>
+                <div class="box box-default table-box mdl-shadow--2dp">
+                    <table class="mdl-data-table">
+                        <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Name</th>
+                            <th class="mdl-data-table__cell--non-numeric">Env</th>
+                            <th class="mdl-data-table__cell--non-numeric">Region</th>
+                            <th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
+                            <th class="mdl-data-table__cell--non-numeric"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let job of jobs">
+                            <td class="mdl-data-table__cell--non-numeric">
+                                {{job.project.org.name}}/{{job.project.name}}/{{job.name}}
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">{{job.environment}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                <a href="javascript:;" [routerLink]="['/app/jobs', job.id, 'runs']">History</a> &nbsp;
+                                <a href="javascript:;" (click)="runJob(job.id)">Run</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-  </article>
+                <mat-paginator [hidden]="length <= pageSize"
+                               [pageSize]="pageSize"
+                               hidePageSize="true"
+                               (page)="change($event)"
+                               [length]="length"
+                >
+                </mat-paginator>
+
+            </article>
+        </div>
+    </article>
 </section>
