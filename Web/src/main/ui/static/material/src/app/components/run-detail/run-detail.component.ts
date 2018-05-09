@@ -72,6 +72,12 @@ export class RunDetailComponent implements OnInit {
   }
 
   calSum() {
+    this.total = 0;
+    this.failed = 0;
+    this.size = 0;
+    this.time = 0;
+    this.success = 0;
+
     for(var i = 0; i < this.suites.length; i++){
         this.total += this.suites[i].tests;
         this.failed += this.suites[i].failed;

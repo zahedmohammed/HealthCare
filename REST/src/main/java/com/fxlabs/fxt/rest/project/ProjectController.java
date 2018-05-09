@@ -35,11 +35,11 @@ public class ProjectController {
         this.projectFileService = projectFileService;
     }
 
-    @Secured(ROLE_USER)
+    /*@Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Project> findById(@PathVariable("id") String id) {
         return projectService.findById(id, SecurityUtil.getCurrentAuditor());
-    }
+    }*/
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/find-by-name/{org}/{name}", method = RequestMethod.GET)
@@ -47,11 +47,11 @@ public class ProjectController {
         return projectService.findByOrgAndName(org + "/" + name, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    /*@Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Project> update(@Valid @RequestBody Project dto) {
         return projectService.save(dto, SecurityUtil.getCurrentAuditor());
-    }
+    }*/
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
