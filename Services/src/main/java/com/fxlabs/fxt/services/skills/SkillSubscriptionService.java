@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface SkillSubscriptionService extends GenericService<SkillSubscription, String> {
 
@@ -23,9 +24,7 @@ public interface SkillSubscriptionService extends GenericService<SkillSubscripti
 
     Response<SkillSubscription> deleteITBot(String id, String user);
 
-    Response<SkillSubscription> addExecBot(Cluster dto, String user);
-
-    Response<SkillSubscription> deleteExecBot(Cluster dto, String user);
+//    Response<SkillSubscription> deleteExecBot(Cluster dto, String user);
 
     Response<Long> count(String user);
 }

@@ -2,27 +2,34 @@ package com.fxlabs.fxt.services.clusters;
 
 import com.fxlabs.fxt.converters.clusters.ClusterConverter;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
-import com.fxlabs.fxt.dao.entity.project.ProjectVisibility;
+import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
+import com.fxlabs.fxt.dao.entity.skills.TaskType;
 import com.fxlabs.fxt.dao.entity.users.OrgRole;
 import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
+import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.repository.es.ClusterESRepository;
-import com.fxlabs.fxt.dao.repository.jpa.ClusterRepository;
-import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.cloud.CloudTask;
+import com.fxlabs.fxt.dto.cloud.CloudTaskType;
+import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import com.fxlabs.fxt.dto.clusters.Cluster;
+import com.fxlabs.fxt.dto.clusters.ClusterStatus;
+import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
-import com.fxlabs.fxt.services.skills.SkillSubscriptionService;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,12 +52,26 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private AmqpAdmin amqpAdmin;
     private TopicExchange topicExchange;
     private OrgUsersRepository orgUsersRepository;
-    private SkillSubscriptionService skillSubscriptionService;
+    private SubscriptionTaskRepository subscriptionTaskRepository;
+    private AmqpClientService amqpClientService;
+    private String fxExecutionBotScriptUrl;
+    private String fxDefaultResponseKey;
+    private String fxUserName;
+    private String fxPassword;
+    private String fxPort;
+    private String fxHost;
+    private SystemSettingRepository systemSettingRepository;
+    private static String SPACE = " ";
 
     @Autowired
     public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository,
                               ClusterConverter clusterConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
-                              OrgUsersRepository orgUsersRepository, SkillSubscriptionService skillSubscriptionService) {
+                              OrgUsersRepository orgUsersRepository, @Value("${fx.default.response.queue.routingkey}") String fxDefaultResponseKey,
+                              UsersRepository usersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
+                              AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository,
+                              @Value("${spring.rabbitmq.username}") String fxUserName, @Value("${spring.rabbitmq.password}") String fxPassword,
+                              @Value("${spring.rabbitmq.port}") String fxPort, @Value("${spring.rabbitmq.host}") String fxHost,
+                              SystemSettingRepository systemSettingRepository) {
 
         super(clusterRepository, clusterConverter);
 
@@ -60,7 +81,15 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.amqpAdmin = amqpAdmin;
         this.topicExchange = topicExchange;
         this.orgUsersRepository = orgUsersRepository;
-        this.skillSubscriptionService = skillSubscriptionService;
+        this.subscriptionTaskRepository = subscriptionTaskRepository;
+        this.fxExecutionBotScriptUrl = fxExecutionBotScriptUrl;
+        this.fxDefaultResponseKey = fxDefaultResponseKey;
+        this.fxUserName = fxUserName;
+        this.fxPassword = fxPassword;
+        this.fxPort = fxPort;
+        this.fxHost = fxHost;
+        this.amqpClientService = amqpClientService;
+        this.systemSettingRepository = systemSettingRepository;
 
     }
 
@@ -147,7 +176,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         com.fxlabs.fxt.dao.entity.clusters.Cluster cluster = this.clusterRepository.saveAndFlush(converter.convertToEntity(dto));
         this.clusterESRepository.save(cluster);
-        skillSubscriptionService.addExecBot(converter.convertToDto(cluster), cluster.getCreatedBy());
+        addExecBot(converter.convertToDto(cluster), cluster.getCreatedBy());
         return new Response<>(converter.convertToDto(cluster));
     }
 
@@ -155,6 +184,68 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     public Response<Cluster> update(Cluster dto, String user) {
         // validate user is the org admin
         return super.save(dto, user);
+    }
+
+    @Override
+    public Response<Cluster> addExecBot(Cluster dto, String user) {
+
+        //TODO validate - name not null and unique
+        if (dto == null || org.apache.commons.lang3.StringUtils.isEmpty(dto.getId())) {
+            throw new FxException("Invalid Cluster");
+        }
+
+
+        if (dto.getOrg() == null) {
+            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+            if (CollectionUtils.isEmpty(set)) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
+            }
+
+            OrgUsers orgUsers = null;
+            orgUsers = set.iterator().next();
+            NameDto org = new NameDto();
+            org.setId(orgUsers.getOrg().getId());
+            dto.setOrg(org);
+
+        }
+
+        // Add Task
+        com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
+        // task.setSubscription(converter.convertToEntity(response.getData()));
+        task.setType(TaskType.CREATE);
+        task.setStatus(TaskStatus.PROCESSING);
+        task.setClusterId(dto.getId());
+        task = subscriptionTaskRepository.save(task);
+
+        CloudTask cloudTask = new CloudTask();
+
+        cloudTask.setId(task.getId());
+        cloudTask.setType(CloudTaskType.CREATE);
+
+        Map<String, String> opts = new HashMap<>();
+
+        CloudAccount cloudAccount = dto.getCloudAccount();
+
+        if (cloudAccount == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Cloud account not found"));
+        }
+        String key = getCloudSkillKey(cloudAccount);
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(key)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
+        }
+
+        opts.put("ACCESS_KEY_ID", cloudAccount.getAccessKey());
+        opts.put("SECRET_KEY", cloudAccount.getSecretKey());
+        opts.put("COMMAND", getUserDataScript(dto.getKey()));
+        opts.put("INSTANCE_NAME", dto.getName());
+        cloudTask.setOpts(opts);
+
+
+        //send task to queue
+        amqpClientService.sendTask(cloudTask, key);
+
+        return new Response<Cluster>();
     }
 
     @Override
@@ -170,7 +261,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         args.put("x-message-ttl", 3600000);
         Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
         amqpAdmin.removeBinding(binding);
-        skillSubscriptionService.deleteExecBot(converter.convertToDto(clusterOptional.get()), clusterOptional.get().getCreatedBy());
+        deleteExecBot(converter.convertToDto(clusterOptional.get()), clusterOptional.get().getCreatedBy());
         return super.delete(clusterId, user);
     }
 
@@ -192,4 +283,158 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             throw new FxException(String.format("User [%s] not entitled to the resource [%s] with 'PRIVATE' visibility.", user, s));
         }
     }
+
+    @Override
+    public Response<Cluster> deleteExecBot(Cluster dto, String user) {
+
+        // TODO check user is owner or org_admin
+        // Response<SkillSubscription> response = findById(id, user);
+        // SkillSubscription dto = response.getData();
+        if (!org.apache.commons.lang3.StringUtils.equals(dto.getCreatedBy(), user)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [DELETE] access to the resource.")));
+        }
+
+        dto.setStatus(ClusterStatus.DELETING);
+
+        // Add Task
+        com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
+        // task.setSubscription(converter.convertToEntity(dto));
+        task.setType(TaskType.DESTROY);
+        task.setStatus(TaskStatus.PROCESSING);
+        task.setClusterId(dto.getId());
+        task = subscriptionTaskRepository.save(task);
+
+        // TODO - send task to queue
+
+        CloudTask cloudTask = new CloudTask();
+
+        cloudTask.setId(task.getId());
+        cloudTask.setType(CloudTaskType.DESTROY);
+
+        Map<String, String> opts = new HashMap<>();
+
+        CloudAccount cloudAccount = dto.getCloudAccount();
+        String key = getCloudSkillKey(cloudAccount);
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(key)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
+        }
+
+        opts.put("ACCESS_KEY_ID", cloudAccount.getAccessKey());
+        opts.put("SECRET_KEY", cloudAccount.getSecretKey());
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(dto.getNodeId())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Node id is empty"));
+        }
+
+        opts.put("NODE_ID", dto.getNodeId());
+        cloudTask.setOpts(opts);
+
+
+        //send task to queue
+        amqpClientService.sendTask(cloudTask, key);
+
+        return new Response<Cluster>();
+    }
+
+    //    sudo wget https://www.dropbox.com/s/fk303tpqiaj93a9/fx_bot_install_script.sh?dl=1 -O fx_bot_install_script.sh
+//    sudo bash fx_bot_install_script.sh fx-rabbitmq 32771 admin admin123 key-nxEoudkaEQAw fx-default-response-queue
+    private String getUserDataScript(String key) {
+
+        StringBuilder sb = new StringBuilder();
+
+        ArrayList<String> lines = new ArrayList<String>();
+
+        lines.add("#! /bin/bash");
+        sb.append("sudo wget").append(SPACE)
+                .append(fxExecutionBotScriptUrl).append(SPACE)
+                .append("-O").append(SPACE)
+                .append("fx_bot_install_script.sh");
+        lines.add(sb.toString());
+
+        String fxHost_ = null;
+
+        Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.host");
+        if (systemSettingOptional.isPresent()) {
+            fxHost_ = systemSettingOptional.get().getValue();
+        } else {
+            fxHost_ = fxHost;
+        }
+
+        String port_ = null;
+
+        Optional<SystemSetting> portSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.port");
+        if (portSettingOptional.isPresent()) {
+            port_ = systemSettingOptional.get().getValue();
+        } else {
+            port_ = fxPort;
+        }
+
+        String fxUserName_ = null;
+
+        Optional<SystemSetting> userNameSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.username");
+        if (userNameSettingOptional.isPresent()) {
+            fxUserName_ = systemSettingOptional.get().getValue();
+        } else {
+            fxUserName_ = fxUserName;
+        }
+
+        String password_ = null;
+
+        Optional<SystemSetting> passwordSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.password");
+        if (passwordSettingOptional.isPresent()) {
+            password_ = systemSettingOptional.get().getValue();
+        } else {
+            password_ = fxPassword;
+        }
+
+
+        StringBuilder sb1 = new StringBuilder();
+        sb1.append(" sudo bash fx_bot_install_script.sh").append(SPACE)
+                .append(fxHost_).append(SPACE)
+                .append(port_).append(SPACE)
+                .append(fxUserName_).append(SPACE)
+                .append(password_).append(SPACE)
+                .append(key).append(SPACE)
+                .append(fxDefaultResponseKey);
+        lines.add(sb1.toString());
+
+        String configScript = join(lines, "\n");
+
+        logger.info("Bot configuaration script [{}]", configScript.toString());
+        String str = new String(Base64.encodeBase64(configScript.getBytes()));
+
+        return str;
+    }
+
+
+    private String join(Collection<String> s, String delimiter) {
+        StringBuilder builder = new StringBuilder();
+        Iterator<String> iter = s.iterator();
+        while (iter.hasNext()) {
+            builder.append(iter.next());
+            if (!iter.hasNext()) {
+                break;
+            }
+            builder.append(delimiter);
+        }
+        return builder.toString();
+    }
+
+    private String getCloudSkillKey(CloudAccount cloudAccount) {
+        String key = null;
+        if (cloudAccount == null || cloudAccount.getAccountType() == null) {
+            return key;
+        }
+        switch (cloudAccount.getAccountType()) {
+            case AWS:
+                key = "fx-caas-aws-ec2";
+                break;
+            default:
+                logger.info("Invalid provider [{}]", cloudAccount.getAccountType());
+                break;
+        }
+        return key;
+    }
+
 }

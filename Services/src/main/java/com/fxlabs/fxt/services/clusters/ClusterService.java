@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface ClusterService extends GenericService<Cluster, String> {
 
@@ -22,7 +23,11 @@ public interface ClusterService extends GenericService<Cluster, String> {
 
     Response<Cluster> findById(String id, String user);
 
+    Response<Cluster> addExecBot(Cluster dto, String user);
+
     Response<Cluster> delete(String s, String user);
 
     Response<Long> countBotRegions(String user);
+
+    Response<Cluster> deleteExecBot(Cluster dto, String user);
 }
