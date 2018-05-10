@@ -3,5 +3,6 @@ export interface Jobs {
     environment: string;
     tags: string;
     regions: string;
+    issueTracker: string;
     nextFire: string;
 }
