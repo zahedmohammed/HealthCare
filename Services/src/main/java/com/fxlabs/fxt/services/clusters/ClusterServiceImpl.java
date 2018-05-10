@@ -174,9 +174,18 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         // generate key
 
+        if(dto.isManual()){
+
+           String script =  getExecutionBotManualScript(queue);
+           dto.setManualScript(script);
+
+        }
+
         com.fxlabs.fxt.dao.entity.clusters.Cluster cluster = this.clusterRepository.saveAndFlush(converter.convertToEntity(dto));
         this.clusterESRepository.save(cluster);
-        addExecBot(converter.convertToDto(cluster), cluster.getCreatedBy());
+        if(!dto.isManual()) {
+            addExecBot(converter.convertToDto(cluster), cluster.getCreatedBy());
+        }
         return new Response<>(converter.convertToDto(cluster));
     }
 
@@ -261,7 +270,11 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         args.put("x-message-ttl", 3600000);
         Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
         amqpAdmin.removeBinding(binding);
-        deleteExecBot(converter.convertToDto(clusterOptional.get()), clusterOptional.get().getCreatedBy());
+
+        if (!clusterOptional.get().isManual()) {
+            deleteExecBot(converter.convertToDto(clusterOptional.get()), clusterOptional.get().getCreatedBy());
+        }
+
         return super.delete(clusterId, user);
     }
 
@@ -337,8 +350,18 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return new Response<Cluster>();
     }
 
-    //    sudo wget https://www.dropbox.com/s/fk303tpqiaj93a9/fx_bot_install_script.sh?dl=1 -O fx_bot_install_script.sh
-//    sudo bash fx_bot_install_script.sh fx-rabbitmq 32771 admin admin123 key-nxEoudkaEQAw fx-default-response-queue
+    private String getExecutionBotManualScript(String key){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("docker").append(SPACE).append("run")
+                .append(SPACE).append("-e")
+                .append(SPACE).append("FX_KEY").append("=").append(key)
+                .append(SPACE).append("fxlabs/bot");
+
+       return sb.toString();
+    }
+
+
     private String getUserDataScript(String key) {
 
         StringBuilder sb = new StringBuilder();

@@ -10,6 +10,8 @@ export class Region {
     public min: number;
     public max: number;
     public live: number;
+    manual: boolean = false;
+    public manualScript: string;
 
 }
 

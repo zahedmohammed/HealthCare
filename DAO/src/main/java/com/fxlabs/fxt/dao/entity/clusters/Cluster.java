@@ -50,6 +50,10 @@ public class Cluster extends BaseEntity {
     private Integer live;
     private String nodeId;
 
+    private boolean manual = false;
+    private String manualScript;
+
+
 
     @PrePersist
     @PreUpdate
