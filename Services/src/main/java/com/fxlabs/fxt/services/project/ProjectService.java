@@ -3,7 +3,6 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectImports;
-import com.fxlabs.fxt.dto.project.ProjectRequest;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
@@ -24,11 +23,11 @@ public interface ProjectService extends GenericService<Project, String> {
 
     //Response<Project> findProjectById(String id, String owner);
 
-    Response<Project> add(ProjectRequest account, String owner);
+    Response<Project> add(Project account, String owner);
 
-    Response<ProjectRequest> findGitByProjectId(String projectId, String user);
+    Response<Project> findGitByProjectId(String projectId, String user);
 
-    Response<ProjectRequest> saveGitAccount(ProjectRequest request, String user);
+    Response<Project> saveGitAccount(Project request, String user);
 
     Response<Project> save(Project dto, String user);
 

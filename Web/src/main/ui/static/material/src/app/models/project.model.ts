@@ -1,11 +1,13 @@
 export class Project {
-
+    id: string;
     public name: string;
+    public description: string;
     public url: string;
+    public branch: string;
     public credsRequired: boolean = false;
     public cloudAccount: CloudAccount = new CloudAccount();
-    public username: string;
-    public password: string;
+    public lastCommit: string;
+    public lastSync: string;
     public projectType: string;
     public org: Dto = new Dto();
     public visibility: string;

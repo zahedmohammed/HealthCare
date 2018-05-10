@@ -11,7 +11,6 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectImports;
-import com.fxlabs.fxt.dto.project.ProjectRequest;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
@@ -156,7 +155,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
 
     @Override
-    public Response<Project> add(ProjectRequest request, String owner) {
+    public Response<Project> add(Project request, String owner) {
         Response<Project> projectResponse = null;
 
         try {
@@ -253,7 +252,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     @Override
-    public Response<ProjectRequest> findGitByProjectId(String projectId, String user) {
+    public Response<Project> findGitByProjectId(String projectId, String user) {
         Response<Project> projectResponse = findById(projectId, user);
         if (projectResponse.isErrors()) {
             return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
@@ -261,8 +260,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Project _project = projectResponse.getData();
 
-
-        ProjectRequest project = new ProjectRequest();
+        Project project = new Project();
 
         project.setOrg(_project.getOrg());
 
@@ -270,7 +268,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setProjectType(_project.getProjectType());
 
         project.setId(_project.getId());
-        project.setProjectId(_project.getId());
         project.setUrl(_project.getUrl());
         project.setBranch(_project.getBranch());
         project.setCloudAccount(_project.getCloudAccount());
@@ -279,12 +276,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         project.setVisibility(_project.getVisibility());
 
-        return new Response<ProjectRequest>(project);
+        return new Response<Project>(project);
     }
 
     @Override
-    public Response<ProjectRequest> saveGitAccount(ProjectRequest request, String user) {
-        Response<Project> projectResponse = findById(request.getProjectId(), user);
+    public Response<Project> saveGitAccount(Project request, String user) {
+        Response<Project> projectResponse = findById(request.getId(), user);
         if (projectResponse.isErrors()) {
             return new Response<>().withErrors(true).withMessages(projectResponse.getMessages());
         }
@@ -305,7 +302,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         // Create GaaS Task
         this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
 
-        return new Response<ProjectRequest>();
+        return new Response<Project>();
     }
 
     @Override

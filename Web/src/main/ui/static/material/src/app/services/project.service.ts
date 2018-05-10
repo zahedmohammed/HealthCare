@@ -26,7 +26,7 @@ export class ProjectService {
   }
 
   create(project: Project) {
-    return this.http.post(this.serviceUrl + "/add", project);
+    return this.http.post(this.serviceUrl, project);
   }
 
   update(project: Project) {

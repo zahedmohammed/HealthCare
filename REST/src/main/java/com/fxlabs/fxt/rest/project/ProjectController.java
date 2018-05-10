@@ -4,7 +4,6 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.ProjectImports;
-import com.fxlabs.fxt.dto.project.ProjectRequest;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.ProjectFileService;
 import com.fxlabs.fxt.services.project.ProjectService;
@@ -35,23 +34,17 @@ public class ProjectController {
         this.projectFileService = projectFileService;
     }
 
-    /*@Secured(ROLE_USER)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Project> findById(@PathVariable("id") String id) {
         return projectService.findById(id, SecurityUtil.getCurrentAuditor());
-    }*/
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/find-by-name/{org}/{name}", method = RequestMethod.GET)
-    public Response<Project> findByProjectName(@PathVariable("org") String org, @PathVariable("name") String name) {
-        return projectService.findByOrgAndName(org + "/" + name, SecurityUtil.getCurrentAuditor());
     }
 
-    /*@Secured(ROLE_USER)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Project> update(@Valid @RequestBody Project dto) {
         return projectService.save(dto, SecurityUtil.getCurrentAuditor());
-    }*/
+    }
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -67,8 +60,14 @@ public class ProjectController {
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Response<Project> add(@RequestBody ProjectRequest request) {
+    @RequestMapping(value = "/find-by-name/{org}/{name}", method = RequestMethod.GET)
+    public Response<Project> findByProjectName(@PathVariable("org") String org, @PathVariable("name") String name) {
+        return projectService.findByOrgAndName(org + "/" + name, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Response<Project> add(@RequestBody Project request) {
         return projectService.add(request, SecurityUtil.getCurrentAuditor());
     }
 
@@ -78,15 +77,15 @@ public class ProjectController {
         return projectService.saveProjectImports(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    /*@Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<ProjectRequest> findGitAccount(@PathVariable("id") String id) {
         return projectService.findGitByProjectId(id, SecurityUtil.getCurrentAuditor());
-    }
+    }*/
 
     @Secured(ROLE_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public Response<ProjectRequest> saveGitAccount(@RequestBody ProjectRequest request) {
+    public Response<Project> save(@RequestBody Project request) {
         return projectService.saveGitAccount(request, SecurityUtil.getCurrentAuditor());
     }
 
@@ -102,7 +101,6 @@ public class ProjectController {
                                                        @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return projectFileService.findByProjectId(projectId, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
-
 
 
 }

@@ -1,5 +1,5 @@
 export class Vault {
-
+    id: string;
     key: string;
     val: string;
     description: string;
