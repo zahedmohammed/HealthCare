@@ -34,7 +34,8 @@
                         <tbody>
                         <tr *ngFor="let item of list">
                             <td class="mdl-data-table__cell--non-numeric">{{item.org.name}}/{{item.name}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{item.region}}</td>
+                            <td class="mdl-data-table__cell--non-numeric" [hidden]="item.manual">{{item.region}}</td>
+                            <td class="mdl-data-table__cell--non-numeric" [hidden]="!item.manual">Registered</td>
                             <td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
                             <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/regions', item.id]">Edit</a></td>
                         </tr>
