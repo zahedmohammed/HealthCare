@@ -27,7 +27,7 @@ public enum CloudAccountPage {
     BOT_HUB {
         @Override
         public List<AccountType> getAccountTypes( ) {
-            return Arrays.asList(AccountType.AWS);
+            return Arrays.asList(AccountType.AWS, AccountType.Self_Hosted);
         }
     },
     PROJECT {

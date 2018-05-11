@@ -2,8 +2,11 @@ package com.fxlabs.fxt.services.users;
 
 import com.fxlabs.fxt.converters.users.OrgConverter;
 import com.fxlabs.fxt.converters.users.OrgUsersConverter;
+import com.fxlabs.fxt.dao.entity.clusters.AccountType;
+import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
 import com.fxlabs.fxt.dao.entity.users.*;
 import com.fxlabs.fxt.dao.repository.es.OrgUsersESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.CloudAccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
@@ -38,11 +41,12 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
     private UsersRepository usersRepository;
     private UsersService usersService;
+    private CloudAccountRepository cloudAccountRepository;
 
     @Autowired
     public OrgServiceImpl(OrgUsersRepository orgUsersRepository, OrgUsersESRepository orgUsersESRepository,
                           OrgUsersConverter orgUsersConverter, OrgRepository orgRepository, OrgConverter orgConverter,
-                          UsersRepository usersRepository, UsersService usersService) {
+                          UsersRepository usersRepository, UsersService usersService, CloudAccountRepository cloudAccountRepository) {
 
         super(orgRepository, orgConverter);
 
@@ -54,6 +58,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         this.orgUsersConverter = orgUsersConverter;
         this.usersRepository = usersRepository;
         this.usersService = usersService;
+        this.cloudAccountRepository  = cloudAccountRepository;
 
     }
 
@@ -98,6 +103,40 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         orgUsers.setOrgRole(OrgRole.ADMIN);
         orgUsers.setStatus(OrgUserStatus.ACTIVE);
         orgUsersRepository.save(orgUsers);
+
+        com.fxlabs.fxt.dao.entity.clusters.CloudAccount ca = new com.fxlabs.fxt.dao.entity.clusters.CloudAccount();
+
+        ca.setOrg(orgConverter.convertToEntity(response.getData()));
+        ca.setAccountType(AccountType.Self_Hosted);
+        ca.setCreatedBy(users.getId());
+        ca.setInactive(false);
+        ca.setName("Default");
+        ca.setVisibility(com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility.ORG_PUBLIC);
+
+        this.cloudAccountRepository.save(ca);
+
+        com.fxlabs.fxt.dao.entity.clusters.CloudAccount caGithub = new com.fxlabs.fxt.dao.entity.clusters.CloudAccount();
+
+        caGithub.setOrg(orgConverter.convertToEntity(response.getData()));
+        caGithub.setAccountType(AccountType.GitHub);
+        caGithub.setCreatedBy(users.getId());
+        caGithub.setInactive(false);
+        caGithub.setName("Default");
+        caGithub.setVisibility(ClusterVisibility.ORG_PUBLIC);
+
+        this.cloudAccountRepository.save(caGithub);
+
+        com.fxlabs.fxt.dao.entity.clusters.CloudAccount caEmail = new com.fxlabs.fxt.dao.entity.clusters.CloudAccount();
+
+        caEmail.setOrg(orgConverter.convertToEntity(response.getData()));
+        caEmail.setAccountType(AccountType.Email);
+        caEmail.setCreatedBy(users.getId());
+        caEmail.setInactive(false);
+        caEmail.setName("Default");
+        caEmail.setVisibility(com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility.ORG_PUBLIC);
+
+        this.cloudAccountRepository.save(caEmail);
+
 
         return response;
     }

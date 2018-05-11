@@ -16,6 +16,7 @@ import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
+import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.clusters.CloudAccount;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.clusters.ClusterStatus;
@@ -174,18 +175,24 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         // generate key
 
-        if(dto.isManual()){
-
-           String script =  getExecutionBotManualScript(queue);
-           dto.setManualScript(script);
-
-        }
 
         com.fxlabs.fxt.dao.entity.clusters.Cluster cluster = this.clusterRepository.saveAndFlush(converter.convertToEntity(dto));
         this.clusterESRepository.save(cluster);
-        if(!dto.isManual()) {
+
+
+        if (dto.getCloudAccount() != null && dto.getCloudAccount().getAccountType().equals(AccountType.Self_Hosted)) {
+
+            String script = getExecutionBotManualScript(queue);
+            cluster.setManualScript(script);
+            cluster.setRegion(AccountType.Self_Hosted.toString());
+
+        } else {
             addExecBot(converter.convertToDto(cluster), cluster.getCreatedBy());
         }
+
+        cluster = this.clusterRepository.saveAndFlush(cluster);
+        this.clusterESRepository.save(cluster);
+
         return new Response<>(converter.convertToDto(cluster));
     }
 
@@ -271,7 +278,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
         amqpAdmin.removeBinding(binding);
 
-        if (!clusterOptional.get().isManual()) {
+        if (clusterOptional.get().getCloudAccount() != null && !clusterOptional.get().getCloudAccount().getAccountType().equals(com.fxlabs.fxt.dao.entity.clusters.AccountType.Self_Hosted)) {
             deleteExecBot(converter.convertToDto(clusterOptional.get()), clusterOptional.get().getCreatedBy());
         }
 

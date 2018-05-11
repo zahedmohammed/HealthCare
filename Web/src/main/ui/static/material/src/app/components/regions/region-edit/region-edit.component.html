@@ -84,7 +84,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row" [hidden]="entry.cloudAccount.accountType === 'Self_Hosted'">
             <label class="col-md-1 control-label">
             </label>
 
@@ -96,10 +96,27 @@
             </div>
             <div class="callout1 text-muted callout-info1">
               <p>
-                Cloud region where the bot will be deployed.
+                Cloud region where the bot is deployed.
               </p>
             </div>
           </div>
+
+          <div class="form-group row" [hidden]="entry.cloudAccount.accountType !== 'Self_Hosted'">
+            <label class="col-md-1 control-label">
+            </label>
+            <div class="col-md-4">
+              <mat-input-container class="full-width">
+                <input required disabled [(ngModel)]="entry.manualScript" name="script" id="script"
+                       matInput placeholder="script">
+              </mat-input-container>
+            </div>
+            <div class="callout1 text-muted callout-info1">
+              <p>
+                Execute this script to run a fx execution bot
+              </p>
+            </div>
+          </div>
+
 
           <!--<div class="form-group row">-->
             <!--<label for="min" class="col-md-2 control-label"></label>-->
