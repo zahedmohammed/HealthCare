@@ -17,6 +17,7 @@ export class Project {
 }
 
 export class CloudAccount {
+    public id: string;
     public name: string;
     public cloudType: string;
     public accessKey: string;

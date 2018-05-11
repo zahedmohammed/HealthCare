@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
+import { CloudAccountService } from '../../../services/cloud-account.service';
 import { Project } from '../../../models/project.model';
 import { Handler } from '../../dialogs/handler/handler';
 
@@ -16,7 +17,8 @@ export class ProjectsEditComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   project: Project = new Project();
-  constructor(private projectService: ProjectService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  cloudAccounts;
+  constructor(private projectService: ProjectService, private cloudAccountService: CloudAccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -24,6 +26,7 @@ export class ProjectsEditComponent implements OnInit {
       if (params['id']) {
         this.getById(params['id']);
         this.getOrgs();
+        this.getAccountsForProjectPage();
       }
     });
   }
@@ -81,6 +84,24 @@ export class ProjectsEditComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  getAccountsForProjectPage() {
+    this.handler.activateLoader();
+    this.cloudAccountService.getAccountByAccountType('PROJECT').subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.cloudAccounts = results['data'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+  setCloudAccount(cloudAccount){
+     this.project.cloudAccount.accountType =  cloudAccount.accountType;
   }
 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];

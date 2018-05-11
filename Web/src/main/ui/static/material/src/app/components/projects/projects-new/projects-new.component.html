@@ -52,14 +52,39 @@
                     <!-- Repository details -->
 
                     <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="project.url" name="url" id="repo"
+                                       matInput placeholder="Repository URL">
+                            </mat-input-container>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p>e.g. https://github.com/username/MyApp.git. Follow the below steps to create a
+                                    new
+                                    repo.
+                                    <br/>Step 1: Fork the <a target="_blank"
+                                                             href="https://github.com/intesar/Fx-Sample">Sample
+                                        repository <i class="material-icons"
+                                                      style="font-size: 18px;">open_in_new</i></a>
+                                    <br/>Step 2: Update environments and jobs section in Fxfile.yaml.
+                                    <a target="_blank" href="https://github.com/intesar/Fx-Sample"> Learn more <i
+                                            class="material-icons"
+                                            style="font-size: 18px;">open_in_new</i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label class="col-md-1 control-label">
                         </label>
                         <div class="col-md-4">
                             <mat-form-field>
                                 <mat-select placeholder="Repository Credentials" required
-                                            [(ngModel)]="project.cloudAccount" name="type">
-                                    <mat-option *ngFor="let ca of cloudAccounts" [value]="ca"
-                                                (change)="setCloudAccount(cloudAccount);">
+                                            [(ngModel)]="project.cloudAccount.id" name="type">
+                                    <mat-option *ngFor="let ca of cloudAccounts" [value]="ca.id">
                                         {{ca.name}} ({{ca.accountType}})
                                     </mat-option>
                                 </mat-select>
@@ -69,77 +94,12 @@
                             <div class="callout1 text-muted callout-info1">
                                 <p>
                                     Register your git credentials in the <a href="#/app/cloud-accounts/new">Accounts
-                                    page</a> if your repository is private or Auto-Code feature is enabled.
+                                    page</a>.
+                                    <br/>
+                                    Repository credentials are required if the repo is private or Auto-Code is enabled.
                                 </p>
                             </div>
                         </div>
-                    </div>
-
-                    <!--<div class="form-group row">-->
-                    <!--<label for="name" class="col-md-1 control-label"></label>-->
-                    <!--<div class="col-md-4">-->
-                    <!--<mat-form-field>-->
-                    <!--<mat-select placeholder="Repository type" required [(ngModel)]="project.projectType"-->
-                    <!--name="type">-->
-                    <!--<mat-option *ngFor="let projectType of projectTypes" [value]="projectType">-->
-                    <!--{{projectType}}-->
-                    <!--</mat-option>-->
-                    <!--</mat-select>-->
-                    <!--</mat-form-field>-->
-                    <!--</div>-->
-                    <!--</div>-->
-
-                    <div>
-                        <div class="form-group row">
-                            <label for="name" class="col-md-1 control-label"></label>
-                            <div class="col-md-4">
-                                <mat-input-container class="full-width">
-                                    <input required [(ngModel)]="project.url" name="url" id="repo"
-                                           matInput placeholder="Repository URL">
-                                </mat-input-container>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="callout1 text-muted callout-info1">
-                                    <p>e.g. https://github.com/username/MyApp.git. Follow the below steps to create a
-                                        new
-                                        repo.
-                                        <br/>Step 1: Fork the <a target="_blank"
-                                                                 href="https://github.com/intesar/Fx-Sample">Sample
-                                            repository <i class="material-icons"
-                                                          style="font-size: 18px;">open_in_new</i></a>
-                                        <br/>Step 2: Update environments and jobs section in Fxfile.yaml.
-                                        <a target="_blank" href="https://github.com/intesar/Fx-Sample"> Learn more <i
-                                                class="material-icons"
-                                                style="font-size: 18px;">open_in_new</i></a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--<div class="form-group row">-->
-                        <!--<label for="name" class="col-md-1 control-label"></label>-->
-                        <!--<div class="col-md-4">-->
-                        <!--<mat-input-container class="full-width">-->
-                        <!--<input [(ngModel)]="project.username" name="username"-->
-                        <!--matInput placeholder="Repository username or access-key">-->
-                        <!--</mat-input-container>-->
-                        <!--</div>-->
-                        <!--<div class="col-md-7">-->
-                        <!--<div class="callout1 text-muted callout-info1">-->
-                        <!--<p>Fx monitors and sync back changed files from the repository. If the repo is private FX requires user/pass with read-access.</p>-->
-                        <!--</div>-->
-                        <!--</div>-->
-                        <!--</div>-->
-
-                        <!--<div class="form-group row">-->
-                        <!--<label for="name" class="col-md-1 control-label"></label>-->
-                        <!--<div class="col-md-4">-->
-                        <!--<mat-input-container class="full-width">-->
-                        <!--<input type="password" [(ngModel)]="project.password" name="password"-->
-                        <!--matInput placeholder="Repository password or access-token">-->
-                        <!--</mat-input-container>-->
-                        <!--</div>-->
-                        <!--</div>-->
                     </div>
 
                     <div class="divider divider-dashed divider-lg pull-in"></div>
@@ -149,7 +109,7 @@
                         <label for="name" class="col-md-1 control-label"></label>
                         <div class="col-md-4">
                             <mat-form-field>
-                                <mat-select placeholder="Auto-Code" [(ngModel)]="project.genPolicy"
+                                <mat-select placeholder="Auto-Code" required [(ngModel)]="project.genPolicy"
                                             name="Auto-Code">
                                     <mat-option *ngFor="let gen of genPolicies" [value]="gen">
                                         {{gen}}
@@ -159,9 +119,11 @@
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
-                                <p>Auto-Code detects new APIs and will create & commits quality & security
-                                    test coverage into your repo. Auto-Code requires write access to your
-                                    repository.</p>
+                                <p>Auto-Code (automatic test coverage for your APIs).
+                                    <br/>Continuously generates 5-point test coverage (Quality, Security, DOS,
+                                    Injections, Data-Leak, Log-forging etc) for all project endpoints.
+                                    <br/>Requires repository credentials for code check-in.
+                                </p>
                             </div>
                         </div>
                     </div>

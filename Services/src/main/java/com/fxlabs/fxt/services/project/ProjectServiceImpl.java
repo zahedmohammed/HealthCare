@@ -181,7 +181,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // check account
-            if (request.getCloudAccount() == null) {
+            if (request.getCloudAccount() == null || StringUtils.isEmpty(request.getCloudAccount().getId())) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
             }
 
@@ -214,7 +214,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
             nameDto.setId(org.get().getId());
 
-            //nameDto.setVersion(org.get().getVersion());
             project.setCloudAccount(request.getCloudAccount());
             project.setOrg(nameDto);
             project.setName(request.getName());
