@@ -87,7 +87,7 @@
             </div>
           </div>
           <!-- AWS  Start    -->
-          <div class="form-group row" [hidden]="entry.accountType !== 'AWS' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'AWS'">
             <label for="awsAccessKey" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -107,7 +107,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.accountType !== 'AWS' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'AWS'">
             <label for="awsSecret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -119,7 +119,7 @@
           </div>
           <!-- AWS  End    -->
           <!-- BitBucket  Start    -->
-          <div class="form-group row" [hidden]="entry.accountType !== 'BitBucket' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'BitBucket'">
             <label for="bitBucketAccessKey" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -139,7 +139,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.accountType !== 'BitBucket' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'BitBucket'">
             <label for="bitBucketSecret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -151,7 +151,7 @@
           </div>
           <!-- BitBucket  End    -->
           <!-- Git  Start    -->
-          <div class="form-group row" [hidden]="entry.accountType !== 'Git' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'Git'">
             <label for="gitAccessKey" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -174,7 +174,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.accountType !== 'Git' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'Git'">
             <label for="gitSecret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -186,7 +186,7 @@
           </div>
           <!-- Git  End    -->
           <!-- Microsoft TFS  Start    -->
-          <div class="form-group row" [hidden]="entry.accountType !== 'Microsoft_TFS_Git' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'Microsoft_TFS_Git'">
             <label for="microsoftTfsAccessKey" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -206,7 +206,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.accountType !== 'Microsoft_TFS_Git' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'Microsoft_TFS_Git'">
             <label for="microsoftTfsSecret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -218,7 +218,7 @@
           </div>
           <!-- Microsoft TFS  End    -->
           <!-- GitHub Start  -->
-          <div class="form-group row" [hidden]="entry.accountType !== 'GitHub' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'GitHub'">
             <label for="gitHubAccessKey" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -238,7 +238,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.accountType !== 'GitHub' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'GitHub'">
             <label for="gitHubSecret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -250,7 +250,7 @@
           </div>
           <!-- GitHub End  -->
 
-          <div class="form-group row" [hidden]="entry.accountType !== 'Slack' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'Slack'">
             <label for="secret_slack" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -276,7 +276,7 @@
             </label>
             <div class="col-md-4">
               <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.secretKey" name="from" id="email"
+                <input required [(ngModel)]="entry.accessKey" name="from" id="email"
                        matInput type="text" placeholder="From:">
               </mat-input-container>
             </div>

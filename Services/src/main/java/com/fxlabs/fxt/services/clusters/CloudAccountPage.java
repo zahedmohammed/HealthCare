@@ -14,7 +14,7 @@ public enum CloudAccountPage {
    NOTIFICATION_HUB {
        @Override
        public List<AccountType> getAccountTypes() {
-           return Arrays.asList(AccountType.SLACK , AccountType.EMAIL);
+           return Arrays.asList(AccountType.Slack , AccountType.Email);
        }
    },
 
