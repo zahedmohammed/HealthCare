@@ -117,19 +117,19 @@ public class MarkTimeoutTaskProcessor {
                 NotificationTask task = new NotificationTask();
                 task.setId(run.getId());
                 Map<String, String> opts = new HashMap<>();
-                switch (notificationAccount.getData().getType()) {
-                    case SLACK:
+                switch (notificationAccount.getData().getCloudAccount().getAccountType()) {
+                    case Slack:
                         if (notificationAccount.getData().getCloudAccount() == null || StringUtils.isEmpty(notificationAccount.getData().getCloudAccount().getAccessKey())) {
                             logger.info("Notification Token not found for account [{}]", notificationAccount.getData().getId());
                             break;
                         }
-                        opts.put("TOKEN", notificationAccount.getData().getCloudAccount().getAccessKey());
+                        opts.put("TOKEN", notificationAccount.getData().getCloudAccount().getSecretKey());
                         opts.put("MESSAGE", formatSlackMessage(run));
-                        opts.put("CHANNELS", notificationAccount.getData().getToken());
+                        opts.put("CHANNELS", notificationAccount.getData().getChannel());
                         task.setOpts(opts);
                         amqpClientService.sendTask(task, slackNotificationQueue);
                         break;
-                    case EMAIL:
+                    case Email:
                         logger.info("Notification Account Type email not supported");
                         break;
 
