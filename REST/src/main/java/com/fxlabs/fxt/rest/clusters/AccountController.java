@@ -22,12 +22,12 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
  */
 @RestController
 @RequestMapping(CLOUD_ACCOUNT_BASE)
-public class CloudAccountController {
+public class AccountController {
 
     private CloudAccountService cloudAccountService;
 
     @Autowired
-    public CloudAccountController(
+    public AccountController(
             CloudAccountService cloudAccountService) {
         this.cloudAccountService = cloudAccountService;
     }

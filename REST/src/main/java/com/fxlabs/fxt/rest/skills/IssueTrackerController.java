@@ -18,12 +18,12 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
  */
 @RestController
 @RequestMapping(SUBSCRIPTION_BASE)
-public class SkillSubscriptionsController {
+public class IssueTrackerController {
 
     private SkillSubscriptionService service;
 
     @Autowired
-    public SkillSubscriptionsController(SkillSubscriptionService service) {
+    public IssueTrackerController(SkillSubscriptionService service) {
         this.service = service;
     }
 
