@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { SkillSubscriptionService } from '../../../services/skill-subscription.service';
+import { IssueTrackerService } from '../../../services/issue-tracker.service';
 import { Handler } from '../../dialogs/handler/handler';
 
 @Component({
   selector: 'app-issues-list',
   templateUrl: './issues-list.component.html',
   styleUrls: ['./issues-list.component.scss'],
-  providers: [SkillSubscriptionService]
+  providers: [IssueTrackerService]
 })
 export class IssuesListComponent implements OnInit {
   keys;
   showSpinner: boolean = false;
-  constructor(private skillSubscriptionService: SkillSubscriptionService, private handler: Handler) { }
+  constructor(private issueTrackerService: IssueTrackerService, private handler: Handler) { }
 
   ngOnInit() {
     this.list();
@@ -19,7 +19,7 @@ export class IssuesListComponent implements OnInit {
 
   list() {
     this.handler.activateLoader();
-    this.skillSubscriptionService.get("ISSUE_TRACKER", this.page, this.pageSize).subscribe(results => {
+    this.issueTrackerService.get("ISSUE_TRACKER", this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

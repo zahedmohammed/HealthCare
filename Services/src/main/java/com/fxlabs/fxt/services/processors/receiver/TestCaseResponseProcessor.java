@@ -1,40 +1,30 @@
 package com.fxlabs.fxt.services.processors.receiver;
 
-import com.fxlabs.fxt.converters.run.SuiteConverter;
 import com.fxlabs.fxt.converters.run.TestCaseResponseConverter;
 import com.fxlabs.fxt.dao.entity.project.Job;
-import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
-import com.fxlabs.fxt.dao.repository.jpa.SkillSubscriptionRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseRepository;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
-import com.fxlabs.fxt.dto.skills.Skill;
-import com.fxlabs.fxt.dto.skills.SkillSubscription;
+import com.fxlabs.fxt.dto.it.IssueTracker;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.skills.SkillService;
-import com.fxlabs.fxt.services.skills.SkillServiceImpl;
-import com.fxlabs.fxt.services.skills.SkillSubscriptionService;
+import com.fxlabs.fxt.services.it.IssueTrackerService;
 import org.apache.commons.collections.IteratorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -47,7 +37,7 @@ public class TestCaseResponseProcessor {
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private TestCaseResponseESRepository testCaseResponseESRepository;
     private TestCaseResponseRepository testCaseResponseRepository;
-    private SkillSubscriptionService skillSubscriptionService;
+    private IssueTrackerService skillSubscriptionService;
     private TestCaseResponseConverter converter;
     private AmqpClientService amqpClientService;
     private SkillService skillService;
@@ -62,7 +52,7 @@ public class TestCaseResponseProcessor {
     @Autowired
     public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
                                      TestCaseResponseRepository testCaseResponseRepository, AmqpClientService amqpClientService,
-                                     JobRepository jobRepository, SkillSubscriptionService skillSubscriptionService, SkillService skillService) {
+                                     JobRepository jobRepository, IssueTrackerService skillSubscriptionService, SkillService skillService) {
         this.testCaseResponseESRepository = testCaseResponseESRepository;
         this.testCaseResponseRepository = testCaseResponseRepository;
         this.skillService = skillService;
@@ -141,9 +131,9 @@ public class TestCaseResponseProcessor {
             return null;
         }
 
-        Response<SkillSubscription> skillSubRespnse = skillSubscriptionService.findByName(job.getIssueTracker());
+        Response<IssueTracker> skillSubRespnse = skillSubscriptionService.findByName(job.getIssueTracker());
 
-        if (skillSubRespnse.getData() == null || skillSubRespnse.getData().getCloudAccount() == null) {
+        if (skillSubRespnse.getData() == null || skillSubRespnse.getData().getAccount() == null) {
             return null;
         }
         //prop1 will have host url
@@ -153,11 +143,11 @@ public class TestCaseResponseProcessor {
 
         tc.setIssueTrackerHost(skillSubRespnse.getData().getProp1());
         tc.setIssueTrackerProjectName(skillSubRespnse.getData().getProp2());
-        tc.setUsername(skillSubRespnse.getData().getCloudAccount().getAccessKey());
-        tc.setPassword(skillSubRespnse.getData().getCloudAccount().getSecretKey());
+        tc.setUsername(skillSubRespnse.getData().getAccount().getAccessKey());
+        tc.setPassword(skillSubRespnse.getData().getAccount().getSecretKey());
         //TODO get key from different source
 
-        switch(skillSubRespnse.getData().getCloudAccount().getAccountType()){
+        switch(skillSubRespnse.getData().getAccount().getAccountType()){
             case GitHub:
                 return itaasQueue;
         }

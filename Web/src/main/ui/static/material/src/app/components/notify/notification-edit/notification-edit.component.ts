@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { NotificationService } from '../../../services/notification.service';
-import { CloudAccountService } from '../../../services/cloud-account.service';
+import { AccountService } from '../../../services/account.service';
 import { OrgService } from '../../../services/org.service';
-import { CloudAccount } from '../../../models/cloud-account.model';
-import { NotificationAccount } from '../../../models/notification-account.model';
+import { Account } from '../../../models/account.model';
+import { Notification } from '../../../models/notification.model';
 import { Handler } from '../../dialogs/handler/handler';
 
 
@@ -12,16 +12,16 @@ import { Handler } from '../../dialogs/handler/handler';
   selector: 'app-notification-edit',
   templateUrl: './notification-edit.component.html',
   styleUrls: ['./notification-edit.component.scss'],
-  providers: [NotificationService, CloudAccountService, OrgService]
+  providers: [NotificationService, AccountService, OrgService]
 })
 export class NotificationEditComponent implements OnInit {
 
   showSpinner: boolean = false;
-  entry: NotificationAccount = new NotificationAccount();
+  entry: Notification = new Notification();
   orgs;
-  cloudAccounts;
+  accounts;
   types = ['SLACK','EMAIL'];
-  constructor(private notificationService: NotificationService, private cloudAccountService: CloudAccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private notificationService: NotificationService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
     ngOnInit() {
     this.route.params.subscribe(params => {
@@ -91,20 +91,20 @@ export class NotificationEditComponent implements OnInit {
 
   getAccountyForNotificationHubType() {
     this.handler.activateLoader();
-    this.cloudAccountService.getAccountByAccountType('NOTIFICATION_HUB').subscribe(results => {
+    this.accountService.getAccountByAccountType('NOTIFICATION_HUB').subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.cloudAccounts = results['data'];
+      this.accounts = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
 
- setCloudAccount(cloudAccount){
-     this.entry.cloudAccount.accountType =  cloudAccount.accountType;
+ setAccount(account){
+     this.entry.account.accountType =  account.accountType;
  }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 }

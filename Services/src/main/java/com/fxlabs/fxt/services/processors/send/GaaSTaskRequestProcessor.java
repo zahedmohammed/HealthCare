@@ -1,13 +1,14 @@
 package com.fxlabs.fxt.services.processors.send;
 
 import com.fxlabs.fxt.dao.entity.project.Project;
-import com.fxlabs.fxt.dao.entity.project.ProjectGitAccount;
-import com.fxlabs.fxt.dao.entity.project.ProjectType;
 import com.fxlabs.fxt.dao.entity.users.ProjectRole;
 import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
 import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.entity.users.UsersPassword;
-import com.fxlabs.fxt.dao.repository.jpa.*;
+import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
+import com.fxlabs.fxt.dao.repository.jpa.ProjectUsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
+import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -35,9 +36,6 @@ public class GaaSTaskRequestProcessor {
 
     @Autowired
     private ProjectRepository projectRepository;
-
-    @Autowired
-    private ProjectGitAccountRepository projectGitAccountRepository;
 
     @Autowired
     private AmqpClientService amqpClientService;
@@ -80,10 +78,10 @@ public class GaaSTaskRequestProcessor {
             task.setVcUrl(project.getUrl());
             task.setVcBranch(project.getBranch());
 
-            if (project.getCloudAccount() != null) {
-                task.setVcUsername(project.getCloudAccount().getAccessKey());
-                if (!StringUtils.isEmpty(project.getCloudAccount().getSecretKey())) {
-                    task.setVcPassword(project.getCloudAccount().getSecretKey());
+            if (project.getAccount() != null) {
+                task.setVcUsername(project.getAccount().getAccessKey());
+                if (!StringUtils.isEmpty(project.getAccount().getSecretKey())) {
+                    task.setVcPassword(project.getAccount().getSecretKey());
                 }
             }
             task.setVcLastCommit(project.getLastCommit());

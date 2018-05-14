@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Intesar Shannan Mohammed
  */
-@Document(indexName = "fxtestsuite")
+@Document(indexName = "fx-test-suites")
 @Entity
 @Data
 @AllArgsConstructor

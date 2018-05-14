@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author Intesar Shannan Mohammed
  */
-@Document(indexName = "fxalerts")
+@Document(indexName = "fx-alerts")
 @Entity
 @Data
 @AllArgsConstructor

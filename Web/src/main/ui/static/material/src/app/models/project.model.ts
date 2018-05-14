@@ -5,7 +5,7 @@ export class Project {
     public url: string;
     public branch: string;
     public credsRequired: boolean = false;
-    public cloudAccount: CloudAccount = new CloudAccount();
+    public account: Account = new Account();
     public lastCommit: string;
     public lastSync: string;
     public projectType: string;
@@ -16,7 +16,7 @@ export class Project {
 
 }
 
-export class CloudAccount {
+export class Account {
     public id: string;
     public name: string;
     public cloudType: string;

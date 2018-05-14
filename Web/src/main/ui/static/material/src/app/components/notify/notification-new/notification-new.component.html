@@ -74,9 +74,9 @@
               </label>
               <div class="col-md-4">
                 <mat-form-field>
-                  <mat-select placeholder="Account" required [(ngModel)]="entry.cloudAccount.id" name="account">
-                    <mat-option *ngFor="let cloudAccount of cloudAccounts" [value]="cloudAccount.id" (click)="setCloudAccount(cloudAccount);">
-                      {{cloudAccount.name}} ({{cloudAccount.accountType}})
+                  <mat-select placeholder="Account" required [(ngModel)]="entry.account.id" name="account">
+                    <mat-option *ngFor="let account of accounts" [value]="account.id" (click)="setAccount(account);">
+                      {{account.name}} ({{account.accountType}})
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -84,13 +84,13 @@
             <div class="callout1 text-muted callout-info1">
               <p>
                 <a target="_blank"
-                   href="#/app/cloud-accounts/new">Add Slack account with access to your channel.<i class="material-icons"
+                   href="#/app/accounts/new">Add Slack account with access to your channel.<i class="material-icons"
                                                                                                                          style="font-size: 18px;">open_in_new</i></a>
               </p>
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.cloudAccount.accountType !== 'Slack'">
+          <div class="form-group row" [hidden]="entry.account.accountType !== 'Slack'">
             <label for="channel" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -101,7 +101,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.cloudAccount.accountType !== 'Email'">
+          <div class="form-group row" [hidden]="entry.account.accountType !== 'Email'">
             <label for="channel" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">

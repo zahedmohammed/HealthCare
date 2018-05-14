@@ -2,11 +2,12 @@ package com.fxlabs.fxt.services.users;
 
 import com.fxlabs.fxt.converters.users.OrgConverter;
 import com.fxlabs.fxt.converters.users.OrgUsersConverter;
+import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.clusters.AccountType;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
 import com.fxlabs.fxt.dao.entity.users.*;
 import com.fxlabs.fxt.dao.repository.es.OrgUsersESRepository;
-import com.fxlabs.fxt.dao.repository.jpa.CloudAccountRepository;
+import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
@@ -41,12 +42,12 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
     private UsersRepository usersRepository;
     private UsersService usersService;
-    private CloudAccountRepository cloudAccountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
     public OrgServiceImpl(OrgUsersRepository orgUsersRepository, OrgUsersESRepository orgUsersESRepository,
                           OrgUsersConverter orgUsersConverter, OrgRepository orgRepository, OrgConverter orgConverter,
-                          UsersRepository usersRepository, UsersService usersService, CloudAccountRepository cloudAccountRepository) {
+                          UsersRepository usersRepository, UsersService usersService, AccountRepository accountRepository) {
 
         super(orgRepository, orgConverter);
 
@@ -58,7 +59,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         this.orgUsersConverter = orgUsersConverter;
         this.usersRepository = usersRepository;
         this.usersService = usersService;
-        this.cloudAccountRepository  = cloudAccountRepository;
+        this.accountRepository = accountRepository;
 
     }
 
@@ -104,7 +105,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         orgUsers.setStatus(OrgUserStatus.ACTIVE);
         orgUsersRepository.save(orgUsers);
 
-        com.fxlabs.fxt.dao.entity.clusters.CloudAccount ca = new com.fxlabs.fxt.dao.entity.clusters.CloudAccount();
+        Account ca = new Account();
 
         ca.setOrg(orgConverter.convertToEntity(response.getData()));
         ca.setAccountType(AccountType.Self_Hosted);
@@ -113,9 +114,9 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         ca.setName("Default");
         ca.setVisibility(com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility.ORG_PUBLIC);
 
-        this.cloudAccountRepository.save(ca);
+        this.accountRepository.save(ca);
 
-        com.fxlabs.fxt.dao.entity.clusters.CloudAccount caGithub = new com.fxlabs.fxt.dao.entity.clusters.CloudAccount();
+        Account caGithub = new Account();
 
         caGithub.setOrg(orgConverter.convertToEntity(response.getData()));
         caGithub.setAccountType(AccountType.GitHub);
@@ -124,9 +125,9 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         caGithub.setName("Default");
         caGithub.setVisibility(ClusterVisibility.ORG_PUBLIC);
 
-        this.cloudAccountRepository.save(caGithub);
+        this.accountRepository.save(caGithub);
 
-        com.fxlabs.fxt.dao.entity.clusters.CloudAccount caEmail = new com.fxlabs.fxt.dao.entity.clusters.CloudAccount();
+        Account caEmail = new Account();
 
         caEmail.setOrg(orgConverter.convertToEntity(response.getData()));
         caEmail.setAccountType(AccountType.Email);
@@ -135,7 +136,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         caEmail.setName("Default");
         caEmail.setVisibility(com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility.ORG_PUBLIC);
 
-        this.cloudAccountRepository.save(caEmail);
+        this.accountRepository.save(caEmail);
 
 
         return response;

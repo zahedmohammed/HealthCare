@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { CloudAccountService } from './cloud-account.service';
+import { AccountService } from './account.service';
 
-describe('CloudAccountService', () => {
+describe('AccountService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CloudAccountService]
+      providers: [AccountService]
     });
   });
 
-  it('should be created', inject([CloudAccountService], (service: CloudAccountService) => {
+  it('should be created', inject([AccountService], (service: AccountService) => {
     expect(service).toBeTruthy();
   }));
 });

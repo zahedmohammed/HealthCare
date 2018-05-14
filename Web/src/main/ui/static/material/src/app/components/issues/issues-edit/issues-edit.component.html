@@ -2,7 +2,7 @@
 
   <article class="article">
 
-    <h2 class="article-title">{{subscription.name}}</h2>
+    <h2 class="article-title">{{entry.name}}</h2>
     <div class="box box-default">
       <div class="box-body padding-xl">
 
@@ -14,7 +14,7 @@
             <div class="col-md-4">
               <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
               <mat-form-field>
-                <mat-select placeholder="Owner" required disabled [(ngModel)]="subscription.org.id" name="type">
+                <mat-select placeholder="Owner" required disabled [(ngModel)]="entry.org.id" name="type">
                   <mat-option *ngFor="let org of orgs" [value]="org.org.id">
                     {{org.org.name}}
                   </mat-option>
@@ -29,7 +29,7 @@
             <div class="col-md-4">
               <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
               <mat-form-field>
-                <mat-select placeholder="Access level" [(ngModel)]="subscription.visibility" name="Access level">
+                <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="Access level">
                   <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
                     {{visibility}}
                   </mat-option>
@@ -43,7 +43,7 @@
             <label for="name" class="col-md-1 control-label"></label>
             <div class="col-md-4">
               <mat-input-container class="full-width">
-                <input required disabled [(ngModel)]="subscription.name" name="name" id="name"
+                <input required disabled [(ngModel)]="entry.name" name="name" id="name"
                        matInput placeholder="Bot name">
               </mat-input-container>
             </div>
@@ -54,9 +54,9 @@
             </label>
             <div class="col-md-4">
               <mat-form-field>
-                <mat-select placeholder="Account Type" disabled [(ngModel)]="subscription.cloudAccount.id" name="cloudAccount" id="cloudAccount">
-                  <mat-option *ngFor="let cloudAccount of cloudAccounts" [value]="cloudAccount.id" (click)="setCloudAccount(cloudAccount);">
-                    {{cloudAccount.name}} ({{cloudAccount.accountType}})
+                <mat-select placeholder="Account Type" disabled [(ngModel)]="entry.account.id" name="account" id="account">
+                  <mat-option *ngFor="let account of accounts" [value]="account.id" (click)="setAccount(account);">
+                    {{account.name}} ({{account.accountType}})
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -68,7 +68,7 @@
             </label>
             <div class="col-md-4">
               <mat-input-container class="full-width">
-                <input required [(ngModel)]="subscription.prop1" name="url"
+                <input required [(ngModel)]="entry.prop1" name="url"
                        matInput placeholder="Issue Tracker URL">
               </mat-input-container>
             </div>
@@ -79,12 +79,12 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="subscription.cloudAccount.accountType !== 'JIRA'">
+          <div class="form-group row" [hidden]="entry.account.accountType !== 'JIRA'">
             <label class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
               <mat-input-container class="full-width">
-                <input [(ngModel)]="subscription.prop2"
+                <input [(ngModel)]="entry.prop2"
                        matInput placeholder="Jira project short name" name="project_name">
               </mat-input-container>
             </div>
@@ -95,7 +95,7 @@
             <!--</label>-->
             <!--<div class="col-md-4">-->
               <!--<mat-input-container class="full-width">-->
-                <!--<input [(ngModel)]="subscription.prop3"-->
+                <!--<input [(ngModel)]="entry.prop3"-->
                        <!--matInput placeholder="Username/Access-key" name="accessKey">-->
               <!--</mat-input-container>-->
             <!--</div>-->
@@ -106,7 +106,7 @@
             <!--</label>-->
             <!--<div class="col-md-4">-->
               <!--<mat-input-container class="full-width">-->
-                <!--<input [(ngModel)]="subscription.prop4"-->
+                <!--<input [(ngModel)]="entry.prop4"-->
                        <!--matInput placeholder="Password/Secret-key" name="secretKey">-->
               <!--</mat-input-container>-->
             <!--</div>-->

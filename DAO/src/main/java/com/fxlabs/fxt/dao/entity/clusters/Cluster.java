@@ -13,7 +13,7 @@ import javax.persistence.*;
 /**
  * @author Intesar Shannan Mohammed
  */
-@Document(indexName = "fxclusters")
+@Document(indexName = "fx-clusters")
 @Entity
 @Data
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class Cluster extends BaseEntity {
     private Org org;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    private CloudAccount cloudAccount;
+    private Account account;
 
     @Enumerated(EnumType.STRING)
     private ClusterDriver driver;

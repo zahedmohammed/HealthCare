@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
-import { CloudAccountService } from '../../../services/cloud-account.service';
-import { CloudAccount } from '../../../models/cloud-account.model';
+import { AccountService } from '../../../services/account.service';
+import { Account } from '../../../models/account.model';
 import { Project } from '../../../models/project.model';
 import { OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
@@ -19,8 +19,8 @@ export class ProjectsNewComponent implements OnInit {
   showSpinner: boolean = false;
   project: Project = new Project();
   orgs;
-  cloudAccounts;
-  constructor(private projectService: ProjectService, private cloudAccountService: CloudAccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) {
+  accounts;
+  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) {
     //this.project.genPolicy = "None";
   }
 
@@ -59,20 +59,20 @@ export class ProjectsNewComponent implements OnInit {
 
   getAccountsForProjectPage() {
     this.handler.activateLoader();
-    this.cloudAccountService.getAccountByAccountType('PROJECT').subscribe(results => {
+    this.accountService.getAccountByAccountType('PROJECT').subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.cloudAccounts = results['data'];
+      this.accounts = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
 
-  setCloudAccount(cloudAccount){
-     this.project.cloudAccount.accountType =  cloudAccount.accountType;
+  setAccount(account){
+     this.project.account.accountType =  account.accountType;
   }
 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];

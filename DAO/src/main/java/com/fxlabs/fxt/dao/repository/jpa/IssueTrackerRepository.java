@@ -1,0 +1,26 @@
+package com.fxlabs.fxt.dao.repository.jpa;
+
+import com.fxlabs.fxt.dao.entity.it.IssueTracker;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+/**
+ * @author Intesar Shannan Mohammed
+ */
+public interface IssueTrackerRepository extends JpaRepository<IssueTracker, String> {
+
+    Page<IssueTracker> findByCreatedBy(String user, Pageable pageable);
+
+    Page<IssueTracker> findByCreatedByAndInactive(String user, boolean inactive, Pageable pageable);
+
+    Optional<IssueTracker> findByOrgNameAndNameAndInactive(String org, String name, boolean inactive);
+
+   // Page<SkillSubscription> findBySkillSkillTypeAndInactiveAndCreatedBy(SkillType skillType, boolean inactive, String user, Pageable pageable);
+
+    Long countByCreatedByAndInactive(String user, boolean inactive);
+
+
+}

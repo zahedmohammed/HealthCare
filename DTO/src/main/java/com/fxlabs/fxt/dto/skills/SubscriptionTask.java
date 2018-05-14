@@ -1,6 +1,10 @@
 package com.fxlabs.fxt.dto.skills;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
+import com.fxlabs.fxt.dto.it.IssueTracker;
+import com.fxlabs.fxt.dto.skills.TaskResult;
+import com.fxlabs.fxt.dto.skills.TaskStatus;
+import com.fxlabs.fxt.dto.skills.TaskType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +19,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class SubscriptionTask extends BaseDto<String> {
 
-    private SkillSubscription subscription;
+    private IssueTracker subscription;
 
     private TaskType type;
 

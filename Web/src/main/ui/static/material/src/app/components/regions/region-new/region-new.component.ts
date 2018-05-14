@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { RegionsService } from '../../../services/regions.service';
-import { CloudAccountService } from '../../../services/cloud-account.service';
-import { CloudAccount } from '../../../models/cloud-account.model';
+import { AccountService } from '../../../services/account.service';
+import { Account } from '../../../models/account.model';
 import { OrgService } from '../../../services/org.service';
 import { Region } from '../../../models/regions.model';
 import { Handler } from '../../dialogs/handler/handler';
@@ -25,10 +25,10 @@ export class RegionNewComponent implements OnInit {
   regions = [];
 
   showSpinner: boolean = false;
-  cloudAccounts;
+  accounts;
   orgs;
   entry: Region = new Region();
-  constructor(private regionsService: RegionsService, private cloudAccountService: CloudAccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.getAccountForExecutionBotPage();
@@ -50,25 +50,25 @@ export class RegionNewComponent implements OnInit {
   }
 
   getRegions(){
-    if (this.entry.cloudAccount.accountType === 'GCP'){
+    if (this.entry.account.accountType === 'GCP'){
         this.regions = this.GCP_REGIONS;
     } else
-    if (this.entry.cloudAccount.accountType === 'AWS'){
+    if (this.entry.account.accountType === 'AWS'){
         this.regions = this.AWS_REGIONS;
     } else
-    if (this.entry.cloudAccount.accountType === 'AZURE'){
+    if (this.entry.account.accountType === 'AZURE'){
         this.regions = this.AZURE_REGIONS;
     }
   }
 
   getCloudAccounts() {
     this.handler.activateLoader();
-    this.cloudAccountService.get(0, 100).subscribe(results => {
+    this.accountService.get(0, 100).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.cloudAccounts = results['data'];
+      this.accounts = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -77,20 +77,20 @@ export class RegionNewComponent implements OnInit {
 
   getAccountForExecutionBotPage() {
     this.handler.activateLoader();
-    this.cloudAccountService.getAccountByAccountType('BOT_HUB').subscribe(results => {
+    this.accountService.getAccountByAccountType('BOT_HUB').subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.cloudAccounts = results['data'];
+      this.accounts = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
 
-  setCloudAccount(cloudAccount){
-     this.entry.cloudAccount.accountType =  cloudAccount.accountType;
+  setAccount(account){
+     this.entry.account.accountType =  account.accountType;
   }
 
   getOrgs() {

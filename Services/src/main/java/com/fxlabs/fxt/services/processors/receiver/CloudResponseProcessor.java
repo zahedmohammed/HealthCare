@@ -5,9 +5,8 @@ import com.fxlabs.fxt.dao.entity.clusters.Cluster;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterStatus;
 import com.fxlabs.fxt.dao.entity.skills.*;
 import com.fxlabs.fxt.dao.repository.jpa.ClusterRepository;
-import com.fxlabs.fxt.dao.repository.jpa.SkillSubscriptionRepository;
+import com.fxlabs.fxt.dao.repository.jpa.IssueTrackerRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SubscriptionTaskRepository;
-import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,7 +27,7 @@ public class CloudResponseProcessor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private SubscriptionTaskRepository repository;
-    private SkillSubscriptionRepository subscriptionRepository;
+    private IssueTrackerRepository subscriptionRepository;
     private ClusterRepository clusterRepository;
 
 
@@ -36,7 +35,7 @@ public class CloudResponseProcessor {
 
 
     @Autowired
-    public CloudResponseProcessor(SubscriptionTaskRepository repository, SkillSubscriptionRepository subscriptionRepository,
+    public CloudResponseProcessor(SubscriptionTaskRepository repository, IssueTrackerRepository subscriptionRepository,
                                     ClusterRepository clusterRepository) {
         this.repository = repository;
         this.clusterRepository = clusterRepository;

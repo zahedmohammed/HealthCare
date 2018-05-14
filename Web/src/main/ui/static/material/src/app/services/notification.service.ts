@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
-import { NotificationAccount } from '../models/notification-account.model';
+import { Notification } from '../models/notification.model';
 
 @Injectable()
 export class NotificationService {
@@ -27,15 +27,15 @@ export class NotificationService {
     return this.http.get(this.serviceUrl + "/" + id);
   }
 
-  create(obj: NotificationAccount) {
+  create(obj: Notification) {
     return this.http.post(this.serviceUrl, obj);
   }
 
-  update(obj: NotificationAccount) {
+  update(obj: Notification) {
     return this.http.put(this.serviceUrl + "/" + obj['id'], obj);
   }
 
-  delete(obj: NotificationAccount) {
+  delete(obj: Notification) {
     return this.http.delete(this.serviceUrl + "/" + obj['id']);
   }
 

@@ -17,7 +17,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
 import com.fxlabs.fxt.dto.clusters.AccountType;
-import com.fxlabs.fxt.dto.clusters.CloudAccount;
+import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.clusters.ClusterStatus;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -180,7 +180,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.clusterESRepository.save(cluster);
 
 
-        if (dto.getCloudAccount() != null && dto.getCloudAccount().getAccountType().equals(AccountType.Self_Hosted)) {
+        if (dto.getAccount() != null && dto.getAccount().getAccountType().equals(AccountType.Self_Hosted)) {
 
             String script = getExecutionBotManualScript(queue);
             cluster.setManualScript(script);
@@ -240,19 +240,19 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Map<String, String> opts = new HashMap<>();
 
-        CloudAccount cloudAccount = dto.getCloudAccount();
+        Account account = dto.getAccount();
 
-        if (cloudAccount == null) {
+        if (account == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Cloud account not found"));
         }
-        String key = getCloudSkillKey(cloudAccount);
+        String key = getCloudSkillKey(account);
 
         if (org.apache.commons.lang3.StringUtils.isEmpty(key)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
         }
 
-        opts.put("ACCESS_KEY_ID", cloudAccount.getAccessKey());
-        opts.put("SECRET_KEY", cloudAccount.getSecretKey());
+        opts.put("ACCESS_KEY_ID", account.getAccessKey());
+        opts.put("SECRET_KEY", account.getSecretKey());
         opts.put("COMMAND", getUserDataScript(dto.getKey()));
         opts.put("INSTANCE_NAME", dto.getName());
         cloudTask.setOpts(opts);
@@ -278,7 +278,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
         amqpAdmin.removeBinding(binding);
 
-        if (clusterOptional.get().getCloudAccount() != null && !clusterOptional.get().getCloudAccount().getAccountType().equals(com.fxlabs.fxt.dao.entity.clusters.AccountType.Self_Hosted)) {
+        if (clusterOptional.get().getAccount() != null && !clusterOptional.get().getAccount().getAccountType().equals(com.fxlabs.fxt.dao.entity.clusters.AccountType.Self_Hosted)) {
             deleteExecBot(converter.convertToDto(clusterOptional.get()), clusterOptional.get().getCreatedBy());
         }
 
@@ -333,15 +333,15 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Map<String, String> opts = new HashMap<>();
 
-        CloudAccount cloudAccount = dto.getCloudAccount();
-        String key = getCloudSkillKey(cloudAccount);
+        Account account = dto.getAccount();
+        String key = getCloudSkillKey(account);
 
         if (org.apache.commons.lang3.StringUtils.isEmpty(key)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
         }
 
-        opts.put("ACCESS_KEY_ID", cloudAccount.getAccessKey());
-        opts.put("SECRET_KEY", cloudAccount.getSecretKey());
+        opts.put("ACCESS_KEY_ID", account.getAccessKey());
+        opts.put("SECRET_KEY", account.getSecretKey());
 
         if (org.apache.commons.lang3.StringUtils.isEmpty(dto.getNodeId())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Node id is empty"));
@@ -451,17 +451,17 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return builder.toString();
     }
 
-    private String getCloudSkillKey(CloudAccount cloudAccount) {
+    private String getCloudSkillKey(Account account) {
         String key = null;
-        if (cloudAccount == null || cloudAccount.getAccountType() == null) {
+        if (account == null || account.getAccountType() == null) {
             return key;
         }
-        switch (cloudAccount.getAccountType()) {
+        switch (account.getAccountType()) {
             case AWS:
                 key = "fx-caas-aws-ec2";
                 break;
             default:
-                logger.info("Invalid provider [{}]", cloudAccount.getAccountType());
+                logger.info("Invalid provider [{}]", account.getAccountType());
                 break;
         }
         return key;

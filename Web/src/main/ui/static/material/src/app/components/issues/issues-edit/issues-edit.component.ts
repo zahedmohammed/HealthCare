@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
-import { SkillSubscriptionService } from '../../../services/skill-subscription.service';
+import { IssueTrackerService } from '../../../services/issue-tracker.service';
 import { SkillService } from '../../../services/skill.service';
 import { OrgService } from '../../../services/org.service';
-import { CloudAccountService } from '../../../services/cloud-account.service';
-import { CloudAccount } from '../../../models/cloud-account.model';
-import { Subscription } from '../../../models/subscription.model';
+import { AccountService } from '../../../services/account.service';
+import { Account } from '../../../models/account.model';
+import { IssueTracker } from '../../../models/issue-tracker.model';
 import { Base } from '../../../models/base.model';
 import { Handler } from '../../dialogs/handler/handler';
 
@@ -13,15 +13,15 @@ import { Handler } from '../../dialogs/handler/handler';
   selector: 'app-issues-edit',
   templateUrl: './issues-edit.component.html',
   styleUrls: ['./issues-edit.component.scss'],
-  providers: [SkillSubscriptionService, SkillService, OrgService]
+  providers: [IssueTrackerService, SkillService, OrgService]
 })
 export class IssuesEditComponent implements OnInit {
   skills;
   orgs;
-  cloudAccounts;
+  accounts;
   showSpinner: boolean = false;
-  subscription: Subscription = new Subscription();
-  constructor(private skillSubscriptionService: SkillSubscriptionService, private cloudAccountService: CloudAccountService, private skillService: SkillService,
+  entry: IssueTracker = new IssueTracker();
+  constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService,
     private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
@@ -38,13 +38,13 @@ export class IssuesEditComponent implements OnInit {
 
   getById(id: string) {
     this.handler.activateLoader();
-    this.skillSubscriptionService.getById(id).subscribe(results => {
+    this.issueTrackerService.getById(id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.subscription = results['data'];
-      //console.log(this.subscription);
+      this.entry = results['data'];
+      //console.log(this.entry);
     }, error => {
       console.log("Unable to fetch vault");
       this.handler.error(error);
@@ -53,7 +53,7 @@ export class IssuesEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.skillSubscriptionService.update(this.subscription).subscribe(results => {
+    this.issueTrackerService.update(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
@@ -67,14 +67,14 @@ export class IssuesEditComponent implements OnInit {
 
   delete() {
     this.handler.activateLoader();
-    this.skillSubscriptionService.deleteITBot(this.subscription).subscribe(results => {
+    this.issueTrackerService.deleteITBot(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
       this.router.navigate(['/app/issues']);
     }, error => {
-      console.log("Unable to delete subscription");
+      console.log("Unable to delete entry");
       this.handler.error(error);
     });
   }
@@ -109,20 +109,20 @@ export class IssuesEditComponent implements OnInit {
 
  getAccountyForIssueTracker() {
     this.handler.activateLoader();
-    this.cloudAccountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
+    this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.cloudAccounts = results['data'];
+      this.accounts = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
 
- setCloudAccount(cloudAccount){
-     this.subscription.cloudAccount.accountType =  cloudAccount.accountType;
+ setAccount(account){
+     this.entry.account.accountType =  account.accountType;
  }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 }

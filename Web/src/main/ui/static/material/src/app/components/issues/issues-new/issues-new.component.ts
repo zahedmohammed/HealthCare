@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
-import { SkillSubscriptionService } from '../../../services/skill-subscription.service';
+import { IssueTrackerService } from '../../../services/issue-tracker.service';
 import { SkillService } from '../../../services/skill.service';
-import { CloudAccountService } from '../../../services/cloud-account.service';
-import { CloudAccount } from '../../../models/cloud-account.model';
+import { AccountService } from '../../../services/account.service';
+import { Account } from '../../../models/account.model';
 import { OrgService } from '../../../services/org.service';
-import { Subscription } from '../../../models/subscription.model';
+import { IssueTracker } from '../../../models/issue-tracker.model';
 import { Base } from '../../../models/base.model';
 import { Handler } from '../../dialogs/handler/handler';
 
@@ -13,15 +13,15 @@ import { Handler } from '../../dialogs/handler/handler';
   selector: 'app-issues-new',
   templateUrl: './issues-new.component.html',
   styleUrls: ['./issues-new.component.scss'],
-  providers: [SkillSubscriptionService, SkillService, OrgService]
+  providers: [IssueTrackerService, SkillService, OrgService]
 })
 export class IssuesNewComponent implements OnInit {
   skills;
   showSpinner: boolean = false;
   orgs;
-  cloudAccounts;
-  entry: Subscription = new Subscription();
-  constructor(private skillSubscriptionService: SkillSubscriptionService, private cloudAccountService: CloudAccountService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  accounts;
+  entry: IssueTracker = new IssueTracker();
+  constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.listSkills();
@@ -44,7 +44,7 @@ export class IssuesNewComponent implements OnInit {
   }
   create() {
     this.handler.activateLoader();
-    this.skillSubscriptionService.createITBot(this.entry).subscribe(results => {
+    this.issueTrackerService.createITBot(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
@@ -72,19 +72,19 @@ export class IssuesNewComponent implements OnInit {
 
   getAccountyForIssueTracker() {
     this.handler.activateLoader();
-    this.cloudAccountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
+    this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.cloudAccounts = results['data'];
+      this.accounts = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
-  setCloudAccount(cloudAccount){
-     this.entry.cloudAccount.accountType =  cloudAccount.accountType;
+  setAccount(account){
+     this.entry.account.accountType =  account.accountType;
   }
 
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];

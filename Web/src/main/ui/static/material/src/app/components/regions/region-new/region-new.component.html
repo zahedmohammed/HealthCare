@@ -70,9 +70,9 @@
             </label>
             <div class="col-md-4">
               <mat-form-field>
-                <mat-select placeholder="Account" required [(ngModel)]="entry.cloudAccount" name="type"   (change)="getRegions()">
-                  <mat-option *ngFor="let ca of cloudAccounts" [value]="ca" (change)="setCloudAccount(cloudAccount);">
-                    {{ca.name}} ({{ca.accountType}})
+                <mat-select placeholder="Account" required [(ngModel)]="entry.account" name="type"   (change)="getRegions()">
+                  <mat-option *ngFor="let account of accounts" [value]="ca" (change)="setAccount(account);">
+                    {{account.name}} ({{account.accountType}})
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -83,13 +83,13 @@
               </p>
               <p>
                 <a target="_blank"
-                   href="#/app/cloud-accounts">Click here to register account<i class="material-icons"
+                   href="#/app/accounts">Click here to register account<i class="material-icons"
                                                                                 style="font-size: 18px;">open_in_new</i></a>
               </p>
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="!entry.cloudAccount || entry.cloudAccount.accountType === 'Self_Hosted'">
+          <div class="form-group row" [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
             <label class="col-md-1 control-label">
             </label>
             <div class="col-md-4">

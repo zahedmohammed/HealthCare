@@ -17,7 +17,7 @@ import java.util.Date;
  * @author Intesar Shannan Mohammed
  */
 
-@Document(indexName = "fxtestsuiteresponse")
+@Document(indexName = "fx-testsuite-responses")
 @Entity
 @Data
 @AllArgsConstructor

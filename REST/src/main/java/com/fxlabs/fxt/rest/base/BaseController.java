@@ -25,10 +25,10 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String SYSTEM_SETTING_BASE = API_BASE + "/system-settings";
     public static final String ALERT_BASE = API_BASE + "/alerts";
     public static final String CLUSTER_BASE = API_BASE + "/bot-clusters";
-    public static final String CLOUD_ACCOUNT_BASE = API_BASE + "/endpoints";
-    public static final String NOTIFICATION_ACCOUNT_BASE = API_BASE + "/notifications";
+    public static final String ACCOUNT_BASE = API_BASE + "/accounts";
+    public static final String NOTIFICATION_BASE = API_BASE + "/notifications";
     public static final String SKILLS_BASE = API_BASE + "/skills";
-    public static final String SUBSCRIPTION_BASE = API_BASE + "/issue-trackers";
+    public static final String ISSUE_TRACKER_BASE = API_BASE + "/issue-trackers";
     public static final String VAULT_BASE = API_BASE + "/vault";
     public static final String DASHBOARD_BASE = API_BASE + "/dashboard";
 

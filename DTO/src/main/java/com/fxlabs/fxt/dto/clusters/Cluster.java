@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Cluster extends BaseDto<String> {
 
     private NameDto org;
-    private CloudAccount cloudAccount;
+    private Account account;
 
     private ClusterDriver driver;
 

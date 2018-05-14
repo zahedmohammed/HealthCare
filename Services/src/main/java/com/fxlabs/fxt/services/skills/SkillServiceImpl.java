@@ -1,13 +1,10 @@
 package com.fxlabs.fxt.services.skills;
 
 import com.fxlabs.fxt.converters.skills.SkillConverter;
-import com.fxlabs.fxt.converters.users.OrgUsersConverter;
 import com.fxlabs.fxt.dao.entity.skills.Skill;
-import com.fxlabs.fxt.dao.entity.skills.SkillSubscription;
 import com.fxlabs.fxt.dao.entity.users.OrgRole;
 import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
-import com.fxlabs.fxt.dao.repository.es.OrgUsersESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SkillRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
@@ -17,7 +14,6 @@ import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
-import com.fxlabs.fxt.services.users.OrgUsersService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

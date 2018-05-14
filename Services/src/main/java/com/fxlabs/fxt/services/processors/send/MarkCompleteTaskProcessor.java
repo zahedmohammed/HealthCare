@@ -4,13 +4,11 @@ import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
-import com.fxlabs.fxt.dto.base.Message;
-import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
-import com.fxlabs.fxt.dto.notify.NotificationAccount;
+import com.fxlabs.fxt.dto.notify.Notification;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
-import com.fxlabs.fxt.services.notify.NotificationAccountService;
+import com.fxlabs.fxt.services.notify.NotificationService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -53,7 +51,7 @@ public class MarkCompleteTaskProcessor {
     private AmqpClientService amqpClientService;
 
     @Autowired
-    private NotificationAccountService notificationAccountService;
+    private NotificationService notificationAccountService;
     // fx-notification-slack
     @Value("${fx.notification.slack.queue.routingkey}")
     private String slackNotificationQueue;
@@ -129,7 +127,7 @@ public class MarkCompleteTaskProcessor {
                     continue;
                 }
 
-                Response<NotificationAccount> notificationAccount = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
+                Response<Notification> notificationAccount = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
 
                 if (notificationAccount.isErrors() || notificationAccount.getData() == null) {
                     logger.info("Notification Account not found for name [{}]", address);
@@ -138,13 +136,13 @@ public class MarkCompleteTaskProcessor {
                 NotificationTask task = new NotificationTask();
                 task.setId(run.getId());
                 Map<String, String> opts = new HashMap<>();
-                switch (notificationAccount.getData().getCloudAccount().getAccountType()) {
+                switch (notificationAccount.getData().getAccount().getAccountType()) {
                     case SLACK:
-                        if (notificationAccount.getData().getCloudAccount() == null || StringUtils.isEmpty(notificationAccount.getData().getCloudAccount().getAccessKey())) {
+                        if (notificationAccount.getData().getAccount() == null || StringUtils.isEmpty(notificationAccount.getData().getAccount().getAccessKey())) {
                             logger.info("Notification Token not found for account [{}]", notificationAccount.getData().getId());
                             break;
                         }
-                        opts.put("TOKEN", notificationAccount.getData().getCloudAccount().getAccessKey());
+                        opts.put("TOKEN", notificationAccount.getData().getAccount().getAccessKey());
                         opts.put("MESSAGE", formatSlackMessage(run));
                         opts.put("CHANNELS", notificationAccount.getData().getChannel());
                         task.setOpts(opts);

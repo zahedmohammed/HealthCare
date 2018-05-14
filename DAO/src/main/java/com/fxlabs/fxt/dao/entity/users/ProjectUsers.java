@@ -13,7 +13,7 @@ import javax.persistence.*;
 /**
  * @author Intesar Shannan Mohammed
  */
-@Document(indexName = "fxprojectusers")
+@Document(indexName = "fx-project-users")
 @Entity
 @Data
 @AllArgsConstructor

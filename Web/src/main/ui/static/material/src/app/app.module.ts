@@ -140,10 +140,10 @@ import { UserNewComponent } from './components/users/user-new/user-new.component
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
 import { OrgUsersComponent } from './components/org/org-users/org-users.component';
-import { CloudAccountListComponent } from './components/manage/cloud-account-list/cloud-account-list.component';
-import { CloudAccountEditComponent } from './components/manage/cloud-account-edit/cloud-account-edit.component';
-import { CloudAccountNewComponent } from './components/manage/cloud-account-new/cloud-account-new.component';
-import { CloudAccountService } from './services/cloud-account.service';
+import { AccountListComponent } from './components/manage/account-list/account-list.component';
+import { AccountEditComponent } from './components/manage/account-edit/account-edit.component';
+import { AccountNewComponent } from './components/manage/account-new/account-new.component';
+import { AccountService } from './services/account.service';
 import { RegionNewComponent } from './components/regions/region-new/region-new.component';
 import { RegionEditComponent } from './components/regions/region-edit/region-edit.component';
 import { NotificationListComponent } from './components/notify/notification-list/notification-list.component';
@@ -276,9 +276,9 @@ import { PasswordResetComponent } from './components/users/password-reset/passwo
     UserEditComponent,
     UserProfileComponent,
     OrgUsersComponent,
-    CloudAccountListComponent,
-    CloudAccountEditComponent,
-    CloudAccountNewComponent,
+    AccountListComponent,
+    AccountEditComponent,
+    AccountNewComponent,
     RegionNewComponent,
     RegionEditComponent,
     NotificationListComponent,
@@ -290,7 +290,7 @@ import { PasswordResetComponent } from './components/users/password-reset/passwo
     PasswordResetComponent
   ],
   bootstrap: [AppComponent],
-  providers: [DashboardService, TestSuiteService, UsersService, CloudAccountService, Handler],
+  providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
   entryComponents: [MsgDialogComponent, ErrorDialogComponent, ResponseDialogComponent]
 })
 

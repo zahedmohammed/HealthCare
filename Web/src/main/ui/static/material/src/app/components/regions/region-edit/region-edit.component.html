@@ -64,7 +64,7 @@
 
             <div class="col-md-4">
               <mat-input-container class="full-width">
-                <input required disabled [(ngModel)]="entry.cloudAccount.name" name="cloudAccountName" id="cloudAccountName"
+                <input required disabled [(ngModel)]="entry.account.name" name="accountName" id="accountName"
                        matInput placeholder="Account name">
               </mat-input-container>
             </div>
@@ -84,7 +84,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.cloudAccount.accountType === 'Self_Hosted'">
+          <div class="form-group row" [hidden]="entry.account.accountType === 'Self_Hosted'">
             <label class="col-md-1 control-label">
             </label>
 
@@ -101,7 +101,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.cloudAccount.accountType !== 'Self_Hosted'">
+          <div class="form-group row" [hidden]="entry.account.accountType !== 'Self_Hosted'">
             <label class="col-md-1 control-label">
             </label>
             <div class="col-md-4">

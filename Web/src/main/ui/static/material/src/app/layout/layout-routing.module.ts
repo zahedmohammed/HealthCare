@@ -63,9 +63,9 @@ import { UserNewComponent } from '../components/users/user-new/user-new.componen
 import { UserEditComponent } from '../components/users/user-edit/user-edit.component';
 import { PasswordResetComponent } from '../components/users/password-reset/password-reset.component';
 
-import { CloudAccountListComponent } from '../components/manage/cloud-account-list/cloud-account-list.component';
-import { CloudAccountNewComponent } from '../components/manage/cloud-account-new/cloud-account-new.component';
-import { CloudAccountEditComponent } from '../components/manage/cloud-account-edit/cloud-account-edit.component';
+import { AccountListComponent } from '../components/manage/account-list/account-list.component';
+import { AccountNewComponent } from '../components/manage/account-new/account-new.component';
+import { AccountEditComponent } from '../components/manage/account-edit/account-edit.component';
 
 import { NotificationListComponent } from '../components/notify/notification-list/notification-list.component';
 import { NotificationNewComponent } from '../components/notify/notification-new/notification-new.component';
@@ -153,9 +153,9 @@ const routes: Routes = [
       { path: 'orgs/:orgId/users/:id/password-reset', component: PasswordResetComponent },
       { path: 'orgs/:orgId/users/:id', component: UserEditComponent },
 
-      { path: 'cloud-accounts', component: CloudAccountListComponent },
-      { path: 'cloud-accounts/new', component: CloudAccountNewComponent },
-      { path: 'cloud-accounts/:id', component: CloudAccountEditComponent },
+      { path: 'accounts', component: AccountListComponent },
+      { path: 'accounts/new', component: AccountNewComponent },
+      { path: 'accounts/:id', component: AccountEditComponent },
 
       { path: 'skills/version-control', component: SkillsVersionControlComponent },
 

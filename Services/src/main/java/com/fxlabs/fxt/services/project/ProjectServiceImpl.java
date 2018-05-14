@@ -35,7 +35,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     private ProjectFileService projectFileService;
     private ProjectRepository projectRepository;
-    private ProjectGitAccountRepository projectGitAccountRepository;
     private OrgUsersRepository orgUsersRepository;
     //private TextEncryptor encryptor;
     private OrgRepository orgRepository;
@@ -49,14 +48,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
-                              ProjectGitAccountRepository projectGitAccountRepository, OrgUsersRepository orgUsersRepository,
+                              OrgUsersRepository orgUsersRepository,
             /*TextEncryptor encryptor,*/ OrgRepository orgRepository, UsersRepository usersRepository,
                               ProjectUsersRepository projectUsersRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                               ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository) {
         super(repository, converter);
         this.projectRepository = repository;
         this.projectFileService = projectFileService;
-        this.projectGitAccountRepository = projectGitAccountRepository;
         this.orgUsersRepository = orgUsersRepository;
         //this.encryptor = encryptor;
         this.orgRepository = orgRepository;
@@ -181,7 +179,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // check account
-            if (request.getCloudAccount() == null || StringUtils.isEmpty(request.getCloudAccount().getId())) {
+            if (request.getAccount() == null || StringUtils.isEmpty(request.getAccount().getId())) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
             }
 
@@ -203,7 +201,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // Validate GIT URL
-            if (request.getCloudAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local && StringUtils.isEmpty(request.getUrl())) {
+            if (request.getAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local && StringUtils.isEmpty(request.getUrl())) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Project's GIT URL cannot be empty"));
             }
 
@@ -214,7 +212,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
             nameDto.setId(org.get().getId());
 
-            project.setCloudAccount(request.getCloudAccount());
+            project.setAccount(request.getAccount());
             project.setOrg(nameDto);
             project.setName(request.getName());
             project.setDescription(request.getDescription());
@@ -239,7 +237,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             this.projectUsersRepository.saveAndFlush(projectUsers);
 
             // Create GaaS Task
-            if (request.getCloudAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
+            if (request.getAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
                 this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
             }
 
@@ -270,7 +268,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setId(_project.getId());
         project.setUrl(_project.getUrl());
         project.setBranch(_project.getBranch());
-        project.setCloudAccount(_project.getCloudAccount());
+        project.setAccount(_project.getAccount());
         project.setGenPolicy(_project.getGenPolicy());
         project.setOpenAPISpec(_project.getOpenAPISpec());
 

@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Intesar Shannan Mohammed
  */
-@Document(indexName = "fxprojectimports")
+@Document(indexName = "fx-project-imports")
 @Entity
 @Data
 @AllArgsConstructor

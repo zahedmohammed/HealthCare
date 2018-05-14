@@ -53,9 +53,9 @@
                         </label>
                         <div class="col-md-4">
                             <mat-form-field>
-                                <mat-select placeholder="Account" required [(ngModel)]="entry.cloudAccount.id" name="account">
-                                    <mat-option *ngFor="let cloudAccount of cloudAccounts" [value]="cloudAccount.id" (click)="setCloudAccount(cloudAccount);">
-                                        {{cloudAccount.name}} ({{cloudAccount.accountType}})
+                                <mat-select placeholder="Account" required [(ngModel)]="entry.account.id" name="account">
+                                    <mat-option *ngFor="let account of accounts" [value]="account.id" (click)="setAccount(account);">
+                                        {{account.name}} ({{account.accountType}})
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -77,7 +77,7 @@
                         <!--</div>-->
                     <!--</div>-->
 
-                    <div class="form-group row" [hidden]="entry.cloudAccount.accountType !== 'GitHub'">
+                    <div class="form-group row" [hidden]="entry.account.accountType !== 'GitHub'">
                         <label for="repo" class="col-md-1 control-label">
                         </label>
                         <div class="col-md-4">
@@ -93,7 +93,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row" [hidden]="entry.cloudAccount.accountType !== 'JIRA'">
+                    <div class="form-group row" [hidden]="entry.account.accountType !== 'JIRA'">
                         <label class="col-md-1 control-label">
                         </label>
                         <div class="col-md-4">

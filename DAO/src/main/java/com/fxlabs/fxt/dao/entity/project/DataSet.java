@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 /**
  * @author  Mohammed Shoukath Ali
  */
-@Document(indexName = "fxdataset")
+@Document(indexName = "fx-datasets")
 @Entity
 @Data
 @AllArgsConstructor

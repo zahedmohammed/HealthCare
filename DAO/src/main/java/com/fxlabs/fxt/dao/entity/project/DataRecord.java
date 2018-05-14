@@ -16,7 +16,7 @@ import javax.persistence.*;
  * @author  Mohammed Shoukath Ali
  */
 
-@Document(indexName = "fxdatarecord")
+@Document(indexName = "fx-datarecords")
 @Entity
 @Data
 @AllArgsConstructor

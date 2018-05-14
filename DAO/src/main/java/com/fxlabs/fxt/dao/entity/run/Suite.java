@@ -18,7 +18,7 @@ import javax.persistence.Enumerated;
  * @author Intesar Shannan Mohammed
  */
 
-@Document(indexName = "fxsuiteresponse")
+@Document(indexName = "fx-suite-responses")
 @Entity
 @Data
 @AllArgsConstructor

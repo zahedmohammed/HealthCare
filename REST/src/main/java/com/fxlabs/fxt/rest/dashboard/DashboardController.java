@@ -1,16 +1,15 @@
 package com.fxlabs.fxt.rest.dashboard;
 
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.clusters.ClusterService;
-import com.fxlabs.fxt.services.notify.NotificationAccountService;
+import com.fxlabs.fxt.services.notify.NotificationService;
 import com.fxlabs.fxt.services.project.EnvironmentService;
 import com.fxlabs.fxt.services.project.JobService;
 import com.fxlabs.fxt.services.project.ProjectService;
 import com.fxlabs.fxt.services.project.TestSuiteService;
 import com.fxlabs.fxt.services.run.RunService;
-import com.fxlabs.fxt.services.skills.SkillSubscriptionService;
+import com.fxlabs.fxt.services.it.IssueTrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
@@ -34,15 +33,15 @@ public class DashboardController {
     private RunService runService;
     private ProjectService projectService;
     private EnvironmentService environmentService;
-    private SkillSubscriptionService skillSubscriptionService;
+    private IssueTrackerService skillSubscriptionService;
     private ClusterService clusterService;
     private TestSuiteService testSuiteService;
-    private NotificationAccountService notificationAccountService;
+    private NotificationService notificationAccountService;
 
     @Autowired
     public DashboardController(JobService jobService, RunService runService, ProjectService projectService, EnvironmentService environmentService,
-                               SkillSubscriptionService skillSubscriptionService, ClusterService clusterService, TestSuiteService testSuiteService,
-                               NotificationAccountService notificationAccountService) {
+                               IssueTrackerService skillSubscriptionService, ClusterService clusterService, TestSuiteService testSuiteService,
+                               NotificationService notificationAccountService) {
         this.jobService = jobService;
         this.runService = runService;
         this.projectService = projectService;

@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.entity.skills;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
+import com.fxlabs.fxt.dao.entity.it.IssueTracker;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,7 +21,7 @@ public class SubscriptionTask extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "subscription_id")
-    private SkillSubscription subscription;
+    private IssueTracker subscription;
 
     @Column(name = "_type")
     @Enumerated(EnumType.STRING)

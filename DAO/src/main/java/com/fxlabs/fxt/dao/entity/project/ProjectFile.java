@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * @author Intesar Shannan Mohammed
  */
-@Document(indexName = "fxprojectfile")
+@Document(indexName = "fx-project-files")
 @JsonIgnoreProperties(value = {"content"})
 @Entity
 @Data

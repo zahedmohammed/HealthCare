@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { RegionsService } from '../../../services/regions.service';
 import { OrgService } from '../../../services/org.service';
-import { CloudAccountService } from '../../../services/cloud-account.service';
+import { AccountService } from '../../../services/account.service';
 import { Region } from '../../../models/regions.model';
 import { Handler } from '../../dialogs/handler/handler';
 
@@ -25,10 +25,10 @@ export class RegionEditComponent implements OnInit {
 
 
   showSpinner: boolean = false;
-  cloudAccounts;
+  accounts;
   entry: Region = new Region();
   orgs;
-  constructor(private regionsService: RegionsService, private cloudAccountService: CloudAccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -83,13 +83,13 @@ export class RegionEditComponent implements OnInit {
   }
 
   getRegions(){
-    if (this.entry.cloudAccount.cloudType === 'GCP'){
+    if (this.entry.account.cloudType === 'GCP'){
         this.regions = this.GCP_REGIONS;
     } else
-    if (this.entry.cloudAccount.cloudType === 'AWS'){
+    if (this.entry.account.cloudType === 'AWS'){
         this.regions = this.AWS_REGIONS;
     } else
-    if (this.entry.cloudAccount.cloudType === 'AZURE'){
+    if (this.entry.account.cloudType === 'AZURE'){
         this.regions = this.AZURE_REGIONS;
     }
   }

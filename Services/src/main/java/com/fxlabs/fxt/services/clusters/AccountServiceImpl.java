@@ -1,0 +1,207 @@
+package com.fxlabs.fxt.services.clusters;
+
+import com.fxlabs.fxt.converters.clusters.AccountConverter;
+import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
+import com.fxlabs.fxt.dao.entity.users.OrgRole;
+import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
+import com.fxlabs.fxt.dao.entity.users.OrgUsers;
+import com.fxlabs.fxt.dao.repository.es.AccountESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
+import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
+import com.fxlabs.fxt.dto.base.Message;
+import com.fxlabs.fxt.dto.base.MessageType;
+import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.clusters.Account;
+import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.exceptions.FxException;
+import org.apache.commons.lang3.EnumUtils;
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+/**
+ * @author Mohammed Luqman Shareef
+ * @since 3/20/2018
+ *  @author Mohammed Shoukath Ali
+ * @since 4/28/2018
+ */
+@Service
+@Transactional
+public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.entity.clusters.Account, Account, String> implements AccountService {
+
+    private AccountRepository accountRepository;
+    private AccountESRepository accountESRepository;
+    private AccountConverter accountConverter;
+    private AmqpAdmin amqpAdmin;
+    private TopicExchange topicExchange;
+    private OrgUsersRepository orgUsersRepository;
+    private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
+
+    @Autowired
+    public AccountServiceImpl(AccountRepository accountRepository, AccountESRepository accountESRepository,
+                              AccountConverter accountConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
+                              OrgUsersRepository orgUsersRepository) {
+
+        super(accountRepository, accountConverter);
+
+        this.accountRepository = accountRepository;
+        this.accountESRepository = accountESRepository;
+        this.accountConverter = accountConverter;
+        this.amqpAdmin = amqpAdmin;
+        this.topicExchange = topicExchange;
+        this.orgUsersRepository = orgUsersRepository;
+
+    }
+
+    @Override
+    public Response<List<Account>> findAll(String user, Pageable pageable) {
+        // Find all public
+        Page<com.fxlabs.fxt.dao.entity.clusters.Account> page = this.accountRepository.findByCreatedBy(user, pageable);
+        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+    }
+
+    @Override
+    public Response<Account> findById(String id, String user) {
+        com.fxlabs.fxt.dao.entity.clusters.Account account = this.accountRepository.findById(id).get();
+        account.setSecretKey(PASSWORD_MASKED);
+        return new Response<>(converter.convertToDto(account));
+    }
+
+    @Override
+    public Response<List<Account>> findByAccountType(String accountType, String user) {
+        if (!EnumUtils.isValidEnum(AccountPage.class, accountType)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Not a valid filter.")));
+        }
+        List<com.fxlabs.fxt.dao.entity.clusters.Account> accounts = this.accountRepository.findByAccountTypeInAndCreatedBy(AccountPage.valueOf(accountType).getAccountTypes(), user);
+        return new Response<>(converter.convertToDtos(accounts));
+    }
+
+    @Override
+    public Response<Account> findByName(String id, String user) {
+        // org//name
+        if (!org.apache.commons.lang3.StringUtils.contains(id, "/")) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid region"));
+        }
+        String[] tokens = StringUtils.split(id, "/");
+        String orgName = tokens[0];
+        String cloudAccountName = tokens[1];
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = this.accountRepository.findByNameAndOrgName(cloudAccountName, orgName);
+
+        if (!cloudAccountOptional.isPresent() && cloudAccountOptional.get().getVisibility() != ClusterVisibility.PUBLIC) {
+            return new Response<>().withErrors(true);
+        }
+        // TODO validate user is entitled to use the cloudAccount.
+        return new Response<Account>(converter.convertToDto(cloudAccountOptional.get()));
+    }
+
+
+    @Override
+    public Response<Account> create(Account dto, String user) {
+        // check duplicate name
+        if (dto.getOrg() == null || StringUtils.isEmpty(dto.getOrg().getId())) {
+            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+            if (CollectionUtils.isEmpty(set)) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
+            }
+
+            NameDto o = new NameDto();
+            o.setId(set.iterator().next().getOrg().getId());
+            //o.setVersion(set.iterator().next().getOrg().getVersion());
+            dto.setOrg(o);
+
+        } else {
+            // check user had write access to Org
+            Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(dto.getOrg().getId(), user, OrgUserStatus.ACTIVE);
+            if (!orgUsersOptional.isPresent() || orgUsersOptional.get().getOrgRole() != OrgRole.ADMIN) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [WRITE] or [ADMIN] access to the Org [%s]", dto.getOrg().getId())));
+            }
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = accountRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
+        if (cloudAccountOptional.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Duplicate cloudAccount name"));
+        }
+
+//        String queue = null;
+//        if (StringUtils.isEmpty(dto.getKey())) {
+//            queue = "key-" + RandomStringUtils.randomAlphabetic(12);
+//        } else {
+//            queue = dto.getKey();
+//        }
+//        Map<String, Object> args = new HashMap<>();
+//        args.put("x-message-ttl", 3600000);
+//        Queue q = new Queue(queue, true, false, false, args);
+//        Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
+//        amqpAdmin.declareQueue(q);
+//        amqpAdmin.declareBinding(binding);
+//
+//        dto.setKey(queue);
+
+        // generate key
+
+        com.fxlabs.fxt.dao.entity.clusters.Account cloudAccount = this.accountRepository.saveAndFlush(converter.convertToEntity(dto));
+        this.accountESRepository.save(cloudAccount);
+        return new Response<>(converter.convertToDto(cloudAccount));
+    }
+
+    @Override
+    public Response<Account> update(Account dto, String user) {
+        // validate user is the org admin
+        if (org.apache.commons.lang3.StringUtils.equals(PASSWORD_MASKED, dto.getSecretKey())) {
+
+            Optional<com.fxlabs.fxt.dao.entity.clusters.Account> response = this.accountRepository.findById(dto.getId());
+
+            if (response.isPresent() && response.get() != null) {
+                dto.setSecretKey(response.get().getSecretKey());
+            }
+
+        }
+        return super.save(dto, user);
+    }
+
+    @Override
+    public Response<Account> delete(String cloudAccountId, String user) {
+        // validate user is the org admin
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = repository.findById(cloudAccountId);
+        if (!cloudAccountOptional.isPresent()) {
+            return new Response<>().withErrors(true);
+        }
+//        String queue = cloudAccountOptional.get().getKey();
+//        amqpAdmin.deleteQueue(queue);
+//        Map<String, Object> args = new HashMap<>();
+//        args.put("x-message-ttl", 3600000);
+//        Binding binding = new Binding(queue, Binding.DestinationType.QUEUE, topicExchange.getName(), queue, args);
+//        amqpAdmin.removeBinding(binding);
+        return super.delete(cloudAccountId, user);
+    }
+
+
+    @Override
+    public Response<Long> countBotRegions(String user) {
+        // Find all public
+        Long count = this.accountRepository.countByVisibility(ClusterVisibility.PUBLIC);
+        return new Response<>(count);
+    }
+
+    @Override
+    public void isUserEntitled(String s, String user) {
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = repository.findById(s);
+        if (!cloudAccountOptional.isPresent()) {
+            throw new FxException(String.format("Resource [%s] not found.", s));
+        }
+        if (cloudAccountOptional.get().getVisibility() == ClusterVisibility.PRIVATE && !org.apache.commons.lang3.StringUtils.equals(cloudAccountOptional.get().getCreatedBy(), user)) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s] with 'PRIVATE' visibility.", user, s));
+        }
+    }
+}
