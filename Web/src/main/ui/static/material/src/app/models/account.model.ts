@@ -1,5 +1,5 @@
 export class Account {
-
+    id: string;
     name: string;
     accessKey: string;
     secretKey: string;

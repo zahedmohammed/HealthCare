@@ -87,29 +87,15 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
     @Override
     public Response<com.fxlabs.fxt.dto.vault.Vault> delete(String id, String org, String user) {
         // duplicate key
-        Optional<Vault> optionalVault = repository.findByKeyAndOrgId(id, org);
+        Optional<Vault> optionalVault = repository.findByIdAndOrgId(id, org);
         if (!optionalVault.isPresent()) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Key with the name exists."));
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Key with the name doesn't exists."));
         }
         return delete(id, user);
     }
 
     @Override
     public Response<com.fxlabs.fxt.dto.vault.Vault> save(com.fxlabs.fxt.dto.vault.Vault dto, String user) {
-
-        if (dto.getOrg() == null) {
-            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
-            if (CollectionUtils.isEmpty(set)) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
-            }
-
-            OrgUsers orgUsers = null;
-            orgUsers = set.iterator().next();
-            NameDto org = new NameDto();
-            org.setId(orgUsers.getOrg().getId());
-            dto.setOrg(org);
-
-        }
 
         // empty key
         if (org.springframework.util.StringUtils.isEmpty(dto.getKey())) {

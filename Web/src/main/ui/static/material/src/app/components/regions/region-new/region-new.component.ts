@@ -32,7 +32,7 @@ export class RegionNewComponent implements OnInit {
 
   ngOnInit() {
     this.getAccountForExecutionBotPage();
-    this.getOrgs();
+    //this.getOrgs();
   }
 
   create() {

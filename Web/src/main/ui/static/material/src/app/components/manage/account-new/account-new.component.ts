@@ -23,7 +23,7 @@ export class AccountNewComponent implements OnInit {
   constructor(private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
-    this.getOrgs();
+    //this.getOrgs();
   }
 
   create() {

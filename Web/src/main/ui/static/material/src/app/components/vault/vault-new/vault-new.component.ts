@@ -19,7 +19,7 @@ export class VaultNewComponent implements OnInit {
   constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
-    this.getOrgs();
+    //this.getOrgs();
   }
 
   create() {

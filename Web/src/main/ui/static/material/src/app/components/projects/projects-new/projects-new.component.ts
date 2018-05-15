@@ -25,7 +25,7 @@ export class ProjectsNewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getOrgs();
+    //this.getOrgs();
     this.getAccountsForProjectPage();
   }
 

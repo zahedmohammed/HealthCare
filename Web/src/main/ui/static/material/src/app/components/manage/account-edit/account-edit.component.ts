@@ -25,7 +25,7 @@ export class AccountEditComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.getById(params['id']);
-        this.getOrgs();
+        //this.getOrgs();
       }
     });
   }

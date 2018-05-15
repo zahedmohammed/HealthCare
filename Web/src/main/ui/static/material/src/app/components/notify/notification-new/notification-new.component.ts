@@ -23,7 +23,7 @@ export class NotificationNewComponent implements OnInit {
   constructor(private notificationService: NotificationService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
-    this.getOrgs();
+    //this.getOrgs();
     this.getAccountyForNotificationHubType();
   }
 

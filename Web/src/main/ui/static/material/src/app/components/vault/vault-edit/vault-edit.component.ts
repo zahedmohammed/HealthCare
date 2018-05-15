@@ -23,7 +23,7 @@ export class VaultEditComponent implements OnInit {
       console.log(params);
       if (params['id']) {
         this.getById(params['id']);
-        this.getOrgs();
+        //this.getOrgs();
       }
     });
   }

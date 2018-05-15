@@ -25,7 +25,7 @@ export class ProjectsEditComponent implements OnInit {
       console.log(params);
       if (params['id']) {
         this.getById(params['id']);
-        this.getOrgs();
+        //this.getOrgs();
         this.getAccountsForProjectPage();
       }
     });

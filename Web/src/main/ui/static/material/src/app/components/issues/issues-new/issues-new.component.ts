@@ -25,7 +25,7 @@ export class IssuesNewComponent implements OnInit {
 
   ngOnInit() {
     this.listSkills();
-    this.getOrgs();
+    //this.getOrgs();
     this.getAccountyForIssueTracker();
   }
 

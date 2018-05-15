@@ -75,15 +75,10 @@
                     <div class="form-group row" [hidden]="entry.account.accountType !== 'Self_Hosted'">
                         <label class="col-md-1 control-label">
                         </label>
-                        <div class="col-md-4">
-                            <mat-input-container class="full-width">
-                                <input required disabled [(ngModel)]="entry.manualScript" name="script" id="script"
-                                       matInput placeholder="script">
-                            </mat-input-container>
-                        </div>
-                        <div class="callout1 text-muted callout-info1">
-                            <p>
-                                Execute this script to run a fx execution bot
+                        <div class="col-md-10">
+                            <p class="text-muted">
+                                Execute this script to run a Fx execution bot: <br/>
+                                <code>{{entry.manualScript}}</code>
                             </p>
                         </div>
                     </div>

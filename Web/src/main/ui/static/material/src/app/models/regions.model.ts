@@ -1,7 +1,7 @@
 export class Region {
 
     public status: string;
-    public account: Account;
+    public account: Account = new Account();
     public name: string;
     public key: string;
     public region: string;
@@ -16,6 +16,7 @@ export class Region {
 }
 
 export class Account {
+    public id: string;
     public name: string;
     public cloudType: string;
     public accessKey: string;

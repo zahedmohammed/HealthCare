@@ -18,4 +18,6 @@ public interface VaultRepository extends JpaRepository<Vault, String> {
     Optional<Vault> findByOrgNameAndKey(String org, String key);
 
     Optional<Vault> findByKeyAndOrgId(String key, String org);
+
+    Optional<Vault> findByIdAndOrgId(String key, String org);
 }

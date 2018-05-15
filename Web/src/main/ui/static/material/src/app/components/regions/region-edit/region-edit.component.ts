@@ -35,7 +35,8 @@ export class RegionEditComponent implements OnInit {
       console.log(params);
       if (params['id']) {
         this.getById(params['id']);
-        this.getOrgs();
+        //this.getOrgs();
+        //this.getAccountForExecutionBotPage();
       }
     });
   }
@@ -102,6 +103,20 @@ export class RegionEditComponent implements OnInit {
         return;
       }
       this.orgs = results['data'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+  getAccountForExecutionBotPage() {
+    this.handler.activateLoader();
+    this.accountService.getAccountByAccountType('BOT_HUB').subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.accounts = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
