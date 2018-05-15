@@ -27,25 +27,28 @@ public class IssueTrackerController {
         this.service = service;
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<IssueTracker>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return service.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+
+        return service.findAll(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/skill-type/{type}", method = RequestMethod.GET)
     public Response<List<IssueTracker>> findByType(@PathVariable("type") String type,
                                                    @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+
         return service.findBySkillType(type, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<IssueTracker> findById(@PathVariable("id") String id) {
-        return service.findById(id, SecurityUtil.getCurrentAuditor());
+
+        return service.findById(id, SecurityUtil.getOrgId());
     }
 
     /*@Secured(ROLE_USER)
@@ -54,16 +57,18 @@ public class IssueTrackerController {
         return service.save(request, SecurityUtil.getCurrentAuditor());
     }*/
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/issue-tracker-bot", method = RequestMethod.POST)
     public Response<IssueTracker> addIssueTrackerBot(@RequestBody IssueTracker request) {
-        return service.addITBot(request, SecurityUtil.getCurrentAuditor());
+
+        return service.addITBot(request, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/issue-tracker-bot/{id}", method = RequestMethod.DELETE)
     public Response<IssueTracker> deleteIssueTrackerBot(@PathVariable("id") String id) {
-        return service.deleteITBot(id, SecurityUtil.getCurrentAuditor());
+
+        return service.deleteITBot(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 //
 //    @Secured(ROLE_USER)
@@ -79,10 +84,11 @@ public class IssueTrackerController {
 //    }
 
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public Response<IssueTracker> update(@RequestBody IssueTracker dto) {
-        return service.save(dto, SecurityUtil.getCurrentAuditor());
+
+        return service.save(dto, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
     /*@Secured(ROLE_USER)

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,6 +31,10 @@ public interface OrgUsersRepository extends JpaRepository<OrgUsers, String> {
     Optional<OrgUsers> findByOrgNameAndUsersIdAndStatus(String name, String usersId, OrgUserStatus status);
 
     Optional<OrgUsers> findByUsersIdAndStatusAndOrgNameAndOrgRole(String usersId, OrgUserStatus status, String orgName, OrgRole orgRole);
+
+    Optional<OrgUsers> findByUsersIdAndStatusAndOrgName(String usersId, OrgUserStatus status, String orgName);
+
+    List<OrgUsers> findByUsersIdAndStatus(String usersId, OrgUserStatus status, Pageable pageable);
 
     Optional<OrgUsers> findByUsersIdAndOrgIdAndStatusAndOrgRole(String usersId, String orgId, OrgUserStatus status, OrgRole orgRole);
 }

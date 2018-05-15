@@ -28,4 +28,9 @@ public class SecurityUtil {
 
         return ((FxUserPrinciple) authentication.getPrincipal()).getOrg();
     }
+
+    public static String getOrgId() {
+        Org org = getOrg();
+        return org != null ? org.getId() : null;
+    }
 }

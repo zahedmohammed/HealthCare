@@ -13,7 +13,9 @@ import java.util.Optional;
  */
 public interface VaultRepository extends JpaRepository<Vault, String> {
 
-    Page<Vault> findByCreatedBy(String user, org.springframework.data.domain.Pageable pageable);
+    Page<Vault> findByOrgId(String org, org.springframework.data.domain.Pageable pageable);
 
     Optional<Vault> findByOrgNameAndKey(String org, String key);
+
+    Optional<Vault> findByKeyAndOrgId(String key, String org);
 }

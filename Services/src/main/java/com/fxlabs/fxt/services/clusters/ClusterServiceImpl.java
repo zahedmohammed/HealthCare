@@ -97,20 +97,23 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     @Override
-    public Response<List<Cluster>> findAll(String user, Pageable pageable) {
-        // Find all public
-        Page<com.fxlabs.fxt.dao.entity.clusters.Cluster> page = this.clusterRepository.findByVisibility(ClusterVisibility.PUBLIC, pageable);
+    public Response<List<Cluster>> findAll(String org, Pageable pageable) {
+        // Find all public or org.
+        Page<com.fxlabs.fxt.dao.entity.clusters.Cluster> page = this.clusterRepository.findByVisibilityOrOrgId(ClusterVisibility.PUBLIC, org, pageable);
         return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
-    public Response<Cluster> findById(String id, String user) {
+    public Response<Cluster> findById(String id, String o) {
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findById(id);
 
         if (!clusterOptional.isPresent()) {
             return new Response<>().withErrors(true);
         }
-        // TODO validate user is entitled to use the cluster.
+        // validate user is entitled to use the cluster.
+        if (!org.apache.commons.lang3.StringUtils.equals(clusterOptional.get().getOrg().getId(), o)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
         return new Response<Cluster>(converter.convertToDto(clusterOptional.get()));
     }
 
@@ -134,26 +137,12 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
 
     @Override
-    public Response<Cluster> create(Cluster dto, String user) {
-        // check duplicate name
-        if (dto.getOrg() == null || StringUtils.isEmpty(dto.getOrg().getId())) {
-            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
-            if (CollectionUtils.isEmpty(set)) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
-            }
+    public Response<Cluster> create(Cluster dto, String org) {
 
-            NameDto o = new NameDto();
-            o.setId(set.iterator().next().getOrg().getId());
-            //o.setVersion(set.iterator().next().getOrg().getVersion());
-            dto.setOrg(o);
+        NameDto o = new NameDto();
+        o.setId(org);
+        dto.setOrg(o);
 
-        } else {
-            // check user had write access to Org
-            Optional<com.fxlabs.fxt.dao.entity.users.OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(dto.getOrg().getId(), user, OrgUserStatus.ACTIVE);
-            if (!orgUsersOptional.isPresent() || orgUsersOptional.get().getOrgRole() != OrgRole.ADMIN) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [WRITE] or [ADMIN] access to the Org [%s]", dto.getOrg().getId())));
-            }
-        }
 
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = clusterRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
         if (clusterOptional.isPresent()) {
@@ -175,9 +164,6 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         dto.setKey(queue);
 
-        // generate key
-
-
         com.fxlabs.fxt.dao.entity.clusters.Cluster cluster = this.clusterRepository.saveAndFlush(converter.convertToEntity(dto));
         this.clusterESRepository.save(cluster);
 
@@ -196,12 +182,6 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.clusterESRepository.save(cluster);
 
         return new Response<>(converter.convertToDto(cluster));
-    }
-
-    @Override
-    public Response<Cluster> update(Cluster dto, String user) {
-        // validate user is the org admin
-        return super.save(dto, user);
     }
 
     @Override
@@ -267,12 +247,27 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     @Override
-    public Response<Cluster> delete(String clusterId, String user) {
+    public Response<Cluster> update(Cluster dto, String o, String user) {
+        // validate user is entitled to use the cluster.
+        if (!org.apache.commons.lang3.StringUtils.equals(dto.getId(), o)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+        return super.save(dto, user);
+    }
+
+    @Override
+    public Response<Cluster> delete(String clusterId, String o, String user) {
         // validate user is the org admin
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = repository.findById(clusterId);
         if (!clusterOptional.isPresent()) {
             return new Response<>().withErrors(true);
         }
+
+        // validate user is entitled to use the cluster.
+        if (!org.apache.commons.lang3.StringUtils.equals(clusterOptional.get().getOrg().getId(), o)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+
         String queue = clusterOptional.get().getKey();
         amqpAdmin.deleteQueue(queue);
         Map<String, Object> args = new HashMap<>();

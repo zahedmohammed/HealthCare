@@ -2,6 +2,8 @@ package com.fxlabs.fxt.dao.repository.jpa;
 
 import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.project.ProjectType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -13,6 +15,10 @@ import java.util.stream.Stream;
 public interface ProjectRepository extends JpaRepository<Project, String> {
 
     Optional<Project> findByNameAndInactive(String name, boolean inactive);
+
+    Optional<Project> findByIdAndOrgId(String id, String org);
+
+    Page<Project> findByOrgIdAndInactive(String org, boolean inactive, Pageable pageable);
 
     Optional<Project> findByNameIgnoreCaseAndOrgIdAndInactive(String name, String orgId, boolean inactive);
 

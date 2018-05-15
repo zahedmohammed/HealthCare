@@ -16,9 +16,11 @@ public interface NotificationRepository extends JpaRepository<Notification, Stri
 
     Optional<Notification> findByNameAndOrgId(String name, String orgId);
 
+    Optional<Notification> findByIdAndOrgId(String id, String orgId);
+
     Optional<Notification> findByNameAndOrgName(String name, String orgName);
 
-    Page<Notification> findByCreatedBy(String owner, Pageable pageable);
+    Page<Notification> findByOrgId(String o, Pageable pageable);
 
     Long countByVisibility(NotificationVisibility visibility);
 

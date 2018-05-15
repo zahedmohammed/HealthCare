@@ -5,5 +5,5 @@ package com.fxlabs.fxt.dao.entity.users;
  */
 public enum OrgRole {
 
-    READ, WRITE, ADMIN, USER
+    READ, WRITE, ADMIN, USER, PROJECT_MANAGER, ENTERPRISE_ADMIN;
 }

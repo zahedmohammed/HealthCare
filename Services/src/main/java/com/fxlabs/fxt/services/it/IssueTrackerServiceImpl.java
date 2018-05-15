@@ -4,9 +4,6 @@ import com.fxlabs.fxt.converters.skills.IssueTrackerConverter;
 import com.fxlabs.fxt.dao.entity.skills.TaskResult;
 import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
-import com.fxlabs.fxt.dao.entity.users.OrgRole;
-import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
-import com.fxlabs.fxt.dao.entity.users.OrgUsers;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.it.IssueTracker;
@@ -20,9 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -40,12 +37,11 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     private ClusterRepository clusterRepository;
 
 
-
     @Autowired
     public IssueTrackerServiceImpl(IssueTrackerRepository repository, IssueTrackerConverter converter,
                                    UsersRepository usersRepository, OrgUsersRepository orgUsersRepository,
                                    AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository,
-                                   ClusterRepository clusterRepository ) {
+                                   ClusterRepository clusterRepository) {
         super(repository, converter);
 
         this.repository = repository;
@@ -60,54 +56,42 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
 
 
     @Override
-    public Response<List<IssueTracker>> findAll(String user, Pageable pageable) {
-        Page<com.fxlabs.fxt.dao.entity.it.IssueTracker> entities = this.repository.findByCreatedBy(user, pageable);
+    public Response<List<IssueTracker>> findAll(String org, Pageable pageable) {
+        Page<com.fxlabs.fxt.dao.entity.it.IssueTracker> entities = this.repository.findByOrgId(org, pageable);
         return new Response<>(converter.convertToDtos(entities.getContent()), entities.getTotalElements(), entities.getTotalPages());
     }
 
     @Override
-    public Response<List<IssueTracker>> findBySkillType(String skillType, String user, Pageable pageable) {
+    public Response<List<IssueTracker>> findBySkillType(String skillType, String org, Pageable pageable) {
         // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
-        Page<com.fxlabs.fxt.dao.entity.it.IssueTracker> entities = this.repository.findByCreatedByAndInactive(user, false, pageable);
+        Page<com.fxlabs.fxt.dao.entity.it.IssueTracker> entities = this.repository.findByOrgIdAndInactive(org, false, pageable);
         return new Response<>(converter.convertToDtos(entities.getContent()), entities.getTotalElements(), entities.getTotalPages());
         // return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Operation not supported.")));
     }
 
     @Override
-    public Response<IssueTracker> save(IssueTracker dto, String user) {
+    public Response<IssueTracker> findById(String id, String org) {
+        Optional<com.fxlabs.fxt.dao.entity.it.IssueTracker> issueTrackerOptional = this.repository.findByIdAndOrgId(id, org);
+        return new Response<>(converter.convertToDto(issueTrackerOptional.get()));
+    }
 
-        if (dto.getOrg() == null) {
-            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
-            if (CollectionUtils.isEmpty(set)) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
-            }
+    @Override
+    public Response<IssueTracker> save(IssueTracker dto, String org, String user) {
 
-            OrgUsers orgUsers = null;
-            orgUsers = set.iterator().next();
-            NameDto org = new NameDto();
-            org.setId(orgUsers.getOrg().getId());
-            dto.setOrg(org);
+        NameDto o = new NameDto();
+        o.setId(org);
+        dto.setOrg(o);
 
-        }
         return super.save(dto, user);
     }
 
     @Override
-    public Response<IssueTracker> addITBot(IssueTracker dto, String user) {
+    public Response<IssueTracker> addITBot(IssueTracker dto, String o, String user) {
 
-        if (dto.getOrg() == null) {
-            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
-            if (CollectionUtils.isEmpty(set)) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
-            }
+        NameDto org = new NameDto();
+        org.setId(o);
+        dto.setOrg(org);
 
-            OrgUsers orgUsers = null;
-            orgUsers = set.iterator().next();
-            NameDto org = new NameDto();
-            org.setId(orgUsers.getOrg().getId());
-            dto.setOrg(org);
-
-        }
 
         //TODO validate - name not null and unique
         dto.setState(State.ACTIVE);
@@ -130,10 +114,12 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     }
 
     @Override
-    public Response<IssueTracker> deleteITBot(String id, String user) {
-        // TODO check user is owner or org_admin
-        Response<IssueTracker> response = findById(id, user);
-        IssueTracker dto = response.getData();
+    public Response<IssueTracker> deleteITBot(String id, String o, String user) {
+
+        // check user is owner or org_admin
+        Optional<com.fxlabs.fxt.dao.entity.it.IssueTracker> issueTracker = repository.findByIdAndOrgId(id, o);
+
+        IssueTracker dto = converter.convertToDto(issueTracker.get());
         if (!StringUtils.equals(dto.getCreatedBy(), user)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [DELETE] access to the resource.")));
         }
@@ -150,9 +136,6 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
 
         return super.save(dto, user);
     }
-
-
-
 
 
     @Override

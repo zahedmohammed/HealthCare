@@ -21,12 +21,14 @@ public class FxUserPrinciple implements UserDetails {
     private final Users user;
     private final UsersPassword usersPassword;
     private final Org org;
+    private final List<String> privileges;
 
     //
-    public FxUserPrinciple(Users user, UsersPassword usersPassword, Org org) {
+    public FxUserPrinciple(Users user, UsersPassword usersPassword, Org org, List<String> privileges) {
         this.user = user;
         this.usersPassword = usersPassword;
         this.org = org;
+        this.privileges = privileges;
     }
 
     //
@@ -43,9 +45,15 @@ public class FxUserPrinciple implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (final String privilege : user.getPrivileges()) {
+
+        /*for (final String privilege : user.getPrivileges()) {
             authorities.add(new SimpleGrantedAuthority(privilege));
-        }
+        }*/
+
+        privileges.forEach(p -> {
+            authorities.add(new SimpleGrantedAuthority(p));
+        });
+
         return authorities;
     }
 

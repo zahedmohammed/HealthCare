@@ -86,14 +86,14 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     }
 
     @Override
-    public Response<List<com.fxlabs.fxt.dto.project.Job>> findAll(String user, Pageable pageable) {
+    public Response<List<com.fxlabs.fxt.dto.project.Job>> findAll(String org, Pageable pageable) {
         // check user has access to project
         // find owned projects org --> projects --> jobs
         // users --> org or users --> projects
         // least - a project should be visible to owner
 
 
-        Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
+        Response<List<Project>> projectsResponse = projectService.findProjects(org, pageable);
         if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
             return new Response<List<com.fxlabs.fxt.dto.project.Job>>(Collections.emptyList(), 0L, 0);
         }
@@ -139,11 +139,11 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     @Override
     public void isUserEntitled(String jobId, String user) {
         // TODO - user has access to job/project
-        Optional<Job> jobOptional = jobRepository.findById(jobId);
+        /*Optional<Job> jobOptional = jobRepository.findById(jobId);
         if (!jobOptional.isPresent()) {
             throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, jobId));
         }
-        projectService.isUserEntitled(jobOptional.get().getProject().getId(), user);
+        projectService.isUserEntitled(jobOptional.get().getProject().getId(), user);*/
     }
 
 }

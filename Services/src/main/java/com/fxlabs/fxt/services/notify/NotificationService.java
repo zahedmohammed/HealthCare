@@ -15,9 +15,9 @@ import java.util.List;
  */
 public interface NotificationService extends GenericService<Notification, String> {
 
-    Response<Notification> create(Notification dto, String user);
+    Response<Notification> create(Notification dto, String org, String user);
 
-    Response<Notification> update(Notification dto, String user);
+    Response<Notification> update(Notification dto, String org, String user);
 
     Response<List<Notification>> findAll(String user, Pageable pageable);
 
@@ -25,7 +25,7 @@ public interface NotificationService extends GenericService<Notification, String
 
     Response<Notification> findById(String id, String user);
 
-    Response<Notification> delete(String s, String user);
+    Response<Notification> delete(String s, String org, String user);
 
     Response<Long> count(String user);
 

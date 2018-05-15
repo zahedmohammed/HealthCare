@@ -35,24 +35,24 @@ public class RunController {
         this.testSuiteResponseService = testSuiteResponseService;
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/job/{id}", method = RequestMethod.GET)
     public Response<List<Run>> findByJobId(@PathVariable("id") String id,
                                            @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                            @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return runService.findByJobId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return runService.findByJobId(id, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}/test-suite-responses", method = RequestMethod.GET)
     public Response<List<TestSuiteResponse>> findResponsesByRunId(@PathVariable("id") String id,
                                                                   @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                                   @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return runService.findByRunId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return runService.findByRunId(id, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}/test-suite-response/{name}", method = RequestMethod.GET)
     public Response<List<TestSuiteResponse>> findBySuiteId(@PathVariable("id") String id,
                                          @PathVariable("name") String name,
@@ -62,7 +62,7 @@ public class RunController {
         return runService.findByPk(id, name, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}/test-suite-summary", method = RequestMethod.GET)
     public Response<List<Suite>> findStatusByRunId(@PathVariable("id") String id,
                                                    @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
@@ -71,14 +71,14 @@ public class RunController {
         return runService.findSummaryByRunId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, new Sort(Sort.Direction.DESC, "failed")));
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Run> findByRunId(@PathVariable("id") String id) {
         return runService.findById(id, SecurityUtil.getCurrentAuditor());
     }
 
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/job/{id}", method = RequestMethod.POST)
     public Response<Run> run(@PathVariable("id") String id,
                              @RequestParam(value = "region", required = false) String region,

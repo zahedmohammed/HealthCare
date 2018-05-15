@@ -31,31 +31,32 @@ public class DataSetController {
     }
 
 
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<DataSet>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                               @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return service.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<DataSet>> create(@Valid @RequestBody List<DataSet> dtos) {
         return service.save(dtos, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<DataSet> create(@Valid @RequestBody DataSet dto) {
         return service.save(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<DataSet> update(@Valid @RequestBody DataSet dto) {
         return service.save(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<DataSet> delete(@PathVariable("id") String id) {
         return service.delete(id, SecurityUtil.getCurrentAuditor());

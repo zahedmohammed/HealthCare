@@ -13,13 +13,15 @@ import java.util.List;
  */
 public interface IssueTrackerService extends GenericService<IssueTracker, String> {
 
+    Response<IssueTracker> save(IssueTracker dto, String org, String user);
+
     Response<IssueTracker> findByName(String name);
 
     Response<List<IssueTracker>> findBySkillType(String skillType, String user, Pageable pageable);
 
-    Response<IssueTracker> addITBot(IssueTracker dto, String user);
+    Response<IssueTracker> addITBot(IssueTracker dto, String o, String user);
 
-    Response<IssueTracker> deleteITBot(String id, String user);
+    Response<IssueTracker> deleteITBot(String id, String o, String user);
 
 //    Response<SkillSubscription> deleteExecBot(Cluster dto, String user);
 

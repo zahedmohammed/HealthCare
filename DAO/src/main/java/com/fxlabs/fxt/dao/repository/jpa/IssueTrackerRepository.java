@@ -12,9 +12,13 @@ import java.util.Optional;
  */
 public interface IssueTrackerRepository extends JpaRepository<IssueTracker, String> {
 
-    Page<IssueTracker> findByCreatedBy(String user, Pageable pageable);
+    Page<IssueTracker> findByOrgId(String org, Pageable pageable);
+
+    Optional<IssueTracker> findByIdAndOrgId(String id, String org);
 
     Page<IssueTracker> findByCreatedByAndInactive(String user, boolean inactive, Pageable pageable);
+
+    Page<IssueTracker> findByOrgIdAndInactive(String org, boolean inactive, Pageable pageable);
 
     Optional<IssueTracker> findByOrgNameAndNameAndInactive(String org, String name, boolean inactive);
 

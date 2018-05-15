@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface ClusterService extends GenericService<Cluster, String> {
 
-    Response<Cluster> create(Cluster dto, String user);
+    Response<Cluster> create(Cluster dto, String org);
 
-    Response<Cluster> update(Cluster dto, String user);
+    Response<Cluster> update(Cluster dto, String org, String user);
 
     Response<List<Cluster>> findAll(String user, Pageable pageable);
 
@@ -25,7 +25,7 @@ public interface ClusterService extends GenericService<Cluster, String> {
 
     Response<Cluster> addExecBot(Cluster dto, String user);
 
-    Response<Cluster> delete(String s, String user);
+    Response<Cluster> delete(String s, String org, String user);
 
     Response<Long> countBotRegions(String user);
 

@@ -34,72 +34,67 @@ public class ProjectController {
         this.projectFileService = projectFileService;
     }
 
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response<Project> findById(@PathVariable("id") String id) {
-        return projectService.findById(id, SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "", method = RequestMethod.PUT)
-    public Response<Project> update(@Valid @RequestBody Project dto) {
-        return projectService.save(dto, SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Response<Project> delete(@PathVariable("id") String id) {
-        return projectService.delete(id, SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER})
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<Project>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                            @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return projectService.findProjects(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return projectService.findProjects(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_USER)
-    @RequestMapping(value = "/find-by-name/{org}/{name}", method = RequestMethod.GET)
-    public Response<Project> findByProjectName(@PathVariable("org") String org, @PathVariable("name") String name) {
-        return projectService.findByOrgAndName(org + "/" + name, SecurityUtil.getCurrentAuditor());
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Response<Project> findById(@PathVariable("id") String id) {
+        return projectService.findById(id, SecurityUtil.getOrgId());
     }
 
-    @Secured(ROLE_USER)
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response<Project> update(@Valid @RequestBody Project dto) {
+        return projectService.save(dto, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Response<Project> delete(@PathVariable("id") String id) {
+        return projectService.delete(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Project> add(@RequestBody Project request) {
-        return projectService.add(request, SecurityUtil.getCurrentAuditor());
+        return projectService.add(request, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}/project-imports", method = RequestMethod.POST)
-    public Response<Boolean> saveImports(@RequestBody ProjectImports request) {
-        return projectService.saveProjectImports(request, SecurityUtil.getCurrentAuditor());
-    }
-
-    /*@Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response<ProjectRequest> findGitAccount(@PathVariable("id") String id) {
-        return projectService.findGitByProjectId(id, SecurityUtil.getCurrentAuditor());
-    }*/
-
-    @Secured(ROLE_USER)
+    @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<Project> save(@RequestBody Project request) {
-        return projectService.saveGitAccount(request, SecurityUtil.getCurrentAuditor());
+        return projectService.saveProject(request, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/find-by-name/{org}/{name}", method = RequestMethod.GET)
+    public Response<Project> findByProjectName(@PathVariable("org") String org, @PathVariable("name") String name) {
+        return projectService.findByOrgAndName(org + "/" + name, SecurityUtil.getOrgId());
+    }
+
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{id}/project-imports", method = RequestMethod.POST)
+    public Response<Boolean> saveImports(@RequestBody ProjectImports request) {
+        return projectService.saveProjectImports(request, SecurityUtil.getOrgId());
+    }
+
+
+    @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
     public Response<Project> findByName(@PathVariable("name") String name) {
-        return projectService.findByName(name, SecurityUtil.getCurrentAuditor());
+        return projectService.findByName(name, SecurityUtil.getOrgId());
     }
 
-    @Secured(ROLE_USER)
+    @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/{id}/project-checksums", method = RequestMethod.GET)
     public Response<List<ProjectFile>> findByProjectId(@PathVariable("id") String projectId, @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                        @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return projectFileService.findByProjectId(projectId, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return projectFileService.findByProjectId(projectId, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
 

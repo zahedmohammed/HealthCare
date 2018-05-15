@@ -22,11 +22,16 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     Page<Account> findByCreatedBy(String owner, Pageable pageable);
 
+    Page<Account> findByOrgId(String orgId, Pageable pageable);
+
     Long countByVisibility(ClusterVisibility visibility);
 
     List<Account> findByAccountTypeAndCreatedBy(AccountType type, String createdBy);
 
-    //@Query("SELECT * FROM CloudAccount ca WHERE ca.accountType in ?1 AND ca.createdBy = ?2")
     List<Account> findByAccountTypeInAndCreatedBy(List<AccountType> types, String createdBy);
+
+    List<Account> findByAccountTypeInAndOrgId(List<AccountType> types, String orgId);
+
+    Optional<Account> findByIdAndOrgId(String id, String orgId);
 
 }

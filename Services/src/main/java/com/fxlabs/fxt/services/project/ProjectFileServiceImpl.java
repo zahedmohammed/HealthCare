@@ -92,7 +92,7 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
     }
 
     @Override
-    public Response<List<ProjectFile>> findByProjectId(String projectId, String user, org.springframework.data.domain.Pageable pageable) {
+    public Response<List<ProjectFile>> findByProjectId(String projectId, String org, org.springframework.data.domain.Pageable pageable) {
         List<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFiles = this.projectFileESRepository.findByProjectId(projectId, pageable);
         return new Response<>(converter.convertToDtos(projectFiles));
     }

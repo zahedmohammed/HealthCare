@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.fxlabs.fxt.rest.base.BaseController.ENVS_BASE;
-import static com.fxlabs.fxt.rest.base.BaseController.ROLE_USER;
+import static com.fxlabs.fxt.rest.base.BaseController.*;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -28,37 +27,37 @@ public class EnvironmentController {
         this.service = service;
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/project-id/{id}", method = RequestMethod.GET)
     public Response<List<Environment>> findByProjectId(@PathVariable("id") String projectId) {
         return service.findByProjectId(projectId, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Environment> findById(@PathVariable("id") String id) {
         return service.findById(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<Environment>> create(@Valid @RequestBody List<Environment> dtos) {
         return service.save(dtos, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Environment> create(@Valid @RequestBody Environment dto) {
         return service.save(dto, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Environment> update(@Valid @RequestBody Environment dto) {
         return service.save(dto, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Environment> delete(@PathVariable("id") String id) {
         return service.delete(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());

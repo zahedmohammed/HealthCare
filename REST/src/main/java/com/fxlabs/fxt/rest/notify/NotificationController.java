@@ -30,42 +30,47 @@ public class NotificationController {
         this.notificationService = NotificationAccountService;
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<Notification>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return notificationService.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+
+        return notificationService.findAll(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Notification> findById(@PathVariable("id") String id) {
-        return notificationService.findById(id, SecurityUtil.getCurrentAuditor());
+
+        return notificationService.findById(id, SecurityUtil.getOrgId());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<Notification>> create(@Valid @RequestBody List<Notification> dtos) {
         //return service.save(dtos);
         return null;
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Notification> create(@Valid @RequestBody Notification dto) {
-        return notificationService.create(dto, SecurityUtil.getCurrentAuditor());
+
+        return notificationService.create(dto, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<Notification> update(@Valid @RequestBody Notification dto) {
-        return notificationService.update(dto, SecurityUtil.getCurrentAuditor());
+
+        return notificationService.update(dto, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_USER)
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Notification> delete(@PathVariable("id") String id) {
-        return notificationService.delete(id, SecurityUtil.getCurrentAuditor());
+
+        return notificationService.delete(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
 

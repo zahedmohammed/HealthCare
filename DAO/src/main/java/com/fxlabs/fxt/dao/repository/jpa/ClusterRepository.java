@@ -19,7 +19,7 @@ public interface ClusterRepository extends JpaRepository<Cluster, String> {
 
     Optional<Cluster> findByNameAndOrgName(String name, String orgName);
 
-    Page<Cluster> findByVisibility(ClusterVisibility visibility, Pageable pageable);
+    Page<Cluster> findByVisibilityOrOrgId(ClusterVisibility visibility, String orgId, Pageable pageable);
 
     Long countByVisibility(ClusterVisibility visibility);
 
