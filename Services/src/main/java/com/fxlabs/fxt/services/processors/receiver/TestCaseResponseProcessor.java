@@ -46,6 +46,8 @@ public class TestCaseResponseProcessor {
     private JobRepository jobRepository;
     @Value("${fx.itaas.github.queue.routingkey}")
     private String itaasQueue;
+    @Value("${fx.itaas.jira.queue.routingkey}")
+    private String itaasJiraQueue;
 
 
     public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
@@ -158,6 +160,8 @@ public class TestCaseResponseProcessor {
         switch (issueTrackerResponse.getData().getAccount().getAccountType()) {
             case GitHub:
                 return itaasQueue;
+            case Jira:
+                return itaasJiraQueue;
         }
 
 

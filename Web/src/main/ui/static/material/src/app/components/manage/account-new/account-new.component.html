@@ -1,4 +1,4 @@
-<section class="container-fluid with-maxwidth chapter">
+  <section class="container-fluid with-maxwidth chapter">
 
   <article class="article">
 
@@ -240,7 +240,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.accountType !== 'GitHub' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'GitHub' || entry.accountType !== 'Jira' || !entry.accountType">
             <label for="gitHubSecret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">

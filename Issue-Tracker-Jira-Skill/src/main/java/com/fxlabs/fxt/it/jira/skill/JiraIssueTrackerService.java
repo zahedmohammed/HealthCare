@@ -120,7 +120,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
         desc.append("\n");
         desc.append("Response: \n" + task.getResponse());
 
-        IssueInput newIssue = new IssueInputBuilder(projectKey, 10004L, summary.toString())
+        IssueInput newIssue = new IssueInputBuilder(projectKey, 10005L, summary.toString())
 //				.setAssigneeName("admin")
                 .setPriorityId(5L)
 //				.setReporterName("admin")

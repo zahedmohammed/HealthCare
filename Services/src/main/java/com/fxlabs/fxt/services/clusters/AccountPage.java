@@ -21,7 +21,7 @@ public enum AccountPage {
     ISSUE_TRACKER {
         @Override
         public List<AccountType> getAccountTypes() {
-            return Arrays.asList(AccountType.GitHub );
+            return Arrays.asList(AccountType.GitHub ,  AccountType.Jira);
         }
     },
     BOT_HUB {
