@@ -71,7 +71,7 @@
             <div class="col-md-4">
               <mat-form-field>
                 <mat-select placeholder="Account" required [(ngModel)]="entry.account" name="type"   (change)="getRegions()">
-                  <mat-option *ngFor="let account of accounts" [value]="ca" (change)="setAccount(account);">
+                  <mat-option *ngFor="let account of accounts" [value]="account" (change)="setAccount(account);">
                     {{account.name}} ({{account.accountType}})
                   </mat-option>
                 </mat-select>

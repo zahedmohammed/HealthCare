@@ -89,8 +89,8 @@ export class RegionNewComponent implements OnInit {
     });
   }
 
-  setAccount(account){
-     this.entry.account.accountType =  account.accountType;
+  setAccount(account_){
+     this.entry.account.accountType =  account_.accountType;
   }
 
   getOrgs() {

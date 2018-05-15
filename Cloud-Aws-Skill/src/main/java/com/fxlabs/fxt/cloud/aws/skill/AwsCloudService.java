@@ -17,10 +17,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -36,40 +33,17 @@ public class AwsCloudService implements CloudService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Small.toString();
-    private static final String AWS_PKEY = "fxlabs";
+    private static final String AWS_PKEY = "fx-pk";
     //private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-09d2fb69";
-    private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-925144f2";
+    private static final String FXLABS_AWS_DEFAULT_IMAGE = "Ubuntu 16.04";
 
-    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP = "fx-sg";
-    private static final String FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID = "sg-7e476807";
-    private static final String FXLABS_AWS_DEFAULT_SUBNET_ID = "subnet-ef5b0e88";
+    private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg";
+    private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet";
 
     private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
 
     private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
-    private String AWS_PRIVATE_KEY_PEM = "-----BEGIN RSA PRIVATE KEY-----\n" +
-            "MIIEogIBAAKCAQEAo4dmeW4TyJU8VLoxlg24j9rscx27cKL7/2kfVVf7rEwZ0P8i4e7ITz1Lwz4X\n" +
-            "AzO6K7YftCH9XjDtFef0dx+k7hAfHvUuu/+snwINy8aUpB7BOQHjMNiEv1reRAXXtWpZMDMPCfAf\n" +
-            "lG9gREQ7dEUgCbOrxBCn6jkAoGrSwKUCxOn+loXl6uI3lfPYtNyNS1N5nG4zXWrgQ9EOx7NjigDw\n" +
-            "Zdj+YIGmFC18tg0Ka3u4bqyljCsrBtgVF4ryg4sCWHQbVtgdc/UmCVZmUH/IU0AOI0RSB6iQ5Dfe\n" +
-            "kYoH02FqvcVepOl+w+e6RZF5kMMMHkcxCk5L8LL8bjAldYdW0TUcNwIDAQABAoIBAFrLG49CGcPd\n" +
-            "cADO3Ccm+RkOAQgtMtvn8iguEpKM5hQUsKTEc3aj4B12t/DwMVC60JviY5nc4VMBsTDfd3EIZccz\n" +
-            "tkO297qzywEB3+0LFY5F8RwYuy5smM+xwQRdhhWYtWo4fxoSc0YzzGw6whPdKVuZoT2bzc8S1RE8\n" +
-            "HkWNmIsBSCPM2L9ItUreicXtRZpBmyu6O9EuArwAyWUa+lmjv2Ku1dJXbyq4ZCVZl7GCmLSfozXL\n" +
-            "NhElVBI6JJlVPi6wYYbymQDxFscwgX3ADJlhNd4a6qm4jJLyop43O9a4jIPyYm1C0hMCwP4j6Zvh\n" +
-            "2JUmRbstTA8iRSMdRwS1tqnaYtECgYEA3zS3FMX/xQXHHAU8LHGLSdz3ZrA+qBXLqCONQgWHr1mp\n" +
-            "UdLALTGLw/V69B6jaIFCF+wkbgMRFWm9d2aWB7N1lUsCjOkgFdASaqZ8FDydRT87KxkGGAgbi7RV\n" +
-            "uE6np0bWHV8njiZo5t5+FK5orOLS52xf+/7ODM4P2WvXAANje4kCgYEAu44YqFLEShWBXMEGX/7m\n" +
-            "UtFCz36pkjoOHXdH9E2abuiraRbatkEy3yHxi1BE6tqqDLJoNXd5F+XuIkBshbce5j1yk2UZsH1u\n" +
-            "KbsLJs5RzC5fyBUWzwitzm+w7DLr4CbbgsLf8247dgdLn5b1Jjd8vO6rfNXT0udp7CFZ3QXbKb8C\n" +
-            "gYA8+xj92u569I4mcKO0/LxyTKVm78XehD3kzPm9zOb6GEPzL+IDNuMZgYq7AVfhqFbXVFPLnpjf\n" +
-            "QclawrNAnV4FkL28o8B5VSSC8MM7gCfzkEfpCWgpzqU/8N/uf8a8I9VBpwqWgpXsZWMK4W+FtF6s\n" +
-            "jWZX4ZCH3RBldVoDDenzCQKBgG6e6tAssPV5JamNd7Ma5sImBp/XdzB16WlbtybStql/tcnv3uPs\n" +
-            "JJMStCKVH3Dds7p1Z51RcCy2QvQUx20+io0F5RQmZzZ/ZIBcf8FNo1UobPnX5nIKDmlZ2yIVDqZQ\n" +
-            "hNvlEK3FcHC28NWZ9dGqnHna0253t84HC6RoL1Z7Y76FAoGAJdMktiD/QoBAwQA/CnwAEpIT3kGg\n" +
-            "ebyX+nt7yRci1d3rZdz+bx5O4tYyWoVVXo7I1J697wqp8PRSXgStSqOywzclhWbdyENmdNOidloJ\n" +
-            "KbIDQyzPNrmomu15fdqnqdEHA7ovvI2yUKPlmwt/kToEUCTfpoMOcuwPFQkXvBO8uCQ=\n" +
-            "-----END RSA PRIVATE KEY-----";
+
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
 
@@ -127,27 +101,39 @@ public class AwsCloudService implements CloudService {
             String hardware = getInstanceType(task);
             taskLogger.get().append("setting hardware id " + hardware);
 
-            String image = getImage(task);
+            String image = getImageId(opts, awsService);
             taskLogger.get().append("Setting image id : " + image);
 
             String awsPrivateKeyName = getAwsPrivateKey(opts);
             taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
 
-            String securityGroup = getSecurityGroup(opts);
-            taskLogger.get().append("Setting Security Group " + securityGroup);
+            String securityGroupId = getSecurityGroupId(opts,awsService);
+            taskLogger.get().append("Setting Security Group Id " + securityGroupId);
 
-            String network = getNetwork(opts);
-            taskLogger.get().append("Setting Network " + network);
+            String subnetId = getSubnetId(opts, awsService);
+            taskLogger.get().append("Setting Subnet Id " + securityGroupId);
 
-            String username = getAwsImageUsername(opts);
-            String password = getImagePassword(opts);
+//            String network = getNetwork(opts);
+//            taskLogger.get().append("Setting Network " + network);
+//
+//            String username = getAwsImageUsername(opts);
+//            String password = getImagePassword(opts);
+
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
                     .withImageId(image)
                     .withInstanceType(com.amazonaws.services.ec2.model.InstanceType.T2Small)
                     .withMinCount(1).withMaxCount(1)
                     .withKeyName(awsPrivateKeyName)
-                    .withSubnetId(getSubnet(opts))
-                    .withSecurityGroupIds(securityGroup);
+                  //  .withSubnetId(subnetId)
+                    .withSecurityGroupIds(securityGroupId);
+
+            //findby image name
+            //findbu by subnet name
+            // findby securit\y groupname
+            //fx-pk hard code
+            //fx-subnet hard code(UI also)
+            //fx-sg hardcode
+            // Documentation
 
             //getECSuserData(runInstancesRequest, opts);
             runInstancesRequest.withUserData(getBotConfigScript(opts));
@@ -374,51 +360,36 @@ public class AwsCloudService implements CloudService {
         return value;
     }
 
-    /**
-     *
-     * @param opts
-     * @return imagepassword
-     */
-    private String getImagePassword(Map<String, String> opts){
+//    /**
+//     *
+//     * @param opts
+//     * @return imagepassword
+//     */
+//    private String getImagePassword(Map<String, String> opts){
+//
+//        String value = opts.get("IMAGE_PASSWORD");
+//
+//        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+//                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+//            return AWS_PRIVATE_KEY_PEM;
+//        }
+//        return value;
+//    }
 
-        String value = opts.get("IMAGE_PASSWORD");
-
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-            return AWS_PRIVATE_KEY_PEM;
-        }
-        return value;
-    }
-
-    /**
-     *
-     * @param opts
-     * @return security group
-     */
-    private String getSecurityGroup(Map<String, String> opts){
-        String value = opts.get("SECURITY_GROUP");
-
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-            return FXLABS_AWS_DEFAULT_SECURITY_GROUP_ID;
-        }
-        return value;
-    }
-
-    /**
-     *
-     * @param opts
-     * @return security group
-     */
-    private String getSubnet(Map<String, String> opts){
-        String value = opts.get("SUBNET");
-
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-            return FXLABS_AWS_DEFAULT_SUBNET_ID;
-        }
-        return value;
-    }
+//    /**
+//     *
+//     * @param opts
+//     * @return security group
+//     */
+//    private String getSubnet(Map<String, String> opts){
+//        String value = opts.get("SUBNET");
+//
+//        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+//                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+//            return FXLABS_AWS_DEFAULT_SUBNET_ID;
+//        }
+//        return value;
+//    }
 
     /**
      *
@@ -446,121 +417,79 @@ public class AwsCloudService implements CloudService {
         return value;
     }
 
+    private String getImageId(Map<String, String> opts, AmazonEC2 awsService) {
+
+        String imageName = opts.get("IMAGE");
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(imageName, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(imageName)) {
+            imageName = FXLABS_AWS_DEFAULT_IMAGE;
+        }
+
+        DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest()
+                .withFilters(new Filter().withName("name").withValues(imageName));
+
+        DescribeImagesResult result = awsService.describeImages(describeImagesRequest);
+        List<Image> images = result.getImages();
+        for (Image image : images) {
+            return image.getImageId();
+        }
+
+        return null;
+    }
+
+    private String getSubnetId(Map<String, String> opts, AmazonEC2  awsService){
+
+        String subnet =  opts.get("SUBNET");
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(subnet, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(subnet)) {
+            subnet = FXLABS_DEFAULT_SUBNET;
+        }
+
+        DescribeSubnetsRequest request = new DescribeSubnetsRequest()
+                .withFilters(new Filter().withName("tag-value").withValues(subnet));
+        DescribeSubnetsResult response = awsService.describeSubnets(request);
+        List<Subnet> subnets = response.getSubnets();
+        for (Subnet subnet_ : subnets) {
+//            System.out.println(subnet.getSubnetId() + "==" + subnet.getVpcId()
+//                    + "==" + subnet.getTags());
+            return subnet_.getSubnetId();
+        }
+
+        return null;
+    }
+
+
     /**
-     * <p>
-     *  This method does only one thing.
-     *   1. Creates Vm's on AWS
-     * </p>
      *
-     * @param task
-     *  <p>
-     *      Contains public cloud system connection information.
-     *      e.g.
-     *     VM configuaration
-     *  </p>
-     *
-     *
-     * @return
-     *  <p>
-     *      CloudTaskResponse - Should only set these properties.
-     *      1. success - true/false
-     *      2. logs - execution or error logs.
-     *  </p>
+     * @param opts
+     * @return security group
      */
-    //@Override
-//    public CloudTaskResponse createJcloud(final CloudTask task) {
-//        logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
-//
-//        CloudTaskResponse response = new CloudTaskResponse();
-//        response.setSuccess(false);
-//        response.setId(task.getId());
-//        ComputeService awsService = null;
-//        try {
-//
-//            taskLogger.set(new StringBuilder());
-//
-//            if (CollectionUtils.isEmpty(task.getOpts())) {
-//                return response;
-//            }
-//
-//            Map<String, String> opts = task.getOpts();
-//
-//            // Args
-//            String accessKeyId = opts.get("ACCESS_KEY_ID");
-//            String secretKey = opts.get("SECRET_KEY");
-//
-//            awsService = getAwsService(accessKeyId, secretKey);
-//
-//            TemplateBuilder templateBuilder = awsService.templateBuilder();
-//
-//            //Instance type/size
-//            String hardware = getInstanceType(task);
-//            taskLogger.get().append("setting hardware id " + hardware);
-//            templateBuilder.hardwareId(hardware);
-//
-//            String image = getImage(task);
-//            taskLogger.get().append("Setting image id : " + image);
-//
-//            templateBuilder.imageId(image);
-//
-//            Template template = templateBuilder.build();
-//
-//            TemplateOptions options = template.getOptions();
-//
-//            String awsPrivateKeyName = getAwsPrivateKey(opts);
-//            taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
-//            options.as(AWSEC2TemplateOptions.class).keyPair(awsPrivateKeyName);
-//
-//
-//            String securityGroup = getSecurityGroup(opts);
-//            taskLogger.get().append("Setting Security Group " + securityGroup);
-//            options.as(AWSEC2TemplateOptions.class).securityGroupIds(securityGroup);
-//
-//            String network = getNetwork(opts);
-//            taskLogger.get().append("Setting Network " + network);
-//            options.as(AWSEC2TemplateOptions.class).networks(network);
-//
-//
-//            String username = getAwsImageUsername(opts);
-//            String password = getImagePassword(opts);
-//
-//
-//            if (!skipBotInstallation(opts)) {
-//                taskLogger.get().append("Installing Bot.....");
-//                LoginCredentials login = null;
-//
-//                if (!StringUtils.isEmpty(username)) {
-//                    login = LoginCredentials.builder().user(username).privateKey(password).build();
-//                } else {
-//                    login = LoginCredentials.builder().privateKey(password).build();
-//                }
-//
-//                if (login != null) {
-//                    options.runAsRoot(true).runScript(getBotInstallationScript(opts)).overrideLoginCredentials(login);
-//                }
-//            }
-//            NodeMetadata virtualBot = getOnlyElement(awsService.createNodesInGroup("fxlabs", 1, template));
-//            response.setSuccess(true);
-//            response.setResponseId(virtualBot.getId());
-//
-//            response.setLogs(taskLogger.get().toString());
-//            return response;
-//        } catch (RunNodesException ex) {
-//            logger.warn(ex.getLocalizedMessage(), ex);
-//            taskLogger.get().append(ex.getLocalizedMessage());
-//            response.setLogs(taskLogger.get().toString());
-//        } catch (Exception ex) {
-//            logger.warn(ex.getLocalizedMessage(), ex);
-//            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
-//        } finally {
-//            if (awsService != null) {
-//                awsService.getContext().close();
-//            }
-//        }
-//
-//        return response;
-//
-//    }
+    private String getSecurityGroupId(Map<String, String> opts, AmazonEC2  awsService){
+        String value = opts.get("SECURITY_GROUP");
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+             value = FXLABS_DEFAULT_SECURITY_GROUP;
+        }
+
+        DescribeSecurityGroupsRequest req = new DescribeSecurityGroupsRequest()
+                .withFilters(new Filter().withName("tag-value").withValues(value));
+
+        DescribeSecurityGroupsResult result = awsService.describeSecurityGroups(req);
+
+        List<SecurityGroup> sgs = result.getSecurityGroups();
+
+        for (SecurityGroup sg_ : sgs) {
+//            System.out.println(subnet.getSubnetId() + "==" + subnet.getVpcId()
+//                    + "==" + subnet.getTags());
+            return sg_.getGroupId();
+        }
+
+
+        return null;
+    }
 
 
 }

@@ -240,7 +240,7 @@
             </div>
           </div>
 
-          <div class="form-group row" [hidden]="entry.accountType !== 'GitHub' || entry.accountType !== 'Jira' || !entry.accountType">
+          <div class="form-group row" [hidden]="entry.accountType !== 'GitHub' || !entry.accountType">
             <label for="gitHubSecret" class="col-md-1 control-label">
             </label>
             <div class="col-md-4">
@@ -251,6 +251,39 @@
             </div>
           </div>
           <!-- GitHub End  -->
+
+          <!-- Jira Start  -->
+          <div class="form-group row" [hidden]="entry.accountType !== 'Jira' || !entry.accountType">
+            <label for="gitHubAccessKey" class="col-md-1 control-label">
+            </label>
+            <div class="col-md-4">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.accessKey" name="accessKey" id="jiraAccessKey"
+                       matInput type="text" placeholder="Username/Access-Key">
+              </mat-input-container>
+            </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>GitHub access keys
+                  <a target="_blank"
+                     href="https://github.com/settings/tokens">&nbsp;learn more. <i class="material-icons"
+                                                                                    style="font-size: 18px;">open_in_new</i></a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row" [hidden]="entry.accountType !== 'Jira' || !entry.accountType">
+            <label for="gitHubSecret" class="col-md-1 control-label">
+            </label>
+            <div class="col-md-4">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.secretKey" name="secret" id="jiraSecret"
+                       matInput type="password" placeholder="Secret-Key/Password">
+              </mat-input-container>
+            </div>
+          </div>
+          <!-- Jira End  -->
 
           <div class="form-group row" [hidden]="entry.accountType !== 'Slack' || !entry.accountType">
             <label for="secret_slack" class="col-md-1 control-label">
