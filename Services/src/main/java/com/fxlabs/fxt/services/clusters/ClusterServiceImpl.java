@@ -16,8 +16,8 @@ import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
-import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.clusters.Account;
+import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.clusters.ClusterStatus;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -50,6 +50,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private ClusterRepository clusterRepository;
     private ClusterESRepository clusterESRepository;
     private ClusterConverter clusterConverter;
+    private AccountRepository accountRepository;
     private AmqpAdmin amqpAdmin;
     private TopicExchange topicExchange;
     private OrgUsersRepository orgUsersRepository;
@@ -65,7 +66,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private static String SPACE = " ";
 
     @Autowired
-    public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository,
+    public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository, AccountRepository accountRepository,
                               ClusterConverter clusterConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
                               OrgUsersRepository orgUsersRepository, @Value("${fx.default.response.queue.routingkey}") String fxDefaultResponseKey,
                               UsersRepository usersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
@@ -79,6 +80,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.clusterRepository = clusterRepository;
         this.clusterESRepository = clusterESRepository;
         this.clusterConverter = clusterConverter;
+        this.accountRepository = accountRepository;
         this.amqpAdmin = amqpAdmin;
         this.topicExchange = topicExchange;
         this.orgUsersRepository = orgUsersRepository;
@@ -105,7 +107,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     public Response<Cluster> findById(String id, String user) {
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findById(id);
 
-        if (!clusterOptional.isPresent() ) {
+        if (!clusterOptional.isPresent()) {
             return new Response<>().withErrors(true);
         }
         // TODO validate user is entitled to use the cluster.
@@ -252,7 +254,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         opts.put("ACCESS_KEY_ID", account.getAccessKey());
-        opts.put("SECRET_KEY", account.getSecretKey());
+        opts.put("SECRET_KEY", getSecretKey(account.getId()));
         opts.put("COMMAND", getUserDataScript(dto.getKey()));
         opts.put("INSTANCE_NAME", dto.getName());
         cloudTask.setOpts(opts);
@@ -341,7 +343,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         opts.put("ACCESS_KEY_ID", account.getAccessKey());
-        opts.put("SECRET_KEY", account.getSecretKey());
+        opts.put("SECRET_KEY", getSecretKey(account.getId()));
 
         if (org.apache.commons.lang3.StringUtils.isEmpty(dto.getNodeId())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Node id is empty"));
@@ -357,7 +359,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return new Response<Cluster>();
     }
 
-    private String getExecutionBotManualScript(String key){
+    private String getExecutionBotManualScript(String key) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("docker").append(SPACE).append("run")
@@ -365,7 +367,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 .append(SPACE).append("FX_KEY").append("=").append(key)
                 .append(SPACE).append("fxlabs/bot");
 
-       return sb.toString();
+        return sb.toString();
     }
 
 
@@ -465,6 +467,13 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 break;
         }
         return key;
+    }
+
+    private String getSecretKey(String id) {
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(id);
+        com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.isPresent() ? accountOptional.get() : null;
+        return account.getSecretKey();
+
     }
 
 }

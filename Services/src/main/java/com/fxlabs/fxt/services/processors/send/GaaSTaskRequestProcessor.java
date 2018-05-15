@@ -1,14 +1,12 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.users.ProjectRole;
 import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
 import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.entity.users.UsersPassword;
-import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
-import com.fxlabs.fxt.dao.repository.jpa.ProjectUsersRepository;
-import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
-import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +39,9 @@ public class GaaSTaskRequestProcessor {
 
     //@Autowired
     //private TextEncryptor encryptor;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private UsersPasswordRepository usersPasswordRepository;
@@ -79,10 +79,10 @@ public class GaaSTaskRequestProcessor {
             task.setVcBranch(project.getBranch());
 
             if (project.getAccount() != null) {
-                task.setVcUsername(project.getAccount().getAccessKey());
-                if (!StringUtils.isEmpty(project.getAccount().getSecretKey())) {
-                    task.setVcPassword(project.getAccount().getSecretKey());
-                }
+                Optional<Account> accountOptional = accountRepository.findById(project.getAccount().getId());
+                Account account = accountOptional.isPresent() ? accountOptional.get() : null;
+                task.setVcUsername(account.getAccessKey());
+                task.setVcPassword(account.getSecretKey());
             }
             task.setVcLastCommit(project.getLastCommit());
 

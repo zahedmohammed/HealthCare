@@ -32,8 +32,8 @@ import java.util.Set;
 
 /**
  * @author Mohammed Luqman Shareef
+ * @author Mohammed Shoukath Ali
  * @since 3/20/2018
- *  @author Mohammed Shoukath Ali
  * @since 4/28/2018
  */
 @Service
@@ -74,8 +74,9 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<Account> findById(String id, String user) {
         com.fxlabs.fxt.dao.entity.clusters.Account account = this.accountRepository.findById(id).get();
-        account.setSecretKey(PASSWORD_MASKED);
-        return new Response<>(converter.convertToDto(account));
+        Account dto = converter.convertToDto(account);
+        dto.setSecretKey(PASSWORD_MASKED);
+        return new Response<>(dto);
     }
 
     @Override

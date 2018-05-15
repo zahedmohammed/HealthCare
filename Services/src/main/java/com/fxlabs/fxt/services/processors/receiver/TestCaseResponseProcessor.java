@@ -3,14 +3,15 @@ package com.fxlabs.fxt.services.processors.receiver;
 import com.fxlabs.fxt.converters.run.TestCaseResponseConverter;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseRepository;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.it.IssueTracker;
+import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
-import com.fxlabs.fxt.services.skills.SkillService;
 import com.fxlabs.fxt.services.it.IssueTrackerService;
+import com.fxlabs.fxt.services.skills.SkillService;
 import org.apache.commons.collections.IteratorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,7 @@ public class TestCaseResponseProcessor {
     private TestCaseResponseConverter converter;
     private AmqpClientService amqpClientService;
     private SkillService skillService;
+    private AccountRepository accountRepository;
     private JobRepository jobRepository;
     @Value("${fx.itaas.github.queue.routingkey}")
     private String itaasQueue;
@@ -52,7 +54,8 @@ public class TestCaseResponseProcessor {
     @Autowired
     public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
                                      TestCaseResponseRepository testCaseResponseRepository, AmqpClientService amqpClientService,
-                                     JobRepository jobRepository, IssueTrackerService skillSubscriptionService, SkillService skillService) {
+                                     JobRepository jobRepository, IssueTrackerService skillSubscriptionService, SkillService skillService,
+                                     AccountRepository accountRepository) {
         this.testCaseResponseESRepository = testCaseResponseESRepository;
         this.testCaseResponseRepository = testCaseResponseRepository;
         this.skillService = skillService;
@@ -60,6 +63,7 @@ public class TestCaseResponseProcessor {
         this.skillSubscriptionService = skillSubscriptionService;
         this.converter = converter;
         this.amqpClientService = amqpClientService;
+        this.accountRepository = accountRepository;
     }
 
     public void process(List<TestCaseResponse> testCaseResponses) {
@@ -67,7 +71,7 @@ public class TestCaseResponseProcessor {
         logger.info("TestCaseResponseProcessor and size is [{}]...", testCaseResponses.size());
         try {
 
-            if (CollectionUtils.isEmpty(testCaseResponses)){
+            if (CollectionUtils.isEmpty(testCaseResponses)) {
                 return;
             }
 
@@ -79,7 +83,7 @@ public class TestCaseResponseProcessor {
             testCaseResponses.forEach(tc -> {
                 if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "fail")) {
 
-                    String key =  getKeyForTestCaseResponse(tc);
+                    String key = getKeyForTestCaseResponse(tc);
 
                     if (StringUtils.isEmpty(key)) {
                         logger.debug("No Issue Tracker Found for project [{}]...", tc.getProject());
@@ -131,23 +135,27 @@ public class TestCaseResponseProcessor {
             return null;
         }
 
-        Response<IssueTracker> skillSubRespnse = skillSubscriptionService.findByName(job.getIssueTracker());
+        Response<IssueTracker> issueTrackerResponse = skillSubscriptionService.findByName(job.getIssueTracker());
 
-        if (skillSubRespnse.getData() == null || skillSubRespnse.getData().getAccount() == null) {
+        if (issueTrackerResponse.getData() == null || issueTrackerResponse.getData().getAccount() == null) {
             return null;
         }
         //prop1 will have host url
-        if (StringUtils.isEmpty(skillSubRespnse.getData().getProp1())) {
+        if (StringUtils.isEmpty(issueTrackerResponse.getData().getProp1())) {
             return null;
         }
 
-        tc.setIssueTrackerHost(skillSubRespnse.getData().getProp1());
-        tc.setIssueTrackerProjectName(skillSubRespnse.getData().getProp2());
-        tc.setUsername(skillSubRespnse.getData().getAccount().getAccessKey());
-        tc.setPassword(skillSubRespnse.getData().getAccount().getSecretKey());
+        tc.setIssueTrackerHost(issueTrackerResponse.getData().getProp1());
+        tc.setIssueTrackerProjectName(issueTrackerResponse.getData().getProp2());
+        tc.setUsername(issueTrackerResponse.getData().getAccount().getAccessKey());
+
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(issueTrackerResponse.getData().getAccount().getId());
+        com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.isPresent() ? accountOptional.get() : null;
+        tc.setPassword(account.getSecretKey());
+
         //TODO get key from different source
 
-        switch(skillSubRespnse.getData().getAccount().getAccountType()){
+        switch (issueTrackerResponse.getData().getAccount().getAccountType()) {
             case GitHub:
                 return itaasQueue;
         }
@@ -158,13 +166,13 @@ public class TestCaseResponseProcessor {
 
     private void getExistingIssueId(TestCaseResponse tc) {
         List<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> oldtestresult = testCaseResponseESRepository.
-                findByProjectAndJobIdAndSuiteAndTestCase(tc.getProject(), tc.getJobId(), tc.getSuite(), tc.getTestCase(),  PageRequest.of(1, 1, DEFAULT_SORT));
+                findByProjectAndJobIdAndSuiteAndTestCase(tc.getProject(), tc.getJobId(), tc.getSuite(), tc.getTestCase(), PageRequest.of(1, 1, DEFAULT_SORT));
 
 
         if (!CollectionUtils.isEmpty(oldtestresult) &&
                 !StringUtils.isEmpty(oldtestresult.get(0).getIssueId())) {
 
-                tc.setIssueId(oldtestresult.get(0).getIssueId());
+            tc.setIssueId(oldtestresult.get(0).getIssueId());
         }
     }
 

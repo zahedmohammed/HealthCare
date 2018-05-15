@@ -1,8 +1,10 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
@@ -40,6 +42,9 @@ public class MarkTimeoutTaskProcessor {
 
     @Autowired
     private RunRepository runRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private TestSuiteResponseESRepository testSuiteResponseESRepository;
@@ -108,24 +113,28 @@ public class MarkTimeoutTaskProcessor {
                     continue;
                 }
 
-                Response<Notification> notificationAccount = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
+                Response<Notification> notificationResponse = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
 
-                if (notificationAccount.isErrors() || notificationAccount.getData() == null) {
-                    logger.info("Notification Account not found for name [{}]", address);
+                if (notificationResponse.isErrors() || notificationResponse.getData() == null) {
+                    logger.info("Notification not found for name [{}]", address);
                     continue;
                 }
                 NotificationTask task = new NotificationTask();
                 task.setId(run.getId());
                 Map<String, String> opts = new HashMap<>();
-                switch (notificationAccount.getData().getAccount().getAccountType()) {
+                switch (notificationResponse.getData().getAccount().getAccountType()) {
                     case Slack:
-                        if (notificationAccount.getData().getAccount() == null || StringUtils.isEmpty(notificationAccount.getData().getAccount().getAccessKey())) {
-                            logger.info("Notification Token not found for account [{}]", notificationAccount.getData().getId());
+                        if (notificationResponse.getData().getAccount() == null || StringUtils.isEmpty(notificationResponse.getData().getAccount().getAccessKey())) {
+                            logger.info("Notification Token not found for account [{}]", notificationResponse.getData().getId());
                             break;
                         }
-                        opts.put("TOKEN", notificationAccount.getData().getAccount().getSecretKey());
+                        Optional<Account> accountOptional = accountRepository.findById(notificationResponse.getData().getAccount().getId());
+                        Account account = accountOptional.isPresent() ? accountOptional.get() : null;
+                        opts.put("TOKEN", account.getSecretKey());
+
+
                         opts.put("MESSAGE", formatSlackMessage(run));
-                        opts.put("CHANNELS", notificationAccount.getData().getChannel());
+                        opts.put("CHANNELS", notificationResponse.getData().getChannel());
                         task.setOpts(opts);
                         amqpClientService.sendTask(task, slackNotificationQueue);
                         break;
@@ -134,7 +143,7 @@ public class MarkTimeoutTaskProcessor {
                         break;
 
                     default:
-                        logger.info("Notification Account type [{}] not supported", notificationAccount.getData().getType());
+                        logger.info("Notification Account type [{}] not supported", notificationResponse.getData().getType());
                 }
 
 
