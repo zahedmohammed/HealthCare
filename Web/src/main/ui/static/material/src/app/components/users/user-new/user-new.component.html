@@ -1,88 +1,99 @@
 <section class="container-fluid with-maxwidth chapter">
 
-  <article class="article">
+    <article class="article">
 
-    <h2 class="article-title">Add User</h2>
-    <div class="box box-default">
-      <div class="box-body padding-xl">
+        <h2 class="article-title">Add User</h2>
+        <div class="box box-default">
+            <div class="box-body padding-xl">
 
-        <form role="form" #heroForm="ngForm">
+                <form role="form" #heroForm="ngForm">
 
-          <div class="form-group row">
-            <label for="name" class="col-md-1 control-label"></label>
-            <div class="col-md-4">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.name" name="name" id="name"
-                       matInput placeholder="Name">
-              </mat-input-container>
+                    <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.name" name="name" id="name"
+                                       matInput placeholder="Name">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group row">
+                      <label for="username" class="col-md-2 control-label"></label>
+                      <div class="col-md-8">
+                        <mat-input-container class="full-width">
+                          <input required [(ngModel)]="entry.username" name="username" id="username"
+                                 matInput placeholder="Username">
+                        </mat-input-container>
+                      </div>
+                    </div>-->
+
+                    <div class="form-group row">
+                        <label for="email" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.email" name="email" id="email" type="email"
+                                       matInput placeholder="Email">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.password" name="pass" id="pass" type="password"
+                                       matInput placeholder="Password" min="8">
+                            </mat-input-container>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.confirmPassword" name="pass" id="confirmPassword"
+                                       type="password"
+                                       matInput placeholder="Confirm password" min="8">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label">
+                        </label>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select placeholder="Role" [(ngModel)]="entry.orgRole" name="roles">
+                                    <mat-option *ngFor="let role of roles" [value]="role">
+                                        {{role}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p>
+                                    Role 'ADMIN' can manage all the resources in the Org. <br/>
+                                    Role 'PROJECT_MANAGER' can manage everything except Accounts. <br/>
+                                    Role 'USER' has View & Run access only. <br/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <button mat-raised-button color="primary" (click)="create();"
+                                    class="btn-w-md no-margin-left">Add
+                            </button>
+                            <button mat-button type="button" color="primary" class="btn-w-md"
+                                    [routerLink]="['/app/orgs', org.id, 'users']">Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
             </div>
-          </div>
-
-          <!--<div class="form-group row">
-            <label for="username" class="col-md-2 control-label"></label>
-            <div class="col-md-8">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.username" name="username" id="username"
-                       matInput placeholder="Username">
-              </mat-input-container>
-            </div>
-          </div>-->
-
-          <div class="form-group row">
-            <label for="email" class="col-md-1 control-label"></label>
-            <div class="col-md-4">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.email" name="email" id="email" type="email"
-                       matInput placeholder="Email">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-md-1 control-label"></label>
-            <div class="col-md-4">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.password" name="pass" id="pass" type="password"
-                       matInput placeholder="Password" min="8">
-              </mat-input-container>
-            </div>
-            <div class="col-md-4">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.confirmPassword" name="pass" id="confirmPassword" type="password"
-                       matInput placeholder="Confirm password" min="8">
-              </mat-input-container>
-            </div>
-          </div>
-
-
-          <div class="form-group row">
-            <label class="col-md-1 control-label">
-            </label>
-            <div class="col-md-4">
-              <mat-form-field>
-                <mat-select placeholder="Role" [(ngModel)]="entry.orgRole" name="roles">
-                  <mat-option *ngFor="let role of roles" [value]="role">
-                    {{role}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-md-1"></div>
-            <div class="col-md-8">
-              <button mat-raised-button color="primary" (click)="create();"
-                      class="btn-w-md no-margin-left">Add
-              </button>
-              <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/orgs', org.id, 'users']">Cancel
-              </button>
-            </div>
-          </div>
-
-        </form>
-
-      </div>
-    </div>
-  </article>
+        </div>
+    </article>
 </section>

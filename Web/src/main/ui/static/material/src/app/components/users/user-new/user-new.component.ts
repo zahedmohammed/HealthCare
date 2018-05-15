@@ -56,5 +56,5 @@ export class UserNewComponent implements OnInit {
     });
   }
 
-  roles = ['ADMIN', 'USER'];
+  roles = ['USER', 'PROJECT_MANAGER', 'ADMIN'];
 }

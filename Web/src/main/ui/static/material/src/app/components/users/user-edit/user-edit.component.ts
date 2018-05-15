@@ -72,7 +72,7 @@ export class UserEditComponent implements OnInit {
     });
   }
 
-  roles = ['ADMIN', 'USER'];
+  roles = ['USER', 'PROJECT_MANAGER', 'ADMIN'];
   statuses = ['ACTIVE', 'INACTIVE'];
 
 }

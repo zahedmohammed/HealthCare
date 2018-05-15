@@ -92,6 +92,9 @@ public class FxUserDetailsService implements UserDetailsService {
             }
         }
 
+        if (org == null || CollectionUtils.isEmpty(privileges)) {
+            throw new UsernameNotFoundException(email);
+        }
         return new FxUserPrinciple(usersConverter.convertToDto(usersOptional.get()), usersPasswordConverter.convertToDto(usersPassword), org, privileges);
     }
 
