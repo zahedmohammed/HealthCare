@@ -54,6 +54,13 @@ dependencies {
     // https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.2'
 
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
+
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
+
+
     compile project(":DTO")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
