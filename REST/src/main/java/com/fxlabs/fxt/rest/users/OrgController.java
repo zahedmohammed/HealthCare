@@ -97,8 +97,8 @@ public class OrgController {
     @Secured({ROLE_ADMIN})
     @RequestMapping(value = "/{orgId}/users/{userId}", method = RequestMethod.PUT)
     public Response<Boolean> updateOrgUser(@PathVariable("orgId") String orgId,
-                                            @PathVariable("userId") String userId,
-                                            @RequestBody OrgUsers request) {
+                                           @PathVariable("userId") String userId,
+                                           @RequestBody OrgUsers request) {
         return orgService.saveUser(userId, request.getUsers(), request, orgId, SecurityUtil.getCurrentAuditor());
     }
 
