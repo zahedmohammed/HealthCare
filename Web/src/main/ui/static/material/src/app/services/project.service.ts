@@ -34,7 +34,7 @@ export class ProjectService {
   }
 
   delete(project: Project) {
-    return this.http.delete(this.serviceUrl + "/" + project['projectId']);
+    return this.http.delete(this.serviceUrl + "/" + project['id']);
   }
 
   getCount() {

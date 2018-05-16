@@ -108,14 +108,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Project project = converter.convertToDto(optionalProject.get());
         project.setInactive(true);
 
-        /*List<com.fxlabs.fxt.dao.entity.users.ProjectUsers> projectUsers = projectUsersRepository.findByProjectId(id);
-        if (!CollectionUtils.isEmpty(projectUsers)) {
-            projectUsers.forEach(pu -> {
-                pu.setInactive(true);
-                projectUsersRepository.save(pu);
-            });
-        }*/
-
         // TODO - Delete Jobs
         return save(project, user);
     }
