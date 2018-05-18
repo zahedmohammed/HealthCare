@@ -267,6 +267,9 @@ public class AwsCloudService implements CloudService {
 
 
     private AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey, String region) {
+
+        logger.info("Signing in region [{}]", region);
+        taskLogger.get().append("Signing in region " + region);
         AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretKey);
 
 
