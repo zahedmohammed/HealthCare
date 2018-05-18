@@ -41,6 +41,8 @@ public class JiraIssueTrackerService implements IssueTrackerService {
     private String fxIssueTrackerBot;
     private String fxIssueTrackerBotSecretKey;
 
+    private final Long ISSUE_TYPE_ID_BUG = 10005L;
+
     @Autowired
     public JiraIssueTrackerService(@Value("${FX_ISSUE_TRACKER_BOT}")String fxIssueTrackerBot, @Value("${FX_ISSUE_TRACKER_BOT_SECRETKEY}") String fxIssueTrackerBotSecretKey) {
         this.fxIssueTrackerBot = fxIssueTrackerBot;
@@ -84,19 +86,22 @@ public class JiraIssueTrackerService implements IssueTrackerService {
             URI uri = new URI(task.getIssueTrackerHost());
 
             JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-            JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, fxIssueTrackerBot, fxIssueTrackerBotSecretKey);
+//            JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, fxIssueTrackerBot, fxIssueTrackerBotSecretKey);
+            JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, task.getUsername(), task.getPassword());
 
+            BasicIssue issue = null;
             if (StringUtils.isEmpty(task.getIssueId())){
-                BasicIssue issue = createIssue(client, task);
+                issue = createIssue(client, task);
                 response.setIssueId(issue.getKey());
             }else{
-                updateIssue(client, task, task.getIssueId());
+                issue = updateIssue(client, task);
             }
             response.setSuccess(true);
 //            response.setLogs(taskLogger.get().toString());
             response.setSuccess(true);
 //            response.setLogs(taskLogger.get().toString());
             response.setTestCaseResponseId(task.getId());
+            response.setIssueId(String.valueOf(issue.getId()));
             return response;
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -120,7 +125,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
         desc.append("\n");
         desc.append("Response: \n" + task.getResponse());
 
-        IssueInput newIssue = new IssueInputBuilder(projectKey, 10005L, summary.toString())
+        IssueInput newIssue = new IssueInputBuilder(projectKey, ISSUE_TYPE_ID_BUG , summary.toString())
 //				.setAssigneeName("admin")
                 .setPriorityId(5L)
 //				.setReporterName("admin")
@@ -132,18 +137,20 @@ public class JiraIssueTrackerService implements IssueTrackerService {
         return basicIssue.claim();
     }
 
-    private BasicIssue updateIssue(JiraRestClient client, TestCaseResponse task, String issueKey){
+    private BasicIssue updateIssue(JiraRestClient client, TestCaseResponse task){
 
         IssueRestClient issueClient = client.getIssueClient();
-        BasicIssue issue = null; // issueClient.getIssue(issueKey).claim(); // get Key from task
+        BasicIssue issue = issueClient.getIssue(task.getIssueId()).claim();
 
         StringBuffer desc = new StringBuffer();
         desc.append("Rerun results :\n");
         desc.append("Request: \n" + task.getRequest());
         desc.append("\n");
         desc.append("Response: \n" + task.getResponse());
-        String projectKey = task.getIssueTrackerProjectName();  //"lFP";//
-        IssueInput issueInput = new IssueInputBuilder(projectKey, 10004L)
+//        issueClient.a
+
+        String projectKey = task.getIssueTrackerProjectName();
+        IssueInput issueInput = new IssueInputBuilder(projectKey, ISSUE_TYPE_ID_BUG )
 //				.setAssigneeName("admin")
                 .setPriorityId(5L)
 //                .setFieldInput(new FieldInput(IssueFieldId.STATUS_FIELD, "done"))
@@ -151,9 +158,10 @@ public class JiraIssueTrackerService implements IssueTrackerService {
                 .setDescription(desc.toString())
                 .build();
 //        Ierator itr = issueInput.getFields().keySet().iterator()
-        issueClient.updateIssue(issueKey, issueInput).claim();
 
-        System.out.println("Issue updated.......... " + issueKey);
+        issueClient.updateIssue(task.getIssueId(), issueInput).claim();
+
+        System.out.println("Issue updated.......... " + issue.getId());
         return issue;
     }
 
