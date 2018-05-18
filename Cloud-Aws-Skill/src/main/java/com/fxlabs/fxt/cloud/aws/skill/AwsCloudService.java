@@ -393,10 +393,10 @@ public class AwsCloudService implements CloudService {
                 .withFilters(new Filter().withName("tag-value").withValues(subnet_));
         DescribeSubnetsResult response = awsService.describeSubnets();
         List<Subnet> subnets = response.getSubnets();
-        logger.info("Found  [{}] subnets for search", response.getSubnets().size());
+        logger.info("Found  [{}] subnets in region [{}]", response.getSubnets().size(), getRegion(opts));
         for (Subnet subnet : subnets) {
-            System.out.println(subnet.getSubnetId() + "==" + subnet.getVpcId()
-                    + "==" + subnet.getTags());
+            System.out.println(subnet.getSubnetId() + " in vpc:" + subnet.getVpcId()
+                    + " with tags:" + subnet.getTags());
             for (Tag entry : subnet.getTags()) {
                 if ("fx-subnet".equals(entry.getValue())) {
                     return subnet.getSubnetId();
@@ -429,7 +429,7 @@ public class AwsCloudService implements CloudService {
         DescribeSecurityGroupsResult result = awsService.describeSecurityGroups(req);
 
         List<SecurityGroup> sgs = result.getSecurityGroups();
-        logger.info("Found  [{}] security groups for search", sgs.size());
+        logger.info("Found  [{}] security groups in region [{}]", sgs.size(), getRegion(opts));
         for (SecurityGroup sg_ : sgs) {
             return sg_.getGroupId();
         }
