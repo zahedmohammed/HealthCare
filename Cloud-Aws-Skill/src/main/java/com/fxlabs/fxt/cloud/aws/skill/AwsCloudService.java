@@ -36,8 +36,8 @@ public class AwsCloudService implements CloudService {
     private static final String AWS_PKEY = "fx-pk";
     private static final String FXLABS_AWS_DEFAULT_IMAGE = "Ubuntu 16.04";
 
-    private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg1";
-    private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet1";
+    private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg";
+    private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet";
 
     private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
 
@@ -282,35 +282,20 @@ public class AwsCloudService implements CloudService {
         return ec2Client;
     }
 
-    private AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey) {
-        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretKey);
+//    private AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey) {
+//        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretKey);
+//
+//
+//        AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
+//                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+//               // .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(REGION_ENPOINTS.get(region), region))
+//               // .withRegion(region)
+//                .build();
+//
+//        return ec2Client;
+//    }
 
 
-        AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-               // .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(REGION_ENPOINTS.get(region), region))
-               // .withRegion(region)
-                .build();
-
-        return ec2Client;
-    }
-
-    /**
-     *
-     * @param map
-     * @return botinstall flag
-     */
-    private Boolean skipBotInstallation(Map<String, String> map) {
-
-        String value = map.get("SKIP_BOT_INSTALL");
-
-        if (!StringUtils.isEmpty(value)
-                && org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "true")) {
-            return false;
-        }
-
-        return false;
-    }
 
     /**
      *
