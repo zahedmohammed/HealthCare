@@ -45,12 +45,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-//    //compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.3.0'
-//    compile("org.apache.jclouds:jclouds-all:$jcloudVersion_200")
-//    compile("org.apache.jclouds:jclouds-compute:$jcloudVersion_200")
-//    compile("org.apache.jclouds.driver:jclouds-slf4j:$jcloudVersion_200")
-//    compile("org.apache.jclouds.driver:jclouds-sshj:$jcloudVersion_200")
-//    compile("org.apache.jclouds.driver:jclouds-enterprise:$jcloudVersion_200")
+
 
     // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ec2
     compile group: 'com.amazonaws', name: 'aws-java-sdk-ec2', version: '1.11.302'

@@ -1,23 +1,23 @@
 package com.fxlabs.fxt.cloud.aws.skill;
 
-import com.amazonaws.auth.*;
-import com.amazonaws.internal.StaticCredentialsProvider;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.ec2.AmazonEC2;
-import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.ec2.model.*;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -32,17 +32,20 @@ public class AwsCloudService implements CloudService {
 
 
     final Logger logger = LoggerFactory.getLogger(getClass());
-    private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Small.toString();
+    private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Micro.toString();
     private static final String AWS_PKEY = "fx-pk";
-    //private static final String FXLABS_AWS_DEFAULT_IMAGE = "ami-09d2fb69";
     private static final String FXLABS_AWS_DEFAULT_IMAGE = "Ubuntu 16.04";
 
-    private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg";
-    private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet";
+    private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg1";
+    private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet1";
 
     private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
 
-    private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
+//    static final Map<String, String> REGION_ENPOINTS = ImmutableMap.<String, String>builder()
+//           .put("US-EAST-1", "ec2.us-east-1.amazonaws.com")
+//            .put("US-WEST-1", "ec2.us-west-1.amazonaws.com").build();
+
+  //  private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
 
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
@@ -113,18 +116,13 @@ public class AwsCloudService implements CloudService {
             String subnetId = getSubnetId(opts, awsService);
             taskLogger.get().append("Setting Subnet Id " + securityGroupId);
 
-//            String network = getNetwork(opts);
-//            taskLogger.get().append("Setting Network " + network);
-//
-//            String username = getAwsImageUsername(opts);
-//            String password = getImagePassword(opts);
 
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
                     .withImageId(image)
                     .withInstanceType(com.amazonaws.services.ec2.model.InstanceType.T2Small)
                     .withMinCount(1).withMaxCount(1)
                     .withKeyName(awsPrivateKeyName)
-                  //  .withSubnetId(subnetId)
+                    .withSubnetId(subnetId)
                     .withSecurityGroupIds(securityGroupId);
 
             //findby image name
@@ -157,6 +155,7 @@ public class AwsCloudService implements CloudService {
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+            response.setLogs(taskLogger.get().toString());
         } finally {
             //TODO close any connections if
         }
@@ -267,41 +266,31 @@ public class AwsCloudService implements CloudService {
     }
 
 
+    private AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey, String region) {
+        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretKey);
 
-    private  AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey, String region) {
-        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId,secretKey);
 
         AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion("us-west-1")
+                //.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(REGION_ENPOINTS.get(region), region))
                 .withRegion(region)
                 .build();
 
         return ec2Client;
     }
 
-//    private ComputeService getAwsService(String accessKeyId, String secretKey) {
-//
-//        Properties properties = new Properties();
-//
-//        long scriptTimeout = TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES);
-//        properties.setProperty(TIMEOUT_SCRIPT_COMPLETE, scriptTimeout + "");
-//
-//
-//        Iterable<Module> modules = ImmutableSet.<Module>of(
-//                new SshjSshClientModule(),
-//                new SLF4JLoggingModule(),
-//                new EnterpriseConfigurationModule());
-//
-//        ContextBuilder builder = ContextBuilder.newBuilder("aws-ec2")
-//                .credentials(accessKeyId, secretKey)
-//                .modules(modules)
-//                .overrides(properties);
-//        System.out.print(builder.getApiMetadata());
-//        ComputeService client = builder.buildView(ComputeServiceContext.class).getComputeService();
-//
-//        return client;
-//    }
+    private AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey) {
+        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretKey);
+
+
+        AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+               // .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(REGION_ENPOINTS.get(region), region))
+               // .withRegion(region)
+                .build();
+
+        return ec2Client;
+    }
 
     /**
      *
@@ -360,51 +349,7 @@ public class AwsCloudService implements CloudService {
         return value;
     }
 
-//    /**
-//     *
-//     * @param opts
-//     * @return imagepassword
-//     */
-//    private String getImagePassword(Map<String, String> opts){
-//
-//        String value = opts.get("IMAGE_PASSWORD");
-//
-//        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-//                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-//            return AWS_PRIVATE_KEY_PEM;
-//        }
-//        return value;
-//    }
 
-//    /**
-//     *
-//     * @param opts
-//     * @return security group
-//     */
-//    private String getSubnet(Map<String, String> opts){
-//        String value = opts.get("SUBNET");
-//
-//        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-//                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-//            return FXLABS_AWS_DEFAULT_SUBNET_ID;
-//        }
-//        return value;
-//    }
-
-    /**
-     *
-     * @param opts
-     * @return NETWORK
-     */
-    private String getNetwork(Map<String, String> opts){
-        String value = opts.get("NETWORK");
-
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-            return FXLABS_AWS_DEFAULT_VPC;
-        }
-        return value;
-    }
 
     private static String getBotConfigScript(Map<String, String> opts){
         String value = opts.get("COMMAND");
@@ -418,6 +363,11 @@ public class AwsCloudService implements CloudService {
     }
 
     private String getImageId(Map<String, String> opts, AmazonEC2 awsService) {
+
+        String accessKeyId = opts.get("ACCESS_KEY_ID");
+        String secretKey = opts.get("SECRET_KEY");
+
+      //  AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey);
 
         String imageName = opts.get("IMAGE");
 
@@ -440,21 +390,30 @@ public class AwsCloudService implements CloudService {
 
     private String getSubnetId(Map<String, String> opts, AmazonEC2  awsService){
 
-        String subnet =  opts.get("SUBNET");
+        String accessKeyId = opts.get("ACCESS_KEY_ID");
+        String secretKey = opts.get("SECRET_KEY");
 
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(subnet, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(subnet)) {
-            subnet = FXLABS_DEFAULT_SUBNET;
+
+        String subnet_ =  opts.get("SUBNET");
+
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(subnet_, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(subnet_)) {
+            subnet_ = FXLABS_DEFAULT_SUBNET;
         }
 
         DescribeSubnetsRequest request = new DescribeSubnetsRequest()
-                .withFilters(new Filter().withName("tag-value").withValues(subnet));
-        DescribeSubnetsResult response = awsService.describeSubnets(request);
+                .withFilters(new Filter().withName("tag-value").withValues(subnet_));
+        DescribeSubnetsResult response = awsService.describeSubnets();
         List<Subnet> subnets = response.getSubnets();
-        for (Subnet subnet_ : subnets) {
-//            System.out.println(subnet.getSubnetId() + "==" + subnet.getVpcId()
-//                    + "==" + subnet.getTags());
-            return subnet_.getSubnetId();
+        logger.info("Found  [{}] subnets for search", response.getSubnets().size());
+        for (Subnet subnet : subnets) {
+            System.out.println(subnet.getSubnetId() + "==" + subnet.getVpcId()
+                    + "==" + subnet.getTags());
+            for (Tag entry : subnet.getTags()) {
+                if ("fx-subnet".equals(entry.getValue())) {
+                    return subnet.getSubnetId();
+                }
+            }
         }
 
         return null;
@@ -467,6 +426,8 @@ public class AwsCloudService implements CloudService {
      * @return security group
      */
     private String getSecurityGroupId(Map<String, String> opts, AmazonEC2  awsService){
+
+
         String value = opts.get("SECURITY_GROUP");
 
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
@@ -475,21 +436,18 @@ public class AwsCloudService implements CloudService {
         }
 
         DescribeSecurityGroupsRequest req = new DescribeSecurityGroupsRequest()
-                .withFilters(new Filter().withName("tag-value").withValues(value));
+                .withFilters(new Filter().withName("group-name").withValues(value));
 
         DescribeSecurityGroupsResult result = awsService.describeSecurityGroups(req);
 
         List<SecurityGroup> sgs = result.getSecurityGroups();
-
+        logger.info("Found  [{}] security groups for search", sgs.size());
         for (SecurityGroup sg_ : sgs) {
-//            System.out.println(subnet.getSubnetId() + "==" + subnet.getVpcId()
-//                    + "==" + subnet.getTags());
             return sg_.getGroupId();
         }
 
 
         return null;
     }
-
 
 }

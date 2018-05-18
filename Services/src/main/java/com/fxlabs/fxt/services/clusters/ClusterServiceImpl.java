@@ -237,6 +237,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         opts.put("SECRET_KEY", getSecretKey(account.getId()));
         opts.put("COMMAND", getUserDataScript(dto.getKey()));
         opts.put("INSTANCE_NAME", dto.getName());
+        opts.put("REGION", dto.getRegion());
         cloudTask.setOpts(opts);
 
 
