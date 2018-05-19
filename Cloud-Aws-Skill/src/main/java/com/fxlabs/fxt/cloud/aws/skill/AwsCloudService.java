@@ -113,8 +113,22 @@ public class AwsCloudService implements CloudService {
             String securityGroupId = getSecurityGroupId(opts,awsService);
             taskLogger.get().append("Setting Security Group Id " + securityGroupId);
 
+            if (StringUtils.isEmpty(securityGroupId)){
+                logger.info("Security Group not found for region " + region);
+                taskLogger.get().append("Security group with group-name [" + FXLABS_DEFAULT_SECURITY_GROUP  + "] not found in region" + region);
+                response.setLogs(taskLogger.get().toString());
+                return response;
+            }
+
             String subnetId = getSubnetId(opts, awsService);
-            taskLogger.get().append("Setting Subnet Id " + securityGroupId);
+            taskLogger.get().append("Setting Subnet Id " + subnetId);
+
+            if (StringUtils.isEmpty(subnetId)){
+                logger.info("Subnet not found for region " + region);
+                taskLogger.get().append("Subnet with tag value [" + FXLABS_DEFAULT_SUBNET + "] not found in region " + region);
+                response.setLogs(taskLogger.get().toString());
+                return response;
+            }
 
 
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
