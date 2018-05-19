@@ -10,6 +10,7 @@ import com.amazonaws.services.ec2.model.*;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
+import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class AwsCloudService implements CloudService {
     final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Micro.toString();
     private static final String AWS_PKEY = "fx-pk";
-    private static final String FXLABS_AWS_DEFAULT_IMAGE = "Ubuntu 16.04";
+    private static final String FXLABS_AWS_DEFAULT_IMAGE = "Ubuntu";
 
     private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg";
     private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet";
@@ -42,8 +43,8 @@ public class AwsCloudService implements CloudService {
     private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
 
 //    static final Map<String, String> REGION_ENPOINTS = ImmutableMap.<String, String>builder()
-//           .put("US-EAST-1", "ec2.us-east-1.amazonaws.com")
-//            .put("US-WEST-1", "ec2.us-west-1.amazonaws.com").build();
+//           .put("us-east-1", "ec2.us-east-1.amazonaws.com")
+//            .put("us-west-1", "ec2.us-west-1.amazonaws.com").build();
 
   //  private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
 
@@ -97,6 +98,7 @@ public class AwsCloudService implements CloudService {
             String secretKey = opts.get("SECRET_KEY");
 
             String region = getRegion(opts);
+           // String region = "us-east-1";
 
             awsService = getAwsEc2Service(accessKeyId, secretKey, region);
 
@@ -210,7 +212,7 @@ public class AwsCloudService implements CloudService {
             logger.info("Deleting bot [{}]..." , nodeId);
             taskLogger.get().append("Deleting Bot : " + nodeId);
 
-            AmazonEC2 client = getAmazonEC2Client(accessKeyId, secretKey, getRegion(opts));
+            AmazonEC2 client = getAwsEc2Service(accessKeyId, secretKey, getRegion(opts));
 
 
             TerminateInstancesRequest termRequest = new TerminateInstancesRequest();
@@ -256,10 +258,10 @@ public class AwsCloudService implements CloudService {
         return tag;
     }
 
-    private AmazonEC2 getAmazonEC2Client(String accessKeyId, String secretKey, String region) {
-        AWSCredentialsProvider credentials = new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKeyId, secretKey));
-        return AmazonEC2ClientBuilder.standard().withRegion(region).withCredentials(credentials).build();
-    }
+//    private AmazonEC2 getAmazonEC2Client(String accessKeyId, String secretKey, String region) {
+//        AWSCredentialsProvider credentials = new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKeyId, secretKey));
+//        return AmazonEC2ClientBuilder.standard().withRegion(region).withCredentials(credentials).build();
+//    }
 
     private String getInstanceType(CloudTask task) {
         String hardware = task.getOpts().get("HARDWARE");
@@ -295,20 +297,6 @@ public class AwsCloudService implements CloudService {
 
         return ec2Client;
     }
-
-//    private AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey) {
-//        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretKey);
-//
-//
-//        AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
-//                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-//               // .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(REGION_ENPOINTS.get(region), region))
-//               // .withRegion(region)
-//                .build();
-//
-//        return ec2Client;
-//    }
-
 
 
     /**
@@ -369,7 +357,7 @@ public class AwsCloudService implements CloudService {
         String accessKeyId = opts.get("ACCESS_KEY_ID");
         String secretKey = opts.get("SECRET_KEY");
 
-      //  AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey);
+        AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey, "us-west-1");
 
         String imageName = opts.get("IMAGE");
 
@@ -381,13 +369,13 @@ public class AwsCloudService implements CloudService {
         DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest()
                 .withFilters(new Filter().withName("name").withValues(imageName));
 
-        DescribeImagesResult result = awsService.describeImages(describeImagesRequest);
+        DescribeImagesResult result = awsService_.describeImages(describeImagesRequest);
         List<Image> images = result.getImages();
         for (Image image : images) {
             return image.getImageId();
         }
-
         return null;
+
     }
 
     private String getSubnetId(Map<String, String> opts, AmazonEC2  awsService){
