@@ -357,7 +357,7 @@ public class AwsCloudService implements CloudService {
         String accessKeyId = opts.get("ACCESS_KEY_ID");
         String secretKey = opts.get("SECRET_KEY");
 
-        AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey, "us-west-1");
+       // AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey, "us-west-1");
 
         String imageName = opts.get("IMAGE");
 
@@ -369,7 +369,7 @@ public class AwsCloudService implements CloudService {
         DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest()
                 .withFilters(new Filter().withName("name").withValues(imageName));
 
-        DescribeImagesResult result = awsService_.describeImages(describeImagesRequest);
+        DescribeImagesResult result = awsService.describeImages(describeImagesRequest);
         List<Image> images = result.getImages();
         for (Image image : images) {
             return image.getImageId();

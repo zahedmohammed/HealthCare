@@ -340,6 +340,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         opts.put("ACCESS_KEY_ID", account.getAccessKey());
         opts.put("SECRET_KEY", getSecretKey(account.getId()));
+        opts.put("REGION", dto.getRegion());
 
         if (org.apache.commons.lang3.StringUtils.isEmpty(dto.getNodeId())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Node id is empty"));
@@ -459,7 +460,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 key = "fx-caas-aws-ec2";
                 break;
             default:
-                logger.info("Invalid provider [{}]", account.getAccountType());
+                logger.info("Provider [{}] not supported", account.getAccountType());
                 break;
         }
         return key;
