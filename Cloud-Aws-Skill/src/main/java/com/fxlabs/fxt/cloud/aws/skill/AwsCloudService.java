@@ -10,7 +10,7 @@ import com.amazonaws.services.ec2.model.*;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
-import com.google.common.collect.ImmutableMap;
+//import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ public class AwsCloudService implements CloudService {
     final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Micro.toString();
     private static final String AWS_PKEY = "fx-pk";
-    private static final String FXLABS_AWS_DEFAULT_IMAGE = "Ubuntu";
+    private static final String FXLABS_AWS_DEFAULT_IMAGE = "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*";
 
     private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg";
     private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet";
