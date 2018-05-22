@@ -1,13 +1,15 @@
 package com.fxlabs.fxt.it.jira.skill;
 
+import com.atlassian.httpclient.api.Request;
+import com.atlassian.jira.rest.client.api.AuthenticationHandler;
 import com.atlassian.jira.rest.client.api.IssueRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClientFactory;
-import com.atlassian.jira.rest.client.api.domain.BasicIssue;
-import com.atlassian.jira.rest.client.api.domain.IssueFieldId;
+import com.atlassian.jira.rest.client.api.domain.*;
 import com.atlassian.jira.rest.client.api.domain.input.FieldInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
+import com.atlassian.jira.rest.client.api.domain.input.TransitionInput;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 import com.atlassian.util.concurrent.Promise;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -86,15 +88,20 @@ public class JiraIssueTrackerService implements IssueTrackerService {
             URI uri = new URI(task.getIssueTrackerHost());
 
             JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
-//            JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, fxIssueTrackerBot, fxIssueTrackerBotSecretKey);
             JiraRestClient client = factory.createWithBasicHttpAuthentication(uri, task.getUsername(), task.getPassword());
 
             BasicIssue issue = null;
             if (StringUtils.isEmpty(task.getIssueId())){
-                issue = createIssue(client, task);
-                response.setIssueId(issue.getKey());
+                if ("fail".equalsIgnoreCase(task.getResult())) {
+                    issue = createIssue(client, task);
+                    response.setIssueId(issue.getKey());
+                }
             }else{
-                issue = updateIssue(client, task);
+                if ("pass".equalsIgnoreCase(task.getResult())) {
+                    issue = closeIssue(client,  task);
+                }else {
+                    issue = updateIssue(client, task);
+                }
             }
             response.setSuccess(true);
 //            response.setLogs(taskLogger.get().toString());
@@ -118,7 +125,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 
         StringBuffer summary = new StringBuffer();
         summary.append(task.getSuite());
-        String projectKey = task.getIssueTrackerProjectName(); //"lFP";//
+        String projectKey = task.getIssueTrackerProjectName();
 
         StringBuffer desc = new StringBuffer();
         desc.append("Request: \n" + task.getRequestEval());
@@ -129,7 +136,6 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 //				.setAssigneeName("admin")
                 .setPriorityId(5L)
 //				.setReporterName("admin")
-//                .setFieldInput(new FieldInput(IssueFieldId.STATUS_FIELD, "To Do"))
                 .setDescription(desc.toString())
                 .build();
         Promise<BasicIssue> basicIssue = issueClient.createIssue(newIssue);
@@ -137,27 +143,46 @@ public class JiraIssueTrackerService implements IssueTrackerService {
         return basicIssue.claim();
     }
 
+
+    Issue closeIssue(JiraRestClient client, TestCaseResponse task) {
+        final IssueRestClient issueClient = client.getIssueClient();
+        Issue issue = issueClient.getIssue(task.getIssueId()).claim();
+
+        int closeTransitionId = getTransitionId(client, issue, "Done");
+        TransitionInput input = new TransitionInput(closeTransitionId, Comment.valueOf("Closing comment here"));
+        issueClient.transition(issue, input).claim();
+
+        return issue;
+    }
+
+    int getTransitionId(JiraRestClient client, Issue issue, String transitionName)  {
+        final Promise<Iterable<Transition>> transitions = client.getIssueClient().getTransitions(issue);
+        final Iterable<Transition> iterable = transitions.claim();
+        for (Transition transition : iterable) {
+            if (transition.getName().equals(transitionName)) {
+                return transition.getId();
+            }
+        }
+        throw new RuntimeException("Transition with name '"+ transitionName + "' is not found for this issue");
+    }
+
+
     private BasicIssue updateIssue(JiraRestClient client, TestCaseResponse task){
 
         IssueRestClient issueClient = client.getIssueClient();
         BasicIssue issue = issueClient.getIssue(task.getIssueId()).claim();
 
         StringBuffer desc = new StringBuffer();
-        desc.append("Rerun results :\n");
+        desc.append("Re-run results :\n");
         desc.append("Request: \n" + task.getRequest());
         desc.append("\n");
         desc.append("Response: \n" + task.getResponse());
-//        issueClient.a
 
         String projectKey = task.getIssueTrackerProjectName();
-        IssueInput issueInput = new IssueInputBuilder(projectKey, ISSUE_TYPE_ID_BUG )
-//				.setAssigneeName("admin")
-                .setPriorityId(5L)
-//                .setFieldInput(new FieldInput(IssueFieldId.STATUS_FIELD, "done"))
-//				.setReporterName("admin")
-                .setDescription(desc.toString())
-                .build();
-//        Ierator itr = issueInput.getFields().keySet().iterator()
+
+        IssueInputBuilder issueInputBuilder = new IssueInputBuilder(projectKey, ISSUE_TYPE_ID_BUG );
+        issueInputBuilder.setDescription(desc.toString());
+        IssueInput issueInput = issueInputBuilder.build();
 
         issueClient.updateIssue(task.getIssueId(), issueInput).claim();
 
