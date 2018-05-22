@@ -1,7 +1,7 @@
 package com.fxlabs.fxt.cloud.aws.skill;
 
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.ec2.AmazonEC2;
@@ -10,7 +10,7 @@ import com.amazonaws.services.ec2.model.*;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
-//import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,6 +19,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+
+//import com.google.common.collect.ImmutableMap;
 
 
 /**
@@ -109,28 +111,29 @@ public class AwsCloudService implements CloudService {
             String image = getImageId(opts, awsService);
             taskLogger.get().append("Setting image id : " + image);
 
-            String awsPrivateKeyName = getAwsPrivateKey(opts);
+            String awsPrivateKeyName = getAwsPrivateKey(opts, awsService);
             taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
 
             String securityGroupId = getSecurityGroupId(opts,awsService);
             taskLogger.get().append("Setting Security Group Id " + securityGroupId);
 
-            if (StringUtils.isEmpty(securityGroupId)){
-                logger.info("Security Group not found for region " + region);
-                taskLogger.get().append("Security group with group-name [" + FXLABS_DEFAULT_SECURITY_GROUP  + "] not found in region" + region);
-                response.setLogs(taskLogger.get().toString());
-                return response;
-            }
+//            commenting out the securitygroup mandatory validation
+//            if (StringUtils.isEmpty(securityGroupId)){
+//                logger.info("Security Group not found for region " + region);
+//                taskLogger.get().append("Security group with group-name [" + FXLABS_DEFAULT_SECURITY_GROUP  + "] not found in region" + region);
+//                response.setLogs(taskLogger.get().toString());
+//                return response;
+//            }
 
             String subnetId = getSubnetId(opts, awsService);
             taskLogger.get().append("Setting Subnet Id " + subnetId);
-
-            if (StringUtils.isEmpty(subnetId)){
-                logger.info("Subnet not found for region " + region);
-                taskLogger.get().append("Subnet with tag value [" + FXLABS_DEFAULT_SUBNET + "] not found in region " + region);
-                response.setLogs(taskLogger.get().toString());
-                return response;
-            }
+//             commenting subnet mandatory validation
+//            if (StringUtils.isEmpty(subnetId)){
+//                logger.info("Subnet not found for region " + region);
+//                taskLogger.get().append("Subnet with tag value [" + FXLABS_DEFAULT_SUBNET + "] not found in region " + region);
+//                response.setLogs(taskLogger.get().toString());
+//                return response;
+//            }
 
 
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
@@ -167,6 +170,7 @@ public class AwsCloudService implements CloudService {
             response.setSuccess(true);
             response.setResponseId(instance_id);
             response.setLogs(taskLogger.get().toString());
+            logger.info("Created instance with id  [{}] in region [{}]", instance_id, region);
             return response;
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -271,16 +275,6 @@ public class AwsCloudService implements CloudService {
         return hardware;
     }
 
-    private String getImage(CloudTask task) {
-        //image
-        String value = task.getOpts().get("IMAGE");
-        if(org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(value)){
-            value = FXLABS_AWS_DEFAULT_IMAGE;
-        }
-        return value;
-    }
-
 
     private AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey, String region) {
 
@@ -299,44 +293,56 @@ public class AwsCloudService implements CloudService {
     }
 
 
-    /**
-     *
-     * @param opts
-     * @return imageusername
-     */
-    private String getAwsImageUsername(Map<String, String> opts) {
-        String value = opts.get("IMAGE_USERNAME");
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")) {
-            return "";
-        }
-        return value;
-    }
-
-    /**
-     *
-     * @param opts
-     * @return bot installation
-     */
-    private String getBotInstallationScript(Map<String, String> opts) {
-        String value = opts.get("SCRIPT");
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")) {
-            return "";
-        }
-        return value;
-    }
+//    /**
+//     *
+//     * @param opts
+//     * @return bot installation
+//     */
+//    private String getBotInstallationScript(Map<String, String> opts) {
+//        String value = opts.get("SCRIPT");
+//        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")) {
+//            return "";
+//        }
+//        return value;
+//    }
 
     /**
      *
      * @param opts
      * @return keypair
      */
-    private String getAwsPrivateKey(Map<String, String> opts){
+    private String getAwsPrivateKey(Map<String, String> opts, AmazonEC2 awsService){
         String value = opts.get("KEY_PAIR");
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
                 || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-            return AWS_PKEY;
+            value = AWS_PKEY;
         }
-        return value;
+        String keyPairFromEc2 = null;
+        try {
+            DescribeKeyPairsRequest describeKeyPairsRequest = new DescribeKeyPairsRequest().withKeyNames(value);
+            DescribeKeyPairsResult describeKeyPairsResult = awsService.describeKeyPairs(describeKeyPairsRequest);
+
+            for (KeyPairInfo kpi : describeKeyPairsResult.getKeyPairs()) {
+                keyPairFromEc2 = kpi.getKeyName();
+            }
+        } catch (AmazonClientException exception) {
+            logger.debug(exception.getLocalizedMessage(), exception);
+        }
+
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(keyPairFromEc2)) {
+
+            String keyName = "fx-pk" + "_" + RandomStringUtils.randomAlphabetic(4);
+            logger.debug("Creatring keypair [{}]" ,  keyName);
+
+            CreateKeyPairRequest createKeyPairRequest = new CreateKeyPairRequest().withKeyName(keyName);
+            CreateKeyPairResult createKeyPairResult = awsService.createKeyPair(createKeyPairRequest);
+
+            keyPairFromEc2 = createKeyPairResult.getKeyPair().getKeyName();
+            taskLogger.get().append("Created key-pair  : " + keyPairFromEc2);
+        }
+
+        return keyPairFromEc2;
     }
 
 
@@ -397,10 +403,10 @@ public class AwsCloudService implements CloudService {
         List<Subnet> subnets = response.getSubnets();
         logger.info("Found  [{}] subnets in region [{}]", response.getSubnets().size(), getRegion(opts));
         for (Subnet subnet : subnets) {
-            System.out.println(subnet.getSubnetId() + " in vpc:" + subnet.getVpcId()
-                    + " with tags:" + subnet.getTags());
+//            System.out.println(subnet.getSubnetId() + " in vpc:" + subnet.getVpcId()
+//                    + " with tags:" + subnet.getTags());
             for (Tag entry : subnet.getTags()) {
-                if ("fx-subnet".equals(entry.getValue())) {
+                if (FXLABS_DEFAULT_SUBNET.equals(entry.getValue())) {
                     return subnet.getSubnetId();
                 }
             }
