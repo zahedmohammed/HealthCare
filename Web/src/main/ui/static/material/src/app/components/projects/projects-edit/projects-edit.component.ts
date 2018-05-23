@@ -5,6 +5,7 @@ import { OrgService } from '../../../services/org.service';
 import { AccountService } from '../../../services/account.service';
 import { Project } from '../../../models/project.model';
 import { Handler } from '../../dialogs/handler/handler';
+import { APPCONFIG } from '../../../config';
 
 @Component({
   selector: 'app-projects-edit',
@@ -18,9 +19,11 @@ export class ProjectsEditComponent implements OnInit {
   orgs;
   project: Project = new Project();
   accounts;
+  public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
+    this.AppConfig = APPCONFIG;
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {

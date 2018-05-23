@@ -16,7 +16,9 @@ function makeAppConfig() {
     theme: 'light',                   // light, gray, dark
     colorOption: '32',                // 11,12,13,14,15,16; 21,22,23,24,25,26; 31,32,33,34,35,36
     AutoCloseMobileNav: true,         // true, false. Automatically close sidenav on route change (Mobile only)
-    productLink: 'https://fxlabs.io'
+    productLink: 'https://fxlabs.io',
+    cliLink: 'https://github.com/fxlabsinc/Fx-CLI',
+    fxSample: 'https://github.com/fxlabsinc/Fx-Sample'
   };
 
   return AppConfig;

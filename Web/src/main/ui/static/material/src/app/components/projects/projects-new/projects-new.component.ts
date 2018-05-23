@@ -7,6 +7,7 @@ import { Account } from '../../../models/account.model';
 import { Project } from '../../../models/project.model';
 import { OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
+import { APPCONFIG } from '../../../config';
 
 @Component({
   selector: 'app-projects-new',
@@ -20,11 +21,13 @@ export class ProjectsNewComponent implements OnInit {
   project: Project = new Project();
   orgs;
   accounts;
+  public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) {
     //this.project.genPolicy = "None";
   }
 
   ngOnInit() {
+    this.AppConfig = APPCONFIG;
     //this.getOrgs();
     this.getAccountsForProjectPage();
   }
