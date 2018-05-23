@@ -19,7 +19,12 @@ export class AccountNewComponent implements OnInit {
   entry: Account = new Account();
   cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
   //accountTypes = [ 'VERSION_CONTROL', 'ISSUE_TRACKER', 'CLOUD', 'NOTIFICATION'];
-  accountTypes = ['Git', 'GitHub', 'Jira', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'AWS', 'Slack' , 'Email' , 'Self_Hosted'];
+  accountTypes = [
+      '--- Version Control ---', 'Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git',
+      '--- Bot Deployment ---', 'AWS', 'Self_Hosted',
+      '--- Issue-Trackers ---', 'GitHub', 'Jira',
+      '--- Notifications ---', 'Slack' , 'Email'
+      ];
   constructor(private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
@@ -54,6 +59,5 @@ export class AccountNewComponent implements OnInit {
     });
   }
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
-
 
 }
