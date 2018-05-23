@@ -73,10 +73,10 @@ public class FxCommands {
 
     }
 
-    @ShellMethod(key = "gen", value = "Generates test-suite files for Open API spec")
+    @ShellMethod(key = "gen", value = "Auto generates quality and security coverage test-suites for Open API spec")
     public void gen(
             @ShellOption(value = {"-h", "--url"}, help = "OpenAPI URL e.g. http://ip/v2/api-docs or myapp-spec.json") @Size(min = 1) String url,
-            @ShellOption(value = {"-d", "--dir"}, help = "Stub generation directory e.g. /opt/MyAppTest") String dir,
+            @ShellOption(value = {"-d", "--dir"}, help = "Stub generation directory e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\test-suites") String dir,
             @ShellOption(value = {"-k", "--auth-header-key"}, help = "Authorization header key e.g. 'Authorization'", defaultValue = "") String key,
             @ShellOption(value = {"-v", "--auth-header-val"}, help = "Authorization header value e.g. 'my-passowrd'", defaultValue = "") String value) {
 
