@@ -30,6 +30,7 @@
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Region</th>
                             <th class="mdl-data-table__cell--non-numeric">Visibility</th>
+                            <th class="mdl-data-table__cell--non-numeric">Count</th>
                             <th class="mdl-data-table__cell--non-numeric"></th>
                         </tr>
                         </thead>
@@ -39,6 +40,7 @@
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="item.manual">{{item.region}}</td>
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="!item.manual">Registered</td>
                             <td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.min}}</td>
                             <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
                                                                              [routerLink]="['/app/regions', item.id]">Edit</a>
                             </td>

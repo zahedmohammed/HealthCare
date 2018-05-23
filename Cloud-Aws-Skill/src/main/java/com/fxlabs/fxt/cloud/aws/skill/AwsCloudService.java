@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -135,11 +137,11 @@ public class AwsCloudService implements CloudService {
 //                return response;
 //            }
 
-
+            int count = getCount(opts);
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
                     .withImageId(image)
                     .withInstanceType(com.amazonaws.services.ec2.model.InstanceType.T2Small)
-                    .withMinCount(1).withMaxCount(1)
+                    .withMinCount(count).withMaxCount(count)
                     .withKeyName(awsPrivateKeyName)
                     .withSubnetId(subnetId)
                     .withSecurityGroupIds(securityGroupId);
@@ -156,21 +158,36 @@ public class AwsCloudService implements CloudService {
             runInstancesRequest.withUserData(getBotConfigScript(opts));
 
             RunInstancesResult run_response = awsService.runInstances(runInstancesRequest);
+            StringBuilder sb = new StringBuilder();
 
-            String instance_id = run_response.getReservation().getInstances().get(0).getInstanceId();
-
+            boolean firstIterationFlag = true ;
+            List<String> instanceIds = new ArrayList<String>();
             String tag = getInstanceTag(opts);
-            if (!StringUtils.isEmpty(tag)) {
-                CreateTagsRequest createTagsRequest = new CreateTagsRequest();
-                createTagsRequest.withResources(run_response.getReservation().getInstances().get(0).getInstanceId()) //
-                        .withTags(new Tag("Name", tag));
-                awsService.createTags(createTagsRequest);
+
+            for (Instance instance :run_response.getReservation().getInstances()){
+                if (firstIterationFlag) {
+                    firstIterationFlag = false;
+                } else {
+                    sb.append(",");
+                }
+                sb.append(instance.getInstanceId());
+
+                if (!StringUtils.isEmpty(tag)) {
+                    instanceIds.add(instance.getInstanceId());
+                }
             }
 
+            CreateTagsRequest createTagsRequest = new CreateTagsRequest();
+            createTagsRequest.withResources(instanceIds) //
+                    .withTags(new Tag("Name", tag));
+            awsService.createTags(createTagsRequest);
+           // String instance_id = run_response.getReservation().getInstances().get(0).getInstanceId();
+
+
             response.setSuccess(true);
-            response.setResponseId(instance_id);
+            response.setResponseId(sb.toString());
             response.setLogs(taskLogger.get().toString());
-            logger.info("Created instance with id  [{}] in region [{}]", instance_id, region);
+            logger.info("Created instances with id's  [{}] in region [{}]", sb.toString(), region);
             return response;
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -208,19 +225,19 @@ public class AwsCloudService implements CloudService {
             if (StringUtils.isEmpty(nodeId)){
                 return response;
             }
-
+            String[] instanceIds = nodeId.split(",");
             String accessKeyId = opts.get("ACCESS_KEY_ID");
             String secretKey = opts.get("SECRET_KEY");
 
 
-            logger.info("Deleting bot [{}]..." , nodeId);
-            taskLogger.get().append("Deleting Bot : " + nodeId);
+            logger.info("Deleting bots with id's [{}]..." , instanceIds.toString());
+            taskLogger.get().append("Deleting Bots : " + instanceIds);
 
             AmazonEC2 client = getAwsEc2Service(accessKeyId, secretKey, getRegion(opts));
 
 
             TerminateInstancesRequest termRequest = new TerminateInstancesRequest();
-            termRequest.withInstanceIds(nodeId);
+            termRequest.withInstanceIds(instanceIds);
 
             client.terminateInstances(termRequest);
 
@@ -243,6 +260,18 @@ public class AwsCloudService implements CloudService {
 
         return response;
 
+    }
+
+    private int getCount(Map<String, String> opts) {
+
+        String countStr =  opts.get("COUNT");
+        try{
+           return Integer.parseInt(countStr);
+        }catch (NumberFormatException ex){
+            logger.info("Error parsing bot count [{}]" , countStr);
+        }
+
+        return 1;
     }
 
     private String getRegion(Map<String, String> opts) {
@@ -332,10 +361,9 @@ public class AwsCloudService implements CloudService {
 
         if (org.apache.commons.lang3.StringUtils.isEmpty(keyPairFromEc2)) {
 
-            String keyName = "fx-pk" + "_" + RandomStringUtils.randomAlphabetic(4);
-            logger.debug("Creatring keypair [{}]" ,  keyName);
+            logger.debug("Creatring keypair [{}]" ,  value);
 
-            CreateKeyPairRequest createKeyPairRequest = new CreateKeyPairRequest().withKeyName(keyName);
+            CreateKeyPairRequest createKeyPairRequest = new CreateKeyPairRequest().withKeyName(value);
             CreateKeyPairResult createKeyPairResult = awsService.createKeyPair(createKeyPairRequest);
 
             keyPairFromEc2 = createKeyPairResult.getKeyPair().getKeyName();
@@ -386,10 +414,6 @@ public class AwsCloudService implements CloudService {
 
     private String getSubnetId(Map<String, String> opts, AmazonEC2  awsService){
 
-        String accessKeyId = opts.get("ACCESS_KEY_ID");
-        String secretKey = opts.get("SECRET_KEY");
-
-
         String subnet_ =  opts.get("SUBNET");
 
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(subnet_, "null")
@@ -399,18 +423,31 @@ public class AwsCloudService implements CloudService {
 
         DescribeSubnetsRequest request = new DescribeSubnetsRequest()
                 .withFilters(new Filter().withName("tag-value").withValues(subnet_));
-        DescribeSubnetsResult response = awsService.describeSubnets();
+
+        DescribeSubnetsResult response = awsService.describeSubnets(request);
         List<Subnet> subnets = response.getSubnets();
-        logger.info("Found  [{}] subnets in region [{}]", response.getSubnets().size(), getRegion(opts));
+
+        logger.info("Found  [{}] subnets in region [{}] for tag search", response.getSubnets().size(), getRegion(opts));
+
         for (Subnet subnet : subnets) {
-//            System.out.println(subnet.getSubnetId() + " in vpc:" + subnet.getVpcId()
-//                    + " with tags:" + subnet.getTags());
             for (Tag entry : subnet.getTags()) {
-                if (FXLABS_DEFAULT_SUBNET.equals(entry.getValue())) {
+                if (subnet_.equals(entry.getValue())) {
                     return subnet.getSubnetId();
                 }
             }
         }
+
+
+        DescribeSubnetsRequest describeSubnetsRequest=new DescribeSubnetsRequest().withSubnetIds(subnet_);
+        DescribeSubnetsResult describeSubnetsIdResult = awsService.describeSubnets(describeSubnetsRequest);
+        List<Subnet> describeSubnetsIdsResult = response.getSubnets();
+
+        logger.info("Found  [{}] subnets in region [{}] for subnet Id search", response.getSubnets().size(), getRegion(opts));
+
+        for (Subnet subnet : subnets) {
+            return subnet.getSubnetId();
+        }
+
 
         return null;
     }

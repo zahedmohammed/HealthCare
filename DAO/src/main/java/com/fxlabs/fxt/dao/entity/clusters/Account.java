@@ -41,6 +41,10 @@ public class Account extends BaseEntity {
     private String accessKey;
     private String secretKey;
 
+    private String prop1;
+    private String prop2;
+    private String prop3;
+
     @PrePersist
     @PreUpdate
     public void defaults() {

@@ -33,5 +33,9 @@ public class Account extends BaseDto<String> {
 
     private ClusterCloud cloudType;
 
+    private String prop1;
+    private String prop2;
+    private String prop3;
+
 
 }

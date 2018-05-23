@@ -105,14 +105,6 @@
                           href="https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html">&nbsp;learn more<i class="material-icons"
                                                                                              style="font-size: 18px;">open_in_new</i></a>
                 </p>
-                <p>
-                  Selected region for deployment of bot on Bot Hub page should have default resources
-                  i.e fx-pk key pair, a subnet with tag value fx-subnet and security group with group-name as fx-sg.
-                </p>
-                <p>
-                  If default resources for fxlabs not found then bot will be deployed using region's default resources.
-                </p>
-
               </div>
             </div>
           </div>
@@ -126,7 +118,50 @@
                        matInput type="password" placeholder="Secret-Key">
               </mat-input-container>
             </div>
+
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>
+                  Selected region for deployment of bot on Bot Hub page should have default resources
+                  i.e fx-pk key pair, a subnet with tag value fx-subnet and security group with group-name as fx-sg.
+                </p>
+                <p>
+                  If default resources for fxlabs not found then bot will be deployed using region's default resources.
+                </p>
+
+              </div>
+            </div>
           </div>
+            <!--prop1 -->
+            <div class="form-group row" [hidden]="entry.accountType !== 'AWS' || !entry.accountType">
+              <label for="name" class="col-md-1 control-label"></label>
+              <div class="col-md-4">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.prop1" name="prop1" id="privateKey"
+                         matInput placeholder="Key-Pair">
+                </mat-input-container>
+              </div>
+            </div>
+            <!--prop2 -->
+            <div class="form-group row" [hidden]="entry.accountType !== 'AWS' || !entry.accountType">
+              <label for="name" class="col-md-1 control-label"></label>
+              <div class="col-md-4">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.prop2" name="prop2" id="fxsg"
+                         matInput placeholder="Security Group Name">
+                </mat-input-container>
+              </div>
+            </div>
+            <!--prop3 -->
+            <div class="form-group row" [hidden]="entry.accountType !== 'AWS' || !entry.accountType">
+              <label for="name" class="col-md-1 control-label"></label>
+              <div class="col-md-4">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.prop3" name="prop3" id="fxsubnet"
+                         matInput placeholder="Subnet Tag or Subnet Id">
+                </mat-input-container>
+              </div>
+            </div>
           <!-- AWS  End    -->
           <!-- BitBucket  Start    -->
           <div class="form-group row" [hidden]="entry.accountType !== 'BitBucket' || !entry.accountType">
