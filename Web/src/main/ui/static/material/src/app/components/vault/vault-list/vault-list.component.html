@@ -25,15 +25,13 @@
                         <thead>
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">Key</th>
-                            <th class="mdl-data-table__cell--non-numeric">Visibility</th>
-                            <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
+                            <th class="mdl-data-table__cell--non-numeric">Create-date</th>
                             <th class="mdl-data-table__cell--non-numeric"></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let key of keys">
                             <td class="mdl-data-table__cell--non-numeric bold">{{key.org.name}}/{{key.key}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{key.visibility}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{key.createdDate | date:'shortDate'}}</td>
                             <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
                                                                              [routerLink]="['/app/vault', key.id]">Edit</a>

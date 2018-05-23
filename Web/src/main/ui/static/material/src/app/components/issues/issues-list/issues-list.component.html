@@ -25,8 +25,7 @@
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Type</th>
-                            <th class="mdl-data-table__cell--non-numeric">Visibility</th>
-                            <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
+                            <th class="mdl-data-table__cell--non-numeric">Create-date</th>
                             <th class="mdl-data-table__cell--non-numeric"></th>
                         </tr>
                         </thead>
@@ -34,7 +33,6 @@
                         <tr *ngFor="let key of keys">
                             <td class="mdl-data-table__cell--non-numeric bold">{{key.org.name}}/{{key.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric bold">{{key.account.accountType}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{key.visibility}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{key.createdDate | date:'shortDate'}}</td>
                             <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
                                                                              [routerLink]="['/app/issues', key.id]">Edit</a>
