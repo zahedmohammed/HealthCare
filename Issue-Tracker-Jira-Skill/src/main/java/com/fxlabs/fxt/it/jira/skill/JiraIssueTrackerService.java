@@ -40,6 +40,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
+
     private String fxIssueTrackerBot;
     private String fxIssueTrackerBotSecretKey;
 
@@ -112,10 +113,10 @@ public class JiraIssueTrackerService implements IssueTrackerService {
             return response;
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
-            //response.setLogs(taskLogger.get().toString());
+//            response.setLogs(taskLogger.get().toString());
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
-            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+//            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
         return response;
     }
@@ -152,6 +153,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
         TransitionInput input = new TransitionInput(closeTransitionId, Comment.valueOf("Closing comment here"));
         issueClient.transition(issue, input).claim();
 
+        System.out.println("Issue Closed: " + task.getIssueId());
         return issue;
     }
 
@@ -186,7 +188,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 
         issueClient.updateIssue(task.getIssueId(), issueInput).claim();
 
-        System.out.println("Issue updated.......... " + issue.getId());
+        System.out.println("Issue updated.......... " + task.getIssueId());
         return issue;
     }
 
