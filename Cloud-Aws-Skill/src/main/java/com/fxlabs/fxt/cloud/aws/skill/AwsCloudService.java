@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -220,18 +221,18 @@ public class AwsCloudService implements CloudService {
             }
 
             Map<String, String> opts = task.getOpts();
-            String nodeId = opts.get("NODE_ID");
+            String nodeIds = opts.get("NODE_ID");
 
-            if (StringUtils.isEmpty(nodeId)){
+            if (StringUtils.isEmpty(nodeIds)){
                 return response;
             }
-            String[] instanceIds = nodeId.split(",");
+            String[] instanceIds = nodeIds.split(",");
             String accessKeyId = opts.get("ACCESS_KEY_ID");
             String secretKey = opts.get("SECRET_KEY");
 
 
-            logger.info("Deleting bots with id's [{}]..." , instanceIds.toString());
-            taskLogger.get().append("Deleting Bots : " + instanceIds);
+            logger.info("Deleting bots with id's [{}]..." , nodeIds);
+            taskLogger.get().append("Deleting Bots : " + nodeIds);
 
             AmazonEC2 client = getAwsEc2Service(accessKeyId, secretKey, getRegion(opts));
 
@@ -239,8 +240,9 @@ public class AwsCloudService implements CloudService {
             TerminateInstancesRequest termRequest = new TerminateInstancesRequest();
             termRequest.withInstanceIds(instanceIds);
 
-            client.terminateInstances(termRequest);
-
+            TerminateInstancesResult terminateInstancesResult = client.terminateInstances(termRequest);
+            logger.info("AWS response for termination of Instances :" + terminateInstancesResult.getTerminatingInstances().toString());
+            taskLogger.get().append("AWS response for termination of Instances :"  + terminateInstancesResult.getTerminatingInstances().toString());
             response.setSuccess(true);
             response.setLogs(taskLogger.get().toString());
 
