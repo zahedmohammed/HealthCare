@@ -25,7 +25,7 @@ export class UserEditComponent implements OnInit {
         this.getOrgById(params['orgId']);
       }
       if (params['id']) {
-        this.getById(params['id']);
+        this.getById(params['orgId'], params['id']);
       }
     });
   }
@@ -44,9 +44,9 @@ export class UserEditComponent implements OnInit {
     });
   }
 
-  getById(id: string) {
+  getById(orgId: string, id: string) {
     this.handler.activateLoader();
-    this.orgService.getOrgUsers(id).subscribe(results => {
+    this.orgService.getOrgUsers(orgId, id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

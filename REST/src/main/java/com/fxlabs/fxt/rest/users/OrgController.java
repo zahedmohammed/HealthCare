@@ -103,9 +103,10 @@ public class OrgController {
     }
 
     @Secured({ROLE_ADMIN})
-    @RequestMapping(value = "org-user/{id}", method = RequestMethod.GET)
-    public Response<OrgUsers> findOrgUserById(@PathVariable("id") String id) {
-        return orgUsersService.findById(id, SecurityUtil.getCurrentAuditor());
+    @RequestMapping(value = "/{orgId}/org-user/{orgUserId}", method = RequestMethod.GET)
+    public Response<OrgUsers> findOrgUserById(@PathVariable("orgId") String orgId,
+                                              @PathVariable("orgUserId") String orgUserId) {
+        return orgService.getUserByOrgUserId(orgUserId, orgId);
     }
 
     @Secured({ROLE_ADMIN})
@@ -120,6 +121,12 @@ public class OrgController {
                                            @PathVariable("userId") String userId,
                                            @RequestBody Member member) {
         return orgService.resetPassword(userId, member, orgId, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured({ROLE_USER})
+    @RequestMapping(value = "/login-status", method = RequestMethod.GET)
+    public Response<OrgUsers> login() {
+        return orgService.getUser(SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
     }
 
 

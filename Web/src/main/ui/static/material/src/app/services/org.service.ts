@@ -46,8 +46,12 @@ export class OrgService {
     return this.http.get(this.serviceUrl + "/" + id + "/users");
   }
 
-  getOrgUsers(id: string) {
-    return this.http.get(this.serviceUrl + "/org-user/" + id);
+  getOrgUsers(orgId: string, id: string) {
+    return this.http.get(this.serviceUrl + "/" + orgId + "/org-user/" + id);
+  }
+
+  getLoggedInUser() {
+    return this.http.get(this.serviceUrl + "/login-status");
   }
 
   createOrgUser(orgUser: OrgUser) {

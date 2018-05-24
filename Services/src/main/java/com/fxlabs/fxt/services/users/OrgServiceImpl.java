@@ -243,6 +243,33 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     }
 
     @Override
+    public Response<com.fxlabs.fxt.dto.users.OrgUsers> getUserByOrgUserId(String orgUserId, String orgId) {
+
+        Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findById(orgUserId);
+
+
+        if (!orgUsersOptional.isPresent() || !StringUtils.equals(orgUsersOptional.get().getOrg().getId(), orgId)) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", orgUserId, orgId));
+        }
+
+        return new Response<>(orgUsersConverter.convertToDto(orgUsersOptional.get()));
+
+    }
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.users.OrgUsers> getUser(String id, String orgId) {
+
+        // check user-id belongs to org
+        Optional<OrgUsers> usersOptional = this.orgUsersRepository.findByOrgIdAndUsersId(orgId, id);
+        if (!usersOptional.isPresent()) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", id, orgId));
+        }
+
+        return new Response<>(orgUsersConverter.convertToDto(usersOptional.get()));
+
+    }
+
+    @Override
     public void isUserEntitled(String s, String user) {
         /*Optional<OrgUsers> orgUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersIdAndStatus(s, user, OrgUserStatus.ACTIVE);
         if (orgUsersOptional.isPresent() && orgUsersOptional.get().getOrgRole() == OrgRole.ADMIN) {

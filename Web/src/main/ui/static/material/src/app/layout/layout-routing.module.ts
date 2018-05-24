@@ -62,6 +62,7 @@ import { UserListComponent } from '../components/users/user-list/user-list.compo
 import { UserNewComponent } from '../components/users/user-new/user-new.component';
 import { UserEditComponent } from '../components/users/user-edit/user-edit.component';
 import { PasswordResetComponent } from '../components/users/password-reset/password-reset.component';
+import { UserProfileComponent } from '../components/users/user-profile/user-profile.component';
 
 import { AccountListComponent } from '../components/manage/account-list/account-list.component';
 import { AccountNewComponent } from '../components/manage/account-new/account-new.component';
@@ -152,6 +153,7 @@ const routes: Routes = [
       { path: 'orgs/:orgId/users/new', component: UserNewComponent },
       { path: 'orgs/:orgId/users/:id/password-reset', component: PasswordResetComponent },
       { path: 'orgs/:orgId/users/:id', component: UserEditComponent },
+      { path: 'my-profile', component: UserProfileComponent },
 
       { path: 'accounts', component: AccountListComponent },
       { path: 'accounts/new', component: AccountNewComponent },

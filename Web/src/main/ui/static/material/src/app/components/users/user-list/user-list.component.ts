@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { OrgService } from '../../../services/org.service';
 import { Org, OrgUser } from '../../../models/org.model';
 import { User } from '../../../models/users.model';
