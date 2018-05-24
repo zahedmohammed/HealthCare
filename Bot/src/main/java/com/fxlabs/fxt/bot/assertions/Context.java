@@ -40,6 +40,7 @@ public class Context implements Serializable {
 
     // status - pass or fail
     private String result = "";
+    private ThreadLocal<String> localResult = new InheritableThreadLocal<>();
 
     private Context parent;
 
@@ -250,6 +251,10 @@ public class Context implements Serializable {
         return result;
     }
 
+    public String getLocalResult() {
+        return this.localResult.get();
+    }
+
     public void setResult(String result) {
         if (parent != null) {
             if (StringUtils.equalsIgnoreCase(this.parent.result, "fail")
@@ -272,6 +277,7 @@ public class Context implements Serializable {
                 //this.log(this.suitename, String.format("Result [%s]", result));
             }
         }
+        this.localResult.set(result);
     }
 
     public String get(String key) {

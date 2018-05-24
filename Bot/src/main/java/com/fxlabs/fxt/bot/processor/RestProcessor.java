@@ -284,7 +284,7 @@ public class RestProcessor {
                     tc.setRequestEval(formattedRequest);
                     tc.setResponse(formattedResponse);
                     tc.setStatusCode(String.valueOf(response.getStatusCodeValue()));
-                    tc.setResult(context.getResult());
+                    tc.setResult(context.getLocalResult());
                     tc.setTime(time);
                     tc.setSize(size);
                     tc.setHeaders(response.getHeaders().toString());
