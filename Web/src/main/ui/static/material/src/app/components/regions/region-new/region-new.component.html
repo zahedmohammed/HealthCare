@@ -74,17 +74,21 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="min" class="col-md-2 control-label"></label>
-                        <div class="col-md-2">
+                    <div class="form-group row"
+                         [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
+                        <label for="min" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
                             <mat-input-container class="full-width">
-                                <input required [(ngModel)]="entry.min" name="min" id="min"
+                                <input [(ngModel)]="entry.min" name="min" id="min"
                                        matInput placeholder="Count">
                             </mat-input-container>
-
+                        </div>
+                        <div class="callout1 text-muted callout-info1">
+                            <p>
+                                Total bot instances. Defaults to 1.
+                            </p>
                         </div>
                     </div>
-
 
                     <div class="divider divider-md"></div>
                     <div class="form-group row">

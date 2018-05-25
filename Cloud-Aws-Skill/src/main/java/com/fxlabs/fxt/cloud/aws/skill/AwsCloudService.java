@@ -39,7 +39,7 @@ public class AwsCloudService implements CloudService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Micro.toString();
-    private static final String AWS_PKEY = "fx-pk";
+    private static final String AWS_PKEY = "fx-kp";
     private static final String FXLABS_AWS_DEFAULT_IMAGE = "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*";
 
     private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg";

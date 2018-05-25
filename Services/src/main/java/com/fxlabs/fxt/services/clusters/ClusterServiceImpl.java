@@ -161,6 +161,10 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         dto.setKey(queue);
 
+        if (dto.getMin() == null) {
+            dto.setMin(1);
+        }
+
         com.fxlabs.fxt.dao.entity.clusters.Cluster cluster = this.clusterRepository.saveAndFlush(converter.convertToEntity(dto));
         this.clusterESRepository.save(cluster);
 

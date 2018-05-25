@@ -17,6 +17,7 @@ export class AccountNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   entry: Account = new Account();
+  cloudShow: boolean = true;
   cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
   //accountTypes = [ 'VERSION_CONTROL', 'ISSUE_TRACKER', 'CLOUD', 'NOTIFICATION'];
   accountTypes = [
@@ -59,6 +60,11 @@ export class AccountNewComponent implements OnInit {
       this.handler.error(error);
     });
   }
+
+  toggleCloud() {
+    this.cloudShow = !this.cloudShow;
+  }
+
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 
 }
