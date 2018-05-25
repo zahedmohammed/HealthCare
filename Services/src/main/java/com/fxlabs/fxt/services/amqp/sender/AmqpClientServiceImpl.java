@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.amqp.sender;
 
 import com.fxlabs.fxt.dto.cloud.CloudTask;
+import com.fxlabs.fxt.dto.cloud.PingTask;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTask;
@@ -9,6 +10,7 @@ import com.fxlabs.fxt.dto.task.EmailTask;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +21,8 @@ public class AmqpClientServiceImpl implements AmqpClientService {
 
     private AmqpTemplate template;
     private String exchange;
+
+    final private static ParameterizedTypeReference<String> PARAMETERIZED_STRING_REFERENCE = new ParameterizedTypeReference<String>() { };
 
 
     @Autowired
@@ -51,6 +55,12 @@ public class AmqpClientServiceImpl implements AmqpClientService {
     @Override
     public void sendTask(CloudTask task, String region) {
         this.template.convertAndSend(exchange, region, task);
+    }
+
+    @Override
+    public String sendTask(PingTask task, String region) {
+        Object obj = this.template.convertSendAndReceive(exchange, region, task);
+        return (String) obj;
     }
 
     @Override

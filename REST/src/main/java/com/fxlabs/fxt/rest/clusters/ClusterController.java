@@ -72,5 +72,12 @@ public class ClusterController {
         return clusterService.delete(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/{id}/ping", method = RequestMethod.GET)
+    public Response<String> ping(@PathVariable("id") String id) {
+
+        return clusterService.pingExecBot(id, SecurityUtil.getOrgId());
+    }
+
 
 }

@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
 import com.fxlabs.fxt.cloud.skill.amqp.Sender;
+import com.fxlabs.fxt.dto.cloud.PingTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class CloudDelegate {
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         }
+    }
+
+    public String ping(PingTask pingTask) {
+        logger.info("PingTask received...");
+        return "Ok!";
     }
 
 

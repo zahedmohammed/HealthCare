@@ -37,7 +37,9 @@ export class RegionsService {
     return this.http.delete(this.serviceUrl + "/" + obj['id']);
   }
 
-
+  ping(obj: Region) {
+    return this.http.get(this.serviceUrl + "/" + obj['id'] + "/ping");
+  }
 
 }
 

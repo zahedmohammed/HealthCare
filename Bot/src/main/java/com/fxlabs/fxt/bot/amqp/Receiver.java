@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.bot.amqp;
 
 import com.fxlabs.fxt.bot.processor.RestProcessor;
+import com.fxlabs.fxt.dto.cloud.PingTask;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,11 @@ public class Receiver {
     public void receiveMessage(BotTask task) {
         logger.info("Task id [{}] name [{}]", task.getId(), task.getSuiteName());
         restProcessor.process(task);
+    }
+
+    public String receiveMessage(PingTask pingTask) {
+        logger.info("PingTask received...");
+        return "Status: Ok!";
     }
 
 }

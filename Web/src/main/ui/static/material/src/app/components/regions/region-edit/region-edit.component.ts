@@ -83,6 +83,20 @@ export class RegionEditComponent implements OnInit {
     });
   }
 
+  ping() {
+    this.handler.activateLoader();
+    this.regionsService.ping(this.entry).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      alert(results['data']);
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
   getRegions(){
     if (this.entry.account.cloudType === 'GCP'){
         this.regions = this.GCP_REGIONS;

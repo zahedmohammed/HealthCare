@@ -4,9 +4,6 @@ import com.fxlabs.fxt.converters.clusters.ClusterConverter;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
 import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
-import com.fxlabs.fxt.dao.entity.users.OrgRole;
-import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
-import com.fxlabs.fxt.dao.entity.users.OrgUsers;
 import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.repository.es.ClusterESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
@@ -16,6 +13,7 @@ import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
+import com.fxlabs.fxt.dto.cloud.PingTask;
 import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.clusters.Cluster;
@@ -35,7 +33,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -192,21 +189,6 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             throw new FxException("Invalid Cluster");
         }
 
-
-        if (dto.getOrg() == null) {
-            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
-            if (CollectionUtils.isEmpty(set)) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
-            }
-
-            OrgUsers orgUsers = null;
-            orgUsers = set.iterator().next();
-            NameDto org = new NameDto();
-            org.setId(orgUsers.getOrg().getId());
-            dto.setOrg(org);
-
-        }
-
         // Add Task
         com.fxlabs.fxt.dao.entity.skills.SubscriptionTask task = new com.fxlabs.fxt.dao.entity.skills.SubscriptionTask();
         // task.setSubscription(converter.convertToEntity(response.getData()));
@@ -310,13 +292,6 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<Cluster> deleteExecBot(Cluster dto, String user) {
 
-        // TODO check user is owner or org_admin
-        // Response<SkillSubscription> response = findById(id, user);
-        // SkillSubscription dto = response.getData();
-        if (!org.apache.commons.lang3.StringUtils.equals(dto.getCreatedBy(), user)) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [DELETE] access to the resource.")));
-        }
-
         dto.setStatus(ClusterStatus.DELETING);
 
         // Add Task
@@ -359,6 +334,35 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         amqpClientService.sendTask(cloudTask, key);
 
         return new Response<Cluster>();
+    }
+
+    @Override
+    public Response<String> pingExecBot(String id, String o) {
+
+        PingTask task = new PingTask();
+
+        task.setId(task.getId());
+
+        Response<Cluster> clusterResponse = findById(id, o);
+
+        if (clusterResponse.isErrors()) {
+            return new Response<>().withMessages(clusterResponse.getMessages()).withErrors(true);
+        }
+
+        String key = clusterResponse.getData().getKey();
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(key)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
+        }
+
+        //send task to queue
+        String response = amqpClientService.sendTask(task, key);
+
+        if (StringUtils.isEmpty(response)) {
+            response = "Not reachable!";
+        }
+
+        return new Response<>(response);
     }
 
     private String getExecutionBotManualScript(String key) {

@@ -30,4 +30,6 @@ public interface ClusterService extends GenericService<Cluster, String> {
     Response<Long> countBotRegions(String user);
 
     Response<Cluster> deleteExecBot(Cluster dto, String user);
+
+    Response<String> pingExecBot(String id, String o);
 }
