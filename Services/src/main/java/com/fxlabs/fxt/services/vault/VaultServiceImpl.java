@@ -69,7 +69,7 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
         }
         // duplicate key
         Optional<Vault> optionalVault = repository.findByKeyAndOrgId(dto.getKey(), o);
-        if (!optionalVault.isPresent()) {
+        if (optionalVault.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Key with the name exists."));
         }
 
