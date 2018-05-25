@@ -82,7 +82,7 @@ public class TestSuiteResponseServiceImpl extends GenericServiceImpl<TestSuiteRe
                     .field(FIELD);
 
             SearchQuery searchQuery = new NativeSearchQueryBuilder()
-                    .withIndices("fxtestsuiteresponse").withTypes("testsuiteresponse")
+                    .withIndices("fx-testsuite-responses").withTypes("testsuiteresponse")
                     .withQuery(matchQuery("runId", runId).operator(Operator.AND))
                     .withSearchType(SearchType.DEFAULT)
                     .addAggregation(aggregation)
