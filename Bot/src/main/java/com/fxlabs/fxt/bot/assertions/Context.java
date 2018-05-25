@@ -277,7 +277,9 @@ public class Context implements Serializable {
                 //this.log(this.suitename, String.format("Result [%s]", result));
             }
         }
-        this.localResult.set(result);
+        if (!StringUtils.equalsIgnoreCase(this.localResult.get(), "fail")) {
+            this.localResult.set(result);
+        }
     }
 
     public String get(String key) {
