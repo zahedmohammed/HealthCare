@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @author Mohammed Luqman Shareef
  * @since 3/20/2018
@@ -36,6 +38,8 @@ public class Account extends BaseDto<String> {
     private String prop1;
     private String prop2;
     private String prop3;
+
+    private List<String> allowedRegions;
 
 
 }

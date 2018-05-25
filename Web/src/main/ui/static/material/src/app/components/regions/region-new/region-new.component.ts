@@ -54,7 +54,11 @@ export class RegionNewComponent implements OnInit {
         this.regions = this.GCP_REGIONS;
     } else
     if (this.entry.account.accountType === 'AWS'){
-        this.regions = this.AWS_REGIONS;
+        if(this.entry.account.allowedRegions.length > 0){
+            this.regions = this.entry.account.allowedRegions;
+        } else {
+            this.regions = this.AWS_REGIONS;
+        }
     } else
     if (this.entry.account.accountType === 'AZURE'){
         this.regions = this.AZURE_REGIONS;

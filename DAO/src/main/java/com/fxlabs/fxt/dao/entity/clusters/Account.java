@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Mohammed Luqman Shareef
@@ -44,6 +45,9 @@ public class Account extends BaseEntity {
     private String prop1;
     private String prop2;
     private String prop3;
+
+    @ElementCollection
+    private List<String> allowedRegions;
 
     @PrePersist
     @PreUpdate

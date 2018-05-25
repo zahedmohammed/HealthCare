@@ -13,6 +13,7 @@ export class Region {
     manual: boolean = false;
     public manualScript: string;
 
+
 }
 
 export class Account {
@@ -22,6 +23,7 @@ export class Account {
     public accessKey: string;
     public secretKey: string;
     public accountType: string;
+    public allowedRegions:string[]
 }
 
 export class Dto {

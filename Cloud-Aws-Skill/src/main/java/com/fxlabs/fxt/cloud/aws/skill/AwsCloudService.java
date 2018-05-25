@@ -162,8 +162,6 @@ public class AwsCloudService implements CloudService {
             StringBuilder sb = new StringBuilder();
 
             boolean firstIterationFlag = true ;
-            List<String> instanceIds = new ArrayList<String>();
-            String tag = getInstanceTag(opts);
 
             for (Instance instance :run_response.getReservation().getInstances()){
                 if (firstIterationFlag) {
@@ -173,22 +171,24 @@ public class AwsCloudService implements CloudService {
                 }
                 sb.append(instance.getInstanceId());
 
-                if (!StringUtils.isEmpty(tag)) {
-                    instanceIds.add(instance.getInstanceId());
-                }
             }
+            logger.info("Created instances with id's  [{}] in region [{}]", sb.toString(), region);
 
-            CreateTagsRequest createTagsRequest = new CreateTagsRequest();
-            createTagsRequest.withResources(instanceIds) //
-                    .withTags(new Tag("Name", tag));
-            awsService.createTags(createTagsRequest);
+            String tag = getInstanceTag(opts);
+            if (!StringUtils.isEmpty(tag)) {
+                logger.info("Tagging instances with Name  [{}] in region [{}]", tag, region);
+                CreateTagsRequest createTagsRequest = new CreateTagsRequest();
+                createTagsRequest.withResources(sb.toString().split(",")) //
+                        .withTags(new Tag("Name", tag));
+                awsService.createTags(createTagsRequest);
+            }
            // String instance_id = run_response.getReservation().getInstances().get(0).getInstanceId();
 
 
             response.setSuccess(true);
             response.setResponseId(sb.toString());
             response.setLogs(taskLogger.get().toString());
-            logger.info("Created instances with id's  [{}] in region [{}]", sb.toString(), region);
+
             return response;
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);

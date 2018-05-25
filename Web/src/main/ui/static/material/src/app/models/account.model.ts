@@ -10,6 +10,7 @@ export class Account {
     prop1: string;
     prop2: string;
     prop3: string;
+    allowedRegions:string[]
 
 }
 
