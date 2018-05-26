@@ -15,7 +15,7 @@ public interface ProjectService extends GenericService<Project, String> {
 
     Response<List<Project>> findProjects(String owner, Pageable pageable);
 
-    Response<Long> countProjects(String owner);
+    Response<Long> countProjects(String org);
 
     Response<Project> findByName(String name, String owner);
 

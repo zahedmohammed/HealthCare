@@ -2,11 +2,12 @@ package com.fxlabs.fxt.services.processors.send;
 
 import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.project.Project;
-import com.fxlabs.fxt.dao.entity.users.ProjectRole;
-import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
 import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.entity.users.UsersPassword;
-import com.fxlabs.fxt.dao.repository.jpa.*;
+import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
+import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
+import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
+import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -16,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -45,9 +44,6 @@ public class GaaSTaskRequestProcessor {
 
     @Autowired
     private UsersPasswordRepository usersPasswordRepository;
-
-    @Autowired
-    private ProjectUsersRepository projectUsersRepository;
 
     @Value("${fx.gaas.queue.routingkey}")
     private String gaaSQueue;
@@ -86,13 +82,8 @@ public class GaaSTaskRequestProcessor {
             }
             task.setVcLastCommit(project.getLastCommit());
 
-            // Send Project-Users-Owner creds
-            List<ProjectUsers> projectUsersList = projectUsersRepository.findByProjectIdAndRoleAndInactive(project.getId(), ProjectRole.OWNER, false);
-            if (CollectionUtils.isEmpty(projectUsersList)) {
-                logger.warn("Ignoring Git sync for project with ID [{}] with name [{}] because of no valid owner.", project.getId(), project.getName());
-                return;
-            }
-            String ownerEmail = projectUsersList.get(0).getUsers().getEmail();
+
+            String ownerEmail = null;//projectUsersList.get(0).getUsers().getEmail();
             Optional<UsersPassword> usersPasswordOptional = usersPasswordRepository.findByUsersEmailAndActive(ownerEmail, true);
             if (!usersPasswordOptional.isPresent()) {
                 logger.warn("Ignoring Git sync for project with ID [{}] with name [{}] because of no valid owner is active.", project.getId(), project.getName());

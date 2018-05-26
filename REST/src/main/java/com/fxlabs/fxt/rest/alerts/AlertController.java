@@ -33,7 +33,7 @@ public class AlertController {
     @RequestMapping(method = RequestMethod.GET)
     public Response<List<Alert>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                          @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return service.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return service.findAll(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
@@ -41,19 +41,19 @@ public class AlertController {
     public Response<List<Alert>> findByProjectId(@PathVariable("id") String refId,
                                                  @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                  @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return service.findRefId(refId, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return service.findRefId(refId, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Alert> findById(@PathVariable("id") String id) {
-        return service.findById(id, SecurityUtil.getCurrentAuditor());
+        return service.findById(id, SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<Alert>> create(@Valid @RequestBody List<Alert> dtos) {
-        return service.save(dtos, SecurityUtil.getCurrentAuditor());
+        return service.save(dtos, SecurityUtil.getOrgId());
     }
 
     /*@Secured(ROLE_USER)
@@ -68,7 +68,7 @@ public class AlertController {
         return service.save(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Alert> delete(@PathVariable("id") String id) {
         return service.delete(id, SecurityUtil.getCurrentAuditor());

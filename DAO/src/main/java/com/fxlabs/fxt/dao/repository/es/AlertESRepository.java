@@ -1,8 +1,8 @@
 package com.fxlabs.fxt.dao.repository.es;
 
 import com.fxlabs.fxt.dao.entity.alerts.Alert;
-import com.fxlabs.fxt.dao.entity.alerts.AlertType;
 import com.fxlabs.fxt.dao.entity.alerts.AlertStatus;
+import com.fxlabs.fxt.dao.entity.alerts.AlertType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
@@ -16,11 +16,11 @@ import java.util.stream.Stream;
  */
 public interface AlertESRepository extends ElasticsearchRepository<Alert, String> {
 
-    public List<Alert> findByRefIdAndUsersIn(String refId, String user, Pageable pageable);
+    public List<Alert> findByRefIdAndOrgId(String refId, String org, Pageable pageable);
 
-    public Optional<Alert> findByIdAndUsersIn(String refId, String user);
+    public Optional<Alert> findByIdAndOrgId(String refId, String org);
 
     public Stream<Alert> findByTypeAndStatus(AlertType type, AlertStatus status);
 
-    public Page<Alert> findByUsersIn(String user, Pageable pageable);
+    public Page<Alert> findByOrgId(String org, Pageable pageable);
 }

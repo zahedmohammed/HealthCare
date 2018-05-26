@@ -55,7 +55,7 @@ public class DashboardController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-projects", method = RequestMethod.GET)
     public Response<Long> countProjects() {
-        return projectService.countProjects(SecurityUtil.getCurrentAuditor());
+        return projectService.countProjects(SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

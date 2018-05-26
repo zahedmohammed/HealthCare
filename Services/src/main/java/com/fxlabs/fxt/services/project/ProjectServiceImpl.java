@@ -1,9 +1,6 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.ProjectConverter;
-import com.fxlabs.fxt.dao.entity.users.ProjectRole;
-import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
-import com.fxlabs.fxt.dao.entity.users.Users;
 import com.fxlabs.fxt.dao.repository.es.ProjectImportsESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
@@ -38,7 +35,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     //private TextEncryptor encryptor;
     private OrgRepository orgRepository;
     private UsersRepository usersRepository;
-    private ProjectUsersRepository projectUsersRepository;
     private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
     private ProjectImportsRepository projectImportsRepository;
     private ProjectImportsESRepository projectImportsESRepository;
@@ -49,7 +45,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               OrgUsersRepository orgUsersRepository,
             /*TextEncryptor encryptor,*/ OrgRepository orgRepository, UsersRepository usersRepository,
-                              ProjectUsersRepository projectUsersRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
+                              GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                               ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository) {
         super(repository, converter);
         this.projectRepository = repository;
@@ -58,7 +54,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         //this.encryptor = encryptor;
         this.orgRepository = orgRepository;
         this.usersRepository = usersRepository;
-        this.projectUsersRepository = projectUsersRepository;
         this.gaaSTaskRequestProcessor = gaaSTaskRequestProcessor;
         this.projectImportsRepository = projectImportsRepository;
         this.projectImportsESRepository = projectImportsESRepository;
@@ -142,8 +137,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return new Response(converter.convertToDto(optionalProject.get()));
     }
 
-    public Response<Long> countProjects(String owner) {
-        Long count = projectUsersRepository.countByUsersIdAndInactive(owner, false);
+    public Response<Long> countProjects(String org) {
+        Long count = projectRepository.countByOrgIdAndInactive(org, false);
         return new Response<>(count);
     }
 
@@ -203,14 +198,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             if (projectResponse.isErrors()) {
                 return projectResponse;
             }
-
-            ProjectUsers projectUsers = new ProjectUsers();
-            projectUsers.setProject(converter.convertToEntity(projectResponse.getData()));
-            Optional<Users> users = usersRepository.findById(owner);
-            projectUsers.setUsers(users.get());
-            projectUsers.setRole(ProjectRole.OWNER);
-            // save to db/es
-            this.projectUsersRepository.saveAndFlush(projectUsers);
 
             // Create GaaS Task
             if (request.getAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {

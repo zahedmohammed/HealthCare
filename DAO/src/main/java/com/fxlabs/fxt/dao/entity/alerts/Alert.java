@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.entity.alerts;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
+import com.fxlabs.fxt.dao.entity.users.Org;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,7 +44,7 @@ public class Alert extends BaseEntity {
     private String refName;
     private String subject;
     @Lob
-    @Type(type="org.hibernate.type.TextType")
+    @Type(type = "org.hibernate.type.TextType")
     private String message;
     @Temporal(TemporalType.TIMESTAMP)
     private Date readDate;
@@ -52,6 +53,10 @@ public class Alert extends BaseEntity {
 
     @ElementCollection
     private List<String> users = new ArrayList<>();
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "org_id")
+    private Org org;
 
 
 }

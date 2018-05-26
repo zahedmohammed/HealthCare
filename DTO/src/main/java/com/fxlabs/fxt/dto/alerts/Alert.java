@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dto.alerts;
 
 import com.fxlabs.fxt.dto.base.BaseDto;
+import com.fxlabs.fxt.dto.base.NameDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,6 +40,8 @@ public class Alert extends BaseDto<String> {
     private Date healedDate;
 
     private List<String> users = new ArrayList<>();
+
+    private NameDto org;
 
 
 }

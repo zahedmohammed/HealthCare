@@ -1,11 +1,13 @@
 package com.fxlabs.fxt.services.processors.receiver;
 
+import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.users.ProjectRole;
-import com.fxlabs.fxt.dao.entity.users.ProjectUsers;
-import com.fxlabs.fxt.dao.repository.jpa.ProjectUsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dto.alerts.*;
+import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.services.alerts.AlertService;
+import com.fxlabs.fxt.services.project.ProjectService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -27,10 +30,10 @@ public class GitTaskResponseProcessor {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private ProjectUsersRepository projectUsersRepository;
+    private AlertService alertService;
 
     @Autowired
-    private AlertService alertService;
+    private ProjectRepository projectRepository;
 
     public void process(VCTaskResponse task) {
         try {
@@ -59,13 +62,14 @@ public class GitTaskResponseProcessor {
             List<String> users = new ArrayList<>();
             alert.setUsers(users);
 
-            // find project-owners
-            List<ProjectUsers> projectUsersList = projectUsersRepository.findByProjectIdAndRoleAndInactive(task.getProjectId(), ProjectRole.OWNER, false);
-            if (!CollectionUtils.isEmpty(projectUsersList)) {
-                projectUsersList.stream().forEach(pu -> {
-                    users.add(pu.getUsers().getId());
-                    alert.setRefName(pu.getProject().getName());
-                });
+            Optional<Project> optionalProject = projectRepository.findById(task.getProjectId());
+
+            if (optionalProject.isPresent()) {
+                Project project = optionalProject.get();
+                NameDto o = new NameDto();
+                o.setId(project.getOrg().getId());
+                alert.setOrg(o);
+                alert.setRefName(project.getName());
             }
 
             alertService.save(alert);

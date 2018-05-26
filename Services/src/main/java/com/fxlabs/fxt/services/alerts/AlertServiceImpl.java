@@ -6,7 +6,6 @@ import com.fxlabs.fxt.dao.repository.jpa.AlertRepository;
 import com.fxlabs.fxt.dto.alerts.Alert;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
-import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,23 +45,25 @@ public class AlertServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.enti
     }
 
     @Override
-    public Response<List<Alert>> findRefId(String refId, String user, Pageable pageable) {
-        List<com.fxlabs.fxt.dao.entity.alerts.Alert> alertList = alertESRepository.findByRefIdAndUsersIn(refId, user, pageable);
+    public Response<List<Alert>> findRefId(String refId, String org, Pageable pageable) {
+        List<com.fxlabs.fxt.dao.entity.alerts.Alert> alertList = alertESRepository.findByRefIdAndOrgId(refId, org, pageable);
         return new Response<List<Alert>>(converter.convertToDtos(alertList));
     }
 
     @Override
-    public Response<List<Alert>> findAll(String user, Pageable pageable) {
-        Page<com.fxlabs.fxt.dao.entity.alerts.Alert> page = alertESRepository.findByUsersIn(user, pageable);
+    public Response<Alert> findById(String id, String org) {
+        Optional<com.fxlabs.fxt.dao.entity.alerts.Alert> optionalAlert = alertESRepository.findByIdAndOrgId(id, org);
+        return new Response<Alert>(converter.convertToDto(optionalAlert.get()));
+    }
+
+    @Override
+    public Response<List<Alert>> findAll(String org, Pageable pageable) {
+        Page<com.fxlabs.fxt.dao.entity.alerts.Alert> page = alertESRepository.findByOrgId(org, pageable);
         return new Response<List<Alert>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
     public void isUserEntitled(String id, String user) {
-        // TODO
-        Optional<com.fxlabs.fxt.dao.entity.alerts.Alert> optional = alertESRepository.findByIdAndUsersIn(id, user);
-        if (!optional.isPresent()) {
-            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
-        }
+        //TODO check user part of the org.
     }
 }

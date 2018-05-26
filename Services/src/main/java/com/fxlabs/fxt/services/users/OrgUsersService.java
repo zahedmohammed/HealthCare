@@ -2,7 +2,6 @@ package com.fxlabs.fxt.services.users;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.users.OrgUsers;
-import com.fxlabs.fxt.dto.users.ProjectUsers;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
