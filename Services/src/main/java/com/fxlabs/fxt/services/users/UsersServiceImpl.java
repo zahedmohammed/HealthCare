@@ -212,7 +212,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         // UsersPassword
         UsersPassword usersPassword = new UsersPassword();
         usersPassword.setUsers(user);
-        usersPassword.setGrantKey(users.getPassword());
+        //usersPassword.setGrantKey(users.getPassword());
         usersPassword.setPassword(this.passwordEncoder.encode(users.getPassword()));
         usersPassword.setActive(true);
         usersPasswordRepository.save(usersPassword);

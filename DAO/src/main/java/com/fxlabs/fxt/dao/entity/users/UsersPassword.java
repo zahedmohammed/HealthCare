@@ -27,7 +27,7 @@ public class UsersPassword extends BaseEntity {
 
     private String password;
 
-    private String grantKey;
+    //private String grantKey;
 
     private boolean active;
 

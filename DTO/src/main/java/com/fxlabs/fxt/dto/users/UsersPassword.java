@@ -21,7 +21,7 @@ public class UsersPassword extends BaseDto<String> {
 
     private String password;
 
-    private String grantKey;
+    //private String grantKey;
 
     private boolean active;
 

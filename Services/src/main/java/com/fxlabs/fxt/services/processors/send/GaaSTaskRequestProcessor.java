@@ -91,7 +91,7 @@ public class GaaSTaskRequestProcessor {
             }
 
             task.setProjectUser(ownerEmail);
-            task.setProjectGrant(usersPasswordOptional.get().getGrantKey());
+            //task.setProjectGrant(usersPasswordOptional.get().getGrantKey());
             //TODO
 
             Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.base.url");
