@@ -102,8 +102,8 @@ public class GaaSTaskRequestProcessor {
 
             String[] accessKey = accessKeyResponse.getData().split(":");
 
-            task.setProjectUser(accessKey[0] + ":" + accessKey[1]);
-            task.setProjectGrant(accessKey[2]);
+            task.setProjectUser(accessKey[0]);
+            task.setProjectGrant(accessKey[1]);
             //TODO
 
             Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.base.url");

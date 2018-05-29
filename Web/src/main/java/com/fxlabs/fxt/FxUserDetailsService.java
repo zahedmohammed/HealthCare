@@ -68,15 +68,15 @@ public class FxUserDetailsService implements UserDetailsService {
         String email = username;
 
         AccessKey accessKey = null;
-        if (StringUtils.contains(username, "ak://")) {
+      //  if (StringUtils.contains(username, "ak://")) {
             Optional<AccessKey> accessKeyOption = accessKeyRepository.findByAccessKeyAndExpirationAfter(email, new Date());
-            if (!accessKeyOption.isPresent()) {
-                throw new UsernameNotFoundException(email);
+            if (accessKeyOption.isPresent()) {
+                accessKey = accessKeyOption.get();
+                email = accessKeyOption.get().getUsers().getEmail();
             }
 
-            accessKey = accessKeyOption.get();
-            email = accessKeyOption.get().getUsers().getEmail();
-        }
+
+       // }
 
 
         if (!StringUtils.contains(username, "ak://") && StringUtils.contains(username, "//")) {

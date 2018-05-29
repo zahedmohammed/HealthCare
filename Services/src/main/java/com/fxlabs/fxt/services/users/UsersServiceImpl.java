@@ -84,7 +84,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         }
 
         String secretKey = RandomStringUtils.randomAlphabetic(16);
-        String accessKey = "ak://" + RandomStringUtils.randomAlphabetic(16);
+        String accessKey = RandomStringUtils.randomAlphabetic(16);
         // AccessKey
         AccessKey ak = new AccessKey();
         ak.setAccessKey(accessKey);
