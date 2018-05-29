@@ -13,18 +13,19 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public class FxUserPrinciple implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
     private final Users user;
-    private final UsersPassword usersPassword;
+    private final String usersPassword;
     private final Org org;
     private final List<String> privileges;
 
     //
-    public FxUserPrinciple(Users user, UsersPassword usersPassword, Org org, List<String> privileges) {
+    public FxUserPrinciple(Users user, String usersPassword, Org org, List<String> privileges) {
         this.user = user;
         this.usersPassword = usersPassword;
         this.org = org;
@@ -39,7 +40,7 @@ public class FxUserPrinciple implements UserDetails {
 
     @Override
     public String getPassword() {
-        return usersPassword.getPassword();
+        return usersPassword;
     }
 
     @Override

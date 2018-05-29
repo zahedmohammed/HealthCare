@@ -8,9 +8,12 @@ import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.GenPolicy;
+import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
+import com.fxlabs.fxt.services.users.UsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ public class GaaSTaskRequestProcessor {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private UsersService usersService;
 
     @Autowired
     private AmqpClientService amqpClientService;
@@ -83,15 +89,21 @@ public class GaaSTaskRequestProcessor {
             task.setVcLastCommit(project.getLastCommit());
 
 
-            String ownerEmail = null;//projectUsersList.get(0).getUsers().getEmail();
+            Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
+
+            String ownerEmail = usersResponse.getData().getEmail();//projectUsersList.get(0).getUsers().getEmail();
             Optional<UsersPassword> usersPasswordOptional = usersPasswordRepository.findByUsersEmailAndActive(ownerEmail, true);
             if (!usersPasswordOptional.isPresent()) {
                 logger.warn("Ignoring Git sync for project with ID [{}] with name [{}] because of no valid owner is active.", project.getId(), project.getName());
                 return;
             }
 
-            task.setProjectUser(ownerEmail);
-            //task.setProjectGrant(usersPasswordOptional.get().getGrantKey());
+            Response<String> accessKeyResponse = usersService.generate(ownerEmail);
+
+            String[] accessKey = accessKeyResponse.getData().split(":");
+
+            task.setProjectUser(accessKey[0] + ":" + accessKey[1]);
+            task.setProjectGrant(accessKey[2]);
             //TODO
 
             Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.base.url");

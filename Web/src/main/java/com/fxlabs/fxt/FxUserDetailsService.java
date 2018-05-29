@@ -3,9 +3,11 @@ package com.fxlabs.fxt;
 import com.fxlabs.fxt.converters.users.OrgConverter;
 import com.fxlabs.fxt.converters.users.UsersConverter;
 import com.fxlabs.fxt.converters.users.UsersPasswordConverter;
+import com.fxlabs.fxt.dao.entity.users.AccessKey;
 import com.fxlabs.fxt.dao.entity.users.OrgRole;
 import com.fxlabs.fxt.dao.entity.users.OrgUserStatus;
 import com.fxlabs.fxt.dao.entity.users.OrgUsers;
+import com.fxlabs.fxt.dao.repository.jpa.AccessKeyRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
@@ -20,12 +22,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Service
 public class FxUserDetailsService implements UserDetailsService {
@@ -46,6 +51,9 @@ public class FxUserDetailsService implements UserDetailsService {
     private OrgUsersRepository orgUsersRepository;
 
     @Autowired
+    private AccessKeyRepository accessKeyRepository;
+
+    @Autowired
     private OrgConverter orgConverter;
 
     public FxUserDetailsService() {
@@ -58,7 +66,20 @@ public class FxUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) {
         String orgName = null;
         String email = username;
-        if (StringUtils.contains(username, "//")) {
+
+        AccessKey accessKey = null;
+        if (StringUtils.contains(username, "ak://")) {
+            Optional<AccessKey> accessKeyOption = accessKeyRepository.findByAccessKeyAndExpirationAfter(email, new Date());
+            if (!accessKeyOption.isPresent()) {
+                throw new UsernameNotFoundException(email);
+            }
+
+            accessKey = accessKeyOption.get();
+            email = accessKeyOption.get().getUsers().getEmail();
+        }
+
+
+        if (!StringUtils.contains(username, "ak://") && StringUtils.contains(username, "//")) {
             String[] tokens = StringUtils.split(username, "//");
             orgName = tokens[0];
             email = tokens[1];
@@ -95,7 +116,12 @@ public class FxUserDetailsService implements UserDetailsService {
         if (org == null || CollectionUtils.isEmpty(privileges)) {
             throw new UsernameNotFoundException(email);
         }
-        return new FxUserPrinciple(usersConverter.convertToDto(usersOptional.get()), usersPasswordConverter.convertToDto(usersPassword), org, privileges);
+
+        if (accessKey != null) {
+            return new FxUserPrinciple(usersConverter.convertToDto(usersOptional.get()), accessKey.getSecretKey(), org, privileges);
+        }
+
+        return new FxUserPrinciple(usersConverter.convertToDto(usersOptional.get()), usersPassword.getPassword(), org, privileges);
     }
 
     private static List<String> getRole(OrgRole orgRole) {

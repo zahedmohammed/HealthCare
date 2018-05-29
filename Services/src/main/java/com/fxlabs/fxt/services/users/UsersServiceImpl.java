@@ -4,15 +4,14 @@ import com.fxlabs.fxt.converters.users.OrgUsersConverter;
 import com.fxlabs.fxt.converters.users.UsersConverter;
 import com.fxlabs.fxt.converters.users.UsersPasswordConverter;
 import com.fxlabs.fxt.dao.entity.users.*;
-import com.fxlabs.fxt.dao.repository.jpa.OrgRepository;
-import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
-import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
-import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,11 +19,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Service
 @Transactional
@@ -33,13 +34,14 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
     private PasswordEncoder passwordEncoder;
     private OrgRepository orgRepository;
     private OrgUsersRepository orgUsersRepository;
+    private AccessKeyRepository accessKeyRepository;
     private UsersPasswordRepository usersPasswordRepository;
     private UsersPasswordConverter usersPasswordConverter;
     private OrgUsersConverter orgUsersConverter;
     //private TextEncryptor encryptor;
 
     @Autowired
-    public UsersServiceImpl(UsersRepository repository, UsersConverter converter, PasswordEncoder passwordEncoder,
+    public UsersServiceImpl(UsersRepository repository, UsersConverter converter, PasswordEncoder passwordEncoder, AccessKeyRepository accessKeyRepository,
                             OrgRepository orgRepository, OrgUsersRepository orgUsersRepository, UsersPasswordRepository usersPasswordRepository,
                             UsersPasswordConverter usersPasswordConverter, /*TextEncryptor encryptor,*/ OrgUsersConverter orgUsersConverter) {
         super(repository, converter);
@@ -50,6 +52,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         this.usersPasswordConverter = usersPasswordConverter;
         //this.encryptor = encryptor;
         this.orgUsersConverter = orgUsersConverter;
+        this.accessKeyRepository = accessKeyRepository;
     }
 
 
@@ -71,6 +74,28 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
             return new Response<com.fxlabs.fxt.dto.users.Users>(converter.convertToDto(usersOptional.get()));
         }
         return new Response<com.fxlabs.fxt.dto.users.Users>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid id")));
+    }
+
+    public Response<String> generate(String email){
+        Optional<Users> usersOptional = ((UsersRepository) repository).findByEmail(email);
+
+        if (!usersOptional.isPresent()) {
+            return new Response<String>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid id")));
+        }
+
+        String secretKey = RandomStringUtils.randomAlphabetic(16);
+        String accessKey = "ak://" + RandomStringUtils.randomAlphabetic(16);
+        // AccessKey
+        AccessKey ak = new AccessKey();
+        ak.setAccessKey(accessKey);
+        ak.setSecretKey(this.passwordEncoder.encode(secretKey));
+        ak.setUsers(usersOptional.get());
+        ak.setExpiration(DateUtils.addMinutes(new Date(), 10));
+        ak = accessKeyRepository.save(ak);
+
+
+        String response = accessKey + ":" + secretKey;
+        return new Response<String>(response);
     }
 
     @Override
