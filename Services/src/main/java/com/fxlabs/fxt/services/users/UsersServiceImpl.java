@@ -83,7 +83,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
             return new Response<String>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid id")));
         }
 
-        String secretKey = RandomStringUtils.randomAlphabetic(16);
+        String secretKey = RandomStringUtils.randomAlphabetic(32);
         String accessKey = RandomStringUtils.randomAlphabetic(16);
         // AccessKey
         AccessKey ak = new AccessKey();
