@@ -130,10 +130,10 @@ public class StubGenerator {
             if (file.exists()) {
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.WHITE,
-                                String.format("%s [Skipping]", ts.getName())
+                                String.format("%s [Skipped]", org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 100))
                                 , AnsiColor.DEFAULT)
                 );
-                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Exists");
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Skipped");
                 return;
             }
 
@@ -142,8 +142,8 @@ public class StubGenerator {
 
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.WHITE,
-                                String.format("%s [Writing]",
-                                        org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 80))
+                                String.format("%s [Written]",
+                                        org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 100))
                                 , AnsiColor.DEFAULT)
                 );
 
@@ -155,7 +155,7 @@ public class StubGenerator {
                 //System.out.println ("done");
                 CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Written");
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });

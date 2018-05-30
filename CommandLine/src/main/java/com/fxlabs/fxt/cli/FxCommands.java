@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.cli;
 
+import com.fxlabs.fxt.codegen.code.CodegenThreadUtils;
 import com.fxlabs.fxt.codegen.code.StubGenerator;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
@@ -82,6 +83,7 @@ public class FxCommands {
 
         try {
 
+            CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
             stubGenerator.generate(url, dir, key, value);
 
         } catch (Exception e) {

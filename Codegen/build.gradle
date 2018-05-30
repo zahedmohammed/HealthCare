@@ -39,7 +39,7 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
     // https://mvnrepository.com/artifact/io.swagger/swagger-compat-spec-parser
-    compile group: 'io.swagger', name: 'swagger-compat-spec-parser', version: '1.0.34'
+    compile group: 'io.swagger', name: 'swagger-compat-spec-parser', version: '1.0.36'
 
     compile project(":DTO")
     testCompile('org.springframework.boot:spring-boot-starter-test')
