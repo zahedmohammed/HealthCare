@@ -36,7 +36,7 @@ public class XSSInjectionQueryParamGenerator extends AbstractGenerator {
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@XSSSQLInjections | sample:all }}");
+                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@XSSSQLInjections}}");
                         testSuite.setCategory(TestSuiteCategory.Security_XSS);
                         testSuite.setSeverity(TestSuiteSeverity.Critical);
                     }

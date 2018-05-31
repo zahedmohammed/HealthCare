@@ -36,7 +36,7 @@ public class MySQLSQLInjectionQueryParamGenerator extends AbstractGenerator {
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@MySQLSQLInjections | sample:all }}");
+                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@MySQLSQLInjections}}");
                         testSuite.setCategory(TestSuiteCategory.Security_SQL_Injection);
                         testSuite.setSeverity(TestSuiteSeverity.Major);
                     }

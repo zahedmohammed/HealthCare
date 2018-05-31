@@ -36,7 +36,7 @@ public class MongoDBSQLInjectionQueryParamGenerator extends AbstractGenerator {
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@MongoDBSQLInjections | sample:all }}");
+                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@MongoDBSQLInjections}}");
                         testSuite.setCategory(TestSuiteCategory.Security_SQL_Injection);
                         testSuite.setSeverity(TestSuiteSeverity.Major);
                     }

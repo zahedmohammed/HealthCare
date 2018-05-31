@@ -36,7 +36,7 @@ public class GenericSQLInjectionQueryParamGenerator extends AbstractGenerator {
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@GenericSQLInjections | sample:all }}");
+                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@GenericSQLInjections}}");
                         testSuite.setCategory(TestSuiteCategory.Security_SQL_Injection);
                         testSuite.setSeverity(TestSuiteSeverity.Major);
                     }
