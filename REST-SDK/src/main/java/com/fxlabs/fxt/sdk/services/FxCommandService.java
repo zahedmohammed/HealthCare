@@ -863,7 +863,7 @@ public class FxCommandService {
 
 
                 System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
-                        String.format("Test-Suite: %s [Synced]",
+                        String.format("Data-Record: %s [Synced]",
                                 org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100)),
                         AnsiColor.DEFAULT));
                 CredUtils.taskLogger.get().append(BotLogger.LogType.INFO,
@@ -877,10 +877,10 @@ public class FxCommandService {
         });
 
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
-                String.format("\nTotal Suites Loaded: [%s]", totalFiles),
+                String.format("\nTotal Data-Records Loaded: [%s]", totalFiles),
                 AnsiColor.DEFAULT));
-        logger.info("test-suites successfully uploaded...");
-        CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", "test-suites successfully uploaded...");
+        logger.info("Data-Records successfully uploaded...");
+        CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", "Data-Records successfully uploaded...");
     }
 
     private boolean isChecksumPresent(List<ProjectFile> projectFiles, File file, String checksum) {
@@ -1038,8 +1038,8 @@ public class FxCommandService {
                                         "\n URL: %s" +
                                         "\n Status: %s " +
                                         "\n Total Tests: %s " +
-                                        "\n Total Passed: %s " +
-                                        "\n Total Failed: %s " +
+                                        "\n Total Pass: %s " +
+                                        "\n Total Fail: %s " +
                                         "\n Success: %s " +
                                         "\n Time: %s ms" +
                                         "\n Data: %s Bytes",
@@ -1107,12 +1107,12 @@ public class FxCommandService {
         System.out.println(
                 AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                         String.format("%s %s %s %s %s %s",
-                                org.apache.commons.lang3.StringUtils.rightPad("Result", 15),
                                 org.apache.commons.lang3.StringUtils.rightPad("Suite", 100),
-                                org.apache.commons.lang3.StringUtils.rightPad("Total/Passed", 20),
+                                org.apache.commons.lang3.StringUtils.rightPad("Total/Pass", 20),
                                 org.apache.commons.lang3.StringUtils.rightPad("Success (%)", 20),
                                 org.apache.commons.lang3.StringUtils.rightPad("Time (ms)", 20),
-                                org.apache.commons.lang3.StringUtils.rightPad("Data (B)", 20)),
+                                org.apache.commons.lang3.StringUtils.rightPad("Data (B)", 20),
+                                org.apache.commons.lang3.StringUtils.rightPad("Result", 15)),
                         AnsiColor.DEFAULT)
         );
     }
@@ -1131,19 +1131,19 @@ public class FxCommandService {
         }
         per = ((tests - fails) * 100) / tests;
 
-        System.out.println(org.apache.commons.lang3.StringUtils.rightPad("-", 145, "-"));
+        System.out.println(org.apache.commons.lang3.StringUtils.rightPad("-", 195, "-"));
         System.out.println(
                 AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                         String.format("%s %s %s %s %s %s",
-                                org.apache.commons.lang3.StringUtils.rightPad("", 15),
                                 org.apache.commons.lang3.StringUtils.rightPad("", 100),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(tests) + "/" + String.valueOf(fails), 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(per) + "%", 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(time), 20),
-                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(size), 20)),
+                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(size), 20),
+                                org.apache.commons.lang3.StringUtils.rightPad("", 15)),
                         AnsiColor.DEFAULT)
         );
-        System.out.println(org.apache.commons.lang3.StringUtils.rightPad("-", 145, "-"));
+        System.out.println(org.apache.commons.lang3.StringUtils.rightPad("-", 195, "-"));
 
     }
 
@@ -1154,29 +1154,29 @@ public class FxCommandService {
     }
 
     private void printSuite(Suite suite) {
-        String result = suite.getFailed() == 0 ? "Passed" : "Failed";
+        String result = suite.getFailed() == 0 ? "Pass" : "Fail";
         if (suite.getFailed() > 0) {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.RED,
                             String.format("%s %s %s %s %s %s",
-                                    org.apache.commons.lang3.StringUtils.rightPad(result, 15),
                                     org.apache.commons.lang3.StringUtils.rightPad(suite.getSuiteName(), 100),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTime()), 20),
-                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getSize()), 20)),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getSize()), 20),
+                                    org.apache.commons.lang3.StringUtils.rightPad(result, 15)),
                             AnsiColor.DEFAULT)
             );
         } else {
             System.out.println(
                     AnsiOutput.toString(AnsiColor.GREEN,
                             String.format("%s %s %s %s %s %s",
-                                    org.apache.commons.lang3.StringUtils.rightPad(result, 15),
                                     org.apache.commons.lang3.StringUtils.rightPad(suite.getSuiteName(), 100),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTests()) + "/" + String.valueOf(suite.getTests() - suite.getFailed()), 20),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf((long) (((suite.getTests() - suite.getFailed()) * 100) / suite.getTests())), 20),
                                     org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getTime()), 20),
-                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getSize()), 20)),
+                                    org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(suite.getSize()), 20),
+                                    org.apache.commons.lang3.StringUtils.rightPad(result, 15)),
                             AnsiColor.DEFAULT)
             );
         }
