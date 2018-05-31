@@ -81,7 +81,7 @@ public class ValidatorDelegate {
         //context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), "Validating " + assertion);
         //logger.info("tokens [{}]", tokens);
         if (tokens == null || tokens.length != 3) {
-            skipAssertion(context, assertion);
+            skipAssertion(context, assertion, "");
             return;
         }
 
@@ -131,21 +131,21 @@ public class ValidatorDelegate {
                     endsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion, assertionLogs);
                     break;
                 default:
-                    skipAssertion(context, assertion);
+                    skipAssertion(context, assertion, "");
             }
         } catch (RuntimeException re) {
             logger.warn(re.getLocalizedMessage());
-            skipAssertion(context, assertion);
+            skipAssertion(context, assertion, re.getLocalizedMessage());
         }
     }
 
-    protected void skipAssertion(Context context, String assertion) {
+    protected void skipAssertion(Context context, String assertion, String errors) {
         context.setResult("fail");
-        logger.debug("Invalid assertion [{}]", assertion);
+        logger.debug("Invalid assertion [{}] errors [{}]", assertion, errors);
         AssertionLogger logger = null;
         if (context.getLogs() != null) {
             context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(),
-                    String.format("Invalid assertion [%s]. e.g. valid [<Operand1> <Operation> <Operand2>] i.e. @Request.name == @Response.name", assertion));
+                    String.format("Invalid assertion [%s] errors [{}]. e.g. valid [<Operand1> <Operation> <Operand2>] i.e. @Request.name == @Response.name", assertion, errors));
         }
     }
 }
