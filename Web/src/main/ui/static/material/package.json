@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "lint-fix": "npm run tslint \"src/**/*.ts --fix\"",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.config.json",
     "hmr": "ng serve --hmr -e=hmr",
     "build": "ng build",
     "test": "ng test",
