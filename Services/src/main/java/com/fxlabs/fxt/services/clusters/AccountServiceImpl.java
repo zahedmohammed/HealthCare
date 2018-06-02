@@ -121,6 +121,47 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         o.setId(org);
         dto.setOrg(o);
 
+        if (dto == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Account"));
+        }
+
+        if (dto != null && StringUtils.isEmpty(dto.getName())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account name is empty"));
+        }
+
+        if (dto != null && StringUtils.isEmpty(dto.getAccountType())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account Type is empty"));
+        }
+
+        switch (dto.getAccountType()) {
+            case GitHub:
+            case Git:
+            case GitLab:
+            case BitBucket:
+            case Microsoft_TFS_Git:
+            case Microsoft_VSTS_Git:
+            case Jira:
+            case AWS:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Username/Access-Key is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Password/Secret-Key is empty"));
+                }
+                break;
+            case Slack:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Slack Token is empty"));
+                }
+            case Email:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
+                }
+                break;
+        }
+
+
         Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = accountRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
         if (cloudAccountOptional.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Duplicate cloudAccount name"));
@@ -172,6 +213,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
              case BitBucket:
              case Microsoft_TFS_Git:
              case Microsoft_VSTS_Git:
+             case Jira:
                  List<Project> projects = projectRepository.findByAccountIdAndInactive(cloudAccountId, false);
                  if (!CollectionUtils.isEmpty(projects)) {
                      return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Project"));
