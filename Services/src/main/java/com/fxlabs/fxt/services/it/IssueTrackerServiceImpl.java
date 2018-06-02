@@ -82,11 +82,42 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
         o.setId(org);
         dto.setOrg(o);
 
+        if (dto == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Account"));
+        }
+
+        if (StringUtils.isEmpty(dto.getName())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Issue Tracker name is empty"));
+        }
+
+        if (dto.getAccount() == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account is empty"));
+        }
+
+
         return super.save(dto, user);
     }
 
     @Override
     public Response<IssueTracker> addITBot(IssueTracker dto, String o, String user) {
+
+
+        if (dto == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Account"));
+        }
+
+        if (StringUtils.isEmpty(dto.getName())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Issue Tracker name is empty"));
+        }
+
+        if (dto.getAccount() == null || StringUtils.isEmpty(dto.getAccount().getId())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account is empty"));
+        }
+
+        if (StringUtils.isEmpty(dto.getProp1())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Issue Tracker URL is empty"));
+        }
+
 
         NameDto org = new NameDto();
         org.setId(o);

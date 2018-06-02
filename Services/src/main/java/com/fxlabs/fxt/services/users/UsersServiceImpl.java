@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -225,6 +226,10 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
 
         // extract username
         String tokens[] = StringUtils.split(users.getEmail(), "@");
+
+        if (CollectionUtils.isEmpty(roles)) {
+            roles.add(OrgRole.USER.toString());
+        }
 
         // users
         Users user = new Users();
