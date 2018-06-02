@@ -6,17 +6,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface ProjectRepository extends JpaRepository<Project, String> {
 
     Optional<Project> findByNameAndInactive(String name, boolean inactive);
 
     Optional<Project> findByIdAndOrgId(String id, String org);
+
+    List<Project> findByAccountIdAndInactive(String id, boolean inactive);
 
     Page<Project> findByOrgIdAndInactive(String org, boolean inactive, Pageable pageable);
 

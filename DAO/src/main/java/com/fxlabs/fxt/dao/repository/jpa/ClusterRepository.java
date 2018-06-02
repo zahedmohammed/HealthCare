@@ -12,6 +12,7 @@ import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface ClusterRepository extends JpaRepository<Cluster, String> {
 
@@ -22,5 +23,7 @@ public interface ClusterRepository extends JpaRepository<Cluster, String> {
     Page<Cluster> findByVisibilityOrOrgId(ClusterVisibility visibility, String orgId, Pageable pageable);
 
     Long countByVisibility(ClusterVisibility visibility);
+
+    List<Cluster> findByAccountIdAndInactive(String id, boolean inactive);
 
 }

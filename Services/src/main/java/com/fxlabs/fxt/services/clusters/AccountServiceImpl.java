@@ -1,10 +1,13 @@
 package com.fxlabs.fxt.services.clusters;
 
 import com.fxlabs.fxt.converters.clusters.AccountConverter;
+import com.fxlabs.fxt.dao.entity.clusters.Cluster;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
+import com.fxlabs.fxt.dao.entity.it.IssueTracker;
+import com.fxlabs.fxt.dao.entity.notify.Notification;
+import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.repository.es.AccountESRepository;
-import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
-import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
@@ -12,6 +15,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import com.fxlabs.fxt.services.project.ProjectService;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.TopicExchange;
@@ -20,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -42,11 +47,15 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private TopicExchange topicExchange;
     private OrgUsersRepository orgUsersRepository;
     private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
+    private ProjectRepository projectRepository;
+    private ClusterRepository clusterRepository;
+    private NotificationRepository notificationRepository;
+    private IssueTrackerRepository issueTrackerRepository;
 
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, AccountESRepository accountESRepository,
-                              AccountConverter accountConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
-                              OrgUsersRepository orgUsersRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountESRepository accountESRepository, IssueTrackerRepository issueTrackerRepository,
+                              AccountConverter accountConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange, NotificationRepository notificationRepository,
+                              OrgUsersRepository orgUsersRepository, ProjectRepository projectRepository, ClusterRepository clusterRepository) {
 
         super(accountRepository, accountConverter);
 
@@ -56,6 +65,10 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.amqpAdmin = amqpAdmin;
         this.topicExchange = topicExchange;
         this.orgUsersRepository = orgUsersRepository;
+        this.projectRepository = projectRepository;
+        this.clusterRepository = clusterRepository;
+        this.notificationRepository = notificationRepository;
+        this.issueTrackerRepository = issueTrackerRepository;
 
     }
 
@@ -151,6 +164,36 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         if (!org.apache.commons.lang3.StringUtils.equals(cloudAccountOptional.get().getOrg().getId(), orgId)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Unauthorized access."));
         }
+
+         switch (cloudAccountOptional.get().getAccountType()) {
+             case  GitHub:
+             case  Git:
+             case  GitLab:
+             case BitBucket:
+             case Microsoft_TFS_Git:
+             case Microsoft_VSTS_Git:
+                 List<Project> projects = projectRepository.findByAccountIdAndInactive(cloudAccountId, false);
+                 if (!CollectionUtils.isEmpty(projects)) {
+                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Project"));
+                 }
+                 List<IssueTracker> issueTrackers = issueTrackerRepository.findByAccountIdAndInactive(cloudAccountId, false);
+                 if (!CollectionUtils.isEmpty(issueTrackers)) {
+                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Issue Tracker"));
+                 }
+             case AWS:
+                 List<Cluster> clusters = clusterRepository.findByAccountIdAndInactive(cloudAccountId, false);
+                 if (!CollectionUtils.isEmpty(clusters)) {
+                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Bot"));
+                 }
+             case Slack:
+             case Email:
+                 List<Notification> notifications = notificationRepository.findByAccountIdAndInactive(cloudAccountId, false);
+                 if (!CollectionUtils.isEmpty(notifications)) {
+                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Notification"));
+                 }
+
+        }
+
 
         return super.delete(cloudAccountId, user);
     }

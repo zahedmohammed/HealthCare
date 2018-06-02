@@ -6,11 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
  * @author Mohammed Luqman Shareef
  * @since 4/3/2018
+ * @author Mohammed Shoukath Ali
  */
 public interface NotificationRepository extends JpaRepository<Notification, String> {
 
@@ -25,5 +27,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Stri
     Long countByVisibility(NotificationVisibility visibility);
 
     Long countByCreatedByAndInactive(String user, boolean inactive);
+
+    List<Notification> findByAccountIdAndInactive(String id, boolean inactive);
 
 }
