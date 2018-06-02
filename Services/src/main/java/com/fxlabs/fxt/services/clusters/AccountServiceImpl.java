@@ -181,6 +181,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                      return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Issue Tracker"));
                  }
              case AWS:
+             case Self_Hosted:
                  List<Cluster> clusters = clusterRepository.findByAccountIdAndInactive(cloudAccountId, false);
                  if (!CollectionUtils.isEmpty(clusters)) {
                      return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Bot"));
