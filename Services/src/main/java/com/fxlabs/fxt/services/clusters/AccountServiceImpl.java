@@ -232,8 +232,11 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             if (response.isPresent() && response.get() != null) {
                 dto.setSecretKey(response.get().getSecretKey());
             }
-
+        } else {
+            // encrypt pass
+            dto.setSecretKey(encryptor.encrypt(dto.getSecretKey()));
         }
+
         return super.save(dto, user);
     }
 
