@@ -47,14 +47,11 @@ public class UsersController {
         return usersService.enterpriseSignUp(users);
     }
 
-
-
     @Secured({ROLE_USER})
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public Response<Users> login() {
         return usersService.findById(SecurityUtil.getCurrentAuditor());
     }
-
 
     @Secured({ROLE_ADMIN, ROLE_ENTERPRISE_ADMIN})
     @RequestMapping(method = RequestMethod.GET)
