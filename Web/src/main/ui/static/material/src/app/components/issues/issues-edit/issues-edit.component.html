@@ -23,7 +23,7 @@
             </label>
             <div class="col-md-4">
               <mat-form-field>
-                <mat-select placeholder="Account Type" disabled [(ngModel)]="entry.account.id" name="account" id="account">
+                <mat-select placeholder="Account" disabled [(ngModel)]="entry.account.id" name="account" id="account">
                   <mat-option *ngFor="let account of accounts" [value]="account.id" (click)="setAccount(account);">
                     {{account.name}} ({{account.accountType}})
                   </mat-option>

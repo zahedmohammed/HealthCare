@@ -25,7 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -125,11 +125,11 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Account"));
         }
 
-        if (dto != null && StringUtils.isEmpty(dto.getName())) {
+        if (StringUtils.isEmpty(dto.getName())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account name is empty"));
         }
 
-        if (dto != null && StringUtils.isEmpty(dto.getAccountType())) {
+        if (dto.getAccountType() == null || StringUtils.isEmpty(dto.getAccountType().toString())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account Type is empty"));
         }
 
@@ -174,6 +174,46 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public Response<Account> update(Account dto, String orgId, String user) {
+
+        if (dto == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Account"));
+        }
+
+        if (StringUtils.isEmpty(dto.getName())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account name is empty"));
+        }
+
+        if (dto.getAccountType() == null || StringUtils.isEmpty(dto.getAccountType().toString())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account Type is empty"));
+        }
+
+        switch (dto.getAccountType()) {
+            case GitHub:
+            case Git:
+            case GitLab:
+            case BitBucket:
+            case Microsoft_TFS_Git:
+            case Microsoft_VSTS_Git:
+            case Jira:
+            case AWS:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Username/Access-Key is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Password/Secret-Key is empty"));
+                }
+                break;
+            case Slack:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Slack Token is empty"));
+                }
+                break;
+            case Email:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
+                }
+        }
         // dto.org == orgId
         if (!org.apache.commons.lang3.StringUtils.equals(dto.getOrg().getId(), orgId)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Unauthorized access."));

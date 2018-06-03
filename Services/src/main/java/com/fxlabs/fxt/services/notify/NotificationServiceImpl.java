@@ -19,7 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -91,14 +91,34 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
 
     @Override
     public Response<Notification> create(Notification dto, String org, String user) {
-        // check duplicate name
+
+        if (dto == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Account"));
+        }
+
+        if (StringUtils.isEmpty(dto.getName())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account name is empty"));
+        }
+
+        if (dto.getAccount() == null || StringUtils.isEmpty(dto.getAccount().getId())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account is empty"));
+        }
+
+        if (StringUtils.isEmpty(dto.getChannel())) {
+            switch (dto.getAccount().getAccountType()) {
+                case Slack:
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Channel is empty"));
+                case Email:
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "To is empty"));
+            }
+        }
 
         NameDto o = new NameDto();
         o.setId(org);
         dto.setOrg(o);
-
-        Optional<com.fxlabs.fxt.dao.entity.notify.Notification> NotificationAccountOptional = notificationAccountRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
-        if (NotificationAccountOptional.isPresent()) {
+        // check duplicate name
+        Optional<com.fxlabs.fxt.dao.entity.notify.Notification> notificationAccountOptional = notificationAccountRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
+        if (notificationAccountOptional.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Duplicate NotificationAccount name"));
         }
 
@@ -109,6 +129,27 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
 
     @Override
     public Response<Notification> update(Notification dto, String org, String user) {
+
+        if (dto == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Account"));
+        }
+
+        if (dto != null && StringUtils.isEmpty(dto.getName())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account name is empty"));
+        }
+
+        if (dto.getAccount() == null || StringUtils.isEmpty(dto.getAccount().getId())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account is empty"));
+        }
+
+        if (StringUtils.isEmpty(dto.getChannel())) {
+            switch (dto.getAccount().getAccountType()) {
+                case Slack:
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Channel is empty"));
+                case Email:
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "To is empty"));
+            }
+        }
         // validate user is the org admin
         Optional<com.fxlabs.fxt.dao.entity.notify.Notification> notificationOptional = notificationAccountRepository.findByIdAndOrgId(dto.getId(), org);
         if (!notificationOptional.isPresent()) {
