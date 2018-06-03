@@ -178,8 +178,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         if (dto.getAccount() != null && dto.getAccount().getAccountType().equals(AccountType.Self_Hosted)) {
 
-            String iam = systemSettingService.findByKey(SystemSettingService.FX_IAM).getData().getValue();
-            String tag = systemSettingService.findByKey(SystemSettingService.BOT_TAG).getData().getValue();
+            String iam = systemSettingService.findByKey(SystemSettingService.FX_IAM);
+            String tag = systemSettingService.findByKey(SystemSettingService.BOT_TAG);
 
             String script = getExecutionBotManualScript(dto.getKey(), iam, tag);
             cluster.setManualScript(script);

@@ -18,5 +18,5 @@ public interface SystemSettingService extends GenericService<SystemSetting, Stri
 
     public Response<SystemSetting> save(SystemSetting dto);
 
-    public Response<SystemSetting> findByKey(String key);
+    public String findByKey(String key);
 }

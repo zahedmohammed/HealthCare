@@ -37,7 +37,8 @@ public class Application {
 
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(encryptor.decrypt(queueName));
+        String queue = encryptor.decrypt(queueName);
+        container.setQueueNames(queue);
         container.setConcurrentConsumers(concurrentConsumers);
         container.setMaxConcurrentConsumers(maxConcurrentConsumers);
         container.setDefaultRequeueRejected(false);
@@ -77,7 +78,8 @@ public class Application {
             factory.setUsername(config.determineUsername());
         }
         if (config.determinePassword() != null) {
-            factory.setPassword(encryptor.decrypt(config.determinePassword()));
+            String pass = encryptor.decrypt(config.determinePassword());
+            factory.setPassword(pass);
         }
         if (config.determineVirtualHost() != null) {
             factory.setVirtualHost(config.determineVirtualHost());

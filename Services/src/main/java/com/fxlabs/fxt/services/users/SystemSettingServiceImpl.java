@@ -70,9 +70,17 @@ public class SystemSettingServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.
         return save(dto, null);
     }
 
-    public Response<SystemSetting> findByKey(String key) {
+    public String findByKey(String key) {
         Optional<com.fxlabs.fxt.dao.entity.users.SystemSetting> systemSettingOptional = systemSettingRepository.findByKey(key);
-        return new Response<>(converter.convertToDto(systemSettingOptional.get()));
+        String val = systemSettingOptional.get().getValue();
+
+        String value = val;
+        if (StringUtils.startsWith(val, ENCRYPTED_PREFIX)) {
+            value = encryptor.decrypt(StringUtils.removeStart(val, ENCRYPTED_PREFIX));
+        }
+
+        return value;
+
     }
 
     @Override

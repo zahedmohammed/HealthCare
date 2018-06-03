@@ -22,6 +22,7 @@ import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.clusters.ClusterService;
 import com.fxlabs.fxt.services.util.DataResolver;
 import org.apache.commons.lang3.BooleanUtils;
+import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -55,11 +56,13 @@ public class RunTaskRequestProcessor {
     private ClusterService clusterService;
     private DataResolver dataResolver;
     private AuthConverter authConverter;
+    private TextEncryptor encryptor;
 
     public RunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter,
                                    TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository,
-                                   ClusterService clusterService, DataResolver dataResolver, AuthConverter authConverter) {
+                                   ClusterService clusterService, DataResolver dataResolver, AuthConverter authConverter,
+                                   TextEncryptor encryptor) {
         this.botClientService = botClientService;
         this.testSuiteRepository = testSuiteRepository;
         this.runRepository = runRepository;
@@ -69,6 +72,7 @@ public class RunTaskRequestProcessor {
         this.clusterService = clusterService;
         this.dataResolver = dataResolver;
         this.authConverter = authConverter;
+        this.encryptor = encryptor;
     }
 
     public void process() {
@@ -406,7 +410,8 @@ public class RunTaskRequestProcessor {
             return null;
         }
 
-        return clusterResponse.getData().getKey();
+        String key = clusterResponse.getData().getKey();
+        return encryptor.decrypt(key);
     }
 
     private boolean isValidSuiteCount(Stream<TestSuite> list, Run run) {
