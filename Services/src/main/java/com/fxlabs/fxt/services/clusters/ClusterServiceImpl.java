@@ -178,10 +178,13 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         if (dto.getAccount() != null && dto.getAccount().getAccountType().equals(AccountType.Self_Hosted)) {
 
+            String host = systemSettingService.findByKey(SystemSettingService.FX_HOST);
+            String port = systemSettingService.findByKey(SystemSettingService.FX_PORT);
+            String ssl = systemSettingService.findByKey(SystemSettingService.FX_SSL);
             String iam = systemSettingService.findByKey(SystemSettingService.FX_IAM);
             String tag = systemSettingService.findByKey(SystemSettingService.BOT_TAG);
 
-            String script = getExecutionBotManualScript(dto.getKey(), iam, tag);
+            String script = getExecutionBotManualScript(host, port, ssl, iam, encryptedQueue, tag);
             cluster.setManualScript(script);
             cluster.setRegion(AccountType.Self_Hosted.toString());
 
@@ -379,13 +382,16 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return new Response<>(response);
     }
 
-    private String getExecutionBotManualScript(String key, String iam, String tag) {
+    private String getExecutionBotManualScript(String host, String port, String ssl, String iam, String key, String tag) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("docker").append(SPACE).append("run")
                 .append(SPACE).append("-d")
-                .append(SPACE).append("-e").append(SPACE).append("FX_KEY").append("=").append(key)
+                .append(SPACE).append("-e").append(SPACE).append("FX_HOST").append("=").append(host)
+                .append(SPACE).append("-e").append(SPACE).append("FX_PORT").append("=").append(port)
+                .append(SPACE).append("-e").append(SPACE).append("FX_SSL").append("=").append(ssl)
                 .append(SPACE).append("-e").append(SPACE).append("FX_IAM").append("=").append(iam)
+                .append(SPACE).append("-e").append(SPACE).append("FX_KEY").append("=").append(key)
                 .append(SPACE).append("fxlabs/bot:").append(tag);
 
         return sb.toString();
@@ -407,54 +413,26 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         String fxHost_ = null;
 
-        Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.host");
-        if (systemSettingOptional.isPresent()) {
-            fxHost_ = systemSettingOptional.get().getValue();
-        } else {
-            fxHost_ = fxHost;
-        }
-
-        String port_ = null;
-
-        Optional<SystemSetting> portSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.port");
-        if (portSettingOptional.isPresent()) {
-            port_ = systemSettingOptional.get().getValue();
-        } else {
-            port_ = fxPort;
-        }
-
-        String fxUserName_ = null;
-
-        Optional<SystemSetting> userNameSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.username");
-        if (userNameSettingOptional.isPresent()) {
-            fxUserName_ = systemSettingOptional.get().getValue();
-        } else {
-            fxUserName_ = fxUserName;
-        }
-
-        String password_ = null;
-
-        Optional<SystemSetting> passwordSettingOptional = this.systemSettingRepository.findByKey("fx.amqp.password");
-        if (passwordSettingOptional.isPresent()) {
-            password_ = systemSettingOptional.get().getValue();
-        } else {
-            password_ = fxPassword;
-        }
+        String host = systemSettingService.findByKey(SystemSettingService.FX_HOST);
+        String port = systemSettingService.findByKey(SystemSettingService.FX_PORT);
+        String ssl = systemSettingService.findByKey(SystemSettingService.FX_SSL);
+        String iam = systemSettingService.findByKey(SystemSettingService.FX_IAM);
+        String tag = systemSettingService.findByKey(SystemSettingService.BOT_TAG);
 
 
         StringBuilder sb1 = new StringBuilder();
         sb1.append(" sudo bash fx_bot_install_script.sh").append(SPACE)
-                .append(fxHost_).append(SPACE)
-                .append(port_).append(SPACE)
-                .append(fxUserName_).append(SPACE)
-                .append(password_).append(SPACE)
+                .append(host).append(SPACE)
+                .append(port).append(SPACE)
+                .append(ssl).append(SPACE)
+                .append(iam).append(SPACE)
                 .append(key).append(SPACE)
-                .append(fxDefaultResponseKey);
+                .append(tag);
         lines.add(sb1.toString());
 
         String configScript = join(lines, "\n");
 
-        logger.info("Bot configuaration script [{}]", configScript.toString());
+        logger.info("Bot configuration script [{}]", configScript.toString());
         String str = new String(Base64.encodeBase64(configScript.getBytes()));
 
         return str;

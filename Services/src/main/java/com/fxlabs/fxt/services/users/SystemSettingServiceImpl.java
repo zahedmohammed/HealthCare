@@ -76,7 +76,7 @@ public class SystemSettingServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.
 
         String value = val;
         if (StringUtils.startsWith(val, ENCRYPTED_PREFIX)) {
-            value = encryptor.decrypt(StringUtils.removeStart(val, ENCRYPTED_PREFIX));
+            value = StringUtils.removeStart(val, ENCRYPTED_PREFIX);
         }
 
         return value;

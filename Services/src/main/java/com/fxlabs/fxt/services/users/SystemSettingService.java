@@ -11,6 +11,9 @@ import java.util.List;
  */
 public interface SystemSettingService extends GenericService<SystemSetting, String> {
 
+    public String FX_HOST = "FX_HOST";
+    public String FX_PORT = "FX_PORT";
+    public String FX_SSL = "FX_SSL";
     public String FX_IAM = "FX_IAM";
     public String BOT_TAG = "BOT_TAG";
 
