@@ -367,7 +367,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         String key = clusterResponse.getData().getKey();
-
+        key = encryptor.decrypt(key);
+        
         if (org.apache.commons.lang3.StringUtils.isEmpty(key)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
         }
