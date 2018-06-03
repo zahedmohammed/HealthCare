@@ -34,6 +34,10 @@ dependencies {
     compile project(":DTO")
     compile project(":Converter")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    // https://mvnrepository.com/artifact/org.jasypt/jasypt
+    compile group: 'org.jasypt', name: 'jasypt', version: '1.9.2'
+
 }
 repositories {
     maven {

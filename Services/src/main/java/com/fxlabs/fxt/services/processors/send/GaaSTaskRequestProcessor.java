@@ -14,6 +14,8 @@ import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.users.UsersService;
+import org.apache.commons.lang3.StringUtils;
+import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,8 @@ public class GaaSTaskRequestProcessor {
     @Autowired
     private AmqpClientService amqpClientService;
 
-    //@Autowired
-    //private TextEncryptor encryptor;
+    @Autowired
+    private TextEncryptor encryptor;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -84,7 +86,9 @@ public class GaaSTaskRequestProcessor {
                 Optional<Account> accountOptional = accountRepository.findById(project.getAccount().getId());
                 Account account = accountOptional.isPresent() ? accountOptional.get() : null;
                 task.setVcUsername(account.getAccessKey());
-                task.setVcPassword(account.getSecretKey());
+                if (StringUtils.isNotEmpty(account.getSecretKey())) {
+                    task.setVcPassword(encryptor.decrypt(account.getSecretKey()));
+                }
             }
             task.setVcLastCommit(project.getLastCommit());
 

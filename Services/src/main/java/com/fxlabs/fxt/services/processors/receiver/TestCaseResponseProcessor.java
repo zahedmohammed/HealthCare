@@ -13,6 +13,7 @@ import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.it.IssueTrackerService;
 import com.fxlabs.fxt.services.skills.SkillService;
 import org.apache.commons.collections.IteratorUtils;
+import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class TestCaseResponseProcessor {
     private String itaasQueue;
     @Value("${fx.itaas.jira.queue.routingkey}")
     private String itaasJiraQueue;
+    private TextEncryptor encryptor;
 
 
     public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
@@ -57,7 +59,7 @@ public class TestCaseResponseProcessor {
     public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
                                      TestCaseResponseRepository testCaseResponseRepository, AmqpClientService amqpClientService,
                                      JobRepository jobRepository, IssueTrackerService skillSubscriptionService, SkillService skillService,
-                                     AccountRepository accountRepository) {
+                                     AccountRepository accountRepository, TextEncryptor encryptor) {
         this.testCaseResponseESRepository = testCaseResponseESRepository;
         this.testCaseResponseRepository = testCaseResponseRepository;
         this.skillService = skillService;
@@ -66,6 +68,7 @@ public class TestCaseResponseProcessor {
         this.converter = converter;
         this.amqpClientService = amqpClientService;
         this.accountRepository = accountRepository;
+        this.encryptor = encryptor;
     }
 
     public void process(List<TestCaseResponse> testCaseResponses) {
@@ -153,7 +156,9 @@ public class TestCaseResponseProcessor {
 
         Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(issueTrackerResponse.getData().getAccount().getId());
         com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.isPresent() ? accountOptional.get() : null;
-        tc.setPassword(account.getSecretKey());
+        if (!StringUtils.isEmpty(account.getSecretKey())) {
+            tc.setPassword(encryptor.decrypt(account.getSecretKey()));
+        }
 
         //TODO get key from different source
 

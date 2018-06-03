@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.services.amqp;
 
 import com.fxlabs.fxt.services.amqp.reciever.Receiver;
+import org.jasypt.util.text.BasicTextEncryptor;
+import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
@@ -478,6 +480,14 @@ public class AmqpConfig {
     @Bean
     public Binding notificationSlackQueueBinding(@Value("${fx.notification.slack.queue.routingkey}") String routingKey, @Qualifier("notificationSlackQueue") Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
+
+    @Bean
+    public TextEncryptor encrypt() {
+        BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        encryptor.setPasswordCharArray("fx-secret".toCharArray());
+        return encryptor;
     }
 
 

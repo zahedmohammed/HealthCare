@@ -13,6 +13,7 @@ import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.notify.NotificationService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.apache.commons.lang3.time.DateUtils;
+import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,9 @@ public class MarkTimeoutTaskProcessor {
 
     @Value("${fx.notification.slack.queue.routingkey}")
     private String slackNotificationQueue;
+
+    @Autowired
+    private TextEncryptor encryptor;
 
     /**
      * Find Tasks with state 'PROCESSING'
@@ -130,7 +134,12 @@ public class MarkTimeoutTaskProcessor {
                         }
                         Optional<Account> accountOptional = accountRepository.findById(notificationResponse.getData().getAccount().getId());
                         Account account = accountOptional.isPresent() ? accountOptional.get() : null;
-                        opts.put("TOKEN", account.getSecretKey());
+
+                        String token = account.getSecretKey();
+                        if (!StringUtils.isEmpty(token)) {
+                            token = encryptor.decrypt(token);
+                        }
+                        opts.put("TOKEN", token);
 
 
                         opts.put("MESSAGE", formatSlackMessage(run));

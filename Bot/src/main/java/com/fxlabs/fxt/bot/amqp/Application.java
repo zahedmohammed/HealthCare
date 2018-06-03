@@ -1,12 +1,13 @@
 package com.fxlabs.fxt.bot.amqp;
 
+import org.jasypt.util.text.BasicTextEncryptor;
+import org.jasypt.util.text.TextEncryptor;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.RabbitConnectionFactoryBean;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,12 +31,13 @@ public class Application {
                                              MessageListenerAdapter listenerAdapter,
                                              @Value("${fx.default.queue}") String queueName,
                                              @Value("${concurrentConsumers}") int concurrentConsumers,
-                                             @Value("${maxConcurrentConsumers}") int maxConcurrentConsumers) {
+                                             @Value("${maxConcurrentConsumers}") int maxConcurrentConsumers,
+                                             TextEncryptor encryptor) {
 
 
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(queueName);
+        container.setQueueNames(encryptor.decrypt(queueName));
         container.setConcurrentConsumers(concurrentConsumers);
         container.setMaxConcurrentConsumers(maxConcurrentConsumers);
         container.setDefaultRequeueRejected(false);
@@ -56,7 +58,14 @@ public class Application {
     }
 
     @Bean
-    public CachingConnectionFactory rabbitConnectionFactory(RabbitProperties config)
+    public TextEncryptor encrypt() {
+        BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        encryptor.setPasswordCharArray("fx-secret".toCharArray());
+        return encryptor;
+    }
+
+    @Bean
+    public CachingConnectionFactory rabbitConnectionFactory(RabbitProperties config, TextEncryptor encryptor)
             throws Exception {
 
         RabbitConnectionFactoryBean factory = new RabbitConnectionFactoryBean();
@@ -68,7 +77,7 @@ public class Application {
             factory.setUsername(config.determineUsername());
         }
         if (config.determinePassword() != null) {
-            factory.setPassword(config.determinePassword());
+            factory.setPassword(encryptor.decrypt(config.determinePassword()));
         }
         if (config.determineVirtualHost() != null) {
             factory.setVirtualHost(config.determineVirtualHost());
@@ -115,7 +124,6 @@ public class Application {
         }
         return connectionFactory;
     }
-
 
 
 }

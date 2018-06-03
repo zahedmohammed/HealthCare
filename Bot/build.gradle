@@ -48,6 +48,9 @@ dependencies {
 
     compile('org.springframework.security.oauth:spring-security-oauth2:2.3.0.RELEASE')
 
+    // https://mvnrepository.com/artifact/org.jasypt/jasypt
+    compile group: 'org.jasypt', name: 'jasypt', version: '1.9.2'
+
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.3.0'
@@ -59,7 +62,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
-
 
     compile project(":DTO")
     testCompile('org.springframework.boot:spring-boot-starter-test')

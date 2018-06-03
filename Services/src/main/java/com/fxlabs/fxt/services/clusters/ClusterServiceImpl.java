@@ -21,8 +21,10 @@ import com.fxlabs.fxt.dto.clusters.ClusterStatus;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jasypt.util.text.TextEncryptor;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
@@ -61,6 +63,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private String fxHost;
     private SystemSettingRepository systemSettingRepository;
     private static String SPACE = " ";
+    private TextEncryptor encryptor;
+    private SystemSettingService systemSettingService;
 
     @Autowired
     public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository, AccountRepository accountRepository,
@@ -70,7 +74,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                               AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository,
                               @Value("${spring.rabbitmq.username}") String fxUserName, @Value("${spring.rabbitmq.password}") String fxPassword,
                               @Value("${spring.rabbitmq.port}") String fxPort, @Value("${spring.rabbitmq.host}") String fxHost,
-                              SystemSettingRepository systemSettingRepository) {
+                              SystemSettingRepository systemSettingRepository, TextEncryptor encryptor, SystemSettingService systemSettingService) {
 
         super(clusterRepository, clusterConverter);
 
@@ -90,6 +94,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.fxHost = fxHost;
         this.amqpClientService = amqpClientService;
         this.systemSettingRepository = systemSettingRepository;
+        this.encryptor = encryptor;
+        this.systemSettingService = systemSettingService;
 
     }
 
@@ -159,7 +165,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         amqpAdmin.declareQueue(q);
         amqpAdmin.declareBinding(binding);
 
-        dto.setKey(queue);
+        String encryptedQueue = this.encryptor.encrypt(queue);
+        dto.setKey(encryptedQueue);
 
         if (dto.getMin() == null) {
             dto.setMin(1);
@@ -171,7 +178,10 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         if (dto.getAccount() != null && dto.getAccount().getAccountType().equals(AccountType.Self_Hosted)) {
 
-            String script = getExecutionBotManualScript(queue);
+            String iam = systemSettingService.findByKey(SystemSettingService.FX_IAM).getData().getValue();
+            String tag = systemSettingService.findByKey(SystemSettingService.BOT_TAG).getData().getValue();
+
+            String script = getExecutionBotManualScript(dto.getKey(), iam, tag);
             cluster.setManualScript(script);
             cluster.setRegion(AccountType.Self_Hosted.toString());
 
@@ -369,13 +379,13 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return new Response<>(response);
     }
 
-    private String getExecutionBotManualScript(String key) {
+    private String getExecutionBotManualScript(String key, String iam, String tag) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("docker").append(SPACE).append("run")
-                .append(SPACE).append("-e")
-                .append(SPACE).append("FX_KEY").append("=").append(key)
-                .append(SPACE).append("fxlabs/bot");
+                .append(SPACE).append("-e").append(SPACE).append("FX_KEY").append("=").append(key)
+                .append(SPACE).append("-e").append(SPACE).append("FX_IAM").append("=").append(iam)
+                .append(SPACE).append("fxlabs/bot:").append(tag);
 
         return sb.toString();
     }
@@ -482,7 +492,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private String getSecretKey(String id) {
         Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(id);
         com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.isPresent() ? accountOptional.get() : null;
-        return account.getSecretKey();
+        return encryptor.decrypt(account.getSecretKey());
 
     }
 
