@@ -189,9 +189,8 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     }
 
     @Override
-    public Response<Long> count(String user) {
-        // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
-        Long count = this.repository.countByCreatedByAndInactive(user, false);
+    public Response<Long> count(String orgId) {
+        Long count = this.repository.countByOrgIdAndInactive(orgId, false);
         return new Response<>(count);
     }
 

@@ -188,9 +188,9 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     }
 
     @Override
-    public Response<Long> count(String user) {
+    public Response<Long> count(String orgId) {
         // TODO - find by skill-type and visibility -> PUBLIC or OWNER or ORG_PUBLIC
-        Long count = this.notificationAccountRepository.countByCreatedByAndInactive(user, false);
+        Long count = this.notificationAccountRepository.countByOrgIdAndInactive(orgId, false);
         return new Response<>(count);
     }
 }

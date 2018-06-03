@@ -22,7 +22,7 @@ public interface ClusterRepository extends JpaRepository<Cluster, String> {
 
     Page<Cluster> findByVisibilityOrOrgId(ClusterVisibility visibility, String orgId, Pageable pageable);
 
-    Long countByVisibility(ClusterVisibility visibility);
+    Long countByOrgId(String orgId);
 
     List<Cluster> findByAccountIdAndInactive(String id, boolean inactive);
 

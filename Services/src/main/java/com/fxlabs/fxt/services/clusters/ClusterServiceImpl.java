@@ -289,9 +289,9 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
 
     @Override
-    public Response<Long> countBotRegions(String user) {
+    public Response<Long> countBotRegions(String orgId) {
         // Find all public
-        Long count = this.clusterRepository.countByVisibility(ClusterVisibility.PUBLIC);
+        Long count = this.clusterRepository.countByOrgId(orgId);
         return new Response<>(count);
     }
 
@@ -368,7 +368,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         String key = clusterResponse.getData().getKey();
         key = encryptor.decrypt(key);
-        
+
         if (org.apache.commons.lang3.StringUtils.isEmpty(key)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
         }

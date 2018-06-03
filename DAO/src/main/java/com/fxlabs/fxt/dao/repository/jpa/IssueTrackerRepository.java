@@ -26,7 +26,7 @@ public interface IssueTrackerRepository extends JpaRepository<IssueTracker, Stri
 
    // Page<SkillSubscription> findBySkillSkillTypeAndInactiveAndCreatedBy(SkillType skillType, boolean inactive, String user, Pageable pageable);
 
-    Long countByCreatedByAndInactive(String user, boolean inactive);
+    Long countByOrgIdAndInactive(String user, boolean inactive);
 
     List<IssueTracker> findByAccountIdAndInactive(String id, boolean inactive);
 

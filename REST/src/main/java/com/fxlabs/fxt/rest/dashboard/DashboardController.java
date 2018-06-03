@@ -3,13 +3,13 @@ package com.fxlabs.fxt.rest.dashboard;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.clusters.ClusterService;
+import com.fxlabs.fxt.services.it.IssueTrackerService;
 import com.fxlabs.fxt.services.notify.NotificationService;
 import com.fxlabs.fxt.services.project.EnvironmentService;
 import com.fxlabs.fxt.services.project.JobService;
 import com.fxlabs.fxt.services.project.ProjectService;
 import com.fxlabs.fxt.services.project.TestSuiteService;
 import com.fxlabs.fxt.services.run.RunService;
-import com.fxlabs.fxt.services.it.IssueTrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
@@ -23,7 +23,6 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
 /**
  * @author Intesar Shannan Mohammed
  * @author Mohammed Shoukath Ali
- *
  */
 @RestController
 @RequestMapping(DASHBOARD_BASE)
@@ -33,7 +32,7 @@ public class DashboardController {
     private RunService runService;
     private ProjectService projectService;
     private EnvironmentService environmentService;
-    private IssueTrackerService skillSubscriptionService;
+    private IssueTrackerService issueTrackerService;
     private ClusterService clusterService;
     private TestSuiteService testSuiteService;
     private NotificationService notificationAccountService;
@@ -46,7 +45,7 @@ public class DashboardController {
         this.runService = runService;
         this.projectService = projectService;
         this.environmentService = environmentService;
-        this.skillSubscriptionService = skillSubscriptionService;
+        this.issueTrackerService = skillSubscriptionService;
         this.clusterService = clusterService;
         this.testSuiteService = testSuiteService;
         this.notificationAccountService = notificationAccountService;
@@ -61,28 +60,28 @@ public class DashboardController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-envs", method = RequestMethod.GET)
     public Response<Long> countEnvs(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return environmentService.count(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-jobs", method = RequestMethod.GET)
     public Response<Long> countJobs(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return jobService.count(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-suites", method = RequestMethod.GET)
     public Response<Long> countSuites(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                      @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return testSuiteService.count(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-runs", method = RequestMethod.GET)
     public Response<Long> countRuns(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return runService.count(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
@@ -96,7 +95,7 @@ public class DashboardController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-time", method = RequestMethod.GET)
     public Response<Long> countTime(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return runService.countTime(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
@@ -110,21 +109,20 @@ public class DashboardController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-ibots", method = RequestMethod.GET)
     public Response<Long> countiBots() {
-        return skillSubscriptionService.count(SecurityUtil.getCurrentAuditor());
+        return issueTrackerService.count(SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-channels", method = RequestMethod.GET)
     public Response<Long> countChannels() {
-        return notificationAccountService.count(SecurityUtil.getCurrentAuditor());
+        return notificationAccountService.count(SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-ebots", method = RequestMethod.GET)
     public Response<Long> counteBots() {
-        return clusterService.countBotRegions(SecurityUtil.getCurrentAuditor());
+        return clusterService.countBotRegions(SecurityUtil.getOrgId());
     }
-
 
 
 }
