@@ -1,0 +1,65 @@
+<section class="chapter page-terms">
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Marketplace</h1>
+        </div>
+        <p class="text-muted">Discover, Publish & Reuse - Expert exchange, DataSets, AI Skills, & Professional Services.</p>
+    </section>
+
+    <article class="article padding-lg-v article-dark article-bordered">
+        <div class="container-fluid with-maxwidth chapter">
+
+            <article class="article">
+                <div class="">
+                    <mat-form-field>
+                        <mat-select placeholder="Category" name="Category">
+                            <mat-option *ngFor="let category of types" [value]="category">
+                                {{category}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-input-container>
+                        <input #box (keyup.enter)="search(box.value)" name="search"
+                               matInput placeholder="search...">
+                    </mat-input-container>
+                </div>
+                <br/>
+                <div>
+                    <div class="row row-eq-height">
+                        <div class="col-xl-3 col-lg-6" *ngFor="let offer of offers">
+                            <section [ngClass]="{'pricing-table': true,
+                                                    'pricing-table-info': offer.type === 'AI_SKILLS',
+                                                    'pricing-table-success': offer.type === 'DATASET',
+                                                    'pricing-table-primary': offer.type === 'CONSULTING_SERVICES'}">
+                                <header> <h2>{{offer.name}}</h2> </header>
+                                <div class="pricing-plan-details">
+                                    <p>{{offer.description | slice:0:100}}</p>
+                                    <p class="pricing-lead"></p>
+                                    <ul>
+                                        <li>Org: {{offer.project.org.name}}</li>
+                                        <li>Project: {{offer.project.name}}</li>
+                                        <li>Type: {{offer.type}}</li>
+                                        <li>Usage: @{{offer.project.org.name}}/{{offer.project.name}}/{{offer.name}}</li>
+                                    </ul>
+                                </div>
+                                <footer><button mat-raised-button class="btn-w-lg">Subscribe</button></footer>
+                            </section>
+                        </div>
+
+                    </div>
+                </div>
+
+                <mat-paginator [hidden]="length <= pageSize"
+                               [pageSize]="pageSize"
+                               hidePageSize="true"
+                               (page)="change($event)"
+                               [length]="length"
+                >
+                </mat-paginator>
+
+            </article>
+        </div>
+    </article>
+
+</section>

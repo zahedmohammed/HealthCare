@@ -83,11 +83,11 @@ dependencyManagement {
 }
 
 
-def webappDir = "$projectDir/src/main/ui/static/material"
+def webappDir = "$projectDir/src/main/ui/material"
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/ui", "src/main/ux", "src/main/resources"]
+            srcDirs = ["src/main/ui/dist", "src/main/resources"]
         }
     }
 }

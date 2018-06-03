@@ -1,0 +1,103 @@
+<section class="container-fluid with-maxwidth chapter">
+
+    <article class="article">
+
+        <h2 class="article-title">New Notification-Channel</h2>
+        <div class="box box-default">
+            <div class="box-body padding-xl">
+
+                <form role="form" #heroForm="ngForm">
+                    <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.name" name="name" id="name"
+                                       matInput placeholder="Name">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+
+                    <!--<div class="form-group row" [hidden]="!entry.name">-->
+                    <!--<label class="col-md-1 control-label">-->
+                    <!--</label>-->
+                    <!--<div class="col-md-4">-->
+                    <!--<mat-form-field>-->
+                    <!--<mat-select placeholder="Notification Type" required [(ngModel)]="entry.type" name="type">-->
+                    <!--<mat-option *ngFor="let type of types" [value]="type" (click)="getAccountyByType(type);">-->
+                    <!--{{type}}-->
+                    <!--</mat-option>-->
+                    <!--</mat-select>-->
+                    <!--</mat-form-field>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-7">-->
+                    <!--<div class="callout1 text-muted callout-info1">-->
+                    <!--<p>Receive test execution results across Email, Slack and other developer collaboration platforms.</p>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label">
+                        </label>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select placeholder="Account" required [(ngModel)]="entry.account.id"
+                                            name="account">
+                                    <mat-option *ngFor="let account of accounts" [value]="account.id"
+                                                (click)="setAccount(account);">
+                                        {{account.name}} ({{account.accountType}})
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="callout1 text-muted callout-info1">
+                            <p>
+                                <a target="_blank"
+                                   href="#/app/accounts/new">Add Slack account with access to your channel.<i
+                                        class="material-icons"
+                                        style="font-size: 18px;">open_in_new</i></a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" [hidden]="entry.account.accountType !== 'Slack'">
+                        <label for="channel" class="col-md-1 control-label">
+                        </label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.channel" name="channel" id="channel"
+                                       matInput type="text" placeholder="Channel">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" [hidden]="entry.account.accountType !== 'Email'">
+                        <label for="channel" class="col-md-1 control-label">
+                        </label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.channel" name="channel" id="email"
+                                       matInput type="text" placeholder="To:">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <button mat-raised-button color="primary" (click)="create();"
+                                    class="btn-w-md no-margin-left">Add
+                            </button>
+                            <button mat-button type="button" color="primary" class="btn-w-md"
+                                    [routerLink]="['/app/notification-accounts']">Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </article>
+</section>

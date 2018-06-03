@@ -1,0 +1,150 @@
+<section class="container-fluid with-maxwidth chapter">
+
+    <article class="article">
+
+        <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a> /
+            {{project.name}}</h2>
+        <div class="box box-default">
+            <div class="box-body padding-xl">
+
+                <form role="form" #heroForm="ngForm">
+
+                    <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="project.name" name="name" id="name"
+                                       matInput placeholder="Project name">
+                            </mat-input-container>
+
+                        </div>
+                    </div>
+
+                    <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                    <div [hidden]="project.account.accountType === 'Local' || !project.account.accountType">
+                        <div class="form-group row">
+                            <label for="name" class="col-md-1 control-label"></label>
+                            <div class="col-md-4">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="project.url" name="url" id="repo"
+                                           matInput placeholder="Repository URL">
+                                </mat-input-container>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>e.g. https://github.com/username/MyApp.git. Follow the below steps to create a
+                                        new
+                                        repo.
+                                        <br/>Step 1: Fork the <a target="_blank" [href]="AppConfig.fxSample">Sample
+                                            repository <i class="material-icons"
+                                                          style="font-size: 18px;">open_in_new</i></a>
+                                        <br/>Step 2: Update environments and jobs section in Fxfile.yaml.
+                                        <a target="_blank" [href]="AppConfig.fxSample"> Learn more <i
+                                                class="material-icons"
+                                                style="font-size: 18px;">open_in_new</i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-1 control-label">
+                            </label>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <mat-select placeholder="Repository Credentials" required
+                                                [(ngModel)]="project.account.id" name="type">
+                                        <mat-option *ngFor="let account of accounts" [value]="account.id">
+                                            {{account.name}} ({{account.accountType}})
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>
+                                        Register your git credentials in the <a href="#/app/accounts/new">Accounts
+                                        page</a>.
+                                        <br/>
+                                        Repository credentials are required if the repo is private or Auto-Code is
+                                        enabled.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                    <!-- Auto-Code -->
+
+                    <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-form-field>
+                                <mat-select placeholder="Auto-Code" required [(ngModel)]="project.genPolicy"
+                                            name="Auto-Code">
+                                    <mat-option *ngFor="let gen of genPolicies" [value]="gen">
+                                        {{gen}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p>Auto-Code (automatic test coverage for your APIs).
+                                    <br/>Continuously generates 5-point test coverage (Quality, Security, DOS,
+                                    Injections, Data-Leak, Log-forging etc) for all project endpoints.
+                                    <br/>Requires repository credentials for code check-in.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" [hidden]="project.genPolicy === 'None' || !project.genPolicy">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
+                                       matInput placeholder="OpenAPI Spec URL">
+                            </mat-input-container>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p> e.g. https://ip/v2/api-docs. Auto-Code requires OpenAPISpec of your application to
+                                    create test/security coverage. How-to generate OpenAPISpec for your Java, .Net
+                                    and other applications.
+                                    <a target="_blank" href="https://swagger.io/open-source-integrations/">
+                                        Learn more <i class="material-icons"
+                                                      style="font-size: 18px;"
+                                    >open_in_new</i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                    <div class="form-group row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <button mat-raised-button color="primary" (click)="update();"
+                                    class="btn-w-md no-margin-left">Save
+                            </button>
+
+                            <button mat-button color="warn" class="btn-w-md" (click)="delete();">Delete</button>
+
+                            <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects']">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </article>
+</section>

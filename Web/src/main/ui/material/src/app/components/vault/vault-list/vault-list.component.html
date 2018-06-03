@@ -1,0 +1,56 @@
+<section class="chapter page-terms">
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Vault</h1>
+        </div>
+        <p class="text-muted">Securely store & inject sensitive data at real-time in test-suites.</p>
+    </section>
+
+    <article class="article padding-lg-v1 article-dark article-bordered">
+        <div class="container-fluid with-maxwidth chapter">
+
+            <article class="article">
+                <h2 class="article-title1">
+                    <button mat-button color="primary" class="btn-w-md pull-left"
+                            [routerLink]="['/app/vault/new']">
+                        <mat-icon class="material-icons">add</mat-icon>
+                        NEW SECRET
+                    </button>
+                    <div class="divider divider-sm"></div>
+                </h2>
+                <br/>
+                <div class="box box-default table-box mdl-shadow--2dp">
+                    <table class="mdl-data-table">
+                        <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Key</th>
+                            <th class="mdl-data-table__cell--non-numeric">Create-date</th>
+                            <th class="mdl-data-table__cell--non-numeric"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let key of keys">
+                            <td class="mdl-data-table__cell--non-numeric bold">{{key.org.name}}/{{key.key}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{key.createdDate | date:'shortDate'}}</td>
+                            <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
+                                                                             [routerLink]="['/app/vault', key.id]">Edit</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <mat-paginator [hidden]="length <= pageSize"
+                               [pageSize]="pageSize"
+                               hidePageSize="true"
+                               (page)="change($event)"
+                               [length]="length"
+                >
+                </mat-paginator>
+
+            </article>
+        </div>
+    </article>
+
+</section>

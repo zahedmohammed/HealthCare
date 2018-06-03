@@ -1,0 +1,65 @@
+<section class="chapter page-terms">
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Projects</h1>
+        </div>
+        <p class="text-muted">Continuous test automation for REST APIs. Build world-class and highly secure products faster.</p>
+    </section>
+
+    <article class="article padding-lg-v1 article-dark article-bordered">
+        <div class="container-fluid with-maxwidth chapter">
+
+            <article class="article">
+                <!--<h2 class="article-title">Continuous Test Automation for REST APIs. Ship fast, high-quality, & secure releases.</h2>-->
+                <h2 class="article-title1">
+                    <button mat-button color="primary" class="btn-w-md pull-left" [routerLink]="['/app/projects/new']">
+                        <mat-icon class="material-icons">add</mat-icon>
+                        NEW PROJECT
+                    </button>
+                    <div class="divider divider-sm"></div>
+                </h2>
+                <br/>
+
+                <div class="box box-default table-box mdl-shadow--2dp">
+                    <table class="mdl-data-table">
+                        <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Name</th>
+                            <th class="mdl-data-table__cell--non-numeric">Auto-Code</th>
+                            <th class="mdl-data-table__cell--non-numeric">Version-Control</th>
+                            <th class="mdl-data-table__cell--non-numeric">Create-date</th>
+                            <!--<th class="mdl-data-table__cell--non-numeric">Jobs</th>-->
+                            <th class="mdl-data-table__cell--non-numeric"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let project of projects">
+                            <td class="mdl-data-table__cell--non-numeric bold">{{project.org.name}}/{{project.name}}
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">{{project.genPolicy}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{project.account.accountType}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{project.createdDate | date:'shortDate'}}
+                            </td>
+                            <!--<td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a></td>-->
+                            <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
+                                                                             [routerLink]="['/app/projects', project.id]">Edit</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <mat-paginator [hidden]="length <= pageSize"
+                               [pageSize]="pageSize"
+                               hidePageSize="true"
+                               (page)="change($event)"
+                               [length]="length"
+                >
+                </mat-paginator>
+
+            </article>
+
+        </div>
+    </article>
+</section>

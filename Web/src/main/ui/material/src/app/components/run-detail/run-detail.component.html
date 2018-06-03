@@ -1,0 +1,151 @@
+<section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter">
+    <article class="article">
+        <h2 class="article-title">
+            <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
+            /
+            <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}
+            <!--</a>-->
+            /
+            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs']"> Runs </a>
+            / {{run.runId}}
+        </h2>
+    </article>
+
+
+    <div class="box box-default table-box mdl-shadow--2dp">
+        <div class="item-card card__horizontal1">
+            <div class="card__body card-white">
+                <div class="card__title">
+                    <h4>ID: {{run.runId}}</h4>
+                    <h4>Status: {{run.task.status}}</h4>
+                    <h4>Date: {{run.task.startTime | date:'short'}}</h4>
+                    <h4>Total Time: {{run.task.totalTime}}</h4>
+                    <h4>Total Tests: {{run.task.totalTests}}</h4>
+                    <h4 color="success">Total Passed: {{run.task.totalTestCompleted}}</h4>
+                    <h4 color="warn">Total Failed: {{run.task.failedTests}}</h4>
+                </div>
+                <div class="divider divider-solid divider-lg"></div>
+                <div class="card__title" *ngIf="run.stats != undefined">
+                    <h4>Statistics By Category (Total/Pass)</h4>
+                    <h4>Security (SQL Injection): {{run.stats.Security_SQL_Injection_Passed + run.stats.Security_SQL_Injection_Failed|| 0}}  / {{run.stats.Security_SQL_Injection_Passed || 0}} </h4>
+                    <h4>Security (DDOS): {{run.stats.Security_DDOS_Passed  + run.stats.Security_DDOS_Failed || 0}} / {{run.stats.Security_DDOS_Passed || 0}} </h4>
+                    <h4>Security (XSS): {{run.stats.Security_XSS_Passed || 0}} / {{run.stats.Security_XSS_Failed || 0}} </h4>
+                    <h4>Negative : {{run.stats.Negative_Passed + run.stats.Negative_Failed || 0}} / {{run.stats.Negative_Passed || 0}} </h4>
+                    <h4>Functional : {{run.stats.Bug_Passed + run.stats.Bug_Failed || 0}} / {{run.stats.Bug_Passed || 0}} </h4>
+                    <br/>
+                    <h4>Statistics By Severity</h4>
+                    <h4>Critical: {{run.stats.Critical_Passed + run.stats.Critical_Failed || 0}} / {{run.stats.Critical_Passed || 0}} </h4>
+                    <h4>Major : {{run.stats.Major_Passed + run.stats.Major_Failed || 0}} / {{run.stats.Major_Failed || 0}} </h4>
+                    <h4>Minor: {{run.stats.Minor_Passed + run.stats.Minor_Failed || 0}} / {{run.stats.Minor_Failed || 0}} </h4>
+                    <h4>Trivial : {{run.stats.Trivial_Passed + run.stats.Trivial_Failed || 0}} / {{run.stats.Trivial_Failed || 0}} </h4>
+                </div>
+
+                <div class="divider divider-solid divider-lg"></div>
+                <p class="card__desc" style="white-space: pre;">{{run.task.description}}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <article class="article">
+        <div class="box box-default table-box mdl-shadow--2dp">
+            <table class="mdl-data-table">
+                <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    <th class="mdl-data-table__cell--non-numeric">Suite</th>
+                    <th class="mdl-data-table__cell--non-numeric">Category</th>
+                    <th class="mdl-data-table__cell--non-numeric">Severity</th>
+                    <th class="mdl-data-table__cell--non-numeric">Total/Pass</th>
+                    <th class="mdl-data-table__cell--non-numeric">Success</th>
+                    <th class="mdl-data-table__cell--non-numeric">Time (ms)</th>
+                    <th class="mdl-data-table__cell--non-numeric">Bytes</th>
+                </tr>
+                <tr class="bg-color-info1">
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{time}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{size}}</th>
+
+                </tr>
+                </thead>
+                <tr *ngFor="let s of suites">
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span class="text-success"><i
+                            class="material-icons">done</i> </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span
+                            class="text-success"> Passed</span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span class="text-danger"><i
+                            class="material-icons">clear</i> </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
+                            class="text-danger"> Fail</span></td>
+                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
+                                                                     (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName |  slice:0:55}}</a>
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.category}} </td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Critical'"><span class="text-danger">{{s.severity}} </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Major'"><span class="text-warning">{{s.severity}} </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category != 'CRITICAL' && s.category != 'MAJOR' "><span class="text-success">{{s.severity}} </span></td>
+
+                    <td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        {{ ( ((s.tests - s.failed) * 100 ) / (s.tests) ).toFixed(0) }}%
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.time}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.size}}</td>
+
+                </tr>
+                <tfoot>
+                <tr class="bg-color-info1">
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{time}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{size}}</th>
+
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <mat-paginator [hidden]="length <= pageSize"
+                       [pageSize]="pageSize"
+                       hidePageSize="true"
+                       (page)="change($event)"
+                       [length]="length"
+        >
+        </mat-paginator>
+
+    </article>
+
+    <!--
+    <a href="javascript:;" (click)="getTestSuiteResponsesByRunId()"> View Logs </a>
+
+    <div class="box box-default table-box mdl-shadow--2dp">
+        <div class="item-card card__horizontal1" *ngFor="let item of list">
+            <div class="card__body card-white">
+                <div class="card__title">
+                    <h4>{{item.testSuite}}</h4>
+                    <h6>Test-Suite</h6>
+                </div>
+                <div class="card__price">
+                    <span>Pass: {{item.totalPassed}}</span>
+                    <span class="type--strikethrough">Fail: {{item.totalFailed}}</span>
+                    <span>Time: {{item.requestTime}}</span>
+                </div>
+                <div class="divider divider-solid divider-lg"></div>
+                <p class="card__desc" style="white-space: pre;">{{item.logs}}</p>
+            </div>
+        </div>
+    </div>
+    -->
+</section>
