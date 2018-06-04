@@ -3,7 +3,7 @@ cd Web/src/main/ui/material
 npm start
 
 ## Login to remote server
-http://localhost:4200/assets/html/login.html
+http://localhost:4200/assets/html/access.html
 ## Then open url
 http://localhost:4200
 ## At this point you should be able to see proxy working.
