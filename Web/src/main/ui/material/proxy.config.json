@@ -15,5 +15,12 @@
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
+  },
+  "/logout": {
+    "target": "http://stg1.fxlabs.io",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
+
 }

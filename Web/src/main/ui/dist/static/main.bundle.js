@@ -1,27 +1,19 @@
 webpackJsonp(["main"],{
 
 /***/ "../../../../../src/$$_lazy_route_resource lazy recursive":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var map = {
-	"./extra-pages/extra-pages.module": [
-		"../../../../../src/app/extra-pages/extra-pages.module.ts",
-		"extra-pages.module"
-	]
-};
-function webpackAsyncContext(req) {
-	var ids = map[req];
-	if(!ids)
-		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return __webpack_require__.e(ids[1]).then(function() {
-		return __webpack_require__(ids[0]);
+function webpackEmptyAsyncContext(req) {
+	// Here Promise.resolve().then() is used instead of new Promise() to prevent
+	// uncatched exception popping up in devtools
+	return Promise.resolve().then(function() {
+		throw new Error("Cannot find module '" + req + "'.");
 	});
-};
-webpackAsyncContext.keys = function webpackAsyncContextKeys() {
-	return Object.keys(map);
-};
-webpackAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy recursive";
-module.exports = webpackAsyncContext;
+}
+webpackEmptyAsyncContext.keys = function() { return []; };
+webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
+module.exports = webpackEmptyAsyncContext;
+webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
@@ -31,19 +23,9 @@ module.exports = webpackAsyncContext;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutingModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_layout_component__ = __webpack_require__("../../../../../src/app/layout/layout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__page_layouts_fullscreen_fullscreen_component__ = __webpack_require__("../../../../../src/app/page-layouts/fullscreen/fullscreen.component.ts");
-
-
-// import { DashboardComponent } from './dashboard/dashboard.component';
-// Page Layouts
 
 var AppRoutes = [
     { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
-    { path: 'app', component: __WEBPACK_IMPORTED_MODULE_1__layout_layout_component__["a" /* LayoutComponent */] },
-    { path: 'extra', loadChildren: './extra-pages/extra-pages.module#ExtraPagesModule' },
-    { path: 'fullscreen', component: __WEBPACK_IMPORTED_MODULE_2__page_layouts_fullscreen_fullscreen_component__["a" /* PageLayoutFullscreenComponent */] },
-    { path: '**', redirectTo: '/app/jobs', pathMatch: 'full' },
 ];
 var AppRoutingModule = __WEBPACK_IMPORTED_MODULE_0__angular_router__["g" /* RouterModule */].forRoot(AppRoutes, { useHash: true });
 
