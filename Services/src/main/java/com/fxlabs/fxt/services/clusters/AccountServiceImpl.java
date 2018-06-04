@@ -154,7 +154,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 }
                 break;
             case Slack:
-                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Slack Token is empty"));
                 }
             case Email:
@@ -189,7 +189,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account name is empty"));
         }
 
-        if (dto.getAccountType() == null || StringUtils.isEmpty(dto.getAccountType().toString())) {
+        if (dto.getAccountType() == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account Type is empty"));
         }
 
@@ -211,7 +211,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 }
                 break;
             case Slack:
-                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Slack Token is empty"));
                 }
                 break;
