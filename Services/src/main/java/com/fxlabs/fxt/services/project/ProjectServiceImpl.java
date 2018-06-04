@@ -163,11 +163,18 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         try {
 
+            if (request == null) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Project"));
+            }
+
             // check name
             if (StringUtils.isEmpty(request.getName())) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project name"));
             }
 
+            if (StringUtils.isEmpty(request.getUrl())) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project URL"));
+            }
 
             // check account
             if (request.getAccount() == null || StringUtils.isEmpty(request.getAccount().getId())) {
@@ -257,9 +264,27 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<Project> saveProject(Project request, String org, String user) {
 
+        if (request == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for update Project "));
+        }
+
         Optional<com.fxlabs.fxt.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(request.getId(), org);
         if (!optionalProject.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+
+        if (StringUtils.isEmpty(request.getName())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project name"));
+        }
+
+        if (StringUtils.isEmpty(request.getUrl())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project URL"));
+        }
+
+
+        // check account
+        if (request.getAccount() == null || StringUtils.isEmpty(request.getAccount().getId())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
         }
 
         Project project = converter.convertToDto(optionalProject.get());
@@ -270,6 +295,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setBranch(request.getBranch());
         project.setGenPolicy(request.getGenPolicy());
         project.setOpenAPISpec(request.getOpenAPISpec());
+        project.setAccount(request.getAccount());
 
         project.setVisibility(request.getVisibility());
 
