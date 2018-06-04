@@ -1,12 +1,19 @@
 {
-  "/api/*": {
+  "/api1/*": {
     "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
-  "/api1/*": {
+  "/api/*": {
     "target": "http://stg1.fxlabs.io",
     "secure": false,
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/login": {
+    "target": "http://stg1.fxlabs.io",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }
