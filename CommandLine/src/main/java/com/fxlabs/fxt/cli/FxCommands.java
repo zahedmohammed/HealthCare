@@ -55,7 +55,13 @@ public class FxCommands {
         service.lsJobs();
     }*/
 
-    @ShellMethod(key = "run", value = "Executes job")
+    @ShellMethod(key = "run", value = "Executes job. \n e.g. \n" +
+            "run --dir /opt/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX \n" +
+            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --region FXLabs/US_WEST_1 \n" +
+            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --tags v2 \n" +
+            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --suites \"personal_user_signup_ds,personal_user_signup_ds\""
+    )
+
     public void run(
             @ShellOption(value = {"-p", "--project"}, help = "Project name e.g. org/project-name or FxLabs/Common") @Size(min = 3) String project,
             @ShellOption(value = {"-d", "--dir"}, help = "Project directory path e.g. /opt/Project1 or C:/Project1", defaultValue = "") String projectDir,
