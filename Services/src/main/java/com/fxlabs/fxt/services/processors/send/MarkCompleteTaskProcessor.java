@@ -11,6 +11,7 @@ import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.notify.NotificationService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import org.apache.commons.lang3.time.DateUtils;
+import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,9 @@ public class MarkCompleteTaskProcessor {
     // fx-notification-slack
     @Value("${fx.notification.slack.queue.routingkey}")
     private String slackNotificationQueue;
+
+    @Autowired
+    private TextEncryptor encryptor;
 
     /**
      * Find Tasks with state 'PROCESSING'
@@ -127,35 +131,38 @@ public class MarkCompleteTaskProcessor {
                     continue;
                 }
 
-                Response<Notification> notificationAccount = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
+                Response<Notification> notificationResponse = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
 
-                if (notificationAccount.isErrors() || notificationAccount.getData() == null) {
+                if (notificationResponse.isErrors() || notificationResponse.getData() == null) {
                     logger.info("Notification Account not found for name [{}]", address);
                     continue;
                 }
+
+                Notification notification = notificationResponse.getData();
                 NotificationTask task = new NotificationTask();
                 task.setId(run.getId());
                 Map<String, String> opts = new HashMap<>();
-                switch (notificationAccount.getData().getAccount().getAccountType()) {
-                    case SLACK:
-                        if (notificationAccount.getData().getAccount() == null || StringUtils.isEmpty(notificationAccount.getData().getAccount().getAccessKey())) {
-                            logger.info("Notification Token not found for account [{}]", notificationAccount.getData().getId());
+                switch (notification.getAccount().getAccountType()) {
+                    case Slack:
+                        if (notification.getAccount() == null || StringUtils.isEmpty(notification.getAccount().getSecretKey())) {
+                            logger.info("Notification Token not found for account [{}]", notification.getId());
                             break;
                         }
-                        opts.put("TOKEN", notificationAccount.getData().getAccount().getAccessKey());
+                        String token = notification.getAccount().getSecretKey();
+                        token = encryptor.decrypt(token);
+                        opts.put("TOKEN", token);
                         opts.put("MESSAGE", formatSlackMessage(run));
-                        opts.put("CHANNELS", notificationAccount.getData().getChannel());
+                        opts.put("CHANNELS", notification.getChannel());
                         task.setOpts(opts);
                         amqpClientService.sendTask(task, slackNotificationQueue);
                         break;
-                    case EMAIL:
+                    case Email:
                         logger.info("Notification Account Type email not supported");
                         break;
 
                     default:
-                        logger.info("Notification Account type [{}] not supported", notificationAccount.getData().getType());
+                        logger.info("Notification Account type [{}] not supported", notification.getType());
                 }
-
 
             }
         } catch (Exception e) {
