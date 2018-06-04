@@ -1129,8 +1129,9 @@ public class FxCommandService {
             time += s.getTime() != null ? s.getTime() : 0;
             size += s.getSize() != null ? s.getSize() : 0;
         }
-        per = ((tests - fails) * 100) / tests;
-
+        if (tests > 0) {
+            per = ((tests - fails) * 100) / tests;
+        }
         System.out.println(org.apache.commons.lang3.StringUtils.rightPad("-", 195, "-"));
         System.out.println(
                 AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
