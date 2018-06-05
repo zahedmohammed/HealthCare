@@ -242,8 +242,8 @@ public class FxCommandService {
             }
 
 
-            System.out.println(String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
-            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", String.format("Fxfile.yaml project [%s] exists and last-synced date [%s]", config.getName(), project.getLastSync()));
+            System.out.println(String.format("Fxfile.yaml project [%s] found...", config.getName()));
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", String.format("Fxfile.yaml project [%s] found...", config.getName()));
 
             projectFiles = getProjectChecksums(project.getId());
 
@@ -259,7 +259,7 @@ public class FxCommandService {
             }
 
             //System.out.println(projectFiles);
-            //System.out.println(checksum);
+            //System.out.println("Fxfile.yaml checksum: " + checksum);
 
             if (!isChecksumPresent(projectFiles, fxfile, checksum)) {
 
@@ -269,8 +269,12 @@ public class FxCommandService {
                     System.err.println(projectResponse.getMessages());
                 }
                 if (projectResponse.getData() != null) {
-                    System.out.println(String.format("Project id: [%s] updated", projectResponse.getData().getId()));
-                    CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project id: [%s] updated", projectResponse.getData().getId()));
+                    System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
+                            String.format("%s [Synced]",
+                                    org.apache.commons.lang3.StringUtils.rightPad(fxfile.getName(), 113)),
+                            AnsiColor.DEFAULT));
+                    //System.out.println(String.format("         : %s [Synced]", projectResponse.getData().getId()));
+                    CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project name [%s] id [%s] updated", projectResponse.getData().getName(), projectResponse.getData().getId()));
                 }
             }
 
@@ -457,7 +461,7 @@ public class FxCommandService {
             }
         }
         Response<List<Environment>> response = envRestRepository.saveAll(oldEnvs);
-        System.out.println("Env updated...");
+        //System.out.println("Env updated...");
         CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "environments", "updated...");
         return response;
     }
