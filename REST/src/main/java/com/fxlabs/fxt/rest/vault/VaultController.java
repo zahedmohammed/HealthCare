@@ -35,14 +35,14 @@ public class VaultController {
         return service.findById(id, SecurityUtil.getOrgId());
     }
 
-    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<Vault> update(@Valid @RequestBody Vault dto) {
 
         return service.update(dto, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Vault> delete(@PathVariable("id") String id) {
 
@@ -58,7 +58,7 @@ public class VaultController {
     }
 
 
-    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Vault> create(@RequestBody Vault request) {
 

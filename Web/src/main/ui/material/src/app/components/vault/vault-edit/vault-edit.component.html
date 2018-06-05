@@ -34,8 +34,8 @@
                                 <p>Store App username, password, and url as secret's and safely inject it into projects
                                     Fxfile's 'baseUrl', 'username', 'password', & test-suite files.
                                     Vault helps you avoid sensitive environment details in version-control system.</p>
-                                <p> e.g. usage <code ngNonBindable>password: '{{@Vault.FxLabs/MyPassword}}'</code></p>
-                                <p> Where 'FxLabs/MyPassword' is the secret name.</p>
+                                <p>e.g. usage in Fxfile.yaml's auths section. Where <code>'{{entry.org.name}}/{{entry.key}}'</code> is the secret name.</p>
+                                <code>password: '<span ngNonBindable>{{@Vault.</span><span>{{entry.org.name}}/{{entry.key}}</span><span ngNonBindable>}}'</span></code>
                             </div>
                         </div>
                     </div>
