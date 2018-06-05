@@ -80,7 +80,8 @@ public class FxCommands {
 
     }
 
-    @ShellMethod(key = "gen", value = "Auto generates quality and security coverage test-suites for Open API spec")
+    @ShellMethod(key = "gen", value = "Auto generates quality and security coverage test-suites for Open API spec. \n e.g. \n" +
+            " gen --url https://cloud.fxlabs.io/v2/api-docs --dir /opt/MyTests/test-suites")
     public void gen(
             @ShellOption(value = {"-h", "--url"}, help = "OpenAPI URL e.g. http://ip/v2/api-docs or myapp-spec.json") @Size(min = 1) String url,
             @ShellOption(value = {"-d", "--dir"}, help = "Stub generation directory e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\test-suites") String dir,
