@@ -145,20 +145,21 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             case Microsoft_VSTS_Git:
             case Jira:
             case AWS:
-                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                if (StringUtils.isEmpty(dto.getAccessKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Username/Access-Key is empty"));
                 }
 
-                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
+                if (StringUtils.isEmpty(dto.getSecretKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Password/Secret-Key is empty"));
                 }
                 break;
             case Slack:
-                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
+                if (StringUtils.isEmpty(dto.getSecretKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Slack Token is empty"));
                 }
+                break;
             case Email:
-                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                if (StringUtils.isEmpty(dto.getAccessKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
                 }
                 break;
