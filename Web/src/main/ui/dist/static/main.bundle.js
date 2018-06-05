@@ -6370,6 +6370,7 @@ function makeAppConfig() {
         productLink: 'https://fxlabs.io/contact/',
         copyright: 'https://fxlabs.io',
         cliLink: 'https://github.com/fxlabsinc/Fx-CLI',
+        apiLink: 'https://cloud.fxlabs.io/swagger-ui.html',
         fxSample: 'https://github.com/fxlabsinc/Fx-Sample'
     };
     return AppConfig;
@@ -6954,7 +6955,7 @@ var ToggleQuickviewDirective = (function () {
 /***/ "../../../../../src/app/layout/footer/footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"app-footer\">\n  <div class=\"container-fluid\">\n    <span class=\"float-left\">\n      <span>Copyright © <a class=\"brand\" target=\"_blank\" [href]=\"AppConfig.copyright\">{{AppConfig.brand}}</a> {{AppConfig.year}}</span>\n    </span>\n    <span class=\"float-right\">\n      <a class=\"brand\" target=\"_blank\" [href]=\"AppConfig.cliLink\">Download FX-cli <i class=\"material-icons\">laptop_windows</i></a>\n    </span>\n  </div>\n</section>\n"
+module.exports = "<section class=\"app-footer\">\n  <div class=\"container-fluid\">\n    <span class=\"float-left\">\n      <span>Copyright © <a class=\"brand\" target=\"_blank\" [href]=\"AppConfig.copyright\">{{AppConfig.brand}}</a> {{AppConfig.year}}</span>\n    </span>\n    <span class=\"float-right\">\n      <a class=\"brand\" target=\"_blank\" [href]=\"AppConfig.apiLink\">REST API</a> &nbsp;&nbsp; | &nbsp;&nbsp;\n      <a class=\"brand\" target=\"_blank\" [href]=\"AppConfig.cliLink\">Download FX-cli &nbsp;<i class=\"material-icons\">laptop_windows</i></a>\n    </span>\n  </div>\n</section>\n"
 
 /***/ }),
 
