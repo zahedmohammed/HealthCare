@@ -1141,7 +1141,7 @@ public class FxCommandService {
                 AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                         String.format("%s %s %s %s %s %s",
                                 org.apache.commons.lang3.StringUtils.rightPad("", 100),
-                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(tests) + "/" + String.valueOf(fails), 20),
+                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(tests) + "/" + String.valueOf(tests-fails), 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(per) + "%", 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(time), 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(size), 20),
