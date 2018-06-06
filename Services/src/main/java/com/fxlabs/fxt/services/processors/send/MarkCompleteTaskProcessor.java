@@ -10,6 +10,7 @@ import com.fxlabs.fxt.dto.notify.Notification;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.notify.NotificationService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
+import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
@@ -59,6 +60,9 @@ public class MarkCompleteTaskProcessor {
 
     @Autowired
     private TextEncryptor encryptor;
+
+    @Autowired
+    private SystemSettingService systemSettingService;
 
     /**
      * Find Tasks with state 'PROCESSING'
@@ -172,12 +176,21 @@ public class MarkCompleteTaskProcessor {
 
     }
 
+    String REPORT_URL = "https://%s/#/app/jobs/%s/runs/%s";
 
     private String formatSlackMessage(Run run) {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Job Name").append(COLON).append(run.getJob().getName()).append(LINE_SEPERATOR)
+        String host = systemSettingService.findByKey(SystemSettingService.FX_HOST);
+        String report = String.format(REPORT_URL, host, run.getJob().getId(), run.getId());
+
+        sb
+                .append("----").append(LINE_SEPERATOR)
+                .append("Job Name").append(COLON).append(run.getJob().getName()).append(LINE_SEPERATOR)
+                .append("Run ID").append(COLON).append(run.getRunId()).append(LINE_SEPERATOR)
+                .append("Date").append(COLON).append(run.getCreatedDate()).append(LINE_SEPERATOR)
+                .append("User").append(COLON).append(run.getCreatedBy()).append(LINE_SEPERATOR)
                 .append("Description").append(COLON).append(getValue(run.getTask().getDescription())).append(LINE_SEPERATOR)
                 .append("Status").append(COLON).append(run.getTask().getStatus().toString()).append(LINE_SEPERATOR)
                 .append("Total Test Cases").append(COLON).append(run.getTask().getTotalTests()).append(LINE_SEPERATOR)
@@ -187,7 +200,10 @@ public class MarkCompleteTaskProcessor {
                 .append("Total Bytes").append(COLON).append(run.getTask().getTotalBytes()).append(LINE_SEPERATOR)
                 .append("Total Time").append(COLON).append(run.getTask().getTotalTime()).append(LINE_SEPERATOR)
                 .append("Bytes").append(COLON).append(run.getTask().getTotalBytes()).append(LINE_SEPERATOR)
-                .append("Region").append(COLON).append(run.getJob().getRegions());
+                .append("Region").append(COLON).append(run.getJob().getRegions()).append(LINE_SEPERATOR)
+                .append("Report").append(COLON).append(report).append(LINE_SEPERATOR)
+                .append("---");
+
 
         return sb.toString();
     }
