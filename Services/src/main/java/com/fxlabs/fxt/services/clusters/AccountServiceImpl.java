@@ -220,6 +220,9 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
                 }
+            default:
+                logger.info("Invalid Account Type [{}]" , dto.getAccountType());
+                break;
         }
         // dto.org == orgId
         if (!org.apache.commons.lang3.StringUtils.equals(dto.getOrg().getId(), orgId)) {
@@ -272,18 +275,24 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 if (!CollectionUtils.isEmpty(issueTrackers)) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Issue Tracker"));
                 }
+                break;
             case AWS:
             case Self_Hosted:
                 List<Cluster> clusters = clusterRepository.findByAccountIdAndInactive(cloudAccountId, false);
                 if (!CollectionUtils.isEmpty(clusters)) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Bot"));
                 }
+                break;
             case Slack:
             case Email:
                 List<Notification> notifications = notificationRepository.findByAccountIdAndInactive(cloudAccountId, false);
                 if (!CollectionUtils.isEmpty(notifications)) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Notification"));
                 }
+                break;
+            default:
+                logger.info("Invalid Account Type [{}]" ,  cloudAccountOptional.get().getAccountType());
+                break;
 
         }
 

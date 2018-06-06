@@ -110,6 +110,9 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Channel is empty"));
                 case Email:
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "To is empty"));
+                default:
+                    logger.info("Invalid Account Type [{}]" ,  dto.getAccount().getAccountType());
+                    break;
             }
         }
 
@@ -148,6 +151,9 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Channel is empty"));
                 case Email:
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "To is empty"));
+                default:
+                    logger.info("Invalid Account Type [{}]" ,  dto.getAccount().getAccountType());
+                    break;
             }
         }
         // validate user is the org admin
