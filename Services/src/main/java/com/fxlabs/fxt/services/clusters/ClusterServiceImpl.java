@@ -56,24 +56,18 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private SubscriptionTaskRepository subscriptionTaskRepository;
     private AmqpClientService amqpClientService;
     private String fxExecutionBotScriptUrl;
-    private String fxDefaultResponseKey;
-    private String fxUserName;
-    private String fxPassword;
-    private String fxPort;
-    private String fxHost;
     private SystemSettingRepository systemSettingRepository;
     private static String SPACE = " ";
     private TextEncryptor encryptor;
+    private String fxCaasAwsEc2Queue;
     private SystemSettingService systemSettingService;
 
     @Autowired
     public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository, AccountRepository accountRepository,
                               ClusterConverter clusterConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
-                              OrgUsersRepository orgUsersRepository, @Value("${fx.default.response.queue.routingkey}") String fxDefaultResponseKey,
-                              UsersRepository usersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
+                              OrgUsersRepository orgUsersRepository,
+                              UsersRepository usersRepository, @Value("${fx.caas.aws_ec2.queue}") String fxCaasAwsEc2Queue,
                               AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository,
-                              @Value("${spring.rabbitmq.username}") String fxUserName, @Value("${spring.rabbitmq.password}") String fxPassword,
-                              @Value("${spring.rabbitmq.port}") String fxPort, @Value("${spring.rabbitmq.host}") String fxHost,
                               SystemSettingRepository systemSettingRepository, TextEncryptor encryptor, SystemSettingService systemSettingService) {
 
         super(clusterRepository, clusterConverter);
@@ -87,15 +81,11 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.orgUsersRepository = orgUsersRepository;
         this.subscriptionTaskRepository = subscriptionTaskRepository;
         this.fxExecutionBotScriptUrl = fxExecutionBotScriptUrl;
-        this.fxDefaultResponseKey = fxDefaultResponseKey;
-        this.fxUserName = fxUserName;
-        this.fxPassword = fxPassword;
-        this.fxPort = fxPort;
-        this.fxHost = fxHost;
         this.amqpClientService = amqpClientService;
         this.systemSettingRepository = systemSettingRepository;
         this.encryptor = encryptor;
         this.systemSettingService = systemSettingService;
+        this.fxCaasAwsEc2Queue = fxCaasAwsEc2Queue;
 
     }
 
@@ -460,7 +450,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
         switch (account.getAccountType()) {
             case AWS:
-                key = "fx-caas-aws-ec2";
+                key = fxCaasAwsEc2Queue;
                 break;
             default:
                 logger.info("Provider [{}] not supported", account.getAccountType());
