@@ -52,23 +52,24 @@
             <table class="mdl-data-table">
                 <thead>
                 <tr>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    <!--<th class="mdl-data-table__cell--non-numeric"></th>-->
                     <th class="mdl-data-table__cell--non-numeric">Suite</th>
                     <th class="mdl-data-table__cell--non-numeric">Category</th>
                     <th class="mdl-data-table__cell--non-numeric">Severity</th>
-                    <th class="mdl-data-table__cell--non-numeric">Total/Pass</th>
+                    <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    <!--<th class="mdl-data-table__cell--non-numeric">Total/Pass</th>-->
                     <th class="mdl-data-table__cell--non-numeric">Success</th>
                     <th class="mdl-data-table__cell--non-numeric">Time (ms)</th>
                     <th class="mdl-data-table__cell--non-numeric">Bytes</th>
                 </tr>
                 <tr class="bg-color-info1">
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
+                    <!--<th class="mdl-data-table__cell--non-numeric"></th>-->
                     <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
                     <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">
+                        <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
+                    </th>
                     <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
                     <th class="mdl-data-table__cell--non-numeric">{{time}}</th>
                     <th class="mdl-data-table__cell--non-numeric">{{size}}</th>
@@ -76,23 +77,25 @@
                 </tr>
                 </thead>
                 <tr *ngFor="let s of suites">
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span class="text-success"><i
-                            class="material-icons">done</i> </span></td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span
-                            class="text-success"> Passed</span></td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span class="text-danger"><i
-                            class="material-icons">clear</i> </span></td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
-                            class="text-danger"> Fail</span></td>
-                    <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
-                                                                     (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName |  slice:0:55}}</a>
+                    <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span class="text-success"><i
+                            class="material-icons">done</i> </span></td>-->
+                    <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span class="text-danger"><i
+                            class="material-icons">clear</i> </span></td>-->
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName |  slice:0:55}}</a>
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.category}} </td>
                     <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Critical'"><span class="text-danger">{{s.severity}} </span></td>
                     <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Major'"><span class="text-warning">{{s.severity}} </span></td>
                     <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category != 'CRITICAL' && s.category != 'MAJOR' "><span class="text-success">{{s.severity}} </span></td>
 
-                    <td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>
+                    <td class="mdl-data-table__cell--non-numeric"><span
+                            class="text-success"> Passed: {{s.tests - s.failed}}  <span class="text-danger" *ngIf="s.failed != 0">&nbsp;&nbsp; Failed: {{s.failed}}</span></span></td>
+
+                    <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
+                            class="text-danger"> Fail: {{s.failed}}</span></td>-->
+
+                    <!--<td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>-->
                     <td class="mdl-data-table__cell--non-numeric">
                         {{ ( ((s.tests - s.failed) * 100 ) / (s.tests) ).toFixed(0) }}%
                     </td>
@@ -102,12 +105,12 @@
                 </tr>
                 <tfoot>
                 <tr class="bg-color-info1">
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
                     <th class="mdl-data-table__cell--non-numeric"></th>
                     <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric">{{total}}/{{total-failed}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">
+                        <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
+                    </th>
                     <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
                     <th class="mdl-data-table__cell--non-numeric">{{time}}</th>
                     <th class="mdl-data-table__cell--non-numeric">{{size}}</th>
