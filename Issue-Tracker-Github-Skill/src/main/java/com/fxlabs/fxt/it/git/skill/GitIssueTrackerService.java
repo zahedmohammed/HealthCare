@@ -22,11 +22,8 @@ import java.util.List;
 
 
 /**
- *
  * @author Intesar Mohammed
  * @author Mohammed Shoukath Ali
- *
- *
  */
 
 @Component
@@ -54,44 +51,40 @@ public class GitIssueTrackerService implements IssueTrackerService {
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
     @Autowired
-    public GitIssueTrackerService( @Value("${FX_ISSUE_TRACKER_BOT}")String fxIssueTrackerBot,  @Value("${FX_ISSUE_TRACKER_BOT_SECRETKEY}") String fxIssueTrackerBotSecretKey) {
+    public GitIssueTrackerService(@Value("${FX_ISSUE_TRACKER_BOT}") String fxIssueTrackerBot, @Value("${FX_ISSUE_TRACKER_BOT_SECRETKEY}") String fxIssueTrackerBotSecretKey) {
         this.fxIssueTrackerBot = fxIssueTrackerBot;
         this.fxIssueTrackerBotSecretKey = fxIssueTrackerBotSecretKey;
     }
 
     /**
      * <p>
-     *  This method does only one thing.
-     *   1. Checkout the repository files to the given location.
-     *
-     *   At the end of the execution all the project files should in the given path.
-     *   Or the response should indicate the processing failed by setting the Response.success to false along with the
-     *   error message.
+     * This method does only one thing.
+     * 1. Checkout the repository files to the given location.
+     * <p>
+     * At the end of the execution all the project files should in the given path.
+     * Or the response should indicate the processing failed by setting the Response.success to false along with the
+     * error message.
      * </p>
      *
-     * @param task
-     *  <p>
-     *      Contains Issue-Tracker System connection information.
-     *      e.g.
-     *      url - contains the IssueTracker endpoint
-     *      username - IssueTracker username/access-key
-     *      password - IssueTracker password/secret-key
-     *      branch - Repository branch defaults to master.
-     *  </p>
-     *
-     *
-     * @return
-     *  <p>
-     *      ITTaskResponse - Should only set these properties.
-     *      1. success - true/false
-     *      2. logs - execution or error logs.
-     *  </p>
+     * @param task <p>
+     *             Contains Issue-Tracker System connection information.
+     *             e.g.
+     *             url - contains the IssueTracker endpoint
+     *             username - IssueTracker username/access-key
+     *             password - IssueTracker password/secret-key
+     *             branch - Repository branch defaults to master.
+     *             </p>
+     * @return <p>
+     * ITTaskResponse - Should only set these properties.
+     * 1. success - true/false
+     * 2. logs - execution or error logs.
+     * </p>
      */
     @Override
     public ITTaskResponse process(final TestCaseResponse task) {
-        logger.info("In IT GitIssueTrackerService for project [{}]" , task.getProject());
+        logger.info("In IT GitIssueTrackerService for project [{}]", task.getProject());
 
-    ITTaskResponse response = new ITTaskResponse();
+        ITTaskResponse response = new ITTaskResponse();
 
         try {
 
@@ -110,10 +103,10 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
             //creates an issue remotely
 
-           // IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
-            if(StringUtils.isNotEmpty(task.getIssueId())){
+            // IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
+            if (StringUtils.isNotEmpty(task.getIssueId())) {
                 //TODO update issue
-                issue = editIssue(issue,  repositoryId, task);
+                issue = editIssue(issue, repositoryId, task);
             } else {
                 issue = createIssue(issue, repositoryId, task);
             }
@@ -162,12 +155,13 @@ public class GitIssueTrackerService implements IssueTrackerService {
         Issue issue = new Issue();
 
         //Title required
-        issue.setTitle(task.getProject() + " : " +task.getSuite());
+        issue.setTitle(task.getProject() + " : " + task.getSuite());
 
         issue.setState(IssueService.STATE_OPEN);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Project").append(COLON).append(task.getProject()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+        sb
+                .append("Project").append(COLON).append(task.getProject()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Job").append(COLON).append(task.getJob()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Env").append(COLON).append(task.getEnv()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Region").append(COLON).append(task.getRegion()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
@@ -177,7 +171,9 @@ public class GitIssueTrackerService implements IssueTrackerService {
                 .append("Endpoint").append(COLON).append(task.getEndpointEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Request").append(COLON).append(LINE_SEPERATOR).append(task.getRequestEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Response").append(COLON).append(LINE_SEPERATOR).append(task.getResponse()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
-                .append("Logs").append(COLON).append(LINE_SEPERATOR).append(task.getLogs()).append(LINE_SEPERATOR);
+                .append("Logs").append(COLON).append(LINE_SEPERATOR).append(task.getLogs()).append(LINE_SEPERATOR)
+                .append("--- FX Bot ---");
+
         String body = sb.toString();
 
         issue.setBody(body);
@@ -197,7 +193,8 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Project").append(COLON).append(task.getProject()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
+        sb
+                .append("Project").append(COLON).append(task.getProject()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Job").append(COLON).append(task.getJob()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Env").append(COLON).append(task.getEnv()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Region").append(COLON).append(task.getRegion()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
@@ -207,7 +204,10 @@ public class GitIssueTrackerService implements IssueTrackerService {
                 .append("Endpoint").append(COLON).append(task.getEndpointEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Request").append(COLON).append(LINE_SEPERATOR).append(task.getRequestEval()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
                 .append("Response").append(COLON).append(LINE_SEPERATOR).append(task.getResponse()).append(LINE_SEPERATOR).append(LINE_SEPERATOR)
-                .append("Logs").append(COLON).append(LINE_SEPERATOR).append(task.getLogs()).append(LINE_SEPERATOR);
+                .append("Logs").append(COLON).append(LINE_SEPERATOR).append(task.getLogs()).append(LINE_SEPERATOR)
+                .append("--- FX Bot ---");
+
+
         String body = sb.toString();
 
         return body;

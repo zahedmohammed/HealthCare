@@ -202,7 +202,7 @@ public class MarkCompleteTaskProcessor {
                 .append("Bytes").append(COLON).append(run.getTask().getTotalBytes()).append(LINE_SEPERATOR)
                 .append("Region").append(COLON).append(run.getJob().getRegions()).append(LINE_SEPERATOR)
                 .append("Report").append(COLON).append(report).append(LINE_SEPERATOR)
-                .append("---");
+                .append("--- FX Bot ---");
 
 
         return sb.toString();
