@@ -131,7 +131,6 @@ public class DataEvaluator {
                                     for (String column : StringUtils.split(PATH, ".")) {
                                         jsonNode = jsonNode.get(column);
                                         val = jsonNode.toString();
-                                        System.out.println(val);
                                     }
 
                                 } catch (Exception e) {
