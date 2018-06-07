@@ -31,7 +31,9 @@ import org.springframework.util.StringUtils;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -76,6 +78,9 @@ public class FxCommandService {
     private JobRestRepository jobRestRepository;
     @Autowired
     private EnvRestRepository envRestRepository;
+
+    private Map<Long, String> logFiles = new ConcurrentHashMap<>();
+    private Long LAST_RUN_ID = 0L;
 
     public Response<Users> login() {
         return this.usersRestRepository.findByLogin();
@@ -134,11 +139,11 @@ public class FxCommandService {
         System.out.println("Starting Job run...");
         dataSets = new HashSet<>();
         suiteSet = new HashSet<>();
-        runJob(jobId, region, tags, envName, suites);
+        Long runId = runJob(jobId, region, tags, envName, suites);
 
         System.out.println(
-                AnsiOutput.toString(AnsiColor.DEFAULT,
-                        String.format(" Total Time: %s ms",
+                AnsiOutput.toString(AnsiColor.GREEN,
+                        String.format(" Total Processing Time: %s ms",
                                 (new Date().getTime() - loadEnd.getTime()))
                         , AnsiColor.DEFAULT)
         );
@@ -146,7 +151,15 @@ public class FxCommandService {
         String file = RandomStringUtils.randomAlphanumeric(6);
         File f = new File(file);
 
-        System.out.println(" Log file: " + f.getAbsolutePath());
+        System.out.println(
+                AnsiOutput.toString(AnsiColor.GREEN,
+                        String.format(" Log file: %s",
+                                f.getAbsolutePath())
+                        , AnsiColor.DEFAULT)
+        );
+
+        logFiles.put(runId, f.getAbsolutePath());
+        LAST_RUN_ID = runId;
 
         System.out.println("");
 
@@ -157,6 +170,26 @@ public class FxCommandService {
         //printSuites(suiteSet);
 
 
+    }
+
+    public void print(Long runId) {
+        if (runId == null || runId == 0L) {
+            runId = LAST_RUN_ID;
+        }
+
+        String file = logFiles.get(runId);
+        if (StringUtils.isEmpty(file)) {
+            System.out.println (String.format("No log file found for run_id %s", runId));
+        }
+        System.out.println("");
+        try {
+            FileUtils.readLines(new File(file), Charset.defaultCharset()).forEach(line -> {
+                System.out.println(line);
+            });
+            System.out.println("");
+        } catch (IOException e) {
+            System.err.println(e.getLocalizedMessage());
+        }
     }
 
     /**
@@ -938,7 +971,7 @@ public class FxCommandService {
 
     }
 
-    private void runJob(String jobId, String region, String tags, String envName, String suites) {
+    private Long runJob(String jobId, String region, String tags, String envName, String suites) {
         Run run = runRestRepository.run(jobId, region, tags, envName, suites);
         System.out.println("");
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
@@ -1006,6 +1039,9 @@ public class FxCommandService {
         run = runRestRepository.findInstance(run.getId());
         printRun(run, "\n");
 
+        Long runId = run != null ? run.getRunId() : 0;
+
+        return runId;
     }
 
     private void inspectRun(String id) {
@@ -1047,7 +1083,7 @@ public class FxCommandService {
                                         "\n Success: %s " +
                                         "\n Time: %s ms" +
                                         "\n Data: %s Bytes",
-                                run.getId(),
+                                run.getRunId(),
                                 CredUtils.url.get() + "/#/app/jobs/" + run.getJob().getId() + "/runs/" + run.getId(),
                                 run.getTask().getStatus(),
                                 run.getTask().getTotalTests(),
@@ -1141,7 +1177,7 @@ public class FxCommandService {
                 AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                         String.format("%s %s %s %s %s %s",
                                 org.apache.commons.lang3.StringUtils.rightPad("", 100),
-                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(tests) + "/" + String.valueOf(tests-fails), 20),
+                                org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(tests) + "/" + String.valueOf(tests - fails), 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(per) + "%", 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(time), 20),
                                 org.apache.commons.lang3.StringUtils.rightPad(String.valueOf(size), 20),

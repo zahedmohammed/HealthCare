@@ -59,7 +59,7 @@ public class FxCommands {
             "run --dir /opt/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX \n" +
             "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --region FXLabs/US_WEST_1 \n" +
             "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --tags v2 \n" +
-            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --suites \"personal_user_signup_ds,personal_user_signup_ds\""
+            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --suites \"personal_user_signup_ds,personal_user_signup_ds\"\n"
     )
 
     public void run(
@@ -80,8 +80,24 @@ public class FxCommands {
 
     }
 
+    @ShellMethod(key = "print", value = "Prints test execution logs. \n e.g. \n" +
+            " print\n" +
+            " print 54\n")
+    public void print(
+            @ShellOption(value = {"-i", "--run-id"}, help = "Test execution id e.g. '10 or 24'", defaultValue = "0") Long runId) {
+
+        try {
+
+            service.print(runId);
+
+        } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
+        }
+
+    }
+
     @ShellMethod(key = "gen", value = "Auto generates quality and security coverage test-suites for Open API spec. \n e.g. \n" +
-            " gen --url https://cloud.fxlabs.io/v2/api-docs --dir /opt/MyTests/test-suites")
+            " gen --url https://cloud.fxlabs.io/v2/api-docs --dir /opt/MyTests/test-suites\n")
     public void gen(
             @ShellOption(value = {"-h", "--url"}, help = "OpenAPI URL e.g. http://ip/v2/api-docs or myapp-spec.json") @Size(min = 1) String url,
             @ShellOption(value = {"-d", "--dir"}, help = "Stub generation directory e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\test-suites") String dir,
