@@ -85,7 +85,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <button mat-raised-button color="primary" (click)="update();"
-                      class="btn-w-md no-margin-left">Save
+                      class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
               </button>
               <button mat-button type="button" color="warn" class="btn-w-md" (click)="delete();">Delete
               </button>
