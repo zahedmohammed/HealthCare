@@ -65,7 +65,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Autowired
     public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository, AccountRepository accountRepository,
                               ClusterConverter clusterConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
-                              OrgUsersRepository orgUsersRepository,
+                              OrgUsersRepository orgUsersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
                               UsersRepository usersRepository, @Value("${fx.caas.aws_ec2.queue}") String fxCaasAwsEc2Queue,
                               AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository,
                               SystemSettingRepository systemSettingRepository, TextEncryptor encryptor, SystemSettingService systemSettingService) {
