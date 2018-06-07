@@ -4,7 +4,6 @@ import com.fxlabs.fxt.converters.clusters.ClusterConverter;
 import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
 import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
-import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.repository.es.ClusterESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
