@@ -1,11 +1,12 @@
 package com.fxlabs.fxt.bot.processor;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
-import com.jayway.jsonpath.InvalidJsonException;
+import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -114,8 +116,29 @@ public class DataEvaluator {
                         val = context.getResponse(suiteName);
                     } else {
                         try {
-                            Object objResponse = JsonPath.read(context.getResponse(suiteName), PATH);
+                            String json = context.getResponse(suiteName);
+                            Object objResponse = JsonPath.read(json, PATH);
                             val = objResponse.toString();
+                            if (objResponse instanceof Map) {
+                                //JsonNode node = JsonPath.parse(context.getResponse(suiteName)).read(PATH, JsonNode.class);
+                                DocumentContext doc = JsonPath.parse(json);
+                                try {
+                                    ObjectMapper mapper = new ObjectMapper();
+                                    JsonNode jsonNode = mapper.readTree(doc.jsonString());
+                                    // strip $.
+                                    // iterate items
+                                    PATH = StringUtils.removeStart(PATH, "$.");
+                                    for (String column : StringUtils.split(PATH, ".")) {
+                                        jsonNode = jsonNode.get(column);
+                                        val = jsonNode.toString();
+                                        System.out.println(val);
+                                    }
+
+                                } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                                }
+                                System.out.println("");
+                            }
                         } catch (Exception e) {
                             logger.warn(e.getLocalizedMessage());
                         }

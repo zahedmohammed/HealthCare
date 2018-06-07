@@ -46,7 +46,11 @@ public class DataResolver {
 
         for (String key : patterns) {
             String val = evaluator.evaluate(key, context, suite);
-            response = StringUtils.replace(response, "{{" + key + "}}", val);
+            if (StringUtils.startsWithIgnoreCase(val, "{")) {
+                response = StringUtils.replace(response, "\"{{" + key + "}}\"", val);
+            } else {
+                response = StringUtils.replace(response, "{{" + key + "}}", val);
+            }
         }
 
         logger.debug("Data [{}] response [{}] suite [{}]", data, response, suite);
