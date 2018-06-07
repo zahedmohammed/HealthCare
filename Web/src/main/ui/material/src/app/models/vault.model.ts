@@ -3,7 +3,6 @@ export class Vault {
     key: string;
     val: string;
     description: string;
-    visibility: string;
     org: Org = new Org();
 
 }

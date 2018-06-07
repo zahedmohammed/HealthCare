@@ -24,6 +24,4 @@ public class Vault extends BaseDto<String> {
 
     private String description;
 
-    private VaultVisibility visibility;
-
 }

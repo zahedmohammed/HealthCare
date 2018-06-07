@@ -28,23 +28,11 @@ public class Vault extends BaseEntity {
     private String key;
 
     @Lob
-    @Type(type="org.hibernate.type.TextType")
+    @Type(type = "org.hibernate.type.TextType")
     private String val;
 
     @Lob
-    @Type(type="org.hibernate.type.TextType")
+    @Type(type = "org.hibernate.type.TextType")
     private String description;
-
-    @Enumerated(EnumType.STRING)
-    private VaultVisibility visibility;
-
-    @PrePersist
-    @PreUpdate
-    public void setVisi() {
-        if (this.visibility == null) {
-            this.visibility = VaultVisibility.PRIVATE;
-        }
-    }
-
 
 }
