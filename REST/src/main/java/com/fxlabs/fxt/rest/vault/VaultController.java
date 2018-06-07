@@ -10,6 +10,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 import static com.fxlabs.fxt.rest.base.BaseController.*;
@@ -28,11 +30,28 @@ public class VaultController {
         this.service = service;
     }
 
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(method = RequestMethod.GET)
+    public Response<List<Vault>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
+                                         @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Min(1) @Max(20) Integer pageSize) {
+
+        return service.findAll(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Vault> findById(@PathVariable("id") String id) {
 
         return service.findById(id, SecurityUtil.getOrgId());
+    }
+
+
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Response<Vault> create(@RequestBody Vault request) {
+
+        return service.create(request, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
@@ -47,22 +66,6 @@ public class VaultController {
     public Response<Vault> delete(@PathVariable("id") String id) {
 
         return service.delete(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
-    }
-
-    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
-    @RequestMapping(method = RequestMethod.GET)
-    public Response<List<Vault>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                         @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-
-        return service.findAll(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
-    }
-
-
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response<Vault> create(@RequestBody Vault request) {
-
-        return service.create(request, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
 
