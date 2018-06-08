@@ -34,8 +34,6 @@ public class Project extends BaseDto<String> {
     //private List<Job> jobs;
     private String name;
     private String description;
-    private ProjectType projectType;
-    private ProjectVisibility visibility;
 
     private GenPolicy genPolicy;
     private String openAPISpec;

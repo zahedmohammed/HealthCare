@@ -21,13 +21,11 @@ public interface AccountService extends GenericService<Account, String> {
 
     Response<Account> update(Account dto, String org, String user);
 
-    Response<Account> findByName(String id, String user);
+    Response<Account> findByName(String id, String org);
 
-    Response<Account> findById(String id, String user);
+    Response<Account> findById(String id, String orgId);
 
     Response<Account> delete(String s, String org, String user);
-
-    Response<Long> countBotRegions(String user);
 
     public Response<List<Account>> findByAccountType(String accountType, String org);
 }

@@ -29,14 +29,8 @@ public class Project extends BaseEntity {
     private String name;
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private ProjectType projectType;
-
     @ManyToOne(cascade = CascadeType.REFRESH)
     private Account account;
-
-    @Enumerated(EnumType.STRING)
-    private ProjectVisibility visibility;
 
     @Enumerated(EnumType.STRING)
     private GenPolicy genPolicy;
@@ -54,27 +48,6 @@ public class Project extends BaseEntity {
     private String branch;
     private String lastCommit;
 
-    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Environment> environments;
-
-    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Job> jobs;
-
-    /*@PrePersist
-    @PreUpdate
-    public void updateEnvironments() {
-        if (!CollectionUtils.isEmpty(this.environments)) {
-            for (Environment env : environments) {
-                env.setProject(this);
-            }
-        }
-
-        if (!CollectionUtils.isEmpty(this.jobs)) {
-            for (Job job : jobs) {
-                job.setProject(this);
-            }
-        }
-    }*/
 
 }
 

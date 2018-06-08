@@ -1,8 +1,6 @@
 package com.fxlabs.fxt.dao.entity.skills;
 
 import com.fxlabs.fxt.dao.entity.base.BaseEntity;
-import com.fxlabs.fxt.dao.entity.project.ProjectType;
-import com.fxlabs.fxt.dao.entity.project.ProjectVisibility;
 import com.fxlabs.fxt.dao.entity.users.Org;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -7,17 +7,19 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectImports;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,16 +40,20 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
     private ProjectImportsRepository projectImportsRepository;
     private ProjectImportsESRepository projectImportsESRepository;
+    private AccountService accountService;
 
     private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               OrgUsersRepository orgUsersRepository,
-            /*TextEncryptor encryptor,*/ OrgRepository orgRepository, UsersRepository usersRepository,
+                              OrgRepository orgRepository, UsersRepository usersRepository,
                               GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
-                              ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository) {
+                              ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository,
+                              AccountService accountService) {
+
         super(repository, converter);
+
         this.projectRepository = repository;
         this.projectFileService = projectFileService;
         this.orgUsersRepository = orgUsersRepository;
@@ -57,6 +63,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.gaaSTaskRequestProcessor = gaaSTaskRequestProcessor;
         this.projectImportsRepository = projectImportsRepository;
         this.projectImportsESRepository = projectImportsESRepository;
+        this.accountService = accountService;
     }
 
 
@@ -186,16 +193,23 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 request.setGenPolicy(GenPolicy.None);
             }
 
+            // check OpenAPISpec
+            if (request.getGenPolicy() == GenPolicy.Create && StringUtils.isEmpty(request.getOpenAPISpec())) {
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "OpenAPISpec is required."));
+            }
+
             // check name is not duplicate
             Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndInactive(request.getName(), request.getOrg().getId(), false);
             if (projectOptional.isPresent()) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Project with name [%s] exists", request.getName())));
             }
 
-            // Validate GIT URL
-            if (request.getAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local && StringUtils.isEmpty(request.getUrl())) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Project's GIT URL cannot be empty"));
+            // check account access
+            Response<Account> accountResponse = accountService.findById(request.getAccount().getId(), org);
+            if (accountResponse == null || accountResponse.isErrors()) {
+                return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
             }
+
 
             NameDto o = new NameDto();
             o.setId(org);
@@ -212,8 +226,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             project.setBranch(request.getBranch());
             project.setGenPolicy(request.getGenPolicy());
             project.setOpenAPISpec(request.getOpenAPISpec());
-
-            project.setVisibility(request.getVisibility());
 
             projectResponse = save(project, owner);
             if (projectResponse.isErrors()) {
@@ -247,7 +259,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setOrg(_project.getOrg());
 
         project.setName(_project.getName());
-        project.setProjectType(_project.getProjectType());
 
         project.setId(_project.getId());
         project.setUrl(_project.getUrl());
@@ -255,8 +266,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setAccount(_project.getAccount());
         project.setGenPolicy(_project.getGenPolicy());
         project.setOpenAPISpec(_project.getOpenAPISpec());
-
-        project.setVisibility(_project.getVisibility());
 
         return new Response<Project>(project);
     }
@@ -296,8 +305,6 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setGenPolicy(request.getGenPolicy());
         project.setOpenAPISpec(request.getOpenAPISpec());
         project.setAccount(request.getAccount());
-
-        project.setVisibility(request.getVisibility());
 
         this.save(project, user);
 

@@ -100,7 +100,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     @Override
-    public Response<Account> findByName(String id, String user) {
+    public Response<Account> findByName(String id, String o) {
         // org//name
         if (!org.apache.commons.lang3.StringUtils.contains(id, "/")) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid region"));
@@ -108,9 +108,9 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         String[] tokens = StringUtils.split(id, "/");
         String orgName = tokens[0];
         String cloudAccountName = tokens[1];
-        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = this.accountRepository.findByNameAndOrgName(cloudAccountName, orgName);
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = this.accountRepository.findByIdAndOrgId(cloudAccountName, o);
 
-        if (!cloudAccountOptional.isPresent() && cloudAccountOptional.get().getVisibility() != ClusterVisibility.PUBLIC) {
+        if (!cloudAccountOptional.isPresent()) {
             return new Response<>().withErrors(true);
         }
         // TODO validate user is entitled to use the cloudAccount.
@@ -221,7 +221,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
                 }
             default:
-                logger.info("Invalid Account Type [{}]" , dto.getAccountType());
+                logger.info("Invalid Account Type [{}]", dto.getAccountType());
                 break;
         }
         // dto.org == orgId
@@ -291,31 +291,16 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 }
                 break;
             default:
-                logger.info("Invalid Account Type [{}]" ,  cloudAccountOptional.get().getAccountType());
+                logger.info("Invalid Account Type [{}]", cloudAccountOptional.get().getAccountType());
                 break;
 
         }
-
 
         return super.delete(cloudAccountId, user);
     }
 
 
     @Override
-    public Response<Long> countBotRegions(String user) {
-        // Find all public
-        Long count = this.accountRepository.countByVisibility(ClusterVisibility.PUBLIC);
-        return new Response<>(count);
-    }
-
-    @Override
     public void isUserEntitled(String s, String user) {
-        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = repository.findById(s);
-        if (!cloudAccountOptional.isPresent()) {
-            throw new FxException(String.format("Resource [%s] not found.", s));
-        }
-        if (cloudAccountOptional.get().getVisibility() == ClusterVisibility.PRIVATE && !org.apache.commons.lang3.StringUtils.equals(cloudAccountOptional.get().getCreatedBy(), user)) {
-            throw new FxException(String.format("User [%s] not entitled to the resource [%s] with 'PRIVATE' visibility.", user, s));
-        }
     }
 }
