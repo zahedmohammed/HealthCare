@@ -257,9 +257,9 @@ public class RestProcessor {
                 // clean-up init tasks
                 if (!CollectionUtils.isEmpty(context.getInitTasks())) {
                     context.getInitTasks().stream().forEach(initTask -> {
-                        initTask.getInit().stream().forEach(t -> {
+                        initTask.getCleanup().stream().forEach(t -> {
                             logger.debug("Executing Cleanup-Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
-                            cleanUpProcessor.process(t, context, t.getSuiteName());
+                            cleanUpProcessor.process(t, parentContext, initTask.getSuiteName());
                         });
                     });
                 }

@@ -71,6 +71,9 @@ public class DataEvaluator {
                 suiteName = StringUtils.substringAfter(suiteName, "@");
                 KEY = "@" + StringUtils.substringAfterLast(KEY, "_");
             }
+            if (StringUtils.isEmpty(suiteName)) {
+                suiteName = suite;
+            }
 
             int count = 8;
 

@@ -94,8 +94,7 @@ public class InitProcessor {
 
             context.withRequest(task.getSuiteName() + "_Request[0]", null)
                     .withResponse(task.getSuiteName() + "_Response[0]", response.getBody())
-                    .withHeaders(task.getSuiteName() + "_Headers[0]", response.getHeaders())
-                    .withTask(task);
+                    .withHeaders(task.getSuiteName() + "_Headers[0]", response.getHeaders());
         } else {
             // TODO - Support request array
             boolean isOneReq = task.getTestCases().size() == 1;
@@ -129,8 +128,7 @@ public class InitProcessor {
 
                 context.withRequest(task.getSuiteName() + "_Request[" + idx.getAndIncrement() + "]", req)
                         .withResponse(task.getSuiteName() + "_Response[" + idx.getAndIncrement() + "]", response.getBody())
-                        .withHeaders(task.getSuiteName() + "_Headers[" + idx.getAndIncrement() + "]", response.getHeaders())
-                        .withTask(task);
+                        .withHeaders(task.getSuiteName() + "_Headers[" + idx.getAndIncrement() + "]", response.getHeaders());
 
             });
 

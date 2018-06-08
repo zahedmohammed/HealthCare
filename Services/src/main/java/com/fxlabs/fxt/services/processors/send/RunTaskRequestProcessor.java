@@ -182,9 +182,10 @@ public class RunTaskRequestProcessor {
 
                         task.setEndpoint(getBaseUrl(env.getBaseUrl()) + testSuite.getEndpoint());
 
-                        // init & cleanup copy
-                        copy(testSuite.getInit(), task.getInit(), run, env);
-                        copy(testSuite.getCleanup(), task.getCleanup(), run, env);
+                        // init & init.cleanup copy
+                        copy(testSuite.getInit(), task.getInit(), run, env, true);
+                        // cleanup copy
+                        copy(testSuite.getCleanup(), task.getCleanup(), run, env, false);
 
                         // count tests
                         if (testSuite.getTestCases() != null && !testSuite.getTestCases().isEmpty()) {
@@ -308,7 +309,7 @@ public class RunTaskRequestProcessor {
     }
 
 
-    private void copy(List<String> after, List<BotTask> tasks, Run run, Environment env) {
+    private void copy(List<String> after, List<BotTask> tasks, Run run, Environment env, boolean copyCleanup) {
         if (CollectionUtils.isEmpty(after) || after.isEmpty()) {
             return;
         }
@@ -348,6 +349,10 @@ public class RunTaskRequestProcessor {
             afterTask.setEndpoint(getBaseUrl(env.getBaseUrl()) + suite1.getEndpoint());
 
             tasks.add(afterTask);
+
+            if(copyCleanup) {
+                copy(suite1.getCleanup(), afterTask.getCleanup(), run, env, false);
+            }
         }
     }
 
