@@ -123,7 +123,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         if (StringUtils.isEmpty(dto.getName())) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Issue Tracker name is empty"));
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Name is empty"));
         }
 
         if (dto.getAccount() == null || StringUtils.isEmpty(dto.getAccount().getId())) {
