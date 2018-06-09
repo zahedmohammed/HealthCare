@@ -31,13 +31,7 @@ public class Account extends BaseEntity {
     private String region;
 
     @Enumerated(EnumType.STRING)
-    private ClusterVisibility visibility;
-
-    @Enumerated(EnumType.STRING)
     private AccountType accountType;
-
-    @Enumerated(EnumType.STRING)
-    private ClusterCloud cloudType;
 
     private String accessKey;
     private String secretKey;
@@ -48,16 +42,5 @@ public class Account extends BaseEntity {
 
     @ElementCollection
     private List<String> allowedRegions;
-
-    @PrePersist
-    @PreUpdate
-    public void defaults() {
-        if (visibility == null) {
-            visibility = ClusterVisibility.PRIVATE;
-        }
-        if (cloudType == null) {
-            cloudType = ClusterCloud.OTHER;
-        }
-    }
 
 }

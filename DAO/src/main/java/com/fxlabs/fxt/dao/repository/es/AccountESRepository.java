@@ -11,6 +11,4 @@ import java.util.List;
  * @since 3/20/2018
  */
 public interface AccountESRepository extends ElasticsearchRepository<Account, String> {
-
-    List<Account> findByVisibility(ClusterVisibility visibility);
 }

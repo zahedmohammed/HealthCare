@@ -41,7 +41,7 @@ import java.util.Optional;
 public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.entity.clusters.Account, Account, String> implements AccountService {
 
     private AccountRepository accountRepository;
-    private AccountESRepository accountESRepository;
+    //private AccountESRepository accountESRepository;
     private AccountConverter accountConverter;
     private AmqpAdmin amqpAdmin;
     private TopicExchange topicExchange;
@@ -62,7 +62,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         super(accountRepository, accountConverter);
 
         this.accountRepository = accountRepository;
-        this.accountESRepository = accountESRepository;
+        //this.accountESRepository = accountESRepository;
         this.accountConverter = accountConverter;
         this.amqpAdmin = amqpAdmin;
         this.topicExchange = topicExchange;
@@ -175,7 +175,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         dto.setSecretKey(encryptor.encrypt(dto.getSecretKey()));
 
         com.fxlabs.fxt.dao.entity.clusters.Account cloudAccount = this.accountRepository.saveAndFlush(converter.convertToEntity(dto));
-        this.accountESRepository.save(cloudAccount);
+        //this.accountESRepository.save(cloudAccount);
         return new Response<>(converter.convertToDto(cloudAccount));
     }
 

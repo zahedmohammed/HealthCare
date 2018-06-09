@@ -179,7 +179,7 @@ public class FxCommandService {
 
         String file = logFiles.get(runId);
         if (StringUtils.isEmpty(file)) {
-            System.out.println (String.format("No log file found for run_id %s", runId));
+            System.out.println(String.format("No log file found for run_id %s", runId));
         }
         System.out.println("");
         try {
@@ -1022,14 +1022,14 @@ public class FxCommandService {
                 } else {
                     if (count++ > 5) page = 0;
                 }
-            } else if (run.getTask().getStatus() != TaskStatus.WAITING) {
+            } /*else if (run.getTask().getStatus() != TaskStatus.WAITING) {
                 isComplete = true;
-            }
+            }*/
 
             //if (isComplete) break;
 
             run = runRestRepository.findInstance(run.getId());
-            if (run.getTask().getStatus() == TaskStatus.COMPLETED || run.getTask().getStatus() == TaskStatus.FAIL) {
+            if (run.getTask().getStatus() == TaskStatus.COMPLETED || run.getTask().getStatus() == TaskStatus.FAIL || run.getTask().getStatus() == TaskStatus.TIMEOUT) {
                 isComplete = true;
             }
         }
@@ -1068,7 +1068,12 @@ public class FxCommandService {
 
     private void printRun(Run run, String carriageReturn) {
         System.out.println("");
-        Long per = ((Long) (((run.getTask().getTotalTests() - run.getTask().getFailedTests()) * 100) / run.getTask().getTotalTests()));
+
+        Long per = 0L;
+        if (run.getTask().getTotalTests() > 0)
+            per = ((Long) (((run.getTask().getTotalTests() - run.getTask().getFailedTests()) * 100) / run.getTask().getTotalTests()));
+
+
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 "Run summary:",
                 AnsiColor.DEFAULT));

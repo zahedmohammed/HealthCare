@@ -113,7 +113,6 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         ca.setCreatedBy(users.getId());
         ca.setInactive(false);
         ca.setName("Default");
-        ca.setVisibility(com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility.ORG_PUBLIC);
 
         this.accountRepository.save(ca);
 
@@ -124,7 +123,6 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         caGithub.setCreatedBy(users.getId());
         caGithub.setInactive(false);
         caGithub.setName("Default");
-        caGithub.setVisibility(ClusterVisibility.ORG_PUBLIC);
 
         this.accountRepository.save(caGithub);
 
@@ -135,7 +133,6 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         caEmail.setCreatedBy(users.getId());
         caEmail.setInactive(false);
         caEmail.setName("Default");
-        caEmail.setVisibility(com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility.ORG_PUBLIC);
 
         this.accountRepository.save(caEmail);
 

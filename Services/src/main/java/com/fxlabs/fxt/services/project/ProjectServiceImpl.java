@@ -190,7 +190,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
             // check auto-code
             if (request.getGenPolicy() == null) {
-                request.setGenPolicy(GenPolicy.None);
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Auto-Code option should selected."));
             }
 
             // check OpenAPISpec
@@ -199,7 +199,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // check name is not duplicate
-            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndInactive(request.getName(), request.getOrg().getId(), false);
+            Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndInactive(request.getName(), org, false);
             if (projectOptional.isPresent()) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Project with name [%s] exists", request.getName())));
             }
@@ -225,9 +225,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             project.setUrl(request.getUrl());
             project.setBranch(request.getBranch());
             project.setGenPolicy(request.getGenPolicy());
-            project.setOpenAPISpec(request.getOpenAPISpec());
+            if (project.getGenPolicy() == GenPolicy.Create) {
+                project.setOpenAPISpec(request.getOpenAPISpec());
+            }
 
             projectResponse = save(project, owner);
+
             if (projectResponse.isErrors()) {
                 return projectResponse;
             }
@@ -281,6 +284,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         if (!optionalProject.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
+        // check org
+        if (!StringUtils.equals(request.getOrg().getId(), org)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid org"));
+        }
 
         if (StringUtils.isEmpty(request.getName())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project name"));
@@ -290,10 +297,31 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project URL"));
         }
 
-
         // check account
         if (request.getAccount() == null || StringUtils.isEmpty(request.getAccount().getId())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
+        }
+
+        // check auto-code
+        if (request.getGenPolicy() == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Auto-Code option should selected."));
+        }
+
+        // check OpenAPISpec
+        if (request.getGenPolicy() == GenPolicy.Create && StringUtils.isEmpty(request.getOpenAPISpec())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "OpenAPISpec is required."));
+        }
+
+        // check name is not duplicate
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndIdNotLikeAndOrgIdAndInactive(request.getName(), request.getId(), request.getOrg().getId(), false);
+        if (projectOptional.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Project with name [%s] exists", request.getName())));
+        }
+
+        // check account access
+        Response<Account> accountResponse = accountService.findById(request.getAccount().getId(), org);
+        if (accountResponse == null || accountResponse.isErrors()) {
+            return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
         }
 
         Project project = converter.convertToDto(optionalProject.get());
@@ -303,7 +331,11 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         project.setUrl(request.getUrl());
         project.setBranch(request.getBranch());
         project.setGenPolicy(request.getGenPolicy());
-        project.setOpenAPISpec(request.getOpenAPISpec());
+        if (project.getGenPolicy() == GenPolicy.Create) {
+            project.setOpenAPISpec(request.getOpenAPISpec());
+        } else {
+            project.setOpenAPISpec(null);
+        }
         project.setAccount(request.getAccount());
 
         this.save(project, user);

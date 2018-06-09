@@ -30,11 +30,6 @@ public class Account extends BaseDto<String> {
 
     private AccountType accountType;
 
-    private ClusterVisibility visibility;
-
-
-    private ClusterCloud cloudType;
-
     private String prop1;
     private String prop2;
     private String prop3;

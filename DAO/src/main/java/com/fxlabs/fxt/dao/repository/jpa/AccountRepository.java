@@ -24,8 +24,6 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     Page<Account> findByOrgId(String orgId, Pageable pageable);
 
-    Long countByVisibility(ClusterVisibility visibility);
-
     List<Account> findByAccountTypeAndCreatedBy(AccountType type, String createdBy);
 
     List<Account> findByAccountTypeInAndCreatedBy(List<AccountType> types, String createdBy);
