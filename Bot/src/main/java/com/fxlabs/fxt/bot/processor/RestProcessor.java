@@ -175,12 +175,24 @@ public class RestProcessor {
             task.getTestCases().parallelStream().forEach(testCase -> {
                 //for (String req : task.getRequest()) {
 
-                Context context = new Context(parentContext);
+                Context pContext = parentContext;
+                Context context = new Context(pContext);
 
                 logger.debug("Init {}", task.getCleanup());
                 // execute init
                 if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getInitExec())
                         || StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Request")) {
+                    // create new context if InitExec policy is of type Request
+                    AssertionLogger logs_ = new AssertionLogger();
+
+                    String logType_ = null;
+                    if (task.getPolicies() != null) {
+                        logType_ = task.getPolicies().getLogger();
+                    }
+
+                    pContext = new Context(task.getProjectId(), task.getSuiteName(), logs, logType_);
+                    context = new Context(pContext);
+
                     if (task.getInit() != null) {
                         //task.getInit().stream().forEach(t -> {
                         for (BotTask t : task.getInit()) {
@@ -199,8 +211,8 @@ public class RestProcessor {
                 HttpEntity<String> request = new HttpEntity<>(testCase.getBody(), httpHeaders);
 
                 //String endpoint = task.getEndpoint();
-                String req = dataResolver.resolve(testCase.getBody(), parentContext, task.getSuiteName());
-                String url = dataResolver.resolve(task.getEndpoint(), parentContext, task.getSuiteName());
+                String req = dataResolver.resolve(testCase.getBody(), pContext, task.getSuiteName());
+                String url = dataResolver.resolve(task.getEndpoint(), pContext, task.getSuiteName());
 
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
@@ -255,11 +267,12 @@ public class RestProcessor {
                 }
 
                 // clean-up init tasks
+                final Context _pContext = pContext;
                 if (!CollectionUtils.isEmpty(context.getInitTasks())) {
                     context.getInitTasks().stream().forEach(initTask -> {
                         initTask.getCleanup().stream().forEach(t -> {
                             logger.debug("Executing Cleanup-Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
-                            cleanUpProcessor.process(t, parentContext, initTask.getSuiteName());
+                            cleanUpProcessor.process(t, _pContext, initTask.getSuiteName());
                         });
                     });
                 }

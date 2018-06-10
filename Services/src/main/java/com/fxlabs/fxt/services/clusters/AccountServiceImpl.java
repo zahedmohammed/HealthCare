@@ -78,7 +78,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<List<Account>> findAll(String org, Pageable pageable) {
         // Find all public
-        Page<com.fxlabs.fxt.dao.entity.clusters.Account> page = this.accountRepository.findByOrgId(org, pageable);
+        Page<com.fxlabs.fxt.dao.entity.clusters.Account> page = this.accountRepository.findByOrgIdAndInactive(org, false, pageable);
         return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
@@ -95,7 +95,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         if (!EnumUtils.isValidEnum(AccountPage.class, accountType)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Not a valid filter.")));
         }
-        List<com.fxlabs.fxt.dao.entity.clusters.Account> accounts = this.accountRepository.findByAccountTypeInAndOrgId(AccountPage.valueOf(accountType).getAccountTypes(), org);
+        List<com.fxlabs.fxt.dao.entity.clusters.Account> accounts = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(AccountPage.valueOf(accountType).getAccountTypes(), org, false);
         return new Response<>(converter.convertToDtos(accounts));
     }
 
@@ -166,7 +166,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
 
-        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = accountRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> cloudAccountOptional = accountRepository.findByNameAndOrgIdAndInactive(dto.getName(), dto.getOrg().getId(), false);
         if (cloudAccountOptional.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Duplicate cloudAccount name"));
         }
@@ -269,25 +269,25 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             case Jira:
                 List<Project> projects = projectRepository.findByAccountIdAndInactive(cloudAccountId, false);
                 if (!CollectionUtils.isEmpty(projects)) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Project"));
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by an active Project"));
                 }
                 List<IssueTracker> issueTrackers = issueTrackerRepository.findByAccountIdAndInactive(cloudAccountId, false);
                 if (!CollectionUtils.isEmpty(issueTrackers)) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Issue Tracker"));
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by an active Issue Tracker"));
                 }
                 break;
             case AWS:
             case Self_Hosted:
                 List<Cluster> clusters = clusterRepository.findByAccountIdAndInactive(cloudAccountId, false);
                 if (!CollectionUtils.isEmpty(clusters)) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Bot"));
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by an active Bot"));
                 }
                 break;
             case Slack:
             case Email:
                 List<Notification> notifications = notificationRepository.findByAccountIdAndInactive(cloudAccountId, false);
                 if (!CollectionUtils.isEmpty(notifications)) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by active Notification"));
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Cannot delete this account. This account is being used by an active Notification"));
                 }
                 break;
             default:
@@ -296,7 +296,11 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         }
 
-        return super.delete(cloudAccountId, user);
+        com.fxlabs.fxt.dao.entity.clusters.Account account = cloudAccountOptional.get();
+        account.setInactive(true);
+
+        return save(converter.convertToDto(account));
+
     }
 
 

@@ -16,19 +16,19 @@ import java.util.Optional;
  */
 public interface AccountRepository extends JpaRepository<Account, String> {
 
-    Optional<Account> findByNameAndOrgId(String name, String orgId);
+    Optional<Account> findByNameAndOrgIdAndInactive(String name, String orgId, boolean inactive);
 
     Optional<Account> findByNameAndOrgName(String name, String orgName);
 
     Page<Account> findByCreatedBy(String owner, Pageable pageable);
 
-    Page<Account> findByOrgId(String orgId, Pageable pageable);
+    Page<Account> findByOrgIdAndInactive(String orgId, boolean inactive, Pageable pageable);
 
     List<Account> findByAccountTypeAndCreatedBy(AccountType type, String createdBy);
 
     List<Account> findByAccountTypeInAndCreatedBy(List<AccountType> types, String createdBy);
 
-    List<Account> findByAccountTypeInAndOrgId(List<AccountType> types, String orgId);
+    List<Account> findByAccountTypeInAndOrgIdAndInactive(List<AccountType> types, String orgId, boolean inactive);
 
     Optional<Account> findByIdAndOrgId(String id, String orgId);
 

@@ -7,6 +7,7 @@ public enum TestSuiteCategory {
 
     Bug("Bug"),
     Use_Case("Use_Case"),
+    Functional("Functional"),
     Positive("Positive"),
     Negative("Negative"),
     Weak_Password ("Weak_Password"),
