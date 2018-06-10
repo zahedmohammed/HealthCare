@@ -10,16 +10,12 @@ import com.amazonaws.services.ec2.model.*;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +23,7 @@ import java.util.Map;
 
 
 /**
- *
  * @author Mohammed Shoukath Ali
- *
- *
  */
 
 @Component
@@ -51,32 +44,27 @@ public class AwsCloudService implements CloudService {
 //           .put("us-east-1", "ec2.us-east-1.amazonaws.com")
 //            .put("us-west-1", "ec2.us-west-1.amazonaws.com").build();
 
-  //  private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
+    //  private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
 
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
 
-
     /**
      * <p>
-     *  This method does only one thing.
-     *   1. Creates Vm's on AWS
+     * This method does only one thing.
+     * 1. Creates Vm's on AWS
      * </p>
      *
-     * @param task
-     *  <p>
-     *      Contains public cloud system connection information.
-     *      e.g.
-     *     VM configuaration
-     *  </p>
-     *
-     *
-     * @return
-     *  <p>
-     *      CloudTaskResponse - Should only set these properties.
-     *      1. success - true/false
-     *      2. logs - execution or error logs.
-     *  </p>
+     * @param task <p>
+     *             Contains public cloud system connection information.
+     *             e.g.
+     *             VM configuaration
+     *             </p>
+     * @return <p>
+     * CloudTaskResponse - Should only set these properties.
+     * 1. success - true/false
+     * 2. logs - execution or error logs.
+     * </p>
      */
     @Override
     public CloudTaskResponse create(final CloudTask task) {
@@ -85,13 +73,13 @@ public class AwsCloudService implements CloudService {
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
         response.setId(task.getId());
-        AmazonEC2  awsService = null;
+        AmazonEC2 awsService = null;
         try {
 
             taskLogger.set(new StringBuilder());
 
             if (task == null || CollectionUtils.isEmpty(task.getOpts())) {
-                taskLogger.get().append("Options empty for takd id :" +  task.getId());
+                taskLogger.get().append("Options empty for takd id :" + task.getId());
                 logger.info("Options empty for takd id : [{}]", task.getId());
                 return response;
             }
@@ -103,7 +91,7 @@ public class AwsCloudService implements CloudService {
             String secretKey = opts.get("SECRET_KEY");
 
             String region = getRegion(opts);
-           // String region = "us-east-1";
+            // String region = "us-east-1";
 
             awsService = getAwsEc2Service(accessKeyId, secretKey, region);
 
@@ -117,7 +105,7 @@ public class AwsCloudService implements CloudService {
             String awsPrivateKeyName = getAwsPrivateKey(opts, awsService);
             taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
 
-            String securityGroupId = getSecurityGroupId(opts,awsService);
+            String securityGroupId = getSecurityGroupId(opts, awsService);
             taskLogger.get().append("Setting Security Group Id " + securityGroupId);
 
 //            commenting out the securitygroup mandatory validation
@@ -141,7 +129,7 @@ public class AwsCloudService implements CloudService {
             int count = getCount(opts);
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
                     .withImageId(image)
-                    .withInstanceType(com.amazonaws.services.ec2.model.InstanceType.T2Small)
+                    .withInstanceType(InstanceType.T1Micro)
                     .withMinCount(count).withMaxCount(count)
                     .withKeyName(awsPrivateKeyName)
                     .withSubnetId(subnetId)
@@ -161,9 +149,9 @@ public class AwsCloudService implements CloudService {
             RunInstancesResult run_response = awsService.runInstances(runInstancesRequest);
             StringBuilder sb = new StringBuilder();
 
-            boolean firstIterationFlag = true ;
+            boolean firstIterationFlag = true;
 
-            for (Instance instance :run_response.getReservation().getInstances()){
+            for (Instance instance : run_response.getReservation().getInstances()) {
                 if (firstIterationFlag) {
                     firstIterationFlag = false;
                 } else {
@@ -182,7 +170,7 @@ public class AwsCloudService implements CloudService {
                         .withTags(new Tag("Name", tag));
                 awsService.createTags(createTagsRequest);
             }
-           // String instance_id = run_response.getReservation().getInstances().get(0).getInstanceId();
+            // String instance_id = run_response.getReservation().getInstances().get(0).getInstanceId();
 
 
             response.setSuccess(true);
@@ -204,14 +192,14 @@ public class AwsCloudService implements CloudService {
 
     @Override
     public CloudTaskResponse destroy(final CloudTask task) {
-        logger.info("In IT AwsCloud Service for task [{}]" , task.getType().toString());
+        logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
         response.setId(task.getId());
 
-       // ComputeService awsService = null;
-        AmazonEC2  awsService = null;
+        // ComputeService awsService = null;
+        AmazonEC2 awsService = null;
         try {
             taskLogger.set(new StringBuilder());
             if (CollectionUtils.isEmpty(task.getOpts())) {
@@ -223,7 +211,7 @@ public class AwsCloudService implements CloudService {
             Map<String, String> opts = task.getOpts();
             String nodeIds = opts.get("NODE_ID");
 
-            if (StringUtils.isEmpty(nodeIds)){
+            if (StringUtils.isEmpty(nodeIds)) {
                 return response;
             }
             String[] instanceIds = nodeIds.split(",");
@@ -231,7 +219,7 @@ public class AwsCloudService implements CloudService {
             String secretKey = opts.get("SECRET_KEY");
 
 
-            logger.info("Deleting bots with id's [{}]..." , nodeIds);
+            logger.info("Deleting bots with id's [{}]...", nodeIds);
             taskLogger.get().append("Deleting Bots : " + nodeIds);
 
             AmazonEC2 client = getAwsEc2Service(accessKeyId, secretKey, getRegion(opts));
@@ -242,7 +230,7 @@ public class AwsCloudService implements CloudService {
 
             TerminateInstancesResult terminateInstancesResult = client.terminateInstances(termRequest);
             logger.info("AWS response for termination of Instances :" + terminateInstancesResult.getTerminatingInstances().toString());
-            taskLogger.get().append("AWS response for termination of Instances :"  + terminateInstancesResult.getTerminatingInstances().toString());
+            taskLogger.get().append("AWS response for termination of Instances :" + terminateInstancesResult.getTerminatingInstances().toString());
             response.setSuccess(true);
             response.setLogs(taskLogger.get().toString());
 
@@ -266,18 +254,18 @@ public class AwsCloudService implements CloudService {
 
     private int getCount(Map<String, String> opts) {
 
-        String countStr =  opts.get("COUNT");
-        try{
-           return Integer.parseInt(countStr);
-        }catch (NumberFormatException ex){
-            logger.info("Error parsing bot count [{}]" , countStr);
+        String countStr = opts.get("COUNT");
+        try {
+            return Integer.parseInt(countStr);
+        } catch (NumberFormatException ex) {
+            logger.info("Error parsing bot count [{}]", countStr);
         }
 
         return 1;
     }
 
     private String getRegion(Map<String, String> opts) {
-        String region =  opts.get("REGION");
+        String region = opts.get("REGION");
         if (StringUtils.isEmpty(region)) {
             region = FXLABS_AWS_DEFAULT_REGION;
         }
@@ -285,9 +273,9 @@ public class AwsCloudService implements CloudService {
     }
 
     private String getInstanceTag(Map<String, String> opts) {
-        String tag =  opts.get("INSTANCE_NAME");
-        if(org.apache.commons.lang3.StringUtils.equalsIgnoreCase(tag, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(tag)){
+        String tag = opts.get("INSTANCE_NAME");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(tag, "null")
+                || org.apache.commons.lang3.StringUtils.isEmpty(tag)) {
             tag = "";
         }
         return tag;
@@ -338,11 +326,10 @@ public class AwsCloudService implements CloudService {
 //    }
 
     /**
-     *
      * @param opts
      * @return keypair
      */
-    private String getAwsPrivateKey(Map<String, String> opts, AmazonEC2 awsService){
+    private String getAwsPrivateKey(Map<String, String> opts, AmazonEC2 awsService) {
         String value = opts.get("KEY_PAIR");
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
                 || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
@@ -363,7 +350,7 @@ public class AwsCloudService implements CloudService {
 
         if (org.apache.commons.lang3.StringUtils.isEmpty(keyPairFromEc2)) {
 
-            logger.debug("Creatring keypair [{}]" ,  value);
+            logger.debug("Creatring keypair [{}]", value);
 
             CreateKeyPairRequest createKeyPairRequest = new CreateKeyPairRequest().withKeyName(value);
             CreateKeyPairResult createKeyPairResult = awsService.createKeyPair(createKeyPairRequest);
@@ -376,8 +363,7 @@ public class AwsCloudService implements CloudService {
     }
 
 
-
-    private static String getBotConfigScript(Map<String, String> opts){
+    private static String getBotConfigScript(Map<String, String> opts) {
         String value = opts.get("COMMAND");
 
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
@@ -393,7 +379,7 @@ public class AwsCloudService implements CloudService {
         String accessKeyId = opts.get("ACCESS_KEY_ID");
         String secretKey = opts.get("SECRET_KEY");
 
-       // AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey, "us-west-1");
+        // AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey, "us-west-1");
 
         String imageName = opts.get("IMAGE");
 
@@ -414,9 +400,9 @@ public class AwsCloudService implements CloudService {
 
     }
 
-    private String getSubnetId(Map<String, String> opts, AmazonEC2  awsService){
+    private String getSubnetId(Map<String, String> opts, AmazonEC2 awsService) {
 
-        String subnet_ =  opts.get("SUBNET");
+        String subnet_ = opts.get("SUBNET");
 
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(subnet_, "null")
                 || org.apache.commons.lang3.StringUtils.isEmpty(subnet_)) {
@@ -440,7 +426,7 @@ public class AwsCloudService implements CloudService {
         }
 
 
-        DescribeSubnetsRequest describeSubnetsRequest=new DescribeSubnetsRequest().withSubnetIds(subnet_);
+        DescribeSubnetsRequest describeSubnetsRequest = new DescribeSubnetsRequest().withSubnetIds(subnet_);
         DescribeSubnetsResult describeSubnetsIdResult = awsService.describeSubnets(describeSubnetsRequest);
         List<Subnet> describeSubnetsIdsResult = response.getSubnets();
 
@@ -456,18 +442,17 @@ public class AwsCloudService implements CloudService {
 
 
     /**
-     *
      * @param opts
      * @return security group
      */
-    private String getSecurityGroupId(Map<String, String> opts, AmazonEC2  awsService){
+    private String getSecurityGroupId(Map<String, String> opts, AmazonEC2 awsService) {
 
 
         String value = opts.get("SECURITY_GROUP");
 
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
                 || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-             value = FXLABS_DEFAULT_SECURITY_GROUP;
+            value = FXLABS_DEFAULT_SECURITY_GROUP;
         }
 
         DescribeSecurityGroupsRequest req = new DescribeSecurityGroupsRequest()
