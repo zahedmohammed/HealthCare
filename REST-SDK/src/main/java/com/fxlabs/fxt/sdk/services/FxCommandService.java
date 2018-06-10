@@ -143,7 +143,7 @@ public class FxCommandService {
 
         System.out.println(
                 AnsiOutput.toString(AnsiColor.GREEN,
-                        String.format(" Total Processing Time: %s ms",
+                        String.format(" Actual Processing Time: %s ms",
                                 (new Date().getTime() - loadEnd.getTime()))
                         , AnsiColor.DEFAULT)
         );
@@ -1086,8 +1086,8 @@ public class FxCommandService {
                                         "\n Total Pass: %s " +
                                         "\n Total Fail: %s " +
                                         "\n Success: %s " +
-                                        "\n Time: %s ms" +
-                                        "\n Data: %s Bytes",
+                                        "\n Data: %s Bytes" +
+                                        "\n Total Time: %s ms",
                                 run.getRunId(),
                                 CredUtils.url.get() + "/#/app/jobs/" + run.getJob().getId() + "/runs/" + run.getId(),
                                 run.getTask().getStatus(),
@@ -1100,7 +1100,7 @@ public class FxCommandService {
                                 carriageReturn)
                         , AnsiColor.DEFAULT)
         );
-        System.out.println("");
+        //System.out.println("");
     }
 
     private void printFailedSuites(Set<TestSuiteResponse> dataSets, File f) {
