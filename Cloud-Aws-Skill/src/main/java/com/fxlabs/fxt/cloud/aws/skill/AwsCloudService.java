@@ -80,7 +80,7 @@ public class AwsCloudService implements CloudService {
 
             if (task == null || CollectionUtils.isEmpty(task.getOpts())) {
                 taskLogger.get().append("Options empty for takd id :" + task.getId());
-                logger.info("Options empty for takd id : [{}]", task.getId());
+                logger.info("Options empty for task id : [{}]", task.getId());
                 return response;
             }
 
@@ -129,7 +129,7 @@ public class AwsCloudService implements CloudService {
             int count = getCount(opts);
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
                     .withImageId(image)
-                    .withInstanceType(InstanceType.T1Micro)
+                    .withInstanceType(InstanceType.T2Micro)
                     .withMinCount(count).withMaxCount(count)
                     .withKeyName(awsPrivateKeyName)
                     .withSubnetId(subnetId)
