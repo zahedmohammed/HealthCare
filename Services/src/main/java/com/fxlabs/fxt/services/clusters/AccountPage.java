@@ -33,7 +33,7 @@ public enum AccountPage {
     PROJECT {
         @Override
         public List<AccountType> getAccountTypes() {
-            return Arrays.asList(AccountType.GitHub, AccountType.Git, AccountType.GitLab, AccountType.Microsoft_TFS_Git, AccountType.Microsoft_VSTS_Git, AccountType.Local);
+            return Arrays.asList(AccountType.GitHub, AccountType.BitBucket, AccountType.Git, AccountType.GitLab, AccountType.Microsoft_TFS_Git, AccountType.Microsoft_VSTS_Git, AccountType.Local);
         }
     };
 
