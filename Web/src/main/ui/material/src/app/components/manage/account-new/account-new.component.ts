@@ -21,7 +21,7 @@ export class AccountNewComponent implements OnInit {
   cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
   //accountTypes = [ 'VERSION_CONTROL', 'ISSUE_TRACKER', 'CLOUD', 'NOTIFICATION'];
   accountTypes = [
-      '--- Version Control ---', 'Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git',
+      '--- Version Control ---', 'Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local',
       '--- Bot Deployment ---', 'AWS', 'Self_Hosted',
       '--- Issue-Trackers ---', 'GitHub', 'Jira',
       '--- Notifications ---', 'Slack' , 'Email'
