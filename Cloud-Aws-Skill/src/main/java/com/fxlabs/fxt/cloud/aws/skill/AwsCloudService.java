@@ -426,16 +426,16 @@ public class AwsCloudService implements CloudService {
         }
 
 
-        DescribeSubnetsRequest describeSubnetsRequest = new DescribeSubnetsRequest().withSubnetIds(subnet_);
+        DescribeSubnetsRequest describeSubnetsRequest = new DescribeSubnetsRequest();
         DescribeSubnetsResult describeSubnetsIdResult = awsService.describeSubnets(describeSubnetsRequest);
         List<Subnet> describeSubnetsIdsResult = response.getSubnets();
 
         logger.info("Found  [{}] subnets in region [{}] for subnet Id search", response.getSubnets().size(), getRegion(opts));
 
         for (Subnet subnet : subnets) {
-            return subnet.getSubnetId();
+            if (subnet.isDefaultForAz())
+                return subnet.getSubnetId();
         }
-
 
         return null;
     }
