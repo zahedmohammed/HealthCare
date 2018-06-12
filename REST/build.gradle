@@ -39,7 +39,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-websocket')
     compile('org.springframework.boot:spring-boot-starter-security')
-
+    compile("org.hibernate:hibernate-validator:5.2.4.Final")
     compile project(":Services")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
