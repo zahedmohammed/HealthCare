@@ -6,10 +6,12 @@ import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.*;
+import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.it.IssueTracker;
 import com.fxlabs.fxt.dto.it.State;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -35,13 +38,14 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     private OrgUsersRepository orgUsersRepository;
     private SubscriptionTaskRepository subscriptionTaskRepository;
     private ClusterRepository clusterRepository;
+    private AccountService accountService;
 
 
     @Autowired
     public IssueTrackerServiceImpl(IssueTrackerRepository repository, IssueTrackerConverter converter,
                                    UsersRepository usersRepository, OrgUsersRepository orgUsersRepository,
                                    AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository,
-                                   ClusterRepository clusterRepository) {
+                                   ClusterRepository clusterRepository, AccountService accountService) {
         super(repository, converter);
 
         this.repository = repository;
@@ -51,6 +55,7 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
         this.orgUsersRepository = orgUsersRepository;
         this.clusterRepository = clusterRepository;
         this.subscriptionTaskRepository = subscriptionTaskRepository;
+        this.accountService = accountService;
 //        this.systemSettingRepository = systemSettingRepository;
     }
 
@@ -110,8 +115,17 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Issue Tracker name is empty"));
         }
 
-        if (dto.getAccount() == null || StringUtils.isEmpty(dto.getAccount().getId())) {
+        if (dto.getAccount() == null || StringUtils.isBlank(dto.getAccount().getId())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account is empty"));
+        }else{
+//            try {
+                Response<Account> accountResp = accountService.findById(dto.getAccount().getId(), o);
+                if (accountResp == null || accountResp.isErrors() || accountResp.getData() == null){
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Account id '" + dto.getAccount().getId() + "'"));
+                }
+//            }catch (NoSuchElementException ex){
+//                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Account id '" + dto.getAccount().getId() + "'"));
+//            }
         }
 
         if (StringUtils.isEmpty(dto.getProp1())) {

@@ -7,8 +7,11 @@ import com.fxlabs.fxt.services.it.IssueTrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 import static com.fxlabs.fxt.rest.base.BaseController.*;
@@ -18,6 +21,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
  */
 @RestController
 @RequestMapping(ISSUE_TRACKER_BASE)
+@Validated
 public class IssueTrackerController {
 
     private IssueTrackerService service;
@@ -29,8 +33,8 @@ public class IssueTrackerController {
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(method = RequestMethod.GET)
-    public Response<List<IssueTracker>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                                @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+    public Response<List<IssueTracker>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
+                                                @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Max(20) Integer pageSize) {
 
         return service.findAll(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
