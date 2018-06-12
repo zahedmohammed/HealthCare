@@ -43,10 +43,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
     @Override
     public Response<Long> count(String org, Pageable pageable) {
-        // check user has access to project
-        // find owned projects org --> projects --> jobs
-        // users --> org or users --> projects
-        // least - a project should be visible to owner
+
         Response<List<Project>> projectsResponse = projectService.findProjects(org, pageable);
         if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
             return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
