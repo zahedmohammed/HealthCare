@@ -164,7 +164,7 @@ export class RunDetailComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 100;
+  pageSize = 1000;
   change(evt) {
     this.page = evt['pageIndex'];
     this.getSummary();
