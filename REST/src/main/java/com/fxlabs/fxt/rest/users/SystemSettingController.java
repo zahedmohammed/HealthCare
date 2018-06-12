@@ -7,19 +7,22 @@ import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
-import static com.fxlabs.fxt.rest.base.BaseController.ROLE_ENTERPRISE_ADMIN;
-import static com.fxlabs.fxt.rest.base.BaseController.SYSTEM_SETTING_BASE;
+import static com.fxlabs.fxt.rest.base.BaseController.*;
 
 /**
  * @author Intesar Shannan Mohammed
  */
 @RestController
 @RequestMapping(SYSTEM_SETTING_BASE)
+@Validated
 public class SystemSettingController {
 
     private SystemSettingService service;
@@ -32,8 +35,9 @@ public class SystemSettingController {
 
     @Secured(ROLE_ENTERPRISE_ADMIN)
     @RequestMapping(method = RequestMethod.GET)
-    public Response<List<SystemSetting>> findAll() {
-        return service.findAll(null, PageRequest.of(0, 100));
+    public Response<List<SystemSetting>> findAll(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
+                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) @Max(100) Integer pageSize) {
+        return service.findAll(null, PageRequest.of(page, pageSize));
     }
 
 
@@ -43,13 +47,13 @@ public class SystemSettingController {
         return service.findById(id, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_ENTERPRISE_ADMIN)
+    /*@Secured(ROLE_ENTERPRISE_ADMIN)
     @RequestMapping(value = "/batch-save", method = RequestMethod.POST)
     public Response<Boolean> create(@Valid @RequestBody List<SystemSetting> dtos) {
         return service.save(dtos);
     }
 
-    /*@Secured(ROLE_ENTERPRISE_ADMIN)
+    @Secured(ROLE_ENTERPRISE_ADMIN)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<SystemSetting> create(@Valid @RequestBody SystemSetting dto) {
         return service.save(dto);
