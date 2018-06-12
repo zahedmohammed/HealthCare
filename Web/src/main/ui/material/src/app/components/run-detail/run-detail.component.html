@@ -17,15 +17,15 @@
             <div class="card__body card-white">
                 <div class="card__title">
                     <h4>ID: {{run.runId}}</h4>
-                    <h4>Status: {{run.task.status}}</h4>
-                    <h4>Date: {{run.task.startTime | date:'short'}}</h4>
+                    <h4>Status: <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span><span *ngIf="run.task.status != 'COMPLETED'" class="text-warning">{{run.task.status}}</span></h4>
+                    <h4>Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>
                     <h4>Total Time: {{run.task.totalTime}}</h4>
                     <h4>Total Tests: {{run.task.totalTests}}</h4>
                     <h4 color="success">Total Passed: {{run.task.totalTestCompleted}}</h4>
                     <h4 color="warn">Total Failed: {{run.task.failedTests}}</h4>
                 </div>
                 <div class="divider divider-solid divider-lg"></div>
-                <div class="card__title" *ngIf="run.stats != undefined">
+                <!--<div class="card__title" *ngIf="run.stats != undefined">
                     <h4>Statistics By Category (Total/Pass)</h4>
                     <h4>Security (SQL Injection): {{run.stats.Security_SQL_Injection_Passed + run.stats.Security_SQL_Injection_Failed|| 0}}  / {{run.stats.Security_SQL_Injection_Passed || 0}} </h4>
                     <h4>Security (DDOS): {{run.stats.Security_DDOS_Passed  + run.stats.Security_DDOS_Failed || 0}} / {{run.stats.Security_DDOS_Passed || 0}} </h4>
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="divider divider-solid divider-lg"></div>
-                <p class="card__desc" style="white-space: pre;">{{run.task.description}}</p>
+                <p class="card__desc" style="white-space: pre;">{{run.task.description}}</p>-->
             </div>
         </div>
     </div>
@@ -82,15 +82,22 @@
                     <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span class="text-danger"><i
                             class="material-icons">clear</i> </span></td>-->
                     <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName |  slice:0:55}}</a>
+                        <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName |
+                            slice:0:55}}</a>
                     </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{s.category}} </td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Critical'"><span class="text-danger">{{s.severity}} </span></td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Major'"><span class="text-warning">{{s.severity}} </span></td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category != 'CRITICAL' && s.category != 'MAJOR' "><span class="text-success">{{s.severity}} </span></td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.category}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Critical'"><span
+                            class="text-danger">{{s.severity}} </span></td>
+                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Major'"><span
+                            class="text-warning">{{s.severity}} </span></td>
+                    <td class="mdl-data-table__cell--non-numeric"
+                        *ngIf="s.category != 'CRITICAL' && s.category != 'MAJOR' "><span class="text-success">{{s.severity}} </span>
+                    </td>
 
                     <td class="mdl-data-table__cell--non-numeric"><span
-                            class="text-success"> Passed: {{s.tests - s.failed}}  <span class="text-danger" *ngIf="s.failed != 0">&nbsp;&nbsp; Failed: {{s.failed}}</span></span></td>
+                            class="text-success"> Passed: {{s.tests - s.failed}}  <span class="text-danger"
+                                                                                        *ngIf="s.failed != 0">&nbsp;&nbsp; Failed: {{s.failed}}</span></span>
+                    </td>
 
                     <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
                             class="text-danger"> Fail: {{s.failed}}</span></td>-->
