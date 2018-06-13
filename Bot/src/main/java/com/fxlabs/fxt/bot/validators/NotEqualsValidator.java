@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.bot.validators;
 
+import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.Context;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,5 +24,13 @@ public class NotEqualsValidator extends Validator {
         } else {
             validationFailed(operand1, operand2, context, assertion, assertionLogs);
         }
+    }
+
+    protected void validationPass(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
+        context.setResult("pass");
+        String msg = String.format("Assertion [%s] passed, not expected [%s] and found [%s]", assertion, operand2, operand1);
+        //logger.debug(msg);
+        context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
+        assertionLogs.append(msg);
     }
 }
