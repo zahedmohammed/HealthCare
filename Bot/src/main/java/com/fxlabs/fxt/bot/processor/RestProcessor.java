@@ -279,9 +279,25 @@ public class RestProcessor {
 
                 // return processed task
                 //sender.sendTask(newTask);
-                String formattedRequest = JsonFormatUtil.format(req);
-                String formattedResponse = JsonFormatUtil.format(response.getBody());
-                String formattedLogs = JsonFormatUtil.clean(assertionLogs.toString());
+                String formattedRequest = null;
+                try {
+                    formattedRequest = JsonFormatUtil.format(req);
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage());
+                }
+                String formattedResponse = null;
+                try {
+                    formattedResponse = JsonFormatUtil.format(response.getBody());
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage());
+                }
+
+                String formattedLogs = null;
+                try {
+                    formattedLogs = JsonFormatUtil.clean(assertionLogs.toString());
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage());
+                }
 
                 // Test-Cases Responses
                 if (generateTestCases) {

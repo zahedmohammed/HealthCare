@@ -30,6 +30,13 @@ constructor(private http: HttpClient) {
     return this.http.post(this.serviceUrl + "/job/" + jobId, null);
   }
 
+  advRun(jobId: string, region: string) {
+    let params = new HttpParams();
+    params = params.append('region', region);
+    console.log("JobId: " + jobId + " Region: " + region);
+    return this.http.post(this.serviceUrl + "/job/" + jobId, null, {params});
+  }
+
   getDetails(runId:string) {
     return this.http.get(this.serviceUrl + "/" + runId);
   }

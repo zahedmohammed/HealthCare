@@ -1,6 +1,7 @@
 export class Run {
   task: Task = new Task();
   runId: string;
+  modifiedDate: string;
   stats : Map<string, number> = new Map<string, number>();
 }
 

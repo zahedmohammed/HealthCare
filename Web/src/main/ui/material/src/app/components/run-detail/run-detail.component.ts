@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { JobsService } from '../../services/jobs.service';
 import { RunService } from '../../services/run.service';
 import { ProjectService } from '../../services/project.service';
 import { Base } from '../../models/base.model';
 import { Run } from '../../models/run.model';
-import {VERSION, MatDialog, MatDialogRef} from '@angular/material';
+import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
 import { MsgDialogComponent } from '../dialogs/msg-dialog/msg-dialog.component';
 import { Handler } from '../dialogs/handler/handler';
 

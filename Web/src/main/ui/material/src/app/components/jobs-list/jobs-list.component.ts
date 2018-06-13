@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { JobsService } from '../../services/jobs.service';
 import { RunService } from '../../services/run.service';
 import { ProjectService } from '../../services/project.service';
 import { Base } from '../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 import { Handler } from '../dialogs/handler/handler';
+import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
+import { AdvRunComponent } from '../dialogs/adv-run/adv-run.component';
 
 
 @Component({
@@ -20,7 +22,8 @@ export class JobslistComponent implements OnInit {
   projectId: string = "";
   project: Base = new Base();
   showSpinner: boolean = false;
-  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private jobsService: JobsService, private runService: RunService, private dialog: MatDialog,
+    private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {   
     this.handler.activateLoader();
@@ -83,6 +86,14 @@ export class JobslistComponent implements OnInit {
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
+    });
+  }
+
+  advRun(job) {
+    this.dialog.open(AdvRunComponent, {
+        width:'50%',
+        height:'80%',
+        data: job
     });
   }
 }

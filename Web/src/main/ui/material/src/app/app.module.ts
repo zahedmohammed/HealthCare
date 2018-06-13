@@ -154,6 +154,7 @@ import { ErrorDialogComponent } from './components/dialogs/error-dialog/error-di
 import { ResponseDialogComponent } from './components/dialogs/response-dialog/response-dialog.component';
 import { Handler } from './components/dialogs/handler/handler';
 import { PasswordResetComponent } from './components/users/password-reset/password-reset.component';
+import { AdvRunComponent } from './components/dialogs/adv-run/adv-run.component';
 
 @NgModule({
   imports: [
@@ -287,11 +288,12 @@ import { PasswordResetComponent } from './components/users/password-reset/passwo
     MsgDialogComponent,
     ErrorDialogComponent,
     ResponseDialogComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    AdvRunComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
-  entryComponents: [MsgDialogComponent, ErrorDialogComponent, ResponseDialogComponent]
+  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent]
 })
 
 export class AppModule {
