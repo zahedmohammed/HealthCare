@@ -77,6 +77,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         return new Response<com.fxlabs.fxt.dto.users.Users>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid id")));
     }
 
+    @Override
     public Response<String> generate(String email){
         Optional<Users> usersOptional = ((UsersRepository) repository).findByEmail(email);
 
