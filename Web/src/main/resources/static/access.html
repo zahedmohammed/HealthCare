@@ -48,6 +48,8 @@
 
 
 
+
+
 </script>
 <body>
 
@@ -63,6 +65,7 @@
     <!-- Our series of input boxes -->
     <form name='f' action='/login' method='POST'>
         <input type='text' name='username' placeholder="Email" class="login"/>
+        <span class="login">Login to specific Org use 'org-name//your-email'</span>
         <input type="password" name="password" placeholder="Password" class="login"/>
         <!--<i class="reveal fa fa-eye" onmousedown="change_type();" onmouseup="change_back()"></i>--> <br/>
         <!--<input type="checkbox" id="remember"/> <span id="rememberLabel"> Remember me? </span>-->
@@ -93,8 +96,8 @@
     <!-- Email address with tooltip -->
     <input type="text" name="email" placeholder="Email Address" class="login" id="emailAddress"/>
     <span class="hint--right hint--rounded" data-hint="Enter a valid email Address!">
-					<i class="fa fa-envelope"></i>
-				</span>
+        <i class="fa fa-envelope"></i>
+    </span>
     <!-- Password input boxes -->
     <input type="password" name="pwd" placeholder="Password" class="login"/>
     <span class="hint--right hint--rounded" data-hint="Choose a Password! Alphanumeric values only.">

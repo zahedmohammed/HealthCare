@@ -22,7 +22,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,11 +67,11 @@ public class FxUserDetailsService implements UserDetailsService {
         String email = username;
 
         AccessKey accessKey = null;
-            Optional<AccessKey> accessKeyOption = accessKeyRepository.findByAccessKeyAndExpirationAfter(email, new Date());
-            if (accessKeyOption.isPresent()) {
-                accessKey = accessKeyOption.get();
-                email = accessKeyOption.get().getUsers().getEmail();
-            }
+        Optional<AccessKey> accessKeyOption = accessKeyRepository.findByAccessKeyAndExpirationAfter(email, new Date());
+        if (accessKeyOption.isPresent()) {
+            accessKey = accessKeyOption.get();
+            email = accessKeyOption.get().getUsers().getEmail();
+        }
 
         if (StringUtils.contains(username, "//")) {
             String[] tokens = StringUtils.split(username, "//");
