@@ -82,7 +82,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
     @Override
     public Response<com.fxlabs.fxt.dto.users.Org> save(com.fxlabs.fxt.dto.users.Org dto, String user) {
-        // TODO - check dup name
+        // check dup name
         Optional<Org> orgOptional = orgRepository.findByName(dto.getName());
         if (orgOptional.isPresent()) {
             throw new FxException(String.format("Org name [%s] taken.", dto.getName()));
@@ -95,6 +95,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         Users users = usersOptional.get();
 
         dto.setOrgType(OrgType.ENTERPRISE);
+        dto.setOrgPlan(com.fxlabs.fxt.dto.users.OrgPlan.FREE);
 
         Response<com.fxlabs.fxt.dto.users.Org> response = super.save(dto, user);
 

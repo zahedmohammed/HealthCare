@@ -12,6 +12,7 @@ export class Org {
   public createdDate: string;
   public billingEmail: string;
   public orgType: string;
+  public orgPlan: string;
 }
 
 export class Dto {

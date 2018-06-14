@@ -1,61 +1,98 @@
 <section class="container-fluid with-maxwidth chapter">
 
-  <article class="article">
+    <article class="article">
 
-    <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/orgs']"> Organizations </a> / {{entry.name}}</h2>
-    <div class="box box-default">
-      <div class="box-body padding-xl">
+        <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/orgs']"> Organizations </a> /
+            {{entry.name}}</h2>
+        <div class="box box-default">
+            <div class="box-body padding-xl">
 
-        <form role="form" #heroForm="ngForm">
+                <form role="form" #heroForm="ngForm">
 
-          <div class="form-group row">
-            <label for="name" class="col-md-1 control-label"></label>
-            <div class="col-md-4">
-              <mat-input-container class="full-width">
-                <input required disabled [(ngModel)]="entry.name" name="name" id="name"
-                       matInput placeholder="Organization name">
-              </mat-input-container>
+                    <div class="form-group row">
+                        <label for="name" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required disabled [(ngModel)]="entry.name" name="name" id="name"
+                                       matInput placeholder="Organization name">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="orgType" class="col-md-1 control-label">
+                        </label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input disabled [(ngModel)]="entry.orgType" name="orgType" id="orgType"
+                                       matInput placeholder="Org Type">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="plan" class="col-md-1 control-label">
+                        </label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input disabled [(ngModel)]="entry.orgPlan" name="plan" id="plan"
+                                       matInput placeholder="Billing Plan">
+                            </mat-input-container>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p>
+                                    FX Labs Team & Enterprise Cloud Plans.
+                                    <a target="_blank" href="https://fxlabs.io/pricing/"> Learn more <i
+                                            class="material-icons"
+                                            style="font-size: 18px;">open_in_new</i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="company" class="col-md-1 control-label">
+                        </label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.company" name="company" id="company"
+                                       matInput placeholder="Company">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="billingEmail" class="col-md-1 control-label">
+                        </label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="entry.billingEmail" name="billingEmail" id="billingEmail"
+                                       matInput placeholder="Billing email">
+                            </mat-input-container>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <button mat-raised-button color="primary" (click)="update();"
+                                    class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
+                            </button>
+                            <button mat-button type="button" color="primary" class="btn-w-md"
+                                    [routerLink]="['/app/orgs']">Cancel
+                            </button>
+                        </div>
+                    </div>
+
+
+                </form>
+
             </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="company" class="col-md-1 control-label">
-            </label>
-            <div class="col-md-4">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.company" name="company" id="company"
-                       matInput placeholder="Company">
-              </mat-input-container>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="billingEmail" class="col-md-1 control-label">
-            </label>
-            <div class="col-md-4">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.billingEmail" name="billingEmail" id="billingEmail"
-                       matInput placeholder="Billing email">
-              </mat-input-container>
-            </div>
-          </div>
-
-
-          <div class="form-group row">
-            <div class="col-md-1"></div>
-            <div class="col-md-8">
-              <button mat-raised-button color="primary" (click)="update();"
-                      class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
-              </button>
-              <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/orgs']">Cancel
-              </button>
-            </div>
-          </div>
-
-
-        </form>
-
-      </div>
-    </div>
-  </article>
+        </div>
+    </article>
 </section>

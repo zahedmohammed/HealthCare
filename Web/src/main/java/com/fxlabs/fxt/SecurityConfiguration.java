@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
@@ -20,7 +18,10 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 @EnableJdbcHttpSession(maxInactiveIntervalInSeconds = 604800)
 //@EnableWebMvc
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -48,15 +49,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAnyRole("SUPER_USER") //Actuator
                 .anyRequest().authenticated()
-                    .and()
-                    .csrf().disable()
+                .and()
+                .csrf().disable()
                 .formLogin()
-                    .loginPage("/access.html")
-                    .loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/")
-                    .and()
+                .loginPage("/access.html")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/")
+                .and()
                 .httpBasic()
-                    .and()
+                .and()
                 .logout();
     }
 

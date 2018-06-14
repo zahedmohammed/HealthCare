@@ -61,7 +61,7 @@ public class OrgController {
         return orgService.findById(id, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_ADMIN})
+    @Secured({ROLE_ENTERPRISE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Org> create(@RequestBody Org request) {
         return orgService.save(request, SecurityUtil.getCurrentAuditor());
@@ -74,7 +74,7 @@ public class OrgController {
         return orgService.update(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_ADMIN})
+    @Secured({ROLE_ENTERPRISE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Org> delete(@PathVariable("id") String id) {
         return orgService.delete(id, SecurityUtil.getCurrentAuditor());
