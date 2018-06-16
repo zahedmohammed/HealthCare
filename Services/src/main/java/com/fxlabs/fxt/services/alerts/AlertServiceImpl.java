@@ -53,6 +53,9 @@ public class AlertServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.enti
     @Override
     public Response<Alert> findById(String id, String org) {
         Optional<com.fxlabs.fxt.dao.entity.alerts.Alert> optionalAlert = alertESRepository.findByIdAndOrgId(id, org);
+        if (optionalAlert.isPresent()) {
+            optionalAlert = alertRepository.findById(id);
+        }
         Alert alert = converter.convertToDto(optionalAlert.get());
         alert.setMessage(optionalAlert.get().getMessage());
         return new Response<Alert>(alert);
