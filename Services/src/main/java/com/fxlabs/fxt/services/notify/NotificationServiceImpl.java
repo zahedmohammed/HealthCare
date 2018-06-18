@@ -9,8 +9,10 @@ import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.notify.Notification;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.TopicExchange;
@@ -40,11 +42,12 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     private AmqpAdmin amqpAdmin;
     private TopicExchange topicExchange;
     private OrgUsersRepository orgUsersRepository;
+    private AccountService accountService;
 
     @Autowired
     public NotificationServiceImpl(NotificationRepository notificationAccountRepository, NotificationESRepository notificationAccountESRepository,
                                    NotificationConverter notificationAccountConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
-                                   OrgUsersRepository orgUsersRepository) {
+                                   OrgUsersRepository orgUsersRepository, AccountService accountService) {
 
         super(notificationAccountRepository, notificationAccountConverter);
 
@@ -54,6 +57,7 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
         this.amqpAdmin = amqpAdmin;
         this.topicExchange = topicExchange;
         this.orgUsersRepository = orgUsersRepository;
+        this.accountService = accountService;
 
     }
 
@@ -103,6 +107,16 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
         if (dto.getAccount() == null || StringUtils.isEmpty(dto.getAccount().getId())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account is empty"));
         }
+
+        if (dto.getAccount() == null || StringUtils.isBlank(dto.getAccount().getId())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Account is empty"));
+        }else{
+            Response<Account> accountResp = accountService.findById(dto.getAccount().getId(), org);
+            if (accountResp == null || accountResp.isErrors() || accountResp.getData() == null){
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Account id '" + dto.getAccount().getId() + "'"));
+            }
+        }
+
 
         if (StringUtils.isEmpty(dto.getChannel())) {
             switch (dto.getAccount().getAccountType()) {
