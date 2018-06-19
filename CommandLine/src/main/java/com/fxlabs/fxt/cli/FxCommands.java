@@ -11,6 +11,7 @@ import com.fxlabs.fxt.sdk.services.FxCommandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.shell.Availability;
@@ -37,6 +38,9 @@ public class FxCommands {
     private StubGenerator stubGenerator;
 
     private boolean connected;
+
+    @Value("${fx_url:#{null}}")
+    protected String url;
 
     /*@ShellMethod(key = "fx load", value = "Loads project files into Fx server")
     public void load() {
@@ -204,7 +208,7 @@ public class FxCommands {
             }
             System.out.println(
                     AnsiOutput.toString(AnsiColor.DEFAULT,
-                            String.format("Welcome %s!", name)
+                            String.format("Welcome %s, to %s!", name, this.url)
                             , AnsiColor.DEFAULT)
             );
         } catch (Exception e) {

@@ -24,6 +24,7 @@ public class Policies {
 
     private Integer repeatOnFailure = 0;
     private Integer repeat = 0;
+    private String repeatModule; // importname
     private Long repeatDelay = 0L;
 
 }

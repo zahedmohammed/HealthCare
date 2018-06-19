@@ -25,6 +25,7 @@ public class Policies implements Serializable {
     private Long timeoutSeconds = 300L;
     private Integer repeatOnFailure = 0;
     private Integer repeat = 0;
+    private String repeatModule;
     private Long repeatDelay = 0L; //ms
 
 }

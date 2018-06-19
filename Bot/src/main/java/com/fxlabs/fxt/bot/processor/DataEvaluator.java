@@ -28,12 +28,12 @@ public class DataEvaluator {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    String PASSWORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~@#%*()-_=+:,.?";
+    private final String PASSWORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~@#%*()-_=+:,.?";
 
-    private MarketplaceDataProvider marketplaceDataProvider;
+    private DataReader reader;
 
-    public DataEvaluator(MarketplaceDataProvider marketplaceDataProvider) {
-        this.marketplaceDataProvider = marketplaceDataProvider;
+    public DataEvaluator(DataReader reader) {
+        this.reader = reader;
     }
 
     public String evaluate(String key, Context context, String suite) {
@@ -225,7 +225,7 @@ public class DataEvaluator {
                     break;
 
                 case "@Vault":
-                    MarketplaceDataTask response_ = this.marketplaceDataProvider.get(context.getProjectId(), "{{" + KEY + "." + PATH + "}}");
+                    MarketplaceDataTask response_ = this.reader.get(context.getProjectId(), "{{" + KEY + "." + PATH + "}}");
                     if (StringUtils.isNotEmpty(response_.getErrors())) {
                         context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response_.getErrors());
                     } else {
@@ -241,9 +241,9 @@ public class DataEvaluator {
                         }
                     } else if (StringUtils.startsWith(KEY, "@")) {
                         // Handle Marketplace request
-                        MarketplaceDataTask response = this.marketplaceDataProvider.get(context.getProjectId(), KEY);
+                        MarketplaceDataTask response = this.reader.get(context.getProjectId(), KEY);
                         if (response != null && StringUtils.isNotEmpty(response.getErrors())) {
-                            context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response.getErrors());
+                            context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), response.getErrors());
                         } else if (StringUtils.isNotEmpty(PATH)) {
                             if (isJsonObject(response.getEval())) {
                                 try {

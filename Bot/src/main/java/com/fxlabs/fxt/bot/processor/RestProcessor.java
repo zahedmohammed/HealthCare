@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.LongStream;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -47,11 +48,12 @@ public class RestProcessor {
     private CleanUpProcessor cleanUpProcessor;
     private DataResolver dataResolver;
     private HeaderUtils headerUtils;
+    private DataCache dataCache;
 
     @Autowired
     RestProcessor(Sender sender, AssertionValidator assertionValidator, RestTemplateUtil restTemplateUtil,
                   InitProcessor initProcessor, CleanUpProcessor cleanUpProcessor, DataResolver dataResolver,
-                  HeaderUtils headerUtils) {
+                  HeaderUtils headerUtils, DataCache dataCache) {
         this.sender = sender;
         this.assertionValidator = assertionValidator;
         this.restTemplateUtil = restTemplateUtil;
@@ -59,6 +61,7 @@ public class RestProcessor {
         this.cleanUpProcessor = cleanUpProcessor;
         this.dataResolver = dataResolver;
         this.headerUtils = headerUtils;
+        this.dataCache = dataCache;
     }
 
     public void process(BotTask task) {
@@ -172,157 +175,24 @@ public class RestProcessor {
 
             logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
 
-            task.getTestCases().parallelStream().forEach(testCase -> {
-                //for (String req : task.getRequest()) {
+            Long count = 0L;
 
-                Context pContext = parentContext;
-                Context context = new Context(pContext);
+            if (task.getPolicies() != null && StringUtils.isNotEmpty(task.getPolicies().getRepeatModule())) {
+                count = dataCache.init(task.getProjectId(), task.getPolicies().getRepeatModule(), "repeatModule");
+            }
 
-                logger.debug("Init {}", task.getCleanup());
-                // execute init
-                if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getInitExec())
-                        || StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Request")) {
-                    // create new context if InitExec policy is of type Request
-                    AssertionLogger logs_ = new AssertionLogger();
-
-                    String logType_ = null;
-                    if (task.getPolicies() != null) {
-                        logType_ = task.getPolicies().getLogger();
-                    }
-
-                    pContext = new Context(task.getProjectId(), task.getSuiteName(), logs, logType_);
-                    context = new Context(pContext);
-
-                    if (task.getInit() != null) {
-                        //task.getInit().stream().forEach(t -> {
-                        for (BotTask t : task.getInit()) {
-                            logger.debug("Executing Suite Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
-                            initProcessor.process(t, context);
-                        }
-                        //);
-                    }
-                }
-
-                //BotTask newTask = new BotTask();
-                //newTask.setId(task.getId());
-                //newTask.setRequestStartTime(new Date());
-
-                //logger.debug("Request: [{}]", req);
-                HttpEntity<String> request = new HttpEntity<>(testCase.getBody(), httpHeaders);
-
-                //String endpoint = task.getEndpoint();
-                String req = dataResolver.resolve(testCase.getBody(), pContext, task.getSuiteName());
-                String url = dataResolver.resolve(task.getEndpoint(), pContext, task.getSuiteName());
-
-                StopWatch stopWatch = new StopWatch();
-                stopWatch.start();
-                ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req, task.getAuth());
-                stopWatch.stop();
-                Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
-                totalTime.getAndAdd(time);
-
-                Integer size = 0;
-                if (response != null && StringUtils.isNotEmpty(response.getBody())) {
-                    size = response.getBody().getBytes().length;
-                }
-                totalSize.getAndAdd(size);
-
-                //newTask.setRequestEndTime(new Date());
-                //newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());
-
-                // validate assertions
-                context.withSuiteData(url, method.name(), req, httpHeaders, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
-
-                StringBuilder assertionLogs = new StringBuilder();
-                assertionValidator.validate(task.getAssertions(), context, assertionLogs);
-
-                //validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
-
-                //newTask.setLogs(context.getLogs().toString());
-                //newTask.setResult(context.getResult());
-
-                //logger.debug("Result: [{}]", newTask.getResult());
-                switch (context.getResult()) {
-                    case "pass":
-                        totalPassed.incrementAndGet();
-                        break;
-                    case "fail":
-                    default:
-                        totalFailed.incrementAndGet();
-                        break;
-                }
-
-                logger.debug("Cleanup {}", task.getCleanup());
-                // execute after
-                if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getCleanupExec())
-                        || StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Request")) {
-                    if (task.getCleanup() != null) {
-                        for (BotTask t : task.getCleanup()) {
-                            //task.getCleanup().stream().forEach(t -> {
-                            logger.debug("Executing Cleanup-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
-                            cleanUpProcessor.process(t, context, StringUtils.EMPTY);
-                        }
-                        //);
-                    }
-                }
-
-                // clean-up init tasks
-                final Context _pContext = pContext;
-                if (!CollectionUtils.isEmpty(context.getInitTasks())) {
-                    context.getInitTasks().stream().forEach(initTask -> {
-                        initTask.getCleanup().stream().forEach(t -> {
-                            logger.debug("Executing Cleanup-Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
-                            cleanUpProcessor.process(t, _pContext, initTask.getSuiteName());
-                        });
+            if (count > 0L) {
+                LongStream.range(0, count).forEach(lc -> {
+                    task.getTestCases().parallelStream().forEach(testCase -> {
+                        processTask(task, testCaseResponses, generateTestCases, totalFailed, totalPassed, totalTime, totalSize, logs, parentContext, method, httpHeaders, testCase);
                     });
-                }
+                });
 
-                // return processed task
-                //sender.sendTask(newTask);
-                String formattedRequest = null;
-                try {
-                    formattedRequest = JsonFormatUtil.format(req);
-                } catch (Exception e) {
-                    logger.warn(e.getLocalizedMessage());
-                }
-                String formattedResponse = null;
-                try {
-                    formattedResponse = JsonFormatUtil.format(response.getBody());
-                } catch (Exception e) {
-                    logger.warn(e.getLocalizedMessage());
-                }
-
-                String formattedLogs = null;
-                try {
-                    formattedLogs = JsonFormatUtil.clean(assertionLogs.toString());
-                } catch (Exception e) {
-                    logger.warn(e.getLocalizedMessage());
-                }
-
-                // Test-Cases Responses
-                if (generateTestCases) {
-                    TestCaseResponse tc = new TestCaseResponse();
-                    tc.setProject(task.getProject());
-                    tc.setJob(task.getJob());
-                    tc.setJobId(task.getJobId());
-                    tc.setEnv(task.getEnv());
-                    tc.setRegion(task.getRegion());
-                    tc.setSuite(task.getSuiteName());
-                    tc.setTestCase(String.valueOf(testCase.getId()));
-                    tc.setEndpointEval(url);
-                    tc.setRequestEval(formattedRequest);
-                    tc.setResponse(formattedResponse);
-                    tc.setStatusCode(String.valueOf(response.getStatusCodeValue()));
-                    tc.setResult(context.getLocalResult());
-                    tc.setTime(time);
-                    tc.setSize(size);
-                    tc.setHeaders(response.getHeaders().toString());
-                    tc.setLogs(formattedLogs);
-                    // TODO - Assertions
-                    testCaseResponses.add(tc);
-                }
-
-            });
+            } else {
+                task.getTestCases().parallelStream().forEach(testCase -> {
+                    processTask(task, testCaseResponses, generateTestCases, totalFailed, totalPassed, totalTime, totalSize, logs, parentContext, method, httpHeaders, testCase);
+                });
+            }
 
             if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Suite")) {
                 if (task.getCleanup() != null) {
@@ -375,6 +245,157 @@ public class RestProcessor {
         }
 
         return completeTask;
+    }
+
+    private void processTask(BotTask task, List<TestCaseResponse> testCaseResponses, boolean generateTestCases, AtomicLong totalFailed, AtomicLong totalPassed, AtomicLong totalTime, AtomicLong totalSize, AssertionLogger logs, Context parentContext, HttpMethod method, HttpHeaders httpHeaders, TestCase testCase) {
+        //for (String req : task.getRequest()) {
+
+        Context pContext = parentContext;
+        Context context = new Context(pContext);
+
+        logger.debug("Init {}", task.getCleanup());
+        // execute init
+        if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getInitExec())
+                || StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Request")) {
+            // create new context if InitExec policy is of type Request
+            AssertionLogger logs_ = new AssertionLogger();
+
+            String logType_ = null;
+            if (task.getPolicies() != null) {
+                logType_ = task.getPolicies().getLogger();
+            }
+
+            pContext = new Context(task.getProjectId(), task.getSuiteName(), logs, logType_);
+            context = new Context(pContext);
+
+            if (task.getInit() != null) {
+                //task.getInit().stream().forEach(t -> {
+                for (BotTask t : task.getInit()) {
+                    logger.debug("Executing Suite Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                    initProcessor.process(t, context);
+                }
+                //);
+            }
+        }
+
+        //BotTask newTask = new BotTask();
+        //newTask.setId(task.getId());
+        //newTask.setRequestStartTime(new Date());
+
+        //logger.debug("Request: [{}]", req);
+        HttpEntity<String> request = new HttpEntity<>(testCase.getBody(), httpHeaders);
+
+        //String endpoint = task.getEndpoint();
+        String req = dataResolver.resolve(testCase.getBody(), pContext, task.getSuiteName());
+        String url = dataResolver.resolve(task.getEndpoint(), pContext, task.getSuiteName());
+
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        ResponseEntity<String> response = restTemplateUtil.execRequest(url, method, httpHeaders, req, task.getAuth());
+        stopWatch.stop();
+        Long time = stopWatch.getTime(TimeUnit.MILLISECONDS);
+        totalTime.getAndAdd(time);
+
+        Integer size = 0;
+        if (response != null && StringUtils.isNotEmpty(response.getBody())) {
+            size = response.getBody().getBytes().length;
+        }
+        totalSize.getAndAdd(size);
+
+        //newTask.setRequestEndTime(new Date());
+        //newTask.setRequestTime(newTask.getRequestEndTime().getTime() - newTask.getRequestStartTime().getTime());
+
+        // validate assertions
+        context.withSuiteData(url, method.name(), req, httpHeaders, response.getBody(), String.valueOf(response.getStatusCodeValue()), response.getHeaders(), time, size);
+
+        StringBuilder assertionLogs = new StringBuilder();
+        assertionValidator.validate(task.getAssertions(), context, assertionLogs);
+
+        //validatorProcessor.process(task.getAssertions(), response, statusCode, logs, taskStatus);
+
+        //newTask.setLogs(context.getLogs().toString());
+        //newTask.setResult(context.getResult());
+
+        //logger.debug("Result: [{}]", newTask.getResult());
+        switch (context.getResult()) {
+            case "pass":
+                totalPassed.incrementAndGet();
+                break;
+            case "fail":
+            default:
+                totalFailed.incrementAndGet();
+                break;
+        }
+
+        logger.debug("Cleanup {}", task.getCleanup());
+        // execute after
+        if (task.getPolicies() == null || StringUtils.isEmpty(task.getPolicies().getCleanupExec())
+                || StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Request")) {
+            if (task.getCleanup() != null) {
+                for (BotTask t : task.getCleanup()) {
+                    //task.getCleanup().stream().forEach(t -> {
+                    logger.debug("Executing Cleanup-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                    cleanUpProcessor.process(t, context, StringUtils.EMPTY);
+                }
+                //);
+            }
+        }
+
+        // clean-up init tasks
+        final Context _pContext = pContext;
+        if (!CollectionUtils.isEmpty(context.getInitTasks())) {
+            context.getInitTasks().stream().forEach(initTask -> {
+                initTask.getCleanup().stream().forEach(t -> {
+                    logger.debug("Executing Cleanup-Init-Request for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                    cleanUpProcessor.process(t, _pContext, initTask.getSuiteName());
+                });
+            });
+        }
+
+        // return processed task
+        //sender.sendTask(newTask);
+        String formattedRequest = null;
+        try {
+            formattedRequest = JsonFormatUtil.format(req);
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage());
+        }
+        String formattedResponse = null;
+        try {
+            formattedResponse = JsonFormatUtil.format(response.getBody());
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage());
+        }
+
+        String formattedLogs = null;
+        try {
+            formattedLogs = JsonFormatUtil.clean(assertionLogs.toString());
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage());
+        }
+
+        // Test-Cases Responses
+        if (generateTestCases) {
+            TestCaseResponse tc = new TestCaseResponse();
+            tc.setProject(task.getProject());
+            tc.setJob(task.getJob());
+            tc.setJobId(task.getJobId());
+            tc.setEnv(task.getEnv());
+            tc.setRegion(task.getRegion());
+            tc.setSuite(task.getSuiteName());
+            tc.setTestCase(String.valueOf(testCase.getId()));
+            tc.setEndpointEval(url);
+            tc.setRequestEval(formattedRequest);
+            tc.setResponse(formattedResponse);
+            tc.setStatusCode(String.valueOf(response.getStatusCodeValue()));
+            tc.setResult(context.getLocalResult());
+            tc.setTime(time);
+            tc.setSize(size);
+            tc.setHeaders(response.getHeaders().toString());
+            tc.setLogs(formattedLogs);
+            // TODO - Assertions
+            testCaseResponses.add(tc);
+        }
     }
 
 }

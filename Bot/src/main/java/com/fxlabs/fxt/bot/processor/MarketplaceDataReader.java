@@ -6,10 +6,10 @@ import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MarketplaceDataProvider {
+public class MarketplaceDataReader {
 
     private Sender sender;
-    public MarketplaceDataProvider(Sender sender) {
+    public MarketplaceDataReader(Sender sender) {
         this.sender = sender;
     }
 
@@ -17,6 +17,10 @@ public class MarketplaceDataProvider {
         MarketplaceDataTask task = new MarketplaceDataTask();
         task.setProjectId(projectId);
         task.setImportName(importName);
+        return sender.processMarketplaceRequest(task);
+    }
+
+    public MarketplaceDataTask get(MarketplaceDataTask task) {
         return sender.processMarketplaceRequest(task);
     }
 }

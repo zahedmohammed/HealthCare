@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -22,5 +23,11 @@ public class MarketplaceDataTask implements Serializable {
     private String projectId;
     private String eval;
     private String errors;
+
+    // policies
+    private String policy; // repeatAll
+    private List<DataRecord> records;
+    private Long totalElements = -1L;
+    private int currentPage = -1;
 
 }
