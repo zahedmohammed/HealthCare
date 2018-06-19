@@ -232,7 +232,9 @@ public class DataEvaluator {
                         val = response_.getEval();
                     }
                     break;
-
+                case "@Faker":
+                    val = FakerProcessor.process(PATH);
+                    break;
                 default:
                     if (StringUtils.endsWithIgnoreCase(KEY, "_Request") || StringUtils.endsWithIgnoreCase(KEY, "_Response")) {
                         Object initData = JsonPath.read(context.get(KEY), PATH);
