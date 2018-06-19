@@ -58,9 +58,9 @@ export class DashboardComponent {
       else if (_var === 'tests')
         this.tests = count;
       else if (_var === 'time')
-        this.time = count;
+        this.time = this.msToTime(count);
       else if (_var === 'bytes')
-        this.bytes = count;
+        this.bytes = this.bformat(count, 1);
       else if (_var === 'iBots')
         this.iBots = count;
       else if (_var === 'eBots')
@@ -72,6 +72,25 @@ export class DashboardComponent {
     });
   }
 
+
+  msToTime (ms: number) {
+    var seconds = (ms/1000);
+    var minutes = parseInt(seconds/60, 10);
+    seconds = parseInt(seconds%60);
+    var hours = parseInt(minutes/60, 10);
+    minutes = minutes%60;
+
+    return hours + ':' + minutes + ':' + seconds;
+  }
+
+  bformat (bytes, precision) {
+    if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
+    if (bytes == 0) bytes = 1;
+	if (typeof precision === 'undefined') precision = 1;
+	var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
+	number = Math.floor(Math.log(bytes) / Math.log(1024));
+	return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
+  }
 
   getMonData = () => {
     const data = [];
