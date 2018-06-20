@@ -23,6 +23,7 @@
                     <h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>
                     <h4>Total Tests: {{run.task.totalTests}} | <span class="text-success">Passed: {{total}}</span> <span
                             class="text-danger">Failed: {{failed}}</span></h4>
+                    <h4>Success Rate: {{success | percent}}</h4>
                     <h4>Total Time: {{time | mstoDuration}}</h4>
                     <h4>Total Data: {{size | byteFormat}}</h4>
                 </div>

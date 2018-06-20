@@ -13,7 +13,7 @@
                 <tr>
                     <th class="mdl-data-table__cell--non-numeric">Region</th>
                     <th class="mdl-data-table__cell--non-numeric">Date</th>
-                    <th class="mdl-data-table__cell--non-numeric">Total/Pass</th>
+                    <th class="mdl-data-table__cell--non-numeric">Pass/Fail</th>
                     <th class="mdl-data-table__cell--non-numeric">Success</th>
                     <th class="mdl-data-table__cell--non-numeric">Time</th>
                     <th class="mdl-data-table__cell--non-numeric">Data</th>
@@ -25,9 +25,9 @@
                 <tr *ngFor="let item of list">
                     <td class="mdl-data-table__cell--non-numeric">{{item.job.regions}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTests}}/{{item.task.totalTestCompleted}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
-                        {{ ( (item.task.totalTestCompleted + item.task.failedTests ) / (item.task.totalTestCompleted) ) | percent}}
+                        {{ ( (item.task.totalTestCompleted ) / (item.task.totalTestCompleted + item.task.failedTests) ) | percent}}
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime | mstoDuration}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalBytes | byteFormat}}</td>
