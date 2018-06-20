@@ -32,6 +32,7 @@
                             <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
                             <!--<th class="mdl-data-table__cell--non-numeric">Visibility</th>-->
                             <th class="mdl-data-table__cell--non-numeric">Count</th>
+                            <th class="mdl-data-table__cell--non-numeric">Status</th>
                             <th class="mdl-data-table__cell--non-numeric"></th>
                         </tr>
                         </thead>
@@ -43,6 +44,7 @@
                             <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'shortDate'}}</td>
                             <!--<td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>-->
                             <td class="mdl-data-table__cell--non-numeric">{{item.min}} <span matTooltip="10 virtual bots!" matTooltipPosition="above"><small>x10</small></span></td>
+                            <td class="mdl-data-table__cell--non-numeric text-success">OK</td>
                             <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
                                                                              [routerLink]="['/app/regions', item.id]">Edit</a>
                             </td>
