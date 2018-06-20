@@ -176,7 +176,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         com.fxlabs.fxt.dao.entity.clusters.Account cloudAccount = this.accountRepository.saveAndFlush(converter.convertToEntity(dto));
         //this.accountESRepository.save(cloudAccount);
-        cloudAccount.setSecretKey(PASSWORD_MASKED);
+        //cloudAccount.setSecretKey(PASSWORD_MASKED);
         return new Response<>(converter.convertToDto(cloudAccount));
     }
 
