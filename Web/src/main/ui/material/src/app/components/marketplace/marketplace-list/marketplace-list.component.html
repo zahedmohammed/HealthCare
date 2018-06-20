@@ -30,8 +30,8 @@
                         <div class="col-xl-3 col-lg-6" *ngFor="let offer of offers">
                             <section [ngClass]="{'pricing-table': true,
                                                     'pricing-table-info': offer.type === 'AI_SKILLS',
-                                                    'pricing-table-success': offer.type === 'DATASET',
-                                                    'pricing-table-primary': offer.type === 'CONSULTING_SERVICES'}">
+                                                    'pricing-table-primary': offer.type === 'DATASET',
+                                                    'pricing-table-default': offer.type === 'CONSULTING_SERVICES'}">
                                 <header> <h2>{{offer.name}}</h2> </header>
                                 <div class="pricing-plan-details">
                                     <p>{{offer.description | slice:0:100}}</p>
@@ -43,7 +43,7 @@
                                         <li>Usage: @{{offer.project.org.name}}/{{offer.project.name}}/{{offer.name}}</li>
                                     </ul>
                                 </div>
-                                <footer><button mat-raised-button class="btn-w-lg">Subscribe</button></footer>
+                                <!--<footer><button mat-raised-button class="btn-w-lg">Subscribe</button></footer>-->
                             </section>
                         </div>
 
