@@ -16,13 +16,15 @@
         <div class="item-card card__horizontal1">
             <div class="card__body card-white">
                 <div class="card__title">
-                    <h4>ID: {{run.runId}}</h4>
-                    <h4>Status: <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span><span *ngIf="run.task.status != 'COMPLETED'" class="text-warning">{{run.task.status}}</span></h4>
-                    <h4>Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>
-                    <h4>Total Time: {{run.task.totalTime}}</h4>
-                    <h4>Total Tests: {{run.task.totalTests}}</h4>
-                    <h4 color="success">Total Passed: {{run.task.totalTestCompleted}}</h4>
-                    <h4 color="warn">Total Failed: {{run.task.failedTests}}</h4>
+                    <h4>Run Id: {{run.runId}}</h4>
+                    <h4>Status: <span *ngIf="run.task.status == 'COMPLETED'"
+                                      class="text-success">{{run.task.status}}</span><span
+                            *ngIf="run.task.status != 'COMPLETED'" class="text-warning">{{run.task.status}}</span></h4>
+                    <h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>
+                    <h4>Total Tests: {{run.task.totalTests}} | <span class="text-success">Passed: {{total}}</span> <span
+                            class="text-danger">Failed: {{failed}}</span></h4>
+                    <h4>Total Time: {{time | mstoDuration}}</h4>
+                    <h4>Total Data: {{size | byteFormat}}</h4>
                 </div>
                 <div class="divider divider-solid divider-lg"></div>
                 <!--<div class="card__title" *ngIf="run.stats != undefined">
@@ -59,8 +61,8 @@
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
                     <!--<th class="mdl-data-table__cell--non-numeric">Total/Pass</th>-->
                     <th class="mdl-data-table__cell--non-numeric">Success</th>
-                    <th class="mdl-data-table__cell--non-numeric">Time (ms)</th>
-                    <th class="mdl-data-table__cell--non-numeric">Bytes</th>
+                    <th class="mdl-data-table__cell--non-numeric">Time</th>
+                    <th class="mdl-data-table__cell--non-numeric">Data</th>
                 </tr>
                 <tr class="bg-color-info1">
                     <!--<th class="mdl-data-table__cell--non-numeric"></th>-->
@@ -70,9 +72,9 @@
                     <th class="mdl-data-table__cell--non-numeric">
                         <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
                     </th>
-                    <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{time}}</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{size}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{success | percent}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{size | byteFormat}}</th>
 
                 </tr>
                 </thead>
@@ -86,13 +88,8 @@
                             slice:0:55}}</a>
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.category}}</td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Critical'"><span
-                            class="text-danger">{{s.severity}} </span></td>
-                    <td class="mdl-data-table__cell--non-numeric" *ngIf="s.category == 'Major'"><span
-                            class="text-warning">{{s.severity}} </span></td>
-                    <td class="mdl-data-table__cell--non-numeric"
-                        *ngIf="s.category != 'CRITICAL' && s.category != 'MAJOR' "><span class="text-success">{{s.severity}} </span>
-                    </td>
+
+                    <td class="mdl-data-table__cell--non-numeric"><span>{{s.severity}} </span></td>
 
                     <td class="mdl-data-table__cell--non-numeric"><span
                             class="text-success"> Passed: {{s.tests - s.failed}}  <span class="text-danger"
@@ -104,10 +101,10 @@
 
                     <!--<td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>-->
                     <td class="mdl-data-table__cell--non-numeric">
-                        {{ ( ((s.tests - s.failed) * 100 ) / (s.tests) ).toFixed(0) }}%
+                        {{ ( (s.tests ) / (s.tests + s.failed) ) | percent }}
                     </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{s.time}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{s.size}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.time | mstoDuration}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.size | byteFormat}}</td>
 
                 </tr>
                 <tfoot>
@@ -118,9 +115,9 @@
                     <th class="mdl-data-table__cell--non-numeric">
                         <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
                     </th>
-                    <th class="mdl-data-table__cell--non-numeric">{{success}}%</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{time}}</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{size}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{success | percent}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
+                    <th class="mdl-data-table__cell--non-numeric">{{size | byteFormat}}</th>
 
                 </tr>
                 </tfoot>

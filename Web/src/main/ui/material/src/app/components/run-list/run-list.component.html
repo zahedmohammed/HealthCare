@@ -15,8 +15,8 @@
                     <th class="mdl-data-table__cell--non-numeric">Date</th>
                     <th class="mdl-data-table__cell--non-numeric">Total/Pass</th>
                     <th class="mdl-data-table__cell--non-numeric">Success</th>
-                    <th class="mdl-data-table__cell--non-numeric">Time (ms)</th>
-                    <th class="mdl-data-table__cell--non-numeric">Bytes</th>
+                    <th class="mdl-data-table__cell--non-numeric">Time</th>
+                    <th class="mdl-data-table__cell--non-numeric">Data</th>
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
                     <th class="mdl-data-table__cell--non-numeric">No</th>
                 </tr>
@@ -27,10 +27,10 @@
                     <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTests}}/{{item.task.totalTestCompleted}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
-                        {{ ( (item.task.totalTestCompleted * 100 ) / (item.task.totalTestCompleted + item.task.failedTests) ).toFixed(0) }}%
+                        {{ ( (item.task.totalTestCompleted + item.task.failedTests ) / (item.task.totalTestCompleted) ) | percent}}
                     </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalBytes}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime | mstoDuration}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalBytes | byteFormat}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.status}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
                         <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>

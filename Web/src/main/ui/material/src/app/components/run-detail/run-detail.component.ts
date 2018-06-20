@@ -84,8 +84,7 @@ export class RunDetailComponent implements OnInit {
         this.size += this.suites[i].size;
         this.time += this.suites[i].time;
     }
-    this.success = ( (this.total - this.failed) * 100 ) / this.total;
-    this.success = Math.floor(this.success);
+    this.success = this.total / (this.total + this.failed);
   }
 
   getRunById() {

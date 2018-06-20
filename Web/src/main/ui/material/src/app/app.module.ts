@@ -155,6 +155,8 @@ import { ResponseDialogComponent } from './components/dialogs/response-dialog/re
 import { Handler } from './components/dialogs/handler/handler';
 import { PasswordResetComponent } from './components/users/password-reset/password-reset.component';
 import { AdvRunComponent } from './components/dialogs/adv-run/adv-run.component';
+import { MstoDurationPipe } from './pipes/msto-duration.pipe';
+import { ByteFormatPipe } from './pipes/byte-format.pipe';
 
 @NgModule({
   imports: [
@@ -289,7 +291,9 @@ import { AdvRunComponent } from './components/dialogs/adv-run/adv-run.component'
     ErrorDialogComponent,
     ResponseDialogComponent,
     PasswordResetComponent,
-    AdvRunComponent
+    AdvRunComponent,
+    MstoDurationPipe,
+    ByteFormatPipe
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],

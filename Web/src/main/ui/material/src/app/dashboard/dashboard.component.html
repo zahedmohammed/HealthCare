@@ -111,7 +111,7 @@
                             <span>Total Time</span>
                         </div>
                         <div class="box-bottom">
-                            <span>{{time}}</span>
+                            <span>{{time | mstoDuration}}</span>
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                             <span>Data</span>
                         </div>
                         <div class="box-bottom">
-                            <span>{{bytes}}</span>
+                            <span>{{bytes | byteFormat}}</span>
                         </div>
                     </div>
                 </div>

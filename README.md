@@ -21,3 +21,6 @@ ng g c components/dialogs/adv-run
 
 # Theme
 http://preview.themeforest.net/item/material-design-angular-2-admin-web-app-with-bootstrap-4/full_screen_preview/19421267?_ga=2.119807680.997196640.1528418155-977591499.1527797469
+
+# Geneate Pipe
+ng generate pipe pipes/MSToDuration
