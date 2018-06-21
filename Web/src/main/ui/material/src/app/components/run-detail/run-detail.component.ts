@@ -8,6 +8,7 @@ import { Run } from '../../models/run.model';
 import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
 import { MsgDialogComponent } from '../dialogs/msg-dialog/msg-dialog.component';
 import { Handler } from '../dialogs/handler/handler';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class RunDetailComponent implements OnInit {
   time = 0;
   duration = 0;
   success = 0;
+  private _clockSubscription: Subscription;
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
@@ -48,8 +50,14 @@ export class RunDetailComponent implements OnInit {
       }
       if (params['runId']) {
         this.id = params['runId'];
-        this.getRunById();
-        this.getSummary();
+        let timer = Observable.timer(1, 5000);
+        this._clockSubscription = timer.subscribe(t => {
+          this.getRunById();
+          this.getSummary();
+          if (this.run.task.status == 'COMPLETE') {
+            this._clockSubscription.unsubscribe();
+          }
+        });
       }
     });
   }
@@ -171,6 +179,5 @@ export class RunDetailComponent implements OnInit {
     this.page = evt['pageIndex'];
     this.getSummary();
   }
-
 
 }

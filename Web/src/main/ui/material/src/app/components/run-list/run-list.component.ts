@@ -5,6 +5,7 @@ import { RunService } from '../../services/run.service';
 import { ProjectService } from '../../services/project.service';
 import { Base } from '../../models/base.model';
 import { Handler } from '../dialogs/handler/handler';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class RunListComponent implements OnInit {
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
+  private _clockSubscription: Subscription;
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute, private handler: Handler) {
 
   }
@@ -36,6 +38,10 @@ export class RunListComponent implements OnInit {
         this.jobId = params['jobId'];
         this.loadJob(this.jobId);
         this.getRunByJob(this.jobId);
+        let timer = Observable.timer(1, 10000);
+        this._clockSubscription = timer.subscribe(t => {
+          this.getRunByJob(this.jobId);
+        });
       }
     });
   }
