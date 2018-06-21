@@ -12,16 +12,17 @@
                         <label for="name" class="col-md-1 control-label"></label>
                         <div class="col-md-4">
                             <mat-input-container class="full-width">
-                                <input required disabled [(ngModel)]="entry.name" name="name" id="name"
+                                <input required [(ngModel)]="entry.name" name="name" id="name"
                                        matInput placeholder="Bot name">
                             </mat-input-container>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
-                                <p>
-                                    A bot is light-weight and stateless process and can be deployed across developer
-                                    laptops & private/public clouds.
-                                    Name represents bot region name. You'll use this name to schedule job runs. example
+                                <p>A bot is a light-weight and stateless container and can be deployed on developer
+                                    laptops, bare-metal servers & private/public cloud regions.
+                                    Bot is headless and it has no open ports or APIs to talk.
+                                    Bot receives tasks from FX Control-Plane over SSL.</p>
+                                <p>Name represents bot region name. You'll use this name to schedule job runs. example
                                     usage: 'region: Org/Name'.
                                 </p>
                             </div>
@@ -78,6 +79,22 @@
                         <div class="callout1 text-muted callout-info1">
                             <p>
                                 Cloud region where the bot is deployed.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row"
+                         [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
+                        <label for="min" class="col-md-1 control-label"></label>
+                        <div class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <input disabled [(ngModel)]="entry.min" name="min" id="min"
+                                       matInput placeholder="Count">
+                            </mat-input-container>
+                        </div>
+                        <div class="callout1 text-muted callout-info1">
+                            <p>
+                                Total bot instances.
                             </p>
                         </div>
                     </div>

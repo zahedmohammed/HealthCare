@@ -59,7 +59,7 @@ public class ClusterController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
-    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<Cluster> update(@Valid @RequestBody Cluster dto) {
 
         return clusterService.update(dto, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());

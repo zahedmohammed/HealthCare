@@ -243,7 +243,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<Cluster> update(Cluster dto, String o, String user) {
         // validate user is entitled to use the cluster.
-        if (!org.apache.commons.lang3.StringUtils.equals(dto.getId(), o)) {
+        if (!org.apache.commons.lang3.StringUtils.equals(dto.getOrg().getId(), o)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
         return super.save(dto, user);
