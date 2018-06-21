@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class MstoDurationPipe implements PipeTransform {
 
   transform(value: number, args?: any): any {
+    if(!value) value = 0;
     let precision: number = 0;
     let seconds: number = (value/1000);
     let minutes: number = seconds/60;

@@ -27,6 +27,7 @@ export class RunDetailComponent implements OnInit {
   failed = 0;
   size = 0;
   time = 0;
+  duration = 0;
   success = 0;
   project: Base = new Base();
   job: Base = new Base();
@@ -77,6 +78,7 @@ export class RunDetailComponent implements OnInit {
     this.size = 0;
     this.time = 0;
     this.success = 0;
+    this.duration = 0;
 
     for(var i = 0; i < this.suites.length; i++){
         this.total += this.suites[i].tests;
@@ -85,6 +87,7 @@ export class RunDetailComponent implements OnInit {
         this.time += this.suites[i].time;
     }
     this.success = this.total / (this.total + this.failed);
+    //this.duration = Date.parse(this.run.modifiedDate) - Date.parse(this.run.task.startTime);
   }
 
   getRunById() {
