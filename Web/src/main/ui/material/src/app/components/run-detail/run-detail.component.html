@@ -21,7 +21,7 @@
                                       class="text-success">{{run.task.status}}</span><span
                             *ngIf="run.task.status != 'COMPLETED'" class="text-warning">{{run.task.status}}</span></h4>
                     <h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>
-                    <h4>Total Tests: {{total + failed}} | <span class="text-success">Passed: {{total}}</span> <span
+                    <h4>Total Tests: {{total}} | <span class="text-success">Passed: {{total - failed}}</span> <span
                             class="text-danger">Failed: {{failed}}</span></h4>
                     <h4>Success Rate: {{success | percent}}</h4>
                     <h4>Response Time: {{time | mstoDuration}}</h4>
