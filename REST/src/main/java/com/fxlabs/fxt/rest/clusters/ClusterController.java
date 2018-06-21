@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.clusters.ClusterService;
+import com.fxlabs.fxt.services.users.OrgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
@@ -22,11 +23,13 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
 public class ClusterController {
 
     private ClusterService clusterService;
+    private OrgService orgService;
 
     @Autowired
     public ClusterController(
-            ClusterService clusterService) {
+            ClusterService clusterService, OrgService orgService) {
         this.clusterService = clusterService;
+        this.orgService = orgService;
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
@@ -35,6 +38,14 @@ public class ClusterController {
                                            @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
 
         return clusterService.findAll(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/superbotnetwork", method = RequestMethod.GET)
+    public Response<List<Cluster>> findSuperBotNetwork(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                           @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+
+        return clusterService.findAll(orgService.findByName("FXLabs").getData().getId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})

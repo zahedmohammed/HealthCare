@@ -41,6 +41,13 @@ export class RegionsService {
     return this.http.get(this.serviceUrl + "/" + obj['id'] + "/ping");
   }
 
+  getSuperBotNetwork(page, pageSize) {
+    let params = new HttpParams();
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl +  "/superbotnetwork", {params});
+  }
+
 }
 
 

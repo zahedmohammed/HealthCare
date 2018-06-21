@@ -16,6 +16,7 @@ import { ProjectsEditComponent } from '../components/projects/projects-edit/proj
 import { RegionsListComponent } from '../components/regions-list/regions-list.component';
 import { RegionEditComponent } from '../components/regions/region-edit/region-edit.component';
 import { RegionNewComponent } from '../components/regions/region-new/region-new.component';
+import { SuperBotNetworkListComponent } from '../components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component';
 
 import { MessageListComponent } from '../components/message-list/message-list.component';
 import { MessageDetailComponent } from '../components/message-detail/message-detail.component';
@@ -103,6 +104,7 @@ const routes: Routes = [
       { path: 'regions', component: RegionsListComponent },
       { path: 'regions/new', component: RegionNewComponent },
       { path: 'regions/:id', component: RegionEditComponent },
+      { path: 'superbotnetwork', component: SuperBotNetworkListComponent },
 
       { path: 'issues', component: IssuesListComponent },
       { path: 'issues/new', component: IssuesNewComponent },

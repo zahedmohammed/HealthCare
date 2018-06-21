@@ -157,6 +157,7 @@ import { PasswordResetComponent } from './components/users/password-reset/passwo
 import { AdvRunComponent } from './components/dialogs/adv-run/adv-run.component';
 import { MstoDurationPipe } from './pipes/msto-duration.pipe';
 import { ByteFormatPipe } from './pipes/byte-format.pipe';
+import { SuperBotNetworkListComponent } from './components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component';
 
 @NgModule({
   imports: [
@@ -293,7 +294,8 @@ import { ByteFormatPipe } from './pipes/byte-format.pipe';
     PasswordResetComponent,
     AdvRunComponent,
     MstoDurationPipe,
-    ByteFormatPipe
+    ByteFormatPipe,
+    SuperBotNetworkListComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],

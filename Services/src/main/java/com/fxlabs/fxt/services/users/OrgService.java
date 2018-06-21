@@ -9,6 +9,7 @@ import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -36,4 +37,6 @@ public interface OrgService extends GenericService<Org, String> {
     Response<com.fxlabs.fxt.dto.users.OrgUsers> getUser(String id, String orgId);
 
     Response<com.fxlabs.fxt.dto.users.OrgUsers> getUserByOrgUserId(String orgUserId, String orgId);
+
+    Response<Org> findByName(String orgName);
 }

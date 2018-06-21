@@ -255,6 +255,17 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     }
 
     @Override
+    public Response<com.fxlabs.fxt.dto.users.Org> findByName(String orgName) {
+
+        Optional<Org> orgOptional = this.orgRepository.findByName(orgName);
+        if (!orgOptional.isPresent()) {
+            throw new FxException("User  not entitled to the resource");
+        }
+        return new Response<>(converter.convertToDto(orgOptional.get()));
+
+    }
+
+    @Override
     public Response<com.fxlabs.fxt.dto.users.OrgUsers> getUser(String id, String orgId) {
 
         // check user-id belongs to org

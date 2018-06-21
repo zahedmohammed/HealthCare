@@ -1,0 +1,1091 @@
+ DEBUG [null] : URL [http://localhost:8080/api/v1/accounts]
+ DEBUG [null] : Method [POST]
+ DEBUG [null] : Request [{
+  "name" : "Init-tEY69C",
+  "accountType" : "BitBucket",
+  "accessKey" : "test",
+  "secretKey" : "test"
+}]
+ DEBUG [null] : Request-Headers [{Content-Type=[application/json], Accept=[application/json], Authorization=[Basic YWRtaW5AZnhsYWJzLmlvOmFwcGxlMTIz]}]
+ DEBUG [null] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.454+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ceb890002",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.433+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.433+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-tEY69C",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "BitBucket",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [null] : Response-Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=NGVmNzg3ZDktZjgwZS00Mzg1LWJjZjgtOWU1YTJhZDgzYzBi; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [null] : StatusCode [200]
+ DEBUG [null] : Time [775]
+ DEBUG [null] : Size [718]
+  INFO [null] : Assertion [@StatusCode == 200] passed, expected [200] and found [200]
+  INFO [null] : Assertion [@Response.errors == false] passed, expected [false] and found [false]
+  INFO [null] : Assertion [@Response.data.accessKey == @Request.accessKey] passed, expected [test] and found [test]
+  INFO [null] : Assertion [@Response.data.accountType == @Request.accountType] passed, expected [BitBucket] and found [BitBucket]
+  INFO [null] : Assertion [@Response.data.name == @Request.name] passed, expected [Init-tEY69C] and found [Init-tEY69C]
+  INFO [null] : Assertion [@Response.data.secretKey == EMPTY] passed, expected [] and found []
+ DEBUG [BitBucket_create_init_Request] : Request [{
+  "name" : "Init-tEY69C",
+  "accountType" : "BitBucket",
+  "accessKey" : "test",
+  "secretKey" : "test"
+}]
+ DEBUG [BitBucket_create_init_Request] : Request [{
+  "name" : "Init-tEY69C",
+  "accountType" : "BitBucket",
+  "accessKey" : "test",
+  "secretKey" : "test"
+}]
+ DEBUG [BitBucket_create_init_Response] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.454+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ceb890002",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.433+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.433+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-tEY69C",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "BitBucket",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [BitBucket_create_init_Response] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.454+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ceb890002",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.433+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.433+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-tEY69C",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "BitBucket",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [BitBucket_create_init_Headers] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=NGVmNzg3ZDktZjgwZS00Mzg1LWJjZjgtOWU1YTJhZDgzYzBi; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [BitBucket_create_init_Headers] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=NGVmNzg3ZDktZjgwZS00Mzg1LWJjZjgtOWU1YTJhZDgzYzBi; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [BitBucket_create_init_Request[0]] : Request [{
+  "name" : "Init-tEY69C",
+  "accountType" : "BitBucket",
+  "accessKey" : "test",
+  "secretKey" : "test"
+}]
+ DEBUG [BitBucket_create_init_Request[0]] : Request [{
+  "name" : "Init-tEY69C",
+  "accountType" : "BitBucket",
+  "accessKey" : "test",
+  "secretKey" : "test"
+}]
+ DEBUG [BitBucket_create_init_Response[1]] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.454+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ceb890002",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.433+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.433+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-tEY69C",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "BitBucket",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [BitBucket_create_init_Response[1]] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.454+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ceb890002",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.433+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.433+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-tEY69C",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "BitBucket",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [BitBucket_create_init_Headers[2]] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=NGVmNzg3ZDktZjgwZS00Mzg1LWJjZjgtOWU1YTJhZDgzYzBi; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [BitBucket_create_init_Headers[2]] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=NGVmNzg3ZDktZjgwZS00Mzg1LWJjZjgtOWU1YTJhZDgzYzBi; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [null] : URL [http://localhost:8080/api/v1/accounts]
+ DEBUG [null] : Method [POST]
+ DEBUG [null] : Request [{
+  "name" : "Init-Ph3PDt",
+  "accountType" : "Local"
+}]
+ DEBUG [null] : Request-Headers [{Content-Type=[application/json], Accept=[application/json], Authorization=[Basic YWRtaW5AZnhsYWJzLmlvOmFwcGxlMTIz]}]
+ DEBUG [null] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.891+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ced520003",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.890+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.890+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-Ph3PDt",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Local",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [null] : Response-Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=MWMwODJlNjYtMTc1MC00NTkyLTgzOTYtMTNmNThmYzRjYzFm; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [null] : StatusCode [200]
+ DEBUG [null] : Time [232]
+ DEBUG [null] : Size [712]
+  INFO [null] : Assertion [@Response.errors == false] passed, expected [false] and found [false]
+  INFO [null] : Assertion [@StatusCode == 200] passed, expected [200] and found [200]
+  INFO [null] : Assertion [@Response.data.accountType == @Request.accountType] passed, expected [Local] and found [Local]
+  INFO [null] : Assertion [@Response.data.name == @Request.name] passed, expected [Init-Ph3PDt] and found [Init-Ph3PDt]
+ DEBUG [Account_Local_create_init_Request] : Request [{
+  "name" : "Init-Ph3PDt",
+  "accountType" : "Local"
+}]
+ DEBUG [Account_Local_create_init_Request] : Request [{
+  "name" : "Init-Ph3PDt",
+  "accountType" : "Local"
+}]
+ DEBUG [Account_Local_create_init_Response] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.891+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ced520003",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.890+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.890+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-Ph3PDt",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Local",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [Account_Local_create_init_Response] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.891+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ced520003",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.890+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.890+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-Ph3PDt",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Local",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [Account_Local_create_init_Headers] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=MWMwODJlNjYtMTc1MC00NTkyLTgzOTYtMTNmNThmYzRjYzFm; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [Account_Local_create_init_Headers] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=MWMwODJlNjYtMTc1MC00NTkyLTgzOTYtMTNmNThmYzRjYzFm; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [Account_Local_create_init_Request[0]] : Request [{
+  "name" : "Init-Ph3PDt",
+  "accountType" : "Local"
+}]
+ DEBUG [Account_Local_create_init_Request[0]] : Request [{
+  "name" : "Init-Ph3PDt",
+  "accountType" : "Local"
+}]
+ DEBUG [Account_Local_create_init_Response[1]] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.891+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ced520003",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.890+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.890+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-Ph3PDt",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Local",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [Account_Local_create_init_Response[1]] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:51.891+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ced520003",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.890+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.890+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-Ph3PDt",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Local",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [Account_Local_create_init_Headers[2]] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=MWMwODJlNjYtMTc1MC00NTkyLTgzOTYtMTNmNThmYzRjYzFm; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [Account_Local_create_init_Headers[2]] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=MWMwODJlNjYtMTc1MC00NTkyLTgzOTYtMTNmNThmYzRjYzFm; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [null] : URL [http://localhost:8080/api/v1/accounts]
+ DEBUG [null] : Method [POST]
+ DEBUG [null] : Request [{
+  "name" : "Init-D0ojbZ",
+  "accountType" : "Email",
+  "accessKey" : "test"
+}]
+ DEBUG [null] : Request-Headers [{Content-Type=[application/json], Accept=[application/json], Authorization=[Basic YWRtaW5AZnhsYWJzLmlvOmFwcGxlMTIz]}]
+ DEBUG [null] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:52.156+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161cee5b0004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:52.154+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:52.154+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-D0ojbZ",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Email",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [null] : Response-Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=YWI5YTdjZjctOGFlYi00NjNkLWEwMTQtMDE1MzAxZWJmNGEz; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [null] : StatusCode [200]
+ DEBUG [null] : Time [255]
+ DEBUG [null] : Size [714]
+  INFO [null] : Assertion [@StatusCode == 200] passed, expected [200] and found [200]
+  INFO [null] : Assertion [@Response.errors == false] passed, expected [false] and found [false]
+  INFO [null] : Assertion [@Response.data.accountType == @Request.accountType] passed, expected [Email] and found [Email]
+  INFO [null] : Assertion [@Response.data.accessKey == @Request.accessKey] passed, expected [test] and found [test]
+  INFO [null] : Assertion [@Response.data.name == @Request.name] passed, expected [Init-D0ojbZ] and found [Init-D0ojbZ]
+ DEBUG [Email_create_init_Request] : Request [{
+  "name" : "Init-D0ojbZ",
+  "accountType" : "Email",
+  "accessKey" : "test"
+}]
+ DEBUG [Email_create_init_Request] : Request [{
+  "name" : "Init-D0ojbZ",
+  "accountType" : "Email",
+  "accessKey" : "test"
+}]
+ DEBUG [Email_create_init_Response] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:52.156+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161cee5b0004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:52.154+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:52.154+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-D0ojbZ",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Email",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [Email_create_init_Response] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:52.156+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161cee5b0004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:52.154+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:52.154+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-D0ojbZ",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Email",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [Email_create_init_Headers] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=YWI5YTdjZjctOGFlYi00NjNkLWEwMTQtMDE1MzAxZWJmNGEz; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [Email_create_init_Headers] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=YWI5YTdjZjctOGFlYi00NjNkLWEwMTQtMDE1MzAxZWJmNGEz; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [Email_create_init_Request[0]] : Request [{
+  "name" : "Init-D0ojbZ",
+  "accountType" : "Email",
+  "accessKey" : "test"
+}]
+ DEBUG [Email_create_init_Request[0]] : Request [{
+  "name" : "Init-D0ojbZ",
+  "accountType" : "Email",
+  "accessKey" : "test"
+}]
+ DEBUG [Email_create_init_Response[1]] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:52.156+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161cee5b0004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:52.154+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:52.154+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-D0ojbZ",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Email",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [Email_create_init_Response[1]] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:52.156+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161cee5b0004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:52.154+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:52.154+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-D0ojbZ",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : null,
+      "createdDate" : null,
+      "modifiedBy" : null,
+      "modifiedDate" : null,
+      "version" : null,
+      "inactive" : false,
+      "name" : null
+    },
+    "accountType" : "Email",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : null
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [Email_create_init_Headers[2]] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=YWI5YTdjZjctOGFlYi00NjNkLWEwMTQtMDE1MzAxZWJmNGEz; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [Email_create_init_Headers[2]] : Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=YWI5YTdjZjctOGFlYi00NjNkLWEwMTQtMDE1MzAxZWJmNGEz; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:51 GMT]}]
+ DEBUG [          account_findAll] : URL [http://localhost:8080/api/v1/accounts?page=0&pageSize=10]
+ DEBUG [          account_findAll] : Method [GET]
+ DEBUG [          account_findAll] : Request []
+ DEBUG [          account_findAll] : Request-Headers [{Content-Type=[application/json], Accept=[application/json], Authorization=[Basic YWRtaW5AZnhsYWJzLmlvOmFwcGxlMTIz]}]
+ DEBUG [          account_findAll] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:52.550+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : [ {
+    "id" : "ff808181641616440164161cee5b0004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:52.154+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:52.156+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-D0ojbZ",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "Email",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff808181641616440164161ced520003",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.890+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.891+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-Ph3PDt",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "Local",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff808181641616440164161ceb890002",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.433+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:51.455+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Init-tEY69C",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "BitBucket",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff80818163ed98a70163edb0ffc1000b",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-11T07:13:10.080+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-11T07:13:10.080+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "Self-Hosted",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "Self_Hosted",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff80818163d87d4e0163db7912c80072",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-07T18:18:55.047+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-07T18:18:55.047+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "dsf",
+    "region" : null,
+    "accessKey" : "shoukathmd@gmail.com",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "GitHub",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff80818163d480740163d48309600004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-06T09:52:27.488+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-06T09:52:27.488+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "AwsCloudLatest",
+    "region" : null,
+    "accessKey" : "AKIAI3VUDT7ZZSTHKX3A",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "AWS",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff80818163cf0eaf0163cf108a780000",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-05T08:29:17.813+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-05T08:29:17.813+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "TeamSlack12",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "Slack",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff80818163c95b1a0163c95f57880004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-04T05:57:38.822+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-04T06:14:51.395+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "GitCredentials",
+    "region" : null,
+    "accessKey" : "shoukathmd@gmail.com",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "GitHub",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff80818163c95b1a0163c96261c4000a",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-04T06:00:58.051+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-04T06:00:58.051+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "IMGitCredentials",
+    "region" : null,
+    "accessKey" : "mdshannan@gmail.com",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "GitHub",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  }, {
+    "id" : "ff80818163bedffd0163bf9856050012",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-02T08:23:41.829+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-02T08:27:12.629+0000",
+    "version" : null,
+    "inactive" : false,
+    "name" : "sdfsf",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : null,
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : "admin@fxlabs.io",
+    "allowedRegions" : [ ]
+  } ],
+  "totalPages" : 2,
+  "totalElements" : 12
+}]
+ DEBUG [          account_findAll] : Response-Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=YzY2M2NlYTYtMjc3ZS00MWFmLTg3NWEtNmYyYmMwNTU1YTY4; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:52 GMT]}]
+ DEBUG [          account_findAll] : StatusCode [200]
+ DEBUG [          account_findAll] : Time [322]
+ DEBUG [          account_findAll] : Size [6770]
+  INFO [          account_findAll] : Assertion [@StatusCode == 200] passed, expected [200] and found [200]
+  INFO [          account_findAll] : Assertion [@Response.data != EMPTY] passed, not expected [] and found [[{"id":"ff808181641616440164161cee5b0004","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-19T03:35:52.154+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-19T03:35:52.156+0000","version":null,"inactive":false,"name":"Init-D0ojbZ","region":null,"accessKey":"test","secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"Email","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff808181641616440164161ced520003","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-19T03:35:51.890+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-19T03:35:51.891+0000","version":null,"inactive":false,"name":"Init-Ph3PDt","region":null,"accessKey":null,"secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"Local","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff808181641616440164161ceb890002","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-19T03:35:51.433+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-19T03:35:51.455+0000","version":null,"inactive":false,"name":"Init-tEY69C","region":null,"accessKey":"test","secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"BitBucket","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff80818163ed98a70163edb0ffc1000b","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-11T07:13:10.080+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-11T07:13:10.080+0000","version":null,"inactive":false,"name":"Self-Hosted","region":null,"accessKey":null,"secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"Self_Hosted","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff80818163d87d4e0163db7912c80072","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-07T18:18:55.047+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-07T18:18:55.047+0000","version":null,"inactive":false,"name":"dsf","region":null,"accessKey":"shoukathmd@gmail.com","secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"GitHub","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff80818163d480740163d48309600004","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-06T09:52:27.488+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-06T09:52:27.488+0000","version":null,"inactive":false,"name":"AwsCloudLatest","region":null,"accessKey":"AKIAI3VUDT7ZZSTHKX3A","secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"AWS","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff80818163cf0eaf0163cf108a780000","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-05T08:29:17.813+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-05T08:29:17.813+0000","version":null,"inactive":false,"name":"TeamSlack12","region":null,"accessKey":null,"secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"Slack","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff80818163c95b1a0163c95f57880004","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-04T05:57:38.822+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-04T06:14:51.395+0000","version":null,"inactive":false,"name":"GitCredentials","region":null,"accessKey":"shoukathmd@gmail.com","secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"GitHub","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff80818163c95b1a0163c96261c4000a","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-04T06:00:58.051+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-04T06:00:58.051+0000","version":null,"inactive":false,"name":"IMGitCredentials","region":null,"accessKey":"mdshannan@gmail.com","secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":"GitHub","prop1":null,"prop2":null,"prop3":null,"allowedRegions":[]},{"id":"ff80818163bedffd0163bf9856050012","createdBy":"ff808181636822cf01636823e4540000","createdDate":"2018-06-02T08:23:41.829+0000","modifiedBy":"ff808181636822cf01636823e4540000","modifiedDate":"2018-06-02T08:27:12.629+0000","version":null,"inactive":false,"name":"sdfsf","region":null,"accessKey":null,"secretKey":null,"org":{"id":"ff808181636822cf01636823e5820003","createdBy":"anonymousUser","createdDate":"2018-05-16T08:49:33.058+0000","modifiedBy":"anonymousUser","modifiedDate":"2018-05-16T08:49:33.058+0000","version":null,"inactive":false,"name":"FXLabs"},"accountType":null,"prop1":null,"prop2":null,"prop3":"admin@fxlabs.io","allowedRegions":[]}]]
+  INFO [          account_findAll] : Assertion [@Response.errors == false] passed, expected [false] and found [false]
+ DEBUG [           account_delete] : URL [http://localhost:8080/api/v1/accounts/ff808181641616440164161ceb890002]
+ DEBUG [           account_delete] : Method [DELETE]
+ DEBUG [           account_delete] : Request [null]
+ DEBUG [           account_delete] : Request-Headers [{Content-Type=[application/json], Accept=[application/json], Authorization=[Basic YWRtaW5AZnhsYWJzLmlvOmFwcGxlMTIz]}]
+ DEBUG [           account_delete] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:52.905+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ceb890002",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.433+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:52.903+0000",
+    "version" : null,
+    "inactive" : true,
+    "name" : "Init-tEY69C",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "BitBucket",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [           account_delete] : Response-Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=NmJlNjVlNTItNGRhMC00MTE2LWIzZTktMjA4ZWNkN2EzNTY4; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:52 GMT]}]
+ DEBUG [           account_delete] : StatusCode [200]
+ DEBUG [           account_delete] : Time [373]
+ DEBUG [           account_delete] : Size [793]
+  INFO [          account_findAll] : Assertion [@StatusCode == 200] passed, expected [200] and found [200]
+  INFO [          account_findAll] : Assertion [@Response.errors == false] passed, expected [false] and found [false]
+ DEBUG [           account_delete] : URL [http://localhost:8080/api/v1/accounts/ff808181641616440164161ced520003]
+ DEBUG [           account_delete] : Method [DELETE]
+ DEBUG [           account_delete] : Request [null]
+ DEBUG [           account_delete] : Request-Headers [{Content-Type=[application/json], Accept=[application/json], Authorization=[Basic YWRtaW5AZnhsYWJzLmlvOmFwcGxlMTIz]}]
+ DEBUG [           account_delete] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:53.193+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161ced520003",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:51.890+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:53.192+0000",
+    "version" : null,
+    "inactive" : true,
+    "name" : "Init-Ph3PDt",
+    "region" : null,
+    "accessKey" : null,
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "Local",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [           account_delete] : Response-Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=NzQ4NzRmNzktNjIzNS00MDQyLTk5YWMtYTA0MzQxYTZkOTQ5; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:52 GMT]}]
+ DEBUG [           account_delete] : StatusCode [200]
+ DEBUG [           account_delete] : Time [300]
+ DEBUG [           account_delete] : Size [787]
+  INFO [          account_findAll] : Assertion [@StatusCode == 200] passed, expected [200] and found [200]
+  INFO [          account_findAll] : Assertion [@Response.errors == false] passed, expected [false] and found [false]
+ DEBUG [           account_delete] : URL [http://localhost:8080/api/v1/accounts/ff808181641616440164161cee5b0004]
+ DEBUG [           account_delete] : Method [DELETE]
+ DEBUG [           account_delete] : Request [null]
+ DEBUG [           account_delete] : Request-Headers [{Content-Type=[application/json], Accept=[application/json], Authorization=[Basic YWRtaW5AZnhsYWJzLmlvOmFwcGxlMTIz]}]
+ DEBUG [           account_delete] : Response [{
+  "requestId" : "None",
+  "requestTime" : "2018-06-19T03:35:53.525+0000",
+  "errors" : false,
+  "messages" : [ ],
+  "data" : {
+    "id" : "ff808181641616440164161cee5b0004",
+    "createdBy" : "ff808181636822cf01636823e4540000",
+    "createdDate" : "2018-06-19T03:35:52.154+0000",
+    "modifiedBy" : "ff808181636822cf01636823e4540000",
+    "modifiedDate" : "2018-06-19T03:35:53.523+0000",
+    "version" : null,
+    "inactive" : true,
+    "name" : "Init-D0ojbZ",
+    "region" : null,
+    "accessKey" : "test",
+    "secretKey" : null,
+    "org" : {
+      "id" : "ff808181636822cf01636823e5820003",
+      "createdBy" : "anonymousUser",
+      "createdDate" : "2018-05-16T08:49:33.058+0000",
+      "modifiedBy" : "anonymousUser",
+      "modifiedDate" : "2018-05-16T08:49:33.058+0000",
+      "version" : null,
+      "inactive" : false,
+      "name" : "FXLabs"
+    },
+    "accountType" : "Email",
+    "prop1" : null,
+    "prop2" : null,
+    "prop3" : null,
+    "allowedRegions" : [ ]
+  },
+  "totalPages" : 1,
+  "totalElements" : 1
+}]
+ DEBUG [           account_delete] : Response-Headers [{X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Set-Cookie=[SESSION=YTg3MGY0ZDAtMjczMS00YjIwLThlYmItOWIwMDBmZTdiN2Rm; Path=/; HttpOnly], Content-Type=[application/json;charset=UTF-8], Transfer-Encoding=[chunked], Date=[Tue, 19 Jun 2018 03:35:53 GMT]}]
+ DEBUG [           account_delete] : StatusCode [200]
+ DEBUG [           account_delete] : Time [341]
+ DEBUG [           account_delete] : Size [789]
+  INFO [          account_findAll] : Assertion [@StatusCode == 200] passed, expected [200] and found [200]
+  INFO [          account_findAll] : Assertion [@Response.errors == false] passed, expected [false] and found [false]
