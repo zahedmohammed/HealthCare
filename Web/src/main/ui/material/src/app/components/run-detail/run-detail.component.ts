@@ -62,6 +62,10 @@ export class RunDetailComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this._clockSubscription.unsubscribe();
+  }
+
   loadProject(id: string) {
     this.projectService.getById(id).subscribe(results => {
       if (this.handler.handle(results)) {
