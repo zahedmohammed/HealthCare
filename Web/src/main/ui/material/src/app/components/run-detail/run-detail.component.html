@@ -56,7 +56,6 @@
             <table class="mdl-data-table">
                 <thead>
                 <tr>
-                    <!--<th class="mdl-data-table__cell--non-numeric"></th>-->
                     <th class="mdl-data-table__cell--non-numeric">Suite</th>
                     <th class="mdl-data-table__cell--non-numeric">Category</th>
                     <th class="mdl-data-table__cell--non-numeric">Severity</th>
@@ -65,6 +64,7 @@
                     <th class="mdl-data-table__cell--non-numeric">Success</th>
                     <th class="mdl-data-table__cell--non-numeric">Time</th>
                     <th class="mdl-data-table__cell--non-numeric">Data</th>
+                    <th class="mdl-data-table__cell--non-numeric">Analytics</th>
                 </tr>
                 <tr class="bg-color-info1">
                     <!--<th class="mdl-data-table__cell--non-numeric"></th>-->
@@ -107,6 +107,10 @@
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.time | mstoDuration}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.size | byteFormat}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'history', s.suiteName]"><i class="nav-icon material-icons">timeline</i></a>
+                    </td>
+
 
                 </tr>
                 <tfoot>

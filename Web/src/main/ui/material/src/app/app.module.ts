@@ -158,6 +158,7 @@ import { AdvRunComponent } from './components/dialogs/adv-run/adv-run.component'
 import { MstoDurationPipe } from './pipes/msto-duration.pipe';
 import { ByteFormatPipe } from './pipes/byte-format.pipe';
 import { SuperBotNetworkListComponent } from './components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component';
+import { RunHistoryComponent } from './components/analytics/run-history/run-history.component';
 
 @NgModule({
   imports: [
@@ -295,7 +296,8 @@ import { SuperBotNetworkListComponent } from './components/superbotnetwork/super
     AdvRunComponent,
     MstoDurationPipe,
     ByteFormatPipe,
-    SuperBotNetworkListComponent
+    SuperBotNetworkListComponent,
+    RunHistoryComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],

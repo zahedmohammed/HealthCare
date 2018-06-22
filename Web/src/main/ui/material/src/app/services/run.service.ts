@@ -56,4 +56,8 @@ constructor(private http: HttpClient) {
     return this.http.get(this.serviceUrl + "/" + id + "/test-suite-response/" + name);
   }
 
+  getTestSuiteResponseHistoryByName(name:string) {
+    return this.http.get(this.serviceUrl + "/testSuite/test-suite-responses/" + name);
+  }
+
  }

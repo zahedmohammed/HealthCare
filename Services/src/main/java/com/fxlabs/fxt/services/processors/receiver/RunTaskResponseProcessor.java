@@ -73,6 +73,8 @@ public class RunTaskResponseProcessor {
     private void saveDS(BotTask task, com.fxlabs.fxt.dao.entity.run.Run run) {
         TestSuiteResponse ds = new TestSuiteResponse();
         ds.setRunId(run.getId());
+        ds.setRunNo(run.getRunId());
+        ds.setRegion(run.getJob().getRegions());
         //TestSuite pds = new TestSuite();
         //pds.setId(task.getProjectDataSetId());
         //ds.setProjectDataSet(pds);

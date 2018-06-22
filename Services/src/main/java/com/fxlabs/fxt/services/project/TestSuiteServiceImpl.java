@@ -10,6 +10,7 @@ import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +61,10 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
 
+        String fileName = testSuite.getProps().get(Project.FILE_NAME);
+        if (StringUtils.contains(fileName, "-")){
+            throw new FxException(String.format("FileName [%s] should not contain hypen '-'.", fileName));
+        }
         Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
         TestSuite entity = null;

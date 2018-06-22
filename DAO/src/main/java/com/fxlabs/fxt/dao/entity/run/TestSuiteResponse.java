@@ -27,6 +27,7 @@ public class TestSuiteResponse extends BaseEntity {
 
     private String testSuite;
     private String runId;
+    private Long runNo;
     private String region;
     private Integer tests;
     private String response;

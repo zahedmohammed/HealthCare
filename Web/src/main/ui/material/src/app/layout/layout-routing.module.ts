@@ -9,6 +9,8 @@ import { JobslistComponent } from '../components/jobs-list/jobs-list.component';
 import { RunListComponent } from '../components/run-list/run-list.component';
 import { RunDetailComponent } from '../components/run-detail/run-detail.component';
 
+import { RunHistoryComponent } from '../components/analytics/run-history/run-history.component';
+
 import { ProjectsListComponent } from '../components/projects/projects-list/projects-list.component';
 import { ProjectsNewComponent } from '../components/projects/projects-new/projects-new.component';
 import { ProjectsEditComponent } from '../components/projects/projects-edit/projects-edit.component';
@@ -169,7 +171,7 @@ const routes: Routes = [
 
       { path: 'skills/analytics', component: SkillsAnalyticsComponent },
 
-
+      { path: 'jobs/:jobId/history/:suiteId', component: RunHistoryComponent },
 
       // { path: 'chart', loadChildren: '../charts/charts.module#ChartsModule' },
       // { path: 'ecommerce', loadChildren: '../ecommerce/ecommerce.module#ECommerceModule' },

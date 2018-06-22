@@ -125,9 +125,13 @@ public class RestProcessor {
             suite.setSuiteName(task.getSuiteName());
             if (task.getCategory() != null) {
                 suite.setCategory(TestSuiteCategory.valueOf(task.getCategory())); //.toUpperCase()
+            }else{
+                suite.setCategory(TestSuiteCategory.Bug);
             }
             if (task.getSeverity() != null) {
                 suite.setSeverity(TestSuiteSeverity.valueOf(task.getSeverity())); //.toUpperCase()
+            }else{
+                suite.setSeverity(TestSuiteSeverity.Major);
             }
             // handle GET requests
             if (CollectionUtils.isEmpty(task.getTestCases())) {
