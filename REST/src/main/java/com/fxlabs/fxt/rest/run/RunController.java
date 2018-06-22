@@ -54,12 +54,12 @@ public class RunController {
 
     //testSuite
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
-    @RequestMapping(value = "/testSuite/test-suite-responses/{name}", method = RequestMethod.GET)
-    public Response<List<TestSuiteResponse>> findResponsesByTestSuite(@PathVariable("name") String testSuite,
+    @RequestMapping(value = "{jobId}/testSuite/test-suite-responses/{name}", method = RequestMethod.GET)
+    public Response<List<TestSuiteResponse>> findResponsesByTestSuite(@PathVariable("jobId") String jobId, @PathVariable("name") String testSuite,
                                                                   @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                                   @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return runService.findByTestSuite(testSuite, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return runService.findByTestSuite(jobId, testSuite, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

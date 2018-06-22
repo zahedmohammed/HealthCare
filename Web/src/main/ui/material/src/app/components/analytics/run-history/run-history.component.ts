@@ -24,12 +24,6 @@ export class RunHistoryComponent implements OnInit {
   suiteName = "";
   projectId:string = "";
   jobId:string =  "";
-  total = 0;
-  failed = 0;
-  size = 0;
-  time = 0;
-  duration = 0;
-  success = 0;
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
@@ -44,18 +38,9 @@ export class RunHistoryComponent implements OnInit {
         this.loadJob(this.jobId);
       }
       if (params['suiteId']) {
-          this.suiteName = params['suiteId'];
-            this.getTestSuiteResponseHistoryByName();
+        this.suiteName = params['suiteId'];
+        this.getTestSuiteResponseHistoryByName();
       }
-    });
-  }
-
-  loadProject(id: string) {
-    this.projectService.getById(id).subscribe(results => {
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.project = results['data'];
     });
   }
 
@@ -68,28 +53,11 @@ export class RunHistoryComponent implements OnInit {
     });
   }
 
-  calSum() {
-    this.total = 0;
-    this.failed = 0;
-    this.size = 0;
-    this.time = 0;
-    this.success = 0;
-    this.duration = 0;
-
-    for(var i = 0; i < this.suites.length; i++){
-        this.total += this.suites[i].tests;
-        this.failed += this.suites[i].failed;
-        this.size += this.suites[i].size;
-        this.time += this.suites[i].time;
-    }
-    this.success = this.total / (this.total + this.failed);
-    //this.duration = Date.parse(this.run.modifiedDate) - Date.parse(this.run.task.startTime);
-  }
 
 
   getTestSuiteResponseHistoryByName() {
     this.handler.activateLoader();
-    this.runService.getTestSuiteResponseHistoryByName(this.suiteName).subscribe(results => {
+    this.runService.getTestSuiteResponseHistoryByName(this.jobId, this.suiteName).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
@@ -99,89 +67,6 @@ export class RunHistoryComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
-  }
-
-
-  getRunById() {
-    this.handler.activateLoader();
-    this.runService.getDetails(this.id).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.run = results['data'];
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getTestSuiteResponsesByRunId() {
-    this.handler.activateLoader();
-    this.runService.getTestSuiteResponses(this.id).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.list = results['data'];
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getSummary() {
-    this.handler.activateLoader();
-    this.runService.getSummary(this.id, this.page, this.pageSize).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.suites = results['data'];
-      this.length = results['totalElements'];
-      this.calSum();
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getTestSuiteResponseByName(name: string) {
-    this.handler.activateLoader();
-    this.runService.getTestSuiteResponseByName(this.id, name).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.list = results['data'];
-      var arrayLength = this.list.length;
-      var msg = '';
-      for (var i = 0; i < arrayLength; i++) {
-        //alert(this.list[i]);
-        msg += this.list[i].logs;
-        //Do something
-      }
-      this.showDialog(msg);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  showDialog(msg) {
-    this.dialog.open(MsgDialogComponent, {
-        width:'100%',
-        height:'90%',
-        data: msg
-    });
-  }
-
-  length = 0;
-  page = 0;
-  pageSize = 1000;
-  change(evt) {
-    this.page = evt['pageIndex'];
-    this.getSummary();
   }
 
 }

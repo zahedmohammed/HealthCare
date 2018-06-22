@@ -31,6 +31,8 @@ public interface RunRepository extends JpaRepository<Run, String> {
 
     Stream<Run> findByTaskStatusAndCreatedDateGreaterThan(TaskStatus status, Date dt);
 
+    List<Run> findAllRunsByJobId(String id);
+
     Page<Run> findByJobId(String id, Pageable pageable);
 
     @Query("SELECT SUM(r.task.totalTestCompleted) FROM Run r WHERE r.job.project.id LIKE ?1")

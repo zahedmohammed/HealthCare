@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * @author Intesar Shannan Mohammed
  */
@@ -12,7 +14,7 @@ public interface TestSuiteResponseRepository extends JpaRepository<TestSuiteResp
 
     Page<TestSuiteResponse> findByRunId(String id, Pageable pageable);
 
-    Page<TestSuiteResponse> findByTestSuite(String testSuite, Pageable pageable);
+    Page<TestSuiteResponse> findByTestSuiteAndRunIdIn(String testSuite, List<String> runIds, Pageable pageable);
 
     Page<TestSuiteResponse> findByRunIdAndTestSuite(String id, String name, Pageable pageable);
 }
