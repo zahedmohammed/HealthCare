@@ -23,7 +23,7 @@
                 </thead>
                 <tbody>
                 <tr *ngFor="let item of list">
-                    <td class="mdl-data-table__cell--non-numeric">{{item.job.regions}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.regions}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
