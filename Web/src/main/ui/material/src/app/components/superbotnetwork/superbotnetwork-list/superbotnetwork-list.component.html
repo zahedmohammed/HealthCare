@@ -1,0 +1,61 @@
+<section class="chapter page-terms">
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Super Bot Network</h1>
+    </div>
+    <p class="text-muted">Use our worldwide networks for bots to run tests on demand.</p>
+  </section>
+
+  <article class="article padding-lg-v1 article-dark article-bordered">
+
+    <div class="container-fluid with-maxwidth chapter">
+
+      <article class="article">
+        <h2 class="article-title1">
+          <!--[routerLink]="['/app/regions/new']" -->
+          <!--<button mat-button color="primary" class="btn-w-md pull-left" [routerLink]="['/app/superbotnetwork/new']">-->
+          <!--<mat-icon class="material-icons">add</mat-icon>-->
+          <!--DEPLOY BOTS-->
+          <!--</button>-->
+          <div class="divider divider-sm"></div>
+        </h2>
+        <br/>
+
+        <div class="box box-default table-box mdl-shadow--2dp">
+          <table class="mdl-data-table">
+            <thead>
+            <tr>
+              <th class="mdl-data-table__cell--non-numeric">Name</th>
+              <th class="mdl-data-table__cell--non-numeric">Region</th>
+              <th class="mdl-data-table__cell--non-numeric">Visibility</th>
+              <th class="mdl-data-table__cell--non-numeric">Count</th>
+              <th class="mdl-data-table__cell--non-numeric">Cost</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of list">
+              <td class="mdl-data-table__cell--non-numeric">{{item.org.name}}/{{item.name}}</td>
+              <td class="mdl-data-table__cell--non-numeric" [hidden]="item.manual">{{item.region}}</td>
+              <td class="mdl-data-table__cell--non-numeric" [hidden]="!item.manual">Registered</td>
+              <td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
+              <td class="mdl-data-table__cell--non-numeric">{{item.min}}</td>
+              <td class="mdl-data-table__cell--non-numeric">$0.00</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+    </div>
+
+    <mat-paginator [hidden]="length <= pageSize"
+                   [pageSize]="pageSize"
+                   hidePageSize="true"
+                   (page)="change($event)"
+                   [length]="length"
+    >
+    </mat-paginator>
+
+  </article>
+</section>
