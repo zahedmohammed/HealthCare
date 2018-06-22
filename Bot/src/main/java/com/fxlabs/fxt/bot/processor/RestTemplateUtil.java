@@ -40,11 +40,13 @@ public class RestTemplateUtil {
         // TODO - handle other auth types
         if (auth == null || auth.getAuthType() == null) {
             return execBasicRequest(url, method, httpHeaders, req, auth);
-        } else if (auth.getAuthType() == AuthType.BASIC || auth.getAuthType() == AuthType.BasicAuth) {
+        } else if (auth.getAuthType() == AuthType.Basic || auth.getAuthType() == AuthType.BASIC || auth.getAuthType() == AuthType.BasicAuth) {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(auth.getUsername(), auth.getPassword()));
             return execBasicRequest(url, method, httpHeaders, req, auth);
         } else if (auth.getAuthType() == AuthType.OAuth_2_0) {
             return execOAuth2Request(url, method, httpHeaders, req, auth);
+        } else if (auth.getAuthType() == AuthType.Token) {
+            return execTokenRequest(url, method, httpHeaders, req, auth);
         } else {
             logger.warn("Invalid auth-type [{}]", auth.getAuthType());
         }
@@ -57,7 +59,7 @@ public class RestTemplateUtil {
         // execute request
         RestTemplate restTemplate = new RestTemplate(httpClientFactory());
 
-        if (auth != null && (auth.getAuthType() == AuthType.BasicAuth || auth.getAuthType() == AuthType.BASIC)) {
+        if (auth != null && (auth.getAuthType() == AuthType.Basic || auth.getAuthType() == AuthType.BasicAuth || auth.getAuthType() == AuthType.BASIC)) {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(auth.getUsername(), auth.getPassword()));
         }
 
@@ -81,6 +83,46 @@ public class RestTemplateUtil {
         }
 
         return response;
+    }
+
+    private ResponseEntity<String> execTokenRequest(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
+        // execute request
+        RestTemplate restTemplate = new RestTemplate(httpClientFactory());
+
+        extractHeader(httpHeaders, auth.getHeader_1());
+        extractHeader(httpHeaders, auth.getHeader_2());
+        extractHeader(httpHeaders, auth.getHeader_3());
+
+
+        //logger.info("Request: [{}]", req);
+        HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
+
+        ResponseEntity<String> response = null;
+        int statusCode = -1;
+        String responseBody = null;
+        HttpHeaders headers = null;
+        try {
+            response = restTemplate.exchange(url, method, request, String.class);
+            //statusCode = response.getStatusCodeValue();
+            //responseBody = response.getBody();
+            //headers = response.getHeaders();
+        } catch (HttpStatusCodeException statusCodeException) {
+            response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage());
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return response;
+    }
+
+    private void extractHeader(HttpHeaders httpHeaders, String header) {
+        if (StringUtils.isNotEmpty(header)) {
+            String[] tokens = header.split(":");
+            if (tokens != null && tokens.length == 2) {
+                httpHeaders.set(StringUtils.trim(tokens[0]), StringUtils.trim(tokens[1]));
+            }
+        }
     }
 
     private ResponseEntity<String> execOAuth2Request(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
@@ -133,7 +175,6 @@ public class RestTemplateUtil {
 
         return null;
     }
-
 
     private OAuth2ProtectedResourceDetails getResourceOwnerPasswordResourceDetails(Auth auth) {
 

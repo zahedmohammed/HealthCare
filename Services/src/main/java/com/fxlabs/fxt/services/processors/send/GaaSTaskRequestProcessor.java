@@ -102,7 +102,7 @@ public class GaaSTaskRequestProcessor {
                 return;
             }
 
-            Response<String> accessKeyResponse = usersService.generate(ownerEmail);
+            Response<String> accessKeyResponse = usersService.generate(ownerEmail, project.getOrg().getName());
 
             String[] accessKey = accessKeyResponse.getData().split(":");
 

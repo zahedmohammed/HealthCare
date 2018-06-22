@@ -78,15 +78,16 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
     }
 
     @Override
-    public Response<String> generate(String email){
+    public Response<String> generate(String email, String org) {
         Optional<Users> usersOptional = ((UsersRepository) repository).findByEmail(email);
 
         if (!usersOptional.isPresent()) {
             return new Response<String>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Invalid id")));
         }
 
+        String accessKey = org + "//" + RandomStringUtils.randomAlphabetic(16);
         String secretKey = RandomStringUtils.randomAlphabetic(32);
-        String accessKey = RandomStringUtils.randomAlphabetic(16);
+
         // AccessKey
         AccessKey ak = new AccessKey();
         ak.setAccessKey(accessKey);
@@ -96,7 +97,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         ak = accessKeyRepository.save(ak);
 
 
-        String response = accessKey + ":" + secretKey;
+        String response = ak.getAccessKey() + ":" + secretKey;
         return new Response<String>(response);
     }
 

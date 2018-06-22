@@ -66,18 +66,19 @@ public class FxUserDetailsService implements UserDetailsService {
         String orgName = null;
         String email = username;
 
-        AccessKey accessKey = null;
-        Optional<AccessKey> accessKeyOption = accessKeyRepository.findByAccessKeyAndExpirationAfter(email, new Date());
-        if (accessKeyOption.isPresent()) {
-            accessKey = accessKeyOption.get();
-            email = accessKeyOption.get().getUsers().getEmail();
-        }
-
         if (StringUtils.contains(username, "//")) {
             String[] tokens = StringUtils.split(username, "//");
             orgName = tokens[0];
             email = tokens[1];
         }
+
+        AccessKey accessKey = null;
+        Optional<AccessKey> accessKeyOption = accessKeyRepository.findByAccessKeyAndExpirationAfter(username, new Date());
+        if (accessKeyOption.isPresent()) {
+            accessKey = accessKeyOption.get();
+            email = accessKeyOption.get().getUsers().getEmail();
+        }
+
         Optional<com.fxlabs.fxt.dao.entity.users.Users> usersOptional = usersRepository.findByEmail(email);
         if (!usersOptional.isPresent()) {
             throw new UsernameNotFoundException(email);

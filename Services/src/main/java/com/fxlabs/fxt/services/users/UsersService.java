@@ -30,6 +30,6 @@ public interface UsersService extends GenericService<Users, String> {
 
     Response<Boolean> resetPassword(String id, String password, String confirmPassword);
 
-    public Response<String> generate(String userId);
+    public Response<String> generate(String email, String orgId);
 
 }

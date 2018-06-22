@@ -9,6 +9,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,10 @@ public class Auth {
     private AuthType authType; // login authType
     private String username;
     private String password;
+
+    private String header_1;
+    private String header_2;
+    private String header_3;
 
     // OAuth 2.0 properties
 

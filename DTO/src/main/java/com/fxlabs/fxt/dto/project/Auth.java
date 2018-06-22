@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -22,6 +23,10 @@ public class Auth implements Serializable {
     private AuthType authType; // login authType
     private String username;
     private String password;
+
+    private String header_1;
+    private String header_2;
+    private String header_3;
 
     // OAuth 2.0 properties
 

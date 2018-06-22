@@ -169,7 +169,7 @@ public class RunTaskRequestProcessor {
                         if (testSuite.getCategory() != null) {
                             task.setCategory(testSuite.getCategory().toString());
                         }
-                        if (testSuite.getSeverity() != null ) {
+                        if (testSuite.getSeverity() != null) {
                             task.setSeverity(testSuite.getSeverity().toString());
                         }
                         copyHeaders(task, testSuite);
@@ -280,6 +280,12 @@ public class RunTaskRequestProcessor {
 
         task.getAuth().setClientId(dataResolver.resolve(cred.getClientId()));
         task.getAuth().setClientSecret(dataResolver.resolve(cred.getClientSecret()));
+
+        // Token
+        task.getAuth().setHeader_1(dataResolver.resolve(cred.getHeader_1()));
+        task.getAuth().setHeader_2(dataResolver.resolve(cred.getHeader_2()));
+        task.getAuth().setHeader_3(dataResolver.resolve(cred.getHeader_3()));
+
     }
 
     private String getBaseUrl(String url) {
@@ -350,7 +356,7 @@ public class RunTaskRequestProcessor {
 
             tasks.add(afterTask);
 
-            if(copyCleanup) {
+            if (copyCleanup) {
                 copy(suite1.getCleanup(), afterTask.getCleanup(), run, env, false);
             }
         }

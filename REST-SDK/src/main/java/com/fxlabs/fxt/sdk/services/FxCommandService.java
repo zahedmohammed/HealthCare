@@ -522,6 +522,11 @@ public class FxCommandService {
         cred.setPreEstablishedRedirectUri(credential.getPreEstablishedRedirectUri());
         cred.setUseCurrentUri(credential.getUseCurrentUri());
         cred.setUserAuthorizationUri(credential.getUserAuthorizationUri());
+
+        cred.setHeader_1(credential.getHeader_1());
+        cred.setHeader_2(credential.getHeader_2());
+        cred.setHeader_3(credential.getHeader_3());
+
     }
 
     private Response<List<Job>> mergeAndSaveJobs(Config config, String projectId) {
@@ -617,6 +622,10 @@ public class FxCommandService {
                 cred.setPreEstablishedRedirectUri(credential.getPreEstablishedRedirectUri());
                 cred.setUseCurrentUri(credential.getUseCurrentUri());
                 cred.setUserAuthorizationUri(credential.getUserAuthorizationUri());
+
+                cred.setHeader_1(credential.getHeader_1());
+                cred.setHeader_2(credential.getHeader_2());
+                cred.setHeader_3(credential.getHeader_3());
 
                 list.add(cred);
             }
