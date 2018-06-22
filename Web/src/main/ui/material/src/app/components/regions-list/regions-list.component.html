@@ -21,7 +21,8 @@
                     </button>
                     <span class="space"></span>
                     <button mat-raised-button color="warn" class="btn-w-md"
-                             [routerLink]="['/app/superbotnetwork']">Superbotnetwork</button>
+                            [routerLink]="['/app/superbotnetwork']">View SuperBotNetwork
+                    </button>
                     <div class="divider divider-sm"></div>
                 </h2>
                 <br/>
@@ -46,7 +47,9 @@
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="!item.manual">Registered</td>
                             <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'shortDate'}}</td>
                             <!--<td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>-->
-                            <td class="mdl-data-table__cell--non-numeric">{{item.min}} <span matTooltip="10 virtual bots!" matTooltipPosition="above"><small>x10</small></span></td>
+                            <td class="mdl-data-table__cell--non-numeric">{{item.min}} <span
+                                    matTooltip="10 virtual bots!" matTooltipPosition="above"><small>x10</small></span>
+                            </td>
                             <td class="mdl-data-table__cell--non-numeric text-success">OK</td>
                             <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
                                                                              [routerLink]="['/app/regions', item.id]">Edit</a>
