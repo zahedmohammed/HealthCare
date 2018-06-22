@@ -14,6 +14,7 @@ import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.skills.SkillType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.users.OrgServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -65,7 +66,7 @@ public class SkillServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.enti
     public Response<com.fxlabs.fxt.dto.skills.Skill> save(com.fxlabs.fxt.dto.skills.Skill dto, String user) {
 
         if (dto.getOrg() == null) {
-            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+            Set<OrgUsers> set = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRoleIn(user, OrgUserStatus.ACTIVE, OrgServiceImpl.roles);
             if (CollectionUtils.isEmpty(set)) {
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("You don't have [ADMIN] access to any Org. Set org with [WRITE] access.")));
             }

@@ -4,14 +4,12 @@ import com.fxlabs.fxt.converters.users.OrgConverter;
 import com.fxlabs.fxt.converters.users.OrgUsersConverter;
 import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.clusters.AccountType;
-import com.fxlabs.fxt.dao.entity.clusters.ClusterVisibility;
 import com.fxlabs.fxt.dao.entity.users.*;
 import com.fxlabs.fxt.dao.repository.es.OrgUsersESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgRepository;
 import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
-import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.UserMinimalDto;
 import com.fxlabs.fxt.dto.users.Member;
@@ -45,6 +43,8 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     private UsersService usersService;
     private AccountRepository accountRepository;
 
+    public static final Collection<OrgRole> roles = Arrays.asList(OrgRole.ADMIN, OrgRole.ENTERPRISE_ADMIN);
+
     @Autowired
     public OrgServiceImpl(OrgUsersRepository orgUsersRepository, OrgUsersESRepository orgUsersESRepository,
                           OrgUsersConverter orgUsersConverter, OrgRepository orgRepository, OrgConverter orgConverter,
@@ -66,13 +66,14 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
     @Override
     public Response<List<com.fxlabs.fxt.dto.users.OrgUsers>> findByAccess(String user, Pageable pageable) {
-        Page<OrgUsers> page = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN, pageable);
+        Page<OrgUsers> page = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRoleIn(user, OrgUserStatus.ACTIVE, roles, pageable);
         return new Response<>(orgUsersConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
     public Response<List<com.fxlabs.fxt.dto.users.Org>> findAll(String user, Pageable pageable) {
-        Set<OrgUsers> orgUsers = orgUsersRepository.findByUsersIdAndStatusAndOrgRole(user, OrgUserStatus.ACTIVE, OrgRole.ADMIN);
+
+        Set<OrgUsers> orgUsers = orgUsersRepository.findByUsersIdAndStatusAndOrgRoleIn(user, OrgUserStatus.ACTIVE, roles);
         List<Org> orgs = new ArrayList<>();
         orgUsers.forEach(ou -> {
             orgs.add(ou.getOrg());
@@ -233,7 +234,18 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
 
         // save OrgUser
-        this.orgUsersRepository.save(orgUsersConverter.convertToEntity(orgUser));
+        // Shouldn't be able to demote/promote an EA.
+
+        OrgUsers orgUsers_ = usersOptional.get();
+        OrgUsers orgUsers = orgUsersConverter.convertToEntity(orgUser);
+
+        if (orgUsers_.getOrgRole() == OrgRole.ENTERPRISE_ADMIN && orgUsers.getOrgRole() != OrgRole.ENTERPRISE_ADMIN) {
+            throw new FxException(String.format("User role [%s] can't be changed.", OrgRole.ENTERPRISE_ADMIN));
+        } else if (orgUsers_.getOrgRole() != OrgRole.ENTERPRISE_ADMIN && orgUsers.getOrgRole() == OrgRole.ENTERPRISE_ADMIN) {
+            throw new FxException(String.format("User role can't be changed to [%s].", OrgRole.ENTERPRISE_ADMIN));
+        }
+
+        this.orgUsersRepository.save(orgUsers_);
 
         return new Response<>(true);
 
