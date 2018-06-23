@@ -592,42 +592,44 @@ public class FxCommandService {
             //env.setProject(proj);
 
             List<Auth> list = new ArrayList<>();
-            for (com.fxlabs.fxt.sdk.beans.Auth credential : environment.getAuths()) {
-                Auth cred = new Auth();
-                cred.setName(credential.getName());
+            if (!CollectionUtils.isEmpty(environment.getAuths())) {
+                for (com.fxlabs.fxt.sdk.beans.Auth credential : environment.getAuths()) {
+                    Auth cred = new Auth();
+                    cred.setName(credential.getName());
 
-                if (credential.getAuthType() != null) {
-                    cred.setAuthType(AuthType.valueOf(credential.getAuthType().name()));
+                    if (credential.getAuthType() != null) {
+                        cred.setAuthType(AuthType.valueOf(credential.getAuthType().name()));
+                    }
+
+                    cred.setUsername(credential.getUsername());
+                    cred.setPassword(credential.getPassword());
+                    // OAuth 2.0
+                    cred.setClientId(credential.getClientId());
+                    cred.setClientSecret(credential.getClientSecret());
+
+                    cred.setId(credential.getId());
+                    cred.setAccessTokenUri(credential.getAccessTokenUri());
+                    if (credential.getAuthorizationScheme() != null) {
+                        cred.setAuthorizationScheme(AuthenticationScheme.valueOf(credential.getAuthorizationScheme().name()));
+                    }
+                    if (credential.getClientAuthenticationScheme() != null) {
+                        cred.setClientAuthenticationScheme(AuthenticationScheme.valueOf(credential.getClientAuthenticationScheme().name()));
+                    }
+                    cred.setTokenName(credential.getTokenName());
+                    cred.setScope(credential.getScope());
+                    if (credential.getGrantType() != null) {
+                        cred.setGrantType(GrantType.valueOf(credential.getGrantType().name()));
+                    }
+                    cred.setPreEstablishedRedirectUri(credential.getPreEstablishedRedirectUri());
+                    cred.setUseCurrentUri(credential.getUseCurrentUri());
+                    cred.setUserAuthorizationUri(credential.getUserAuthorizationUri());
+
+                    cred.setHeader_1(credential.getHeader_1());
+                    cred.setHeader_2(credential.getHeader_2());
+                    cred.setHeader_3(credential.getHeader_3());
+
+                    list.add(cred);
                 }
-
-                cred.setUsername(credential.getUsername());
-                cred.setPassword(credential.getPassword());
-                // OAuth 2.0
-                cred.setClientId(credential.getClientId());
-                cred.setClientSecret(credential.getClientSecret());
-
-                cred.setId(credential.getId());
-                cred.setAccessTokenUri(credential.getAccessTokenUri());
-                if (credential.getAuthorizationScheme() != null) {
-                    cred.setAuthorizationScheme(AuthenticationScheme.valueOf(credential.getAuthorizationScheme().name()));
-                }
-                if (credential.getClientAuthenticationScheme() != null) {
-                    cred.setClientAuthenticationScheme(AuthenticationScheme.valueOf(credential.getClientAuthenticationScheme().name()));
-                }
-                cred.setTokenName(credential.getTokenName());
-                cred.setScope(credential.getScope());
-                if (credential.getGrantType() != null) {
-                    cred.setGrantType(GrantType.valueOf(credential.getGrantType().name()));
-                }
-                cred.setPreEstablishedRedirectUri(credential.getPreEstablishedRedirectUri());
-                cred.setUseCurrentUri(credential.getUseCurrentUri());
-                cred.setUserAuthorizationUri(credential.getUserAuthorizationUri());
-
-                cred.setHeader_1(credential.getHeader_1());
-                cred.setHeader_2(credential.getHeader_2());
-                cred.setHeader_3(credential.getHeader_3());
-
-                list.add(cred);
             }
             env.setAuths(list);
 
