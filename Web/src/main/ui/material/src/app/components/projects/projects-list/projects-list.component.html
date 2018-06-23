@@ -29,22 +29,17 @@
                             <th class="mdl-data-table__cell--non-numeric">Auto-Code</th>
                             <th class="mdl-data-table__cell--non-numeric">Version-Control</th>
                             <th class="mdl-data-table__cell--non-numeric">Create-date</th>
-                            <!--<th class="mdl-data-table__cell--non-numeric">Jobs</th>-->
-                            <th class="mdl-data-table__cell--non-numeric"></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let project of projects">
-                            <td class="mdl-data-table__cell--non-numeric bold">{{project.org.name}}/{{project.name}}
+                            <td class="mdl-data-table__cell--non-numeric bold">
+                                <a href="javascript:;"
+                                   [routerLink]="['/app/projects', project.id]">{{project.org.name}}/{{project.name}}</a>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric">{{project.genPolicy}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{project.account.accountType}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{project.createdDate | date:'shortDate'}}
-                            </td>
-                            <!--<td class="mdl-data-table__cell--non-numeric"><a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a></td>-->
-                            <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
-                                                                             [routerLink]="['/app/projects', project.id]">Edit</a>
-                            </td>
                         </tr>
                         </tbody>
                     </table>

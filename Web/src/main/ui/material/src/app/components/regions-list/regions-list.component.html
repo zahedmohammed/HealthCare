@@ -37,12 +37,13 @@
                             <!--<th class="mdl-data-table__cell--non-numeric">Visibility</th>-->
                             <th class="mdl-data-table__cell--non-numeric">Count</th>
                             <th class="mdl-data-table__cell--non-numeric">Status</th>
-                            <th class="mdl-data-table__cell--non-numeric"></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let item of list">
-                            <td class="mdl-data-table__cell--non-numeric">{{item.org.name}}/{{item.name}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                <a href="javascript:;"
+                                   [routerLink]="['/app/regions', item.id]">{{item.org.name}}/{{item.name}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="item.manual">{{item.region}}</td>
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="!item.manual">Registered</td>
                             <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'shortDate'}}</td>
@@ -51,9 +52,6 @@
                                     matTooltip="10 virtual bots!" matTooltipPosition="above"><small>x10</small></span>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric text-success">OK</td>
-                            <td class="mdl-data-table__cell--non-numeric"><a href="javascript:;"
-                                                                             [routerLink]="['/app/regions', item.id]">Edit</a>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
