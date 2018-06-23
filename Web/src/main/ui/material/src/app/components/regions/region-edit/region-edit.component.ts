@@ -5,7 +5,8 @@ import { OrgService } from '../../../services/org.service';
 import { AccountService } from '../../../services/account.service';
 import { Region } from '../../../models/regions.model';
 import { Handler } from '../../dialogs/handler/handler';
-
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-regions-edit',
@@ -28,7 +29,7 @@ export class RegionEditComponent implements OnInit {
   accounts;
   entry: Region = new Region();
   orgs;
-  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -69,19 +70,28 @@ export class RegionEditComponent implements OnInit {
     });
   }
 
-  delete() {
-    this.handler.activateLoader();
-    this.regionsService.delete(this.entry).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.router.navigate(['/app/regions']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
+delete() {
+    let dialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: {
+            entry: this.entry
+        }
     });
-  }
+    dialogRef.afterClosed().subscribe(result => {
+        if (result != null) {
+            this.handler.activateLoader();
+            this.regionsService.delete(this.entry).subscribe(results => {
+                this.handler.hideLoader();
+                if (this.handler.handle(results)) {
+                    return;
+                }
+                this.router.navigate(['/app/regions']);
+            }, error => {
+                this.handler.hideLoader();
+                this.handler.error(error);
+            });
+        }
+    });
+}
 
   ping() {
     this.handler.activateLoader();

@@ -4,6 +4,8 @@ import { VaultService } from '../../../services/vault.service';
 import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
 import { Handler } from '../../dialogs/handler/handler';
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-vault-edit',
@@ -16,7 +18,7 @@ export class VaultEditComponent implements OnInit {
   showSpinner: boolean = false;
   entry: Vault = new Vault();
   orgs;
-  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -56,19 +58,30 @@ export class VaultEditComponent implements OnInit {
     });
   }
 
-  delete() {
-    this.handler.activateLoader();
-    this.vaultService.delete(this.entry).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.router.navigate(['/app/vault']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
+ delete() {
+    let dialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: {
+            entry: this.entry
+        }
     });
-  }
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result != null) {
+            this.handler.activateLoader();
+            this.vaultService.delete(this.entry).subscribe(results => {
+                this.handler.hideLoader();
+                if (this.handler.handle(results)) {
+                    return;
+                }
+                this.router.navigate(['/app/vault']);
+            }, error => {
+                this.handler.hideLoader();
+                this.handler.error(error);
+
+            });
+        }
+    });
+}
 
   getOrgs() {
     this.handler.activateLoader();

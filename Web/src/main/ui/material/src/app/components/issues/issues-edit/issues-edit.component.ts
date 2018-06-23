@@ -8,6 +8,8 @@ import { Account } from '../../../models/account.model';
 import { IssueTracker } from '../../../models/issue-tracker.model';
 import { Base } from '../../../models/base.model';
 import { Handler } from '../../dialogs/handler/handler';
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-issues-edit',
@@ -22,7 +24,7 @@ export class IssuesEditComponent implements OnInit {
   showSpinner: boolean = false;
   entry: IssueTracker = new IssueTracker();
   constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService,
-    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -66,18 +68,29 @@ export class IssuesEditComponent implements OnInit {
   }
 
   delete() {
-    this.handler.activateLoader();
-    this.issueTrackerService.deleteITBot(this.entry).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.router.navigate(['/app/issues']);
-    }, error => {
-      console.log("Unable to delete entry");
-      this.handler.error(error);
+    let dialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: {
+            entry: this.entry
+        }
     });
-  }
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result != null) {
+            this.handler.activateLoader();
+            this.issueTrackerService.deleteITBot(this.entry).subscribe(results => {
+                this.handler.hideLoader();
+                if (this.handler.handle(results)) {
+                    return;
+                }
+                this.router.navigate(['/app/issues']);
+            }, error => {
+                this.handler.hideLoader();
+                this.handler.error(error);
+
+            });
+        }
+    });
+}
 
   listSkills() {
     this.handler.activateLoader();

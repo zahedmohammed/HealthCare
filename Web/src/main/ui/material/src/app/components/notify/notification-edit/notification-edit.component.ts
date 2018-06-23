@@ -6,7 +6,8 @@ import { OrgService } from '../../../services/org.service';
 import { Account } from '../../../models/account.model';
 import { Notification } from '../../../models/notification.model';
 import { Handler } from '../../dialogs/handler/handler';
-
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-notification-edit',
@@ -21,7 +22,7 @@ export class NotificationEditComponent implements OnInit {
   orgs;
   accounts;
   types = ['SLACK','EMAIL'];
-  constructor(private notificationService: NotificationService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private notificationService: NotificationService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
 
     ngOnInit() {
     this.route.params.subscribe(params => {
@@ -63,18 +64,29 @@ export class NotificationEditComponent implements OnInit {
   }
 
   delete() {
-    this.handler.activateLoader();
-    this.notificationService.delete(this.entry).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.router.navigate(['/app/notification-accounts']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
+    let dialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: {
+            entry: this.entry
+        }
     });
-  }
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result != null) {
+            this.handler.activateLoader();
+            this.notificationService.delete(this.entry).subscribe(results => {
+                this.handler.hideLoader();
+                if (this.handler.handle(results)) {
+                    return;
+                }
+                this.router.navigate(['/app/notification-accounts']);
+            }, error => {
+                this.handler.hideLoader();
+                this.handler.error(error);
+
+            });
+        }
+    });
+}
 
   getOrgs() {
     this.orgService.getByUser().subscribe(results => {
