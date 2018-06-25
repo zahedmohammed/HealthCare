@@ -206,8 +206,8 @@
             </label>
             <div class="col-md-4">
               <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
-                       matInput type="password" placeholder="Password/Secret-Key">
+                <textarea [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
+                          matInput type="password" placeholder="Password/Private-Key"></textarea>
               </mat-input-container>
             </div>
           </div>
@@ -305,8 +305,8 @@
             </label>
             <div class="col-md-4">
               <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
-                       matInput type="password" placeholder="Secret-Key/Password">
+                <textarea  [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
+                          matInput type="password" placeholder="Password/Private-Key"></textarea>
               </mat-input-container>
             </div>
           </div>
