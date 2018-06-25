@@ -8,6 +8,7 @@ import { Base } from '../../models/base.model';
 import { Handler } from '../dialogs/handler/handler';
 import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
 import { AdvRunComponent } from '../dialogs/adv-run/adv-run.component';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class JobslistComponent implements OnInit {
   projectId: string = "";
   project: Base = new Base();
   showSpinner: boolean = false;
+  private _clockSubscription: Subscription;
+
   constructor(private jobsService: JobsService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
@@ -29,12 +32,16 @@ export class JobslistComponent implements OnInit {
     this.handler.activateLoader();
     this.route.params.subscribe(params => {
       console.log(params);
-      //if (params['id']) {
-        //this.projectId = params['id'];
-        this.list();
-        //this.loadProject(this.projectId);
-      //}
+      this.list();
     });
+    let timer = Observable.timer(1, 10000);
+    this._clockSubscription = timer.subscribe(t => {
+      this.list();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._clockSubscription.unsubscribe();
   }
 
   loadProject(id: string) {

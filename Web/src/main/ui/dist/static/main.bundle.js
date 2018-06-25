@@ -1078,7 +1078,7 @@ var AdvRunComponent = (function () {
         this.showSpinner = false;
         this.length = 0;
         this.page = 0;
-        this.pageSize = 20;
+        this.pageSize = 100;
     }
     AdvRunComponent.prototype.ngOnInit = function () {
         this.newRegion = this.data.regions;
@@ -1087,7 +1087,7 @@ var AdvRunComponent = (function () {
     AdvRunComponent.prototype.get = function () {
         var _this = this;
         this.handler.activateLoader();
-        this.regionService.get(this.page, this.pageSize).subscribe(function (results) {
+        this.regionService.getEntitled(this.page, this.pageSize).subscribe(function (results) {
             _this.handler.hideLoader();
             if (_this.handler.handle(results)) {
                 return;
@@ -2129,6 +2129,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__dialogs_adv_run_adv_run_component__ = __webpack_require__("../../../../../src/app/components/dialogs/adv-run/adv-run.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_Rx__ = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2145,6 +2146,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
+
 
 
 
@@ -2169,12 +2171,15 @@ var JobslistComponent = (function () {
         this.handler.activateLoader();
         this.route.params.subscribe(function (params) {
             console.log(params);
-            //if (params['id']) {
-            //this.projectId = params['id'];
             _this.list();
-            //this.loadProject(this.projectId);
-            //}
         });
+        var timer = __WEBPACK_IMPORTED_MODULE_9_rxjs_Rx__["a" /* Observable */].timer(1, 10000);
+        this._clockSubscription = timer.subscribe(function (t) {
+            _this.list();
+        });
+    };
+    JobslistComponent.prototype.ngOnDestroy = function () {
+        this._clockSubscription.unsubscribe();
     };
     JobslistComponent.prototype.loadProject = function (id) {
         var _this = this;
@@ -9387,6 +9392,12 @@ var RegionsService = (function () {
         params = params.append('page', page);
         params = params.append('pageSize', pageSize);
         return this.http.get(this.serviceUrl, { params: params });
+    };
+    RegionsService.prototype.getEntitled = function (page, pageSize) {
+        var params = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpParams */]();
+        params = params.append('page', page);
+        params = params.append('pageSize', pageSize);
+        return this.http.get(this.serviceUrl + "/entitled", { params: params });
     };
     RegionsService.prototype.getById = function (id) {
         return this.http.get(this.serviceUrl + "/" + id);
