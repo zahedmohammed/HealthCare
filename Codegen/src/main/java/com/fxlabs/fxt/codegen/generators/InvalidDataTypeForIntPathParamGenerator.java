@@ -22,7 +22,7 @@ import java.util.List;
 public class InvalidDataTypeForIntPathParamGenerator extends AbstractGenerator {
 
     protected static final String POSTFIX = "path_param_invalid_datatype_for_int";
-    protected static final String AUTH = "BASIC";
+    protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
     @Override

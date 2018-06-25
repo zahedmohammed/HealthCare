@@ -18,7 +18,7 @@ import java.util.List;
 public class NegativeQueryParamGenerator extends AbstractGenerator {
 
     protected static final String POSTFIX = "query_param_negative";
-    protected static final String AUTH = "BASIC";
+    protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
     @Override

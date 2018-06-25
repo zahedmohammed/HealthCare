@@ -21,7 +21,7 @@ import java.util.List;
 public class LogForgingQueryParamGenerator extends AbstractGenerator {
 
     protected static final String POSTFIX = "query_param_log_forging";
-    protected static final String AUTH = "BASIC";
+    protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
     @Override
