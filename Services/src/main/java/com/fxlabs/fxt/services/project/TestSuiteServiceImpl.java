@@ -61,10 +61,10 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
 
-        String fileName = testSuite.getProps().get(Project.FILE_NAME);
-        if (StringUtils.contains(fileName, "-")){
-            throw new FxException(String.format("FileName [%s] should not contain hypen '-'.", fileName));
-        }
+//        String fileName = testSuite.getProps().get(Project.FILE_NAME);
+//        if (StringUtils.contains(fileName, "-")){
+//            throw new FxException(String.format("FileName [%s] should not contain hypen '-'.", fileName));
+//        }
         Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
         TestSuite entity = null;

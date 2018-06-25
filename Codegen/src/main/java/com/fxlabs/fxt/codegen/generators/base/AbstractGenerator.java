@@ -3,10 +3,7 @@ package com.fxlabs.fxt.codegen.generators.base;
 import com.fxlabs.fxt.codegen.code.StubHandler;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
-import com.fxlabs.fxt.dto.project.HttpMethod;
-import com.fxlabs.fxt.dto.project.TestCase;
-import com.fxlabs.fxt.dto.project.TestSuiteMin;
-import com.fxlabs.fxt.dto.project.TestSuiteType;
+import com.fxlabs.fxt.dto.project.*;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
@@ -42,6 +39,11 @@ public abstract class AbstractGenerator implements Generator {
 
     public List<TestSuiteMin> build(Operation op, String path, String postfix, String description, TestSuiteType testSuiteType,
                                     io.swagger.models.HttpMethod method, String tag, String auth) {
+        return build(op,path,postfix,description,testSuiteType,method,tag,auth,null, false);
+    }
+
+    public List<TestSuiteMin> build(Operation op, String path, String postfix, String description, TestSuiteType testSuiteType,
+                                    io.swagger.models.HttpMethod method, String tag, String auth, Policies policies, boolean inactive) {
 
         TestSuiteMin testSuite = new TestSuiteMin();
         List<TestSuiteMin> list = new ArrayList<>();
@@ -52,7 +54,7 @@ public abstract class AbstractGenerator implements Generator {
 
 
         buildName(testSuite, path, method, postfix)
-                .buildInactive(testSuite)
+                .buildInactive(testSuite, inactive)
                 //buildFileName(testSuite, name)
                 .buildDescription(testSuite, description)
                 .buildType(testSuite, testSuiteType)
@@ -65,15 +67,16 @@ public abstract class AbstractGenerator implements Generator {
                 // TODO buildCleanup(testSuite)
                 .buildTag(testSuite, tag)
                 .buildAuth(testSuite, auth)
-                .buildAuthor(testSuite, AUTHOR);
+                .buildAuthor(testSuite, AUTHOR)
+                .buildPolicies(testSuite, policies);
 
         return list;
 
     }
 
-    protected AbstractGenerator buildInactive(TestSuiteMin testSuite) {
+    protected AbstractGenerator buildInactive(TestSuiteMin testSuite, boolean inactive) {
 
-        testSuite.setInactive(false);
+        testSuite.setInactive(inactive);
 
         return this;
 
@@ -250,4 +253,20 @@ public abstract class AbstractGenerator implements Generator {
 
         return this;
     }
+
+    protected AbstractGenerator buildPolicies(TestSuiteMin testSuite, Policies policies) {
+
+        // Tags
+        /*if (testSuite.getCleanup() == null) {
+            testSuite.setCleanup(new ArrayList<>());
+        }
+        testSuite.getInit().add(cleanup);*/
+
+        if (policies != null) {
+            testSuite.setPolicies(policies);
+        }
+        return this;
+    }
+
+
 }

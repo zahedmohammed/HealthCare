@@ -39,6 +39,8 @@ public class TestSuiteMin {
 
     private boolean inactive;
 
+    private Policies policies;
+
 
 }
 
