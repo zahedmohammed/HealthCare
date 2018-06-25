@@ -138,9 +138,13 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         switch (dto.getAccountType()) {
             case GitHub:
+            case BitBucket:
+                if (StringUtils.isEmpty(dto.getAccessKey()) && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Username/Access-Key is empty"));
+                }
+                break;
             case Git:
             case GitLab:
-            case BitBucket:
             case Microsoft_TFS_Git:
             case Microsoft_VSTS_Git:
             case Jira:
@@ -163,6 +167,9 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
                 }
                 break;
+            default:
+                logger.info("Invalid Account Type [{}]", dto.getAccountType());
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account type"));
         }
 
 
@@ -197,9 +204,13 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         switch (dto.getAccountType()) {
             case GitHub:
+            case BitBucket:
+                if (StringUtils.isEmpty(dto.getAccessKey()) && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Username/Access-Key and Password/Secret-Key/SS is empty"));
+                }
+                break;
             case Git:
             case GitLab:
-            case BitBucket:
             case Microsoft_TFS_Git:
             case Microsoft_VSTS_Git:
             case Jira:
@@ -223,7 +234,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 }
             default:
                 logger.info("Invalid Account Type [{}]", dto.getAccountType());
-                break;
+                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account type"));
         }
         // dto.org == orgId
         if (!org.apache.commons.lang3.StringUtils.equals(dto.getOrg().getId(), orgId)) {

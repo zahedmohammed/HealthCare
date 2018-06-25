@@ -69,4 +69,12 @@ export class RunHistoryComponent implements OnInit {
     });
   }
 
+
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.list();
+  }
 }

@@ -219,8 +219,8 @@
                         <label for="bitBucketAccessKey" class="col-md-1 control-label">
                         </label>
                         <div  class="col-md-4">
-                            <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'" >
-                                <input required [(ngModel)]="entry.accessKey" name="accessKey" id="bitBucketAccessKey"
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="entry.accessKey" name="accessKey" id="bitBucketAccessKey"
                                        matInput type="text" placeholder="Username/Access-Key">
                             </mat-input-container>
                         </div>
@@ -238,10 +238,10 @@
                     <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
                         <label for="bitBucketSecret" class="col-md-1 control-label">
                         </label>
-                        <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-4">
-                            <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'" >
-                                <input required [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
-                                       matInput type="password" placeholder="Password/Secret-Key">
+                        <div  class="col-md-4">
+                            <mat-input-container class="full-width">
+                                <textarea [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
+                                          matInput type="password" placeholder="Password/Secret-Key"></textarea>
                             </mat-input-container>
                         </div>
                     </div>
@@ -250,7 +250,7 @@
                     <div class="form-group row" *ngIf="entry.accountType === 'Git'">
                         <label for="gitAccessKey" class="col-md-1 control-label">
                         </label>
-                        <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-4">
+                        <div  class="col-md-4">
                             <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'" >
                                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitAccessKey"
                                        matInput type="text" placeholder="Access-Key">
@@ -290,7 +290,7 @@
                         <label for="microsoftTfsAccessKey" class="col-md-1 control-label">
                         </label>
                         <div  class="col-md-4">
-                            <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
+                            <mat-input-container class="full-width">
                                 <input required [(ngModel)]="entry.accessKey" name="accessKey"
                                        id="microsoftTfsAccessKey"
                                        matInput type="text" placeholder="Username/Accesskey">
@@ -324,8 +324,8 @@
                         <label for="gitHubAccessKey" class="col-md-1 control-label">
                         </label>
                         <div   class="col-md-4">
-                            <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
-                                <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitHubAccessKey"
+                            <mat-input-container class="full-width">
+                                <input  [(ngModel)]="entry.accessKey" name="accessKey" id="gitHubAccessKey"
                                        matInput type="text" placeholder="Username/Access-Key">
                             </mat-input-container>
                         </div>
@@ -346,8 +346,8 @@
                         </label>
                         <div  class="col-md-4">
                             <mat-input-container class="full-width">
-                                <input required [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
-                                       matInput type="password" placeholder="Secret-Key/Password">
+                                <textarea [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
+                                          matInput type="password" placeholder="Secret-Key/Password"></textarea>
                             </mat-input-container>
                         </div>
                     </div>
@@ -358,7 +358,7 @@
                         <label for="gitHubAccessKey" class="col-md-1 control-label">
                         </label>
                         <div  class="col-md-4">
-                            <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
+                            <mat-input-container class="full-width">
                                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="jiraAccessKey"
                                        matInput type="text" placeholder="Username/Access-Key">
                             </mat-input-container>
@@ -412,7 +412,7 @@
                         <label for="secret" class="col-md-1 control-label">
                         </label>
                         <div  class="col-md-4">
-                            <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
+                            <mat-input-container class="full-width">
                                 <input required [(ngModel)]="entry.accessKey" name="from" id="email"
                                        matInput type="text" placeholder="From:">
                             </mat-input-container>

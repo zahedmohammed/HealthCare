@@ -3,6 +3,7 @@ package com.fxlabs.fxt.vc.git.skill;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.vc.git.skill.services.Task;
 import com.fxlabs.fxt.vc.git.skill.services.VersionControlService;
+import com.jcraft.jsch.Session;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -10,7 +11,7 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -164,6 +165,17 @@ public class GitService implements VersionControlService {
                 cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
             }
 
+            // ssh public/private key auth
+            if (StringUtils.isEmpty(username) && StringUtils.isNoneEmpty(password)) {
+                cloneCommand.setTransportConfigCallback(new TransportConfigCallback() {
+                    @Override
+                    public void configure(Transport transport) {
+                        SshTransport sshTransport = (SshTransport) transport;
+                        sshTransport.setSshSessionFactory(getSshSessionFactory(password));
+                    }
+                });
+            }
+
             Git git = cloneCommand.call();
 
             repository = git.getRepository();
@@ -197,6 +209,17 @@ public class GitService implements VersionControlService {
             PullCommand pullCommand = new Git(repository).pull();
             if (StringUtils.isNotEmpty(username)) {
                 pullCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+            }
+
+            // ssh public/private key auth
+            if (StringUtils.isEmpty(username) && StringUtils.isNoneEmpty(password)) {
+                pullCommand.setTransportConfigCallback(new TransportConfigCallback() {
+                    @Override
+                    public void configure(Transport transport) {
+                        SshTransport sshTransport = (SshTransport) transport;
+                        sshTransport.setSshSessionFactory(getSshSessionFactory(password));
+                    }
+                });
             }
             return pullCommand.call().isSuccessful();
         } catch (GitAPIException ex) {
@@ -249,6 +272,18 @@ public class GitService implements VersionControlService {
             if (StringUtils.isNotEmpty(username)) {
                 pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
             }
+
+            // ssh public/private key auth
+            if (StringUtils.isEmpty(username) && StringUtils.isNoneEmpty(password)) {
+                pushCommand.setTransportConfigCallback(new TransportConfigCallback() {
+                    @Override
+                    public void configure(Transport transport) {
+                        SshTransport sshTransport = (SshTransport) transport;
+                        sshTransport.setSshSessionFactory(getSshSessionFactory(password));
+                    }
+                });
+            }
+
             pushCommand.call();
             taskLogger.get().append("Push successful!").append("\n");
             logger.info("Push successful!");
@@ -337,4 +372,18 @@ public class GitService implements VersionControlService {
         }
         return null;
     }
+
+    private  SshSessionFactory getSshSessionFactory(String password) {
+        SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
+            @Override
+            protected void configure(OpenSshConfig.Host host, Session session ) {
+                session.setPassword( password );
+                java.util.Properties config = new java.util.Properties();
+                config.put("StrictHostKeyChecking", "no");
+                session.setConfig(config);
+            }
+        };
+        return sshSessionFactory;
+    }
+
 }
