@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../../services/message.service';
 import { Handler } from '../dialogs/handler/handler';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-message-list',
@@ -11,10 +12,19 @@ import { Handler } from '../dialogs/handler/handler';
 export class MessageListComponent implements OnInit {
   items;
   showSpinner: boolean = false;
+  private _clockSubscription: Subscription;
   constructor(private messageService: MessageService, private handler: Handler) { }
 
   ngOnInit() {
     this.list();
+    let timer = Observable.timer(1, 5000);
+    this._clockSubscription = timer.subscribe(t => {
+      this.list();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this._clockSubscription.unsubscribe();
   }
 
   list() {
