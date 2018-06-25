@@ -214,6 +214,7 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__pipes_byte_format_pipe__ = __webpack_require__("../../../../../src/app/pipes/byte-format.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__components_analytics_run_history_run_history_component__ = __webpack_require__("../../../../../src/app/components/analytics/run-history/run-history.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__components_superbotnetwork_superbotnetwork_list_superbotnetwork_list_component__ = __webpack_require__("../../../../../src/app/components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__components_dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -263,6 +264,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 // hmr
 //import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
+
 
 
 
@@ -474,11 +476,12 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_95__pipes_msto_duration_pipe__["a" /* MstoDurationPipe */],
                 __WEBPACK_IMPORTED_MODULE_96__pipes_byte_format_pipe__["a" /* ByteFormatPipe */],
                 __WEBPACK_IMPORTED_MODULE_97__components_analytics_run_history_run_history_component__["a" /* RunHistoryComponent */],
-                __WEBPACK_IMPORTED_MODULE_98__components_superbotnetwork_superbotnetwork_list_superbotnetwork_list_component__["a" /* SuperbotnetworkListComponent */]
+                __WEBPACK_IMPORTED_MODULE_98__components_superbotnetwork_superbotnetwork_list_superbotnetwork_list_component__["a" /* SuperbotnetworkListComponent */],
+                __WEBPACK_IMPORTED_MODULE_99__components_dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */]
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */]],
             providers: [__WEBPACK_IMPORTED_MODULE_72__services_dashboard_service__["a" /* DashboardService */], __WEBPACK_IMPORTED_MODULE_73__services_test_suite_service__["a" /* TestSuiteService */], __WEBPACK_IMPORTED_MODULE_74__services_users_service__["a" /* UsersService */], __WEBPACK_IMPORTED_MODULE_83__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_92__components_dialogs_handler_handler__["a" /* Handler */]],
-            entryComponents: [__WEBPACK_IMPORTED_MODULE_89__components_dialogs_msg_dialog_msg_dialog_component__["a" /* MsgDialogComponent */], __WEBPACK_IMPORTED_MODULE_94__components_dialogs_adv_run_adv_run_component__["a" /* AdvRunComponent */], __WEBPACK_IMPORTED_MODULE_90__components_dialogs_error_dialog_error_dialog_component__["a" /* ErrorDialogComponent */], __WEBPACK_IMPORTED_MODULE_91__components_dialogs_response_dialog_response_dialog_component__["a" /* ResponseDialogComponent */]]
+            entryComponents: [__WEBPACK_IMPORTED_MODULE_89__components_dialogs_msg_dialog_msg_dialog_component__["a" /* MsgDialogComponent */], __WEBPACK_IMPORTED_MODULE_94__components_dialogs_adv_run_adv_run_component__["a" /* AdvRunComponent */], __WEBPACK_IMPORTED_MODULE_90__components_dialogs_error_dialog_error_dialog_component__["a" /* ErrorDialogComponent */], __WEBPACK_IMPORTED_MODULE_91__components_dialogs_response_dialog_response_dialog_component__["a" /* ResponseDialogComponent */], __WEBPACK_IMPORTED_MODULE_99__components_dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */]]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ApplicationRef */]])
     ], AppModule);
@@ -1122,6 +1125,78 @@ var AdvRunComponent = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h4 mat-dialog-title>Are you sure you you want to delete this resource?</h4>\n<mat-dialog-actions>\n  <button button mat-raised-button color=\"warn\" class=\"btn-w-md\" [mat-dialog-close]=\"true\">Delete</button>\n  <button mat-button mat-dialog-close (click)=\"onNoClick()\">Cancel</button>\n</mat-dialog-actions>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DeleteDialogComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+var DeleteDialogComponent = (function () {
+    function DeleteDialogComponent(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+    }
+    DeleteDialogComponent.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    DeleteDialogComponent.prototype.ngOnInit = function () {
+    };
+    DeleteDialogComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-delete-dialog',
+            template: __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.scss")]
+        }),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MAT_DIALOG_DATA */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_material__["k" /* MatDialogRef */], Object])
+    ], DeleteDialogComponent);
+    return DeleteDialogComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/dialogs/error-dialog/error-dialog.component.html":
 /***/ (function(module, exports) {
 
@@ -1607,6 +1682,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_account_service__ = __webpack_require__("../../../../../src/app/services/account.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__models_issue_tracker_model__ = __webpack_require__("../../../../../src/app/models/issue-tracker.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1624,8 +1701,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var IssuesEditComponent = (function () {
-    function IssuesEditComponent(issueTrackerService, accountService, skillService, orgService, route, router, handler) {
+    function IssuesEditComponent(issueTrackerService, accountService, skillService, orgService, route, router, handler, dialog) {
         this.issueTrackerService = issueTrackerService;
         this.accountService = accountService;
         this.skillService = skillService;
@@ -1633,6 +1712,7 @@ var IssuesEditComponent = (function () {
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.dialog = dialog;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_6__models_issue_tracker_model__["a" /* IssueTracker */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
@@ -1680,16 +1760,25 @@ var IssuesEditComponent = (function () {
     };
     IssuesEditComponent.prototype.delete = function () {
         var _this = this;
-        this.handler.activateLoader();
-        this.issueTrackerService.deleteITBot(this.entry).subscribe(function (results) {
-            _this.handler.hideLoader();
-            if (_this.handler.handle(results)) {
-                return;
+        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_9__dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */], {
+            data: {
+                entry: this.entry
             }
-            _this.router.navigate(['/app/issues']);
-        }, function (error) {
-            console.log("Unable to delete entry");
-            _this.handler.error(error);
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result != null) {
+                _this.handler.activateLoader();
+                _this.issueTrackerService.deleteITBot(_this.entry).subscribe(function (results) {
+                    _this.handler.hideLoader();
+                    if (_this.handler.handle(results)) {
+                        return;
+                    }
+                    _this.router.navigate(['/app/issues']);
+                }, function (error) {
+                    _this.handler.hideLoader();
+                    _this.handler.error(error);
+                });
+            }
         });
     };
     IssuesEditComponent.prototype.listSkills = function () {
@@ -1745,7 +1834,7 @@ var IssuesEditComponent = (function () {
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_issue_tracker_service__["a" /* IssueTrackerService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */]]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_issue_tracker_service__["a" /* IssueTrackerService */], __WEBPACK_IMPORTED_MODULE_5__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */],
-            __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__["a" /* Handler */]])
+            __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["i" /* MatDialog */]])
     ], IssuesEditComponent);
     return IssuesEditComponent;
 }());
@@ -2188,6 +2277,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_account_model__ = __webpack_require__("../../../../../src/app/models/account.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2203,13 +2294,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var AccountEditComponent = (function () {
-    function AccountEditComponent(accountService, orgService, route, router, handler) {
+    function AccountEditComponent(accountService, orgService, route, router, handler, dialog) {
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.dialog = dialog;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_account_model__["a" /* Account */]();
         this.cloudShow = true;
@@ -2257,16 +2351,25 @@ var AccountEditComponent = (function () {
     };
     AccountEditComponent.prototype.delete = function () {
         var _this = this;
-        this.handler.activateLoader();
-        this.accountService.delete(this.entry).subscribe(function (results) {
-            _this.handler.hideLoader();
-            if (_this.handler.handle(results)) {
-                return;
+        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_7__dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */], {
+            data: {
+                entry: this.entry
             }
-            _this.router.navigate(['/app/accounts']);
-        }, function (error) {
-            _this.handler.hideLoader();
-            _this.handler.error(error);
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result != null) {
+                _this.handler.activateLoader();
+                _this.accountService.delete(_this.entry).subscribe(function (results) {
+                    _this.handler.hideLoader();
+                    if (_this.handler.handle(results)) {
+                        return;
+                    }
+                    _this.router.navigate(['/app/accounts']);
+                }, function (error) {
+                    _this.handler.hideLoader();
+                    _this.handler.error(error);
+                });
+            }
         });
     };
     AccountEditComponent.prototype.getOrgs = function () {
@@ -2293,7 +2396,7 @@ var AccountEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/manage/account-edit/account-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["i" /* MatDialog */]])
     ], AccountEditComponent);
     return AccountEditComponent;
 }());
@@ -3163,6 +3266,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_notification_model__ = __webpack_require__("../../../../../src/app/models/notification.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3179,14 +3284,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var NotificationEditComponent = (function () {
-    function NotificationEditComponent(notificationService, accountService, orgService, route, router, handler) {
+    function NotificationEditComponent(notificationService, accountService, orgService, route, router, handler, dialog) {
         this.notificationService = notificationService;
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.dialog = dialog;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_5__models_notification_model__["a" /* Notification */]();
         this.types = ['SLACK', 'EMAIL'];
@@ -3233,16 +3341,25 @@ var NotificationEditComponent = (function () {
     };
     NotificationEditComponent.prototype.delete = function () {
         var _this = this;
-        this.handler.activateLoader();
-        this.notificationService.delete(this.entry).subscribe(function (results) {
-            _this.handler.hideLoader();
-            if (_this.handler.handle(results)) {
-                return;
+        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_8__dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */], {
+            data: {
+                entry: this.entry
             }
-            _this.router.navigate(['/app/notification-accounts']);
-        }, function (error) {
-            _this.handler.hideLoader();
-            _this.handler.error(error);
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result != null) {
+                _this.handler.activateLoader();
+                _this.notificationService.delete(_this.entry).subscribe(function (results) {
+                    _this.handler.hideLoader();
+                    if (_this.handler.handle(results)) {
+                        return;
+                    }
+                    _this.router.navigate(['/app/notification-accounts']);
+                }, function (error) {
+                    _this.handler.hideLoader();
+                    _this.handler.error(error);
+                });
+            }
         });
     };
     NotificationEditComponent.prototype.getOrgs = function () {
@@ -3282,7 +3399,7 @@ var NotificationEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/notify/notification-edit/notification-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_7__angular_material__["i" /* MatDialog */]])
     ], NotificationEditComponent);
     return NotificationEditComponent;
 }());
@@ -3907,6 +4024,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__config__ = __webpack_require__("../../../../../src/app/config.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3924,14 +4043,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var ProjectsEditComponent = (function () {
-    function ProjectsEditComponent(projectService, accountService, orgService, route, router, handler) {
+    function ProjectsEditComponent(projectService, accountService, orgService, route, router, handler, dialog) {
         this.projectService = projectService;
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.dialog = dialog;
         this.showSpinner = false;
         this.project = new __WEBPACK_IMPORTED_MODULE_5__models_project_model__["a" /* Project */]();
         this.projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
@@ -3980,16 +4102,25 @@ var ProjectsEditComponent = (function () {
     };
     ProjectsEditComponent.prototype.delete = function () {
         var _this = this;
-        console.log(this.project);
-        this.projectService.delete(this.project).subscribe(function (results) {
-            _this.handler.hideLoader();
-            if (_this.handler.handle(results)) {
-                return;
+        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_9__dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */], {
+            data: {
+                project: this.project
             }
-            _this.router.navigate(['/app/projects']);
-        }, function (error) {
-            _this.handler.hideLoader();
-            _this.handler.error(error);
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result != null) {
+                _this.handler.activateLoader();
+                _this.projectService.delete(_this.project).subscribe(function (results) {
+                    _this.handler.hideLoader();
+                    if (_this.handler.handle(results)) {
+                        return;
+                    }
+                    _this.router.navigate(['/app/projects']);
+                }, function (error) {
+                    _this.handler.hideLoader();
+                    _this.handler.error(error);
+                });
+            }
         });
     };
     ProjectsEditComponent.prototype.getOrgs = function () {
@@ -4029,7 +4160,7 @@ var ProjectsEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/projects/projects-edit/projects-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["i" /* MatDialog */]])
     ], ProjectsEditComponent);
     return ProjectsEditComponent;
 }());
@@ -4397,6 +4528,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_account_service__ = __webpack_require__("../../../../../src/app/services/account.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_regions_model__ = __webpack_require__("../../../../../src/app/models/regions.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4413,14 +4546,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var RegionEditComponent = (function () {
-    function RegionEditComponent(regionsService, accountService, orgService, route, router, handler) {
+    function RegionEditComponent(regionsService, accountService, orgService, route, router, handler, dialog) {
         this.regionsService = regionsService;
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.dialog = dialog;
         this.GCP_REGIONS = ['NORTHAMERICA-NORTHEAST1', 'US-CENTRAL', 'US-EAST1', 'US-EAST4', 'SOUTHAMERICA-EAST1', 'EUROPE-WEST', 'EUROPE-WEST2', 'EUROPE-WEST3', 'ASIA-NORTHEAST1', 'ASIA-SOUTH1', 'AUSTRALIA-SOUTHEAST1'];
         //AWS_REGIONS = ['US-EAST-1','US-EAST-2','US-WEST-1','US-WEST-2','CA-CENTRAL-1','EU-CENTRAL-1','EU-WEST-1','EU-WEST-2','EU-WEST-3','AP-NORTHEAST-1','AP-NORTHEAST-2','AP-NORTHEAST-3','AP-SOUTHEAST-1','AP-SOUTHEAST-2','AP-SOUTH-1','SA-EAST-1'];
         this.AWS_REGIONS = ['US-WEST-1'];
@@ -4471,16 +4607,25 @@ var RegionEditComponent = (function () {
     };
     RegionEditComponent.prototype.delete = function () {
         var _this = this;
-        this.handler.activateLoader();
-        this.regionsService.delete(this.entry).subscribe(function (results) {
-            _this.handler.hideLoader();
-            if (_this.handler.handle(results)) {
-                return;
+        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_8__dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */], {
+            data: {
+                entry: this.entry
             }
-            _this.router.navigate(['/app/regions']);
-        }, function (error) {
-            _this.handler.hideLoader();
-            _this.handler.error(error);
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result != null) {
+                _this.handler.activateLoader();
+                _this.regionsService.delete(_this.entry).subscribe(function (results) {
+                    _this.handler.hideLoader();
+                    if (_this.handler.handle(results)) {
+                        return;
+                    }
+                    _this.router.navigate(['/app/regions']);
+                }, function (error) {
+                    _this.handler.hideLoader();
+                    _this.handler.error(error);
+                });
+            }
         });
     };
     RegionEditComponent.prototype.ping = function () {
@@ -4543,7 +4688,7 @@ var RegionEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/regions/region-edit/region-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_7__angular_material__["i" /* MatDialog */]])
     ], RegionEditComponent);
     return RegionEditComponent;
 }());
@@ -6425,6 +6570,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_vault_model__ = __webpack_require__("../../../../../src/app/models/vault.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6440,13 +6587,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var VaultEditComponent = (function () {
-    function VaultEditComponent(vaultService, orgService, route, router, handler) {
+    function VaultEditComponent(vaultService, orgService, route, router, handler, dialog) {
         this.vaultService = vaultService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.dialog = dialog;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_vault_model__["a" /* Vault */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
@@ -6491,16 +6641,25 @@ var VaultEditComponent = (function () {
     };
     VaultEditComponent.prototype.delete = function () {
         var _this = this;
-        this.handler.activateLoader();
-        this.vaultService.delete(this.entry).subscribe(function (results) {
-            _this.handler.hideLoader();
-            if (_this.handler.handle(results)) {
-                return;
+        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_7__dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */], {
+            data: {
+                entry: this.entry
             }
-            _this.router.navigate(['/app/vault']);
-        }, function (error) {
-            _this.handler.hideLoader();
-            _this.handler.error(error);
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result != null) {
+                _this.handler.activateLoader();
+                _this.vaultService.delete(_this.entry).subscribe(function (results) {
+                    _this.handler.hideLoader();
+                    if (_this.handler.handle(results)) {
+                        return;
+                    }
+                    _this.router.navigate(['/app/vault']);
+                }, function (error) {
+                    _this.handler.hideLoader();
+                    _this.handler.error(error);
+                });
+            }
         });
     };
     VaultEditComponent.prototype.getOrgs = function () {
@@ -6524,7 +6683,7 @@ var VaultEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/vault/vault-edit/vault-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["i" /* MatDialog */]])
     ], VaultEditComponent);
     return VaultEditComponent;
 }());

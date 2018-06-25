@@ -22,7 +22,7 @@ export class ProjectsEditComponent implements OnInit {
   project: Project = new Project();
   accounts;
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, , public dialog: MatDialog) { }
+  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.AppConfig = APPCONFIG;
