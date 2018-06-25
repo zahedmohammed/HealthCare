@@ -18,9 +18,9 @@
                 <div class="card__title">
                     <h4>Run Id: {{run.runId}}</h4>
                     <h4>Status:
-                        <span *ngIf="run.task.status == 'COMPLETED'"
-                                      class="text-success">{{run.task.status}} <i class="fa fa-check" aria-hidden="true"></i></span>
-                        <span *ngIf="run.task.status != 'COMPLETED'" class="text-warning">{{run.task.status}} <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>
+                        <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span>
+                        <span *ngIf="run.task.status != 'COMPLETED'" class="text-warning"><i
+                                class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
                     </h4>
                     <h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>
                     <h4>Total Tests: {{total}} | <span class="text-success">Passed: {{total - failed}}</span> <span
@@ -88,16 +88,16 @@
                     <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span class="text-danger"><i
                             class="material-icons">clear</i> </span></td>-->
                     <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)">{{s.suiteName |
-                            slice:0:55}}</a>
+                        {{s.suiteName | slice:0:55}}
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.category}}</td>
 
                     <td class="mdl-data-table__cell--non-numeric"><span>{{s.severity}} </span></td>
 
-                    <td class="mdl-data-table__cell--non-numeric"><span
-                            class="text-success"> Passed: {{s.tests - s.failed}}  <span class="text-danger"
-                                                                                        *ngIf="s.failed != 0">&nbsp;&nbsp; Failed: {{s.failed}}</span></span>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <span class="text-success"> Passed: {{s.tests - s.failed}}
+                            <span class="text-danger" *ngIf="s.failed != 0">&nbsp;&nbsp; Failed: {{s.failed}}</span>
+                        </span>
                     </td>
 
                     <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
@@ -110,7 +110,12 @@
                     <td class="mdl-data-table__cell--non-numeric">{{s.time | mstoDuration}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{s.size | byteFormat}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'history', s.suiteName]"><i class="nav-icon material-icons">timeline</i></a>
+                        <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)" matTooltip="logs" matTooltipPosition="above">
+                            <i class="material-icons">
+                                description
+                            </i></a>
+                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'history', s.suiteName]" matTooltip="analytics" matTooltipPosition="above"><i
+                                class="nav-icon material-icons">timeline</i></a>
                     </td>
 
 

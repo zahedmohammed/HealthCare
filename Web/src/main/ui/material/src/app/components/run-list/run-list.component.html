@@ -11,6 +11,7 @@
             <table class="mdl-data-table">
                 <thead>
                 <tr>
+                    <th class="mdl-data-table__cell--non-numeric">No</th>
                     <th class="mdl-data-table__cell--non-numeric">Region</th>
                     <th class="mdl-data-table__cell--non-numeric">Date</th>
                     <th class="mdl-data-table__cell--non-numeric">Pass/Fail</th>
@@ -18,11 +19,13 @@
                     <th class="mdl-data-table__cell--non-numeric">Time</th>
                     <th class="mdl-data-table__cell--non-numeric">Data</th>
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
-                    <th class="mdl-data-table__cell--non-numeric">No</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let item of list">
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>
+                    </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.regions}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>
@@ -32,12 +35,8 @@
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime | mstoDuration}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalBytes | byteFormat}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
-                        <span *ngIf="item.task.status == 'COMPLETED'"
-                              class="text-success">{{item.task.status}} <i class="fa fa-check" aria-hidden="true"></i></span>
-                        <span *ngIf="item.task.status != 'COMPLETED'" class="text-warning">{{item.task.status}} <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></span>
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>
+                        <span *ngIf="item.task.status == 'COMPLETED'" class="text-success">{{item.task.status}}</span>
+                        <span *ngIf="item.task.status != 'COMPLETED'" class="text-warning"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{item.task.status}}</span>
                     </td>
                 </tr>
                 </tbody>
