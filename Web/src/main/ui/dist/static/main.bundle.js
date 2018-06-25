@@ -1135,7 +1135,7 @@ var AdvRunComponent = (function () {
 /***/ "../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h4 mat-dialog-title>Are you sure you you want to delete this resource?</h4>\n<mat-dialog-actions>\n  <button button mat-raised-button color=\"warn\" class=\"btn-w-md\" [mat-dialog-close]=\"true\">Delete</button>\n  <button mat-button mat-dialog-close (click)=\"onNoClick()\">Cancel</button>\n</mat-dialog-actions>"
+module.exports = "<h4 mat-dialog-title>Are you sure you you want to delete this resource?</h4>\n<mat-dialog-actions class=\"pull-right\">\n  <button mat-button mat-dialog-close (click)=\"onNoClick()\">Cancel</button>\n  <button button mat-raised-button color=\"warn\" class=\"btn-w-md\" [mat-dialog-close]=\"true\">Delete</button>\n</mat-dialog-actions>"
 
 /***/ }),
 
@@ -2093,7 +2093,7 @@ var IssuesNewComponent = (function () {
 /***/ "../../../../../src/app/components/jobs-list/jobs-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"chapter page-terms\">\n\n    <section class=\"hero\">\n        <div class=\"hero-content\">\n            <h1 class=\"hero-title\">Jobs</h1>\n        </div>\n        <p class=\"text-muted\">Schedule jobs using cron expression in Project's Fxfile or run them ad-hoc.</p>\n    </section>\n\n    <article class=\"article padding-lg-v1 article-dark article-bordered\">\n        <div class=\"container-fluid with-maxwidth chapter\">\n            <article class=\"article\">\n                <h2 class=\"article-title1\">\n                </h2>\n                <div class=\"box box-default table-box mdl-shadow--2dp\">\n                    <table class=\"mdl-data-table\">\n                        <thead>\n                        <tr>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Project</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Env</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Bot-Region</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Issue-Tracker</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Next-Fire</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                        </tr>\n                        </thead>\n                        <tbody>\n                        <tr *ngFor=\"let job of jobs\">\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.name}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.project.name}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.environment}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.regions}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.issueTracker}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.nextFire | date:'short'}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">\n                                <a href=\"javascript:;\" (click)=\"runJob(job.id)\">Run</a> &nbsp;\n                                <a href=\"javascript:;\" (click)=\"advRun(job)\">Adv</a> &nbsp;\n                                <a href=\"javascript:;\" [routerLink]=\"['/app/jobs', job.id, 'runs']\">History</a> &nbsp;\n                            </td>\n                        </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n                <mat-paginator [hidden]=\"length <= pageSize\"\n                               [pageSize]=\"pageSize\"\n                               hidePageSize=\"true\"\n                               (page)=\"change($event)\"\n                               [length]=\"length\"\n                >\n                </mat-paginator>\n\n            </article>\n        </div>\n    </article>\n</section>\n"
+module.exports = "<section class=\"chapter page-terms\">\n\n    <section class=\"hero\">\n        <div class=\"hero-content\">\n            <h1 class=\"hero-title\">Jobs</h1>\n        </div>\n        <p class=\"text-muted\">Schedule jobs using cron expression in Project's Fxfile or run them ad-hoc.</p>\n    </section>\n\n    <article class=\"article padding-lg-v1 article-dark article-bordered\">\n        <div class=\"container-fluid with-maxwidth chapter\">\n            <article class=\"article\">\n                <h2 class=\"article-title1\">\n                </h2>\n                <div class=\"box box-default table-box mdl-shadow--2dp\">\n                    <table class=\"mdl-data-table\">\n                        <thead>\n                        <tr>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Name</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Env</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Bot-Region</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Issue-Tracker</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\">Next-Fire</th>\n                            <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                        </tr>\n                        </thead>\n                        <tbody>\n                        <tr *ngFor=\"let job of jobs\">\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.project.name}}/{{job.name}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.environment}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.regions}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.issueTracker}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">{{job.nextFire | date:'short'}}</td>\n                            <td class=\"mdl-data-table__cell--non-numeric\">\n                                <a href=\"javascript:;\" (click)=\"runJob(job.id)\">Run</a> &nbsp;\n                                <a href=\"javascript:;\" (click)=\"advRun(job)\">Adv</a> &nbsp;\n                                <a href=\"javascript:;\" [routerLink]=\"['/app/jobs', job.id, 'runs']\">History</a> &nbsp;\n                            </td>\n                        </tr>\n                        </tbody>\n                    </table>\n                </div>\n\n                <mat-paginator [hidden]=\"length <= pageSize\"\n                               [pageSize]=\"pageSize\"\n                               hidePageSize=\"true\"\n                               (page)=\"change($event)\"\n                               [length]=\"length\"\n                >\n                </mat-paginator>\n\n            </article>\n        </div>\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -2994,6 +2994,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_message_service__ = __webpack_require__("../../../../../src/app/services/message.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__ = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3003,6 +3004,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -3016,7 +3018,15 @@ var MessageListComponent = (function () {
         this.pageSize = 20;
     }
     MessageListComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.list();
+        var timer = __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__["a" /* Observable */].timer(1, 5000);
+        this._clockSubscription = timer.subscribe(function (t) {
+            _this.list();
+        });
+    };
+    MessageListComponent.prototype.ngOnDestroy = function () {
+        this._clockSubscription.unsubscribe();
     };
     MessageListComponent.prototype.list = function () {
         var _this = this;
