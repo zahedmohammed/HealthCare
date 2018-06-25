@@ -11,6 +11,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static com.fxlabs.fxt.rest.base.BaseController.*;
@@ -41,9 +43,18 @@ public class ClusterController {
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/entitled", method = RequestMethod.GET)
+    public Response<List<Cluster>> findEntitled(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+
+        Collection<String> orgs = Arrays.asList(SecurityUtil.getOrgId(), orgService.findByName("FXLabs").getData().getId());
+        return clusterService.findEntitled(orgs, PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/superbotnetwork", method = RequestMethod.GET)
     public Response<List<Cluster>> findSuperBotNetwork(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                           @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                                       @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
 
         return clusterService.findAll(orgService.findByName("FXLabs").getData().getId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }

@@ -21,6 +21,13 @@ export class RegionsService {
     return this.http.get(this.serviceUrl, {params});
   }
 
+  getEntitled(page, pageSize) {
+    let params = new HttpParams();
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/entitled", {params});
+  }
+
   getById(id: string) {
     return this.http.get(this.serviceUrl + "/" + id);
   }

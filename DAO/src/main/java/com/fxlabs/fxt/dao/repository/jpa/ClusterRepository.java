@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.swing.text.html.Option;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public interface ClusterRepository extends JpaRepository<Cluster, String> {
 
     Optional<Cluster> findByNameAndOrgName(String name, String orgName);
 
-    Page<Cluster> findByVisibilityOrOrgId(ClusterVisibility visibility, String orgId, Pageable pageable);
+    Page<Cluster> findByOrgIdIn(Collection<String> orgs, Pageable pageable);
 
     Long countByOrgId(String orgId);
 

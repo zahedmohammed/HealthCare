@@ -17,7 +17,7 @@ export class AdvRunComponent implements OnInit {
   showSpinner: boolean = false;
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 100;
   regions;
   newRegion;
 
@@ -33,7 +33,7 @@ export class AdvRunComponent implements OnInit {
 
   get() {
     this.handler.activateLoader();
-    this.regionService.get(this.page, this.pageSize).subscribe(results => {
+    this.regionService.getEntitled(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

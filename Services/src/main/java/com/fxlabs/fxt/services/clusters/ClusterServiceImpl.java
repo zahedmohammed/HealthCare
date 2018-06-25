@@ -91,7 +91,14 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<List<Cluster>> findAll(String org, Pageable pageable) {
         // Find all public or org.
-        Page<com.fxlabs.fxt.dao.entity.clusters.Cluster> page = this.clusterRepository.findByVisibilityOrOrgId(ClusterVisibility.PUBLIC, org, pageable);
+        Page<com.fxlabs.fxt.dao.entity.clusters.Cluster> page = this.clusterRepository.findByOrgIdIn(Collections.singleton(org), pageable);
+        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+    }
+
+    @Override
+    public Response<List<Cluster>> findEntitled(Collection<String> orgs, Pageable pageable) {
+        // Find all public or org.
+        Page<com.fxlabs.fxt.dao.entity.clusters.Cluster> page = this.clusterRepository.findByOrgIdIn(orgs, pageable);
         return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
