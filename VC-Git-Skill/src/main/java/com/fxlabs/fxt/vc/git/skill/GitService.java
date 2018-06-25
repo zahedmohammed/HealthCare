@@ -374,6 +374,8 @@ public class GitService implements VersionControlService {
     }
 
     private  SshSessionFactory getSshSessionFactory(String password) {
+
+        System.out.println("Private Key ------->" + password);
         SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
             @Override
             protected void configure(OpenSshConfig.Host host, Session session ) {
