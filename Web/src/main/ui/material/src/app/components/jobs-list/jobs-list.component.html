@@ -17,7 +17,6 @@
                         <thead>
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
-                            <th class="mdl-data-table__cell--non-numeric">Project</th>
                             <th class="mdl-data-table__cell--non-numeric">Env</th>
                             <th class="mdl-data-table__cell--non-numeric">Bot-Region</th>
                             <th class="mdl-data-table__cell--non-numeric">Issue-Tracker</th>
@@ -27,8 +26,7 @@
                         </thead>
                         <tbody>
                         <tr *ngFor="let job of jobs">
-                            <td class="mdl-data-table__cell--non-numeric">{{job.name}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{job.project.name}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{job.project.name}}/{{job.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.environment}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.issueTracker}}</td>
