@@ -137,10 +137,15 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         switch (dto.getAccountType()) {
+            case Local:
+                if (StringUtils.isNotEmpty(dto.getAccessKey()) && StringUtils.isNotEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Data"));
+                }
+                break;
             case GitHub:
             case BitBucket:
                 if (StringUtils.isEmpty(dto.getAccessKey()) && StringUtils.isEmpty(dto.getSecretKey())) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Username/Access-Key is empty"));
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account details for Version Control access"));
                 }
                 break;
             case Git:
@@ -203,6 +208,11 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         switch (dto.getAccountType()) {
+            case Local:
+                if (StringUtils.isNotEmpty(dto.getAccessKey()) && StringUtils.isNotEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Data"));
+                }
+                break;
             case GitHub:
             case BitBucket:
                 if (StringUtils.isEmpty(dto.getAccessKey()) && StringUtils.isEmpty(dto.getSecretKey())) {
