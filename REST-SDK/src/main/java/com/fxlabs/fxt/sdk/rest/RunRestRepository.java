@@ -31,7 +31,6 @@ public class RunRestRepository extends GenericRestRespository<Run> {
     }
 
     public Run run(String id, String region, String tags, String env, String suites) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
@@ -44,7 +43,6 @@ public class RunRestRepository extends GenericRestRespository<Run> {
     }
 
     public Run findInstance(String id) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
@@ -56,7 +54,6 @@ public class RunRestRepository extends GenericRestRespository<Run> {
     }
 
     public Response<List<TestSuiteResponse>> findTestSuitesByRunId(String id, Integer page, Integer pageSize) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
@@ -68,7 +65,6 @@ public class RunRestRepository extends GenericRestRespository<Run> {
     }
 
     public Response<List<Suite>> findTestSuiteSummaryByRunId(String id, Integer page, Integer pageSize) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 

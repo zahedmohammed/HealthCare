@@ -30,7 +30,6 @@ public class JobRestRepository extends GenericRestRespository<Job> {
     }
 
     public Response<List<Job>> findByProjectId(String id) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 

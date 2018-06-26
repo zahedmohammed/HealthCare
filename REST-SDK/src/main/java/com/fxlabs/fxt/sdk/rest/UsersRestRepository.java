@@ -33,7 +33,6 @@ public class UsersRestRepository extends GenericRestRespository<Project> {
     }
 
     public Response<Users> findByLogin() {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 

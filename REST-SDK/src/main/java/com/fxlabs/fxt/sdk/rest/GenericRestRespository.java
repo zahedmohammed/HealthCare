@@ -8,6 +8,10 @@ import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.services.CredUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,9 +19,15 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
 import java.nio.charset.Charset;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -77,7 +87,6 @@ public class GenericRestRespository<T> {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
 
-
     //protected HttpHeaders httpHeaders;
     protected ParameterizedTypeReference reference;
     protected ParameterizedTypeReference referenceList;
@@ -89,7 +98,6 @@ public class GenericRestRespository<T> {
     }
 
     public Response<T> save(T t) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<T> request = new HttpEntity<>(t, this.getHeaders());
 
@@ -101,7 +109,6 @@ public class GenericRestRespository<T> {
     }
 
     public Response<T> update(T t) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<T> request = new HttpEntity<>(t, this.getHeaders());
 
@@ -113,7 +120,6 @@ public class GenericRestRespository<T> {
     }
 
     public Response<List<T>> saveAll(List<T> t) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<List<T>> request = new HttpEntity<>(t, this.getHeaders());
 
@@ -127,7 +133,6 @@ public class GenericRestRespository<T> {
     }
 
     public Response<List<T>> findAll() {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(this.getHeaders());
 
@@ -140,7 +145,6 @@ public class GenericRestRespository<T> {
 
 
     public Response<T> findById(String id) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(this.getHeaders());
 
@@ -181,6 +185,51 @@ public class GenericRestRespository<T> {
 
     protected HttpHeaders getHeaders() {
         return getHttpHeaders(getUsername(), getPassword());
+    }
+
+
+    protected RestTemplate restTemplate = new RestTemplate(httpClientFactory());
+
+
+    protected HttpComponentsClientHttpRequestFactory httpClientFactory() {
+
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+
+        SSLContext sslContext = null;
+        try {
+            sslContext = org.apache.http.ssl.SSLContexts.custom()
+                    .loadTrustMaterial(null, acceptingTrustStrategy)
+                    .build();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLSocketFactory(csf)
+                .build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory =
+                new HttpComponentsClientHttpRequestFactory();
+
+        requestFactory.setHttpClient(httpClient);
+
+        // Didn't work
+        /*CloseableHttpClient httpClient
+                = HttpClients.custom()
+                .setSSLHostnameVerifier(new NoopHostnameVerifier())
+                .build();
+        HttpComponentsClientHttpRequestFactory requestFactory
+                = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setHttpClient(httpClient);*/
+
+        //System.out.println("Connection factory created...");
+        return requestFactory;
     }
 
 

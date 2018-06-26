@@ -32,7 +32,6 @@ public class EnvRestRepository extends GenericRestRespository<Environment> {
 
 
     public Response<List<Environment>> findByProjectId(String id) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 

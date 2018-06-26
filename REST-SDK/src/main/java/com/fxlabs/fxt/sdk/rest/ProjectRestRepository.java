@@ -32,7 +32,6 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
     }
 
     public Project findByName(String id) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
@@ -44,7 +43,6 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
     }
 
     public Response<Project> findByOrgAndName(String name) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
@@ -54,7 +52,6 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
     }
 
     public Response<Project> findById(String id) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
@@ -66,7 +63,6 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
     }
 
     public Response<List<ProjectFile>> findProjectChecksums(String projectId) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<Void> request = new HttpEntity<>(getHeaders());
 
@@ -78,7 +74,6 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
     }
 
     public Response<Boolean> saveImports(ProjectImports projectImports, String projectId) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpEntity<ProjectImports> request = new HttpEntity<>(projectImports, getHeaders());
 
