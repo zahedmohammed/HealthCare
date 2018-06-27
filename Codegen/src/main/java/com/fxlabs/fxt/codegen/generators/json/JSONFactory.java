@@ -2,6 +2,7 @@ package com.fxlabs.fxt.codegen.generators.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.models.Model;
 import io.swagger.models.Swagger;
@@ -112,23 +113,32 @@ public class JSONFactory {
 
             if (prop instanceof ArrayProperty) {
                 // TODO ( (ArrayProperty) prop).g
-                node.set(p, new ObjectMapper().createArrayNode());
+                ArrayNode arrayNode = new ObjectMapper().createArrayNode();
+                node.set(p, arrayNode);
             } else if (prop instanceof BooleanProperty) {
                 Boolean val = null;
                 if (BooleanUtils.isTrue(prop.getRequired())) {
                     val = Boolean.FALSE;
                 }
                 node.put(p, val);
-            } else if (prop instanceof DateProperty) {
+            } else if (prop instanceof DateProperty || ( p.toLowerCase().contains("date")) ) {
                 String val = null;
                 if (BooleanUtils.isTrue(prop.getRequired())) {
-                    val = "{{@Date}}";
+//                    if (StringUtils.isBlank(prop.getFormat())) {
+                        val = "{{@Date}}";
+//                    }else{
+//                        val = "{{@Date | "+prop.getFormat()+"}}";
+//                    }
                 }
                 node.put(p, val);
-            } else if (prop instanceof DateTimeProperty) {
+            } else if (prop instanceof DateTimeProperty || ( p.toLowerCase().contains("time"))) {
                 String val = null;
                 if (BooleanUtils.isTrue(prop.getRequired())) {
-                    val = "{{@DateTime}}";
+//                    if (StringUtils.isBlank(prop.getFormat())) {
+                        val = "{{@DateTime}}";
+//                    }else {
+//                        val = "{{@DateTime | "+prop.getFormat()+"}}";
+//                    }
                 }
                 node.put(p, val);
             } else if (prop instanceof DoubleProperty) {
@@ -139,9 +149,15 @@ public class JSONFactory {
                 node.put(p, val);
             } else if (prop instanceof EmailProperty) {
                 String val = null;
-                if (BooleanUtils.isTrue(prop.getRequired())) {
-                    val = "{{@Random | 8}}@test.local";
-                }
+//                if (BooleanUtils.isTrue(prop.getRequired())) {
+
+                    String fakerString = FakerUtil.getFakerString("email");
+                    if (!StringUtils.isBlank(fakerString)){
+                        val = "{{@"+fakerString+"}}";
+                    }else {
+                        val = "{{@Random | 8}}@test.local";
+                    }
+//                }
                 node.put(p, val);
             } else if (prop instanceof PasswordProperty) {
                 String val = null;
@@ -151,9 +167,14 @@ public class JSONFactory {
                 node.put(p, val);
             } else if (prop instanceof StringProperty) {
                 String val = null;
-                if (BooleanUtils.isTrue(prop.getRequired())) {
-                    val = "{{@Random | 8}}";
-                }
+//                if (BooleanUtils.isTrue(prop.getRequired())) {
+                    String fakerString = FakerUtil.getFakerString(p);
+                    if (!StringUtils.isBlank(fakerString)){
+                        val = "{{@"+fakerString+"}}";
+                    }else {
+                        val = "{{@Random | 8}}";
+                    }
+//                }
                 node.put(p, val);
             } else if (prop instanceof UUIDProperty) {
                 String val = null;
