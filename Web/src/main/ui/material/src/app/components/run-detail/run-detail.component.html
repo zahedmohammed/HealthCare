@@ -19,9 +19,10 @@
                     <h4>Run Id: {{run.runId}}</h4>
                     <h4>Status:
                         <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span>
-                        <span *ngIf="run.task.status != 'COMPLETED'" class="text-warning"><i
-                                class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
+                        <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'" class="text-danger">{{run.task.status}}</span>
+                        <span *ngIf="run.task.status == 'PROCESSING'" class="text-warning"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
                     </h4>
+                    <h6>{{run.task.description}}</h6>
                     <h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>
                     <h4>Total Tests: {{total}} | <span class="text-success">Passed: {{total - failed}}</span> <span
                             class="text-danger">Failed: {{failed}}</span></h4>
@@ -64,8 +65,8 @@
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
                     <!--<th class="mdl-data-table__cell--non-numeric">Total/Pass</th>-->
                     <th class="mdl-data-table__cell--non-numeric">Success</th>
-                    <th class="mdl-data-table__cell--non-numeric">Time</th>
                     <th class="mdl-data-table__cell--non-numeric">Data</th>
+                    <th class="mdl-data-table__cell--non-numeric">Time</th>
                     <th class="mdl-data-table__cell--non-numeric">Analytics</th>
                 </tr>
                 <tr class="bg-color-info1">
@@ -77,9 +78,8 @@
                         <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
                     </th>
                     <th class="mdl-data-table__cell--non-numeric">{{success | percent}}</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
                     <th class="mdl-data-table__cell--non-numeric">{{size | byteFormat}}</th>
-
+                    <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
                 </tr>
                 </thead>
                 <tr *ngFor="let s of suites">
@@ -107,8 +107,11 @@
                     <td class="mdl-data-table__cell--non-numeric">
                         {{ ( (s.tests ) / (s.tests + s.failed) ) | percent }}
                     </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{s.time | mstoDuration}}</td>
+
                     <td class="mdl-data-table__cell--non-numeric">{{s.size | byteFormat}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{s.time | mstoDuration}}</td>
+
+
                     <td class="mdl-data-table__cell--non-numeric">
                         <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)" matTooltip="logs" matTooltipPosition="above">
                             <i class="material-icons">
@@ -129,9 +132,8 @@
                         <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
                     </th>
                     <th class="mdl-data-table__cell--non-numeric">{{success | percent}}</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
                     <th class="mdl-data-table__cell--non-numeric">{{size | byteFormat}}</th>
-
+                    <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
                 </tr>
                 </tfoot>
             </table>
