@@ -418,7 +418,7 @@ public class GitService implements VersionControlService {
         File myFile = null;
         try {
             //String strContent = "This example shows how to write string content to a file";
-            myFile = new File("/opt/fx/" + RandomStringUtils.randomAlphabetic(6));
+            myFile = new File("/opt/" + RandomStringUtils.randomAlphabetic(6));
             // check if file exist, otherwise create the file before writing
             if (!myFile.exists()) {
                 myFile.createNewFile();
