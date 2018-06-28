@@ -412,12 +412,11 @@ public class GitService implements VersionControlService {
         return sshSessionFactory;
     }
 
-    public static File createFile(String args) {
+    private File createFile(String args) {
 
         BufferedWriter bufferedWriter = null;
         File myFile = null;
         try {
-            //String strContent = "This example shows how to write string content to a file";
             myFile = new File("/opt/" + RandomStringUtils.randomAlphabetic(6));
             // check if file exist, otherwise create the file before writing
             if (!myFile.exists()) {
@@ -427,13 +426,12 @@ public class GitService implements VersionControlService {
             bufferedWriter = new BufferedWriter(writer);
             bufferedWriter.write(args);
 
-
         } catch (IOException e) {
             e.printStackTrace();
-        } finally{
-            try{
-                if(bufferedWriter != null) bufferedWriter.close();
-            } catch(Exception ex){
+        } finally {
+            try {
+                if (bufferedWriter != null) bufferedWriter.close();
+            } catch (Exception ex) {
 
             }
         }
