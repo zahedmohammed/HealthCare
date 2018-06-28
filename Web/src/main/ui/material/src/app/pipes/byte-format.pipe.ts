@@ -10,7 +10,7 @@ export class ByteFormatPipe implements PipeTransform {
     if (!isFinite(value)) return '-';
     if (value == 0) value = 1;
 	if (typeof precision === 'undefined') precision = 1;
-	var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
+	var units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'],
 	number = Math.floor(Math.log(value) / Math.log(1024));
 	return (value / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
   }

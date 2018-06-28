@@ -11,28 +11,22 @@
         </h2>
     </article>
 
-
     <div class="box box-default table-box mdl-shadow--2dp">
         <div class="item-card card__horizontal1">
             <div class="card__body card-white">
                 <div class="card__title">
-                    <h4>Run Id: {{run.runId}}</h4>
                     <h4>Status:
                         <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span>
-                        <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'" class="text-danger">{{run.task.status}}</span>
-                        <span *ngIf="run.task.status == 'PROCESSING'" class="text-warning"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
+                        <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'"
+                              class="text-danger">{{run.task.status}}</span>
+                        <span *ngIf="run.task.status == 'PROCESSING'" class="text-warning"><i
+                                class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
                     </h4>
                     <h6>{{run.task.description}}</h6>
-                    <h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>
-                    <h4>Total Tests: {{total}} | <span class="text-success">Passed: {{total - failed}}</span> <span
-                            class="text-danger">Failed: {{failed}}</span></h4>
-                    <h4>Success Rate: {{success | percent}}</h4>
-                    <h4>Response Time: {{time | mstoDuration}}</h4>
-                    <h4>Total Time: {{run.task.totalTime | mstoDuration}}</h4>
-                    <h4>Total Data: {{size | byteFormat}}</h4>
+                    <!--<h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>-->
                 </div>
-                <div class="divider divider-solid divider-lg"></div>
-                <!--<div class="card__title" *ngIf="run.stats != undefined">
+                <!--<div class="divider divider-solid divider-lg"></div>
+                <div class="card__title" *ngIf="run.stats != undefined">
                     <h4>Statistics By Category (Total/Pass)</h4>
                     <h4>Security (SQL Injection): {{run.stats.Security_SQL_Injection_Passed + run.stats.Security_SQL_Injection_Failed|| 0}}  / {{run.stats.Security_SQL_Injection_Passed || 0}} </h4>
                     <h4>Security (DDOS): {{run.stats.Security_DDOS_Passed  + run.stats.Security_DDOS_Failed || 0}} / {{run.stats.Security_DDOS_Passed || 0}} </h4>
@@ -53,7 +47,173 @@
         </div>
     </div>
 
+    <div class="no-breadcrumbs page-dashboard">
+        <div class="row">
+            <!-- Stats -->
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-info">assignment</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Test-Suites</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{length}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-info">check</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Test Executions</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{total}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-warning">data_usage</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Data</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{size | byteFormat}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-warning">av_timer</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Duration</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{time | mstoDuration}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top bg-color-danger">
+                        <i class="fa fa-times-circle"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>Fail</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{failed}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top bg-color-success">
+                        <i class="material-icons">check</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Success Rate</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{success | percent}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="row">
+            <!-- Security Stats -->
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="fa fa-database color-danger"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>SQL</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{run.stats.Security_SQL_Injection_Passed + run.stats.Security_SQL_Injection_Failed || 0}}  / {{run.stats.Security_SQL_Injection_Passed || 0}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="fa fa-code color-danger"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>XSS</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{run.stats.Security_XSS_Passed || 0}} / {{run.stats.Security_XSS_Failed || 0}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="fa fa-globe color-danger"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>DOS</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{run.stats.Security_DDOS_Passed  + run.stats.Security_DDOS_Failed || 0}} / {{run.stats.Security_DDOS_Passed || 0}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="fa fa-user-secret color-danger"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>RBAC</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{run.stats.Security_UnSecured_Passed  + run.stats.Security_UnSecured_Passed || 0}} / {{run.stats.Security_UnSecured_Passed || 0}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="fa fa-times-circle color-danger"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>Critical</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{run.stats.Critical_Passed + run.stats.Critical_Failed || 0}} / {{run.stats.Critical_Passed || 0}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="fa fa-tasks color-danger"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>Functional</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{run.stats.Functional_Passed + run.stats.Functional_Failed || 0}} / {{run.stats.Functional_Passed || 0}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br/>
     <article class="article">
         <div class="box box-default table-box mdl-shadow--2dp">
             <table class="mdl-data-table">
@@ -69,18 +229,7 @@
                     <th class="mdl-data-table__cell--non-numeric">Time</th>
                     <th class="mdl-data-table__cell--non-numeric">Analytics</th>
                 </tr>
-                <tr class="bg-color-info1">
-                    <!--<th class="mdl-data-table__cell--non-numeric"></th>-->
-                    <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric">
-                        <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
-                    </th>
-                    <th class="mdl-data-table__cell--non-numeric">{{success | percent}}</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{size | byteFormat}}</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
-                </tr>
+
                 </thead>
                 <tr *ngFor="let s of suites">
                     <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span class="text-success"><i
@@ -113,11 +262,13 @@
 
 
                     <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)" matTooltip="logs" matTooltipPosition="above">
+                        <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)" matTooltip="logs"
+                           matTooltipPosition="above">
                             <i class="material-icons">
                                 description
                             </i></a>
-                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'history', s.suiteName]" matTooltip="analytics" matTooltipPosition="above"><i
+                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'history', s.suiteName]"
+                           matTooltip="analytics" matTooltipPosition="above"><i
                                 class="nav-icon material-icons">timeline</i></a>
                     </td>
 
