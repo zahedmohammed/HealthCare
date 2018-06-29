@@ -1,5 +1,7 @@
 package com.fxlabs.fxt.codegen.generators.base;
 
+import com.fxlabs.fxt.codegen.code.AutoCodeConfig;
+import com.fxlabs.fxt.codegen.code.Database;
 import com.fxlabs.fxt.codegen.code.StubHandler;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
@@ -8,7 +10,9 @@ import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -31,6 +35,8 @@ public abstract class AbstractGenerator implements Generator {
 
     @Autowired
     protected JSONFactory factory;
+
+    protected AutoCodeConfig autoCodeConfig = null;
 
     @PostConstruct
     public void register() {
@@ -268,5 +274,47 @@ public abstract class AbstractGenerator implements Generator {
         return this;
     }
 
+
+    @Override
+    public void setAutoCodeConfig(AutoCodeConfig config){
+        this.autoCodeConfig = config;
+    }
+
+//    @Override
+    public AutoCodeConfig getAutoCodeConfig(){
+        return this.autoCodeConfig ;
+    }
+
+    public boolean isDB(String dbName){
+
+        // For now, returning true for every DB (if config file is not present) so that TestSuites for all DBs are generated.
+        //TODO: If we make AutoCodeConfig.yaml mandatory with entries of DB, we need to return false here.
+        if (this.autoCodeConfig == null ) return true;
+
+        boolean isDBGivenName = false;
+        if (! CollectionUtils.isEmpty(this.autoCodeConfig.getDatabases())){
+            for ( Database db : this.autoCodeConfig.getDatabases()){
+                if (StringUtils.equalsIgnoreCase(db.getName(), dbName)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public String getDBVersion(String dbName){
+
+        if (this.autoCodeConfig == null ) return null;
+
+        String version = null;
+        if (! CollectionUtils.isEmpty(this.autoCodeConfig.getDatabases())){
+            for ( Database db : this.autoCodeConfig.getDatabases() ){
+                if (StringUtils.equalsIgnoreCase(db.getName(), dbName)){
+                    version = db.getVersion();
+                }
+            }
+        }
+        return version;
+    }
 
 }

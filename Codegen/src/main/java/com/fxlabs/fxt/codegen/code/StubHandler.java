@@ -26,13 +26,14 @@ public class StubHandler {
     }
 
 
-    public List<TestSuiteMin> handle(String path, HttpMethod method, Operation op) {
+    public List<TestSuiteMin> handle(String path, HttpMethod method, Operation op, AutoCodeConfig config) {
 
         logger.debug("{} {}", path, method);
         List<TestSuiteMin> suites = Collections.synchronizedList(new ArrayList<>());
 
         this.generators.parallelStream().forEach(g -> {
             try {
+                g.setAutoCodeConfig(config);
                 List<TestSuiteMin> list = g.generate(path, method, op);
                 if (list != null && !list.isEmpty()) {
                     suites.addAll(list);

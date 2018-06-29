@@ -23,9 +23,16 @@ public class MongoDBSQLInjectionQueryParamGenerator extends AbstractGenerator {
     protected static final String POSTFIX = "query_param_sql_injection_MongoDB";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
+    protected static final String DB_NAME = "MongoDB";
 
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
+
+        if (! isDB(DB_NAME)){
+            return null;
+        }
+        String dbVersion = getDBVersion(DB_NAME);
+
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
         if (method == io.swagger.models.HttpMethod.GET) {

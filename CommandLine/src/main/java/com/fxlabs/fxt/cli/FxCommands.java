@@ -79,6 +79,7 @@ public class FxCommands {
             CredUtils.taskLogger.set(new BotLogger());
             service.loadAndRun(projectDir, project, jobName, region, tags, envName, suites);
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println(e.getLocalizedMessage());
         }
 
@@ -105,15 +106,17 @@ public class FxCommands {
     public void gen(
             @ShellOption(value = {"-h", "--url"}, help = "OpenAPI URL e.g. http://ip/v2/api-docs or myapp-spec.json") @Size(min = 1) String url,
             @ShellOption(value = {"-d", "--dir"}, help = "Stub generation directory e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\test-suites") String dir,
+            @ShellOption(value = {"-cfg", "--config-location"}, help = "AutoCodeConfig.yaml location e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\config", defaultValue = "") String configLocation,
             @ShellOption(value = {"-k", "--auth-header-key"}, help = "Authorization header key e.g. 'Authorization'", defaultValue = "") String key,
             @ShellOption(value = {"-v", "--auth-header-val"}, help = "Authorization header value e.g. 'my-passowrd'", defaultValue = "") String value) {
 
         try {
 
             CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
-            stubGenerator.generate(url, dir, key, value);
+            stubGenerator.generate(url, dir, configLocation, key, value);
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println(e.getLocalizedMessage());
         }
 
@@ -181,7 +184,7 @@ public class FxCommands {
     @PostConstruct
     private void tryLogin() {
         try {
-            System.out.println("Reading credentials from fx.properties");
+            System.out.println("Reading credentials from fx.properties ");
             Response<Users> response = service.login();
             if (response == null || response.isErrors() || response.getData() == null) {
                 System.out.println(

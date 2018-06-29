@@ -31,11 +31,13 @@ public class StubGenerator {
     @Autowired
     private JSONFactory factory;
 
-    public void generate(String spec, String dir, String headerKey, String headerVal) {
+    public void generate(String spec, String dir, String configFilePath , String headerKey, String headerVal) {
 
         try {
 
             Swagger swagger = build(spec, headerKey, headerVal);
+
+            AutoCodeConfig config = AutoCodeConfigUtil.loadConfig(configFilePath);
 
             factory.init(swagger);
 
@@ -86,7 +88,7 @@ public class StubGenerator {
                     Operation op = path.getOperationMap().get(m);
 
                     //System.out.println (p + " " + op.getOperationId());
-                    testSuites.addAll(this.stubHandler.handle(p, m, op));
+                    testSuites.addAll(this.stubHandler.handle(p, m, op, config));
                     /*System.out.println (op.getOperationId());
                     System.out.println (op.getConsumes());
                     System.out.println (op.getProduces());
@@ -111,6 +113,7 @@ public class StubGenerator {
 
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println(e.getLocalizedMessage());
         }
 
