@@ -295,7 +295,8 @@ public abstract class AbstractGenerator implements Generator {
         if (! CollectionUtils.isEmpty(this.autoCodeConfig.getDatabases())){
             for ( Database db : this.autoCodeConfig.getDatabases()){
                 if (StringUtils.equalsIgnoreCase(db.getName(), dbName)){
-                    return true;
+                    if (!db.isInactive())
+                        return true;
                 }
             }
         }
