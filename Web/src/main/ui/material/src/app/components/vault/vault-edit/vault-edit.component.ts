@@ -4,7 +4,7 @@ import { VaultService } from '../../../services/vault.service';
 import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
 import { Handler } from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig }from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
@@ -18,7 +18,8 @@ export class VaultEditComponent implements OnInit {
   showSpinner: boolean = false;
   entry: Vault = new Vault();
   orgs;
-  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
+  config = new MatSnackBarConfig();
+  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -51,7 +52,11 @@ export class VaultEditComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.router.navigate(['/app/vault']);
+        this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;
+        this.snackBar.open("Vault " + this.entry.key + " Successfully Updated", "", this.config);
+        this.router.navigate(['/app/vault']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -73,6 +78,11 @@ export class VaultEditComponent implements OnInit {
                 if (this.handler.handle(results)) {
                     return;
                 }
+                let config = new MatSnackBarConfig();
+                config.verticalPosition = 'top';
+                config.horizontalPosition = 'right';
+                config.duration = 3000;
+                this.snackBar.open("Vault " + this.entry.key + " Successfully Deleted", "", config);
                 this.router.navigate(['/app/vault']);
             }, error => {
                 this.handler.hideLoader();

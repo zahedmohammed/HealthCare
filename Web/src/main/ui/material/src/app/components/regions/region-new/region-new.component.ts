@@ -6,7 +6,7 @@ import { Account } from '../../../models/account.model';
 import { OrgService } from '../../../services/org.service';
 import { Region } from '../../../models/regions.model';
 import { Handler } from '../../dialogs/handler/handler';
-
+import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
 
 @Component({
   selector: 'app-region-new',
@@ -23,12 +23,12 @@ export class RegionNewComponent implements OnInit {
   AZURE_REGIONS = [];
 
   regions = [];
-
+  config = new MatSnackBarConfig();
   showSpinner: boolean = false;
   accounts;
   orgs;
   entry: Region = new Region();
-  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getAccountForExecutionBotPage();
@@ -36,17 +36,21 @@ export class RegionNewComponent implements OnInit {
   }
 
   create() {
-    this.handler.activateLoader();
-    this.regionsService.create(this.entry).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.router.navigate(['/app/regions']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
+      this.handler.activateLoader();
+      this.regionsService.create(this.entry).subscribe(results => {
+          this.handler.hideLoader();
+          if (this.handler.handle(results)) {
+              return;
+          }
+          this.config.verticalPosition = 'top';
+          this.config.horizontalPosition = 'right';
+          this.config.duration = 3000;
+          this.snackBar.open("Bot Hub " + this.entry.name + " Successfully Created", "", this.config);
+          this.router.navigate(['/app/regions']);
+      }, error => {
+          this.handler.hideLoader();
+          this.handler.error(error);
+      });
   }
 
   getRegions(){

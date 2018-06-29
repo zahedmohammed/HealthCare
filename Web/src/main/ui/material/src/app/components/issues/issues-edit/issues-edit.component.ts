@@ -8,7 +8,7 @@ import { Account } from '../../../models/account.model';
 import { IssueTracker } from '../../../models/issue-tracker.model';
 import { Base } from '../../../models/base.model';
 import { Handler } from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig }from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
@@ -22,9 +22,10 @@ export class IssuesEditComponent implements OnInit {
   orgs;
   accounts;
   showSpinner: boolean = false;
+  config = new MatSnackBarConfig();
   entry: IssueTracker = new IssueTracker();
   constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService,
-    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
+    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -60,6 +61,10 @@ export class IssuesEditComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
+        this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;
+        this.snackBar.open("Issue Tracker " + this.entry.name + " Successfully Updated", "", this.config);
       this.router.navigate(['/app/issues']);
     }, error => {
       console.log("Unable to update vault");
@@ -82,7 +87,11 @@ export class IssuesEditComponent implements OnInit {
                 if (this.handler.handle(results)) {
                     return;
                 }
-                this.router.navigate(['/app/issues']);
+               this.config.verticalPosition = 'top';
+               this.config.horizontalPosition = 'right';
+               this.config.duration = 3000;
+               this.snackBar.open("Issue Tracker " + this.entry.name + " Successfully Deleted", "", this.config);
+               this.router.navigate(['/app/issues']);
             }, error => {
                 this.handler.hideLoader();
                 this.handler.error(error);

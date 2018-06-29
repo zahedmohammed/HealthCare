@@ -3,7 +3,7 @@ import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { OrgService } from '../../../services/org.service';
 import { Org } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
-
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig }from '@angular/material';
 
 @Component({
   selector: 'app-org-edit',
@@ -16,7 +16,8 @@ export class OrgEditComponent implements OnInit {
   showSpinner: boolean = false;
   entry: Org = new Org();
   orgs;
-  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  config = new MatSnackBarConfig();
+  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -48,7 +49,11 @@ export class OrgEditComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.router.navigate(['/app/orgs']);
+        this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;
+        this.snackBar.open("Organization " + this.entry.name + " Successfully Updated", "", this.config);
+        this.router.navigate(['/app/orgs']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

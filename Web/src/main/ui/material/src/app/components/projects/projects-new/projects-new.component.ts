@@ -8,6 +8,7 @@ import { Project } from '../../../models/project.model';
 import { OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
+import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
 
 @Component({
   selector: 'app-projects-new',
@@ -22,7 +23,7 @@ export class ProjectsNewComponent implements OnInit {
   orgs;
   accounts;
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) {
+  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) {
     //this.project.genPolicy = "None";
   }
 
@@ -35,16 +36,21 @@ export class ProjectsNewComponent implements OnInit {
   create() {
     this.handler.activateLoader();
     this.projectService.create(this.project).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.router.navigate(['/app/projects']);
+        this.handler.hideLoader();
+        if (this.handler.handle(results)) {
+            return;
+        }
+        let config = new MatSnackBarConfig();
+        config.verticalPosition = 'top';
+        config.horizontalPosition = 'right';
+        config.duration = 3000;
+        this.snackBar.open("Project " + this.project.name + " Successfully Created", "", config);
+        this.router.navigate(['/app/projects']);
     }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
+        this.handler.hideLoader();
+        this.handler.error(error);
     });
-  }
+}
 
   getOrgs() {
     this.handler.activateLoader();

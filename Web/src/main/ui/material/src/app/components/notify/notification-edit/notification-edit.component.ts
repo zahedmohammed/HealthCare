@@ -6,7 +6,7 @@ import { OrgService } from '../../../services/org.service';
 import { Account } from '../../../models/account.model';
 import { Notification } from '../../../models/notification.model';
 import { Handler } from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig }from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
@@ -21,8 +21,9 @@ export class NotificationEditComponent implements OnInit {
   entry: Notification = new Notification();
   orgs;
   accounts;
+  config = new MatSnackBarConfig();
   types = ['SLACK','EMAIL'];
-  constructor(private notificationService: NotificationService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
+  constructor(private notificationService: NotificationService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
     ngOnInit() {
     this.route.params.subscribe(params => {
@@ -50,17 +51,21 @@ export class NotificationEditComponent implements OnInit {
   }
 
   update() {
-    this.handler.activateLoader();
-    this.notificationService.update(this.entry).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.router.navigate(['/app/notification-accounts']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
+      this.handler.activateLoader();
+      this.notificationService.update(this.entry).subscribe(results => {
+          this.handler.hideLoader();
+          if (this.handler.handle(results)) {
+              return;
+          }
+          this.config.verticalPosition = 'top';
+          this.config.horizontalPosition = 'right';
+          this.config.duration = 3000;
+          this.snackBar.open("Notification " + this.entry.name + " Successfully Updated", "", this.config);
+          this.router.navigate(['/app/notification-accounts']);
+      }, error => {
+          this.handler.hideLoader();
+          this.handler.error(error);
+      });
   }
 
   delete() {
@@ -78,6 +83,11 @@ export class NotificationEditComponent implements OnInit {
                 if (this.handler.handle(results)) {
                     return;
                 }
+                let config = new MatSnackBarConfig();
+                config.verticalPosition = 'top';
+                config.horizontalPosition = 'right';
+                config.duration = 3000;
+                this.snackBar.open("Notification " + this.entry.name + " Successfully Deleted", "", config);
                 this.router.navigate(['/app/notification-accounts']);
             }, error => {
                 this.handler.hideLoader();

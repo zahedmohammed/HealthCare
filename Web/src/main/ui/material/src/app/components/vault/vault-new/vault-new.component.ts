@@ -4,6 +4,7 @@ import { VaultService } from '../../../services/vault.service';
 import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
 import { Handler } from '../../dialogs/handler/handler';
+import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
 
 @Component({
   selector: 'app-vault-new',
@@ -16,7 +17,8 @@ export class VaultNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   entry: Vault = new Vault();
-  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  config = new MatSnackBarConfig();
+  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     //this.getOrgs();
@@ -29,7 +31,11 @@ export class VaultNewComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.router.navigate(['/app/vault']);
+        this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;
+        this.snackBar.open("Vault " + this.entry.key + " Successfully Created", "", this.config);
+        this.router.navigate(['/app/vault']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

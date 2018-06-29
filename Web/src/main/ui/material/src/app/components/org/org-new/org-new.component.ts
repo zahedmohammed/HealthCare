@@ -3,6 +3,7 @@ import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { OrgService } from '../../../services/org.service';
 import { Org } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
+import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
 
 
 @Component({
@@ -16,7 +17,8 @@ export class OrgNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   entry: Org = new Org();
-  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  config = new MatSnackBarConfig();
+  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
   }
@@ -28,6 +30,10 @@ export class OrgNewComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
+        this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;
+        this.snackBar.open("Organization " + this.entry.name + " Successfully Created", "", this.config);
       this.router.navigate(['/app/orgs']);
     }, error => {
       this.handler.hideLoader();

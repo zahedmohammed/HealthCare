@@ -8,6 +8,7 @@ import { OrgService } from '../../../services/org.service';
 import { IssueTracker } from '../../../models/issue-tracker.model';
 import { Base } from '../../../models/base.model';
 import { Handler } from '../../dialogs/handler/handler';
+import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
 
 @Component({
   selector: 'app-issues-new',
@@ -20,8 +21,9 @@ export class IssuesNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   accounts;
+  config = new MatSnackBarConfig();
   entry: IssueTracker = new IssueTracker();
-  constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.listSkills();
@@ -49,6 +51,10 @@ export class IssuesNewComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
+        this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;
+        this.snackBar.open("Issue Tracker " + this.entry.name + " Successfully Created", "", this.config);
       this.router.navigate(['/app/issues']);
     }, error => {
       this.handler.hideLoader();

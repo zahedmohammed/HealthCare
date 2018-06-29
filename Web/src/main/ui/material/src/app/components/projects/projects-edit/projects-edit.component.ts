@@ -6,7 +6,7 @@ import { AccountService } from '../../../services/account.service';
 import { Project } from '../../../models/project.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
@@ -21,8 +21,9 @@ export class ProjectsEditComponent implements OnInit {
   orgs;
   project: Project = new Project();
   accounts;
+  config = new MatSnackBarConfig();
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
+  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.AppConfig = APPCONFIG;
@@ -57,36 +58,44 @@ export class ProjectsEditComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
+      this.config.verticalPosition = 'top';
+      this.config.horizontalPosition = 'right';
+      this.config.duration = 3000;
+      this.snackBar.open("Project " + this.project.name + " Successfully Updated", "", this.config);
       this.router.navigate(['/app/projects']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
- delete() {
-     let dialogRef = this.dialog.open(DeleteDialogComponent, {
-         data: {
-             project: this.project
-         }
-     });
 
-     dialogRef.afterClosed().subscribe(result => {
-         if (result != null) {
-             this.handler.activateLoader();
-             this.projectService.delete(this.project).subscribe(results => {
-                 this.handler.hideLoader();
-                 if (this.handler.handle(results)) {
-                     return;
-                 }
-                 this.router.navigate(['/app/projects']);
-             }, error => {
-                 this.handler.hideLoader();
-                 this.handler.error(error);
+delete() {
+    let dialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: {
+            project: this.project
+        }
+    });
 
-             });
-         }
-     });
- }
+    dialogRef.afterClosed().subscribe(result => {
+        if (result != null) {
+            this.handler.activateLoader();
+            this.projectService.delete(this.project).subscribe(results => {
+                this.handler.hideLoader();
+                if (this.handler.handle(results)) {
+                    return;
+                }
+                this.config.verticalPosition = 'top';
+                this.config.horizontalPosition = 'right';
+                this.config.duration = 3000;
+                this.snackBar.open("Project " + this.project.name + " Successfully Deleted", "", this.config);
+                this.router.navigate(['/app/projects']);
+            }, error => {
+                this.handler.hideLoader();
+                this.handler.error(error);
+            });
+        }
+    });
+}
 
   getOrgs() {
     this.orgService.getByUser().subscribe(results => {

@@ -5,7 +5,7 @@ import { OrgService } from '../../../services/org.service';
 import { AccountService } from '../../../services/account.service';
 import { Region } from '../../../models/regions.model';
 import { Handler } from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar }from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig }from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
@@ -29,7 +29,8 @@ export class RegionEditComponent implements OnInit {
   accounts;
   entry: Region = new Region();
   orgs;
-  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog) { }
+  config = new MatSnackBarConfig();
+  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -63,6 +64,10 @@ export class RegionEditComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
+        this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;
+        this.snackBar.open("Bot Hub " + this.entry.name + " Successfully Updated", "", this.config);
       this.router.navigate(['/app/regions']);
     }, error => {
       this.handler.hideLoader();
@@ -84,6 +89,10 @@ delete() {
                 if (this.handler.handle(results)) {
                     return;
                 }
+                this.config.verticalPosition = 'top';
+                this.config.horizontalPosition = 'right';
+                this.config.duration = 3000;
+                this.snackBar.open("Bot Hub " + this.entry.name + " Successfully Deleted", "", this.config);
                 this.router.navigate(['/app/regions']);
             }, error => {
                 this.handler.hideLoader();
