@@ -21,7 +21,7 @@ export class IssuesNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   accounts;
-  config = new MatSnackBarConfig();
+  config;
   entry: IssueTracker = new IssueTracker();
   constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
@@ -29,6 +29,7 @@ export class IssuesNewComponent implements OnInit {
     this.listSkills();
     //this.getOrgs();
     this.getAccountyForIssueTracker();
+    this.config = new MatSnackBarConfig();
   }
 
   listSkills() {

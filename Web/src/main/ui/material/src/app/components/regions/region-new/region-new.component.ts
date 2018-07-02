@@ -23,16 +23,17 @@ export class RegionNewComponent implements OnInit {
   AZURE_REGIONS = [];
 
   regions = [];
-  config = new MatSnackBarConfig();
   showSpinner: boolean = false;
   accounts;
   orgs;
+  config;
   entry: Region = new Region();
   constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getAccountForExecutionBotPage();
     //this.getOrgs();
+    this.config = new MatSnackBarConfig();
   }
 
   create() {

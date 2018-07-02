@@ -19,7 +19,7 @@ export class AccountNewComponent implements OnInit {
   orgs;
   entry: Account = new Account();
   cloudShow: boolean = true;
-  config = new MatSnackBarConfig();
+  config;
   cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
   //accountTypes = [ 'VERSION_CONTROL', 'ISSUE_TRACKER', 'CLOUD', 'NOTIFICATION'];
   accountTypes = [
@@ -33,6 +33,7 @@ export class AccountNewComponent implements OnInit {
   constructor(private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
   ngOnInit() {
     //this.getOrgs();
+    this.config = new MatSnackBarConfig();
   }
 
   create() {

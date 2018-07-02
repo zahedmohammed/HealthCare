@@ -29,7 +29,7 @@ export class RegionEditComponent implements OnInit {
   accounts;
   entry: Region = new Region();
   orgs;
-  config = new MatSnackBarConfig();
+  config;
   constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -39,6 +39,7 @@ export class RegionEditComponent implements OnInit {
         this.getById(params['id']);
         //this.getOrgs();
         //this.getAccountForExecutionBotPage();
+        this.config = new MatSnackBarConfig();
       }
     });
   }

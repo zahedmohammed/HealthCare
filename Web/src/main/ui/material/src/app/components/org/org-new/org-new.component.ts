@@ -17,10 +17,11 @@ export class OrgNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   entry: Org = new Org();
-  config = new MatSnackBarConfig();
+  config;
   constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
+  this.config = new MatSnackBarConfig();
   }
 
   create() {

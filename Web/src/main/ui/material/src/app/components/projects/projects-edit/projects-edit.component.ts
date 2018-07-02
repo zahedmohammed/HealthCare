@@ -21,7 +21,7 @@ export class ProjectsEditComponent implements OnInit {
   orgs;
   project: Project = new Project();
   accounts;
-  config = new MatSnackBarConfig();
+  config;
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
@@ -33,6 +33,7 @@ export class ProjectsEditComponent implements OnInit {
         this.getById(params['id']);
         //this.getOrgs();
         this.getAccountsForProjectPage();
+        this.config = new MatSnackBarConfig();
       }
     });
   }

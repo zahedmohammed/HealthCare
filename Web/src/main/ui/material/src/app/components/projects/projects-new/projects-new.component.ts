@@ -22,6 +22,7 @@ export class ProjectsNewComponent implements OnInit {
   project: Project = new Project();
   orgs;
   accounts;
+  config;
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) {
     //this.project.genPolicy = "None";
@@ -31,6 +32,7 @@ export class ProjectsNewComponent implements OnInit {
     this.AppConfig = APPCONFIG;
     //this.getOrgs();
     this.getAccountsForProjectPage();
+    this.config = new MatSnackBarConfig();
   }
 
   create() {
@@ -40,11 +42,10 @@ export class ProjectsNewComponent implements OnInit {
         if (this.handler.handle(results)) {
             return;
         }
-        let config = new MatSnackBarConfig();
-        config.verticalPosition = 'top';
-        config.horizontalPosition = 'right';
-        config.duration = 3000;
-        this.snackBar.open("Project " + this.project.name + " Successfully Created", "", config);
+        this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;
+        this.snackBar.open("Project " + this.project.name + " Successfully Created", "", this.config);
         this.router.navigate(['/app/projects']);
     }, error => {
         this.handler.hideLoader();

@@ -21,7 +21,7 @@ export class NotificationEditComponent implements OnInit {
   entry: Notification = new Notification();
   orgs;
   accounts;
-  config = new MatSnackBarConfig();
+  config;
   types = ['SLACK','EMAIL'];
   constructor(private notificationService: NotificationService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
@@ -32,6 +32,7 @@ export class NotificationEditComponent implements OnInit {
         this.getById(params['id']);
         //this.getOrgs();
         this.getAccountyForNotificationHubType();
+        this.config = new MatSnackBarConfig();
       }
     });
   }

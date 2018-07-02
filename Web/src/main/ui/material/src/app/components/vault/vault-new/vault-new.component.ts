@@ -17,11 +17,12 @@ export class VaultNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   entry: Vault = new Vault();
-  config = new MatSnackBarConfig();
+  config;
   constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     //this.getOrgs();
+    this.config = new MatSnackBarConfig();
   }
 
   create() {

@@ -21,8 +21,8 @@ export class IssuesEditComponent implements OnInit {
   skills;
   orgs;
   accounts;
+  config;
   showSpinner: boolean = false;
-  config = new MatSnackBarConfig();
   entry: IssueTracker = new IssueTracker();
   constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService,
     private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
@@ -34,6 +34,7 @@ export class IssuesEditComponent implements OnInit {
         this.getById(params['id']);
         //this.getOrgs();
         this.getAccountyForIssueTracker();
+        this.config = new MatSnackBarConfig();
       }
     });
     //this.listSkills();

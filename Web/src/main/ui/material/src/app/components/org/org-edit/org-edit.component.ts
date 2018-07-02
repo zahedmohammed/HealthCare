@@ -16,7 +16,7 @@ export class OrgEditComponent implements OnInit {
   showSpinner: boolean = false;
   entry: Org = new Org();
   orgs;
-  config = new MatSnackBarConfig();
+  config;
   constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -24,6 +24,7 @@ export class OrgEditComponent implements OnInit {
       console.log(params);
       if (params['id']) {
         this.getById(params['id']);
+        this.config = new MatSnackBarConfig();
       }
     });
   }

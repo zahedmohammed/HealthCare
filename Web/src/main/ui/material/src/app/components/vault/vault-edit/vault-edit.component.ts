@@ -18,7 +18,7 @@ export class VaultEditComponent implements OnInit {
   showSpinner: boolean = false;
   entry: Vault = new Vault();
   orgs;
-  config = new MatSnackBarConfig();
+  config;
   constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -27,6 +27,7 @@ export class VaultEditComponent implements OnInit {
       if (params['id']) {
         this.getById(params['id']);
         //this.getOrgs();
+        this.config = new MatSnackBarConfig();
       }
     });
   }

@@ -19,7 +19,7 @@ export class NotificationNewComponent implements OnInit {
   showSpinner: boolean = false;
   orgs;
   accounts;
-  config = new MatSnackBarConfig();
+  config;
   entry: Notification = new Notification();
   types = ['SLACK','EMAIL'];
   constructor(private notificationService: NotificationService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
@@ -27,6 +27,7 @@ export class NotificationNewComponent implements OnInit {
   ngOnInit() {
     //this.getOrgs();
     this.getAccountyForNotificationHubType();
+    this.config = new MatSnackBarConfig();
   }
 
   create() {
