@@ -17,6 +17,8 @@ public class ParamUtil {
             "pageSize"
     };
 
+    private static final String[] DDOS_PARAMS = {"size","list","page","pageSize", "limit", "count", "items", "listSize"};
+
     static List<String> skip = Arrays.asList(skippedProps);
 
     public static boolean isPaginationParam(String p) {
@@ -31,4 +33,17 @@ public class ParamUtil {
         }
         return false;
     }
+
+    public static boolean isDDOSParam(String paramName){
+        if (paramName == null ) return false;
+
+        boolean found = false;
+        for (String str : DDOS_PARAMS){
+            if (paramName.equalsIgnoreCase(str)){
+                return true;
+            }
+        }
+        return found;
+    }
+
 }

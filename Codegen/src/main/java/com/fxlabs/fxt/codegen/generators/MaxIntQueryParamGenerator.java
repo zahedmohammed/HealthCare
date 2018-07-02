@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.QueryParameter;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 @Component(value = "queryParamGeneratorMaxInt")
 public class MaxIntQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "query_param_max_int";
+    protected static final String POSTFIX = "query_param_DDOS";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
@@ -34,6 +35,11 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
             for ( Parameter param : op.getParameters()){
                 if (param instanceof QueryParameter){
                     QueryParameter queryParam = (QueryParameter) param;
+
+                    if (!ParamUtil.isDDOSParam(queryParam.getName())){
+                        break;
+                    }
+
                     if (ParamUtil.isPaginationParam(queryParam.getName())) {
                         biggerNumber= 1001;
                     }
@@ -43,7 +49,7 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
                         List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                         for (TestSuiteMin testSuite : testSuites) {
                             buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                            testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + Integer.MAX_VALUE);
+                            testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + biggerNumber);
                             testSuite.setCategory(TestSuiteCategory.Security_DDOS);
                             testSuite.setSeverity(TestSuiteSeverity.Major);
                         }
@@ -53,6 +59,6 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
             }
         }
         return allTestSuites;
-
     }
+
 }
