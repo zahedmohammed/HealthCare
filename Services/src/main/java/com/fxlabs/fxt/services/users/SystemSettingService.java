@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.users;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.dto.users.SystemSetting;
 import com.fxlabs.fxt.services.base.GenericService;
 
@@ -22,4 +23,8 @@ public interface SystemSettingService extends GenericService<SystemSetting, Stri
     public Response<SystemSetting> save(SystemSetting dto);
 
     public String findByKey(String key);
+
+    public Response<Saving> getSavingsById(String id);
+
+
 }

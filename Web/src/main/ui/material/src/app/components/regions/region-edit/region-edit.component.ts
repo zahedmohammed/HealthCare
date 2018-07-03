@@ -3,7 +3,9 @@ import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { RegionsService } from '../../../services/regions.service';
 import { OrgService } from '../../../services/org.service';
 import { AccountService } from '../../../services/account.service';
+import { SystemSettingService } from '../../../services/system-setting.service';
 import { Region } from '../../../models/regions.model';
+import { Saving } from '../../../models/system-setting.model';
 import { Handler } from '../../dialogs/handler/handler';
 import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig }from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
@@ -12,7 +14,7 @@ import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.co
   selector: 'app-regions-edit',
   templateUrl: './region-edit.component.html',
   styleUrls: ['./region-edit.component.scss'],
-  providers: [RegionsService, OrgService]
+  providers: [RegionsService, OrgService, SystemSettingService]
 })
 export class RegionEditComponent implements OnInit {
 
@@ -30,8 +32,9 @@ export class RegionEditComponent implements OnInit {
   entry: Region = new Region();
   orgs;
   config;
+  saving: Saving;
   constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
-                public dialog: MatDialog, public snackBar: MatSnackBar) { }
+                public dialog: MatDialog, public snackBar: MatSnackBar, private systemSettingService: SystemSettingService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -43,6 +46,12 @@ export class RegionEditComponent implements OnInit {
         this.config = new MatSnackBarConfig();
       }
     });
+     this.route.params.subscribe(params => {
+      console.log(params);
+        if (params['id']) {
+            this.getSavings(params['id']);
+        }
+     });
   }
 
   getById(id: string) {
@@ -152,6 +161,20 @@ delete() {
         return;
       }
       this.accounts = results['data'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+   getSavings(id: string) {
+    this.handler.activateLoader();
+    this.systemSettingService.getSavingById(id).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.saving = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

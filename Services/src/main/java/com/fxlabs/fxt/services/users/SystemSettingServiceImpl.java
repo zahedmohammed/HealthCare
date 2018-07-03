@@ -1,14 +1,20 @@
 package com.fxlabs.fxt.services.users;
 
 import com.fxlabs.fxt.converters.users.SystemSettingConverter;
+import com.fxlabs.fxt.dao.entity.clusters.Cluster;
+import com.fxlabs.fxt.dao.repository.jpa.ClusterRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.dto.users.SystemSetting;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.jasypt.util.text.TextEncryptor;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.Months;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,14 +35,16 @@ public class SystemSettingServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.
     private SystemSettingConverter systemSettingConverter;
     private TextEncryptor encryptor;
     private String ENCRYPTED_PREFIX = "encrypted:";
+    private ClusterRepository clusterRepository;
 
     @Autowired
-    public SystemSettingServiceImpl(SystemSettingRepository systemSettingRepository, SystemSettingConverter systemSettingConverter, TextEncryptor encryptor) {
+    public SystemSettingServiceImpl(SystemSettingRepository systemSettingRepository, SystemSettingConverter systemSettingConverter, TextEncryptor encryptor,
+                                    ClusterRepository clusterRepository) {
         super(systemSettingRepository, systemSettingConverter);
 
         this.systemSettingRepository = systemSettingRepository;
         this.systemSettingConverter = systemSettingConverter;
-
+        this.clusterRepository = clusterRepository;
         this.encryptor = encryptor;
 
     }
@@ -84,9 +92,54 @@ public class SystemSettingServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.
     }
 
     @Override
+    public Response<Saving> getSavingsById(String id) {
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(id)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid id"));
+        }
+
+        Optional<Cluster> clusterResponse = clusterRepository.findById(id);
+
+        if (!clusterResponse.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid id"));
+        }
+
+        Cluster entity = clusterResponse.get();
+
+        String licenseSetting = findByKey("LICENSE_SAVING");
+        String managedInstanceSetting = findByKey("MANAGED_INSTANCE_SAVING");
+
+        Saving saving = new Saving();
+        saving.setStartDate(entity.getCreatedDate());
+
+        DateTime dt = new DateTime(entity.getCreatedDate());
+        LocalDate dateToReturn = new LocalDate(entity.getCreatedDate());
+        int calMonths = monthsBetweenIgnoreDays(new LocalDate(entity.getCreatedDate()), LocalDate.now());
+
+        saving.setCalMonths(calMonths);
+        saving.setCount(entity.getMin());
+
+        int licenseSaving = calMonths * entity.getMin() * Integer.parseInt(licenseSetting);
+        int managedInstanceSaving = calMonths * entity.getMin() * Integer.parseInt(licenseSetting);
+
+        saving.setLicenseSaving(licenseSaving);
+        saving.setManagedInstanceSaving(managedInstanceSaving);
+
+        saving.setTotal(licenseSaving + managedInstanceSaving);
+
+        return new Response<Saving>(saving);
+    }
+
+    @Override
     public void isUserEntitled(String s, String user) {
         // TODO
     }
 
+
+    private  int monthsBetweenIgnoreDays(LocalDate start, LocalDate end) {
+        start = start.withDayOfMonth(1);
+        end = end.withDayOfMonth(1);
+        return Months.monthsBetween(start, end).getMonths();
+    }
 
 }

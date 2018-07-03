@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.rest.users;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.dto.users.SystemSetting;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.users.SystemSettingService;
@@ -41,10 +42,16 @@ public class SystemSettingController {
     }
 
 
-    @Secured({ROLE_ENTERPRISE_ADMIN,ROLE_ADMIN})
+    @Secured({ROLE_ENTERPRISE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<SystemSetting> findById(@PathVariable("id") String id) {
         return service.findById(id, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured({ROLE_USER, ROLE_ENTERPRISE_ADMIN, ROLE_ADMIN})
+    @RequestMapping(value = "/{id}/bot-saving", method = RequestMethod.GET)
+    public Response<Saving> getSavingsById(@PathVariable("id") String id) {
+        return service.getSavingsById(id);
     }
 
     /*@Secured(ROLE_ENTERPRISE_ADMIN)
