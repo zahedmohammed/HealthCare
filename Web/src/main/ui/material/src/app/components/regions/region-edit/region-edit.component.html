@@ -8,9 +8,6 @@
                     <mat-tab label="Details">
                         <section class="box box-transparent">
                             <div class="box-body">
-
-    <article class="article">
-
         <div class="box box-default">
             <div class="box-body padding-xl">
 
@@ -145,24 +142,20 @@
                             </button>
                         </div>
                     </div>
-
                 </form>
-
             </div>
         </div>
-    </article>
-                            </div>
-                        </section>
-                    </mat-tab>
+      </div>
+    </section>
+    </mat-tab>
+
                     <mat-tab label="Savings">
                         <section class="box box-transparent">
                             <div class="box-body">
-                                <div class="article-title-style">Total Savings</div>
-                                       <div>Total Months: {{saving.calMonths}}<br>
-                                       License Saving: ${{saving.licenseSaving}}<br>
-                                       Managed Instance Saving: ${{saving.managedInstanceSaving}}<br>
-                                           Total Saving: ${{saving.total}}<br></div>
-
+                                <div>Total Months: {{saving?.calMonths}}<br></div>
+                                <div>License Saving: {{saving?.licenseSaving}}<br></div>
+                                <div>Managed Instance Saving: {{saving?.managedInstanceSaving}}<br></div>
+                                <div>Total Saving: ${{saving?.total}}<br></div>
                             </div>
                         </section>
                     </mat-tab>
