@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.ProjectConverter;
+import com.fxlabs.fxt.dao.entity.users.Org;
 import com.fxlabs.fxt.dao.repository.es.ProjectImportsESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
@@ -210,10 +211,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
             }
 
-
+            Org org_ = orgRepository.findById(org).get();
             NameDto o = new NameDto();
-            o.setId(org);
-            request.setOrg(o);
+            o.setId(org_.getId());
+            o.setName(org_.getName());
 
             // create project, project-git-account
             Project project = new Project();
