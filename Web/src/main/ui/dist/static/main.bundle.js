@@ -353,7 +353,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["e" /* MatCardModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["f" /* MatCheckboxModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["g" /* MatChipsModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_material__["D" /* MatStepperModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["F" /* MatStepperModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["h" /* MatDatepickerModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["j" /* MatDialogModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["l" /* MatExpansionModule */],
@@ -372,12 +372,12 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["y" /* MatSidenavModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["A" /* MatSliderModule */],
                 __WEBPACK_IMPORTED_MODULE_6__angular_material__["z" /* MatSlideToggleModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_material__["B" /* MatSnackBarModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_material__["C" /* MatSortModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_material__["E" /* MatTableModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_material__["F" /* MatTabsModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_material__["G" /* MatToolbarModule */],
-                __WEBPACK_IMPORTED_MODULE_6__angular_material__["H" /* MatTooltipModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["D" /* MatSnackBarModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["E" /* MatSortModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["G" /* MatTableModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["H" /* MatTabsModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["I" /* MatToolbarModule */],
+                __WEBPACK_IMPORTED_MODULE_6__angular_material__["J" /* MatTooltipModule */],
                 __WEBPACK_IMPORTED_MODULE_7__app_routing_module__["a" /* AppRoutingModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["b" /* HttpClientModule */],
                 // Sub modules
@@ -1135,7 +1135,7 @@ var AdvRunComponent = (function () {
 /***/ "../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h4 mat-dialog-title>Are you sure you you want to delete this resource?</h4>\n<mat-dialog-actions class=\"pull-right\">\n  <button mat-button mat-dialog-close (click)=\"onNoClick()\">Cancel</button>\n  <button button mat-raised-button color=\"warn\" class=\"btn-w-md\" [mat-dialog-close]=\"true\">Delete</button>\n</mat-dialog-actions>"
+module.exports = "<h4 mat-dialog-title>Are you sure you want to delete this resource?</h4>\n<mat-dialog-actions align=\"center\">\n  <button mat-button mat-dialog-close (click)=\"onNoClick()\">Cancel</button>\n  <button button mat-raised-button color=\"warn\" class=\"btn-w-md\" [mat-dialog-close]=\"true\">Delete</button>\n</mat-dialog-actions>"
 
 /***/ }),
 
@@ -1711,7 +1711,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var IssuesEditComponent = (function () {
-    function IssuesEditComponent(issueTrackerService, accountService, skillService, orgService, route, router, handler, dialog) {
+    function IssuesEditComponent(issueTrackerService, accountService, skillService, orgService, route, router, handler, dialog, snackBar) {
         this.issueTrackerService = issueTrackerService;
         this.accountService = accountService;
         this.skillService = skillService;
@@ -1720,6 +1720,7 @@ var IssuesEditComponent = (function () {
         this.router = router;
         this.handler = handler;
         this.dialog = dialog;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_6__models_issue_tracker_model__["a" /* IssueTracker */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
@@ -1732,6 +1733,7 @@ var IssuesEditComponent = (function () {
                 _this.getById(params['id']);
                 //this.getOrgs();
                 _this.getAccountyForIssueTracker();
+                _this.config = new __WEBPACK_IMPORTED_MODULE_8__angular_material__["C" /* MatSnackBarConfig */]();
             }
         });
         //this.listSkills();
@@ -1759,6 +1761,10 @@ var IssuesEditComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Issue Tracker " + _this.entry.name + " Successfully Updated", "", _this.config);
             _this.router.navigate(['/app/issues']);
         }, function (error) {
             console.log("Unable to update vault");
@@ -1780,6 +1786,10 @@ var IssuesEditComponent = (function () {
                     if (_this.handler.handle(results)) {
                         return;
                     }
+                    _this.config.verticalPosition = 'top';
+                    _this.config.horizontalPosition = 'right';
+                    _this.config.duration = 3000;
+                    _this.snackBar.open("Issue Tracker " + _this.entry.name + " Successfully Deleted", "", _this.config);
                     _this.router.navigate(['/app/issues']);
                 }, function (error) {
                     _this.handler.hideLoader();
@@ -1841,7 +1851,7 @@ var IssuesEditComponent = (function () {
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_issue_tracker_service__["a" /* IssueTrackerService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */]]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_issue_tracker_service__["a" /* IssueTrackerService */], __WEBPACK_IMPORTED_MODULE_5__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */],
-            __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["i" /* MatDialog */]])
+            __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["i" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["B" /* MatSnackBar */]])
     ], IssuesEditComponent);
     return IssuesEditComponent;
 }());
@@ -1980,6 +1990,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__models_issue_tracker_model__ = __webpack_require__("../../../../../src/app/models/issue-tracker.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1997,8 +2008,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var IssuesNewComponent = (function () {
-    function IssuesNewComponent(issueTrackerService, accountService, skillService, orgService, route, router, handler) {
+    function IssuesNewComponent(issueTrackerService, accountService, skillService, orgService, route, router, handler, snackBar) {
         this.issueTrackerService = issueTrackerService;
         this.accountService = accountService;
         this.skillService = skillService;
@@ -2006,6 +2018,7 @@ var IssuesNewComponent = (function () {
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_6__models_issue_tracker_model__["a" /* IssueTracker */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
@@ -2014,6 +2027,7 @@ var IssuesNewComponent = (function () {
         this.listSkills();
         //this.getOrgs();
         this.getAccountyForIssueTracker();
+        this.config = new __WEBPACK_IMPORTED_MODULE_8__angular_material__["C" /* MatSnackBarConfig */]();
     };
     IssuesNewComponent.prototype.listSkills = function () {
         var _this = this;
@@ -2037,6 +2051,10 @@ var IssuesNewComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Issue Tracker " + _this.entry.name + " Successfully Created", "", _this.config);
             _this.router.navigate(['/app/issues']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -2081,7 +2099,7 @@ var IssuesNewComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/issues/issues-new/issues-new.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_issue_tracker_service__["a" /* IssueTrackerService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_5__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_issue_tracker_service__["a" /* IssueTrackerService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_5__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_issue_tracker_service__["a" /* IssueTrackerService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_skill_service__["a" /* SkillService */], __WEBPACK_IMPORTED_MODULE_5__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["B" /* MatSnackBar */]])
     ], IssuesNewComponent);
     return IssuesNewComponent;
 }());
@@ -2309,13 +2327,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var AccountEditComponent = (function () {
-    function AccountEditComponent(accountService, orgService, route, router, handler, dialog) {
+    function AccountEditComponent(accountService, orgService, route, router, handler, dialog, snackBar) {
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
         this.dialog = dialog;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_account_model__["a" /* Account */]();
         this.cloudShow = true;
@@ -2330,6 +2349,7 @@ var AccountEditComponent = (function () {
             if (params['id']) {
                 _this.getById(params['id']);
                 //this.getOrgs();
+                _this.config = new __WEBPACK_IMPORTED_MODULE_6__angular_material__["C" /* MatSnackBarConfig */]();
             }
         });
     };
@@ -2355,6 +2375,10 @@ var AccountEditComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Account " + _this.entry.name + " Successfully Updated", "", _this.config);
             _this.router.navigate(['/app/accounts']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -2376,6 +2400,10 @@ var AccountEditComponent = (function () {
                     if (_this.handler.handle(results)) {
                         return;
                     }
+                    _this.config.verticalPosition = 'top';
+                    _this.config.horizontalPosition = 'right';
+                    _this.config.duration = 3000;
+                    _this.snackBar.open("Account " + _this.entry.name + " Successfully Deleted", "", _this.config);
                     _this.router.navigate(['/app/accounts']);
                 }, function (error) {
                     _this.handler.hideLoader();
@@ -2408,7 +2436,7 @@ var AccountEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/manage/account-edit/account-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["i" /* MatDialog */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["i" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["B" /* MatSnackBar */]])
     ], AccountEditComponent);
     return AccountEditComponent;
 }());
@@ -2545,6 +2573,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_account_model__ = __webpack_require__("../../../../../src/app/models/account.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2560,13 +2589,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AccountNewComponent = (function () {
-    function AccountNewComponent(accountService, orgService, route, router, handler) {
+    function AccountNewComponent(accountService, orgService, route, router, handler, snackBar) {
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_account_model__["a" /* Account */]();
         this.cloudShow = true;
@@ -2583,6 +2614,7 @@ var AccountNewComponent = (function () {
     }
     AccountNewComponent.prototype.ngOnInit = function () {
         //this.getOrgs();
+        this.config = new __WEBPACK_IMPORTED_MODULE_6__angular_material__["C" /* MatSnackBarConfig */]();
     };
     AccountNewComponent.prototype.create = function () {
         var _this = this;
@@ -2592,6 +2624,10 @@ var AccountNewComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Account " + _this.entry.name + " Successfully Created", "", _this.config);
             _this.router.navigate(['/app/accounts']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -2622,7 +2658,7 @@ var AccountNewComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/manage/account-new/account-new.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["B" /* MatSnackBar */]])
     ], AccountNewComponent);
     return AccountNewComponent;
 }());
@@ -3309,7 +3345,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var NotificationEditComponent = (function () {
-    function NotificationEditComponent(notificationService, accountService, orgService, route, router, handler, dialog) {
+    function NotificationEditComponent(notificationService, accountService, orgService, route, router, handler, dialog, snackBar) {
         this.notificationService = notificationService;
         this.accountService = accountService;
         this.orgService = orgService;
@@ -3317,6 +3353,7 @@ var NotificationEditComponent = (function () {
         this.router = router;
         this.handler = handler;
         this.dialog = dialog;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_5__models_notification_model__["a" /* Notification */]();
         this.types = ['SLACK', 'EMAIL'];
@@ -3330,6 +3367,7 @@ var NotificationEditComponent = (function () {
                 _this.getById(params['id']);
                 //this.getOrgs();
                 _this.getAccountyForNotificationHubType();
+                _this.config = new __WEBPACK_IMPORTED_MODULE_7__angular_material__["C" /* MatSnackBarConfig */]();
             }
         });
     };
@@ -3355,6 +3393,10 @@ var NotificationEditComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Notification " + _this.entry.name + " Successfully Updated", "", _this.config);
             _this.router.navigate(['/app/notification-accounts']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -3376,6 +3418,11 @@ var NotificationEditComponent = (function () {
                     if (_this.handler.handle(results)) {
                         return;
                     }
+                    var config = new __WEBPACK_IMPORTED_MODULE_7__angular_material__["C" /* MatSnackBarConfig */]();
+                    config.verticalPosition = 'top';
+                    config.horizontalPosition = 'right';
+                    config.duration = 3000;
+                    _this.snackBar.open("Notification " + _this.entry.name + " Successfully Deleted", "", config);
                     _this.router.navigate(['/app/notification-accounts']);
                 }, function (error) {
                     _this.handler.hideLoader();
@@ -3421,7 +3468,7 @@ var NotificationEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/notify/notification-edit/notification-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_7__angular_material__["i" /* MatDialog */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_7__angular_material__["i" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_7__angular_material__["B" /* MatSnackBar */]])
     ], NotificationEditComponent);
     return NotificationEditComponent;
 }());
@@ -3559,6 +3606,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_notification_model__ = __webpack_require__("../../../../../src/app/models/notification.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3575,14 +3623,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var NotificationNewComponent = (function () {
-    function NotificationNewComponent(notificationService, accountService, orgService, route, router, handler) {
+    function NotificationNewComponent(notificationService, accountService, orgService, route, router, handler, snackBar) {
         this.notificationService = notificationService;
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_5__models_notification_model__["a" /* Notification */]();
         this.types = ['SLACK', 'EMAIL'];
@@ -3591,6 +3641,7 @@ var NotificationNewComponent = (function () {
     NotificationNewComponent.prototype.ngOnInit = function () {
         //this.getOrgs();
         this.getAccountyForNotificationHubType();
+        this.config = new __WEBPACK_IMPORTED_MODULE_7__angular_material__["C" /* MatSnackBarConfig */]();
     };
     NotificationNewComponent.prototype.create = function () {
         var _this = this;
@@ -3601,6 +3652,10 @@ var NotificationNewComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Notification " + _this.entry.name + " Successfully Created", "", _this.config);
             _this.router.navigate(['/app/notification-accounts']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -3645,7 +3700,7 @@ var NotificationNewComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/notify/notification-new/notification-new.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_notification_service__["a" /* NotificationService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_7__angular_material__["B" /* MatSnackBar */]])
     ], NotificationNewComponent);
     return NotificationNewComponent;
 }());
@@ -3689,6 +3744,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_org_model__ = __webpack_require__("../../../../../src/app/models/org.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3703,12 +3759,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var OrgEditComponent = (function () {
-    function OrgEditComponent(orgService, route, router, handler) {
+    function OrgEditComponent(orgService, route, router, handler, snackBar) {
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_3__models_org_model__["b" /* Org */]();
     }
@@ -3718,6 +3776,7 @@ var OrgEditComponent = (function () {
             console.log(params);
             if (params['id']) {
                 _this.getById(params['id']);
+                _this.config = new __WEBPACK_IMPORTED_MODULE_5__angular_material__["C" /* MatSnackBarConfig */]();
             }
         });
     };
@@ -3743,6 +3802,10 @@ var OrgEditComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Organization " + _this.entry.name + " Successfully Updated", "", _this.config);
             _this.router.navigate(['/app/orgs']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -3756,7 +3819,7 @@ var OrgEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/org/org-edit/org-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_4__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_4__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_5__angular_material__["B" /* MatSnackBar */]])
     ], OrgEditComponent);
     return OrgEditComponent;
 }());
@@ -3892,6 +3955,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_org_model__ = __webpack_require__("../../../../../src/app/models/org.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3906,16 +3970,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var OrgNewComponent = (function () {
-    function OrgNewComponent(orgService, route, router, handler) {
+    function OrgNewComponent(orgService, route, router, handler, snackBar) {
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_3__models_org_model__["b" /* Org */]();
     }
     OrgNewComponent.prototype.ngOnInit = function () {
+        this.config = new __WEBPACK_IMPORTED_MODULE_5__angular_material__["C" /* MatSnackBarConfig */]();
     };
     OrgNewComponent.prototype.create = function () {
         var _this = this;
@@ -3925,6 +3992,10 @@ var OrgNewComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Organization " + _this.entry.name + " Successfully Created", "", _this.config);
             _this.router.navigate(['/app/orgs']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -3938,7 +4009,7 @@ var OrgNewComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/org/org-new/org-new.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_4__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_4__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_5__angular_material__["B" /* MatSnackBar */]])
     ], OrgNewComponent);
     return OrgNewComponent;
 }());
@@ -4068,7 +4139,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var ProjectsEditComponent = (function () {
-    function ProjectsEditComponent(projectService, accountService, orgService, route, router, handler, dialog) {
+    function ProjectsEditComponent(projectService, accountService, orgService, route, router, handler, dialog, snackBar) {
         this.projectService = projectService;
         this.accountService = accountService;
         this.orgService = orgService;
@@ -4076,6 +4147,7 @@ var ProjectsEditComponent = (function () {
         this.router = router;
         this.handler = handler;
         this.dialog = dialog;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.project = new __WEBPACK_IMPORTED_MODULE_5__models_project_model__["a" /* Project */]();
         this.projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
@@ -4091,6 +4163,7 @@ var ProjectsEditComponent = (function () {
                 _this.getById(params['id']);
                 //this.getOrgs();
                 _this.getAccountsForProjectPage();
+                _this.config = new __WEBPACK_IMPORTED_MODULE_8__angular_material__["C" /* MatSnackBarConfig */]();
             }
         });
     };
@@ -4116,6 +4189,10 @@ var ProjectsEditComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Project " + _this.project.name + " Successfully Updated", "", _this.config);
             _this.router.navigate(['/app/projects']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -4137,6 +4214,10 @@ var ProjectsEditComponent = (function () {
                     if (_this.handler.handle(results)) {
                         return;
                     }
+                    _this.config.verticalPosition = 'top';
+                    _this.config.horizontalPosition = 'right';
+                    _this.config.duration = 3000;
+                    _this.snackBar.open("Project " + _this.project.name + " Successfully Deleted", "", _this.config);
                     _this.router.navigate(['/app/projects']);
                 }, function (error) {
                     _this.handler.hideLoader();
@@ -4182,7 +4263,7 @@ var ProjectsEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/projects/projects-edit/projects-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["i" /* MatDialog */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["i" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["B" /* MatSnackBar */]])
     ], ProjectsEditComponent);
     return ProjectsEditComponent;
 }());
@@ -4322,6 +4403,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_project_model__ = __webpack_require__("../../../../../src/app/models/project.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__config__ = __webpack_require__("../../../../../src/app/config.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4339,14 +4421,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectsNewComponent = (function () {
-    function ProjectsNewComponent(projectService, accountService, orgService, route, router, handler) {
+    function ProjectsNewComponent(projectService, accountService, orgService, route, router, handler, snackBar) {
         this.projectService = projectService;
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.project = new __WEBPACK_IMPORTED_MODULE_5__models_project_model__["a" /* Project */]();
         this.projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
@@ -4358,6 +4442,7 @@ var ProjectsNewComponent = (function () {
         this.AppConfig = __WEBPACK_IMPORTED_MODULE_7__config__["a" /* APPCONFIG */];
         //this.getOrgs();
         this.getAccountsForProjectPage();
+        this.config = new __WEBPACK_IMPORTED_MODULE_8__angular_material__["C" /* MatSnackBarConfig */]();
     };
     ProjectsNewComponent.prototype.create = function () {
         var _this = this;
@@ -4367,6 +4452,10 @@ var ProjectsNewComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Project " + _this.project.name + " Successfully Created", "", _this.config);
             _this.router.navigate(['/app/projects']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -4411,7 +4500,7 @@ var ProjectsNewComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/projects/projects-new/projects-new.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["B" /* MatSnackBar */]])
     ], ProjectsNewComponent);
     return ProjectsNewComponent;
 }());
@@ -4548,10 +4637,11 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_regions_service__ = __webpack_require__("../../../../../src/app/services/regions.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_account_service__ = __webpack_require__("../../../../../src/app/services/account.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_regions_model__ = __webpack_require__("../../../../../src/app/models/regions.model.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_system_setting_service__ = __webpack_require__("../../../../../src/app/services/system-setting.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__models_regions_model__ = __webpack_require__("../../../../../src/app/models/regions.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__dialogs_delete_dialog_delete_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialogs/delete-dialog/delete-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4570,8 +4660,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var RegionEditComponent = (function () {
-    function RegionEditComponent(regionsService, accountService, orgService, route, router, handler, dialog) {
+    function RegionEditComponent(regionsService, accountService, orgService, route, router, handler, dialog, snackBar, systemSettingService) {
         this.regionsService = regionsService;
         this.accountService = accountService;
         this.orgService = orgService;
@@ -4579,13 +4670,15 @@ var RegionEditComponent = (function () {
         this.router = router;
         this.handler = handler;
         this.dialog = dialog;
+        this.snackBar = snackBar;
+        this.systemSettingService = systemSettingService;
         this.GCP_REGIONS = ['NORTHAMERICA-NORTHEAST1', 'US-CENTRAL', 'US-EAST1', 'US-EAST4', 'SOUTHAMERICA-EAST1', 'EUROPE-WEST', 'EUROPE-WEST2', 'EUROPE-WEST3', 'ASIA-NORTHEAST1', 'ASIA-SOUTH1', 'AUSTRALIA-SOUTHEAST1'];
         //AWS_REGIONS = ['US-EAST-1','US-EAST-2','US-WEST-1','US-WEST-2','CA-CENTRAL-1','EU-CENTRAL-1','EU-WEST-1','EU-WEST-2','EU-WEST-3','AP-NORTHEAST-1','AP-NORTHEAST-2','AP-NORTHEAST-3','AP-SOUTHEAST-1','AP-SOUTHEAST-2','AP-SOUTH-1','SA-EAST-1'];
         this.AWS_REGIONS = ['US-WEST-1'];
         this.AZURE_REGIONS = [];
         this.regions = [];
         this.showSpinner = false;
-        this.entry = new __WEBPACK_IMPORTED_MODULE_5__models_regions_model__["a" /* Region */]();
+        this.entry = new __WEBPACK_IMPORTED_MODULE_6__models_regions_model__["a" /* Region */]();
         this.visibilities = ['PRIVATE', 'PUBLIC'];
     }
     RegionEditComponent.prototype.ngOnInit = function () {
@@ -4596,8 +4689,11 @@ var RegionEditComponent = (function () {
                 _this.getById(params['id']);
                 //this.getOrgs();
                 //this.getAccountForExecutionBotPage();
+                _this.config = new __WEBPACK_IMPORTED_MODULE_8__angular_material__["C" /* MatSnackBarConfig */]();
             }
         });
+        this.getSystemSettingLicenseSaving();
+        this.getSystemSettingManagedMachineSaving();
     };
     RegionEditComponent.prototype.getById = function (id) {
         var _this = this;
@@ -4621,6 +4717,10 @@ var RegionEditComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Bot Hub " + _this.entry.name + " Successfully Updated", "", _this.config);
             _this.router.navigate(['/app/regions']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -4629,7 +4729,7 @@ var RegionEditComponent = (function () {
     };
     RegionEditComponent.prototype.delete = function () {
         var _this = this;
-        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_8__dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */], {
+        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_9__dialogs_delete_dialog_delete_dialog_component__["a" /* DeleteDialogComponent */], {
             data: {
                 entry: this.entry
             }
@@ -4642,6 +4742,10 @@ var RegionEditComponent = (function () {
                     if (_this.handler.handle(results)) {
                         return;
                     }
+                    _this.config.verticalPosition = 'top';
+                    _this.config.horizontalPosition = 'right';
+                    _this.config.duration = 3000;
+                    _this.snackBar.open("Bot Hub " + _this.entry.name + " Successfully Deleted", "", _this.config);
                     _this.router.navigate(['/app/regions']);
                 }, function (error) {
                     _this.handler.hideLoader();
@@ -4703,14 +4807,41 @@ var RegionEditComponent = (function () {
             _this.handler.error(error);
         });
     };
+    RegionEditComponent.prototype.getSystemSettingLicenseSaving = function () {
+        var _this = this;
+        this.systemSettingService.getById('4028b881620688c001620689a3210008').subscribe(function (results) {
+            _this.handler.hideLoader();
+            if (_this.handler.handle(results)) {
+                return;
+            }
+            _this.licenseSaving = results['data'];
+        }, function (error) {
+            _this.handler.hideLoader();
+            _this.handler.error(error);
+        });
+    };
+    RegionEditComponent.prototype.getSystemSettingManagedMachineSaving = function () {
+        var _this = this;
+        this.systemSettingService.getById('4028b881620688c001620689a3210009').subscribe(function (results) {
+            _this.handler.hideLoader();
+            if (_this.handler.handle(results)) {
+                return;
+            }
+            _this.manageInstanceSaving = results['data'];
+        }, function (error) {
+            _this.handler.hideLoader();
+            _this.handler.error(error);
+        });
+    };
     RegionEditComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-regions-edit',
             template: __webpack_require__("../../../../../src/app/components/regions/region-edit/region-edit.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/regions/region-edit/region-edit.component.scss")],
-            providers: [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_5__services_system_setting_service__["a" /* SystemSettingService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_7__angular_material__["i" /* MatDialog */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_4__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_7__dialogs_handler_handler__["a" /* Handler */],
+            __WEBPACK_IMPORTED_MODULE_8__angular_material__["i" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_8__angular_material__["B" /* MatSnackBar */], __WEBPACK_IMPORTED_MODULE_5__services_system_setting_service__["a" /* SystemSettingService */]])
     ], RegionEditComponent);
     return RegionEditComponent;
 }());
@@ -4756,6 +4887,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_regions_model__ = __webpack_require__("../../../../../src/app/models/regions.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4772,14 +4904,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var RegionNewComponent = (function () {
-    function RegionNewComponent(regionsService, accountService, orgService, route, router, handler) {
+    function RegionNewComponent(regionsService, accountService, orgService, route, router, handler, snackBar) {
         this.regionsService = regionsService;
         this.accountService = accountService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.snackBar = snackBar;
         this.GCP_REGIONS = ['NORTHAMERICA-NORTHEAST1', 'US-CENTRAL', 'US-EAST1', 'US-EAST4', 'SOUTHAMERICA-EAST1', 'EUROPE-WEST', 'EUROPE-WEST2', 'EUROPE-WEST3', 'ASIA-NORTHEAST1', 'ASIA-SOUTH1', 'AUSTRALIA-SOUTHEAST1'];
         this.AWS_REGIONS = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-southeast-1', 'ap-southeast-2', 'ap-southeast-1', 'sa-east-1'];
         //AWS_REGIONS = ['US-WEST-1'];
@@ -4792,6 +4926,7 @@ var RegionNewComponent = (function () {
     RegionNewComponent.prototype.ngOnInit = function () {
         this.getAccountForExecutionBotPage();
         //this.getOrgs();
+        this.config = new __WEBPACK_IMPORTED_MODULE_7__angular_material__["C" /* MatSnackBarConfig */]();
     };
     RegionNewComponent.prototype.create = function () {
         var _this = this;
@@ -4801,6 +4936,10 @@ var RegionNewComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Bot Hub " + _this.entry.name + " Successfully Created", "", _this.config);
             _this.router.navigate(['/app/regions']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -4875,7 +5014,7 @@ var RegionNewComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/regions/region-new/region-new.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_regions_service__["a" /* RegionsService */], __WEBPACK_IMPORTED_MODULE_3__services_account_service__["a" /* AccountService */], __WEBPACK_IMPORTED_MODULE_4__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_6__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_7__angular_material__["B" /* MatSnackBar */]])
     ], RegionNewComponent);
     return RegionNewComponent;
 }());
@@ -4887,7 +5026,7 @@ var RegionNewComponent = (function () {
 /***/ "../../../../../src/app/components/run-detail/run-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"container-fluid with-maxwidth-lg1 no-breadcrumbs chapter1\">\n    <article class=\"article\">\n        <h2 class=\"article-title\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\"> Jobs </a>\n            /\n            <!--<a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId]\"> -->{{job.name}}\n            <!--</a>-->\n            /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId, 'runs']\"> Runs </a>\n            / {{run.runId}}\n        </h2>\n    </article>\n\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>Run Id: {{run.runId}}</h4>\n                    <h4>Status:\n                        <span *ngIf=\"run.task.status == 'COMPLETED'\" class=\"text-success\">{{run.task.status}}</span>\n                        <span *ngIf=\"run.task.status != 'COMPLETED'\" class=\"text-warning\"><i\n                                class=\"fa fa-spinner fa-spin\" aria-hidden=\"true\"></i> {{run.task.status}}</span>\n                    </h4>\n                    <h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>\n                    <h4>Total Tests: {{total}} | <span class=\"text-success\">Passed: {{total - failed}}</span> <span\n                            class=\"text-danger\">Failed: {{failed}}</span></h4>\n                    <h4>Success Rate: {{success | percent}}</h4>\n                    <h4>Response Time: {{time | mstoDuration}}</h4>\n                    <h4>Total Time: {{run.task.totalTime | mstoDuration}}</h4>\n                    <h4>Total Data: {{size | byteFormat}}</h4>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <!--<div class=\"card__title\" *ngIf=\"run.stats != undefined\">\n                    <h4>Statistics By Category (Total/Pass)</h4>\n                    <h4>Security (SQL Injection): {{run.stats.Security_SQL_Injection_Passed + run.stats.Security_SQL_Injection_Failed|| 0}}  / {{run.stats.Security_SQL_Injection_Passed || 0}} </h4>\n                    <h4>Security (DDOS): {{run.stats.Security_DDOS_Passed  + run.stats.Security_DDOS_Failed || 0}} / {{run.stats.Security_DDOS_Passed || 0}} </h4>\n                    <h4>Security (XSS): {{run.stats.Security_XSS_Passed || 0}} / {{run.stats.Security_XSS_Failed || 0}} </h4>\n                    <h4>Negative : {{run.stats.Negative_Passed + run.stats.Negative_Failed || 0}} / {{run.stats.Negative_Passed || 0}} </h4>\n                    <h4>Functional : {{run.stats.Bug_Passed + run.stats.Bug_Failed || 0}} / {{run.stats.Bug_Passed || 0}} </h4>\n                    <br/>\n                    <h4>Statistics By Severity</h4>\n                    <h4>Critical: {{run.stats.Critical_Passed + run.stats.Critical_Failed || 0}} / {{run.stats.Critical_Passed || 0}} </h4>\n                    <h4>Major : {{run.stats.Major_Passed + run.stats.Major_Failed || 0}} / {{run.stats.Major_Failed || 0}} </h4>\n                    <h4>Minor: {{run.stats.Minor_Passed + run.stats.Minor_Failed || 0}} / {{run.stats.Minor_Failed || 0}} </h4>\n                    <h4>Trivial : {{run.stats.Trivial_Passed + run.stats.Trivial_Failed || 0}} / {{run.stats.Trivial_Failed || 0}} </h4>\n                </div>\n\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{run.task.description}}</p>-->\n            </div>\n        </div>\n    </div>\n\n\n    <article class=\"article\">\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Suite</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Category</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Severity</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <!--<th class=\"mdl-data-table__cell--non-numeric\">Total/Pass</th>-->\n                    <th class=\"mdl-data-table__cell--non-numeric\">Success</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Data</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Analytics</th>\n                </tr>\n                <tr class=\"bg-color-info1\">\n                    <!--<th class=\"mdl-data-table__cell--non-numeric\"></th>-->\n                    <th class=\"mdl-data-table__cell--non-numeric\">Aggregate</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">\n                        <span class=\"text-success\">Passed: {{total-failed}}</span><span class=\"text-danger\">&nbsp;&nbsp; Failed: {{failed}}</span>\n                    </th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{success | percent}}</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{time | mstoDuration}}</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{size | byteFormat}}</th>\n\n                </tr>\n                </thead>\n                <tr *ngFor=\"let s of suites\">\n                    <!--<td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed == 0\"><span class=\"text-success\"><i\n                            class=\"material-icons\">done</i> </span></td>-->\n                    <!--<td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span class=\"text-danger\"><i\n                            class=\"material-icons\">clear</i> </span></td>-->\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{s.suiteName | slice:0:55}}\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.category}}</td>\n\n                    <td class=\"mdl-data-table__cell--non-numeric\"><span>{{s.severity}} </span></td>\n\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <span class=\"text-success\"> Passed: {{s.tests - s.failed}}\n                            <span class=\"text-danger\" *ngIf=\"s.failed != 0\">&nbsp;&nbsp; Failed: {{s.failed}}</span>\n                        </span>\n                    </td>\n\n                    <!--<td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span\n                            class=\"text-danger\"> Fail: {{s.failed}}</span></td>-->\n\n                    <!--<td class=\"mdl-data-table__cell--non-numeric\">{{s.tests}}/{{s.tests - s.failed}}</td>-->\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (s.tests ) / (s.tests + s.failed) ) | percent }}\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.time | mstoDuration}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.size | byteFormat}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <a href=\"javascript:;\" (click)=\"getTestSuiteResponseByName(s.suiteName)\" matTooltip=\"logs\" matTooltipPosition=\"above\">\n                            <i class=\"material-icons\">\n                                description\n                            </i></a>\n                        <a href=\"javascript:;\" [routerLink]=\"['/app/jobs', jobId, 'history', s.suiteName]\" matTooltip=\"analytics\" matTooltipPosition=\"above\"><i\n                                class=\"nav-icon material-icons\">timeline</i></a>\n                    </td>\n\n\n                </tr>\n                <tfoot>\n                <tr class=\"bg-color-info1\">\n                    <th class=\"mdl-data-table__cell--non-numeric\">Aggregate</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">\n                        <span class=\"text-success\">Passed: {{total-failed}}</span><span class=\"text-danger\">&nbsp;&nbsp; Failed: {{failed}}</span>\n                    </th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{success | percent}}</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{time | mstoDuration}}</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{size | byteFormat}}</th>\n\n                </tr>\n                </tfoot>\n            </table>\n        </div>\n\n        <mat-paginator [hidden]=\"length <= pageSize\"\n                       [pageSize]=\"pageSize\"\n                       hidePageSize=\"true\"\n                       (page)=\"change($event)\"\n                       [length]=\"length\"\n        >\n        </mat-paginator>\n\n    </article>\n\n    <!--\n    <a href=\"javascript:;\" (click)=\"getTestSuiteResponsesByRunId()\"> View Logs </a>\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\" *ngFor=\"let item of list\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{item.testSuite}}</h4>\n                    <h6>Test-Suite</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{item.totalPassed}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{item.totalFailed}}</span>\n                    <span>Time: {{item.requestTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{item.logs}}</p>\n            </div>\n        </div>\n    </div>\n    -->\n</section>"
+module.exports = "<section class=\"container-fluid with-maxwidth-lg1 no-breadcrumbs chapter1\">\n    <article class=\"article\">\n        <h2 class=\"article-title\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\"> Jobs </a>\n            /\n            <!--<a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId]\"> -->{{job.name}}\n            <!--</a>-->\n            /\n            <a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId, 'runs']\"> Runs </a>\n            / {{run.runId}}\n        </h2>\n    </article>\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>Status:\n                        <span *ngIf=\"run.task.status == 'COMPLETED'\" class=\"text-success\">{{run.task.status}}</span>\n                        <span *ngIf=\"run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'\"\n                              class=\"text-danger\">{{run.task.status}}</span>\n                        <span *ngIf=\"run.task.status == 'PROCESSING'\" class=\"text-warning\"><i\n                                class=\"fa fa-spinner fa-spin\" aria-hidden=\"true\"></i> {{run.task.status}}</span>\n                    </h4>\n                    <h6>{{run.task.description}}</h6>\n                    <!--<h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>-->\n                </div>\n                <!--<div class=\"divider divider-solid divider-lg\"></div>\n                <div class=\"card__title\" *ngIf=\"run.stats != undefined\">\n                    <h4>Statistics By Category (Total/Pass)</h4>\n                    <h4>Security (SQL Injection): {{run.stats.Security_SQL_Injection_Passed + run.stats.Security_SQL_Injection_Failed|| 0}}  / {{run.stats.Security_SQL_Injection_Passed || 0}} </h4>\n                    <h4>Security (DDOS): {{run.stats.Security_DDOS_Passed  + run.stats.Security_DDOS_Failed || 0}} / {{run.stats.Security_DDOS_Passed || 0}} </h4>\n                    <h4>Security (XSS): {{run.stats.Security_XSS_Passed || 0}} / {{run.stats.Security_XSS_Failed || 0}} </h4>\n                    <h4>Negative : {{run.stats.Negative_Passed + run.stats.Negative_Failed || 0}} / {{run.stats.Negative_Passed || 0}} </h4>\n                    <h4>Functional : {{run.stats.Bug_Passed + run.stats.Bug_Failed || 0}} / {{run.stats.Bug_Passed || 0}} </h4>\n                    <br/>\n                    <h4>Statistics By Severity</h4>\n                    <h4>Critical: {{run.stats.Critical_Passed + run.stats.Critical_Failed || 0}} / {{run.stats.Critical_Passed || 0}} </h4>\n                    <h4>Major : {{run.stats.Major_Passed + run.stats.Major_Failed || 0}} / {{run.stats.Major_Failed || 0}} </h4>\n                    <h4>Minor: {{run.stats.Minor_Passed + run.stats.Minor_Failed || 0}} / {{run.stats.Minor_Failed || 0}} </h4>\n                    <h4>Trivial : {{run.stats.Trivial_Passed + run.stats.Trivial_Failed || 0}} / {{run.stats.Trivial_Failed || 0}} </h4>\n                </div>\n\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{run.task.description}}</p>-->\n            </div>\n        </div>\n    </div>\n\n    <div class=\"no-breadcrumbs page-dashboard\">\n        <div class=\"row\">\n            <!-- Stats -->\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"material-icons color-info\">assignment</i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>Test-Suites</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{length}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"material-icons color-info\">check</i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>Test Executions</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{total}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"material-icons color-warning\">data_usage</i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>Data</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{size | byteFormat}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"material-icons color-warning\">av_timer</i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>Duration</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{time | mstoDuration}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top bg-color-danger\">\n                        <i class=\"fa fa-times-circle\"></i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>Fail</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{failed}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top bg-color-success\">\n                        <i class=\"material-icons\">check</i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>Success Rate</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{success | percent}}</span>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <div class=\"row\">\n            <!-- Security Stats -->\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"fa fa-database color-danger\"></i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>SQL</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{run.stats.Security_SQL_Injection_Passed + run.stats.Security_SQL_Injection_Failed || 0}}  / {{run.stats.Security_SQL_Injection_Passed || 0}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"fa fa-code color-danger\"></i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>XSS</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{run.stats.Security_XSS_Passed || 0}} / {{run.stats.Security_XSS_Failed || 0}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"fa fa-globe color-danger\"></i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>DOS</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{run.stats.Security_DDOS_Passed  + run.stats.Security_DDOS_Failed || 0}} / {{run.stats.Security_DDOS_Passed || 0}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"fa fa-user-secret color-danger\"></i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>RBAC</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{run.stats.Security_UnSecured_Passed  + run.stats.Security_UnSecured_Passed || 0}} / {{run.stats.Security_UnSecured_Passed || 0}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"fa fa-times-circle color-danger\"></i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>Critical</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{run.stats.Critical_Passed + run.stats.Critical_Failed || 0}} / {{run.stats.Critical_Passed || 0}}</span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xl-2 col-sm-6\">\n                <div class=\"box box-default\">\n                    <div class=\"box-top\">\n                        <i class=\"fa fa-tasks color-danger\"></i>\n                    </div>\n                    <div class=\"box-info\">\n                        <span>Functional</span>\n                    </div>\n                    <div class=\"box-bottom\">\n                        <span>{{run.stats.Functional_Passed + run.stats.Functional_Failed || 0}} / {{run.stats.Functional_Passed || 0}}</span>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n    <br/>\n    <article class=\"article\">\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Suite</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Category</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Severity</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                    <!--<th class=\"mdl-data-table__cell--non-numeric\">Total/Pass</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Success</th>-->\n                    <th class=\"mdl-data-table__cell--non-numeric\">Data</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Analytics</th>\n                </tr>\n\n                </thead>\n                <tr *ngFor=\"let s of suites\">\n                    <!--<td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed == 0\"><span class=\"text-success\"><i\n                            class=\"material-icons\">done</i> </span></td>-->\n                    <!--<td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span class=\"text-danger\"><i\n                            class=\"material-icons\">clear</i> </span></td>-->\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{s.suiteName | slice:0:55}}\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.category}}</td>\n\n                    <td class=\"mdl-data-table__cell--non-numeric\"><span>{{s.severity}} </span></td>\n\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <span class=\"text-success\"> Passed: {{s.tests - s.failed}}\n                            <span class=\"text-danger\" *ngIf=\"s.failed != 0\">&nbsp;&nbsp; Failed: {{s.failed}}</span>\n                        </span>\n                    </td>\n\n                    <!--<td class=\"mdl-data-table__cell--non-numeric\" *ngIf=\"s.failed != 0\"><span\n                            class=\"text-danger\"> Fail: {{s.failed}}</span></td>-->\n\n                    <!--<td class=\"mdl-data-table__cell--non-numeric\">{{s.tests}}/{{s.tests - s.failed}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (s.tests ) / (s.tests + s.failed) ) | percent }}\n                    </td>-->\n\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.size | byteFormat}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{s.time | mstoDuration}}</td>\n\n\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <a href=\"javascript:;\" (click)=\"getTestSuiteResponseByName(s.suiteName)\" matTooltip=\"logs\"\n                           matTooltipPosition=\"above\">\n                            <i class=\"material-icons\">\n                                description\n                            </i></a>\n                        <a href=\"javascript:;\" [routerLink]=\"['/app/jobs', jobId, 'history', s.suiteName]\"\n                           matTooltip=\"analytics\" matTooltipPosition=\"above\"><i\n                                class=\"nav-icon material-icons\">timeline</i></a>\n                    </td>\n\n\n                </tr>\n                <tfoot>\n                <tr class=\"bg-color-info1\">\n                    <th class=\"mdl-data-table__cell--non-numeric\">Aggregate</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\"></th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">\n                        <span class=\"text-success\">Passed: {{total-failed}}</span><span class=\"text-danger\">&nbsp;&nbsp; Failed: {{failed}}</span>\n                    </th>\n                    <!--<th class=\"mdl-data-table__cell--non-numeric\">{{success | percent}}</th>-->\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{size | byteFormat}}</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">{{time | mstoDuration}}</th>\n                </tr>\n                </tfoot>\n            </table>\n        </div>\n\n        <mat-paginator [hidden]=\"length <= pageSize\"\n                       [pageSize]=\"pageSize\"\n                       hidePageSize=\"true\"\n                       (page)=\"change($event)\"\n                       [length]=\"length\"\n        >\n        </mat-paginator>\n\n    </article>\n\n    <!--\n    <a href=\"javascript:;\" (click)=\"getTestSuiteResponsesByRunId()\"> View Logs </a>\n\n    <div class=\"box box-default table-box mdl-shadow--2dp\">\n        <div class=\"item-card card__horizontal1\" *ngFor=\"let item of list\">\n            <div class=\"card__body card-white\">\n                <div class=\"card__title\">\n                    <h4>{{item.testSuite}}</h4>\n                    <h6>Test-Suite</h6>\n                </div>\n                <div class=\"card__price\">\n                    <span>Pass: {{item.totalPassed}}</span>\n                    <span class=\"type--strikethrough\">Fail: {{item.totalFailed}}</span>\n                    <span>Time: {{item.requestTime}}</span>\n                </div>\n                <div class=\"divider divider-solid divider-lg\"></div>\n                <p class=\"card__desc\" style=\"white-space: pre;\">{{item.logs}}</p>\n            </div>\n        </div>\n    </div>\n    -->\n</section>"
 
 /***/ }),
 
@@ -5128,7 +5267,7 @@ var RunDetailComponent = (function () {
 /***/ "../../../../../src/app/components/run-list/run-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\"> Jobs </a>\n            /\n            <!--<a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId]\"> -->{{job.name}}<!--</a>--> /\n            Runs</h2>\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">No</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Date</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Pass/Fail</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Success</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Data</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let item of list\">\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <a href=\"javascript:;\" [routerLink]=\"['/app/jobs', jobId, 'runs', item.id]\">#{{item.runId}}</a>\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.regions}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.createdDate | date:'short'}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (item.task.totalTestCompleted ) / (item.task.totalTestCompleted + item.task.failedTests) ) | percent}}\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTime | mstoDuration}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalBytes | byteFormat}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <span *ngIf=\"item.task.status == 'COMPLETED'\" class=\"text-success\">{{item.task.status}}</span>\n                        <span *ngIf=\"item.task.status != 'COMPLETED'\" class=\"text-warning\"><i class=\"fa fa-spinner fa-spin\" aria-hidden=\"true\"></i> {{item.task.status}}</span>\n                    </td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n\n        <mat-paginator [hidden]=\"length <= pageSize\"\n                       [pageSize]=\"pageSize\"\n                       hidePageSize=\"true\"\n                       (page)=\"change($event)\"\n                       [length]=\"length\"\n        >\n        </mat-paginator>\n\n    </article>\n</section>\n"
+module.exports = "\n<section class=\"container-fluid with-maxwidth chapter\">\n\n    <article class=\"article\">\n        <h2 class=\"article-title\">\n            <a href=\"javascript:;\" [routerLink]=\"['/app/jobs']\"> Jobs </a>\n            /\n            <!--<a href=\"javascript:;\" [routerLink]=\"['/app/projects', projectId, 'jobs', jobId]\"> -->{{job.name}}<!--</a>--> /\n            Runs</h2>\n        <div class=\"box box-default table-box mdl-shadow--2dp\">\n            <table class=\"mdl-data-table\">\n                <thead>\n                <tr>\n                    <th class=\"mdl-data-table__cell--non-numeric\">No</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Region</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Date</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Pass/Fail</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Success</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Data</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Time</th>\n                    <th class=\"mdl-data-table__cell--non-numeric\">Status</th>\n                </tr>\n                </thead>\n                <tbody>\n                <tr *ngFor=\"let item of list\">\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <a href=\"javascript:;\" [routerLink]=\"['/app/jobs', jobId, 'runs', item.id]\">#{{item.runId}}</a>\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.regions}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.createdDate | date:'short'}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        {{ ( (item.task.totalTestCompleted ) / (item.task.totalTestCompleted + item.task.failedTests) ) | percent}}\n                    </td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalBytes | byteFormat}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{item.task.totalTime | mstoDuration}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">\n                        <span *ngIf=\"item.task.status == 'COMPLETED'\" class=\"text-success\">{{item.task.status}}</span>\n                        <span *ngIf=\"item.task.status != 'COMPLETED' && item.task.status != 'PROCESSING'\" class=\"text-danger\">{{item.task.status}}</span>\n                        <span *ngIf=\"item.task.status == 'PROCESSING'\" class=\"text-warning\"><i class=\"fa fa-spinner fa-spin\" aria-hidden=\"true\"></i> {{item.task.status}}</span>\n                    </td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n\n        <mat-paginator [hidden]=\"length <= pageSize\"\n                       [pageSize]=\"pageSize\"\n                       hidePageSize=\"true\"\n                       (page)=\"change($event)\"\n                       [length]=\"length\"\n        >\n        </mat-paginator>\n\n    </article>\n</section>\n"
 
 /***/ }),
 
@@ -6612,13 +6751,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var VaultEditComponent = (function () {
-    function VaultEditComponent(vaultService, orgService, route, router, handler, dialog) {
+    function VaultEditComponent(vaultService, orgService, route, router, handler, dialog, snackBar) {
         this.vaultService = vaultService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
         this.dialog = dialog;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_vault_model__["a" /* Vault */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
@@ -6630,6 +6770,7 @@ var VaultEditComponent = (function () {
             if (params['id']) {
                 _this.getById(params['id']);
                 //this.getOrgs();
+                _this.config = new __WEBPACK_IMPORTED_MODULE_6__angular_material__["C" /* MatSnackBarConfig */]();
             }
         });
     };
@@ -6655,6 +6796,10 @@ var VaultEditComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Vault " + _this.entry.key + " Successfully Updated", "", _this.config);
             _this.router.navigate(['/app/vault']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -6676,6 +6821,11 @@ var VaultEditComponent = (function () {
                     if (_this.handler.handle(results)) {
                         return;
                     }
+                    var config = new __WEBPACK_IMPORTED_MODULE_6__angular_material__["C" /* MatSnackBarConfig */]();
+                    config.verticalPosition = 'top';
+                    config.horizontalPosition = 'right';
+                    config.duration = 3000;
+                    _this.snackBar.open("Vault " + _this.entry.key + " Successfully Deleted", "", config);
                     _this.router.navigate(['/app/vault']);
                 }, function (error) {
                     _this.handler.hideLoader();
@@ -6705,7 +6855,7 @@ var VaultEditComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/vault/vault-edit/vault-edit.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["i" /* MatDialog */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["i" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["B" /* MatSnackBar */]])
     ], VaultEditComponent);
     return VaultEditComponent;
 }());
@@ -6842,6 +6992,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_org_service__ = __webpack_require__("../../../../../src/app/services/org.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_vault_model__ = __webpack_require__("../../../../../src/app/models/vault.model.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__ = __webpack_require__("../../../../../src/app/components/dialogs/handler/handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6857,19 +7008,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var VaultNewComponent = (function () {
-    function VaultNewComponent(vaultService, orgService, route, router, handler) {
+    function VaultNewComponent(vaultService, orgService, route, router, handler, snackBar) {
         this.vaultService = vaultService;
         this.orgService = orgService;
         this.route = route;
         this.router = router;
         this.handler = handler;
+        this.snackBar = snackBar;
         this.showSpinner = false;
         this.entry = new __WEBPACK_IMPORTED_MODULE_4__models_vault_model__["a" /* Vault */]();
         this.visibilities = ['PRIVATE', 'ORG_PUBLIC'];
     }
     VaultNewComponent.prototype.ngOnInit = function () {
         //this.getOrgs();
+        this.config = new __WEBPACK_IMPORTED_MODULE_6__angular_material__["C" /* MatSnackBarConfig */]();
     };
     VaultNewComponent.prototype.create = function () {
         var _this = this;
@@ -6879,6 +7033,10 @@ var VaultNewComponent = (function () {
             if (_this.handler.handle(results)) {
                 return;
             }
+            _this.config.verticalPosition = 'top';
+            _this.config.horizontalPosition = 'right';
+            _this.config.duration = 3000;
+            _this.snackBar.open("Vault " + _this.entry.key + " Successfully Created", "", _this.config);
             _this.router.navigate(['/app/vault']);
         }, function (error) {
             _this.handler.hideLoader();
@@ -6906,7 +7064,7 @@ var VaultNewComponent = (function () {
             styles: [__webpack_require__("../../../../../src/app/components/vault/vault-new/vault-new.component.scss")],
             providers: [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services_vault_service__["a" /* VaultService */], __WEBPACK_IMPORTED_MODULE_3__services_org_service__["a" /* OrgService */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* Router */], __WEBPACK_IMPORTED_MODULE_5__dialogs_handler_handler__["a" /* Handler */], __WEBPACK_IMPORTED_MODULE_6__angular_material__["B" /* MatSnackBar */]])
     ], VaultNewComponent);
     return VaultNewComponent;
 }());
@@ -8835,7 +8993,7 @@ var ByteFormatPipe = (function () {
             value = 1;
         if (typeof precision === 'undefined')
             precision = 1;
-        var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'], number = Math.floor(Math.log(value) / Math.log(1024));
+        var units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'], number = Math.floor(Math.log(value) / Math.log(1024));
         return (value / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number];
     };
     ByteFormatPipe = __decorate([
@@ -9567,6 +9725,46 @@ var SkillService = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/system-setting.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SystemSettingService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_toPromise__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var SystemSettingService = (function () {
+    function SystemSettingService(http) {
+        this.http = http;
+        this.serviceUrl = '/api/v1/system-settings';
+    }
+    SystemSettingService.prototype.getById = function (id) {
+        return this.http.get(this.serviceUrl + "/" + id);
+    };
+    SystemSettingService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+    ], SystemSettingService);
+    return SystemSettingService;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/test-suite.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -10161,7 +10359,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":focus {\n  outline: none !important; }\n\nbutton[mat-fab], button[mat-mini-fab], button[mat-raised-button],\na[mat-fab],\na[mat-mini-fab],\na[mat-raised-button] {\n  text-decoration: none; }\n\nbutton[mat-raised-button].mat-warn, button[mat-fab].mat-warn, button[mat-mini-fab].mat-warn, button[mat-raised-button].mat-accent, button[mat-fab].mat-accent, button[mat-mini-fab].mat-accent,\na[mat-raised-button].mat-warn,\na[mat-fab].mat-warn,\na[mat-mini-fab].mat-warn,\na[mat-raised-button].mat-accent,\na[mat-fab].mat-accent,\na[mat-mini-fab].mat-accent {\n  color: #fff; }\n\nbutton[mat-fab], button[mat-mini-fab],\na[mat-fab],\na[mat-mini-fab] {\n  color: #fff; }\n\nbutton.btn-lg,\na.btn-lg {\n  padding: 0.5rem 1rem;\n  font-size: 1.25rem;\n  line-height: 1.5;\n  border-radius: 0.2rem; }\n\nbutton.btn-sm,\na.btn-sm {\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem; }\n\n.mat-menu-content a[mat-menu-item] {\n  text-decoration: none; }\n  .mat-menu-content a[mat-menu-item]:hover, .mat-menu-content a[mat-menu-item]:focus {\n    color: rgba(0, 0, 0, 0.87); }\n\n[mat-tab-nav-bar], .mat-tab-header {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.05); }\n\n[mdInput] {\n  width: 100%; }\n\nmat-input-container.mat-icon-left {\n  position: relative;\n  padding-left: 36px; }\n  mat-input-container.mat-icon-left .mat-input-wrapper {\n    position: relative; }\n  mat-input-container.mat-icon-left .mat-input-infix > mat-icon {\n    position: absolute;\n    top: 0;\n    left: -32px;\n    right: auto; }\n\n.mat-input-container .mat-icon.material-icons {\n  font-size: 24px; }\n\n.mat-radio-group-spacing mat-radio-button {\n  margin-right: 20px; }\n  .mat-radio-group-spacing mat-radio-button:last-child {\n    margin-right: 0; }\n\nmat-input-container:not(.ng-pristine).ng-invalid .mat-input-underline {\n  border-color: #EF5350; }\n  mat-input-container:not(.ng-pristine).ng-invalid .mat-input-underline .mat-input-ripple {\n    background-color: #EF5350; }\n\nmat-input-container:not(.ng-pristine).ng-valid .mat-input-underline {\n  border-color: #66BB6A; }\n  mat-input-container:not(.ng-pristine).ng-valid .mat-input-underline .mat-input-ripple {\n    background-color: #66BB6A; }\n\n.app-sidebar [mat-button], .app-sidebar [mat-raised-button], .app-sidebar [mat-fab], .app-sidebar [mat-icon-button], .app-sidebar [mat-mini-fab] {\n  font-weight: normal;\n  min-width: inherit; }\n\n.quickview-inner .mat-list-item .mat-list-item-content {\n  padding: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: start;\n      -ms-flex-pack: start;\n          justify-content: flex-start; }\n  .quickview-inner .mat-list-item .mat-list-item-content > p {\n    -webkit-box-flex: 1;\n        -ms-flex: 1 1 auto;\n            flex: 1 1 auto;\n    margin: 0; }\n  .quickview-inner .mat-list-item .mat-list-item-content .mat-secondary {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    margin-right: 0;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end; }\n\n.app-header .mat-button {\n  min-width: 60px; }\n\nbody .cdk-overlay-container {\n  z-index: 1001; }\n\n.page-with-tabs > .page-title {\n  background-color: rgba(0, 0, 0, 0.05);\n  padding: 30px 15px 30px 39px; }\n  .page-with-tabs > .page-title h2 {\n    margin: 0;\n    font-size: 20px;\n    line-height: 1;\n    font-weight: 500;\n    color: #2196F3; }\n\n.page-with-tabs > mat-tab-group > mat-tab-header {\n  background-color: rgba(0, 0, 0, 0.05);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.05); }\n\n.typo-styles dt {\n  display: block;\n  float: left;\n  color: #fff;\n  background-color: rgba(0, 0, 0, 0.24);\n  width: 32px;\n  height: 32px;\n  border-radius: 16px;\n  line-height: 32px;\n  text-align: center;\n  font-weight: 500;\n  margin-top: 5px; }\n\n.typo-styles dd {\n  display: block;\n  margin-left: 80px;\n  margin-bottom: 20px; }\n\n.typo-styles .typo-styles__demo {\n  margin-bottom: 8px; }\n\n.page-icons .card .fa,\n.page-icons .card .material-icons,\n.page-icons .card .wi {\n  color: rgba(0, 0, 0, 0.5); }\n\n.page-icons .card .fa,\n.page-icons .card .wi {\n  font-size: 20px;\n  margin: 5px; }\n\n.theme-gray .page-icons .card .fa,\n.theme-gray .page-icons .card .material-icons,\n.theme-gray .page-icons .card .wi,\n.theme-dark .page-icons .card .fa,\n.theme-dark .page-icons .card .material-icons,\n.theme-dark .page-icons .card .wi {\n  color: rgba(255, 255, 255, 0.7);\n  opacity: .7; }\n\n.page-grids .grid-structure .row {\n  margin-top: .8rem; }\n  .page-grids .grid-structure .row .widget-container {\n    margin-top: 5px;\n    background: rgba(0, 0, 0, 0.1);\n    padding: 10px 15px 12px;\n    font-size: 0.875rem;\n    min-height: 0;\n    border-radius: 0.2rem; }\n\n.color-palette {\n  color: rgba(255, 255, 255, 0.87);\n  font-size: 14px;\n  font-weight: 500;\n  padding-bottom: 60px; }\n  .color-palette ul {\n    margin: 0;\n    padding: 0; }\n  .color-palette .dark {\n    color: rgba(0, 0, 0, 0.87); }\n  .color-palette .color-group {\n    padding-bottom: 40px; }\n  .color-palette .color-group:first-child,\n  .color-palette .color-group:nth-of-type(3n+1),\n  .color-palette .color-group:last-child:first-child,\n  .color-palette .color-group:last-child:nth-of-type(3n+1) {\n    clear: left;\n    margin-left: 0; }\n  .color-palette .color-group li.divide,\n  .color-palette .color-group:last-child li.divide {\n    border-top: 4px solid #fafafa; }\n  .color-palette .color-group li.color,\n  .color-palette .color-group:last-child li.color {\n    padding: 15px; }\n  .color-palette .color-group li,\n  .color-palette .color-group:last-child li {\n    list-style-type: none; }\n  .color-palette .color-group li.main-color,\n  .color-palette .color-group:last-child li.main-color {\n    border-bottom: 4px solid #fafafa; }\n  .color-palette .color-group li.main-color .name,\n  .color-palette .color-group:last-child li.main-color .name {\n    display: block;\n    margin-bottom: 60px; }\n  .color-palette .color-group li.color .hex,\n  .color-palette .color-group:last-child li.color .hex {\n    float: right;\n    text-transform: uppercase; }\n\n.page-auth {\n  background-color: #e9ecef;\n  min-height: 100%;\n  background: url(" + __webpack_require__("../../../../../src/assets/images/background/2.png") + ") no-repeat center center fixed;\n  background-size: cover;\n  padding: 0 10px; }\n  .page-auth .card {\n    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n    padding: 40px 30px; }\n  .page-auth .logo {\n    font-size: 32px;\n    margin-bottom: 1.3em; }\n    .page-auth .logo.text-center {\n      padding: 0; }\n    .page-auth .logo a {\n      font-weight: normal;\n      text-decoration: none; }\n  .page-auth .main-body {\n    position: relative;\n    max-width: 480px;\n    margin: 0 auto;\n    padding: 50px 0 20px; }\n    @media (min-width: 768px) {\n      .page-auth .main-body {\n        padding-top: 150px; } }\n  .page-auth .additional-info {\n    color: #868e96;\n    background-color: rgba(0, 0, 0, 0.04);\n    padding: 10px 6px;\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    text-align: center;\n    font-size: 0.875rem; }\n    .page-auth .additional-info a {\n      color: #636c72; }\n    .page-auth .additional-info .divider-h {\n      border-right: 1px solid rgba(0, 0, 0, 0.1);\n      margin: 0 15px; }\n  .page-auth.page-confirm-email .logo {\n    font-size: 24px;\n    margin-bottom: .8em; }\n  .page-auth .confirm-mail-icon {\n    text-align: center; }\n    .page-auth .confirm-mail-icon .material-icons {\n      color: #636c72;\n      font-size: 100px; }\n\n.page-err {\n  background-color: #343a40;\n  height: 100%;\n  position: relative; }\n  .page-err .err-container {\n    background-color: #343a40;\n    padding: 45px 10px 0; }\n    @media (min-width: 768px) {\n      .page-err .err-container {\n        padding: 100px 0 0; } }\n  .page-err .err {\n    color: #fafafa; }\n    .page-err .err h1 {\n      margin-bottom: 35px;\n      color: #fafafa;\n      color: rgba(255, 255, 255, 0.8);\n      font-size: 150px;\n      font-weight: 300;\n      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); }\n      @media (min-width: 768px) {\n        .page-err .err h1 {\n          font-size: 180px; } }\n    .page-err .err h2 {\n      color: #fafafa;\n      color: rgba(255, 255, 255, 0.6);\n      margin: 0;\n      font-weight: 300;\n      font-size: 28px;\n      text-transform: uppercase; }\n      @media (min-width: 768px) {\n        .page-err .err h2 {\n          font-size: 36px; } }\n  .page-err .err-body {\n    padding: 20px 10px; }\n  .page-err .btn-goback {\n    color: #fff;\n    color: rgba(255, 255, 255, 0.8);\n    background-color: transparent;\n    border-color: #fff;\n    border-color: rgba(255, 255, 255, 0.8); }\n    .page-err .btn-goback:hover, .page-err .btn-goback:focus, .page-err .btn-goback:active, .page-err .btn-goback.active {\n      color: #fff;\n      background-color: rgba(255, 255, 255, 0.1); }\n    .open .page-err .btn-goback.dropdown-toggle {\n      color: #fff;\n      background-color: rgba(255, 255, 255, 0.1); }\n  .page-err .footer {\n    position: absolute;\n    bottom: 20px;\n    width: 100%; }\n\n.page-lock {\n  height: 100%;\n  background: url(" + __webpack_require__("../../../../../src/assets/images/background/2.png") + ") no-repeat center center fixed;\n  background-size: cover; }\n  .page-lock .lock-centered {\n    position: absolute;\n    top: 50%;\n    left: 0;\n    right: 0;\n    margin-top: -65px; }\n    @media screen and (min-width: 768px) {\n      .page-lock .lock-centered {\n        margin-top: -75px; } }\n  .page-lock .lock-container {\n    position: relative;\n    max-width: 420px;\n    margin: 0 auto; }\n  .page-lock .lock-box {\n    position: absolute;\n    left: 0;\n    right: 0; }\n    .page-lock .lock-box .lock-user {\n      background: #fff;\n      width: 50%;\n      float: left;\n      height: 50px;\n      line-height: 50px;\n      margin-top: 50px;\n      padding: 0 20px;\n      border-left-radius: 0.2rem 0 0 0.2rem;\n      color: #868e96; }\n    .page-lock .lock-box .lock-img img {\n      position: absolute;\n      border-radius: 50%;\n      left: 40%;\n      width: 80px;\n      height: 80px;\n      border: 6px solid #fff;\n      background: #fff; }\n      @media screen and (min-width: 768px) {\n        .page-lock .lock-box .lock-img img {\n          left: 33%;\n          width: 150px;\n          height: 150px;\n          border: 10px solid #fff; } }\n    .page-lock .lock-box .lock-pwd {\n      background: #fff;\n      width: 50%;\n      float: right;\n      height: 50px;\n      line-height: 50px;\n      padding: 0 0 0 50px;\n      margin-top: 50px;\n      border-right-radius: 0 0.2rem 0.2rem 0;\n      color: #2196F3; }\n      @media screen and (min-width: 768px) {\n        .page-lock .lock-box .lock-pwd {\n          padding: 0 0 0 80px; } }\n      .page-lock .lock-box .lock-pwd input {\n        width: 80%;\n        height: 50px;\n        color: #495057;\n        border: 0; }\n      .page-lock .lock-box .lock-pwd .btn-submit {\n        position: absolute;\n        top: 50%;\n        right: 20px;\n        color: rgba(0, 0, 0, 0.87); }\n        .page-lock .lock-box .lock-pwd .btn-submit .material-icons {\n          line-height: 50px;\n          height: 50px; }\n\n.page-profile .profile-header {\n  position: relative;\n  margin: 0 0 15px;\n  padding: 50px 30px 90px;\n  background: url(" + __webpack_require__("../../../../../src/assets/images/background/1.png") + ") no-repeat center center fixed;\n  background-size: cover; }\n\n.page-profile .profile-img {\n  display: inline-block;\n  margin-right: 20px; }\n  .page-profile .profile-img img {\n    max-width: 120px;\n    height: auto;\n    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(0, 0, 0, 0.2); }\n\n.page-profile .profile-social {\n  display: inline-block; }\n  .page-profile .profile-social > a {\n    margin-right: 15px;\n    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }\n\n.page-profile .profile-info {\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.3);\n  line-height: 20px;\n  padding: 10px 30px;\n  color: #fafafa; }\n  .page-profile .profile-info ul {\n    margin: 0; }\n\n.page-profile img.media-object {\n  border-radius: 0.2rem; }\n\n.page-invoice {\n  color: rgba(0, 0, 0, 0.87); }\n  .page-invoice .invoice-wrapper {\n    padding: 0 0 30px;\n    background-color: #fff; }\n\n.invoice-inner {\n  padding: 15px 15px 30px;\n  background-color: #fff; }\n  .invoice-inner .invoice-sum li {\n    margin-bottom: 5px;\n    padding: 10px;\n    background-color: rgba(0, 0, 0, 0.05);\n    border-radius: 0.2rem; }\n  .invoice-inner .table.table-bordered {\n    border: 0; }\n  .invoice-inner .table .bg-color-dark > th {\n    border: 0; }\n\n.page-dashboard h3 {\n  font-size: 22px;\n  font-weight: normal;\n  line-height: 1;\n  margin: 0 0 30px; }\n\n.page-dashboard .box {\n  position: relative;\n  border-radius: 0.2rem; }\n  .page-dashboard .box .box-top,\n  .page-dashboard .box .box-bottom {\n    height: 100px;\n    padding: 32px 15px;\n    font-size: 40px;\n    line-height: 1;\n    text-align: center;\n    font-weight: 300; }\n    .page-dashboard .box .box-top .material-icons,\n    .page-dashboard .box .box-bottom .material-icons {\n      font-size: 40px; }\n  .page-dashboard .box .box-bottom {\n    border-top: 1px solid rgba(0, 0, 0, 0.15); }\n  .page-dashboard .box .box-info {\n    position: absolute;\n    width: 100%;\n    top: 50%;\n    margin-top: -12px;\n    text-align: center; }\n    .page-dashboard .box .box-info span {\n      height: 24px;\n      display: inline-block;\n      padding: 4px 10px;\n      text-transform: uppercase;\n      line-height: 14px;\n      background-color: #fff;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      font-size: 11px;\n      color: #868e96;\n      border-radius: 1em; }\n\n.theme-gray .page-dashboard .box .box-info span {\n  background-color: #444; }\n\n.theme-dark .page-dashboard .box .box-info span {\n  background-color: #3a4047; }\n\n.vprogressbar-container {\n  height: 250px;\n  margin-top: 25px;\n  border-bottom: rgba(221, 221, 221, 0.3) 2px solid;\n  position: relative; }\n  .vprogressbar-container.brand-info {\n    border-color: #00BCD4; }\n  .vprogressbar-container.brand-success {\n    border-color: #66BB6A; }\n  .vprogressbar-container .vprogressbar {\n    padding-left: 10px; }\n    .vprogressbar-container .vprogressbar li {\n      position: relative;\n      height: 248px;\n      width: 35px;\n      background: rgba(221, 221, 221, 0.3);\n      margin-right: 18px;\n      float: left;\n      list-style: none; }\n  .vprogressbar-container .vprogressbar-percent {\n    display: block;\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%; }\n  .vprogressbar-container .vprogressbar-legend {\n    position: absolute;\n    top: 0px;\n    right: 0px;\n    padding-left: 0;\n    padding: 5px 10px;\n    text-align: left;\n    border-radius: 0.2rem;\n    background: rgba(255, 255, 255, 0.15); }\n    .vprogressbar-container .vprogressbar-legend li {\n      display: block;\n      font-size: 11px;\n      margin-bottom: 5px;\n      list-style: none; }\n    .vprogressbar-container .vprogressbar-legend .vpointer {\n      height: 10px;\n      width: 10px;\n      display: inline-block;\n      position: relative;\n      top: 1px;\n      margin-right: 5px; }\n  .vprogressbar-container .vprogressbar-info {\n    color: #ccc; }\n\n.theme-gray .box-info .box-icon .material-icons,\n.theme-dark .box-info .box-icon .material-icons {\n  color: rgba(255, 255, 255, 0.54); }\n\n.theme-gray .box-info .box-num,\n.theme-dark .box-info .box-num {\n  color: rgba(255, 255, 255, 0.54); }\n\n.page-maintenance .top-header {\n  padding: 1em 0;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n  font-size: 32px;\n  line-height: 1; }\n  .page-maintenance .top-header a.logo {\n    text-decoration: none;\n    color: rgba(0, 0, 0, 0.87); }\n\n.page-maintenance .content {\n  max-width: 1140px;\n  margin: 50px auto 0; }\n\n.page-maintenance .main-content {\n  margin-bottom: 80px; }\n  .page-maintenance .main-content h1 {\n    text-transform: uppercase;\n    font-size: 32px;\n    margin-bottom: 15px; }\n  .page-maintenance .main-content p {\n    font-size: 22px; }\n\n.theme-dark .page-maintenance .top-header a.logo,\n.theme-gray .page-maintenance .top-header a.logo {\n  color: #fff; }\n\n.page-about .hero.hero-bg-img {\n  background-size: cover;\n  padding: 0; }\n\n.page-about .hero .hero-inner {\n  background-color: rgba(0, 0, 0, 0.15);\n  padding: 90px 0; }\n\n.page-about .hero .hero-title,\n.page-about .hero .hero-tagline {\n  color: #fff; }\n\n.page-about .stat-container {\n  margin-bottom: 30px; }\n  .page-about .stat-container .stat-item {\n    margin-bottom: 20px;\n    border-bottom: 2px solid #f5f5f5; }\n  .page-about .stat-container .stat-num {\n    display: block;\n    color: #2196F3;\n    font-size: 72px;\n    font-weight: 300;\n    line-height: 66px; }\n  .page-about .stat-container .stat-desc {\n    display: inline-block;\n    margin-bottom: -2px;\n    padding-bottom: 20px;\n    border-bottom: 2px solid #2196F3;\n    font-size: 20px;\n    line-height: 22px;\n    font-weight: bold; }\n\n.page-about .article:nth-of-type(1) {\n  padding-top: 75px; }\n\n.page-about .space-bar {\n  padding: 3px;\n  border-radius: 0.2rem;\n  margin-right: 5px; }\n\n.page-terms h4 {\n  margin-top: 2em;\n  font-size: 16px;\n  font-weight: 500;\n  text-transform: uppercase; }\n\n.blog-item {\n  border-top: 1px solid rgba(0, 0, 0, 0.117647);\n  margin-top: 70px;\n  padding: 70px 0 10px; }\n  .blog-item:first-child {\n    border-top: 0;\n    padding-top: 0;\n    margin-top: 0; }\n  .blog-item h2 {\n    font-size: 35px;\n    line-height: 1; }\n    .blog-item h2 a {\n      color: rgba(0, 0, 0, 0.87);\n      font-weight: 300;\n      text-decoration: none; }\n  .blog-item .blog-info {\n    margin: 10px 0; }\n    .blog-item .blog-info > span {\n      margin-right: 8px; }\n    .blog-item .blog-info .avatar {\n      width: 30px;\n      height: auto;\n      border-radius: 50%; }\n    .blog-item .blog-info .date {\n      opacity: .7; }\n    .blog-item .blog-info .category {\n      display: inline-block;\n      text-transform: uppercase;\n      font-size: 12px;\n      padding: 2px 5px;\n      border-radius: 0.2rem;\n      background-color: rgba(0, 0, 0, 0.08); }\n      .blog-item .blog-info .category a {\n        color: rgba(0, 0, 0, 0.87);\n        text-decoration: none;\n        opacity: .7; }\n  .blog-item .desc {\n    font-size: 16px;\n    opacity: .7; }\n\n.theme-gray .blog-item h2 a,\n.theme-dark .blog-item h2 a {\n  color: rgba(255, 255, 255, 0.7); }\n\n.theme-gray .blog-item .blog-info .category a,\n.theme-dark .blog-item .blog-info .category a {\n  color: rgba(255, 255, 255, 0.7); }\n\n.spinner-center {\n  margin: 0 auto; }\n\n.spinner-center {\n  margin: 0 auto; }\n", ""]);
+exports.push([module.i, ":focus {\n  outline: none !important; }\n\nbutton[mat-fab], button[mat-mini-fab], button[mat-raised-button],\na[mat-fab],\na[mat-mini-fab],\na[mat-raised-button] {\n  text-decoration: none; }\n\nbutton[mat-raised-button].mat-warn, button[mat-fab].mat-warn, button[mat-mini-fab].mat-warn, button[mat-raised-button].mat-accent, button[mat-fab].mat-accent, button[mat-mini-fab].mat-accent,\na[mat-raised-button].mat-warn,\na[mat-fab].mat-warn,\na[mat-mini-fab].mat-warn,\na[mat-raised-button].mat-accent,\na[mat-fab].mat-accent,\na[mat-mini-fab].mat-accent {\n  color: #fff; }\n\nbutton[mat-fab], button[mat-mini-fab],\na[mat-fab],\na[mat-mini-fab] {\n  color: #fff; }\n\nbutton.btn-lg,\na.btn-lg {\n  padding: 0.5rem 1rem;\n  font-size: 1.25rem;\n  line-height: 1.5;\n  border-radius: 0.2rem; }\n\nbutton.btn-sm,\na.btn-sm {\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem; }\n\n.mat-menu-content a[mat-menu-item] {\n  text-decoration: none; }\n  .mat-menu-content a[mat-menu-item]:hover, .mat-menu-content a[mat-menu-item]:focus {\n    color: rgba(0, 0, 0, 0.87); }\n\n[mat-tab-nav-bar], .mat-tab-header {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.05); }\n\n[mdInput] {\n  width: 100%; }\n\nmat-input-container.mat-icon-left {\n  position: relative;\n  padding-left: 36px; }\n  mat-input-container.mat-icon-left .mat-input-wrapper {\n    position: relative; }\n  mat-input-container.mat-icon-left .mat-input-infix > mat-icon {\n    position: absolute;\n    top: 0;\n    left: -32px;\n    right: auto; }\n\n.mat-input-container .mat-icon.material-icons {\n  font-size: 24px; }\n\n.mat-radio-group-spacing mat-radio-button {\n  margin-right: 20px; }\n  .mat-radio-group-spacing mat-radio-button:last-child {\n    margin-right: 0; }\n\nmat-input-container:not(.ng-pristine).ng-invalid .mat-input-underline {\n  border-color: #EF5350; }\n  mat-input-container:not(.ng-pristine).ng-invalid .mat-input-underline .mat-input-ripple {\n    background-color: #EF5350; }\n\nmat-input-container:not(.ng-pristine).ng-valid .mat-input-underline {\n  border-color: #66BB6A; }\n  mat-input-container:not(.ng-pristine).ng-valid .mat-input-underline .mat-input-ripple {\n    background-color: #66BB6A; }\n\n.app-sidebar [mat-button], .app-sidebar [mat-raised-button], .app-sidebar [mat-fab], .app-sidebar [mat-icon-button], .app-sidebar [mat-mini-fab] {\n  font-weight: normal;\n  min-width: inherit; }\n\n.quickview-inner .mat-list-item .mat-list-item-content {\n  padding: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: start;\n      -ms-flex-pack: start;\n          justify-content: flex-start; }\n  .quickview-inner .mat-list-item .mat-list-item-content > p {\n    -webkit-box-flex: 1;\n        -ms-flex: 1 1 auto;\n            flex: 1 1 auto;\n    margin: 0; }\n  .quickview-inner .mat-list-item .mat-list-item-content .mat-secondary {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    margin-right: 0;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end; }\n\n.app-header .mat-button {\n  min-width: 60px; }\n\nbody .cdk-overlay-container {\n  z-index: 1001; }\n\n.page-with-tabs > .page-title {\n  background-color: rgba(0, 0, 0, 0.05);\n  padding: 30px 15px 30px 39px; }\n  .page-with-tabs > .page-title h2 {\n    margin: 0;\n    font-size: 20px;\n    line-height: 1;\n    font-weight: 500;\n    color: #2196F3; }\n\n.page-with-tabs > mat-tab-group > mat-tab-header {\n  background-color: rgba(0, 0, 0, 0.05);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.05); }\n\n.typo-styles dt {\n  display: block;\n  float: left;\n  color: #fff;\n  background-color: rgba(0, 0, 0, 0.24);\n  width: 32px;\n  height: 32px;\n  border-radius: 16px;\n  line-height: 32px;\n  text-align: center;\n  font-weight: 500;\n  margin-top: 5px; }\n\n.typo-styles dd {\n  display: block;\n  margin-left: 80px;\n  margin-bottom: 20px; }\n\n.typo-styles .typo-styles__demo {\n  margin-bottom: 8px; }\n\n.page-icons .card .fa,\n.page-icons .card .material-icons,\n.page-icons .card .wi {\n  color: rgba(0, 0, 0, 0.5); }\n\n.page-icons .card .fa,\n.page-icons .card .wi {\n  font-size: 20px;\n  margin: 5px; }\n\n.theme-gray .page-icons .card .fa,\n.theme-gray .page-icons .card .material-icons,\n.theme-gray .page-icons .card .wi,\n.theme-dark .page-icons .card .fa,\n.theme-dark .page-icons .card .material-icons,\n.theme-dark .page-icons .card .wi {\n  color: rgba(255, 255, 255, 0.7);\n  opacity: .7; }\n\n.page-grids .grid-structure .row {\n  margin-top: .8rem; }\n  .page-grids .grid-structure .row .widget-container {\n    margin-top: 5px;\n    background: rgba(0, 0, 0, 0.1);\n    padding: 10px 15px 12px;\n    font-size: 0.875rem;\n    min-height: 0;\n    border-radius: 0.2rem; }\n\n.color-palette {\n  color: rgba(255, 255, 255, 0.87);\n  font-size: 14px;\n  font-weight: 500;\n  padding-bottom: 60px; }\n  .color-palette ul {\n    margin: 0;\n    padding: 0; }\n  .color-palette .dark {\n    color: rgba(0, 0, 0, 0.87); }\n  .color-palette .color-group {\n    padding-bottom: 40px; }\n  .color-palette .color-group:first-child,\n  .color-palette .color-group:nth-of-type(3n+1),\n  .color-palette .color-group:last-child:first-child,\n  .color-palette .color-group:last-child:nth-of-type(3n+1) {\n    clear: left;\n    margin-left: 0; }\n  .color-palette .color-group li.divide,\n  .color-palette .color-group:last-child li.divide {\n    border-top: 4px solid #fafafa; }\n  .color-palette .color-group li.color,\n  .color-palette .color-group:last-child li.color {\n    padding: 15px; }\n  .color-palette .color-group li,\n  .color-palette .color-group:last-child li {\n    list-style-type: none; }\n  .color-palette .color-group li.main-color,\n  .color-palette .color-group:last-child li.main-color {\n    border-bottom: 4px solid #fafafa; }\n  .color-palette .color-group li.main-color .name,\n  .color-palette .color-group:last-child li.main-color .name {\n    display: block;\n    margin-bottom: 60px; }\n  .color-palette .color-group li.color .hex,\n  .color-palette .color-group:last-child li.color .hex {\n    float: right;\n    text-transform: uppercase; }\n\n.page-auth {\n  background-color: #e9ecef;\n  min-height: 100%;\n  background: url(" + __webpack_require__("../../../../../src/assets/images/background/2.png") + ") no-repeat center center fixed;\n  background-size: cover;\n  padding: 0 10px; }\n  .page-auth .card {\n    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n    padding: 40px 30px; }\n  .page-auth .logo {\n    font-size: 32px;\n    margin-bottom: 1.3em; }\n    .page-auth .logo.text-center {\n      padding: 0; }\n    .page-auth .logo a {\n      font-weight: normal;\n      text-decoration: none; }\n  .page-auth .main-body {\n    position: relative;\n    max-width: 480px;\n    margin: 0 auto;\n    padding: 50px 0 20px; }\n    @media (min-width: 768px) {\n      .page-auth .main-body {\n        padding-top: 150px; } }\n  .page-auth .additional-info {\n    color: #868e96;\n    background-color: rgba(0, 0, 0, 0.04);\n    padding: 10px 6px;\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    text-align: center;\n    font-size: 0.875rem; }\n    .page-auth .additional-info a {\n      color: #636c72; }\n    .page-auth .additional-info .divider-h {\n      border-right: 1px solid rgba(0, 0, 0, 0.1);\n      margin: 0 15px; }\n  .page-auth.page-confirm-email .logo {\n    font-size: 24px;\n    margin-bottom: .8em; }\n  .page-auth .confirm-mail-icon {\n    text-align: center; }\n    .page-auth .confirm-mail-icon .material-icons {\n      color: #636c72;\n      font-size: 100px; }\n\n.page-err {\n  background-color: #343a40;\n  height: 100%;\n  position: relative; }\n  .page-err .err-container {\n    background-color: #343a40;\n    padding: 45px 10px 0; }\n    @media (min-width: 768px) {\n      .page-err .err-container {\n        padding: 100px 0 0; } }\n  .page-err .err {\n    color: #fafafa; }\n    .page-err .err h1 {\n      margin-bottom: 35px;\n      color: #fafafa;\n      color: rgba(255, 255, 255, 0.8);\n      font-size: 150px;\n      font-weight: 300;\n      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); }\n      @media (min-width: 768px) {\n        .page-err .err h1 {\n          font-size: 180px; } }\n    .page-err .err h2 {\n      color: #fafafa;\n      color: rgba(255, 255, 255, 0.6);\n      margin: 0;\n      font-weight: 300;\n      font-size: 28px;\n      text-transform: uppercase; }\n      @media (min-width: 768px) {\n        .page-err .err h2 {\n          font-size: 36px; } }\n  .page-err .err-body {\n    padding: 20px 10px; }\n  .page-err .btn-goback {\n    color: #fff;\n    color: rgba(255, 255, 255, 0.8);\n    background-color: transparent;\n    border-color: #fff;\n    border-color: rgba(255, 255, 255, 0.8); }\n    .page-err .btn-goback:hover, .page-err .btn-goback:focus, .page-err .btn-goback:active, .page-err .btn-goback.active {\n      color: #fff;\n      background-color: rgba(255, 255, 255, 0.1); }\n    .open .page-err .btn-goback.dropdown-toggle {\n      color: #fff;\n      background-color: rgba(255, 255, 255, 0.1); }\n  .page-err .footer {\n    position: absolute;\n    bottom: 20px;\n    width: 100%; }\n\n.page-lock {\n  height: 100%;\n  background: url(" + __webpack_require__("../../../../../src/assets/images/background/2.png") + ") no-repeat center center fixed;\n  background-size: cover; }\n  .page-lock .lock-centered {\n    position: absolute;\n    top: 50%;\n    left: 0;\n    right: 0;\n    margin-top: -65px; }\n    @media screen and (min-width: 768px) {\n      .page-lock .lock-centered {\n        margin-top: -75px; } }\n  .page-lock .lock-container {\n    position: relative;\n    max-width: 420px;\n    margin: 0 auto; }\n  .page-lock .lock-box {\n    position: absolute;\n    left: 0;\n    right: 0; }\n    .page-lock .lock-box .lock-user {\n      background: #fff;\n      width: 50%;\n      float: left;\n      height: 50px;\n      line-height: 50px;\n      margin-top: 50px;\n      padding: 0 20px;\n      border-left-radius: 0.2rem 0 0 0.2rem;\n      color: #868e96; }\n    .page-lock .lock-box .lock-img img {\n      position: absolute;\n      border-radius: 50%;\n      left: 40%;\n      width: 80px;\n      height: 80px;\n      border: 6px solid #fff;\n      background: #fff; }\n      @media screen and (min-width: 768px) {\n        .page-lock .lock-box .lock-img img {\n          left: 33%;\n          width: 150px;\n          height: 150px;\n          border: 10px solid #fff; } }\n    .page-lock .lock-box .lock-pwd {\n      background: #fff;\n      width: 50%;\n      float: right;\n      height: 50px;\n      line-height: 50px;\n      padding: 0 0 0 50px;\n      margin-top: 50px;\n      border-right-radius: 0 0.2rem 0.2rem 0;\n      color: #2196F3; }\n      @media screen and (min-width: 768px) {\n        .page-lock .lock-box .lock-pwd {\n          padding: 0 0 0 80px; } }\n      .page-lock .lock-box .lock-pwd input {\n        width: 80%;\n        height: 50px;\n        color: #495057;\n        border: 0; }\n      .page-lock .lock-box .lock-pwd .btn-submit {\n        position: absolute;\n        top: 50%;\n        right: 20px;\n        color: rgba(0, 0, 0, 0.87); }\n        .page-lock .lock-box .lock-pwd .btn-submit .material-icons {\n          line-height: 50px;\n          height: 50px; }\n\n.page-profile .profile-header {\n  position: relative;\n  margin: 0 0 15px;\n  padding: 50px 30px 90px;\n  background: url(" + __webpack_require__("../../../../../src/assets/images/background/1.png") + ") no-repeat center center fixed;\n  background-size: cover; }\n\n.page-profile .profile-img {\n  display: inline-block;\n  margin-right: 20px; }\n  .page-profile .profile-img img {\n    max-width: 120px;\n    height: auto;\n    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(0, 0, 0, 0.2); }\n\n.page-profile .profile-social {\n  display: inline-block; }\n  .page-profile .profile-social > a {\n    margin-right: 15px;\n    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }\n\n.page-profile .profile-info {\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.3);\n  line-height: 20px;\n  padding: 10px 30px;\n  color: #fafafa; }\n  .page-profile .profile-info ul {\n    margin: 0; }\n\n.page-profile img.media-object {\n  border-radius: 0.2rem; }\n\n.page-invoice {\n  color: rgba(0, 0, 0, 0.87); }\n  .page-invoice .invoice-wrapper {\n    padding: 0 0 30px;\n    background-color: #fff; }\n\n.invoice-inner {\n  padding: 15px 15px 30px;\n  background-color: #fff; }\n  .invoice-inner .invoice-sum li {\n    margin-bottom: 5px;\n    padding: 10px;\n    background-color: rgba(0, 0, 0, 0.05);\n    border-radius: 0.2rem; }\n  .invoice-inner .table.table-bordered {\n    border: 0; }\n  .invoice-inner .table .bg-color-dark > th {\n    border: 0; }\n\n.page-dashboard h3 {\n  font-size: 22px;\n  font-weight: normal;\n  line-height: 1;\n  margin: 0 0 30px; }\n\n.page-dashboard .box {\n  position: relative;\n  border-radius: 0.2rem; }\n  .page-dashboard .box .box-top,\n  .page-dashboard .box .box-bottom {\n    height: 85px;\n    padding: 18px 15px;\n    font-size: 35px;\n    line-height: 1.5;\n    text-align: center;\n    font-weight: 300; }\n    .page-dashboard .box .box-top .material-icons,\n    .page-dashboard .box .box-bottom .material-icons {\n      font-size: 40px; }\n  .page-dashboard .box .box-bottom {\n    border-top: 1px solid rgba(0, 0, 0, 0.15); }\n  .page-dashboard .box .box-info {\n    position: absolute;\n    width: 100%;\n    top: 50%;\n    margin-top: -12px;\n    text-align: center; }\n    .page-dashboard .box .box-info span {\n      height: 24px;\n      display: inline-block;\n      padding: 4px 10px;\n      text-transform: uppercase;\n      line-height: 14px;\n      background-color: #fff;\n      border: 1px solid rgba(0, 0, 0, 0.15);\n      font-size: 11px;\n      color: #868e96;\n      border-radius: 1em; }\n\n.theme-gray .page-dashboard .box .box-info span {\n  background-color: #444; }\n\n.theme-dark .page-dashboard .box .box-info span {\n  background-color: #3a4047; }\n\n.vprogressbar-container {\n  height: 250px;\n  margin-top: 25px;\n  border-bottom: rgba(221, 221, 221, 0.3) 2px solid;\n  position: relative; }\n  .vprogressbar-container.brand-info {\n    border-color: #00BCD4; }\n  .vprogressbar-container.brand-success {\n    border-color: #66BB6A; }\n  .vprogressbar-container .vprogressbar {\n    padding-left: 10px; }\n    .vprogressbar-container .vprogressbar li {\n      position: relative;\n      height: 248px;\n      width: 35px;\n      background: rgba(221, 221, 221, 0.3);\n      margin-right: 18px;\n      float: left;\n      list-style: none; }\n  .vprogressbar-container .vprogressbar-percent {\n    display: block;\n    position: absolute;\n    bottom: 0px;\n    left: 0px;\n    width: 100%; }\n  .vprogressbar-container .vprogressbar-legend {\n    position: absolute;\n    top: 0px;\n    right: 0px;\n    padding-left: 0;\n    padding: 5px 10px;\n    text-align: left;\n    border-radius: 0.2rem;\n    background: rgba(255, 255, 255, 0.15); }\n    .vprogressbar-container .vprogressbar-legend li {\n      display: block;\n      font-size: 11px;\n      margin-bottom: 5px;\n      list-style: none; }\n    .vprogressbar-container .vprogressbar-legend .vpointer {\n      height: 10px;\n      width: 10px;\n      display: inline-block;\n      position: relative;\n      top: 1px;\n      margin-right: 5px; }\n  .vprogressbar-container .vprogressbar-info {\n    color: #ccc; }\n\n.theme-gray .box-info .box-icon .material-icons,\n.theme-dark .box-info .box-icon .material-icons {\n  color: rgba(255, 255, 255, 0.54); }\n\n.theme-gray .box-info .box-num,\n.theme-dark .box-info .box-num {\n  color: rgba(255, 255, 255, 0.54); }\n\n.page-maintenance .top-header {\n  padding: 1em 0;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n  font-size: 32px;\n  line-height: 1; }\n  .page-maintenance .top-header a.logo {\n    text-decoration: none;\n    color: rgba(0, 0, 0, 0.87); }\n\n.page-maintenance .content {\n  max-width: 1140px;\n  margin: 50px auto 0; }\n\n.page-maintenance .main-content {\n  margin-bottom: 80px; }\n  .page-maintenance .main-content h1 {\n    text-transform: uppercase;\n    font-size: 32px;\n    margin-bottom: 15px; }\n  .page-maintenance .main-content p {\n    font-size: 22px; }\n\n.theme-dark .page-maintenance .top-header a.logo,\n.theme-gray .page-maintenance .top-header a.logo {\n  color: #fff; }\n\n.page-about .hero.hero-bg-img {\n  background-size: cover;\n  padding: 0; }\n\n.page-about .hero .hero-inner {\n  background-color: rgba(0, 0, 0, 0.15);\n  padding: 90px 0; }\n\n.page-about .hero .hero-title,\n.page-about .hero .hero-tagline {\n  color: #fff; }\n\n.page-about .stat-container {\n  margin-bottom: 30px; }\n  .page-about .stat-container .stat-item {\n    margin-bottom: 20px;\n    border-bottom: 2px solid #f5f5f5; }\n  .page-about .stat-container .stat-num {\n    display: block;\n    color: #2196F3;\n    font-size: 72px;\n    font-weight: 300;\n    line-height: 66px; }\n  .page-about .stat-container .stat-desc {\n    display: inline-block;\n    margin-bottom: -2px;\n    padding-bottom: 20px;\n    border-bottom: 2px solid #2196F3;\n    font-size: 20px;\n    line-height: 22px;\n    font-weight: bold; }\n\n.page-about .article:nth-of-type(1) {\n  padding-top: 75px; }\n\n.page-about .space-bar {\n  padding: 3px;\n  border-radius: 0.2rem;\n  margin-right: 5px; }\n\n.page-terms h4 {\n  margin-top: 2em;\n  font-size: 16px;\n  font-weight: 500;\n  text-transform: uppercase; }\n\n.blog-item {\n  border-top: 1px solid rgba(0, 0, 0, 0.117647);\n  margin-top: 70px;\n  padding: 70px 0 10px; }\n  .blog-item:first-child {\n    border-top: 0;\n    padding-top: 0;\n    margin-top: 0; }\n  .blog-item h2 {\n    font-size: 35px;\n    line-height: 1; }\n    .blog-item h2 a {\n      color: rgba(0, 0, 0, 0.87);\n      font-weight: 300;\n      text-decoration: none; }\n  .blog-item .blog-info {\n    margin: 10px 0; }\n    .blog-item .blog-info > span {\n      margin-right: 8px; }\n    .blog-item .blog-info .avatar {\n      width: 30px;\n      height: auto;\n      border-radius: 50%; }\n    .blog-item .blog-info .date {\n      opacity: .7; }\n    .blog-item .blog-info .category {\n      display: inline-block;\n      text-transform: uppercase;\n      font-size: 12px;\n      padding: 2px 5px;\n      border-radius: 0.2rem;\n      background-color: rgba(0, 0, 0, 0.08); }\n      .blog-item .blog-info .category a {\n        color: rgba(0, 0, 0, 0.87);\n        text-decoration: none;\n        opacity: .7; }\n  .blog-item .desc {\n    font-size: 16px;\n    opacity: .7; }\n\n.theme-gray .blog-item h2 a,\n.theme-dark .blog-item h2 a {\n  color: rgba(255, 255, 255, 0.7); }\n\n.theme-gray .blog-item .blog-info .category a,\n.theme-dark .blog-item .blog-info .category a {\n  color: rgba(255, 255, 255, 0.7); }\n\n.spinner-center {\n  margin: 0 auto; }\n\n.spinner-center {\n  margin: 0 auto; }\n", ""]);
 
 // exports
 

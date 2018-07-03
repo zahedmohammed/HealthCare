@@ -41,7 +41,7 @@ public class SystemSettingController {
     }
 
 
-    @Secured(ROLE_ENTERPRISE_ADMIN)
+    @Secured({ROLE_ENTERPRISE_ADMIN,ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<SystemSetting> findById(@PathVariable("id") String id) {
         return service.findById(id, SecurityUtil.getCurrentAuditor());
