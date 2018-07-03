@@ -15,9 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 
         eVal = evaluate(propName);
         switch (eVal){
-//            case "name":
-//                fakerString = "Faker.name.lastName";
-//                break;
+            case "name":
+                fakerString = "Faker.name.lastName";
+                break;
             case "fullname":
                 fakerString = "Faker.name.fullName";
                 break;

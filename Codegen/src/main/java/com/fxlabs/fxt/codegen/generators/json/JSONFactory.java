@@ -40,11 +40,6 @@ public class JSONFactory {
 
     }
 
-    public ObjectNode getValidAsNode(String schema) {
-        schema = extractSchema(schema);
-        return nodes.get().get(schema);
-    }
-
     public String getValid(String schema) {
         schema = extractSchema(schema);
         //System.out.println ("Schema : " + schema);
