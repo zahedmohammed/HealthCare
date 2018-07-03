@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
-import { RegionsService } from '../../../services/regions.service';
-import { OrgService } from '../../../services/org.service';
-import { AccountService } from '../../../services/account.service';
-import { SystemSettingService } from '../../../services/system-setting.service';
-import { Region } from '../../../models/regions.model';
-import { Saving } from '../../../models/system-setting.model';
-import { Handler } from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig }from '@angular/material';
+import {Component, OnInit}from '@angular/core';
+import {MatTabChangeEvent}from '@angular/material';
+import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
+import {RegionsService}from '../../../services/regions.service';
+import {OrgService}from '../../../services/org.service';
+import {AccountService}from '../../../services/account.service';
+import {DashboardService}from '../../../services/dashboard.service';
+import {SystemSettingService}from '../../../services/system-setting.service';
+import {Region}from '../../../models/regions.model';
+import {Saving}from '../../../models/system-setting.model';
+import {Handler}from '../../dialogs/handler/handler';
+import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig}from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-regions-edit',
   templateUrl: './region-edit.component.html',
   styleUrls: ['./region-edit.component.scss'],
-  providers: [RegionsService, OrgService, SystemSettingService]
+  providers: [RegionsService, OrgService, SystemSettingService, DashboardService]
 })
 export class RegionEditComponent implements OnInit {
 
@@ -32,26 +34,33 @@ export class RegionEditComponent implements OnInit {
   entry: Region = new Region();
   orgs;
   config;
+  id;
   saving: Saving;
-  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
+  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private dashboardService: DashboardService,
+                private route: ActivatedRoute, private router: Router, private handler: Handler,
                 public dialog: MatDialog, public snackBar: MatSnackBar, private systemSettingService: SystemSettingService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['id']) {
+        this.id = params['id'];
         this.getById(params['id']);
         //this.getOrgs();
         //this.getAccountForExecutionBotPage();
         this.config = new MatSnackBarConfig();
       }
     });
-     this.route.params.subscribe(params => {
-      console.log(params);
-        if (params['id']) {
-            this.getSavings(params['id']);
-        }
-     });
+  }
+
+  tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
+      //console.log('tabChangeEvent => ', tabChangeEvent);
+      console.log('index => ', tabChangeEvent.index);
+      if (tabChangeEvent.index === 0) {
+        this.getById(this.id);
+      } else if (tabChangeEvent.index === 1) {
+        this.getSavings(this.id);
+      }
   }
 
   getById(id: string) {
@@ -169,7 +178,7 @@ delete() {
 
    getSavings(id: string) {
     this.handler.activateLoader();
-    this.systemSettingService.getSavingById(id).subscribe(results => {
+    this.dashboardService.botSavings(id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

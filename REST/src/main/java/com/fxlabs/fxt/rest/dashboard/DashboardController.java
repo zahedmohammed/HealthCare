@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.rest.dashboard;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.clusters.ClusterService;
 import com.fxlabs.fxt.services.it.IssueTrackerService;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -125,9 +123,16 @@ public class DashboardController {
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/count-ebots", method = RequestMethod.GET)
-    public Response<Long> counteBots() {
+    public Response<Long> countBots() {
         return clusterService.countBotRegions(SecurityUtil.getOrgId());
     }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/bots/{id}/savings", method = RequestMethod.GET)
+    public Response<Saving> getSavingsById(@PathVariable("id") String id) {
+        return clusterService.savings(id, SecurityUtil.getOrgId());
+    }
+
 
 
 }

@@ -17,6 +17,7 @@ import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.clusters.ClusterStatus;
+import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
@@ -24,6 +25,9 @@ import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jasypt.util.text.TextEncryptor;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.Months;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Queue;
@@ -377,6 +381,56 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         return new Response<>(response);
+    }
+
+    @Override
+    public Response<Saving> savings(String id, String o) {
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(id)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid id"));
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterResponse = clusterRepository.findById(id);
+
+        if (!clusterResponse.isPresent() || !org.apache.commons.lang3.StringUtils.equals(clusterResponse.get().getOrg().getId(), o)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid id"));
+        }
+
+        com.fxlabs.fxt.dao.entity.clusters.Cluster entity = clusterResponse.get();
+
+        String licenseSetting = systemSettingService.findByKey("LICENSE_SAVING");
+        String managedInstanceSetting = systemSettingService.findByKey("MANAGED_INSTANCE_SAVING");
+
+        Saving saving = new Saving();
+        saving.setStartDate(entity.getCreatedDate());
+
+        DateTime dt = new DateTime(entity.getCreatedDate());
+        LocalDate dateToReturn = new LocalDate(entity.getCreatedDate());
+        int calMonths = monthsBetweenIgnoreDays(new LocalDate(entity.getCreatedDate()), LocalDate.now());
+
+        saving.setCalMonths(calMonths);
+        saving.setCount(entity.getMin());
+
+        int licenseSaving = calMonths * entity.getMin() * Integer.parseInt(licenseSetting);
+        int managedInstanceSaving = calMonths * entity.getMin() * Integer.parseInt(licenseSetting);
+
+        if (entity.getAccount().getAccountType() == com.fxlabs.fxt.dao.entity.clusters.AccountType.Self_Hosted) {
+            managedInstanceSaving = 0;
+        }
+
+        saving.setLicenseSaving(licenseSaving);
+        saving.setManagedInstanceSaving(managedInstanceSaving);
+
+        saving.setTotal(licenseSaving + managedInstanceSaving);
+
+        return new Response<Saving>(saving);
+    }
+
+    private int monthsBetweenIgnoreDays(LocalDate start, LocalDate end) {
+        start = start.withDayOfMonth(1);
+        end = end.withDayOfMonth(1);
+        int mos = Months.monthsBetween(start, end).getMonths();
+        return mos == 0 ? 1 : mos;
     }
 
     private String getExecutionBotManualScript(String host, String port, String ssl, String iam, String key, String tag) {

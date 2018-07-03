@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.clusters;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
+import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
@@ -35,4 +36,6 @@ public interface ClusterService extends GenericService<Cluster, String> {
     Response<Cluster> deleteExecBot(Cluster dto, String user);
 
     Response<String> pingExecBot(String id, String o);
+
+    Response<Saving> savings(String id, String o);
 }

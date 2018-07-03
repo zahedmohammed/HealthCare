@@ -24,7 +24,4 @@ public interface SystemSettingService extends GenericService<SystemSetting, Stri
 
     public String findByKey(String key);
 
-    public Response<Saving> getSavingsById(String id);
-
-
 }

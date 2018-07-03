@@ -48,12 +48,6 @@ public class SystemSettingController {
         return service.findById(id, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_USER, ROLE_ENTERPRISE_ADMIN, ROLE_ADMIN})
-    @RequestMapping(value = "/{id}/bot-saving", method = RequestMethod.GET)
-    public Response<Saving> getSavingsById(@PathVariable("id") String id) {
-        return service.getSavingsById(id);
-    }
-
     /*@Secured(ROLE_ENTERPRISE_ADMIN)
     @RequestMapping(value = "/batch-save", method = RequestMethod.POST)
     public Response<Boolean> create(@Valid @RequestBody List<SystemSetting> dtos) {

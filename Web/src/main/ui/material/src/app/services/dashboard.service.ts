@@ -15,4 +15,8 @@ export class DashboardService {
     return this.http.get(this.serviceUrl + "/" + name);
   }
 
+  botSavings(botid: string) {
+    return this.http.get(this.serviceUrl + "/bots/" + botid + "/savings");
+  }
+
 }

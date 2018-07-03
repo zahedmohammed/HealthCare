@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.users;
 
 import com.fxlabs.fxt.converters.users.SystemSettingConverter;
+import com.fxlabs.fxt.dao.entity.clusters.AccountType;
 import com.fxlabs.fxt.dao.entity.clusters.Cluster;
 import com.fxlabs.fxt.dao.repository.jpa.ClusterRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
@@ -92,54 +93,11 @@ public class SystemSettingServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.
     }
 
     @Override
-    public Response<Saving> getSavingsById(String id) {
-
-        if (org.apache.commons.lang3.StringUtils.isEmpty(id)) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid id"));
-        }
-
-        Optional<Cluster> clusterResponse = clusterRepository.findById(id);
-
-        if (!clusterResponse.isPresent()) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid id"));
-        }
-
-        Cluster entity = clusterResponse.get();
-
-        String licenseSetting = findByKey("LICENSE_SAVING");
-        String managedInstanceSetting = findByKey("MANAGED_INSTANCE_SAVING");
-
-        Saving saving = new Saving();
-        saving.setStartDate(entity.getCreatedDate());
-
-        DateTime dt = new DateTime(entity.getCreatedDate());
-        LocalDate dateToReturn = new LocalDate(entity.getCreatedDate());
-        int calMonths = monthsBetweenIgnoreDays(new LocalDate(entity.getCreatedDate()), LocalDate.now());
-
-        saving.setCalMonths(calMonths);
-        saving.setCount(entity.getMin());
-
-        int licenseSaving = calMonths * entity.getMin() * Integer.parseInt(licenseSetting);
-        int managedInstanceSaving = calMonths * entity.getMin() * Integer.parseInt(licenseSetting);
-
-        saving.setLicenseSaving(licenseSaving);
-        saving.setManagedInstanceSaving(managedInstanceSaving);
-
-        saving.setTotal(licenseSaving + managedInstanceSaving);
-
-        return new Response<Saving>(saving);
-    }
-
-    @Override
     public void isUserEntitled(String s, String user) {
         // TODO
     }
 
 
-    private  int monthsBetweenIgnoreDays(LocalDate start, LocalDate end) {
-        start = start.withDayOfMonth(1);
-        end = end.withDayOfMonth(1);
-        return Months.monthsBetween(start, end).getMonths();
-    }
+
 
 }
