@@ -41,6 +41,8 @@ dependencies {
     // https://mvnrepository.com/artifact/io.swagger/swagger-compat-spec-parser
     compile group: 'io.swagger', name: 'swagger-compat-spec-parser', version: '1.0.36'
 
+    compileOnly('org.projectlombok:lombok')
+
     compile project(":DTO")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
