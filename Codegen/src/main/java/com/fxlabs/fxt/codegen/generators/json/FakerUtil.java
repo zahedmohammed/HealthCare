@@ -30,6 +30,9 @@ import org.apache.commons.lang3.StringUtils;
             case "company":
                 fakerString = "Faker.company.name";
                 break;
+            case "phone":
+                fakerString = "Faker.PhoneNumber.phoneNumber";
+                break;
             case "currency":
                 fakerString = "Faker.currency.name";
                 break;
@@ -106,7 +109,8 @@ import org.apache.commons.lang3.StringUtils;
             return "username";
         }
 
-        //Imp Note:  If there is only One search String, DON'T use StringUtils.containsAny method (it is giving weird results), instead use StringUtils.contains method.
+        //Imp Note: If there is only One search String, DON'T use StringUtils.containsAny() method (it is giving weird results),
+        // instead use StringUtils.contains() method.
         if (StringUtils.contains(eVal,  "address")){
             return "address";
         }
