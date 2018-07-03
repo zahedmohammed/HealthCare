@@ -162,6 +162,8 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Password/Secret-Key is empty"));
                 }
                 break;
+            case Self_Hosted:
+                break;
             case Slack:
                 if (StringUtils.isEmpty(dto.getSecretKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Slack Token is empty"));
@@ -232,6 +234,8 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Password/Secret-Key is empty"));
                 }
+                break;
+            case Self_Hosted:
                 break;
             case Slack:
                 if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
