@@ -136,7 +136,7 @@ public class DashboardController {
 
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
-    @RequestMapping(value = "/bots/{id}/savings", method = RequestMethod.GET)
+    @RequestMapping(value = "/projects/{id}/savings", method = RequestMethod.GET)
     public Response<ProjectSaving> getProjectSavings(@PathVariable("id") String id) {
         return projectService.getProjectSavings(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
