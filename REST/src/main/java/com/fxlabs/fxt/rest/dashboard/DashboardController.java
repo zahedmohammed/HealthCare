@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.rest.dashboard;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.ProjectSaving;
 import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.clusters.ClusterService;
@@ -133,6 +134,12 @@ public class DashboardController {
         return clusterService.savings(id, SecurityUtil.getOrgId());
     }
 
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/bots/{id}/savings", method = RequestMethod.GET)
+    public Response<ProjectSaving> getProjectSavings(@PathVariable("id") String id) {
+        return projectService.getProjectSavings(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
+    }
 
 
 }

@@ -53,11 +53,11 @@ public class ProjectController {
         return projectService.findById(id, SecurityUtil.getOrgId());
     }
 
-    @Secured(ROLE_USER)
-    @RequestMapping(value = "/{id}"+SAVINGS, method = RequestMethod.GET)
-    public Response<ProjectSaving> getProjectSavings(@PathVariable("id") String id) {
-        return projectService.getProjectSavings(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
-    }
+//    @Secured(ROLE_USER)
+//    @RequestMapping(value = "/{id}"+SAVINGS, method = RequestMethod.GET)
+//    public Response<ProjectSaving> getProjectSavings(@PathVariable("id") String id) {
+//        return projectService.getProjectSavings(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
+//    }
 
     @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "", method = RequestMethod.PUT)
