@@ -1,19 +1,23 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import {MatTabChangeEvent}from '@angular/material';
 import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
 import { AccountService } from '../../../services/account.service';
+import {DashboardService}from '../../../services/dashboard.service';
+import {TestSuiteService}from '../../../services/test-suite.service';
 import { Project } from '../../../models/project.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
 import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
+import { Http, Response} from '@angular/http';
 
 @Component({
   selector: 'app-projects-edit',
   templateUrl: './projects-edit.component.html',
   styleUrls: ['./projects-edit.component.scss'],
-  providers: [ProjectService, OrgService]
+  providers: [ProjectService, OrgService, DashboardService, TestSuiteService]
 })
 export class ProjectsEditComponent implements OnInit {
 
@@ -22,13 +26,18 @@ export class ProjectsEditComponent implements OnInit {
   project: Project = new Project();
   accounts;
   config;
+  TestSuite;
+  id;
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
+  constructor(private projectService: ProjectService, private accountService: AccountService,
+  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
+  public dialog: MatDialog, public snackBar: MatSnackBar, private dashboardService: DashboardService) { }
 
   ngOnInit() {
     this.AppConfig = APPCONFIG;
     this.route.params.subscribe(params => {
       console.log(params);
+      this.id = params['id'];
       if (params['id']) {
         this.getById(params['id']);
         //this.getOrgs();
@@ -36,6 +45,16 @@ export class ProjectsEditComponent implements OnInit {
         this.config = new MatSnackBarConfig();
       }
     });
+  }
+
+    tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
+      //console.log('tabChangeEvent => ', tabChangeEvent);
+      console.log('index => ', tabChangeEvent.index);
+      if (tabChangeEvent.index === 0) {
+        this.getById(this.id);
+      } else if (tabChangeEvent.index === 1) {
+        this.getTestSuite(this.id);
+      }
   }
 
   getById(id: string) {
@@ -119,6 +138,19 @@ delete() {
         return;
       }
       this.accounts = results['data'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+   getTestSuite(id: string) {
+    this.handler.activateLoader();
+    this.dashboardService.projectSavings(id).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.TestSuite = results['data'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
