@@ -48,6 +48,8 @@ public class Project extends BaseEntity {
     private String branch;
     private String lastCommit;
 
+    private Integer autoGenSuites = 0;
+
 
 }
 

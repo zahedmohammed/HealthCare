@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.ProjectImports;
+import com.fxlabs.fxt.dto.project.ProjectSaving;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.ProjectFileService;
 import com.fxlabs.fxt.services.project.ProjectService;
@@ -30,6 +31,7 @@ public class ProjectController {
 
     private ProjectFileService projectFileService;
     private ProjectService projectService;
+    private static final String SAVINGS = "/savings";
 
     @Autowired
     public ProjectController(
@@ -49,6 +51,12 @@ public class ProjectController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Project> findById(@PathVariable("id") String id) {
         return projectService.findById(id, SecurityUtil.getOrgId());
+    }
+
+    @Secured(ROLE_USER)
+    @RequestMapping(value = "/{id}"+SAVINGS, method = RequestMethod.GET)
+    public Response<ProjectSaving> getProjectSavings(@PathVariable("id") String id) {
+        return projectService.getProjectSavings(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
     @Secured(ROLE_PROJECT_MANAGER)

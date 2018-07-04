@@ -25,4 +25,6 @@ public class VCTaskResponse implements Serializable {
 
     private String vcLastCommit;
 
+    private int autoGenSuitesCount;
+
 }

@@ -66,6 +66,10 @@ public class GitTaskResponseProcessor {
 
             if (optionalProject.isPresent()) {
                 Project project = optionalProject.get();
+                project.setAutoGenSuites(task.getAutoGenSuitesCount());
+
+                projectRepository.save(project);
+
                 NameDto o = new NameDto();
                 o.setId(project.getOrg().getId());
                 alert.setOrg(o);

@@ -12,9 +12,11 @@ import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectImports;
+import com.fxlabs.fxt.dto.project.ProjectSaving;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
+import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,7 @@ import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Luqman Shareef
  */
 @Service
 @Transactional
@@ -42,6 +45,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private ProjectImportsRepository projectImportsRepository;
     private ProjectImportsESRepository projectImportsESRepository;
     private AccountService accountService;
+    private SystemSettingService systemSettingService;
 
     private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
@@ -51,7 +55,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                               OrgRepository orgRepository, UsersRepository usersRepository,
                               GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                               ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository,
-                              AccountService accountService) {
+                              AccountService accountService, SystemSettingService systemSettingService) {
 
         super(repository, converter);
 
@@ -65,6 +69,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.projectImportsRepository = projectImportsRepository;
         this.projectImportsESRepository = projectImportsESRepository;
         this.accountService = accountService;
+        this.systemSettingService = systemSettingService;
     }
 
 
@@ -384,4 +389,49 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }*/
 
     }
+
+    @Override
+    public Response<ProjectSaving> getProjectSavings(String id, String org, String owner) {
+        ProjectSaving saving = new ProjectSaving();
+
+        Response<Project> projResp = this.findById(id, org);
+
+        Project project = projResp.getData();
+
+        if (project == null ){
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Project Not found"));
+        }
+
+        int generatedSuites = 0;
+        try {
+            generatedSuites = project.getAutoGenSuites();
+        }catch (Exception ex){}
+
+        // Default values, in case not found in DB
+        int suiteCodeHrs = 8;
+        int suiteCodeCost = 50;
+
+        String suiteCodeHrsStr = systemSettingService.findByKey("SUITE_CODE_HRS");
+        String suiteCodeCostStr = systemSettingService.findByKey("SUITE_CODE_COST_PER_HR");
+
+        try{
+            suiteCodeHrs = Integer.parseInt(suiteCodeHrsStr);
+            suiteCodeCost = Integer.parseInt(suiteCodeCostStr);
+        }catch(Exception ex){
+            // Default values will be used
+        }
+
+        saving.setAutoGenAllSuites(generatedSuites);
+        saving.setAutoGenSecuritySuites(generatedSuites);
+
+        saving.setTotalTimeSaving((long) saving.getAutoGenAllSuites() * suiteCodeHrs);
+        saving.setTotalCostSaving((long) saving.getAutoGenAllSuites() * suiteCodeHrs * suiteCodeCost);
+
+        saving.setSecurityCoverageTimeSaving((long) saving.getAutoGenSecuritySuites() * suiteCodeHrs);
+        saving.setSecurityCoverageCostSaving((long) saving.getAutoGenSecuritySuites() * suiteCodeHrs * suiteCodeCost);
+
+        return new Response(saving);
+    }
+
+
 }

@@ -48,5 +48,7 @@ public class Project extends BaseDto<String> {
     private List<String> licenses;
     private Map<String, String> props = new HashMap<>();
 
+    private Integer autoGenSuites = 0;
+
 }
 

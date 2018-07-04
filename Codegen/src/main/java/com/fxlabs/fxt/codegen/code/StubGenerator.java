@@ -31,7 +31,7 @@ public class StubGenerator {
     @Autowired
     private JSONFactory factory;
 
-    public void generate(String spec, String dir, String configFilePath , String headerKey, String headerVal) {
+    public int generate(String spec, String dir, String configFilePath , String headerKey, String headerVal) {
 
         try {
 
@@ -111,12 +111,13 @@ public class StubGenerator {
 
             printTS(testSuites, dir);
 
+            return testSuites.size();
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getLocalizedMessage());
         }
-
+        return 0;
     }
 
     private void printTS(List<TestSuiteMin> testSuites, String dir) {
