@@ -23,6 +23,7 @@ public class FakerProcessor {
 
     public static String process(String str){
 
+        logger.debug("Processing Faker String "+str);
         if (StringUtils.isBlank(str) ){
             return null;
         }
@@ -51,8 +52,10 @@ public class FakerProcessor {
                 Method propMethod = null;
                 for (Method m : propMethodArray) {
                     if (m.getName().equalsIgnoreCase(property)) {
-                        propMethod  = m;
-                        break;
+                        if ( m.getParameterCount() == 0 ) {
+                            propMethod = m;
+                            break;
+                        }
                     }
                 }
                 if (propMethod != null){

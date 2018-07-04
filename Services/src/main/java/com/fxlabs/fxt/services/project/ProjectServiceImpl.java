@@ -402,6 +402,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Project Not found"));
         }
 
+        saving.setId(project.getId());
+        saving.setName(project.getName());
+
         int generatedSuites = 0;
         try {
             generatedSuites = project.getAutoGenSuites();
