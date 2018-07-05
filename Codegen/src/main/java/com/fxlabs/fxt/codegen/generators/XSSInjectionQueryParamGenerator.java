@@ -27,6 +27,10 @@ public class XSSInjectionQueryParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
+        // Generating XSS TCs for GET parameters is turned off
+        return null;
+
+/*
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
         if (method == io.swagger.models.HttpMethod.GET) {
             for (Parameter param : op.getParameters()) {
@@ -45,5 +49,6 @@ public class XSSInjectionQueryParamGenerator extends AbstractGenerator {
             }
         }
         return allTestSuites;
+*/
     }
 }
