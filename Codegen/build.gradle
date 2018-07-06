@@ -43,6 +43,9 @@ dependencies {
 
     compileOnly('org.projectlombok:lombok')
 
+    // https://mvnrepository.com/artifact/com.github.mifmif/generex
+    compile group: 'com.github.mifmif', name: 'generex', version: '1.0.2'
+
     compile project(":DTO")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
