@@ -140,16 +140,17 @@
                                                             <td class="mdl-data-table__cell--non-numeric">1</td>
                                                             <td class="mdl-data-table__cell--non-numeric">Total Time Savings</td>
                                                             <td class="mdl-data-table__cell--non-numeric text-muted">
-                                                               ( Validated / {{issueTracker?.hourlyBugRate}})
+                                                                ( Trends: Bugs validated/hr = {{issueTracker?.hourlyBugValidation}} ) | {{issueTracker?.validatedCount}} / {{issueTracker?.hourlyBugValidation}} hrs saved
                                                             </td>
                                                             <td>{{issueTracker?.totalHourSaving}} hrs</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td class="mdl-data-table__cell--non-numeric">2</td>
+                                                        <tr  class="bg-color-info font-weight-bold">
+                                                            <td class="mdl-data-table__cell--non-numeric"></td>
                                                             <td class="mdl-data-table__cell--non-numeric">Total Cost Savings
                                                             </td>
-                                                            <td class="mdl-data-table__cell--non-numeric text-muted">
-                                                                ( (Validated / {{issueTracker?.hourlyBugValidation}}) x {{issueTracker?.hourlyBugRate}})
+                                                            <td class="mdl-data-table__cell--non-numeric">
+                                                                <!--( (Validated / {{issueTracker?.hourlyBugValidation}}) x {{issueTracker?.hourlyBugRate}})-->
+                                                                ( Cost ${{issueTracker?.hourlyBugRate}}/hrs ) | Hours: {{issueTracker?.totalHourSaving}} x ${{issueTracker?.hourlyBugRate}}/hrs saved
                                                             </td>
                                                             <td>${{issueTracker?.totalCostSaving}}</td>
                                                         </tr>
