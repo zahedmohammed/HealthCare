@@ -20,5 +20,6 @@ public class IssueTrackerSaving implements Serializable{
     private Long totalCostSaving;
     private int hourlyBugRate;
     private int hourlyBugValidation;
+    private int validatedCount;
 }
 

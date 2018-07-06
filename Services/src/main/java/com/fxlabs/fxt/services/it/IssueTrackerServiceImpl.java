@@ -288,6 +288,7 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
 
         its.setHourlyBugRate(hourlyBugRateInt);
         its.setHourlyBugValidation(hourlyBugValidationInt);
+        its.setValidatedCount(variations);
 
         return new Response<>(its);
     }
