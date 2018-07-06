@@ -10,12 +10,14 @@ import { Base}from '../../../models/base.model';
 import {Handler}from '../../dialogs/handler/handler';
 import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig}from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
-
+import {MatTabChangeEvent}from '@angular/material';
+import {DashboardService}from '../../../services/dashboard.service';
+import { Http, Response} from '@angular/http';
 @Component({
   selector: 'app-issues-edit',
   templateUrl: './issues-edit.component.html',
   styleUrls: ['./issues-edit.component.scss'],
-  providers: [IssueTrackerService, SkillService, OrgService]
+  providers: [IssueTrackerService, SkillService, OrgService, DashboardService]
 })
 export class IssuesEditComponent implements OnInit {
   skills;
@@ -23,14 +25,17 @@ export class IssuesEditComponent implements OnInit {
   accounts;
   config;
   showSpinner: boolean = false;
+  issueTracker;
+  id;
   entry: IssueTracker = new IssueTracker();
   constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService,
-    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
+    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar, private dashboardService  : DashboardService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       console.log(params);
-      if (params['id']) {
+        this.id = params['id'];
+        if (params['id']) {
         this.getById(params['id']);
         //this.getOrgs();
         this.getAccountyForIssueTracker();
@@ -44,7 +49,36 @@ export class IssuesEditComponent implements OnInit {
     //this.listSkills();
   }
 
-  getById(id: string) {
+    tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
+        //console.log('tabChangeEvent => ', tabChangeEvent);
+        console.log('index => ', tabChangeEvent.index);
+        if (tabChangeEvent.index === 0) {
+            this.getById(this.id);
+        } else if (tabChangeEvent.index === 1) {
+            this.getissueTacker(this.id);
+        }
+    }
+
+
+    //getting issue tracker
+
+    getissueTacker(id: string){
+
+        this.handler.activateLoader();
+        this.dashboardService.issueTrackerSavings(id).subscribe(results => {
+            this.handler.hideLoader();
+            if (this.handler.handle(results)) {
+                return;
+            }
+            this.issueTracker = results['data'];
+        }, error => {
+            this.handler.hideLoader();
+            this.handler.error(error);
+        });
+    }
+
+    //ends getissueTracker
+    getById(id: string) {
     this.handler.activateLoader();
     this.issueTrackerService.getById(id).subscribe(results => {
       this.handler.hideLoader();

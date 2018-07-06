@@ -25,4 +25,8 @@ export class DashboardService {
 
   }
 
+  issueTrackerSavings(trackerid: string){
+    return this.http.get(this.serviceUrl + "/issuetracker/" + trackerid + "/issuetracker-savings");
+
+  }
 }
