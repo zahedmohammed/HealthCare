@@ -7,6 +7,11 @@
             /
             <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}<!--</a>--> /
             Runs</h2>
+        <mat-tab-group>
+            <mat-tab label="Details">
+                <section class="box box-transparent">
+                    <div class="box-body">
+
         <div class="box box-default table-box mdl-shadow--2dp">
             <table class="mdl-data-table">
                 <thead>
@@ -45,6 +50,49 @@
                 </tbody>
             </table>
         </div>
+
+                    </div>
+                </section>
+            </mat-tab>
+
+            <mat-tab label="Savings">
+                <section class="box box-transparent">
+                    <div class="box-body">
+                        <div class="box box-default table-box mdl-shadow--2dp">
+                            <table class="mdl-data-table">
+                                <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric">No</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Region</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Date</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Pass/Fail</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Time Saved</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let item of list">
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>
+                                    </td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.regions}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.task.timeSaved | mstoDuration}}</td>
+                                </tr>
+                                <tr class="bg-color-info font-weight-bold">
+                                    <td class="mdl-data-table__cell--non-numeric"></td>
+                                    <td class="mdl-data-table__cell--non-numeric">Total Time Saved</td>
+                                    <td class="mdl-data-table__cell--non-numeric"></td>
+                                    <td class="mdl-data-table__cell--non-numeric"></td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{totalTimeSaved | mstoDuration}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </mat-tab>
+        </mat-tab-group>
 
         <mat-paginator [hidden]="length <= pageSize"
                        [pageSize]="pageSize"

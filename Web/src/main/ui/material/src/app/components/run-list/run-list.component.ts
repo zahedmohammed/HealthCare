@@ -16,6 +16,8 @@ import { Observable, Subscription } from 'rxjs/Rx';
 })
 export class RunListComponent implements OnInit {
   list;
+  times;
+  totalTimeSaved = 0;
   projectId:string = "";
   jobId:string =  "";
   title:string = "";
@@ -77,11 +79,17 @@ export class RunListComponent implements OnInit {
       }
       this.list = results['data'];
       this.length = results['totalElements'];
+       this.times = 0;
+       for (var  i = 0; i < this.list.length; i++){
+           this.times += this.list[i].task.timeSaved;
+        }
+       this.totalTimeSaved = this.times;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
+
 
   length = 0;
   page = 0;
