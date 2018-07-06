@@ -24,6 +24,8 @@ public class AutoCodeConfig implements Serializable {
 
     private List<Database> databases;
 
+    private List<String> logForgingPatterns;
+
 }
 
 
