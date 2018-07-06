@@ -82,8 +82,10 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             } else {
                 run.setRegions(run.getJob().getRegions());
             }
-            if (run.getTask().getStartTime()!=null && run.getTask().getEndTime() != null)
+            if (run.getTask().getStartTime()!=null && run.getTask().getEndTime() != null) {
                 run.getTask().setTimeTaken(run.getTask().getEndTime().getTime() - run.getTask().getStartTime().getTime());
+                run.getTask().setTimeSaved(run.getTask().getTotalTime() - run.getTask().getTimeTaken());
+            }
         }
         return new Response<List<com.fxlabs.fxt.dto.run.Run>>(runs, page.getTotalElements(), page.getTotalPages());
     }

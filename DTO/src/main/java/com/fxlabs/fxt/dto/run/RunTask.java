@@ -25,6 +25,8 @@ public class RunTask {
     private Date startTime;
     private Date endTime;
     private Long timeTaken;
+    private Long timeSaved;
+
 
     private Long totalTests;
     private Long totalSuiteCompleted = 0L;
