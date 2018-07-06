@@ -33,5 +33,7 @@ public class Run extends BaseDto<String> {
 
     private Map<String, Long> stats = new HashMap<>();
 
+    private Integer validations;
+
 }
 

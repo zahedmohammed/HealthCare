@@ -397,6 +397,7 @@ public class RestProcessor {
             tc.setSize(size);
             tc.setHeaders(response.getHeaders().toString());
             tc.setLogs(formattedLogs);
+            tc.setRunId(task.getRunId());
             // TODO - Assertions
             testCaseResponses.add(tc);
         }

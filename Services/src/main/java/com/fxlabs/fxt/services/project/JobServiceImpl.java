@@ -137,6 +137,12 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     }
 
     @Override
+    public Response<List<com.fxlabs.fxt.dto.project.Job>> findJobsByIssueTracker(String name) {
+        List<Job> _jobs = jobRepository.findByIssueTracker(name);
+        return new Response<>(converter.convertToDtos(_jobs), new Long(_jobs.size()), _jobs.size());
+    }
+
+    @Override
     public void isUserEntitled(String jobId, String user) {
         // TODO - user has access to job/project
         /*Optional<Job> jobOptional = jobRepository.findById(jobId);

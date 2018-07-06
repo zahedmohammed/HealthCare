@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.it;
 
 import com.fxlabs.fxt.converters.skills.IssueTrackerConverter;
+import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.skills.TaskResult;
 import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
@@ -8,17 +9,26 @@ import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.it.IssueTracker;
+import com.fxlabs.fxt.dto.it.IssueTrackerSaving;
 import com.fxlabs.fxt.dto.it.State;
+import com.fxlabs.fxt.dto.project.Job;
+import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import com.fxlabs.fxt.services.project.JobService;
+import com.fxlabs.fxt.services.run.RunService;
+import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,13 +49,18 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     private SubscriptionTaskRepository subscriptionTaskRepository;
     private ClusterRepository clusterRepository;
     private AccountService accountService;
+    private SystemSettingService systemSettingService;
+    private JobService jobService;
+    private RunService runService;
+
+    public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
 
 
     @Autowired
     public IssueTrackerServiceImpl(IssueTrackerRepository repository, IssueTrackerConverter converter,
                                    UsersRepository usersRepository, OrgUsersRepository orgUsersRepository,
-                                   AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository,
-                                   ClusterRepository clusterRepository, AccountService accountService) {
+                                   AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository, RunService runService,
+                                   ClusterRepository clusterRepository, AccountService accountService, SystemSettingService systemSettingService,  JobService jobService) {
         super(repository, converter);
 
         this.repository = repository;
@@ -56,6 +71,9 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
         this.clusterRepository = clusterRepository;
         this.subscriptionTaskRepository = subscriptionTaskRepository;
         this.accountService = accountService;
+        this.systemSettingService = systemSettingService;
+        this.jobService = jobService;
+        this.runService = runService;
 //        this.systemSettingRepository = systemSettingRepository;
     }
 
@@ -208,6 +226,72 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
         return new Response<>(count);
     }
 
+    @Override
+    public Response<IssueTrackerSaving> getIssueTrackerSavings(String id, String org, String owner) {
+
+        if (StringUtils.isEmpty(id)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid id"));
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.it.IssueTracker> issueTrackerResponse = repository.findById(id);
+
+        if (!issueTrackerResponse.isPresent() || !StringUtils.equals(issueTrackerResponse.get().getOrg().getId(), org)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid id"));
+        }
+
+        Response<List<Job>> jobResponse = jobService.findJobsByIssueTracker(issueTrackerResponse.get().getOrg().getName() + "/" +issueTrackerResponse.get().getName());
+
+        String hourlyBugValidation = systemSettingService.findByKey("HOURLY_BUG_VALIDATION");
+        String hourlyBugRate = systemSettingService.findByKey("HOURLY_BUG_RATE");
+
+        int hourlyBugValidationInt = Integer.parseInt(hourlyBugValidation);
+        int hourlyBugRateInt = Integer.parseInt(hourlyBugRate);
+
+        IssueTrackerSaving its = new IssueTrackerSaving();
+        its.setItid(id);
+
+        if(CollectionUtils.isEmpty(jobResponse.getData())){
+            its.setTotalCostSaving(0L);
+            its.setTotalHourSaving(0L);
+
+            its.setHourlyBugRate(hourlyBugRateInt);
+            its.setHourlyBugValidation(hourlyBugValidationInt);
+            return new Response<>(its);
+        }
+
+        List<Job>  jobList = jobResponse.getData();
+        Integer variations = 0;
+
+        for (Job job : jobList) {
+
+            Response<List<Run>> runResponse = runService.findByJobIdForSaving(job.getId(), owner, PageRequest.of(0, 100, DEFAULT_SORT));
+
+            if (CollectionUtils.isEmpty(runResponse.getData())) {
+                continue;
+            }
+
+            for (Run run : runResponse.getData()) {
+                Integer validationsForRun = run.getValidations() == null ? 0 : run.getValidations();
+                variations = variations + validationsForRun;
+            }
+
+        }
+//        Total Hour Savings                   200hrs      (formula: Validated/hr_bug_validation)
+//        Total Cost Savings                   $1100 x 10  (formula: Validated/hr_bug_validation x hr_bug_rate)
+
+
+        int totalHourSaving = variations / hourlyBugValidationInt;
+        int totalCostSaving = totalHourSaving * hourlyBugRateInt;
+
+        its.setTotalHourSaving((long) totalHourSaving);
+        its.setTotalCostSaving((long) totalCostSaving);
+
+        its.setHourlyBugRate(hourlyBugRateInt);
+        its.setHourlyBugValidation(hourlyBugValidationInt);
+
+        return new Response<>(its);
+    }
+
 
     @Override
     public void isUserEntitled(String id, String user) {
@@ -222,5 +306,7 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
         }
 
     }
+
+
 
 }

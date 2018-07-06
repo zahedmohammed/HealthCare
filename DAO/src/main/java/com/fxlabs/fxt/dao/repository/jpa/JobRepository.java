@@ -10,10 +10,13 @@ import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface JobRepository extends JpaRepository<Job, String> {
 
     List<Job> findByProjectIdAndInactive(String project, boolean inactive, Pageable pageable);
+
+    List<Job> findByIssueTracker(String issueTracker);
 
     Long countByProjectIdAndInactive(String project, boolean inactive);
 

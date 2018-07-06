@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface JobService extends GenericService<Job, String> {
 
@@ -23,5 +24,7 @@ public interface JobService extends GenericService<Job, String> {
     Response<List<com.fxlabs.fxt.dto.project.Job>> findAll(String user, Pageable pageable);
 
     Response<Long> count(String user, Pageable pageable);
+
+    Response<List<com.fxlabs.fxt.dto.project.Job>> findJobsByIssueTracker(String issueTracker);
 
 }

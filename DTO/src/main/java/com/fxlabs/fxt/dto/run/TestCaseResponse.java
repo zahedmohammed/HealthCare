@@ -41,6 +41,7 @@ public class TestCaseResponse extends BaseDto<String> {
     private String issueTrackerProjectName;
     private String username;
     private String password;
+    private String runId;
 
 
 

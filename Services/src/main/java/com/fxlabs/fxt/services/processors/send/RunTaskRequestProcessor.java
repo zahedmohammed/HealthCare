@@ -130,6 +130,7 @@ public class RunTaskRequestProcessor {
                 String _jobId = run.getJob().getId();
                 String _env = run.getJob().getEnvironment();
                 String _region = run.getJob().getRegions();
+                String runId = run.getId();
 
                 run.getTask().setStatus(TaskStatus.PROCESSING);
                 runRepository.saveAndFlush(run);
@@ -161,6 +162,7 @@ public class RunTaskRequestProcessor {
                         task.setSuiteName(testSuite.getName());
                         task.setProjectDataSetId(testSuite.getId());
                         task.setGenerateTestCaseResponse(generateTestCaseResponse);
+                        task.setRunId(runId);
 
                         task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
 

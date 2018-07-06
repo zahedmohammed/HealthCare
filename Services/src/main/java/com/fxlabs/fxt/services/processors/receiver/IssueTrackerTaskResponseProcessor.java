@@ -1,8 +1,11 @@
 package com.fxlabs.fxt.services.processors.receiver;
 
 import com.fxlabs.fxt.converters.run.TestCaseResponseConverter;
+import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.run.TestCaseResponse;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
+import com.fxlabs.fxt.dao.repository.es.TestCaseResponseITESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseITRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseRepository;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.services.alerts.AlertService;
@@ -32,6 +35,12 @@ public class IssueTrackerTaskResponseProcessor {
     @Autowired
     private TestCaseResponseConverter converter;
 
+    @Autowired
+    private TestCaseResponseITRepository testCaseResponseITRepository;
+
+    @Autowired
+    private TestCaseResponseITESRepository testCaseResponseITESRepository;
+
 
     @Autowired
     private AlertService alertService;
@@ -48,6 +57,35 @@ public class IssueTrackerTaskResponseProcessor {
                 testCaseResponseRepository.save(response);
                 testCaseResponseESRepository.save(response);
 
+                String projectId = response.getProject();
+                String jobId = response.getJobId();
+                String testSuite = response.getSuite();
+                String testCase = response.getTestCase();
+
+                String id = projectId + "//" + jobId + "//" + testSuite + "//" + testCase;
+
+                Optional<TestCaseResponseIssueTracker> existingIssue = testCaseResponseITRepository.findByTestCaseResponseIssueTrackerId(id);
+
+                if (existingIssue.isPresent()) {
+
+                    TestCaseResponseIssueTracker testCaseResponseIssueTracker = existingIssue.get();
+
+                    testCaseResponseIssueTracker.setValidations(testCaseResponseIssueTracker.getValidations() + 1);
+                    testCaseResponseIssueTracker.setStatus(task.getIssueStatus());
+
+                    testCaseResponseITRepository.save(testCaseResponseIssueTracker);
+                    testCaseResponseITESRepository.save(testCaseResponseIssueTracker);
+
+                    return;
+                }
+
+                TestCaseResponseIssueTracker  newItResponse = new TestCaseResponseIssueTracker();
+                newItResponse.setIssueId(task.getIssueId());
+                newItResponse.setStatus(task.getIssueStatus());
+                newItResponse.setTestCaseResponseIssueTrackerId(id);
+                newItResponse.setValidations(1);
+                testCaseResponseITRepository.save(newItResponse);
+                testCaseResponseITESRepository.save(newItResponse);
             }
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);

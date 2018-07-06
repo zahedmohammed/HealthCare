@@ -106,9 +106,10 @@ public class GitIssueTrackerService implements IssueTrackerService {
             // IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
             if (StringUtils.isNotEmpty(task.getIssueId())) {
                 //TODO update issue
-                issue = editIssue(issue, repositoryId, task);
+                issue = editIssue(issue, repositoryId, task, response);
             } else {
                 issue = createIssue(issue, repositoryId, task);
+                response.setIssueStatus(STATE_OPEN);
             }
 
             response.setSuccess(true);
@@ -131,7 +132,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
     }
 
-    private Issue editIssue(Issue issue, RepositoryId repositoryId, TestCaseResponse task) throws IOException {
+    private Issue editIssue(Issue issue, RepositoryId repositoryId, TestCaseResponse task, ITTaskResponse response) throws IOException {
 
         IssueService issueService = getIssueService(task.getUsername(), task.getPassword());
 
@@ -141,8 +142,10 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
         if (StringUtils.equals(task.getResult(), "pass")) {
             issue_.setState(STATE_CLOSED);
+            response.setIssueStatus(STATE_CLOSED);
         } else {
             issue_.setState(STATE_OPEN);
+            response.setIssueStatus(STATE_OPEN);
         }
         issue = issueService.editIssue(repositoryId, issue_);
 

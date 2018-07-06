@@ -42,6 +42,7 @@ public class TestCaseResponse extends BaseEntity {
     private String headers;
     private Long time;
     private Integer size;
+    private String runId;
 
 }
 

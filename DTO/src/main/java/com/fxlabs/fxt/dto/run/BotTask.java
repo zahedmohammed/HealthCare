@@ -76,5 +76,7 @@ public class BotTask implements Serializable {
 
     private boolean generateTestCaseResponse;
 
+    private String runId;
+
 
 }

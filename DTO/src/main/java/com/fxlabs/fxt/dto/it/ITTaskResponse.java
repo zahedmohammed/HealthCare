@@ -16,6 +16,7 @@ public class ITTaskResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String issueId;
+    private String issueStatus;
     private String projectName;
 
     private String logs;

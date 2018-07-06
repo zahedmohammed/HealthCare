@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.it;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.it.IssueTracker;
+import com.fxlabs.fxt.dto.it.IssueTrackerSaving;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
@@ -26,4 +27,6 @@ public interface IssueTrackerService extends GenericService<IssueTracker, String
 //    Response<SkillSubscription> deleteExecBot(Cluster dto, String user);
 
     Response<Long> count(String user);
+
+    Response<IssueTrackerSaving> getIssueTrackerSavings(String id, String org, String owner);
 }

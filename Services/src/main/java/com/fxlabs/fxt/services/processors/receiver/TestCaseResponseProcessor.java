@@ -1,17 +1,19 @@
 package com.fxlabs.fxt.services.processors.receiver;
 
 import com.fxlabs.fxt.converters.run.TestCaseResponseConverter;
+import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.project.Job;
+import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
-import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
-import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
-import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseRepository;
+import com.fxlabs.fxt.dao.repository.es.TestCaseResponseITESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.it.IssueTracker;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.it.IssueTrackerService;
 import com.fxlabs.fxt.services.skills.SkillService;
+import io.netty.util.internal.StringUtil;
 import org.apache.commons.collections.IteratorUtils;
 import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
@@ -27,6 +29,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -50,6 +53,9 @@ public class TestCaseResponseProcessor {
     @Value("${fx.itaas.jira.queue.routingkey}")
     private String itaasJiraQueue;
     private TextEncryptor encryptor;
+    private TestCaseResponseITRepository testCaseResponseITRepository;
+    private TestCaseResponseITESRepository testCaseResponseITESRepository;
+    private RunRepository runRepository;
 
 
     public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
@@ -58,8 +64,8 @@ public class TestCaseResponseProcessor {
     @Autowired
     public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
                                      TestCaseResponseRepository testCaseResponseRepository, AmqpClientService amqpClientService,
-                                     JobRepository jobRepository, IssueTrackerService skillSubscriptionService, SkillService skillService,
-                                     AccountRepository accountRepository, TextEncryptor encryptor) {
+                                     JobRepository jobRepository, IssueTrackerService skillSubscriptionService, SkillService skillService, TestCaseResponseITRepository testCaseResponseITRepository,
+                                     AccountRepository accountRepository, TextEncryptor encryptor, TestCaseResponseITESRepository testCaseResponseITESRepository, RunRepository runRepository) {
         this.testCaseResponseESRepository = testCaseResponseESRepository;
         this.testCaseResponseRepository = testCaseResponseRepository;
         this.skillService = skillService;
@@ -69,6 +75,9 @@ public class TestCaseResponseProcessor {
         this.amqpClientService = amqpClientService;
         this.accountRepository = accountRepository;
         this.encryptor = encryptor;
+        this.testCaseResponseITESRepository = testCaseResponseITESRepository;
+        this.testCaseResponseITRepository = testCaseResponseITRepository;
+        this.runRepository = runRepository;
     }
 
     public void process(List<TestCaseResponse> testCaseResponses) {
@@ -85,8 +94,10 @@ public class TestCaseResponseProcessor {
 
             testCaseResponses = converter.convertToDtos(IteratorUtils.toList(result.iterator()));
 
+            AtomicInteger validations = new AtomicInteger();
+
             testCaseResponses.forEach(tc -> {
-                if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "fail")) {
+
 
                     String key = getKeyForTestCaseResponse(tc);
 
@@ -95,13 +106,19 @@ public class TestCaseResponseProcessor {
                         return;
                     }
                     //Populate issue id
-                    getExistingIssueId(tc);
+                    populateIssueId(tc);
 
+                if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "fail")) {
+                    validations.incrementAndGet();
                     amqpClientService.sendTask(tc, key);
-
                 }
-                //Check past test data for failure
-                checkPastDataForFailure(tc);
+
+                if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "pass") && !StringUtils.isEmpty(tc.getIssueId())) {
+                    validations.incrementAndGet();
+                    amqpClientService.sendTask(tc, key);
+                }
+
+
 
                 // TODO
                 // fail-from-na   --> DoneIT-Handler
@@ -113,6 +130,11 @@ public class TestCaseResponseProcessor {
                 // pass-from-na   ?
                 // send to ITTask to the right Skill.
             });
+            Run run = runRepository.findByRunId(testCaseResponses.get(0).getRunId());
+            if (run != null && validations.intValue() != 0) {
+                run.setValidations(validations.intValue());
+                runRepository.save(run);
+            }
 
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -173,44 +195,40 @@ public class TestCaseResponseProcessor {
         return null;
     }
 
-    private void getExistingIssueId(TestCaseResponse tc) {
-        List<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> oldtestresult = testCaseResponseESRepository.
-                findByProjectAndJobIdAndSuiteAndTestCase(tc.getProject(), tc.getJobId(), tc.getSuite(), tc.getTestCase(), PageRequest.of(1, 1, DEFAULT_SORT));
+    private void checkOpenBugs(TestCaseResponse tc) {
 
+        populateIssueId(tc);
 
-        if (!CollectionUtils.isEmpty(oldtestresult) &&
-                !StringUtils.isEmpty(oldtestresult.get(0).getIssueId())) {
+        String key = getKeyForTestCaseResponse(tc);
 
-            tc.setIssueId(oldtestresult.get(0).getIssueId());
+        if (StringUtils.isEmpty(key)) {
+            return;
         }
+
+
+        logger.info("TestCaseResponseProcessor updating issue  [{}]  for project [{}]", tc.getIssueId(), tc.getProject());
+        amqpClientService.sendTask(tc, key);
+
+
     }
 
-    private void checkPastDataForFailure(TestCaseResponse tc) {
 
-        if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "pass")) {
-            //TODO
-            //Load latest
-            List<com.fxlabs.fxt.dao.entity.run.TestCaseResponse> oldtestresult = testCaseResponseESRepository.
-                    findByProjectAndJobAndSuiteAndTestCase(tc.getProject(), tc.getJob(), tc.getSuite(), tc.getTestCase(), PageRequest.of(1, 1, DEFAULT_SORT));
+    private void populateIssueId(TestCaseResponse tc) {
+        String projectId = tc.getProject();
+        String jobId = tc.getJobId();
+        String testSuite = tc.getSuite();
+        String testCase = tc.getTestCase();
 
+        String id = projectId + "//" + jobId + "//" + testSuite + "//" + testCase;
 
-            if (!CollectionUtils.isEmpty(oldtestresult) &&
-                    org.apache.commons.lang3.StringUtils.equals(oldtestresult.get(0).getResult(), "fail")) {
+        Optional<TestCaseResponseIssueTracker> existingIssue = testCaseResponseITRepository.findByTestCaseResponseIssueTrackerId(id);
 
-                if (StringUtils.isEmpty(oldtestresult.get(0).getIssueId())) {
-                    return;
-                }
-
-                tc.setIssueId(oldtestresult.get(0).getIssueId());
-                String key = getKeyForTestCaseResponse(tc);
-
-                if (StringUtils.isEmpty(key)) {
-                    return;
-                }
-                logger.info("TestCaseResponseProcessor updating issue  [{}]  for project [{}]", tc.getIssueId(), tc.getProject());
-                amqpClientService.sendTask(tc, key);
-            }
-
+        if (!existingIssue.isPresent()) {
+            return;
         }
+
+        TestCaseResponseIssueTracker testCaseResponseIssueTracker = existingIssue.get();
+
+        tc.setIssueId(testCaseResponseIssueTracker.getIssueId());
     }
 }

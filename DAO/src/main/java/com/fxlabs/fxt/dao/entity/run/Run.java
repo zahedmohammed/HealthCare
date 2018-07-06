@@ -44,5 +44,7 @@ public class Run extends BaseEntity {
     @CollectionTable(name = "run_stats", joinColumns = @JoinColumn(name = "run_id"))
     private Map<String, Long> stats = new HashMap<>(); // maps from attribute name to value
 
+    private Integer validations;
+
 }
 

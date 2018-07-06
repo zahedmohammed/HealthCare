@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.rest.dashboard;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.it.IssueTrackerSaving;
 import com.fxlabs.fxt.dto.project.ProjectSaving;
 import com.fxlabs.fxt.dto.run.RunSavings;
 import com.fxlabs.fxt.dto.users.Saving;
@@ -146,6 +147,12 @@ public class DashboardController {
     @RequestMapping(value = "/run/{id}/run-savings", method = RequestMethod.GET)
     public Response<RunSavings> getExecTimeSavings(@PathVariable("id") String id) {
         return runService.getRunSavings(id,  SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/issuetracker/{id}/issuetracker-savings", method = RequestMethod.GET)
+    public Response<IssueTrackerSaving> getIssueTrackerSavings(@PathVariable("id") String id) {
+        return issueTrackerService.getIssueTrackerSavings(id,  SecurityUtil.getOrgId(),  SecurityUtil.getCurrentAuditor());
     }
 
 }
