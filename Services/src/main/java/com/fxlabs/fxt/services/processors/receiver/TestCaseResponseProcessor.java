@@ -130,10 +130,15 @@ public class TestCaseResponseProcessor {
                 // pass-from-na   ?
                 // send to ITTask to the right Skill.
             });
-            Run run = runRepository.findByRunId(testCaseResponses.get(0).getRunId());
-            if (run != null && validations.intValue() != 0) {
-                run.setValidations(validations.intValue());
-                runRepository.save(run);
+            String runId = testCaseResponses.get(0).getRunId();
+            if (!StringUtils.isEmpty(runId)) {
+
+                Run run = runRepository.findByRunId(runId);
+
+                if (run != null && validations.intValue() != 0) {
+                    run.setValidations(validations.intValue());
+                    runRepository.save(run);
+                }
             }
 
         } catch (RuntimeException ex) {
