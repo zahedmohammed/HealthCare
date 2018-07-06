@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.run;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.run.Run;
+import com.fxlabs.fxt.dto.run.RunSavings;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
 import com.fxlabs.fxt.services.base.GenericService;
@@ -33,4 +34,8 @@ public interface RunService extends GenericService<Run, String> {
     Response<Long> countTime(String user, Pageable pageable);
 
     Response<Long> countBytes(String user, Pageable pageable);
+
+    Response<com.fxlabs.fxt.dto.run.Run> findRunById(String runId, String user);
+
+    Response<RunSavings> getRunSavings(String runId, String user);
 }

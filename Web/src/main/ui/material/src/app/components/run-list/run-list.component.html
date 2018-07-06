@@ -17,7 +17,8 @@
                     <th class="mdl-data-table__cell--non-numeric">Pass/Fail</th>
                     <th class="mdl-data-table__cell--non-numeric">Success</th>
                     <th class="mdl-data-table__cell--non-numeric">Data</th>
-                    <th class="mdl-data-table__cell--non-numeric">Time</th>
+                    <th class="mdl-data-table__cell--non-numeric">Total Time</th>
+                    <th class="mdl-data-table__cell--non-numeric">Actual Time</th>
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
                 </tr>
                 </thead>
@@ -34,6 +35,7 @@
                     </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalBytes | byteFormat}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime | mstoDuration}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{item.task.timeTaken | mstoDuration}}</td>
                     <td class="mdl-data-table__cell--non-numeric">
                         <span *ngIf="item.task.status == 'COMPLETED'" class="text-success">{{item.task.status}}</span>
                         <span *ngIf="item.task.status != 'COMPLETED' && item.task.status != 'PROCESSING'" class="text-danger">{{item.task.status}}</span>

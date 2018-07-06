@@ -21,6 +21,7 @@ import com.fxlabs.fxt.services.project.ProjectService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,6 +82,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             } else {
                 run.setRegions(run.getJob().getRegions());
             }
+            if (run.getTask().getStartTime()!=null && run.getTask().getEndTime() != null)
+                run.getTask().setTimeTaken(run.getTask().getEndTime().getTime() - run.getTask().getStartTime().getTime());
         }
         return new Response<List<com.fxlabs.fxt.dto.run.Run>>(runs, page.getTotalElements(), page.getTotalPages());
     }
@@ -171,6 +174,13 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         List<TestSuiteResponse> dataSets = testSuiteResponseConverter.convertToDtos(page.getContent());
         return new Response<List<TestSuiteResponse>>(dataSets, page.getTotalElements(), page.getTotalPages());
     }
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.run.Run> findRunById(String runId, String user) {
+        Run run = this.repository.findByRunId(runId);
+        return new Response<com.fxlabs.fxt.dto.run.Run>(this.converter.convertToDto(run));
+    }
+
 
     @Override
     public Response<List<TestSuiteResponse>> findByPk(String id, String name, String user, Pageable pageable) {
@@ -310,5 +320,23 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     public void isUserEntitled(String s, String user) {
         // TODO
     }
+
+
+    @Override
+    public Response<RunSavings> getRunSavings(String runId, String user) {
+
+        RunSavings savings = new RunSavings();
+
+        long timeSaved = 0L;
+
+        Run run = this.repository.findByRunId(runId);
+        if (run.getTask().getStartTime()!=null && run.getTask().getEndTime() != null)
+            timeSaved = run.getTask().getTotalTime() - ( run.getTask().getEndTime().getTime() - run.getTask().getStartTime().getTime() );
+
+        savings.setTimeSaved(timeSaved);
+
+        return new Response<RunSavings>(savings);
+    }
+
 
 }
