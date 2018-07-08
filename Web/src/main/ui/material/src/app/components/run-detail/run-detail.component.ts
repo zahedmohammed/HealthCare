@@ -8,7 +8,9 @@ import { Run } from '../../models/run.model';
 import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
 import { MsgDialogComponent } from '../dialogs/msg-dialog/msg-dialog.component';
 import { Handler } from '../dialogs/handler/handler';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/timer';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({

@@ -8,7 +8,9 @@ import { Base } from '../../models/base.model';
 import { Handler } from '../dialogs/handler/handler';
 import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
 import { AdvRunComponent } from '../dialogs/adv-run/adv-run.component';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/timer';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
