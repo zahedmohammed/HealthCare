@@ -9,12 +9,13 @@ import { OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
 import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
+import {SnackbarService}from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-projects-new',
   templateUrl: './projects-new.component.html',
   styleUrls: ['./projects-new.component.scss'],
-  providers: [ProjectService, OrgService]
+  providers: [ProjectService, OrgService, SnackbarService]
 })
 export class ProjectsNewComponent implements OnInit {
 
@@ -22,9 +23,9 @@ export class ProjectsNewComponent implements OnInit {
   project: Project = new Project();
   orgs;
   accounts;
-  config;
+  /*config;*/
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) {
+  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar, private snackbarService: SnackbarService) {
     //this.project.genPolicy = "None";
   }
 
@@ -32,20 +33,21 @@ export class ProjectsNewComponent implements OnInit {
     this.AppConfig = APPCONFIG;
     //this.getOrgs();
     this.getAccountsForProjectPage();
-    this.config = new MatSnackBarConfig();
+    /*this.config = new MatSnackBarConfig();*/
   }
 
   create() {
     this.handler.activateLoader();
-    this.projectService.create(this.project).subscribe(results => {
+      this.snackbarService.openSnackBar( this.project.name + " Creating...", "");
+      this.projectService.create(this.project).subscribe(results => {
         this.handler.hideLoader();
         if (this.handler.handle(results)) {
             return;
         }
-        this.config.verticalPosition = 'top';
+       /* this.config.verticalPosition = 'top';
         this.config.horizontalPosition = 'right';
-        this.config.duration = 3000;
-        this.snackBar.open("Project " + this.project.name + " Successfully Created", "", this.config);
+        this.config.duration = 3000;*/
+        this.snackbarService.openSnackBar(this.project.name + " Created Successfully", "");
         this.router.navigate(['/app/projects']);
     }, error => {
         this.handler.hideLoader();

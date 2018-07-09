@@ -11,13 +11,14 @@ import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
 import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
+import {SnackbarService}from '../../../services/snackbar.service';
 import { Http, Response} from '@angular/http';
 
 @Component({
   selector: 'app-projects-edit',
   templateUrl: './projects-edit.component.html',
   styleUrls: ['./projects-edit.component.scss'],
-  providers: [ProjectService, OrgService, DashboardService, TestSuiteService]
+  providers: [ProjectService, OrgService, DashboardService, TestSuiteService, SnackbarService]
 })
 export class ProjectsEditComponent implements OnInit {
 
@@ -25,13 +26,13 @@ export class ProjectsEditComponent implements OnInit {
   orgs;
   project: Project = new Project();
   accounts;
-  config;
+  /*config;*/
   TestSuite;
   id;
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService,
   private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
-  public dialog: MatDialog, public snackBar: MatSnackBar, private dashboardService: DashboardService) { }
+  public dialog: MatDialog, public snackBar: MatSnackBar, private dashboardService: DashboardService, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.AppConfig = APPCONFIG;
@@ -42,7 +43,7 @@ export class ProjectsEditComponent implements OnInit {
         this.getById(params['id']);
         //this.getOrgs();
         this.getAccountsForProjectPage();
-        this.config = new MatSnackBarConfig();
+        /*this.config = new MatSnackBarConfig();*/
       }
     });
   }
@@ -73,15 +74,16 @@ export class ProjectsEditComponent implements OnInit {
 
   update() {
     console.log(this.project);
+    this.snackbarService.openSnackBar(this.project.name + " Savings...", "");
     this.projectService.update(this.project).subscribe(results => {
       this.handler.hideLoader();
-      if (this.handler.handle(results)) {
+        if (this.handler.handle(results)) {
         return;
       }
-      this.config.verticalPosition = 'top';
+     /* this.config.verticalPosition = 'top';
       this.config.horizontalPosition = 'right';
-      this.config.duration = 3000;
-      this.snackBar.open("Project " + this.project.name + " Successfully Updated", "", this.config);
+      this.config.duration = 3000;*/
+      this.snackbarService.openSnackBar( this.project.name + "  Saved Successfully", "");
       this.router.navigate(['/app/projects']);
     }, error => {
       this.handler.hideLoader();
@@ -99,15 +101,16 @@ delete() {
     dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
             this.handler.activateLoader();
+            this.snackbarService.openSnackBar(this.project.name + " Deleting...", "");
             this.projectService.delete(this.project).subscribe(results => {
                 this.handler.hideLoader();
                 if (this.handler.handle(results)) {
                     return;
                 }
-                this.config.verticalPosition = 'top';
+               /* this.config.verticalPosition = 'top';
                 this.config.horizontalPosition = 'right';
-                this.config.duration = 3000;
-                this.snackBar.open("Project " + this.project.name + " Successfully Deleted", "", this.config);
+                this.config.duration = 3000;*/
+                this.snackbarService.openSnackBar(this.project.name + " Deleted Successfully", "");
                 this.router.navigate(['/app/projects']);
             }, error => {
                 this.handler.hideLoader();
