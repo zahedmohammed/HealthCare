@@ -178,26 +178,26 @@
                                             <tbody>
                                             <tr>
                                                 <td class="mdl-data-table__cell--non-numeric">1</td>
-                                                <td class="mdl-data-table__cell--non-numeric">Total Time saving</td>
-                                                <td class="mdl-data-table__cell--non-numeric text-muted">( Trends: 25 Test-Suites/mo  => 8 hrs/suite ) | Generated: {{ TestSuite?.autoGenAllSuites }} x 8 hrs saved</td>
+                                                <td class="mdl-data-table__cell--non-numeric">AutoCode Coverage</td>
+                                                <td class="mdl-data-table__cell--non-numeric text-muted">Total test-suites checked-in by AutoCode</td>
+                                                <td> {{ TestSuite?.autoGenAllSuites }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="mdl-data-table__cell--non-numeric"></td>
+                                                <td class="mdl-data-table__cell--non-numeric">Time savings</td>
+                                                <td class="mdl-data-table__cell--non-numeric text-muted">~(20 integration test per month per developer)</td>
                                                 <td> {{ TestSuite?.totalTimeSaving | number }} hrs</td>
                                             </tr>
                                             <tr>
-                                                <td class="mdl-data-table__cell--non-numeric">2</td>
-                                                <td class="mdl-data-table__cell--non-numeric">Total Cost saving</td>
-                                                <td class="mdl-data-table__cell--non-numeric text-muted">( Cost $50/hr ) | Hours: {{ TestSuite?.totalTimeSaving }} x $50/hr saved</td>
+                                                <td class="mdl-data-table__cell--non-numeric"></td>
+                                                <td class="mdl-data-table__cell--non-numeric">Cost savings</td>
+                                                <td class="mdl-data-table__cell--non-numeric text-muted">~$50/hr per developer</td>
                                                 <td> ${{ TestSuite?.totalCostSaving | number}} </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="mdl-data-table__cell--non-numeric">3</td>
-                                                <td class="mdl-data-table__cell--non-numeric">Security coverage saving</td>
-                                                <td class="mdl-data-table__cell--non-numeric text-muted">Security Test-Suites Generated = {{ TestSuite?.autoGenSecuritySuites }} x 8 hrs x $50</td>
-                                                <td> ${{ TestSuite?.securityCoverageCostSaving | number }} </td>
                                             </tr>
                                             <tr class="bg-color-info font-weight-bold">
                                                 <td class="mdl-data-table__cell--non-numeric"></td>
-                                                <td class="mdl-data-table__cell--non-numeric">Total</td>
-                                                <td class="mdl-data-table__cell--non-numeric">Test-Suites Auto Generated: {{ TestSuite?.autoGenAllSuites }}</td>
+                                                <td class="mdl-data-table__cell--non-numeric">Total Value</td>
+                                                <td class="mdl-data-table__cell--non-numeric">Time saving + Cost saving</td>
                                                 <td>${{ TestSuite?.totalCostSaving | number}}  </td>
                                             </tr>
                                             </tbody>
