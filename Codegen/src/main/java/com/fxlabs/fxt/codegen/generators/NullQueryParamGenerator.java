@@ -10,6 +10,7 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +47,13 @@ public class NullQueryParamGenerator extends AbstractGenerator {
                     QueryParameter queryParam = (QueryParameter) param;
                     String postFix = POSTFIX + "_" + queryParam.getName();
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                    List<String> assertions = configUtil.getAssertions(POSTFIX);
                     for (TestSuiteMin testSuite : testSuites) {
-                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        if (!CollectionUtils.isEmpty(assertions)) {
+                            addAssertions(testSuite, assertions);
+                        }else{
+                            buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        }
                         String _path = path.replace("{" + queryParam.getName() + "}", "null");
                         testSuite.setEndpoint(_path);
                         testSuite.setCategory(TestSuiteCategory.Bug);

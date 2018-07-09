@@ -10,6 +10,7 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ import java.util.List;
 @Component(value = "invalidDataTypeForIntQueryParamGenerator")
 public class InvalidDataTypeForIntQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "query_param_invalid_data_type_for_int";
+    protected static final String POSTFIX = "invalid_datatype";
+    protected static final String PARAM_TYPE = "query_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
@@ -47,8 +49,13 @@ public class InvalidDataTypeForIntQueryParamGenerator extends AbstractGenerator 
                List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
 
 
+                List<String> assertions = configUtil.getAssertions(POSTFIX);
                 for (TestSuiteMin testSuite : testSuites) {
-                    buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                    if (!CollectionUtils.isEmpty(assertions)) {
+                        addAssertions(testSuite, assertions);
+                    }else{
+                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                    }
                     testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + RandomStringUtils.randomAlphanumeric(6));
                     testSuite.setCategory(TestSuiteCategory.Bug);
                     testSuite.setSeverity(TestSuiteSeverity.Major);

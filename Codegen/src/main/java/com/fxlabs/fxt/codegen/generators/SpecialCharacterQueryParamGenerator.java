@@ -8,6 +8,8 @@ import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
+import io.swagger.models.parameters.QueryParameter;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -18,10 +20,11 @@ import java.util.List;
  * @author Mohammed Shoukath Ali
  * @since 4/11/2018
  */
-@Component(value = "getEmptyStringPathParamGenerator")
-public class EmptyStringPathParamGenerator extends AbstractGenerator {
+@Component(value = "specialCharacterQueryParamStringGenerator")
+public class SpecialCharacterQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "path_param_empty_string";
+    protected static final String POSTFIX = "special_chars";
+    protected static final String PARAM_TYPE = "query_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
@@ -33,19 +36,17 @@ public class EmptyStringPathParamGenerator extends AbstractGenerator {
 
             for (Parameter param : op.getParameters()) {
 
-                if (!(param instanceof PathParameter)) {
+                if (!(param instanceof QueryParameter)) {
                     continue;
                 }
 
+                QueryParameter queryParam = (QueryParameter) param;
 
-                PathParameter pathParam = (PathParameter) param;
-
-                if (!"string".equals(pathParam.getType()) || !pathParam.getRequired()) {
+                if (!"string".equals(queryParam.getType())) {
                     continue;
                 }
 
-
-                String postFix = POSTFIX + "_" + pathParam.getName();
+                String postFix = PARAM_TYPE + "_" +POSTFIX + "_" + queryParam.getName();
                 List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
 
                 List<String> assertions = configUtil.getAssertions(POSTFIX);
@@ -55,10 +56,9 @@ public class EmptyStringPathParamGenerator extends AbstractGenerator {
                     }else{
                         buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
                     }
-                    String _path = path.replace("{" + pathParam.getName() + "}", "");
-                    testSuite.setEndpoint(_path);
+                    testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "!@#$%^&*()");
                     testSuite.setCategory(TestSuiteCategory.Bug);
-                    testSuite.setSeverity(TestSuiteSeverity.Minor);
+                    testSuite.setSeverity(TestSuiteSeverity.Major);
 
                 }
                 allTestSuites.addAll(testSuites);
