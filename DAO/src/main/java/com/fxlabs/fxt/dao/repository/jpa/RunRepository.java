@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -29,7 +30,7 @@ public interface RunRepository extends JpaRepository<Run, String> {
 
     Stream<Run> findByTaskStatusAndCreatedDateLessThan(TaskStatus status, Date dt);
 
-    Stream<Run> findByTaskStatusAndCreatedDateGreaterThan(TaskStatus status, Date dt);
+    Stream<Run> findByTaskStatusInAndCreatedDateGreaterThan(Collection<TaskStatus> status, Date dt);
 
     List<Run> findAllRunsByJobId(String id);
 
