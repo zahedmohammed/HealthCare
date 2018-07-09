@@ -22,9 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -64,6 +62,8 @@ public class MarkCompleteTaskProcessor {
     @Autowired
     private SystemSettingService systemSettingService;
 
+    private final static Collection<TaskStatus> statuses = Arrays.asList(TaskStatus.PROCESSING, TaskStatus.COMPLETED);
+
     /**
      * Find Tasks with state 'PROCESSING'
      * If completed-suites >= total-suites
@@ -73,7 +73,7 @@ public class MarkCompleteTaskProcessor {
     public void process() {
         try {
             Date dt = DateUtils.addMinutes(new Date(), -30);
-            Stream<Run> runs = runRepository.findByTaskStatusAndCreatedDateGreaterThan(TaskStatus.PROCESSING, dt);
+            Stream<Run> runs = runRepository.findByTaskStatusInAndCreatedDateGreaterThan(statuses, dt);
 
 
             runs.forEach(run -> {
