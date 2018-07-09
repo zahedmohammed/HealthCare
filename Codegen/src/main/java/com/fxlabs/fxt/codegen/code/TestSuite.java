@@ -20,6 +20,7 @@ import java.util.List;
 @ToString
 public class TestSuite implements Serializable {
 
+    private String category;
     private String postfix;
     private List<String> assertions;
 
