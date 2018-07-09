@@ -22,7 +22,9 @@ import java.util.List;
 @Component(value = "nullPathParamGenerator")
 public class NullPathParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "path_param_null";
+    protected static final String POSTFIX = "null_value";
+    protected static final String PARAM_TYPE = "path_param";
+
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
@@ -39,7 +41,7 @@ public class NullPathParamGenerator extends AbstractGenerator {
                     }
 
                     PathParameter pathParam = (PathParameter) param;
-                    String postFix = POSTFIX + "_" + pathParam.getName();
+                    String postFix = PARAM_TYPE  + "_" + POSTFIX + "_" + pathParam.getName();
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     List<String> assertions = configUtil.getAssertions(POSTFIX);
                     for (TestSuiteMin testSuite : testSuites) {
