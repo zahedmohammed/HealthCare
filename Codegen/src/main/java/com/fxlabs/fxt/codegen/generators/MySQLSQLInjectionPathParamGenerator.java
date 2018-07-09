@@ -21,7 +21,8 @@ import java.util.List;
 @Component(value = "mySQLSqlInjectionPathParamGenerator")
 public class MySQLSQLInjectionPathParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "path_param_sql_injection_MySQL";
+    protected static final String POSTFIX = "sql_injection";
+    protected static final String PARAM_TYPE = "path_param";
     protected static final String AUTH = "Default";// BASIC
     protected static final String OPERAND = "200";
     protected static final String INJECTION_DATASET = "@MySQLSQLInjections";
@@ -31,11 +32,10 @@ public class MySQLSQLInjectionPathParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        if (! isDB(DB_NAME)){
+        if (! configUtil.isDB(DB_NAME)){
             return null;
         }
-        String dbVersion = getDBVersion(DB_NAME);
-
+        String dbVersion = configUtil.getDBVersion(DB_NAME);
 
         Policies policies =  new Policies();
         policies.setRepeatModule(INJECTION_DATASET);
@@ -58,10 +58,15 @@ public class MySQLSQLInjectionPathParamGenerator extends AbstractGenerator {
 //                }
                 if (param instanceof PathParameter) {
                     PathParameter pathParam = (PathParameter) param;
-                    String postFix = POSTFIX + "_" + pathParam.getName();
+                    String postFix = PARAM_TYPE + "_" + POSTFIX + "_" + DB_NAME + "_" + pathParam.getName();
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, false);
+                    List<String> assertions = configUtil.getAssertions(POSTFIX);
                     for (TestSuiteMin testSuite : testSuites) {
-                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        if (!CollectionUtils.isEmpty(assertions)) {
+                            addAssertions(testSuite, assertions);
+                        }else{
+                            buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        }
 
                         String _path = path.replace("{" + pathParam.getName() + "}", "{{"+INJECTION_DATASET+"}}");
                         testSuite.setEndpoint(_path);

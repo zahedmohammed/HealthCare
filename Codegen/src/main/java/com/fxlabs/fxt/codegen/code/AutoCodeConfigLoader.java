@@ -14,9 +14,9 @@ import java.io.File;
 /**
  * @author Mohammed Luqman Shareef
  */
-public class AutoCodeConfigUtil {
+public class AutoCodeConfigLoader {
 
-    protected static Logger logger = LoggerFactory.getLogger(AutoCodeConfigUtil.class);
+    protected static Logger logger = LoggerFactory.getLogger(AutoCodeConfigLoader.class);
 
     public static AutoCodeConfig loadConfig(String projectDir){
         AutoCodeConfig config = null;
@@ -49,7 +49,6 @@ public class AutoCodeConfigUtil {
             }
 
         } catch (Exception e) {
-//            e.printStackTrace();
             logger.warn(e.getLocalizedMessage(), e);
             System.out.println(String.format("Failed with error [%s]", e.getLocalizedMessage()));
             CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.ERROR, "", String.format("Failed with error [%s]", e.getLocalizedMessage()));

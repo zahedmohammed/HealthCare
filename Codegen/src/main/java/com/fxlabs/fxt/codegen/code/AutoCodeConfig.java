@@ -26,6 +26,8 @@ public class AutoCodeConfig implements Serializable {
 
     private List<String> logForgingPatterns;
 
+    private List<TestSuite> testSuites;
+
 }
 
 

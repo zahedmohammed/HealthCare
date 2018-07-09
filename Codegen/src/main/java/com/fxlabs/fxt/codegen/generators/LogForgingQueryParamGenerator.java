@@ -9,6 +9,7 @@ import com.mifmif.common.regex.Generex;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.QueryParameter;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -22,38 +23,36 @@ import java.util.List;
 @Component(value = "logForgingQueryParamGenerator")
 public class LogForgingQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "query_param_log_forging";
+    protected static final String POSTFIX = "log_forging";
+    protected static final String PARAM_TYPE = "query_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        if (this.getAutoCodeConfig() == null ) return null;
-
-        List<String> patterns = this.getAutoCodeConfig().getLogForgingPatterns();
+        List<String> patterns = configUtil.getLogForgingPatterns();
 
         if (CollectionUtils.isEmpty(patterns)) return null;
-//
-//        Generex generex1 = new Generex("[6-9]\\d{9}");
-//        String logForgerStr1 = generex1.random();
-//        System.out.println(logForgerStr1);
 
-        Generex generex = new Generex(patterns.get(0));
+        Generex generex = new Generex(patterns.get(RandomUtils.nextInt(0,patterns.size()-1)));
         String logForgerStr = generex.random();
-        System.out.println(logForgerStr);
-
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
         if (method == io.swagger.models.HttpMethod.GET) {
             for (Parameter param : op.getParameters()) {
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
-                    System.out.println("QP :" + queryParam.getName());
-                    String postFix = POSTFIX + "_" + queryParam.getName();
+                    String postFix = PARAM_TYPE + "_" + POSTFIX + "_" + queryParam.getName();
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                    List<String> assertions = configUtil.getAssertions(POSTFIX);
                     for (TestSuiteMin testSuite : testSuites) {
-                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        if (!CollectionUtils.isEmpty(assertions)) {
+                            addAssertions(testSuite, assertions);
+                        }else{
+                            buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        }
+
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + logForgerStr );  // "{{@LogForging}}"
                         testSuite.setCategory(TestSuiteCategory.Security_DDOS);
                         testSuite.setSeverity(TestSuiteSeverity.Major);
@@ -64,4 +63,6 @@ public class LogForgingQueryParamGenerator extends AbstractGenerator {
         }
         return allTestSuites;
     }
+
+
 }

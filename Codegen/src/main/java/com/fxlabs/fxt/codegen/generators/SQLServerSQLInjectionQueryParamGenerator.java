@@ -9,6 +9,7 @@ import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,8 @@ import java.util.List;
 @Component(value = "sqlServerSqlInjectionQueryParamGenerator")
 public class SQLServerSQLInjectionQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "query_param_sql_injection_sqlServer";
+    protected static final String POSTFIX = "sql_injection";
+    protected static final String PARAM_TYPE = "path_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
     protected static final String DB_NAME = "SQLServer";
@@ -28,20 +30,25 @@ public class SQLServerSQLInjectionQueryParamGenerator extends AbstractGenerator 
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        if (! isDB(DB_NAME)){
+        if (! configUtil.isDB(DB_NAME)){
             return null;
         }
-        String dbVersion = getDBVersion(DB_NAME);
+        String dbVersion = configUtil.getDBVersion(DB_NAME);
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
         if (method == io.swagger.models.HttpMethod.GET) {
             for (Parameter param : op.getParameters()) {
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
-                    String postFix = POSTFIX + "_" + queryParam.getName();
+                    String postFix = PARAM_TYPE + "_" + POSTFIX + "_" + DB_NAME + "_" + queryParam.getName();
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                    List<String> assertions = configUtil.getAssertions(POSTFIX);
                     for (TestSuiteMin testSuite : testSuites) {
-                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        if (!CollectionUtils.isEmpty(assertions)) {
+                            addAssertions(testSuite, assertions);
+                        }else{
+                            buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        }
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@SQLServerSQLInjections}}");
                         testSuite.setCategory(TestSuiteCategory.Security_SQL_Injection);
                         testSuite.setSeverity(TestSuiteSeverity.Major);

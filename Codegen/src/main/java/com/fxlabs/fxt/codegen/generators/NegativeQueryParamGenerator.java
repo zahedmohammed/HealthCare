@@ -6,6 +6,7 @@ import io.swagger.models.Operation;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
 import io.swagger.models.parameters.Parameter;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.List;
 @Component(value = "queryParamGeneratorNegative")
 public class NegativeQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "query_param_negative";
+    protected static final String POSTFIX = "negative";
+    protected static final String PARAM_TYPE = "query_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
@@ -30,10 +32,15 @@ public class NegativeQueryParamGenerator extends AbstractGenerator {
                 if (param instanceof QueryParameter){
                     QueryParameter queryParam = (QueryParameter) param;
                     if ("integer".equals(queryParam.getType())){
-                        String postFix = POSTFIX + "_" + queryParam.getName() ;
+                        String postFix = PARAM_TYPE + "_" + POSTFIX + "_"  + queryParam.getName() ;
                         List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                        List<String> assertions = configUtil.getAssertions(POSTFIX);
                         for (TestSuiteMin testSuite : testSuites) {
-                            buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                            if (!CollectionUtils.isEmpty(assertions)) {
+                                addAssertions(testSuite, assertions);
+                            }else{
+                                buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                            }
                             testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "-1");
                             testSuite.setCategory(TestSuiteCategory.Negative);
                             testSuite.setSeverity(TestSuiteSeverity.Major);

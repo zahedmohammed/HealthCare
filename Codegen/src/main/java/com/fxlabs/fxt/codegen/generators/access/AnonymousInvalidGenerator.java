@@ -8,6 +8,7 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
 
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
+
+
 
         for (Parameter param : op.getParameters()) {
             if (param instanceof QueryParameter) {
@@ -39,7 +42,13 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
         List<TestSuiteMin> list = build(op, path, POSTFIX, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
 
         // TODO - if Security required
-        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+
+        List<String> assertions = configUtil.getAssertions(POSTFIX);
+        if (!CollectionUtils.isEmpty(assertions)) {
+            addAssertions(list.get(0), assertions);
+        }else{
+            buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+        }
 
         // TODO buildTestCase(testSuite)
         if (method == io.swagger.models.HttpMethod.POST || method == io.swagger.models.HttpMethod.PUT) {

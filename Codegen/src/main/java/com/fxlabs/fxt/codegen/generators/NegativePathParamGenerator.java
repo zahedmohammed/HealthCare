@@ -10,6 +10,7 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ import java.util.List;
 @Component(value = "pathParamGeneratorNegative")
 public class NegativePathParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "path_param_negative";
+    protected static final String POSTFIX = "negative";
+    protected static final String PARARM_TYPE  = "path_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
@@ -47,10 +49,15 @@ public class NegativePathParamGenerator extends AbstractGenerator {
                 if (param instanceof PathParameter){
                     PathParameter pathParam = (PathParameter) param;
                     if ("integer".equals(pathParam.getType())){
-                        String postFix = POSTFIX + "_" + pathParam.getName() ;
+                        String postFix = PARARM_TYPE + "_" + POSTFIX + "_" + pathParam.getName() ;
                         List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                        List<String> assertions = configUtil.getAssertions(POSTFIX);
                         for (TestSuiteMin testSuite : testSuites) {
-                            buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                            if (!CollectionUtils.isEmpty(assertions)) {
+                                addAssertions(testSuite, assertions);
+                            }else{
+                                buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                            }
                             String name = pathParam.getName();
                             path = path.replace("\\{"+name+"\\}" , "-1");
                             testSuite.setEndpoint(path );

@@ -4,6 +4,7 @@ import com.fxlabs.fxt.codegen.code.AutoCodeConfig;
 import com.fxlabs.fxt.codegen.code.Database;
 import com.fxlabs.fxt.codegen.code.StubHandler;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
+import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
 import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
 import com.fxlabs.fxt.dto.project.*;
 import io.swagger.models.Operation;
@@ -36,7 +37,8 @@ public abstract class AbstractGenerator implements Generator {
     @Autowired
     protected JSONFactory factory;
 
-    protected AutoCodeConfig autoCodeConfig = null;
+    protected AutoCodeConfigUtil configUtil = new AutoCodeConfigUtil();
+//    protected AutoCodeConfig autoCodeConfig = null;
 
     @PostConstruct
     public void register() {
@@ -205,6 +207,18 @@ public abstract class AbstractGenerator implements Generator {
         return this;
     }
 
+    protected AbstractGenerator addAssertions(TestSuiteMin testSuite, List<String> assertions) {
+
+        // Assertions
+        if (testSuite.getAssertions() == null) {
+            testSuite.setAssertions(new ArrayList<>());
+        }
+
+        testSuite.getAssertions().addAll(assertions);
+
+        return this;
+    }
+
     protected AbstractGenerator buildTag(TestSuiteMin testSuite) {
         return buildTag(testSuite, "V1");
     }
@@ -276,46 +290,13 @@ public abstract class AbstractGenerator implements Generator {
 
 
     @Override
-    public void setAutoCodeConfig(AutoCodeConfig config){
-        this.autoCodeConfig = config;
+    public void setAutoCodeConfig(AutoCodeConfig autoCodeConfig){
+        this.configUtil.setConfig(autoCodeConfig);
     }
 
 //    @Override
-    public AutoCodeConfig getAutoCodeConfig(){
-        return this.autoCodeConfig ;
-    }
-
-    public boolean isDB(String dbName){
-
-        // For now, returning true for every DB (if config file is not present) so that TestSuites for all DBs are generated.
-        //TODO: If we make AutoCodeConfig.yaml mandatory with entries of DB, we need to return false here.
-        if (this.autoCodeConfig == null ) return true;
-
-        boolean isDBGivenName = false;
-        if (! CollectionUtils.isEmpty(this.autoCodeConfig.getDatabases())){
-            for ( Database db : this.autoCodeConfig.getDatabases()){
-                if (StringUtils.equalsIgnoreCase(db.getName(), dbName)){
-                    if (!db.isInactive())
-                        return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public String getDBVersion(String dbName){
-
-        if (this.autoCodeConfig == null ) return null;
-
-        String version = null;
-        if (! CollectionUtils.isEmpty(this.autoCodeConfig.getDatabases())){
-            for ( Database db : this.autoCodeConfig.getDatabases() ){
-                if (StringUtils.equalsIgnoreCase(db.getName(), dbName)){
-                    version = db.getVersion();
-                }
-            }
-        }
-        return version;
-    }
+//    public AutoCodeConfig getAutoCodeConfig(){
+//        return this.autoCodeConfig ;
+//    }
 
 }

@@ -37,7 +37,7 @@ public class StubGenerator {
 
             Swagger swagger = build(spec, headerKey, headerVal);
 
-            AutoCodeConfig config = AutoCodeConfigUtil.loadConfig(configFilePath);
+            AutoCodeConfig config = AutoCodeConfigLoader.loadConfig(configFilePath);
 
             factory.init(swagger);
 

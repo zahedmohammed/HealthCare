@@ -27,10 +27,10 @@ public class MongoDBSQLInjectionPathParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        if (! isDB(DB_NAME)){
+        if (! configUtil.isDB(DB_NAME)){
             return null;
         }
-        String dbVersion = getDBVersion(DB_NAME);
+        String dbVersion = configUtil.getDBVersion(DB_NAME);
 
 
         Policies policies =  new Policies();

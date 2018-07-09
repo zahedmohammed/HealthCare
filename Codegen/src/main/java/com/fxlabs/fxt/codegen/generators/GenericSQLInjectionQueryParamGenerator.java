@@ -9,6 +9,7 @@ import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,9 @@ import java.util.List;
 @Component(value = "genericSqlInjectionQueryParamGenerator")
 public class GenericSQLInjectionQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "query_param_sql_injection_generic";
+    protected static final String POSTFIX = "sql_injection";
+    protected static final String PARAM_TYPE = "query_param";
+    protected static final String DB_NAME = "generic";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
@@ -32,10 +35,15 @@ public class GenericSQLInjectionQueryParamGenerator extends AbstractGenerator {
             for (Parameter param : op.getParameters()) {
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
-                    String postFix = POSTFIX + "_" + queryParam.getName();
+                    String postFix = PARAM_TYPE + "_" + POSTFIX + "_" + DB_NAME + "_" + queryParam.getName();
                     List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                    List<String> assertions = configUtil.getAssertions(POSTFIX);
                     for (TestSuiteMin testSuite : testSuites) {
-                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        if (!CollectionUtils.isEmpty(assertions)) {
+                            addAssertions(testSuite, assertions);
+                        }else{
+                            buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
+                        }
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@GenericSQLInjections}}");
                         testSuite.setCategory(TestSuiteCategory.Security_SQL_Injection);
                         testSuite.setSeverity(TestSuiteSeverity.Major);

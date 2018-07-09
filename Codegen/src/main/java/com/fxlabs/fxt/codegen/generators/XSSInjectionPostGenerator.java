@@ -79,7 +79,14 @@ public class XSSInjectionPostGenerator extends AbstractGenerator {
 
         String testcase = objNode.toString();
         List<TestSuiteMin> list = build(op, path, POSTFIX, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+        List<String> assertions = configUtil.getAssertions(POSTFIX);
+
+        if (!CollectionUtils.isEmpty(assertions)) {
+            addAssertions(list.get(0), assertions);
+        }else{
+            buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+        }
+
         buildTestCase(list.get(0), 1, testcase);
 
         return list;
