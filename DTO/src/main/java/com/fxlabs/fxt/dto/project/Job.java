@@ -36,10 +36,9 @@ public class Job extends BaseDto<String> {
 
     private Date nextFire;
 
-    private String issueTracker;
+    private JobIssueTracker issueTracker;
 
-    private  List<String> notifications;
-
+    private List<JobNotification> notifications;
 
 }
 

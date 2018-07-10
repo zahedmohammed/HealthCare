@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.sdk.beans;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,11 +35,13 @@ public class Job implements Serializable {
     private String cron;
     private Date nextFire;
 
-    private String issueTracker;
-
     private boolean inactive;
 
-    private  List<String> notifications;
+    @JsonProperty("issueTracker")
+    private JobIssueTracker issueTracker;
+
+    @JsonProperty("notifications")
+    private List<JobNotification> notifications;
 
 
 }

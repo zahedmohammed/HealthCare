@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -44,10 +43,17 @@ public class Job extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date nextFire;
 
-    private String issueTracker;
+    @OneToOne
+    @JoinColumn(name = "job_issue_tracker_id")
+    private JobIssueTracker issueTracker;
 
     @ElementCollection
-    private  List<String> notifications;
+    private List<JobNotification> notifications;
+
+    //private String issueTracker;
+
+//    @ElementCollection
+//    private  List<String> notifications;
 
     @PrePersist
     @PreUpdate

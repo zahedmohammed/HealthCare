@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.dao.entity.project.JobNotification;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
@@ -134,18 +135,18 @@ public class MarkCompleteTaskProcessor {
                 return;
             }
 
-            for (String address : run.getJob().getNotifications()) {
+            for (JobNotification jn : run.getJob().getNotifications()) {
 
-                if (StringUtils.isEmpty(address) || StringUtils.isEmpty(run.getJob().getCreatedBy())) {
+                if (StringUtils.isEmpty(jn.getName()) || StringUtils.isEmpty(run.getJob().getCreatedBy())) {
                     logger.info("Ignoring notification invalid data");
-                    continue;
+                    return;
                 }
 
-                Response<Notification> notificationResponse = notificationAccountService.findByName(address, run.getJob().getCreatedBy());
+                Response<Notification> notificationResponse = notificationAccountService.findByName(jn.getName(), run.getJob().getCreatedBy());
 
                 if (notificationResponse.isErrors() || notificationResponse.getData() == null) {
-                    logger.info("Notification Account not found for name [{}]", address);
-                    continue;
+                    logger.info("Notification Account not found for name [{}]", jn.getName());
+                    return;
                 }
 
                 Notification notification = notificationResponse.getData();
@@ -174,8 +175,8 @@ public class MarkCompleteTaskProcessor {
                     default:
                         logger.info("Notification Account type [{}] not supported", notification.getType());
                 }
-
             }
+
         } catch (Exception e) {
             logger.info("Failed to send notification for Job [{}]", run.getJob().getName());
             logger.info(e.getLocalizedMessage());

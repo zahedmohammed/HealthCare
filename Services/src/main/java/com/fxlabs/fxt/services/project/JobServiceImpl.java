@@ -1,9 +1,14 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.JobConverter;
+import com.fxlabs.fxt.converters.project.JobIssueTrackerConverter;
+import com.fxlabs.fxt.converters.project.JobNotificationConverter;
 import com.fxlabs.fxt.dao.entity.project.Job;
+import com.fxlabs.fxt.dao.entity.project.JobIssueTracker;
+import com.fxlabs.fxt.dao.repository.jpa.JobIssueTrackerRepository;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
+import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
@@ -15,7 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -28,16 +36,26 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     private JobRepository jobRepository;
     private ProjectService projectService;
     private RunRepository runRepository;
+    private JobNotificationConverter jobNotificationConverter;
+    private JobIssueTrackerConverter jobIssueTrackerConverter;
+
+    //private JobNotificationRepository jobNotificationRepository;
+    private JobIssueTrackerRepository jobIssueTrackerRepository;
 
     @Autowired
-    public JobServiceImpl(JobRepository repository, JobConverter converter, ProjectService projectService, RunRepository runRepository) {
+    public JobServiceImpl(JobRepository repository, JobConverter converter, ProjectService projectService, RunRepository runRepository,
+                          JobNotificationConverter projectNotificationConverter, JobIssueTrackerConverter jobIssueTrackerConverter,
+                           JobIssueTrackerRepository jobIssueTrackerRepository) {
         super(repository, converter);
         this.jobRepository = repository;
         this.projectService = projectService;
         this.runRepository = runRepository;
+        this.jobNotificationConverter = jobNotificationConverter;
+        this.jobIssueTrackerConverter = jobIssueTrackerConverter;
+        this.jobIssueTrackerRepository = jobIssueTrackerRepository;
     }
 
-    /*@Override
+    @Override
     public Response<List<com.fxlabs.fxt.dto.project.Job>> save(List<com.fxlabs.fxt.dto.project.Job> jobs, String user) {
         if (CollectionUtils.isEmpty(jobs)) {
             throw new FxException("Invalid arguments");
@@ -45,6 +63,10 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         final List<Message> messages = new ArrayList<>();
         Response response = new Response<>();
         jobs.stream().forEach(job -> {
+
+           // getSavedProjectNotification(job);
+            getSavedProjectIssueTracker(job);
+
             Response<com.fxlabs.fxt.dto.project.Job> jobResponse = save(job, user);
             if (!CollectionUtils.isEmpty(jobResponse.getMessages())) {
                 messages.addAll(jobResponse.getMessages());
@@ -55,7 +77,23 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         });
 
         return response.withMessages(messages);
-    }*/
+    }
+
+//    private void getSavedProjectNotification(com.fxlabs.fxt.dto.project.Job job) {
+//        if (job.getNotifications() != null) {
+//            JobNotification projectNotification = projectNotificationConverter.convertToEntity(job.getNotification());
+//            com.fxlabs.fxt.dto.project.JobNotification projectNotificationDto = projectNotificationConverter.convertToDto(projectNotificationRepository.save(projectNotification));
+//            job.setNotification(projectNotificationDto);
+//        }
+//    }
+
+    private void getSavedProjectIssueTracker(com.fxlabs.fxt.dto.project.Job job) {
+        if (job.getIssueTracker() != null) {
+            JobIssueTracker projectIssueTracker = jobIssueTrackerConverter.convertToEntity(job.getIssueTracker());
+            com.fxlabs.fxt.dto.project.JobIssueTracker projectIssueTrackerDto = jobIssueTrackerConverter.convertToDto(jobIssueTrackerRepository.save(projectIssueTracker));
+            job.setIssueTracker(projectIssueTrackerDto);
+        }
+    }
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.Job> save(com.fxlabs.fxt.dto.project.Job job, String user) {
@@ -138,7 +176,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
     @Override
     public Response<List<com.fxlabs.fxt.dto.project.Job>> findJobsByIssueTracker(String name) {
-        List<Job> _jobs = jobRepository.findByIssueTracker(name);
+        List<Job> _jobs = jobRepository.findByIssueTrackerName(name);
         return new Response<>(converter.convertToDtos(_jobs), new Long(_jobs.size()), _jobs.size());
     }
 

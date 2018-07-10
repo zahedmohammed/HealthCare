@@ -4,12 +4,11 @@ import com.fxlabs.fxt.converters.users.OrgConverter;
 import com.fxlabs.fxt.converters.users.OrgUsersConverter;
 import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.clusters.AccountType;
+import com.fxlabs.fxt.dao.entity.it.IssueTracker;
+import com.fxlabs.fxt.dao.entity.notify.Notification;
 import com.fxlabs.fxt.dao.entity.users.*;
 import com.fxlabs.fxt.dao.repository.es.OrgUsersESRepository;
-import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
-import com.fxlabs.fxt.dao.repository.jpa.OrgRepository;
-import com.fxlabs.fxt.dao.repository.jpa.OrgUsersRepository;
-import com.fxlabs.fxt.dao.repository.jpa.UsersRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.UserMinimalDto;
 import com.fxlabs.fxt.dto.users.Member;
@@ -42,13 +41,15 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     private UsersRepository usersRepository;
     private UsersService usersService;
     private AccountRepository accountRepository;
+    private IssueTrackerRepository issueTrackerRepository;
+    private NotificationRepository notificationRepository;
 
     public static final Collection<OrgRole> roles = Arrays.asList(OrgRole.ADMIN, OrgRole.ENTERPRISE_ADMIN);
 
     @Autowired
     public OrgServiceImpl(OrgUsersRepository orgUsersRepository, OrgUsersESRepository orgUsersESRepository,
-                          OrgUsersConverter orgUsersConverter, OrgRepository orgRepository, OrgConverter orgConverter,
-                          UsersRepository usersRepository, UsersService usersService, AccountRepository accountRepository) {
+                          OrgUsersConverter orgUsersConverter, OrgRepository orgRepository, OrgConverter orgConverter, NotificationRepository notificationRepository,
+                          UsersRepository usersRepository, IssueTrackerRepository issueTrackerRepository, UsersService usersService, AccountRepository accountRepository) {
 
         super(orgRepository, orgConverter);
 
@@ -61,7 +62,8 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         this.usersRepository = usersRepository;
         this.usersService = usersService;
         this.accountRepository = accountRepository;
-
+        this.issueTrackerRepository = issueTrackerRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     @Override
@@ -102,7 +104,8 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
         // OrgUsers
         OrgUsers orgUsers = new OrgUsers();
-        orgUsers.setOrg(orgConverter.convertToEntity(response.getData()));
+        Org org = orgConverter.convertToEntity(response.getData());
+        orgUsers.setOrg(org);
         orgUsers.setUsers(users);
         orgUsers.setOrgRole(OrgRole.ADMIN);
         orgUsers.setStatus(OrgUserStatus.ACTIVE);
@@ -110,32 +113,48 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
         Account ca = new Account();
 
-        ca.setOrg(orgConverter.convertToEntity(response.getData()));
+        ca.setOrg(org);
         ca.setAccountType(AccountType.Self_Hosted);
         ca.setCreatedBy(users.getId());
         ca.setInactive(false);
-        ca.setName("Default");
+        ca.setName("Default_SelfHosted");
 
         this.accountRepository.save(ca);
 
         Account caGithub = new Account();
-
-        caGithub.setOrg(orgConverter.convertToEntity(response.getData()));
+        caGithub.setOrg(org);
         caGithub.setAccountType(AccountType.GitHub);
         caGithub.setCreatedBy(users.getId());
         caGithub.setInactive(false);
-        caGithub.setName("Default");
+        caGithub.setName("Default_GitHub");
+        Account gitSavedEntity = this.accountRepository.save(caGithub);
 
-        this.accountRepository.save(caGithub);
+        IssueTracker issueTrackerGitHub = new IssueTracker();
+        issueTrackerGitHub.setOrg(org);
+        issueTrackerGitHub.setAccount(gitSavedEntity);
+        issueTrackerGitHub.setName("Dev-IssueTracker");
+        issueTrackerRepository.save(issueTrackerGitHub);
+
+        Account caSlack = new Account();
+        caSlack.setOrg(org);
+        caSlack.setAccountType(AccountType.Slack);
+        caSlack.setCreatedBy(users.getId());
+        caSlack.setInactive(false);
+        caSlack.setName("Default_Slack");
+        Account accountSlackEntity = this.accountRepository.save(caSlack);
+
+        Notification notificationSlack =  new Notification();
+        notificationSlack.setOrg(org);
+        notificationSlack.setName("Dev-Slack-Notification");
+        notificationSlack.setAccount(accountSlackEntity);
+        notificationRepository.save(notificationSlack);
 
         Account caEmail = new Account();
-
-        caEmail.setOrg(orgConverter.convertToEntity(response.getData()));
+        caEmail.setOrg(org);
         caEmail.setAccountType(AccountType.Email);
         caEmail.setCreatedBy(users.getId());
         caEmail.setInactive(false);
-        caEmail.setName("Default");
-
+        caEmail.setName("Default_Email");
         this.accountRepository.save(caEmail);
 
 

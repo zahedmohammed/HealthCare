@@ -16,7 +16,7 @@ public interface JobRepository extends JpaRepository<Job, String> {
 
     List<Job> findByProjectIdAndInactive(String project, boolean inactive, Pageable pageable);
 
-    List<Job> findByIssueTracker(String issueTracker);
+    List<Job> findByIssueTrackerName(String issueTracker);
 
     Long countByProjectIdAndInactive(String project, boolean inactive);
 

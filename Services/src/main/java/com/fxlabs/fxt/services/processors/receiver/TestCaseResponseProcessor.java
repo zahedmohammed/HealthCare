@@ -13,14 +13,12 @@ import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.it.IssueTrackerService;
 import com.fxlabs.fxt.services.skills.SkillService;
-import io.netty.util.internal.StringUtil;
 import org.apache.commons.collections.IteratorUtils;
 import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -167,7 +165,7 @@ public class TestCaseResponseProcessor {
             return null;
         }
 
-        Response<IssueTracker> issueTrackerResponse = skillSubscriptionService.findByName(job.getIssueTracker());
+        Response<IssueTracker> issueTrackerResponse = skillSubscriptionService.findByName(job.getIssueTracker().getName());
 
         if (issueTrackerResponse.getData() == null || issueTrackerResponse.getData().getAccount() == null) {
             return null;

@@ -196,7 +196,9 @@ public class GitService implements VersionControlService {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }finally {
-            deletePrivateKey(privateKey);
+            if (privateKey != null) {
+                deletePrivateKey(privateKey);
+            }
         }
 
         return repository;
@@ -412,7 +414,11 @@ public class GitService implements VersionControlService {
         return sshSessionFactory;
     }
 
-    private File createFile(String args) {
+    private File createFile(String password) {
+
+        if (StringUtils.isEmpty(password)){
+            return null;
+        }
 
         BufferedWriter bufferedWriter = null;
         File myFile = null;
@@ -424,7 +430,9 @@ public class GitService implements VersionControlService {
             }
             Writer writer = new FileWriter(myFile);
             bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write(args);
+            if (bufferedWriter != null) {
+                bufferedWriter.write(password);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

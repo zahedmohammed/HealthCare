@@ -651,13 +651,13 @@ public class FxCommandService {
             job.setName(jobProfile.getName());
 
             job.setTags(jobProfile.getTags());
-            job.setNotifications(jobProfile.getNotifications());
+            getNotification(jobProfile, job);
 
             job.setEnvironment(jobProfile.getEnvironment());
 
             job.setRegions(jobProfile.getRegions());
             job.setCron(jobProfile.getCron());
-            job.setIssueTracker(jobProfile.getIssueTracker());
+            getIssueTracker(jobProfile, job);
             job.setInactive(jobProfile.isInactive());
             ProjectMinimalDto proj = new ProjectMinimalDto();
             proj.setId(projectId);
@@ -668,6 +668,35 @@ public class FxCommandService {
             logger.info("job created with id [{}]...", job.getId());
         }
         return jobs;
+    }
+
+    private void getIssueTracker(com.fxlabs.fxt.sdk.beans.Job jobProfile, Job job) {
+        com.fxlabs.fxt.sdk.beans.JobIssueTracker projectIssueTracker = jobProfile.getIssueTracker();
+        if (projectIssueTracker != null) {
+            JobIssueTracker issueTracker1 = new JobIssueTracker();
+            issueTracker1.setAccount(projectIssueTracker.getAccount());
+            issueTracker1.setName(projectIssueTracker.getName());
+            issueTracker1.setUrl(projectIssueTracker.getUrl());
+            job.setIssueTracker(issueTracker1);
+        }
+
+    }
+
+    private void getNotification(com.fxlabs.fxt.sdk.beans.Job jobProfile, Job job) {
+        List<com.fxlabs.fxt.sdk.beans.JobNotification> projectNotifications = jobProfile.getNotifications();
+        if (!CollectionUtils.isEmpty(projectNotifications)) {
+            List<com.fxlabs.fxt.dto.project.JobNotification> listNotification= new ArrayList<>();
+            for (com.fxlabs.fxt.sdk.beans.JobNotification jn : projectNotifications){
+                com.fxlabs.fxt.dto.project.JobNotification jn_ = new JobNotification();
+                jn_.setAccount(jn.getAccount());
+                jn_.setChannel(jn.getChannel());
+                jn_.setName(jn.getName());
+                jn_.setTo(jn.getTo());
+                listNotification.add(jn_);
+            }
+            job.setNotifications(listNotification);
+        }
+
     }
 
     private void loadSuites(String projectDir, ObjectMapper yamlMapper, String projectId, List<ProjectFile> projectFiles) {
