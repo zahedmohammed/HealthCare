@@ -9,14 +9,15 @@ import {SystemSettingService}from '../../../services/system-setting.service';
 import {Region}from '../../../models/regions.model';
 import {Saving}from '../../../models/system-setting.model';
 import {Handler}from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig}from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
+import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
+import {SnackbarService}from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-regions-edit',
   templateUrl: './region-edit.component.html',
   styleUrls: ['./region-edit.component.scss'],
-  providers: [RegionsService, OrgService, SystemSettingService, DashboardService]
+  providers: [RegionsService, OrgService, SystemSettingService, DashboardService, SnackbarService]
 })
 export class RegionEditComponent implements OnInit {
 
@@ -33,12 +34,11 @@ export class RegionEditComponent implements OnInit {
   accounts;
   entry: Region = new Region();
   orgs;
-  config;
   id;
   saving: Saving;
   constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private dashboardService: DashboardService,
                 private route: ActivatedRoute, private router: Router, private handler: Handler,
-                public dialog: MatDialog, public snackBar: MatSnackBar, private systemSettingService: SystemSettingService) { }
+                public dialog: MatDialog, private snackbarService: SnackbarService, private systemSettingService: SystemSettingService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -48,7 +48,6 @@ export class RegionEditComponent implements OnInit {
         this.getById(params['id']);
         //this.getOrgs();
         //this.getAccountForExecutionBotPage();
-        this.config = new MatSnackBarConfig();
       }
     });
   }
@@ -79,15 +78,13 @@ export class RegionEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
+    this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Updating...", "");
     this.regionsService.update(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-        this.config.verticalPosition = 'top';
-        this.config.horizontalPosition = 'right';
-        this.config.duration = 3000;
-        this.snackBar.open("Bot Hub " + this.entry.name + " Successfully Updated", "", this.config);
+      this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Successfully Updated", "");
       this.router.navigate(['/app/regions']);
     }, error => {
       this.handler.hideLoader();
@@ -102,6 +99,7 @@ delete() {
         }
     });
     dialogRef.afterClosed().subscribe(result => {
+        this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Deleting...", "");
         if (result != null) {
             this.handler.activateLoader();
             this.regionsService.delete(this.entry).subscribe(results => {
@@ -109,10 +107,7 @@ delete() {
                 if (this.handler.handle(results)) {
                     return;
                 }
-                this.config.verticalPosition = 'top';
-                this.config.horizontalPosition = 'right';
-                this.config.duration = 3000;
-                this.snackBar.open("Bot Hub " + this.entry.name + " Successfully Deleted", "", this.config);
+                this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Successfully Deleted", "");
                 this.router.navigate(['/app/regions']);
             }, error => {
                 this.handler.hideLoader();

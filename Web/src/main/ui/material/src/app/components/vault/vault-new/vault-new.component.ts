@@ -4,38 +4,35 @@ import { VaultService } from '../../../services/vault.service';
 import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
 import { Handler } from '../../dialogs/handler/handler';
-import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
+import {SnackbarService}from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-vault-new',
   templateUrl: './vault-new.component.html',
   styleUrls: ['./vault-new.component.scss'],
-  providers: [VaultService, OrgService]
+  providers: [VaultService, OrgService, SnackbarService]
 })
 export class VaultNewComponent implements OnInit {
 
   showSpinner: boolean = false;
   orgs;
   entry: Vault = new Vault();
-  config;
-  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
+  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     //this.getOrgs();
-    this.config = new MatSnackBarConfig();
   }
 
   create() {
     this.handler.activateLoader();
+    this.snackbarService.openSnackBar(this.entry.key + " Creating...", "");
     this.vaultService.create(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-        this.config.verticalPosition = 'top';
-        this.config.horizontalPosition = 'right';
-        this.config.duration = 3000;
-        this.snackBar.open("Vault " + this.entry.key + " Successfully Created", "", this.config);
+        this.snackbarService.openSnackBar(this.entry.key + " Created Successfully", "");
         this.router.navigate(['/app/vault']);
     }, error => {
       this.handler.hideLoader();

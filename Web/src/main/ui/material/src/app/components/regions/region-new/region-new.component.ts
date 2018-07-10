@@ -6,13 +6,14 @@ import { Account } from '../../../models/account.model';
 import { OrgService } from '../../../services/org.service';
 import { Region } from '../../../models/regions.model';
 import { Handler } from '../../dialogs/handler/handler';
-import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
+import {SnackbarService}from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-region-new',
   templateUrl: './region-new.component.html',
   styleUrls: ['./region-new.component.scss'],
-  providers: [RegionsService, OrgService]
+  providers: [RegionsService, OrgService, SnackbarService]
 })
 export class RegionNewComponent implements OnInit {
 
@@ -26,27 +27,23 @@ export class RegionNewComponent implements OnInit {
   showSpinner: boolean = false;
   accounts;
   orgs;
-  config;
   entry: Region = new Region();
-  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
+  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.getAccountForExecutionBotPage();
     //this.getOrgs();
-    this.config = new MatSnackBarConfig();
   }
 
   create() {
       this.handler.activateLoader();
+      this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Creating...", "");
       this.regionsService.create(this.entry).subscribe(results => {
           this.handler.hideLoader();
           if (this.handler.handle(results)) {
               return;
           }
-          this.config.verticalPosition = 'top';
-          this.config.horizontalPosition = 'right';
-          this.config.duration = 3000;
-          this.snackBar.open("Bot Hub " + this.entry.name + " Successfully Created", "", this.config);
+          this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Successfully Created", "");
           this.router.navigate(['/app/regions']);
       }, error => {
           this.handler.hideLoader();

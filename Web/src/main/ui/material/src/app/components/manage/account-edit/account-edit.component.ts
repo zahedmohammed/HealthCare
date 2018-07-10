@@ -50,13 +50,13 @@ export class AccountEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar(this.entry.name + " Updating...", "");
+    this.snackbarService.openSnackBar(this.entry.name + " Saving...", "");
     this.accountService.update(this.entry).subscribe(results => {
         this.handler.hideLoader();
         if (this.handler.handle(results)) {
             return;
         }
-        this.snackbarService.openSnackBar(this.entry.name + " Successfully Updated", "");
+        this.snackbarService.openSnackBar(this.entry.name + " Saved Successfully", "");
         this.router.navigate(['/app/accounts']);
     }, error => {
         this.handler.hideLoader();
@@ -72,7 +72,7 @@ delete() {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-this.snackbarService.openSnackBar(this.entry.name + " Deleting...", "");
+        this.snackbarService.openSnackBar(this.entry.name + " Deleting...", "");
         if (result != null) {
             this.handler.activateLoader();
             this.accountService.delete(this.entry).subscribe(results => {
@@ -80,7 +80,7 @@ this.snackbarService.openSnackBar(this.entry.name + " Deleting...", "");
                 if (this.handler.handle(results)) {
                     return;
                 }
-                this.snackbarService.openSnackBar(this.entry.name + " Successfully Deleted", "");
+                this.snackbarService.openSnackBar(this.entry.name + " Deleted Successfully", "");
                 this.router.navigate(['/app/accounts']);
             }, error => {
                 this.handler.hideLoader();

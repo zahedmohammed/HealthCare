@@ -4,22 +4,22 @@ import { VaultService } from '../../../services/vault.service';
 import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
 import { Handler } from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig }from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
+import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
+import {SnackbarService}from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-vault-edit',
   templateUrl: './vault-edit.component.html',
   styleUrls: ['./vault-edit.component.scss'],
-  providers: [VaultService, OrgService]
+  providers: [VaultService, OrgService, SnackbarService]
 })
 export class VaultEditComponent implements OnInit {
 
   showSpinner: boolean = false;
   entry: Vault = new Vault();
   orgs;
-  config;
-  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar) { }
+  constructor(private vaultService: VaultService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -27,7 +27,6 @@ export class VaultEditComponent implements OnInit {
       if (params['id']) {
         this.getById(params['id']);
         //this.getOrgs();
-        this.config = new MatSnackBarConfig();
       }
     });
   }
@@ -48,15 +47,13 @@ export class VaultEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
+    this.snackbarService.openSnackBar(this.entry.key + " Saving...", "");
     this.vaultService.update(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-        this.config.verticalPosition = 'top';
-        this.config.horizontalPosition = 'right';
-        this.config.duration = 3000;
-        this.snackBar.open("Vault " + this.entry.key + " Successfully Updated", "", this.config);
+        this.snackbarService.openSnackBar(this.entry.key + " Saved Successfully", "");
         this.router.navigate(['/app/vault']);
     }, error => {
       this.handler.hideLoader();
@@ -72,6 +69,7 @@ export class VaultEditComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+        this.snackbarService.openSnackBar(this.entry.key + " Deleting...", "");
         if (result != null) {
             this.handler.activateLoader();
             this.vaultService.delete(this.entry).subscribe(results => {
@@ -79,11 +77,7 @@ export class VaultEditComponent implements OnInit {
                 if (this.handler.handle(results)) {
                     return;
                 }
-                let config = new MatSnackBarConfig();
-                config.verticalPosition = 'top';
-                config.horizontalPosition = 'right';
-                config.duration = 3000;
-                this.snackBar.open("Vault " + this.entry.key + " Successfully Deleted", "", config);
+                this.snackbarService.openSnackBar(this.entry.key + " Deleted Successfully", "");
                 this.router.navigate(['/app/vault']);
             }, error => {
                 this.handler.hideLoader();

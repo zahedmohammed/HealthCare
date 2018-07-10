@@ -8,28 +8,29 @@ import {Account}from '../../../models/account.model';
 import {IssueTracker}from '../../../models/issue-tracker.model';
 import { Base}from '../../../models/base.model';
 import {Handler}from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig}from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 import {MatTabChangeEvent}from '@angular/material';
 import {DashboardService}from '../../../services/dashboard.service';
 import { Http, Response} from '@angular/http';
+import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
+import {SnackbarService}from '../../../services/snackbar.service';
+
 @Component({
   selector: 'app-issues-edit',
   templateUrl: './issues-edit.component.html',
   styleUrls: ['./issues-edit.component.scss'],
-  providers: [IssueTrackerService, SkillService, OrgService, DashboardService]
+  providers: [IssueTrackerService, SkillService, OrgService, DashboardService, SnackbarService]
 })
 export class IssuesEditComponent implements OnInit {
   skills;
   orgs;
   accounts;
-  config;
   showSpinner: boolean = false;
   issueTracker;
   id;
   entry: IssueTracker = new IssueTracker();
   constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService,
-    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, public snackBar: MatSnackBar, private dashboardService  : DashboardService) { }
+    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public dialog: MatDialog, private snackbarService: SnackbarService, private dashboardService  : DashboardService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -41,11 +42,6 @@ export class IssuesEditComponent implements OnInit {
         this.getAccountyForIssueTracker();
       }
     });
-    this.config = new MatSnackBarConfig();
-    this.config.verticalPosition = 'bottom';
-    this.config.horizontalPosition = 'center';
-    this.config.duration = 3000;
-
     //this.listSkills();
   }
 
@@ -95,14 +91,14 @@ export class IssuesEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.snackBar.open(this.entry.name + " saving...", "", this.config);
+    this.snackbarService.openSnackBar(this.entry.name + " Saving...", "");
     this.issueTrackerService.update(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
 
-      this.snackBar.open(this.entry.name + " saved.", "", this.config);
+      this.snackbarService.openSnackBar(this.entry.name + " Saved Successfully", "");
       this.router.navigate(['/app/issues']);
     }, error => {
       console.log("Unable to update vault");
@@ -118,15 +114,15 @@ export class IssuesEditComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+        this.snackbarService.openSnackBar(this.entry.name + " Deleting...", "");
         if (result != null) {
             this.handler.activateLoader();
-            this.snackBar.open(this.entry.name + " deleting...", "", this.config);
             this.issueTrackerService.deleteITBot(this.entry).subscribe(results => {
                 this.handler.hideLoader();
                 if (this.handler.handle(results)) {
                     return;
                 }
-               this.snackBar.open(this.entry.name + " deleted.", "", this.config);
+               this.snackbarService.openSnackBar(this.entry.name + " Deleted Successfully", "");
                this.router.navigate(['/app/issues']);
             }, error => {
                 this.handler.hideLoader();

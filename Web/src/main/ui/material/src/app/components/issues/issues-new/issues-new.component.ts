@@ -8,28 +8,27 @@ import { OrgService } from '../../../services/org.service';
 import { IssueTracker } from '../../../models/issue-tracker.model';
 import { Base } from '../../../models/base.model';
 import { Handler } from '../../dialogs/handler/handler';
-import { MatSnackBar, MatSnackBarConfig }from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
+import {SnackbarService}from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-issues-new',
   templateUrl: './issues-new.component.html',
   styleUrls: ['./issues-new.component.scss'],
-  providers: [IssueTrackerService, SkillService, OrgService]
+  providers: [IssueTrackerService, SkillService, OrgService, SnackbarService]
 })
 export class IssuesNewComponent implements OnInit {
   skills;
   showSpinner: boolean = false;
   orgs;
   accounts;
-  config;
   entry: IssueTracker = new IssueTracker();
-  constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar) { }
+  constructor(private issueTrackerService: IssueTrackerService, private accountService: AccountService, private skillService: SkillService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.listSkills();
     //this.getOrgs();
     this.getAccountyForIssueTracker();
-    this.config = new MatSnackBarConfig();
   }
 
   listSkills() {
@@ -47,15 +46,13 @@ export class IssuesNewComponent implements OnInit {
   }
   create() {
     this.handler.activateLoader();
+    this.snackbarService.openSnackBar(this.entry.name + " Creating...", "");
     this.issueTrackerService.createITBot(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-        this.config.verticalPosition = 'top';
-        this.config.horizontalPosition = 'right';
-        this.config.duration = 3000;
-        this.snackBar.open("Issue Tracker " + this.entry.name + " Successfully Created", "", this.config);
+      this.snackbarService.openSnackBar(this.entry.name + " Created Successfully", "");
       this.router.navigate(['/app/issues']);
     }, error => {
       this.handler.hideLoader();

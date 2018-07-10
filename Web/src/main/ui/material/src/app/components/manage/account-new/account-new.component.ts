@@ -42,7 +42,7 @@ export class AccountNewComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-    this.snackbarService.openSnackBar("Account " + this.entry.name + " Successfully Created", "");
+    this.snackbarService.openSnackBar("Account " + this.entry.name + " Created Successfully", "");
     this.router.navigate(['/app/accounts']);
     }, error => {
       this.handler.hideLoader();
