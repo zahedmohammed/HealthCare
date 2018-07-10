@@ -170,9 +170,9 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 }
                 break;
             case Email:
-                if (StringUtils.isEmpty(dto.getAccessKey())) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
-                }
+//                if (StringUtils.isEmpty(dto.getAccessKey())) {
+//                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
+//                }
                 break;
             default:
                 logger.info("Invalid Account Type [{}]", dto.getAccountType());
@@ -243,9 +243,9 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 }
                 break;
             case Email:
-                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
-                }
+//                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+//                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
+//                }
             default:
                 logger.info("Invalid Account Type [{}]", dto.getAccountType());
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account type"));
