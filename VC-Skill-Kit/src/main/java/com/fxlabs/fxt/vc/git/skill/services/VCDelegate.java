@@ -66,7 +66,11 @@ public class VCDelegate {
                     try {
                         // 2/4. Auto-Code
                         CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
-                        int count = stubGenerator.generate(task.getOpenAPISpec(), path + "/test-suites", path, null, null);
+                        String location = task.getOpenAPISpec();
+                        if (!location.toLowerCase().startsWith("http")) {
+                            location = path + "/" + location;
+                        }
+                        int count = stubGenerator.generate(location, path + "/test-suites", path, null, null);
                         response.setAutoGenSuitesCount(count);
                         // 3/4. Push to VC
                         gitPushLogs = versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
