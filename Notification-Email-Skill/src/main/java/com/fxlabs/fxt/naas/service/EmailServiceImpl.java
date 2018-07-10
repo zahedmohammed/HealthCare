@@ -22,7 +22,9 @@ public class EmailServiceImpl implements EmailService {
             message.setTo(tos);
             message.setSubject(subject);
             message.setText(text);
+            //message.setFrom("FX Labs, Inc");
             emailSender.send(message);
+            logger.info("to [{}] subject [{}]", tos, subject);
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         }

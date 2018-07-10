@@ -7,6 +7,7 @@ import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
 import com.fxlabs.fxt.dto.notify.Notification;
+import com.fxlabs.fxt.dto.task.EmailTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.notify.NotificationService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
@@ -55,6 +56,9 @@ public class MarkCompleteTaskProcessor {
     // fx-notification-slack
     @Value("${fx.notification.slack.queue.routingkey}")
     private String slackNotificationQueue;
+    // fx-naas
+    @Value("${fx.naas.queue.routingkey}")
+    private String naaSQueue;
 
     @Autowired
     private TextEncryptor encryptor;
@@ -86,6 +90,7 @@ public class MarkCompleteTaskProcessor {
 
                     Map<String, Long> statsMap = testSuiteResponseService.runStats(run.getId());
 
+                    TaskStatus oldStatus = run.getTask().getStatus();
                     Long count = failed + passed;
                     if (count >= run.getTask().getTotalTests()) {
                         run.getTask().setTotalTests(count);
@@ -107,7 +112,7 @@ public class MarkCompleteTaskProcessor {
 
                     runRepository.saveAndFlush(run);
 
-                    if (run.getTask().getStatus().equals(TaskStatus.COMPLETED)) {
+                    if (run.getTask().getStatus().equals(TaskStatus.COMPLETED) && !oldStatus.equals(TaskStatus.COMPLETED)) {
                         sendNotification(run);
                     }
 
@@ -156,13 +161,14 @@ public class MarkCompleteTaskProcessor {
                         String token = notification.getAccount().getSecretKey();
                         token = encryptor.decrypt(token);
                         opts.put("TOKEN", token);
-                        opts.put("MESSAGE", formatSlackMessage(run));
+                        opts.put("MESSAGE", formatBody(run));
                         opts.put("CHANNELS", notification.getChannel());
                         task.setOpts(opts);
                         amqpClientService.sendTask(task, slackNotificationQueue);
                         break;
                     case Email:
-                        logger.info("Notification Account Type email not supported");
+                        //logger.info("Notification Account Type email not supported");
+                        sendEmailTask(notification.getChannel(), "Job #" + run.getRunId(), formatBody(run));
                         break;
 
                     default:
@@ -177,9 +183,24 @@ public class MarkCompleteTaskProcessor {
 
     }
 
-    String REPORT_URL = "https://%s/#/app/jobs/%s/runs/%s";
 
-    private String formatSlackMessage(Run run) {
+    private void sendEmailTask(String to, String subject, String body) {
+        try {
+            EmailTask task = new EmailTask();
+
+            task.setSubject(subject);
+            task.setBody(body);
+            List<String> tos = Arrays.asList(to);
+            task.setTos(tos);
+            amqpClientService.sendTask(task, naaSQueue);
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private static final String REPORT_URL = "https://%s/#/app/jobs/%s/runs/%s";
+
+    private String formatBody(Run run) {
 
         StringBuilder sb = new StringBuilder();
 

@@ -54,7 +54,9 @@ public class NaaSTaskRequestProcessor {
      * Send as NaaSTask
      */
     public void process() {
-        Stream<Alert> alerts = alertESRepository.findByTypeAndStatus(AlertType.ERROR, AlertStatus.UNREAD);
+        return ;
+        /*
+        Stream<Alert> alerts = null;//alertESRepository.findByTypeAndStatus(AlertType.ERROR, AlertStatus.UNREAD);
         alerts.forEach(alert -> {
             try {
                 EmailTask task = new EmailTask();
@@ -89,7 +91,7 @@ public class NaaSTaskRequestProcessor {
                 logger.warn(e.getLocalizedMessage(), e);
             }
 
-        });
+        });*/
     }
 
 }
