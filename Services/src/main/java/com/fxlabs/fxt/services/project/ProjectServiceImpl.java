@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.ProjectConverter;
+import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.entity.users.Org;
 import com.fxlabs.fxt.dao.repository.es.ProjectImportsESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
@@ -20,7 +21,9 @@ import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,12 +49,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private ProjectImportsESRepository projectImportsESRepository;
     private AccountService accountService;
     private SystemSettingService systemSettingService;
+    private JobRepository jobRepository;
 
     private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
-                              OrgUsersRepository orgUsersRepository,
+                              OrgUsersRepository orgUsersRepository, JobRepository jobRepository,
                               OrgRepository orgRepository, UsersRepository usersRepository,
                               GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                               ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository,
@@ -70,6 +74,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.projectImportsESRepository = projectImportsESRepository;
         this.accountService = accountService;
         this.systemSettingService = systemSettingService;
+        this.jobRepository = jobRepository;
     }
 
 
@@ -115,7 +120,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Project project = converter.convertToDto(optionalProject.get());
         project.setInactive(true);
+        List<Job> responseJobs = jobRepository.findByProjectIdAndInactive(id, false, PageRequest.of(0, 20, new Sort(Sort.Direction.DESC, "createdDate")));
+        for (Job job :responseJobs) {
+            job.setInactive(true);
+        }
 
+        jobRepository.saveAll(responseJobs);
         // TODO - Delete Jobs
         return save(project, user);
     }
