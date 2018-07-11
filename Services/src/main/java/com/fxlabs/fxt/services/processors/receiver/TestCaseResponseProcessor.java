@@ -165,7 +165,7 @@ public class TestCaseResponseProcessor {
             return null;
         }
 
-        Response<IssueTracker> issueTrackerResponse = skillSubscriptionService.findByName(job.getIssueTracker().getName());
+        Response<IssueTracker> issueTrackerResponse = skillSubscriptionService.findByName(job.getIssueTracker().getName(), job.getProject().getOrg().getName());
 
         if (issueTrackerResponse.getData() == null || issueTrackerResponse.getData().getAccount() == null) {
             return null;

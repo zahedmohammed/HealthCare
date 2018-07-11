@@ -16,7 +16,7 @@ public interface IssueTrackerService extends GenericService<IssueTracker, String
 
     Response<IssueTracker> save(IssueTracker dto, String org, String user);
 
-    Response<IssueTracker> findByName(String name);
+    Response<IssueTracker> findByName(String name, String orgName);
 
     Response<List<IssueTracker>> findBySkillType(String skillType, String user, Pageable pageable);
 

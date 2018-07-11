@@ -26,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -202,22 +203,38 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
 
 
     @Override
-    public Response<IssueTracker> findByName(String name) {
+    public Response<IssueTracker> findByName(String name, String organisation) {
         if (StringUtils.isEmpty(name)) {
             return new Response<>().withErrors(true);
         }
-        String[] tokens = name.split("/");
-        String org = tokens[0];
-        String key = tokens[1];
 
-        Optional<com.fxlabs.fxt.dao.entity.it.IssueTracker> optional = this.repository.findByOrgNameAndNameAndInactive(org, key, false);
+        if (name.contains("/")) {
 
-        if (!optional.isPresent()) {
-            return new Response<>().withErrors(true);
+            String[] tokens = name.split("/");
+            String org = tokens[0];
+            String key = tokens[1];
+
+            Optional<com.fxlabs.fxt.dao.entity.it.IssueTracker> optional = this.repository.findByOrgNameAndNameAndInactive(org, key, false);
+
+            if (!optional.isPresent()) {
+                return new Response<>().withErrors(true);
+            }
+
+            return new Response<>(converter.convertToDto(optional.get()));
+        } else {
+
+            if (StringUtils.isEmpty(organisation)) {
+                return new Response<>().withErrors(true);
+            }
+
+            Optional<com.fxlabs.fxt.dao.entity.it.IssueTracker> optional = this.repository.findByOrgNameAndNameAndInactive(organisation, name, false);
+
+            if (!optional.isPresent()) {
+                return new Response<>().withErrors(true);
+            }
+
+            return new Response<>(converter.convertToDto(optional.get()));
         }
-
-        return new Response<>(converter.convertToDto(optional.get()));
-
     }
 
     @Override

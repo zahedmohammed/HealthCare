@@ -65,7 +65,7 @@ public class FxCommandService {
     @Autowired
     private UsersRestRepository usersRestRepository;
     @Autowired
-    private ProjectRestRepository projectRepository;
+    private ProjectRestRepository projectRestRepository;
     @Autowired
     private TestSuiteRestRepository testSuiteRestRepository;
     @Autowired
@@ -113,7 +113,7 @@ public class FxCommandService {
         }
 
         System.out.println(String.format("Locating project %s...", projectName));
-        Response<Project> response = projectRepository.findByOrgAndName(projectName);
+        Response<Project> response = projectRestRepository.findByOrgAndName(projectName);
         if (response == null || response.isErrors()) {
             for (Message m : response.getMessages())
                 System.out.println(
@@ -347,12 +347,12 @@ public class FxCommandService {
     }
 
     private Project getProjectByName(Config config) {
-        Project project = projectRepository.findByName(config.getName());
+        Project project = projectRestRepository.findByName(config.getName());
         return project;
     }
 
     private Project getProjectById(String id) {
-        Response<Project> project = projectRepository.findById(id);
+        Response<Project> project = projectRestRepository.findById(id);
         if (project.isErrors() && !CollectionUtils.isEmpty(project.getMessages())) {
             logger.warn(project.getMessages().get(0).getValue());
         }
@@ -364,7 +364,7 @@ public class FxCommandService {
         project.setName(config.getName());
         project.setLicenses(config.getLicenses());
         project.setDescription(config.getDescription());
-        Response<Project> projectResponse = projectRepository.save(project);
+        Response<Project> projectResponse = projectRestRepository.save(project);
 
         logger.info("project created with id [{}]...", project.getId());
         CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, config.getName(), String.format("project created with id [%s]...", project.getId()));
@@ -401,7 +401,7 @@ public class FxCommandService {
 
         //project.setLastSync(new Date());
 
-        Response<Project> projectResponse = projectRepository.update(project);
+        Response<Project> projectResponse = projectRestRepository.update(project);
 
         //System.out.println(project);
         if (!CollectionUtils.isEmpty(config.getEnvironments())) {
@@ -573,7 +573,7 @@ public class FxCommandService {
         ProjectImports projectImports = new ProjectImports();
         projectImports.setProjectId(projectId);
         projectImports.setImports(config.getImports());
-        return projectRepository.saveImports(projectImports, projectId);
+        return projectRestRepository.saveImports(projectImports, projectId);
     }
 
     private List<Environment> extractEnvironments(Config config, String projectId) {
@@ -835,7 +835,7 @@ public class FxCommandService {
 
         // TODO - If duplicate file names reject processing with error.
         // TODO - Log all non .json files name as ignored.
-        Response<Project> project = projectRepository.findById(projectId);
+        Response<Project> project = projectRestRepository.findById(projectId);
         NameDto nameDto = null;
         if (project.getData() != null) {
             nameDto = project.getData().getOrg();
@@ -961,6 +961,7 @@ public class FxCommandService {
     }
 
     private boolean isChecksumPresent(List<ProjectFile> projectFiles, File file, String checksum) {
+
         if (projectFiles != null && !CollectionUtils.isEmpty(projectFiles)) {
             Optional<ProjectFile> projectFileOptional = projectFiles.stream().filter(pf -> org.apache.commons.lang3.StringUtils.equals(checksum, pf.getChecksum()))
                     .findFirst();
@@ -980,15 +981,16 @@ public class FxCommandService {
     }
 
     private List<ProjectFile> getProjectChecksums(String projectId) {
-        final Response<List<ProjectFile>> projectFilesResponse = this.projectRepository.findProjectChecksums(projectId);
-        return projectFilesResponse.getData();
+        //final Response<List<ProjectFile>> projectFilesResponse = this.projectRestRepository.findProjectChecksums(projectId);
+       // return projectFilesResponse.getData();
+        return new ArrayList<ProjectFile>();
     }
 
     private void lsJobs() {
     }
 
     private void lsProjects() {
-        Response<List<Project>> list = projectRepository.findAll();
+        Response<List<Project>> list = projectRestRepository.findAll();
 
         if (list.isErrors()) {
             System.err.println(list.getMessages());
