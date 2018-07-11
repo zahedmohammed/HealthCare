@@ -117,13 +117,13 @@
                         <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
-                                       matInput placeholder="OpenAPI Spec URL">
+                                       matInput placeholder="OpenAPI Spec File">
                             </mat-input-container>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
-                                <p> e.g. https://ip/v2/api-docs. Auto-Code requires OpenAPISpec of your application to
-                                    create test/security coverage. How-to generate OpenAPISpec for your Java, .Net
+                                <p> e.g. https://ip/v2/api-docs or api-docs.json or api-docs.yaml. Auto-Code requires OpenAPISpec of your application to
+                                    create security/functional test coverage. How-to generate OpenAPISpec for your Java, .Net
                                     and other applications.
                                     <a target="_blank" href="https://swagger.io/open-source-integrations/">
                                         Learn more <i class="material-icons"

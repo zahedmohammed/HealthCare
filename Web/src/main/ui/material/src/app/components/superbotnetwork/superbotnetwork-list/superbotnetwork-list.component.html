@@ -28,7 +28,6 @@
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Region</th>
-                            <th class="mdl-data-table__cell--non-numeric">Visibility</th>
                             <th class="mdl-data-table__cell--non-numeric">Count</th>
                             <th class="mdl-data-table__cell--non-numeric">Cost</th>
                         </tr>
@@ -38,9 +37,8 @@
                             <td class="mdl-data-table__cell--non-numeric">{{item.org.name}}/{{item.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="item.manual">{{item.region}}</td>
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="!item.manual">Registered</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{item.min}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">$0.00</td>
+                            <td class="mdl-data-table__cell--non-numeric">Free</td>
                         </tr>
                         </tbody>
                     </table>
