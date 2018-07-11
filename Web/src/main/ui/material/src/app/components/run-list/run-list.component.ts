@@ -42,7 +42,7 @@ export class RunListComponent implements OnInit {
         this.jobId = params['jobId'];
         this.loadJob(this.jobId);
         this.getRunByJob(this.jobId);
-        let timer = Observable.timer(1, 10000);
+        let timer = Observable.timer(10000, 15000);
         this._clockSubscription = timer.subscribe(t => {
           this.getRunByJob(this.jobId);
         });

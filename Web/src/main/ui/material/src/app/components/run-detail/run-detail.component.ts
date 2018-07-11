@@ -32,10 +32,14 @@ export class RunDetailComponent implements OnInit {
   time = 0;
   duration = 0;
   success = 0;
+  length = 0;
+  page = 0;
+  pageSize = 25;
   private _clockSubscription: Subscription;
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
+
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
     private route: ActivatedRoute, private dialog: MatDialog, private handler: Handler) { }
 
@@ -52,11 +56,11 @@ export class RunDetailComponent implements OnInit {
       }
       if (params['runId']) {
         this.id = params['runId'];
-        let timer = Observable.timer(1, 5000);
+        let timer = Observable.timer(100, 10000);
         this._clockSubscription = timer.subscribe(t => {
           this.getRunById();
           this.getSummary();
-          if (this.run.task.status == 'COMPLETE') {
+          if (this.run.task.status == 'COMPLETED' || this.run.task.status == 'TIMEOUT') {
             this._clockSubscription.unsubscribe();
           }
         });
@@ -87,20 +91,20 @@ export class RunDetailComponent implements OnInit {
   }
 
   calSum() {
-    this.total = 0;
-    this.failed = 0;
-    this.size = 0;
-    this.time = 0;
+    //this.total = 0;
+    //this.failed = 0;
+    //this.size = 0;
+    //this.time = 0;
     this.success = 0;
-    this.duration = 0;
+    //this.duration = 0;
 
-    for(var i = 0; i < this.suites.length; i++){
+    /*for(var i = 0; i < this.suites.length; i++){
         this.total += this.suites[i].tests;
         this.failed += this.suites[i].failed;
         this.size += this.suites[i].size;
         this.time += this.suites[i].time;
-    }
-    this.success = this.total / (this.total + this.failed);
+    }*/
+    this.success = this.run.task['totalTests'] / (this.run.task['totalTests'] + this.run.task['failedTests']);
     //this.duration = Date.parse(this.run.modifiedDate) - Date.parse(this.run.task.startTime);
   }
 
@@ -112,6 +116,7 @@ export class RunDetailComponent implements OnInit {
         return;
       }
       this.run = results['data'];
+      this.calSum();
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -141,7 +146,6 @@ export class RunDetailComponent implements OnInit {
       }
       this.suites = results['data'];
       this.length = results['totalElements'];
-      this.calSum();
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -178,9 +182,7 @@ export class RunDetailComponent implements OnInit {
     });
   }
 
-  length = 0;
-  page = 0;
-  pageSize = 1000;
+
   change(evt) {
     this.page = evt['pageIndex'];
     this.getSummary();

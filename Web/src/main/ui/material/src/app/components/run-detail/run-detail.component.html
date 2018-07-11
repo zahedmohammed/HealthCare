@@ -23,6 +23,7 @@
                                 class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
                     </h4>
                     <h6>{{run.task.description}}</h6>
+                    <h6>Region: {{run.job?.regions}}</h6>
                     <!--<h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>-->
                 </div>
                 <!--<div class="divider divider-solid divider-lg"></div>
@@ -59,7 +60,7 @@
                         <span>Test-Suites</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{length}}</span>
+                        <span>{{run.task['totalSuiteCompleted']}}</span>
                     </div>
                 </div>
             </div>
@@ -72,7 +73,7 @@
                         <span>Test Executions</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{total}}</span>
+                        <span>{{run.task['totalTests']}}</span>
                     </div>
                 </div>
             </div>
@@ -85,7 +86,7 @@
                         <span>Data</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{size | byteFormat}}</span>
+                        <span>{{run.task['totalBytes'] | byteFormat}}</span>
                     </div>
                 </div>
             </div>
@@ -98,7 +99,7 @@
                         <span>Duration</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{time | mstoDuration}}</span>
+                        <span>{{run.task['totalTime'] | mstoDuration}}</span>
                     </div>
                 </div>
             </div>
@@ -111,7 +112,7 @@
                         <span>Fail</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{failed}}</span>
+                        <span>{{run.task['failedTests']}}</span>
                     </div>
                 </div>
             </div>
@@ -274,7 +275,7 @@
 
 
                 </tr>
-                <tfoot>
+                <!--<tfoot>
                 <tr class="bg-color-info1">
                     <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
                     <th class="mdl-data-table__cell--non-numeric"></th>
@@ -282,11 +283,10 @@
                     <th class="mdl-data-table__cell--non-numeric">
                         <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
                     </th>
-                    <!--<th class="mdl-data-table__cell--non-numeric">{{success | percent}}</th>-->
                     <th class="mdl-data-table__cell--non-numeric">{{size | byteFormat}}</th>
                     <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
                 </tr>
-                </tfoot>
+                </tfoot>-->
             </table>
         </div>
 
