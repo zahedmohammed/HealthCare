@@ -19,8 +19,8 @@
                 <form role="form" #heroForm="ngForm">
 
                     <div class="form-group row">
-                        <label for="name" class="col-md-1 control-label"></label>
-                        <div class="col-md-4">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input [(ngModel)]="project.name" name="name" id="name"
                                        matInput placeholder="Project name">
@@ -33,8 +33,8 @@
 
                     <div [hidden]="project.account.accountType === 'Local' || !project.account.accountType">
                         <div class="form-group row">
-                            <label for="name" class="col-md-1 control-label"></label>
-                            <div class="col-md-4">
+                            <label for="name" class="col-md-0 control-label"></label>
+                            <div class="col-md-5">
                                 <mat-input-container class="full-width">
                                     <input required [(ngModel)]="project.url" name="url" id="repo"
                                            matInput placeholder="Repository URL">
@@ -58,9 +58,9 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-1 control-label">
+                            <label class="col-md-0 control-label">
                             </label>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <mat-form-field>
                                     <mat-select placeholder="Repository Credentials" required
                                                 [(ngModel)]="project.account.id" name="type">
@@ -90,8 +90,8 @@
                     <!-- Auto-Code -->
 
                     <div class="form-group row">
-                        <label for="name" class="col-md-1 control-label"></label>
-                        <div class="col-md-4">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
                             <mat-form-field>
                                 <mat-select placeholder="Auto-Code" required [(ngModel)]="project.genPolicy"
                                             name="Auto-Code">
@@ -113,8 +113,8 @@
                     </div>
 
                     <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
-                        <label for="name" class="col-md-1 control-label"></label>
-                        <div class="col-md-4">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
                                        matInput placeholder="OpenAPI Spec URL">
@@ -137,7 +137,7 @@
                     <div class="divider divider-dashed divider-lg pull-in"></div>
 
                     <div class="form-group row">
-                        <div class="col-md-1"></div>
+                        <div class="col-md-0"></div>
                         <div class="col-md-8">
                             <button mat-raised-button color="primary" (click)="update();"
                                     class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
