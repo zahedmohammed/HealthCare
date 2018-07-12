@@ -52,7 +52,7 @@ public class JobConfig {
     @Bean
     public Trigger gaaSTrigger(@Qualifier("gaaSJobDetail") JobDetail job) {
 
-        int frequencyInMins = 12 * 60;//Runs Every 12 hours
+        int frequencyInMins = 6 * 60;//Runs Every 6 hours
         logger.info("Configuring trigger to fire every {} mins", frequencyInMins);
 
         return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaaSRequestProcessor_Trigger")).withDescription("GaaSRequestProcessor trigger")
