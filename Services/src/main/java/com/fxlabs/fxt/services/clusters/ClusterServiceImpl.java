@@ -297,13 +297,13 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public void isUserEntitled(String s, String user) {
-        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = repository.findById(s);
+        /*Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = repository.findById(s);
         if (!clusterOptional.isPresent()) {
             throw new FxException(String.format("Resource [%s] not found.", s));
         }
         if (clusterOptional.get().getVisibility() == ClusterVisibility.PRIVATE && !org.apache.commons.lang3.StringUtils.equals(clusterOptional.get().getCreatedBy(), user)) {
             throw new FxException(String.format("User [%s] not entitled to the resource [%s] with 'PRIVATE' visibility.", user, s));
-        }
+        }*/
     }
 
     @Override
