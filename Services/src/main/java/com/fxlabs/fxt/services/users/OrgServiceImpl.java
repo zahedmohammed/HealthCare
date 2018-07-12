@@ -248,6 +248,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         Response<com.fxlabs.fxt.dto.users.Users> usersResponse = this.usersService.findById(id);
         usersResponse.getData().setName(users.getName());
         usersResponse.getData().setCompany(users.getCompany());
+        usersOptional.get().setOrgRole(OrgRole.valueOf(orgUser.getOrgRole().toString()));
 
         this.usersService.save(usersResponse.getData());
 
