@@ -125,10 +125,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             if (StringUtils.isNotEmpty(env)) {
                 attributes.put(RunConstants.ENV, env);
             }
-            String[] _tags = null;
             if (StringUtils.isNotEmpty(tags)) {
                 attributes.put(RunConstants.TAGS, tags);
-                _tags = StringUtils.split(tags, ",");
             }
             if (StringUtils.isNotEmpty(suites)) {
                 attributes.put(RunConstants.SUITES, suites);
