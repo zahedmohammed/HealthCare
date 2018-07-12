@@ -30,21 +30,31 @@
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Issue-Tracker</label>
                     <div class="col-md-4">
-                        <span>{{data.issueTracker}}</span>
+                        <span>{{data.issueTracker.name}}</span>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Notifications</label>
                     <div class="col-md-4">
-                        <span *ngFor="let n of data.notifications">{{n}}</span>
+                        <span *ngFor="let n of data.notifications">{{n.name}}, </span>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Tags</label>
                     <div class="col-md-4">
-                        <span *ngFor="let t of data.tags">{{t}}</span>
+                        <mat-input-container>
+                            <input required matInput [(ngModel)]="data.tags" name="name">
+                        </mat-input-container>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 control-label">Test Suites</label>
+                    <div class="col-md-4">
+                        <mat-input-container>
+                            <input required matInput>
+                        </mat-input-container>
                     </div>
                 </div>
 
