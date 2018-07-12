@@ -93,7 +93,7 @@ public class UsersServiceImpl extends GenericServiceImpl<Users, com.fxlabs.fxt.d
         ak.setAccessKey(accessKey);
         ak.setSecretKey(this.passwordEncoder.encode(secretKey));
         ak.setUsers(usersOptional.get());
-        ak.setExpiration(DateUtils.addMinutes(new Date(), 60));
+        ak.setExpiration(DateUtils.addHours(new Date(), 6));
         ak = accessKeyRepository.save(ak);
 
 
