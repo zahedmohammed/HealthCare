@@ -34,7 +34,9 @@
                             <td class="mdl-data-table__cell--non-numeric bold">
                                 <a href="javascript:;"
                                    [routerLink]="['/app/issues', key.id]">{{key.org.name}}/{{key.name}}</a></td>
-                            <td class="mdl-data-table__cell--non-numeric bold">{{key.prop1}}</td>
+                            <td class="mdl-data-table__cell--non-numeric bold">{{key.prop1}}<a target="_blank" href="{{key.prop1}}"> <i
+                                    class="material-icons"
+                                    style="font-size: 18px;">open_in_new</i></a> </td>
                             <td class="mdl-data-table__cell--non-numeric">{{key.createdDate | date:'shortDate'}}</td>
                         </tr>
                         </tbody>
