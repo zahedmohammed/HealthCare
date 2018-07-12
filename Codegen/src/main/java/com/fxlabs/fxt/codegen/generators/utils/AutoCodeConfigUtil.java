@@ -3,6 +3,8 @@ package com.fxlabs.fxt.codegen.generators.utils;
 import com.fxlabs.fxt.codegen.code.AutoCodeConfig;
 import com.fxlabs.fxt.codegen.code.Database;
 import com.fxlabs.fxt.codegen.code.TestSuite;
+import com.fxlabs.fxt.dto.project.TestSuiteCategory;
+import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -63,19 +65,64 @@ public class AutoCodeConfigUtil {
         return this.config.getLogForgingPatterns();
     }
 
-    public List<String> getAssertions(String postfix){
+    public List<String> getAssertions(String scanario){
 
         if (this.config == null ) return null;
 
         String version = null;
         if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
             for ( TestSuite ts : this.config.getTestSuites() ){
-                if (StringUtils.equalsIgnoreCase(ts.getPostfix(), postfix)){
+                if (StringUtils.equalsIgnoreCase(ts.getScenario(), scanario)){
                     return ts.getAssertions();
                 }
             }
         }
         return null;
+    }
+
+    public TestSuiteSeverity getTestSuiteSeverity(String scanario){
+
+        if (this.config == null ) return null;
+
+        String version = null;
+        if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
+            for ( TestSuite ts : this.config.getTestSuites() ){
+                if (StringUtils.equalsIgnoreCase(ts.getScenario(), scanario)){
+                    return TestSuiteSeverity.valueOf(ts.getSeverity());
+                }
+            }
+        }
+        return null;
+    }
+
+    public TestSuiteCategory getTestSuiteCategory(String scanario){
+
+        if (this.config == null ) return null;
+
+        String version = null;
+        if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
+            for ( TestSuite ts : this.config.getTestSuites() ){
+                if (StringUtils.equalsIgnoreCase(ts.getScenario(), scanario)){
+                    return TestSuiteCategory.valueOf(ts.getCategory());
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getTestSuitePostfix(String scanario){
+
+        if (this.config == null ) return "";
+
+        String version = null;
+        if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
+            for ( TestSuite ts : this.config.getTestSuites() ){
+                if (StringUtils.equalsIgnoreCase(ts.getScenario(), scanario)){
+                    return ts.getPostfix() != null ? ts.getPostfix() : ts.getScenario();
+                }
+            }
+        }
+        return "";
     }
 
 }

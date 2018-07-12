@@ -41,13 +41,16 @@ public class TestSuiteResponseServiceImpl extends GenericServiceImpl<TestSuiteRe
 
     private ElasticsearchTemplate elasticsearchTemplate;
     private TestSuiteResponseESRepository testSuiteResponseESRepository;
+    private TestSuiteResponseRepository testSuiteResponseRepository;
 
     @Autowired
     public TestSuiteResponseServiceImpl(TestSuiteResponseRepository repository, TestSuiteResponseConverter converter,
-                                        ElasticsearchTemplate elasticsearchTemplate, TestSuiteResponseESRepository testSuiteResponseESRepository) {
+                                        ElasticsearchTemplate elasticsearchTemplate, TestSuiteResponseESRepository testSuiteResponseESRepository,
+                                        TestSuiteResponseRepository testSuiteResponseRepository) {
         super(repository, converter);
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.testSuiteResponseESRepository = testSuiteResponseESRepository;
+        this.testSuiteResponseRepository = testSuiteResponseRepository;
     }
 
     @Override
@@ -114,7 +117,7 @@ public class TestSuiteResponseServiceImpl extends GenericServiceImpl<TestSuiteRe
 
             Map<String, Long> stats = new HashMap<>();
 
-            List<TestSuiteResponse> list = testSuiteResponseESRepository.findByRunId(runId);
+            List<TestSuiteResponse> list = testSuiteResponseRepository.findByRunId(runId);
 
             // Total Failed By Category
             for (TestSuiteResponse tsr : list){

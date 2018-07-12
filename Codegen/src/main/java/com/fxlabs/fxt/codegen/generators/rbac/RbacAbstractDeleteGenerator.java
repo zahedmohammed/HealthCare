@@ -51,7 +51,7 @@ public class RbacAbstractDeleteGenerator extends AbstractGenerator {
 
         //String testcase = factory.getValid(model.getReference());
 
-        List<TestSuiteMin> list = build(op, path, POSTFIX, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH, null, true);
+        List<TestSuiteMin> list = build(op, path, POSTFIX, POSTFIX, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH, null, true);
 
         list.get(0).setEndpoint(path_);
 

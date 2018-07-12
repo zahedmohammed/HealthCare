@@ -21,7 +21,7 @@ import java.util.List;
 @Component(value = "specialCharacterPathParamStringGenerator")
 public class SpecialCharacterPathParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "special_chars";
+    protected static final String SCENARIO = "special_chars";
     protected static final String PARAM_TYPE = "path_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
@@ -44,21 +44,12 @@ public class SpecialCharacterPathParamGenerator extends AbstractGenerator {
                     continue;
                 }
 
-                String postFix = PARAM_TYPE + "_" +POSTFIX + "_" + pathParam.getName();
-                List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                String postFix = PARAM_TYPE + "_" +configUtil.getTestSuitePostfix(SCENARIO) + "_" + pathParam.getName();
+                List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
 
-                List<String> assertions = configUtil.getAssertions(POSTFIX);
                 for (TestSuiteMin testSuite : testSuites) {
-                    if (!CollectionUtils.isEmpty(assertions)) {
-                        addAssertions(testSuite, assertions);
-                    }else{
-                        buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                    }
                     String _path = path.replace("{" + pathParam.getName() + "}", "!@#$%^&*()");
                     testSuite.setEndpoint(_path);
-                    testSuite.setCategory(TestSuiteCategory.Bug);
-                    testSuite.setSeverity(TestSuiteSeverity.Major);
-
                 }
                 allTestSuites.addAll(testSuites);
             }

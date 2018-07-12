@@ -22,7 +22,7 @@ import java.util.List;
 @Component(value = "pathParamGeneratorNegative")
 public class NegativePathParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "negative";
+    protected static final String SCENARIO = "Negative";
     protected static final String PARARM_TYPE  = "path_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
@@ -49,20 +49,12 @@ public class NegativePathParamGenerator extends AbstractGenerator {
                 if (param instanceof PathParameter){
                     PathParameter pathParam = (PathParameter) param;
                     if ("integer".equals(pathParam.getType())){
-                        String postFix = PARARM_TYPE + "_" + POSTFIX + "_" + pathParam.getName() ;
-                        List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-                        List<String> assertions = configUtil.getAssertions(POSTFIX);
+                        String postFix = PARARM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + pathParam.getName() ;
+                        List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                         for (TestSuiteMin testSuite : testSuites) {
-                            if (!CollectionUtils.isEmpty(assertions)) {
-                                addAssertions(testSuite, assertions);
-                            }else{
-                                buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                            }
                             String name = pathParam.getName();
                             path = path.replace("\\{"+name+"\\}" , "-1");
                             testSuite.setEndpoint(path );
-                            testSuite.setCategory(TestSuiteCategory.Negative);
-                            testSuite.setSeverity(TestSuiteSeverity.Major);
                         }
                         allTestSuites.addAll(testSuites);
                     }

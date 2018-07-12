@@ -21,7 +21,7 @@ import java.util.List;
 @Component(value = "queryParamGeneratorEmpty")
 public class EmptyQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "empty_value";
+    protected static final String SCENARIO = "empty_value";
     protected static final String PARAM_TYPE = "query_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
@@ -35,18 +35,10 @@ public class EmptyQueryParamGenerator extends AbstractGenerator {
 
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
-                    String postFix = PARAM_TYPE + "_" + POSTFIX + "_" + queryParam.getName();
-                    List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-                    List<String> assertions = configUtil.getAssertions(POSTFIX);
+                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + queryParam.getName();
+                    List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
-                        if (!CollectionUtils.isEmpty(assertions)) {
-                            addAssertions(testSuite, assertions);
-                        }else{
-                            buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                        }
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "");
-                        testSuite.setCategory(TestSuiteCategory.Bug);
-                        testSuite.setSeverity(TestSuiteSeverity.Minor);
                     }
                     allTestSuites.addAll(testSuites);
                 }

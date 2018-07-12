@@ -142,7 +142,7 @@
                         <span>SQL</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{run.stats['Security_SQL_Injection_Passed'] + run.stats['Security_SQL_Injection_Failed'] || 0}}  / {{run.stats['Security_SQL_Injection_Passed'] || 0}}</span>
+                        <span>{{run.stats['SQL_Injection_Passed'] + run.stats['SQL_Injection_Failed'] || 0}}  / {{run.stats['SQL_Injection_Failed'] || 0}}</span>
                     </div>
                 </div>
             </div>
@@ -155,7 +155,7 @@
                         <span>XSS</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{run.stats['Security_XSS_Passed'] || 0}} / {{run.stats['Security_XSS_Failed'] || 0}}</span>
+                        <span>{{run.stats['XSS_Injection_Passed'] + run.stats['XSS_Injection_Failed'] || 0}} / {{run.stats['XSS_Injection_Failed'] || 0}}</span>
                     </div>
                 </div>
             </div>
@@ -168,7 +168,7 @@
                         <span>DOS</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{run.stats['Security_DDOS_Passed']  + run.stats['Security_DDOS_Failed'] || 0}} / {{run.stats['Security_DDOS_Passed'] || 0}}</span>
+                        <span>{{run.stats['DDOS_Passed']  + run.stats['DDOS_Failed'] || 0}} / {{run.stats['DDOS_Failed'] || 0}}</span>
                     </div>
                 </div>
             </div>
@@ -181,20 +181,7 @@
                         <span>RBAC</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{run.stats['Security_UnSecured_Passed']  + run.stats['Security_UnSecured_Passed'] || 0}} / {{run.stats['Security_UnSecured_Passed'] || 0}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-sm-6">
-                <div class="box box-default">
-                    <div class="box-top">
-                        <i class="fa fa-times-circle color-danger"></i>
-                    </div>
-                    <div class="box-info">
-                        <span>Critical</span>
-                    </div>
-                    <div class="box-bottom">
-                        <span>{{run.stats['Critical_Passed'] + run.stats['Critical_Failed'] || 0}} / {{run.stats['Critical_Passed'] || 0}}</span>
+                        <span>{{run.stats['UnSecured_Passed']  + run.stats['UnSecured_Failed'] || 0}} / {{run.stats['UnSecured_Failed'] || 0}}</span>
                     </div>
                 </div>
             </div>
@@ -207,7 +194,20 @@
                         <span>Functional</span>
                     </div>
                     <div class="box-bottom">
-                        <span>{{run.stats['Functional_Passed'] + run.stats['Functional_Failed'] || 0}} / {{run.stats['Functional_Passed'] || 0}}</span>
+                        <span>{{run.stats['Functional_Passed'] + run.stats['Functional_Failed'] || 0}} / {{run.stats['Functional_Failed'] || 0}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="fa fa-times-circle color-danger"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>Critical</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{run.stats['Critical_Passed'] + run.stats['Critical_Failed'] || 0}} / {{run.stats['Critical_Failed'] || 0}}</span>
                     </div>
                 </div>
             </div>

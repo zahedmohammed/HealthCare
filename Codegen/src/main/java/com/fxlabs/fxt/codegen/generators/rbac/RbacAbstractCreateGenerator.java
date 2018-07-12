@@ -16,6 +16,7 @@ import java.util.List;
 public class RbacAbstractCreateGenerator extends AbstractGenerator {
 
     public static final String POSTFIX = "rbac_create_abstract";
+    public static final String SCENARIO = "create";
     protected static final String AUTH = "";
     protected static final String OPERAND = "200";
 
@@ -45,11 +46,11 @@ public class RbacAbstractCreateGenerator extends AbstractGenerator {
 
         String testcase = factory.getValid(model.getReference());
 
-        List<TestSuiteMin> list = build(op, path, POSTFIX, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH, null, true);
+        List<TestSuiteMin> list = build(op, path, POSTFIX, SCENARIO, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH, null, true);
 
         // TODO - if Security required
 
-        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+//        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
 
         buildTestCase(list.get(0), 1, testcase);
 

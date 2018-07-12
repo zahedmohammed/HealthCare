@@ -95,6 +95,7 @@ public class MarkCompleteTaskProcessor {
                     Long count = failed + passed;
                     if (count >= run.getTask().getTotalTests()) {
                         run.getTask().setTotalTests(count);
+                        run.getTask().setEndTime(new Date());
                         run.getTask().setStatus(TaskStatus.COMPLETED);
                     }
                     // count total-suites

@@ -18,7 +18,7 @@ import java.util.List;
 @Component(value = "queryParamGeneratorNegative")
 public class NegativeQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "negative";
+    protected static final String SCENARIO = "negative";
     protected static final String PARAM_TYPE = "query_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
@@ -32,18 +32,10 @@ public class NegativeQueryParamGenerator extends AbstractGenerator {
                 if (param instanceof QueryParameter){
                     QueryParameter queryParam = (QueryParameter) param;
                     if ("integer".equals(queryParam.getType())){
-                        String postFix = PARAM_TYPE + "_" + POSTFIX + "_"  + queryParam.getName() ;
-                        List<TestSuiteMin> testSuites = build(op, path, postFix, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-                        List<String> assertions = configUtil.getAssertions(POSTFIX);
+                        String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_"  + queryParam.getName() ;
+                        List<TestSuiteMin> testSuites = build(op, path, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                         for (TestSuiteMin testSuite : testSuites) {
-                            if (!CollectionUtils.isEmpty(assertions)) {
-                                addAssertions(testSuite, assertions);
-                            }else{
-                                buildAssertion(testSuite, STATUS_CODE_ASSERTION, NOT_EQUALS, OPERAND);
-                            }
                             testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "-1");
-                            testSuite.setCategory(TestSuiteCategory.Negative);
-                            testSuite.setSeverity(TestSuiteSeverity.Major);
                         }
                         allTestSuites.addAll(testSuites);
                     }

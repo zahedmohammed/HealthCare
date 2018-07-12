@@ -14,6 +14,8 @@ public interface TestSuiteResponseRepository extends JpaRepository<TestSuiteResp
 
     Page<TestSuiteResponse> findByRunId(String id, Pageable pageable);
 
+    List<TestSuiteResponse> findByRunId(String id);
+
     Page<TestSuiteResponse> findByTestSuiteAndRunIdIn(String testSuite, List<String> runIds, Pageable pageable);
 
     Page<TestSuiteResponse> findByRunIdAndTestSuite(String id, String name, Pageable pageable);

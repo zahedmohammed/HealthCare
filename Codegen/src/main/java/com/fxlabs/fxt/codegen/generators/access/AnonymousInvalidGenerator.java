@@ -15,7 +15,7 @@ import java.util.List;
 @Component(value = "anonymousInvalidGenerator")
 public class AnonymousInvalidGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "anonymous_invalid";
+    protected static final String SCENARIO = "anonymous_invalid";
     protected static final String AUTH = "NONE";
     protected static final String OPERAND = "401";
 
@@ -39,16 +39,11 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
             }
 
         }
-        List<TestSuiteMin> list = build(op, path, POSTFIX, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+
+        String postFix = configUtil.getTestSuitePostfix(SCENARIO);
+        List<TestSuiteMin> list = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
 
         // TODO - if Security required
-
-        List<String> assertions = configUtil.getAssertions(POSTFIX);
-        if (!CollectionUtils.isEmpty(assertions)) {
-            addAssertions(list.get(0), assertions);
-        }else{
-            buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
-        }
 
         // TODO buildTestCase(testSuite)
         if (method == io.swagger.models.HttpMethod.POST || method == io.swagger.models.HttpMethod.PUT) {

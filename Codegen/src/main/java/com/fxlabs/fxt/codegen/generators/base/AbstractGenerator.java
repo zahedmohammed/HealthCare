@@ -45,17 +45,22 @@ public abstract class AbstractGenerator implements Generator {
         this.stubHandler.register(this);
     }
 
-    public List<TestSuiteMin> build(Operation op, String path, String postfix, String description, TestSuiteType testSuiteType,
+    public List<TestSuiteMin> build(Operation op, String path, String postfix, String scenario, String description, TestSuiteType testSuiteType,
                                     io.swagger.models.HttpMethod method, String tag, String auth) {
-        return build(op,path,postfix,description,testSuiteType,method,tag,auth,null, false);
+        return build(op,path,postfix,scenario, description,testSuiteType,method,tag,auth,null, false);
     }
 
-    public List<TestSuiteMin> build(Operation op, String path, String postfix, String description, TestSuiteType testSuiteType,
+    public List<TestSuiteMin> build(Operation op, String path, String postfix, String scenario, String description, TestSuiteType testSuiteType,
                                     io.swagger.models.HttpMethod method, String tag, String auth, Policies policies, boolean inactive) {
 
         TestSuiteMin testSuite = new TestSuiteMin();
+        testSuite.setSeverity(configUtil.getTestSuiteSeverity(scenario));
+        testSuite.setCategory(configUtil.getTestSuiteCategory(scenario));
+        addAssertions(testSuite,configUtil.getAssertions(scenario));
+
         List<TestSuiteMin> list = new ArrayList<>();
         list.add(testSuite);
+
 
 
         // TODO - replace path-params and query-params
@@ -214,7 +219,8 @@ public abstract class AbstractGenerator implements Generator {
             testSuite.setAssertions(new ArrayList<>());
         }
 
-        testSuite.getAssertions().addAll(assertions);
+        if (assertions != null)
+            testSuite.getAssertions().addAll(assertions);
 
         return this;
     }

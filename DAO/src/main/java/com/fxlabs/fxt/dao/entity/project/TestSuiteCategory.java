@@ -14,7 +14,13 @@ public enum TestSuiteCategory {
     Security_UnSecured("Security_UnSecured"),
     Security_DDOS("Security_DDOS"),
     Security_XSS("Security_XSS"),
-    Security_SQL_Injection("Security_SQL_Injection");
+    Security_SQL_Injection("Security_SQL_Injection"),
+
+    UnSecured("UnSecured"),
+    DDOS("DDOS"),
+    XSS_Injection("XSS_Injection"),
+    SQL_Injection("SQL_Injection"),
+    Log_Forging("Log_Forging");
 
     private final String category;
 

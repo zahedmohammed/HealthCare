@@ -15,7 +15,7 @@ import java.util.List;
 @Component(value = "createGenerator")
 public class CreateGenerator extends AbstractGenerator {
 
-    public static final String POSTFIX = "create";
+    public static final String SCENARIO = "create";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
 
@@ -45,11 +45,12 @@ public class CreateGenerator extends AbstractGenerator {
 
         String testcase = factory.getValid(model.getReference());
 
-        List<TestSuiteMin> list = build(op, path, POSTFIX, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+        String postFix = configUtil.getTestSuitePostfix(SCENARIO);;
+        List<TestSuiteMin> list = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
 
         // TODO - if Security required
 
-        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+//        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
 
         buildTestCase(list.get(0), 1, testcase);
 

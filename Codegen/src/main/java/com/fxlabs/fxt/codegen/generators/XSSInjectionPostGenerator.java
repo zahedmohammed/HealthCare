@@ -26,7 +26,7 @@ import java.util.*;
 @Component(value = "xssInjectionPostGenerator")
 public class XSSInjectionPostGenerator extends AbstractGenerator {
 
-    protected static final String POSTFIX = "XSS_Injection";
+    protected static final String SCENARIO = "XSS_Injection";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
     protected static final String INJECTION_DATASET = "@XSSSQLInjections";
@@ -78,15 +78,8 @@ public class XSSInjectionPostGenerator extends AbstractGenerator {
         if (!found) return null;
 
         String testcase = objNode.toString();
-        List<TestSuiteMin> list = build(op, path, POSTFIX, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-        List<String> assertions = configUtil.getAssertions(POSTFIX);
-
-        if (!CollectionUtils.isEmpty(assertions)) {
-            addAssertions(list.get(0), assertions);
-        }else{
-            buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
-        }
-
+        String postFix = configUtil.getTestSuitePostfix(SCENARIO);
+        List<TestSuiteMin> list = build(op, path, postFix, SCENARIO,op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
         buildTestCase(list.get(0), 1, testcase);
 
         return list;

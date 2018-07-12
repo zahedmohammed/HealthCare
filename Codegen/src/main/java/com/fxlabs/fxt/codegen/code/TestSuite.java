@@ -22,7 +22,9 @@ public class TestSuite implements Serializable {
 
     private String category;
     private String postfix;
+    private String scenario;
     private List<String> assertions;
+    private String severity;
 
 
 }
