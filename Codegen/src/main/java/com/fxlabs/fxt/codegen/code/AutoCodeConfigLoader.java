@@ -18,7 +18,7 @@ public class AutoCodeConfigLoader {
 
     protected static Logger logger = LoggerFactory.getLogger(AutoCodeConfigLoader.class);
 
-    public static AutoCodeConfig loadConfig(String projectDir){
+    public static AutoCodeConfig loadConfig(String projectDir) throws Exception{
         AutoCodeConfig config = null;
 
         if (projectDir == null){
@@ -52,6 +52,7 @@ public class AutoCodeConfigLoader {
             logger.warn(e.getLocalizedMessage(), e);
             System.out.println(String.format("Failed with error [%s]", e.getLocalizedMessage()));
             CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.ERROR, "", String.format("Failed with error [%s]", e.getLocalizedMessage()));
+            throw e;
         }
 
         return config;

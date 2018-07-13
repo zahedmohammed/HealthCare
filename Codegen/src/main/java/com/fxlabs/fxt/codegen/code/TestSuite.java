@@ -1,6 +1,9 @@
 package com.fxlabs.fxt.codegen.code;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,13 +21,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TestSuite implements Serializable {
 
-    private String category;
+//    private String category;
     private String postfix;
-    private String scenario;
+    private String type;
     private List<String> assertions;
     private String severity;
-
+    private boolean inactive;
 
 }

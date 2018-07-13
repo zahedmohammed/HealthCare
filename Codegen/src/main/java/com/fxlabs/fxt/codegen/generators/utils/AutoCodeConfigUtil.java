@@ -8,7 +8,10 @@ import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mohammed Luqman Shareef
@@ -24,6 +27,30 @@ public class AutoCodeConfigUtil {
 
     public AutoCodeConfig getConfig() {
         return config;
+    }
+
+    private static List<String> defaultAssertions = new ArrayList<>();
+    private static TestSuiteCategory defaultCategory = TestSuiteCategory.Functional;
+    private static TestSuiteSeverity defaultSeverity = TestSuiteSeverity.Major;
+    private static boolean defaultInactive = false;
+
+    private static Map<String,TestSuiteCategory> typeCategoryMap = new HashMap<>();
+
+    static{
+        defaultAssertions.add("@StatusCode != 200");
+
+        typeCategoryMap.put("anonymous_invalid", TestSuiteCategory.UnSecured);
+        typeCategoryMap.put("auth_invalid", TestSuiteCategory.UnSecured);
+        typeCategoryMap.put("DDOS", TestSuiteCategory.DDOS);
+        typeCategoryMap.put("XSS_Injection", TestSuiteCategory.XSS_Injection);
+        typeCategoryMap.put("sql_injection", TestSuiteCategory.SQL_Injection);
+        typeCategoryMap.put("Log_Forging", TestSuiteCategory.Log_Forging);
+        typeCategoryMap.put("invalid_datatype", TestSuiteCategory.Negative);
+        typeCategoryMap.put("special_chars", TestSuiteCategory.Negative);
+        typeCategoryMap.put("null_value", TestSuiteCategory.Negative);
+        typeCategoryMap.put("empty_value", TestSuiteCategory.Negative);
+        typeCategoryMap.put("create", TestSuiteCategory.Functional);
+
     }
 
     public boolean isDB(String dbName){
@@ -65,64 +92,78 @@ public class AutoCodeConfigUtil {
         return this.config.getLogForgingPatterns();
     }
 
-    public List<String> getAssertions(String scanario){
+    public List<String> getAssertions(String type){
 
-        if (this.config == null ) return null;
+        if (this.config == null ) return defaultAssertions;
 
         String version = null;
         if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
             for ( TestSuite ts : this.config.getTestSuites() ){
-                if (StringUtils.equalsIgnoreCase(ts.getScenario(), scanario)){
-                    return ts.getAssertions();
+                if (StringUtils.equalsIgnoreCase(ts.getType(), type)){
+                    if ( CollectionUtils.isEmpty(ts.getAssertions()) ||
+                            ts.getAssertions().get(0) == null ||
+                            ts.getAssertions().get(0).equalsIgnoreCase("null") ){
+                        return defaultAssertions;
+                    }else {
+                        return ts.getAssertions();
+                    }
                 }
             }
         }
-        return null;
+        return defaultAssertions;
     }
 
-    public TestSuiteSeverity getTestSuiteSeverity(String scanario){
+    public TestSuiteSeverity getTestSuiteSeverity(String type){
 
-        if (this.config == null ) return null;
+        TestSuiteSeverity severity = defaultSeverity;
+        if (this.config == null ) return severity;
 
         String version = null;
         if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
             for ( TestSuite ts : this.config.getTestSuites() ){
-                if (StringUtils.equalsIgnoreCase(ts.getScenario(), scanario)){
-                    return TestSuiteSeverity.valueOf(ts.getSeverity());
+                if (StringUtils.equalsIgnoreCase(ts.getType(), type)){
+                    try {
+                        severity = TestSuiteSeverity.valueOf(ts.getSeverity());
+                    }catch(Exception ex) {}
+                    break;
                 }
             }
         }
-        return null;
+        return severity;
     }
 
-    public TestSuiteCategory getTestSuiteCategory(String scanario){
-
-        if (this.config == null ) return null;
-
-        String version = null;
-        if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
-            for ( TestSuite ts : this.config.getTestSuites() ){
-                if (StringUtils.equalsIgnoreCase(ts.getScenario(), scanario)){
-                    return TestSuiteCategory.valueOf(ts.getCategory());
-                }
-            }
-        }
-        return null;
+    public TestSuiteCategory getTestSuiteCategory(String type){
+        return typeCategoryMap.get(type) != null ? typeCategoryMap.get(type) : defaultCategory;
     }
 
-    public String getTestSuitePostfix(String scanario){
+    public String getTestSuitePostfix(String type){
 
-        if (this.config == null ) return "";
+        if (this.config == null ) return type;
 
         String version = null;
         if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
             for ( TestSuite ts : this.config.getTestSuites() ){
-                if (StringUtils.equalsIgnoreCase(ts.getScenario(), scanario)){
-                    return ts.getPostfix() != null ? ts.getPostfix() : ts.getScenario();
+                if (StringUtils.equalsIgnoreCase(ts.getType(), type)){
+                    return ts.getPostfix() != null ? ts.getPostfix() : ts.getType();
                 }
             }
         }
-        return "";
+        return type;
+    }
+
+    public boolean isInactive(String type){
+
+        if (this.config == null ) return defaultInactive;
+
+        if (! CollectionUtils.isEmpty(this.config.getTestSuites())){
+            for ( TestSuite ts : this.config.getTestSuites() ){
+                if (StringUtils.equalsIgnoreCase(ts.getType(), type)){
+                    return ts.isInactive();
+                }
+            }
+        }
+
+        return defaultInactive;
     }
 
 }

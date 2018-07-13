@@ -50,22 +50,19 @@ public abstract class AbstractGenerator implements Generator {
         return build(op,path,postfix,scenario, description,testSuiteType,method,tag,auth,null, false);
     }
 
-    public List<TestSuiteMin> build(Operation op, String path, String postfix, String scenario, String description, TestSuiteType testSuiteType,
+    public List<TestSuiteMin> build(Operation op, String path, String postfix, String type, String description, TestSuiteType testSuiteType,
                                     io.swagger.models.HttpMethod method, String tag, String auth, Policies policies, boolean inactive) {
 
         TestSuiteMin testSuite = new TestSuiteMin();
-        testSuite.setSeverity(configUtil.getTestSuiteSeverity(scenario));
-        testSuite.setCategory(configUtil.getTestSuiteCategory(scenario));
-        addAssertions(testSuite,configUtil.getAssertions(scenario));
+        testSuite.setSeverity(configUtil.getTestSuiteSeverity(type));
+        testSuite.setCategory(configUtil.getTestSuiteCategory(type));
+        addAssertions(testSuite,configUtil.getAssertions(type));
+        inactive = configUtil.isInactive(type);
 
         List<TestSuiteMin> list = new ArrayList<>();
         list.add(testSuite);
 
-
-
         // TODO - replace path-params and query-params
-
-
         buildName(testSuite, path, method, postfix)
                 .buildInactive(testSuite, inactive)
                 //buildFileName(testSuite, name)

@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.codegen.code;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AutoCodeConfig implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -18,7 +18,7 @@ import java.util.List;
 @Component(value = "queryParamGeneratorNegative")
 public class NegativeQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String SCENARIO = "negative";
+    protected static final String SCENARIO = "negative_number";
     protected static final String PARAM_TYPE = "query_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";

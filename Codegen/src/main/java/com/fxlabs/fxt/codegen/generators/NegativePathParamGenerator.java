@@ -22,7 +22,7 @@ import java.util.List;
 @Component(value = "pathParamGeneratorNegative")
 public class NegativePathParamGenerator extends AbstractGenerator {
 
-    protected static final String SCENARIO = "Negative";
+    protected static final String SCENARIO = "negative_number";
     protected static final String PARARM_TYPE  = "path_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
