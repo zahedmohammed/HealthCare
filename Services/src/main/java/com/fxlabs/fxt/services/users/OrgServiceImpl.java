@@ -155,7 +155,13 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         caEmail.setCreatedBy(users.getId());
         caEmail.setInactive(false);
         caEmail.setName("Default_Email");
-        this.accountRepository.save(caEmail);
+        Account caEmailEntity = this.accountRepository.save(caEmail);
+
+        Notification notificationEmail =  new Notification();
+        notificationEmail.setOrg(org);
+        notificationEmail.setName("Dev-Email-Notification");
+        notificationEmail.setAccount(caEmailEntity);
+        notificationRepository.save(notificationEmail);
 
 
         return response;
