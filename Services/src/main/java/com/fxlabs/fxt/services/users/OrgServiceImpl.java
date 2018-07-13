@@ -220,13 +220,19 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     }
 
     @Override
-    public Response<Boolean> resetPassword(String id, Member member, String orgId, String user) {
+    public Response<Boolean> resetPassword(String id, Member member, String orgId, String auditoryUserId, String auditorOrgId) {
 
         // check user-id belongs to org
         Optional<OrgUsers> usersOptional = this.orgUsersRepository.findByOrgIdAndUsersId(orgId, id);
         if (!usersOptional.isPresent()) {
             throw new FxException(String.format("User [%s] not entitled to the resource [%s].", id, orgId));
         }
+
+       // Optional<OrgUsers> usersOptional_ = this.orgUsersRepository.findByOrgIdAndUsersId(auditorOrgId, id);
+        if (!orgId.equals(auditorOrgId)) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", id, orgId));
+        }
+
 
         return this.usersService.resetPassword(id, member.getPassword(), member.getConfirmPassword());
     }

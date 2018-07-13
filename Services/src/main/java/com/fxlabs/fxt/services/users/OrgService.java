@@ -30,7 +30,7 @@ public interface OrgService extends GenericService<Org, String> {
 
     Response<Boolean> addMember(Member dto, String orgId, String user);
 
-    Response<Boolean> resetPassword(String id, Member member, String orgId, String user);
+    Response<Boolean> resetPassword(String id, Member member, String orgId, String user, String auditorOrgId);
 
     Response<Boolean> saveUser(String id, UserMinimalDto users, com.fxlabs.fxt.dto.users.OrgUsers orgUser, String orgId, String user);
 

@@ -120,7 +120,7 @@ public class OrgController {
     public Response<Boolean> resetPassword(@PathVariable("orgId") String orgId,
                                            @PathVariable("userId") String userId,
                                            @RequestBody Member member) {
-        return orgService.resetPassword(userId, member, orgId, SecurityUtil.getCurrentAuditor());
+        return orgService.resetPassword(userId, member, orgId, SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_USER})
