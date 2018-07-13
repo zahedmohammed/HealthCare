@@ -44,13 +44,13 @@ export class OrgEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar(this.entry.name + " Saving...", "");
+    this.snackbarService.openSnackBar(this.entry.name + " saving...", "");
     this.orgService.update(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-        this.snackbarService.openSnackBar(this.entry.name + " Saved Successfully", "");
+        this.snackbarService.openSnackBar(this.entry.name + " saved successfully", "");
         this.router.navigate(['/app/orgs']);
     }, error => {
       this.handler.hideLoader();

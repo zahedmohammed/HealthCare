@@ -50,13 +50,13 @@ export class AccountEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar(this.entry.name + " Saving...", "");
+    this.snackbarService.openSnackBar(this.entry.name + " saving...", "");
     this.accountService.update(this.entry).subscribe(results => {
         this.handler.hideLoader();
         if (this.handler.handle(results)) {
             return;
         }
-        this.snackbarService.openSnackBar(this.entry.name + " Saved Successfully", "");
+        this.snackbarService.openSnackBar(this.entry.name + " saved successfully", "");
         this.router.navigate(['/app/accounts']);
     }, error => {
         this.handler.hideLoader();
@@ -72,7 +72,7 @@ delete() {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-        this.snackbarService.openSnackBar(this.entry.name + " Deleting...", "");
+        this.snackbarService.openSnackBar(this.entry.name + " deleting...", "");
         if (result != null) {
             this.handler.activateLoader();
             this.accountService.delete(this.entry).subscribe(results => {
@@ -80,7 +80,7 @@ delete() {
                 if (this.handler.handle(results)) {
                     return;
                 }
-                this.snackbarService.openSnackBar(this.entry.name + " Deleted Successfully", "");
+                this.snackbarService.openSnackBar(this.entry.name + " deleted successfully", "");
                 this.router.navigate(['/app/accounts']);
             }, error => {
                 this.handler.hideLoader();

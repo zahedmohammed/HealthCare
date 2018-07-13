@@ -26,13 +26,13 @@ export class VaultNewComponent implements OnInit {
 
   create() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar(this.entry.key + " Creating...", "");
+    this.snackbarService.openSnackBar(this.entry.key + " creating...", "");
     this.vaultService.create(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-        this.snackbarService.openSnackBar(this.entry.key + " Created Successfully", "");
+        this.snackbarService.openSnackBar(this.entry.key + " created successfully", "");
         this.router.navigate(['/app/vault']);
     }, error => {
       this.handler.hideLoader();

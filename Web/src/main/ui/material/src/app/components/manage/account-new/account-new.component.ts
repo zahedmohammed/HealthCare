@@ -36,13 +36,13 @@ export class AccountNewComponent implements OnInit {
 
   create() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar("Account " + this.entry.name + " Creating...", "");
+    this.snackbarService.openSnackBar(this.entry.name + " creating...", "");
     this.accountService.create(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-    this.snackbarService.openSnackBar("Account " + this.entry.name + " Created Successfully", "");
+    this.snackbarService.openSnackBar(this.entry.name + " created successfully", "");
     this.router.navigate(['/app/accounts']);
     }, error => {
       this.handler.hideLoader();

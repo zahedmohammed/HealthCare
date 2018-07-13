@@ -74,7 +74,7 @@ export class ProjectsEditComponent implements OnInit {
 
   update() {
     console.log(this.project);
-    this.snackbarService.openSnackBar(this.project.name + " Savings...", "");
+    this.snackbarService.openSnackBar(this.project.name + " saving...", "");
     this.projectService.update(this.project).subscribe(results => {
       this.handler.hideLoader();
         if (this.handler.handle(results)) {
@@ -83,7 +83,7 @@ export class ProjectsEditComponent implements OnInit {
      /* this.config.verticalPosition = 'top';
       this.config.horizontalPosition = 'right';
       this.config.duration = 3000;*/
-      this.snackbarService.openSnackBar( this.project.name + "  Saved Successfully", "");
+      this.snackbarService.openSnackBar( this.project.name + "  saved successfully", "");
       this.router.navigate(['/app/projects']);
     }, error => {
       this.handler.hideLoader();
@@ -101,7 +101,7 @@ delete() {
     dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
             this.handler.activateLoader();
-            this.snackbarService.openSnackBar(this.project.name + " Deleting...", "");
+            this.snackbarService.openSnackBar(this.project.name + " deleting...", "");
             this.projectService.delete(this.project).subscribe(results => {
                 this.handler.hideLoader();
                 if (this.handler.handle(results)) {
@@ -110,7 +110,7 @@ delete() {
                /* this.config.verticalPosition = 'top';
                 this.config.horizontalPosition = 'right';
                 this.config.duration = 3000;*/
-                this.snackbarService.openSnackBar(this.project.name + " Deleted Successfully", "");
+                this.snackbarService.openSnackBar(this.project.name + " deleted successfully", "");
                 this.router.navigate(['/app/projects']);
             }, error => {
                 this.handler.hideLoader();

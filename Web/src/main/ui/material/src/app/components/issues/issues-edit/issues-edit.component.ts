@@ -91,14 +91,14 @@ export class IssuesEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar(this.entry.name + " Saving...", "");
+    this.snackbarService.openSnackBar(this.entry.name + " saving...", "");
     this.issueTrackerService.update(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
 
-      this.snackbarService.openSnackBar(this.entry.name + " Saved Successfully", "");
+      this.snackbarService.openSnackBar(this.entry.name + " saved successfully", "");
       this.router.navigate(['/app/issues']);
     }, error => {
       console.log("Unable to update vault");
@@ -114,7 +114,7 @@ export class IssuesEditComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-        this.snackbarService.openSnackBar(this.entry.name + " Deleting...", "");
+        this.snackbarService.openSnackBar(this.entry.name + " deleting...", "");
         if (result != null) {
             this.handler.activateLoader();
             this.issueTrackerService.deleteITBot(this.entry).subscribe(results => {
@@ -122,7 +122,7 @@ export class IssuesEditComponent implements OnInit {
                 if (this.handler.handle(results)) {
                     return;
                 }
-               this.snackbarService.openSnackBar(this.entry.name + " Deleted Successfully", "");
+               this.snackbarService.openSnackBar(this.entry.name + " deleted successfully", "");
                this.router.navigate(['/app/issues']);
             }, error => {
                 this.handler.hideLoader();

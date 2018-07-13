@@ -24,12 +24,12 @@ export class OrgNewComponent implements OnInit {
 
   create() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar(this.entry.name + " Creating...", "");
+    this.snackbarService.openSnackBar(this.entry.name + " creating...", "");
     this.orgService.create(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
-      }this.snackbarService.openSnackBar(this.entry.name + " Created Successfully...", "");
+      }this.snackbarService.openSnackBar(this.entry.name + " created successfully...", "");
       this.router.navigate(['/app/orgs']);
     }, error => {
       this.handler.hideLoader();

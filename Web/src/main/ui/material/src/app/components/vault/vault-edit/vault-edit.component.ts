@@ -47,13 +47,13 @@ export class VaultEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar(this.entry.key + " Saving...", "");
+    this.snackbarService.openSnackBar(this.entry.key + " saving...", "");
     this.vaultService.update(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-        this.snackbarService.openSnackBar(this.entry.key + " Saved Successfully", "");
+        this.snackbarService.openSnackBar(this.entry.key + " saved successfully", "");
         this.router.navigate(['/app/vault']);
     }, error => {
       this.handler.hideLoader();
@@ -69,7 +69,7 @@ export class VaultEditComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-        this.snackbarService.openSnackBar(this.entry.key + " Deleting...", "");
+        this.snackbarService.openSnackBar(this.entry.key + " deleting...", "");
         if (result != null) {
             this.handler.activateLoader();
             this.vaultService.delete(this.entry).subscribe(results => {
@@ -77,7 +77,7 @@ export class VaultEditComponent implements OnInit {
                 if (this.handler.handle(results)) {
                     return;
                 }
-                this.snackbarService.openSnackBar(this.entry.key + " Deleted Successfully", "");
+                this.snackbarService.openSnackBar(this.entry.key + " deleted successfully", "");
                 this.router.navigate(['/app/vault']);
             }, error => {
                 this.handler.hideLoader();

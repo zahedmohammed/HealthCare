@@ -33,14 +33,14 @@ export class NotificationNewComponent implements OnInit {
   create() {
     this.handler.activateLoader();
     this.showSpinner = true;
-    this.snackbarService.openSnackBar(this.entry.name + " Creating...", "");
+    this.snackbarService.openSnackBar(this.entry.name + " creating...", "");
     this.notificationService.create(this.entry).subscribe(results => {
      this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
 
-        this.snackbarService.openSnackBar( this.entry.name + " Created Successfully", "");
+        this.snackbarService.openSnackBar( this.entry.name + " created successfully", "");
         this.router.navigate(['/app/notification-accounts']);
     }, error => {
       this.handler.hideLoader();

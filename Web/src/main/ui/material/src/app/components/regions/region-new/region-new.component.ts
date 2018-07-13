@@ -37,13 +37,13 @@ export class RegionNewComponent implements OnInit {
 
   create() {
       this.handler.activateLoader();
-      this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Creating...", "");
+      this.snackbarService.openSnackBar(this.entry.name + " creating...", "");
       this.regionsService.create(this.entry).subscribe(results => {
           this.handler.hideLoader();
           if (this.handler.handle(results)) {
               return;
           }
-          this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Successfully Created", "");
+          this.snackbarService.openSnackBar(this.entry.name + " created successfully", "");
           this.router.navigate(['/app/regions']);
       }, error => {
           this.handler.hideLoader();

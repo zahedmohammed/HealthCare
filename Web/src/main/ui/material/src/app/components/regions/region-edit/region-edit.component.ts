@@ -78,13 +78,13 @@ export class RegionEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Updating...", "");
+    this.snackbarService.openSnackBar(this.entry.name + " saving...", "");
     this.regionsService.update(this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Successfully Updated", "");
+      this.snackbarService.openSnackBar(this.entry.name + " saved successfully", "");
       this.router.navigate(['/app/regions']);
     }, error => {
       this.handler.hideLoader();
@@ -99,7 +99,7 @@ delete() {
         }
     });
     dialogRef.afterClosed().subscribe(result => {
-        this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Deleting...", "");
+        this.snackbarService.openSnackBar(this.entry.name + " deleting...", "");
         if (result != null) {
             this.handler.activateLoader();
             this.regionsService.delete(this.entry).subscribe(results => {
@@ -107,7 +107,7 @@ delete() {
                 if (this.handler.handle(results)) {
                     return;
                 }
-                this.snackbarService.openSnackBar("Bot Hub " + this.entry.name + " Successfully Deleted", "");
+                this.snackbarService.openSnackBar(this.entry.name + " deleted successfully", "");
                 this.router.navigate(['/app/regions']);
             }, error => {
                 this.handler.hideLoader();

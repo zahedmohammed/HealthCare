@@ -38,7 +38,7 @@ export class ProjectsNewComponent implements OnInit {
 
   create() {
     this.handler.activateLoader();
-      this.snackbarService.openSnackBar( this.project.name + " Creating...", "");
+      this.snackbarService.openSnackBar( this.project.name + " creating...", "");
       this.projectService.create(this.project).subscribe(results => {
         this.handler.hideLoader();
         if (this.handler.handle(results)) {
@@ -47,7 +47,7 @@ export class ProjectsNewComponent implements OnInit {
        /* this.config.verticalPosition = 'top';
         this.config.horizontalPosition = 'right';
         this.config.duration = 3000;*/
-        this.snackbarService.openSnackBar(this.project.name + " Created Successfully", "");
+        this.snackbarService.openSnackBar(this.project.name + " created successfully", "");
         this.router.navigate(['/app/projects']);
     }, error => {
         this.handler.hideLoader();
