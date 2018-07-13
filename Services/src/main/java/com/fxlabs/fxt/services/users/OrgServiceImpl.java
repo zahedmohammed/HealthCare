@@ -233,6 +233,11 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
             throw new FxException(String.format("User [%s] not entitled to the resource [%s].", id, orgId));
         }
 
+        Optional<OrgUsers> auditorUsersOptional = this.orgUsersRepository.findByOrgIdAndUsersId(auditorOrgId, auditoryUserId);
+        if (!auditorUsersOptional.isPresent() || !auditorUsersOptional.get().getOrgRole().equals(OrgRole.ADMIN)) {
+            throw new FxException(String.format("User [%s] not entitled to the resource [%s].", id, orgId));
+        }
+
 
         return this.usersService.resetPassword(id, member.getPassword(), member.getConfirmPassword());
     }
