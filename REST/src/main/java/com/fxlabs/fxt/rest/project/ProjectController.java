@@ -4,7 +4,6 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.ProjectImports;
-import com.fxlabs.fxt.dto.project.ProjectSaving;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.ProjectFileService;
 import com.fxlabs.fxt.services.project.ProjectService;
@@ -32,6 +31,7 @@ public class ProjectController {
     private ProjectFileService projectFileService;
     private ProjectService projectService;
     private static final String SAVINGS = "/savings";
+
 
     @Autowired
     public ProjectController(
@@ -103,12 +103,17 @@ public class ProjectController {
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
-    @RequestMapping(value = "/{id}/project-checksums", method = RequestMethod.GET)
+    @RequestMapping(value = { "/{id}/project-checksums" , "/{id}/files"}, method = RequestMethod.GET)
     public Response<List<ProjectFile>> findByProjectId(@PathVariable("id") String projectId,
                                                        @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                        @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
         return projectFileService.findByProjectId(projectId, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{projectId}/files/{id}", method = RequestMethod.GET)
+    public Response<ProjectFile> findByProjectIdAndFileId(@PathVariable("projectId") String projectId, @PathVariable("id") String id) {
+        return projectFileService.findById(id, SecurityUtil.getCurrentAuditor());
+    }
 
 }
