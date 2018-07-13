@@ -48,7 +48,7 @@
                         </div>
                         <div class="col-md-4">
                             <mat-input-container class="full-width">
-                                <input required [(ngModel)]="entry.confirmPassword" name="pass" id="confirmPassword"
+                                <input required [(ngModel)]="entry.confirmPassword" name="confirmPassword" id="confirmPassword"
                                        type="password"
                                        matInput placeholder="Confirm password" min="8">
                             </mat-input-container>
@@ -61,8 +61,8 @@
                         </label>
                         <div class="col-md-4">
                             <mat-form-field>
-                                <mat-select placeholder="Role" [(ngModel)]="entry.orgRole" name="roles">
-                                    <mat-option *ngFor="let role of roles" [value]="role">
+                                <mat-select placeholder="Role" required [(ngModel)]="entry.orgRole" name="roles">
+                                    <mat-option  *ngFor="let role of roles" [value]="role">
                                         {{role}}
                                     </mat-option>
                                 </mat-select>
@@ -83,7 +83,7 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-8">
                             <button mat-raised-button color="primary" (click)="create();"
-                                    class="btn-w-md no-margin-left">Add
+                                    class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Add
                             </button>
                             <button mat-button type="button" color="primary" class="btn-w-md"
                                     [routerLink]="['/app/orgs', org.id, 'users']">Cancel
