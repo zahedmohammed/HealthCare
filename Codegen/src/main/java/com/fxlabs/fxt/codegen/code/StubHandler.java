@@ -7,10 +7,8 @@ import io.swagger.models.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,14 +24,14 @@ public class StubHandler {
     }
 
 
-    public List<TestSuiteMin> handle(String path, HttpMethod method, Operation op, AutoCodeConfig config) {
+    public List<TestSuiteMin> handle(String path, HttpMethod method, Operation op) {
 
         logger.debug("{} {}", path, method);
         List<TestSuiteMin> suites = Collections.synchronizedList(new ArrayList<>());
 
+
         this.generators.parallelStream().forEach(g -> {
             try {
-                g.setAutoCodeConfig(config);
                 List<TestSuiteMin> list = g.generate(path, method, op);
                 if (list != null && !list.isEmpty()) {
                     suites.addAll(list);

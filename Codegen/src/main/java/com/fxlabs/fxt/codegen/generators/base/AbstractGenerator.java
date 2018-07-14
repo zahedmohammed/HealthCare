@@ -1,7 +1,5 @@
 package com.fxlabs.fxt.codegen.generators.base;
 
-import com.fxlabs.fxt.codegen.code.AutoCodeConfig;
-import com.fxlabs.fxt.codegen.code.Database;
 import com.fxlabs.fxt.codegen.code.StubHandler;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
@@ -11,9 +9,7 @@ import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -37,8 +33,8 @@ public abstract class AbstractGenerator implements Generator {
     @Autowired
     protected JSONFactory factory;
 
-    protected AutoCodeConfigUtil configUtil = new AutoCodeConfigUtil();
-//    protected AutoCodeConfig autoCodeConfig = null;
+    @Autowired
+    protected AutoCodeConfigUtil configUtil;
 
     @PostConstruct
     public void register() {
@@ -47,7 +43,7 @@ public abstract class AbstractGenerator implements Generator {
 
     public List<TestSuiteMin> build(Operation op, String path, String postfix, String scenario, String description, TestSuiteType testSuiteType,
                                     io.swagger.models.HttpMethod method, String tag, String auth) {
-        return build(op,path,postfix,scenario, description,testSuiteType,method,tag,auth,null, false);
+        return build(op, path, postfix, scenario, description, testSuiteType, method, tag, auth, null, false);
     }
 
     public List<TestSuiteMin> build(Operation op, String path, String postfix, String type, String description, TestSuiteType testSuiteType,
@@ -56,10 +52,16 @@ public abstract class AbstractGenerator implements Generator {
         TestSuiteMin testSuite = new TestSuiteMin();
         testSuite.setSeverity(configUtil.getTestSuiteSeverity(type));
         testSuite.setCategory(configUtil.getTestSuiteCategory(type));
-        addAssertions(testSuite,configUtil.getAssertions(type));
+        addAssertions(testSuite, configUtil.getAssertions(type));
         inactive = configUtil.isInactive(type);
 
         List<TestSuiteMin> list = new ArrayList<>();
+
+        // Don't create file if inactive is true.
+        if (inactive) {
+            return list;
+        }
+
         list.add(testSuite);
 
         // TODO - replace path-params and query-params
@@ -290,16 +292,5 @@ public abstract class AbstractGenerator implements Generator {
         }
         return this;
     }
-
-
-    @Override
-    public void setAutoCodeConfig(AutoCodeConfig autoCodeConfig){
-        this.configUtil.setConfig(autoCodeConfig);
-    }
-
-//    @Override
-//    public AutoCodeConfig getAutoCodeConfig(){
-//        return this.autoCodeConfig ;
-//    }
 
 }

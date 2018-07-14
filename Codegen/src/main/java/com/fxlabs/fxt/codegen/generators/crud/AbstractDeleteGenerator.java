@@ -1,14 +1,11 @@
 package com.fxlabs.fxt.codegen.generators.crud;
 
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
-import com.fxlabs.fxt.codegen.generators.base.Generator;
 import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.HttpMethod;
-import io.swagger.models.Model;
 import io.swagger.models.Operation;
-import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +45,7 @@ public class AbstractDeleteGenerator extends AbstractGenerator {
 
         String base = NameUtil.extractBase(path);
         //System.out.println ("Path: " + path);
-        String path_ = StringUtils.replace(path, "{" + name + "}", "{{@" + base + "_post_" +AbstractCreateGenerator.POSTFIX + "_Response.id}}");
+        String path_ = StringUtils.replace(path, "{" + name + "}", "{{@" + base + "_post_" + AbstractCreateGenerator.POSTFIX + "_Response.id}}");
         //System.out.println ("Eval Path: " + path);
 
         //System.out.println ("AbstractCreate -> " + path + " " + op.getOperationId());
@@ -57,11 +54,13 @@ public class AbstractDeleteGenerator extends AbstractGenerator {
 
         List<TestSuiteMin> list = build(op, path, POSTFIX, POSTFIX, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH);
 
-        list.get(0).setEndpoint(path_);
+        if (!CollectionUtils.isEmpty(list)) {
+            list.get(0).setEndpoint(path_);
 
-        // TODO - if Security required
+            // TODO - if Security required
 
-        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+            buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+        }
 
         return list;
     }

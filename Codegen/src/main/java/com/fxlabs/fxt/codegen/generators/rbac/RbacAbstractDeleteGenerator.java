@@ -10,6 +10,7 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -53,11 +54,13 @@ public class RbacAbstractDeleteGenerator extends AbstractGenerator {
 
         List<TestSuiteMin> list = build(op, path, POSTFIX, POSTFIX, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH, null, true);
 
-        list.get(0).setEndpoint(path_);
+        if (!CollectionUtils.isEmpty(list)) {
+            list.get(0).setEndpoint(path_);
 
-        // TODO - if Security required
+            // TODO - if Security required
 
-        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+            buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+        }
 
         return list;
     }

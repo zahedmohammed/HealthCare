@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
+import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import io.swagger.models.*;
 import io.swagger.models.auth.AuthorizationValue;
@@ -31,13 +32,18 @@ public class StubGenerator {
     @Autowired
     private JSONFactory factory;
 
-    public int generate(String spec, String dir, String configFilePath , String headerKey, String headerVal) {
+    @Autowired
+    private AutoCodeConfigUtil autoCodeConfigUtil;
+
+    public int generate(String spec, String dir, String configFilePath, String headerKey, String headerVal) {
 
         try {
 
             Swagger swagger = build(spec, headerKey, headerVal);
 
             AutoCodeConfig config = AutoCodeConfigLoader.loadConfig(configFilePath);
+            autoCodeConfigUtil.resetConfig();
+            autoCodeConfigUtil.setConfig(config);
 
             factory.init(swagger);
 
@@ -88,7 +94,7 @@ public class StubGenerator {
                     Operation op = path.getOperationMap().get(m);
 
                     //System.out.println (p + " " + op.getOperationId());
-                    testSuites.addAll(this.stubHandler.handle(p, m, op, config));
+                    testSuites.addAll(this.stubHandler.handle(p, m, op));
                     /*System.out.println (op.getOperationId());
                     System.out.println (op.getConsumes());
                     System.out.println (op.getProduces());

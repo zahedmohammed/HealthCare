@@ -1,6 +1,5 @@
 package com.fxlabs.fxt.codegen.generators.base;
 
-import com.fxlabs.fxt.codegen.code.AutoCodeConfig;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import io.swagger.models.Operation;
 
@@ -10,7 +9,4 @@ public interface Generator {
 
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op);
 
-    public void setAutoCodeConfig(AutoCodeConfig config);
-
-//    public AutoCodeConfig getAutoCodeConfig();
 }
