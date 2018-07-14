@@ -42,27 +42,27 @@ public class AutoCodeConfigUtil {
         this.config = null;
     }
 
-    private static List<String> defaultAssertions = new ArrayList<>();
-    private static TestSuiteCategory defaultCategory = TestSuiteCategory.Functional;
-    private static TestSuiteSeverity defaultSeverity = TestSuiteSeverity.Major;
-    private static boolean DEFAULT_INACTIVE = true;
+    private static final List<String> DEFAULT_ASSERTIONS = new ArrayList<>();
+    private static final TestSuiteCategory DEFAULT_CATEGORY = TestSuiteCategory.Functional;
+    private static final TestSuiteSeverity DEFAULT_SEVERITY = TestSuiteSeverity.Major;
+    private static final boolean DEFAULT_INACTIVE = false;
 
-    private static Map<String, TestSuiteCategory> typeCategoryMap = new HashMap<>();
+    private static final Map<String, TestSuiteCategory> TYPE_CATEGORY_MAP = new HashMap<>();
 
     static {
-        defaultAssertions.add("@StatusCode != 200");
+        DEFAULT_ASSERTIONS.add("@StatusCode != 200");
 
-        typeCategoryMap.put("anonymous_invalid", TestSuiteCategory.UnSecured);
-        typeCategoryMap.put("auth_invalid", TestSuiteCategory.UnSecured);
-        typeCategoryMap.put("DDOS", TestSuiteCategory.DDOS);
-        typeCategoryMap.put("XSS_Injection", TestSuiteCategory.XSS_Injection);
-        typeCategoryMap.put("sql_injection", TestSuiteCategory.SQL_Injection);
-        typeCategoryMap.put("Log_Forging", TestSuiteCategory.Log_Forging);
-        typeCategoryMap.put("invalid_datatype", TestSuiteCategory.Negative);
-        typeCategoryMap.put("special_chars", TestSuiteCategory.Negative);
-        typeCategoryMap.put("null_value", TestSuiteCategory.Negative);
-        typeCategoryMap.put("empty_value", TestSuiteCategory.Negative);
-        typeCategoryMap.put("create", TestSuiteCategory.Functional);
+        TYPE_CATEGORY_MAP.put("anonymous_invalid", TestSuiteCategory.UnSecured);
+        TYPE_CATEGORY_MAP.put("auth_invalid", TestSuiteCategory.UnSecured);
+        TYPE_CATEGORY_MAP.put("DDOS", TestSuiteCategory.DDOS);
+        TYPE_CATEGORY_MAP.put("XSS_Injection", TestSuiteCategory.XSS_Injection);
+        TYPE_CATEGORY_MAP.put("sql_injection", TestSuiteCategory.SQL_Injection);
+        TYPE_CATEGORY_MAP.put("Log_Forging", TestSuiteCategory.Log_Forging);
+        TYPE_CATEGORY_MAP.put("invalid_datatype", TestSuiteCategory.Negative);
+        TYPE_CATEGORY_MAP.put("special_chars", TestSuiteCategory.Negative);
+        TYPE_CATEGORY_MAP.put("null_value", TestSuiteCategory.Negative);
+        TYPE_CATEGORY_MAP.put("empty_value", TestSuiteCategory.Negative);
+        TYPE_CATEGORY_MAP.put("create", TestSuiteCategory.Functional);
 
     }
 
@@ -107,7 +107,7 @@ public class AutoCodeConfigUtil {
 
     public List<String> getAssertions(String type) {
 
-        if (this.config == null) return defaultAssertions;
+        if (this.config == null) return DEFAULT_ASSERTIONS;
 
         String version = null;
         if (!CollectionUtils.isEmpty(this.config.getTestSuites())) {
@@ -116,19 +116,19 @@ public class AutoCodeConfigUtil {
                     if (CollectionUtils.isEmpty(ts.getAssertions()) ||
                             ts.getAssertions().get(0) == null ||
                             ts.getAssertions().get(0).equalsIgnoreCase("null")) {
-                        return defaultAssertions;
+                        return DEFAULT_ASSERTIONS;
                     } else {
                         return ts.getAssertions();
                     }
                 }
             }
         }
-        return defaultAssertions;
+        return DEFAULT_ASSERTIONS;
     }
 
     public TestSuiteSeverity getTestSuiteSeverity(String type) {
 
-        TestSuiteSeverity severity = defaultSeverity;
+        TestSuiteSeverity severity = DEFAULT_SEVERITY;
         if (this.config == null) return severity;
 
         String version = null;
@@ -147,7 +147,7 @@ public class AutoCodeConfigUtil {
     }
 
     public TestSuiteCategory getTestSuiteCategory(String type) {
-        return typeCategoryMap.get(type) != null ? typeCategoryMap.get(type) : defaultCategory;
+        return TYPE_CATEGORY_MAP.get(type) != null ? TYPE_CATEGORY_MAP.get(type) : DEFAULT_CATEGORY;
     }
 
     public String getTestSuitePostfix(String type) {
