@@ -118,7 +118,7 @@ public class MarkTimeoutTaskProcessor {
                     return;
                 }
 
-                Response<Notification> notificationResponse = notificationAccountService.findByName(jn.getName(), run.getJob().getCreatedBy());
+                Response<Notification> notificationResponse = notificationAccountService.findByName(jn.getName(), run.getJob().getProject().getOrg().getName());
 
                 if (notificationResponse.isErrors() || notificationResponse.getData() == null) {
                     logger.info("Notification not found for name [{}]", jn.getName());

@@ -75,21 +75,39 @@ public class NotificationServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     }
 
     @Override
-    public Response<Notification> findByName(String id, String user) {
+    public Response<Notification> findByName(String name, String org) {
         // org//name
-        if (!org.apache.commons.lang3.StringUtils.contains(id, "/")) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid region"));
-        }
-        String[] tokens = StringUtils.split(id, "/");
-        String orgName = tokens[0];
-        String NotificationAccountName = tokens[1];
-        Optional<com.fxlabs.fxt.dao.entity.notify.Notification> NotificationAccountOptional = this.notificationAccountRepository.findByNameAndOrgName(NotificationAccountName, orgName);
-
-        if (!NotificationAccountOptional.isPresent()) {
+        if (StringUtils.isEmpty(name)) {
             return new Response<>().withErrors(true);
         }
-        // TODO validate user is entitled to use the NotificationAccount.
-        return new Response<Notification>(converter.convertToDto(NotificationAccountOptional.get()));
+        if (name.contains("/")) {
+
+            String[] tokens = StringUtils.split(name, "/");
+
+            String orgName = tokens[0];
+            String notificationAccountName = tokens[1];
+
+            Optional<com.fxlabs.fxt.dao.entity.notify.Notification> NotificationAccountOptional = this.notificationAccountRepository.findByNameAndOrgNameAndInactive(notificationAccountName, orgName, false);
+
+            if (!NotificationAccountOptional.isPresent()) {
+                return new Response<>().withErrors(true);
+            }
+            // TODO validate user is entitled to use the NotificationAccount.
+            return new Response<Notification>(converter.convertToDto(NotificationAccountOptional.get()));
+        } else {
+
+            if (StringUtils.isEmpty(org)) {
+                return new Response<>().withErrors(true);
+            }
+
+            Optional<com.fxlabs.fxt.dao.entity.notify.Notification> optional = this.notificationAccountRepository.findByNameAndOrgNameAndInactive(name, org, false);
+
+            if (!optional.isPresent()) {
+                return new Response<>().withErrors(true);
+            }
+
+            return new Response<>(converter.convertToDto(optional.get()));
+        }
     }
 
 

@@ -143,7 +143,7 @@ public class MarkCompleteTaskProcessor {
                     return;
                 }
 
-                Response<Notification> notificationResponse = notificationAccountService.findByName(jn.getName(), run.getJob().getCreatedBy());
+                Response<Notification> notificationResponse = notificationAccountService.findByName(jn.getName(), run.getJob().getProject().getOrg().getName());
 
                 if (notificationResponse.isErrors() || notificationResponse.getData() == null) {
                     logger.info("Notification Account not found for name [{}]", jn.getName());
