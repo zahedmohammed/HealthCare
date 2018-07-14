@@ -34,7 +34,7 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
             if (param instanceof PathParameter) {
                 PathParameter queryParam = (PathParameter) param;
                 String name = queryParam.getName();
-                String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@RandomInteger}}";
+                String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@Random}}";
                 path = path.replaceAll("\\{"+name+"\\}" , defaultVal);
             }
 

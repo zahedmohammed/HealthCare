@@ -36,7 +36,7 @@ public class NullQueryParamGenerator extends AbstractGenerator {
                 if (param instanceof PathParameter) {
                     PathParameter pathParam = (PathParameter) param;
                     String name = pathParam.getName();
-                    String defaultVal = pathParam.getDefault() != null ? pathParam.getDefault().toString() : "{{@RandomInteger}}";
+                    String defaultVal = pathParam.getDefault() != null ? pathParam.getDefault().toString() : "{{@Random}}";
                     path = path.replaceAll("\\{"+name+"\\}" , defaultVal);
                 }
                 if (param instanceof QueryParameter) {
