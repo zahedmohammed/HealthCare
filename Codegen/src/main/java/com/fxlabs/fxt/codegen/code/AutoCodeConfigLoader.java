@@ -18,13 +18,13 @@ public class AutoCodeConfigLoader {
 
     protected static Logger logger = LoggerFactory.getLogger(AutoCodeConfigLoader.class);
 
-    public static AutoCodeConfig loadConfig(String projectDir) throws Exception{
+    public static AutoCodeConfig loadConfig(String projectDir) throws Exception {
         AutoCodeConfig config = null;
 
-        if (projectDir == null){
+        if (projectDir == null) {
             return null;
         }
-        try{
+        try {
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 

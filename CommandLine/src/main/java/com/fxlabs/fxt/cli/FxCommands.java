@@ -21,6 +21,7 @@ import org.springframework.shell.standard.ShellOption;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
@@ -101,19 +102,21 @@ public class FxCommands {
 
     }
 
-    @ShellMethod(key = "gen", value = "Auto generates quality and security coverage test-suites for Open API spec. \n e.g. \n" +
-            " gen --url https://cloud.fxlabs.io/v2/api-docs --dir /opt/MyTests/test-suites\n")
+    @ShellMethod(key = "gen", value = "Auto generates security and quality coverage for all endpoints based on OpenAPIspec. \n e.g. \n" +
+            " gen --project-dir /opt/MyTests --open-api-spec-file https://cloud.fxlabs.io/v2/api-docs \n" +
+            " gen --project-dir /opt/MyTests --open-api-spec-file api-docs.json \n" +
+            " gen --project-dir /opt/MyTests --open-api-spec-file api-docs.yaml etc\n")
     public void gen(
-            @ShellOption(value = {"-h", "--url"}, help = "OpenAPI URL e.g. http://ip/v2/api-docs or myapp-spec.json") @Size(min = 1) String url,
-            @ShellOption(value = {"-d", "--dir"}, help = "Stub generation directory e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\test-suites") String dir,
-            @ShellOption(value = {"-cfg", "--config-location"}, help = "AutoCodeConfig.yaml location e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\config", defaultValue = "") String configLocation,
+            @ShellOption(value = {"-o", "--open-api-spec-file"}, help = "OpenAPISpec URL e.g. http://ip/v2/api-docs or myapp-spec.json") @NotBlank String openAPISpec,
+            @ShellOption(value = {"-p", "--project-dir"}, help = "Stub generation directory e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\test-suites") @NotBlank String projectDir,
+            //@ShellOption(value = {"-cfg", "--config-location"}, help = "AutoCodeConfig.yaml location e.g. C:\\MyApp or /opt/MyAppTest or C:\\MyApp\\config", defaultValue = "") String configLocation,
             @ShellOption(value = {"-k", "--auth-header-key"}, help = "Authorization header key e.g. 'Authorization'", defaultValue = "") String key,
             @ShellOption(value = {"-v", "--auth-header-val"}, help = "Authorization header value e.g. 'my-passowrd'", defaultValue = "") String value) {
 
         try {
 
             CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
-            stubGenerator.generate(url, dir, configLocation, key, value);
+            stubGenerator.generate(projectDir, openAPISpec, key, value);
 
         } catch (Exception e) {
             e.printStackTrace();

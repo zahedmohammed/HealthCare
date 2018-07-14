@@ -24,3 +24,8 @@
 1517623544464:run --project-dir /Users/intesarmohammed/Documents/projects/FxLabs/Fx-Hotels-Test
 1527730443792:run --dir '/Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation' --suites 'vault_create_valid_key' --job SANDBOX --project FXLabs/FX_Test_Automation
 1527730484672:run --dir '/Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation' --job SANDBOX --project FXLabs/FX_Test_Automation
+1529972998891:ls
+1529973001122:help
+1529973155292:exit
+1529973240687:eit
+1529973242119:exit

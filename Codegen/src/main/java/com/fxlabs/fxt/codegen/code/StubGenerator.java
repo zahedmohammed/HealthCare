@@ -35,13 +35,15 @@ public class StubGenerator {
     @Autowired
     private AutoCodeConfigUtil autoCodeConfigUtil;
 
-    public int generate(String spec, String dir, String configFilePath, String headerKey, String headerVal) {
+    private static final String DEFAULT_OPENAPISPEC_FILE = "OpenAPISpec.yaml";
+
+    public int generate(String projectDir, String openAPISpec, String headerKey, String headerVal) {
 
         try {
 
-            Swagger swagger = build(spec, headerKey, headerVal);
+            Swagger swagger = build(projectDir, openAPISpec, headerKey, headerVal);
 
-            AutoCodeConfig config = AutoCodeConfigLoader.loadConfig(configFilePath);
+            AutoCodeConfig config = AutoCodeConfigLoader.loadConfig(projectDir);
             autoCodeConfigUtil.resetConfig();
             autoCodeConfigUtil.setConfig(config);
 
@@ -115,7 +117,7 @@ public class StubGenerator {
             //System.out.println(ts);
             //}
 
-            printTS(testSuites, dir);
+            printTS(testSuites, projectDir);
 
             return testSuites.size();
 
@@ -135,7 +137,7 @@ public class StubGenerator {
             //System.out.println ("start "  + ts);
             //System.out.println ("Name "  + ts.getName());
 
-            File file = new File(dir + "/AutoCode/" + ts.getParent(), ts.getName() + ".yaml");
+            File file = new File(dir + "/test-suites/AutoCode/" + ts.getParent(), ts.getName() + ".yaml");
             //System.out.println (file);
             if (file.exists()) {
                 System.out.println(
@@ -255,8 +257,15 @@ public class StubGenerator {
         return null;
     }
 
-    private Swagger build(String spec, String headerKey, String headerVal) throws IOException {
+    private Swagger build(String projectDir, String openAPISpec, String headerKey, String headerVal) throws IOException {
         Swagger swagger = null;
+
+        if (StringUtils.isEmpty(openAPISpec)) {
+            openAPISpec = DEFAULT_OPENAPISPEC_FILE;
+        }
+        if (!openAPISpec.toLowerCase().startsWith("http")) {
+            openAPISpec = projectDir + "/" + openAPISpec;
+        }
 
         List<AuthorizationValue> list = new ArrayList<>();
         // or in a single constructor
@@ -264,17 +273,16 @@ public class StubGenerator {
             AuthorizationValue apiKey = new AuthorizationValue(headerKey, headerVal, "header");
             list.add(apiKey);
 
-            swagger = new SwaggerParser().read(spec, list, true);
+            swagger = new SwaggerParser().read(openAPISpec, list, true);
 
             if (swagger == null) {
-                swagger = new SwaggerCompatConverter().read(spec, list);
+                swagger = new SwaggerCompatConverter().read(openAPISpec, list);
             }
         } else {
-
-            swagger = new SwaggerParser().read(spec);
+            swagger = new SwaggerParser().read(openAPISpec);
 
             if (swagger == null) {
-                swagger = new SwaggerCompatConverter().read(spec);
+                swagger = new SwaggerCompatConverter().read(openAPISpec);
             }
         }
         return swagger;
