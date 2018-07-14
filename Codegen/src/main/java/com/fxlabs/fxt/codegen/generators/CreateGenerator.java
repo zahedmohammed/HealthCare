@@ -9,6 +9,7 @@ import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -45,14 +46,16 @@ public class CreateGenerator extends AbstractGenerator {
 
         String testcase = factory.getValid(model.getReference());
 
-        String postFix = configUtil.getTestSuitePostfix(SCENARIO);;
+        String postFix = configUtil.getTestSuitePostfix(SCENARIO);
+
         List<TestSuiteMin> list = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
 
         // TODO - if Security required
 
-//        buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
-
-        buildTestCase(list.get(0), 1, testcase);
+        // buildAssertion(list.get(0), STATUS_CODE_ASSERTION, EQUALS, OPERAND);
+        if (!CollectionUtils.isEmpty(list)) {
+            buildTestCase(list.get(0), 1, testcase);
+        }
 
 
         return list;

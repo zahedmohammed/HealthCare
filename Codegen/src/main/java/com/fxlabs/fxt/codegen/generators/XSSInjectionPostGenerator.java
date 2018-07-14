@@ -80,7 +80,9 @@ public class XSSInjectionPostGenerator extends AbstractGenerator {
         String testcase = objNode.toString();
         String postFix = configUtil.getTestSuitePostfix(SCENARIO);
         List<TestSuiteMin> list = build(op, path, postFix, SCENARIO,op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-        buildTestCase(list.get(0), 1, testcase);
+        if (!CollectionUtils.isEmpty(list)) {
+            buildTestCase(list.get(0), 1, testcase);
+        }
 
         return list;
     }
