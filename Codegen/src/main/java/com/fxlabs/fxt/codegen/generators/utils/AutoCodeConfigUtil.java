@@ -269,4 +269,26 @@ public class AutoCodeConfigUtil {
 
     }
 
+    // PropertyMapping
+
+    public String getPropertyMapping(String node, String property) {
+        if (this.config.getPropertyMapping() == null) {
+            return null;
+        }
+
+        // 1. look for node.property
+        // 2. look for property
+
+        String nodeKey = String.format("%s.%s", node, property);
+        if (this.config.getPropertyMapping().containsKey(nodeKey)) {
+            return this.config.getPropertyMapping().get(nodeKey);
+        }
+
+        if (this.config.getPropertyMapping().containsKey(property)) {
+            return this.config.getPropertyMapping().get(property);
+        }
+
+        return null;
+    }
+
 }

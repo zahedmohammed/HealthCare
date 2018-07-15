@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mohammed Luqman Shareef
@@ -27,6 +28,8 @@ public class AutoCodeConfig implements Serializable {
     private List<String> logForgingPatterns;
 
     private List<TestSuite> testSuites;
+
+    private Map<String, String> propertyMapping;
 
 }
 

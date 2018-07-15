@@ -191,6 +191,7 @@ public class DataEvaluator {
                     }
                     val = RandomStringUtils.randomNumeric(count);
                     break;
+                case "@RandomDouble":
                 case "@RandomDecimal":
                     if (StringUtils.isNotEmpty(PATH)) {
                         count = Integer.parseInt(PATH);
