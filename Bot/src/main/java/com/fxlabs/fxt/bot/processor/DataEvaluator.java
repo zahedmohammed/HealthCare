@@ -203,6 +203,7 @@ public class DataEvaluator {
                 case "@RandomLong":
                     val = String.valueOf(RandomUtils.nextLong());
                     break;
+                // Supports - CurrentDate, RandomDate, RandomDOB, PastDate, StartDate, FutureDate, EndDate
                 case "@Date":
                     if (StringUtils.isNotEmpty(PATH)) {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
@@ -211,6 +212,50 @@ public class DataEvaluator {
                         val = String.valueOf(new Date().getTime());
                     }
                     break;
+                case "@CurrentDate":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        val = df.format(new Date());
+                    } else {
+                        val = String.valueOf(new Date().getTime());
+                    }
+                    break;
+                case "@RandomDate":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        val = df.format(RandomDate.createRandomDate(1950, 2024));
+                    } else {
+                        val = String.valueOf(new Date().getTime());
+                    }
+                    break;
+                case "@RandomDOB":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        val = df.format(RandomDate.createRandomDate(1950, 2000));
+                    } else {
+                        val = String.valueOf(new Date().getTime());
+                    }
+                    break;
+
+                case "@PastDate":
+                case "@StartDate":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        val = df.format(RandomDate.createRandomDate(2016, 2018));
+                    } else {
+                        val = String.valueOf(new Date().getTime());
+                    }
+                    break;
+                case "@FutureDate":
+                case "@EndDate":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        val = df.format(RandomDate.createRandomDate(2018, 2020));
+                    } else {
+                        val = String.valueOf(new Date().getTime());
+                    }
+                    break;
+
                 case "@DateTime":
                     if (StringUtils.isNotEmpty(PATH)) {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
@@ -219,7 +264,6 @@ public class DataEvaluator {
                         val = String.valueOf(new Date().getTime());
                     }
                     break;
-                // TODO Date format
                 case "@RandomUUID":
                     val = UUID.randomUUID().toString();
                     break;
