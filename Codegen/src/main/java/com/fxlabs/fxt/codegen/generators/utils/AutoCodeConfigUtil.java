@@ -219,13 +219,13 @@ public class AutoCodeConfigUtil {
 
         TestSuite ts = get("DDOS");
 
+        boolean isPresent = false;
         if (ts != null && !CollectionUtils.isEmpty(ts.getMatches())) {
-            return ts.getMatches().stream().anyMatch(match ->
-                    StringUtils.equals(match.getName(), name)
-            );
+            isPresent = ts.getMatches().stream().filter(match ->
+                    StringUtils.equalsIgnoreCase(match.getName(), name)).findFirst().isPresent();
         }
-
-        return DEFAULT_DDOS_PARAM_NAMES.stream().anyMatch(s -> StringUtils.equalsAnyIgnoreCase(s, name));
+        
+        return isPresent || DEFAULT_DDOS_PARAM_NAMES.stream().filter(s -> StringUtils.equalsIgnoreCase(s, name)).findFirst().isPresent();
 
     }
 
