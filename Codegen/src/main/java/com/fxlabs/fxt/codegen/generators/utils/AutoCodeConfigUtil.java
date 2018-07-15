@@ -30,6 +30,7 @@ public class AutoCodeConfigUtil {
             if (this.config.getTestSuites() != null) {
                 this.config.getTestSuites().forEach(System.out::println);
                 System.out.println("");
+                System.out.println(this.config.getPropertyMapping());
             }
         }
     }
@@ -224,7 +225,7 @@ public class AutoCodeConfigUtil {
             isPresent = ts.getMatches().stream().filter(match ->
                     StringUtils.equalsIgnoreCase(match.getName(), name)).findFirst().isPresent();
         }
-        
+
         return isPresent || DEFAULT_DDOS_PARAM_NAMES.stream().filter(s -> StringUtils.equalsIgnoreCase(s, name)).findFirst().isPresent();
 
     }

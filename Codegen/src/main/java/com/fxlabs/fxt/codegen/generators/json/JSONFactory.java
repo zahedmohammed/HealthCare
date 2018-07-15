@@ -5,16 +5,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
+import com.fxlabs.fxt.codegen.generators.utils.JsonFormatUtil;
 import io.swagger.models.Model;
 import io.swagger.models.Swagger;
 import io.swagger.models.properties.*;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Component
 public class JSONFactory {
@@ -50,7 +55,9 @@ public class JSONFactory {
     public String getValid(String schema) {
         schema = extractSchema(schema);
         //System.out.println ("Schema : " + schema);
-        return nodes.get().get(schema).toString();
+        String json = nodes.get().get(schema).toString();
+
+        return JsonFormatUtil.replaceQuotes(json);
     }
 
     private String extractSchema(String schema) {
@@ -123,81 +130,79 @@ public class JSONFactory {
                 node.set(p, arrayNode);
             } else if (prop instanceof BooleanProperty) {
                 Boolean val = null;
-                if (BooleanUtils.isTrue(prop.getRequired())) {
+                String _val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
+                if (StringUtils.isNotEmpty(_val)) {
+                    val = Boolean.parseBoolean(_val);
+                } else if (BooleanUtils.isTrue(prop.getRequired())) {
                     val = Boolean.FALSE;
                 }
                 node.put(p, val);
             } else if (prop instanceof DateProperty) {
                 String val = null;
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
                 if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
-                    // if (StringUtils.isBlank(prop.getFormat())) {
                     val = "{{@Date}}";
-                    // } else {
-                    // val = "{{@Date | "+prop.getFormat()+"}}";
-                    // }
                 }
                 node.put(p, val);
             } else if (prop instanceof DateTimeProperty) {
                 String val = null;
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
                 if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
-                    // if (StringUtils.isBlank(prop.getFormat())) {
                     val = "{{@DateTime}}";
-                    // }else {
-                    // val = "{{@DateTime | "+prop.getFormat()+"}}";
-                    // }
                 }
                 node.put(p, val);
             } else if (prop instanceof DoubleProperty) {
                 String val = null;
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
                 if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
                     val = "{{@RandomDouble | 4}}";
                 }
                 node.put(p, val);
             } else if (prop instanceof EmailProperty) {
                 String val = null;
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
                 if (val == null) {
-                    // if (BooleanUtils.isTrue(prop.getRequired())) {
                     val = "{{@Faker.internet.emailAddress}}";
-                    // }
                 }
                 node.put(p, val);
             } else if (prop instanceof PasswordProperty) {
                 String val = null;
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
                 if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
                     val = "{{@Password | 12}}";
                 }
                 node.put(p, val);
             } else if (prop instanceof StringProperty) {
                 String val = null;
-                // if (BooleanUtils.isTrue(prop.getRequired())) {
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
-                if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
+                System.out.println (" String " + nodeName + " " + p + " " + val);
+                if (val == null) {
+                    List<String> enums = ((StringProperty) prop).getEnum();
+                    if (!CollectionUtils.isEmpty(enums)) {
+                        val = enums.get(RandomUtils.nextInt(0, enums.size()));
+                    }
+                }
+                else if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
                     val = "{{@Random}}";
                 }
-                // }
                 node.put(p, val);
             } else if (prop instanceof UUIDProperty) {
                 String val = null;
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
                 if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
                     val = "{{@RandomUUID}}";
                 }
                 node.put(p, val);
             } else if (prop instanceof IntegerProperty) {
                 String val = null;
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
                 if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
                     val = "{{@RandomInteger}}";
                 }
                 node.put(p, val);
             } else if (prop instanceof LongProperty) {
                 String val = null;
-                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, prop.getName());
+                val = this.autoCodeConfigUtil.getPropertyMapping(nodeName, p);
                 if (val == null && BooleanUtils.isTrue(prop.getRequired())) {
                     val = "{{@RandomLong}}";
                 }
@@ -214,7 +219,6 @@ public class JSONFactory {
 
             } else if (prop instanceof RefProperty) {
                 String ref = ((RefProperty) prop).get$ref();
-                //System.out.println("Ref " + ref);
 
                 ObjectNode n = new ObjectMapper().createObjectNode();
                 node.set(p, n);
@@ -224,7 +228,7 @@ public class JSONFactory {
 
                 Model m_ = map.get(type);
                 if (m_ != null) {
-                    buildNode(nodeName, n, m_.getProperties(), map);
+                    buildNode(p, n, m_.getProperties(), map);
                 } else {
                     System.err.println(String.format("Invalid Ref [%s], eval [%s] ", type, ref));
                 }
