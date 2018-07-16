@@ -10,6 +10,7 @@ import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,8 +94,8 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
 
     @Override
     public Response<List<ProjectFile>> findByProjectId(String projectId, String org, org.springframework.data.domain.Pageable pageable) {
-        List<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFiles = this.projectFileESRepository.findByProjectId(projectId, pageable);
-        return new Response<>(converter.convertToDtos(projectFiles));
+        Page<com.fxlabs.fxt.dao.entity.project.ProjectFile> page = this.projectFileESRepository.findByProjectId(projectId, pageable);
+        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     private Response<ProjectFile> saveProjectFile(String projectId, String fileName, String content, String modified, String md5Hex) {

@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.dao.repository.es;
 
+import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.project.ProjectFile;
+import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;
@@ -13,5 +15,5 @@ public interface ProjectFileESRepository extends ElasticsearchRepository<Project
 
     Optional<ProjectFile> findByProjectIdAndFilenameIgnoreCase(String projectId, String fileName);
 
-    List<ProjectFile> findByProjectId(String projectId, org.springframework.data.domain.Pageable pageable);
+    Page<ProjectFile> findByProjectId(String projectId, org.springframework.data.domain.Pageable pageable);
 }
