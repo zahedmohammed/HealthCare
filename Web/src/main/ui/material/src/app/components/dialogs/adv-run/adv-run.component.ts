@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
-import { RunService } from '../../../services/run.service';
-import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material';
-import { RegionsService } from '../../../services/regions.service';
-import { Handler } from '../handler/handler';
+import{Component, Inject, OnInit}from '@angular/core';
+import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
+import {RunService}from '../../../services/run.service';
+import {MatDialogRef,MAT_DIALOG_DATA }from '@angular/material';
+import {RegionsService}from '../../../services/regions.service';
+import {Handler}from '../handler/handler';
 
 @Component({
   selector: 'app-adv-run',
@@ -19,16 +19,21 @@ export class AdvRunComponent implements OnInit {
   page = 0;
   pageSize = 100;
   regions;
+  tags_;
+  suites;
   newRegion;
 
   constructor(private regionService: RegionsService, private runService: RunService, private router: Router, private handler: Handler,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AdvRunComponent>
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.newRegion = this.data.regions;
     this.get();
+    this.tags_ = '';//this.data.tags.join(',');
+    this.suites = '';
+    //alert(this.tags_);
   }
 
   get() {
@@ -51,7 +56,7 @@ export class AdvRunComponent implements OnInit {
       this.newRegion = this.regions['org']['name'] + "/" + this.regions['name'];
     }
     this.dialogRef.close()
-    this.runService.advRun(this.data.id, this.newRegion).subscribe(results => {
+    this.runService.advRun(this.data.id, this.newRegion, this.tags_, this.suites).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

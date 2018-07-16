@@ -2,58 +2,59 @@
     <div class="err-container">
         <div class="err">
             <h3>Advanced Run</h3>
-            <br/>
 
             <form role="form" #heroForm="ngForm">
 
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Project</label>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <span>{{data.project.name}}</span>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Job</label>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <span>{{data.name}}</span>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Environment</label>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <span>{{data.environment}}</span>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Issue-Tracker</label>
-                    <div class="col-md-4">
-                        <span>{{data.issueTracker.name}}</span>
+                    <div class="col-md-6">
+                        <span>{{data.issueTracker?.name}}</span>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Notifications</label>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <span *ngFor="let n of data.notifications">{{n.name}}, </span>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Tags</label>
-                    <div class="col-md-4">
-                        <mat-input-container>
-                            <input required matInput [(ngModel)]="data.tags" name="name">
-                        </mat-input-container>
+                    <div class="col-md-6">
+                        <span *ngFor="let t of data.tags">{{t}}</span>
+                        <!--<mat-input-container>
+                            <input matInput placeholder="{{data.tags.join(',')}}" [(ngModel)]="tags_" name="name">
+                        </mat-input-container>-->
                     </div>
                 </div>
+
                 <div class="form-group row">
                     <label class="col-md-3 control-label">Test Suites</label>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <mat-input-container>
-                            <input required matInput>
+                            <input matInput [(ngModel)]="suites" name="name">
                         </mat-input-container>
                     </div>
                 </div>
@@ -62,7 +63,7 @@
                     <label class="col-md-3 control-label">
                         Bot Region
                     </label>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <mat-form-field>
                             <mat-select placeholder="{{data.regions}}" [(ngModel)]="regions" name="regions">
                                 <mat-option *ngFor="let region of list" [value]="region">
@@ -86,8 +87,6 @@
                 </div>
 
             </form>
-
-
         </div>
     </div>
 </div>

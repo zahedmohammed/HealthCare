@@ -25,7 +25,7 @@ export class JobslistComponent implements OnInit {
   projectId: string = "";
   project: Base = new Base();
   showSpinner: boolean = false;
-  private _clockSubscription: Subscription;
+  //private _clockSubscription: Subscription;
 
   constructor(private jobsService: JobsService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
@@ -36,14 +36,14 @@ export class JobslistComponent implements OnInit {
       console.log(params);
       this.list();
     });
-    let timer = Observable.timer(1, 10000);
+    /*let timer = Observable.timer(1, 10000);
     this._clockSubscription = timer.subscribe(t => {
       this.list();
-    });
+    });*/
   }
 
   ngOnDestroy(): void {
-    this._clockSubscription.unsubscribe();
+    //this._clockSubscription.unsubscribe();
   }
 
   loadProject(id: string) {
@@ -101,7 +101,7 @@ export class JobslistComponent implements OnInit {
   advRun(job) {
     this.dialog.open(AdvRunComponent, {
         width:'50%',
-        height:'80%',
+        height:'85%',
         data: job
     });
   }

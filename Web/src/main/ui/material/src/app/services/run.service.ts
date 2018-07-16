@@ -31,9 +31,11 @@ constructor(private http: HttpClient) {
     return this.http.post(this.serviceUrl + "/job/" + jobId, null);
   }
 
-  advRun(jobId: string, region: string) {
+  advRun(jobId: string, region: string, tags: string, suites: string) {
     let params = new HttpParams();
     params = params.append('region', region);
+    params = params.append('tags', tags);
+    params = params.append('suites', suites);
     console.log("JobId: " + jobId + " Region: " + region);
     return this.http.post(this.serviceUrl + "/job/" + jobId, null, {params});
   }
