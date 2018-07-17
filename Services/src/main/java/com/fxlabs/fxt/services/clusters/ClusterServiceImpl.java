@@ -121,21 +121,43 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     @Override
-    public Response<Cluster> findByName(String id, String user) {
-        // org//name
-        if (!org.apache.commons.lang3.StringUtils.contains(id, "/")) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid region"));
-        }
-        String[] tokens = StringUtils.split(id, "/");
-        String orgName = tokens[0];
-        String clusterName = tokens[1];
-        Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findByNameAndOrgName(clusterName, orgName);
+    public Response<Cluster> findByName(String name, String user, String orgName) {
 
-        if (!clusterOptional.isPresent()) {
+
+        // org//name
+//        if (!org.apache.commons.lang3.StringUtils.contains(id, "/")) {
+//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid region"));
+//        }
+
+        if (org.apache.commons.lang3.StringUtils.isEmpty(name)) {
             return new Response<>().withErrors(true);
         }
-        // TODO validate user is entitled to use the cluster.
-        return new Response<Cluster>(converter.convertToDto(clusterOptional.get()));
+
+        if (name.contains("/")) {
+            String[] tokens = StringUtils.split(name, "/");
+            String orgName_ = tokens[0];
+            String clusterName = tokens[1];
+            Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findByNameAndOrgName(clusterName, orgName);
+
+            if (!clusterOptional.isPresent()) {
+                return new Response<>().withErrors(true);
+            }
+            // TODO validate user is entitled to use the cluster.
+            return new Response<Cluster>(converter.convertToDto(clusterOptional.get()));
+        } else {
+
+            if (org.apache.commons.lang3.StringUtils.isEmpty(orgName)) {
+                return new Response<>().withErrors(true);
+            }
+
+            Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = this.clusterRepository.findByNameAndOrgName(name, orgName);
+
+            if (!clusterOptional.isPresent()) {
+                return new Response<>().withErrors(true);
+            }
+
+            return new Response<Cluster>(converter.convertToDto(clusterOptional.get()));
+        }
     }
 
 

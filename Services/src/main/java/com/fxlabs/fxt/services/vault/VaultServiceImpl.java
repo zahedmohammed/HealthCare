@@ -152,13 +152,13 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
             return new Response<>(encryptor.decrypt(vaultOptional.get().getVal()));
         } else {
             if (StringUtils.isEmpty(organisation)) {
-                return new Response<>().withErrors(true);
+                return new Response<>(StringUtils.EMPTY);
             }
 
             Optional<Vault> vaultOptional = this.repository.findByOrgNameAndKey(organisation, name);
 
             if (!vaultOptional.isPresent()) {
-                return new Response<>().withErrors(true);
+                return new Response<>(StringUtils.EMPTY);
             }
 
             return new Response<>(encryptor.decrypt(vaultOptional.get().getVal()));

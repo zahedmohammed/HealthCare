@@ -421,7 +421,7 @@ public class RunTaskRequestProcessor {
         }
 
         // get cluster by name
-        Response<Cluster> clusterResponse = clusterService.findByName(region, run.getJob().getCreatedBy());
+        Response<Cluster> clusterResponse = clusterService.findByName(region, run.getJob().getCreatedBy(), run.getJob().getProject().getOrg().getName());
         if (clusterResponse.isErrors()) {
             run.getTask().setStatus(TaskStatus.FAIL);
             run.getTask().setDescription(String.format("Invalid Region: %s", region));
