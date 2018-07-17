@@ -5,12 +5,12 @@
     <h2 class="article-title"><a href="javascript:;" [routerLink]="['/app/accounts']">Account </a> / {{entry.name}}</h2>
     <div class="box box-default">
       <div class="box-body padding-xl">
-
+        <div class="box-body">
         <form role="form" #heroForm="ngForm">
 
           <div class="form-group row">
-            <label for="name" class="col-md-1 control-label"></label>
-            <div class="col-md-4">
+            <label for="name" class="col-md-0 control-label"></label>
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.name" name="name" id="name"
                        matInput placeholder="Name">
@@ -19,9 +19,9 @@
           </div>
 
           <div class="form-group row">
-            <label class="col-md-1 control-label">
+            <label class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-form-field>
                 <mat-select placeholder="Account Type" required disabled [(ngModel)]="entry.accountType" name="type">
                   <mat-option *ngFor="let type of accountTypes" [value]="type">
@@ -33,9 +33,9 @@
           </div>
 
           <div class="form-group row" *ngIf="entry.accountType == 'GitLab' || entry.accountType === 'Microsoft_VSTS_Git'">
-            <label for="accessKey" class="col-md-1 control-label">
+            <label for="accessKey" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="accessKey"
                        matInput type="text" placeholder="Access-Key/Username">
@@ -44,9 +44,9 @@
           </div>
 
           <div class="form-group row" *ngIf="entry.accountType == 'GitLab' || entry.accountType === 'Microsoft_VSTS_Git'">
-            <label for="secret" class="col-md-1 control-label">
+            <label for="secret" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
                        matInput type="password" placeholder="Secret-Key/Password">
@@ -58,9 +58,9 @@
           <div *ngIf="entry.accountType === 'AWS'">
 
             <div class="form-group row">
-              <label for="awsAccessKey" class="col-md-1 control-label">
+              <label for="awsAccessKey" class="col-md-0 control-label">
               </label>
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <mat-input-container class="full-width">
                   <input required [(ngModel)]="entry.accessKey" name="accessKey" id="awsAccessKey"
                          matInput type="text" placeholder="Access-Key">
@@ -79,9 +79,9 @@
             </div>
 
             <div class="form-group row">
-              <label for="awsSecret" class="col-md-1 control-label">
+              <label for="awsSecret" class="col-md-0 control-label">
               </label>
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <mat-input-container class="full-width">
                   <input required [(ngModel)]="entry.secretKey" name="secret" id="awsSecret"
                          matInput type="password" placeholder="Secret-Key">
@@ -90,9 +90,9 @@
             </div>
 
             <div class="form-group row">
-              <label class="col-md-1 control-label">
+              <label class="col-md-0 control-label">
               </label>
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <a href="javascript:;" (click)="toggleCloud()">Advanced section</a>
               </div>
             </div>
@@ -100,9 +100,9 @@
             <div [hidden]="cloudShow">
 
               <div class="form-group row">
-                <label class="col-md-1 control-label">
+                <label class="col-md-0 control-label">
                 </label>
-                <div class="col-md-4">
+                <div class="col-md-5">
                   <mat-form-field>
                     <mat-select placeholder="Available regions" [(ngModel)]="entry.allowedRegions"
                                 name="region" multiple>
@@ -122,8 +122,8 @@
               </div>
 
               <div class="form-group row">
-                <label for="name" class="col-md-1 control-label"></label>
-                <div class="col-md-4">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input [(ngModel)]="entry.prop1" name="prop1" id="privateKey"
                            matInput placeholder="Key-Pair">
@@ -142,8 +142,8 @@
               </div>
               <!--prop2 -->
               <div class="form-group row">
-                <label for="name" class="col-md-1 control-label"></label>
-                <div class="col-md-4">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input [(ngModel)]="entry.prop2" name="prop2" id="fxsg"
                            matInput placeholder="Security Group name">
@@ -160,8 +160,8 @@
               </div>
               <!--prop3 -->
               <div class="form-group row">
-                <label for="name" class="col-md-1 control-label"></label>
-                <div class="col-md-4">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input [(ngModel)]="entry.prop3" name="prop3" id="fxsubnet"
                            matInput placeholder="Subnet name or id">
@@ -182,9 +182,9 @@
 
           <!-- BitBucket  Start    -->
           <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
-            <label for="bitBucketAccessKey" class="col-md-1 control-label">
+            <label for="bitBucketAccessKey" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="bitBucketAccessKey"
                        matInput type="text" placeholder="Username/Access-Key">
@@ -202,9 +202,9 @@
           </div>
 
           <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
-            <label for="bitBucketSecret" class="col-md-1 control-label">
+            <label for="bitBucketSecret" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <textarea [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
                           matInput type="password" placeholder="Password/Private-Key"></textarea>
@@ -214,9 +214,9 @@
           <!-- BitBucket  End    -->
           <!-- Git  Start    -->
           <div class="form-group row" *ngIf="entry.accountType === 'Git'">
-            <label for="gitAccessKey" class="col-md-1 control-label">
+            <label for="gitAccessKey" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitAccessKey"
                        matInput type="text" placeholder="Access-Key">
@@ -237,9 +237,9 @@
           </div>
 
           <div class="form-group row" *ngIf="entry.accountType === 'Git'">
-            <label for="gitSecret" class="col-md-1 control-label">
+            <label for="gitSecret" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="gitSecret"
                        matInput type="password" placeholder="Secret-Key">
@@ -249,9 +249,9 @@
           <!-- Git  End    -->
           <!-- Microsoft TFS  Start    -->
           <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_TFS_Git'">
-            <label for="microsoftTfsAccessKey" class="col-md-1 control-label">
+            <label for="microsoftTfsAccessKey" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="microsoftTfsAccessKey"
                        matInput type="text" placeholder="Username/Accesskey">
@@ -269,9 +269,9 @@
           </div>
 
           <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_TFS_Git'">
-            <label for="microsoftTfsSecret" class="col-md-1 control-label">
+            <label for="microsoftTfsSecret" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="microsoftTfsSecret"
                        matInput type="password" placeholder="Password/SecretKey">
@@ -281,9 +281,9 @@
           <!-- Microsoft TFS  End    -->
           <!-- GitHub Start  -->
           <div class="form-group row" *ngIf="entry.accountType === 'GitHub'">
-            <label for="gitHubAccessKey" class="col-md-1 control-label">
+            <label for="gitHubAccessKey" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitHubAccessKey"
                        matInput type="text" placeholder="Username/Access-Key">
@@ -301,9 +301,9 @@
           </div>
 
           <div class="form-group row" *ngIf="entry.accountType === 'GitHub'">
-            <label for="gitHubSecret" class="col-md-1 control-label">
+            <label for="gitHubSecret" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <textarea  [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
                           matInput type="password" placeholder="Password/Private-Key"></textarea>
@@ -313,9 +313,9 @@
           <!-- GitHub End  -->
           <!-- Jira Start  -->
           <div class="form-group row" *ngIf="entry.accountType === 'Jira'">
-            <label for="gitHubAccessKey" class="col-md-1 control-label">
+            <label for="gitHubAccessKey" class="col-md-0 control-label">
             </label>
-            <div  class="col-md-4">
+            <div  class="col-md-5">
               <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="jiraAccessKey"
                        matInput type="text" placeholder="Username/Access-Key">
@@ -333,9 +333,9 @@
           </div>
 
           <div class="form-group row"  *ngIf="entry.accountType === 'Jira'">
-            <label for="gitHubSecret" class="col-md-1 control-label">
+            <label for="gitHubSecret" class="col-md-0 control-label">
             </label>
-            <div  class="col-md-4">
+            <div  class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="jiraSecret"
                        matInput type="password" placeholder="Secret-Key/Password">
@@ -345,9 +345,9 @@
           <!-- Jira End  -->
 
           <div class="form-group row" *ngIf="entry.accountType === 'Slack'">
-            <label for="secret_slack" class="col-md-1 control-label">
+            <label for="secret_slack" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="secret_slack"
                        matInput type="password" placeholder="Slack token">
@@ -366,9 +366,9 @@
           </div>
 
           <!--<div class="form-group row" *ngIf="entry.accountType === 'Email'">
-            <label for="secret" class="col-md-1 control-label">
+            <label for="secret" class="col-md-0 control-label">
             </label>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="from" id="email"
                        matInput type="text" placeholder="From:">
@@ -377,7 +377,7 @@
           </div>-->
 
           <div class="form-group row">
-            <div class="col-md-1"></div>
+            <div class="col-md-0"></div>
             <div class="col-md-8">
               <button mat-raised-button color="primary" (click)="update();"
                       class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
@@ -390,7 +390,7 @@
           </div>
 
         </form>
-
+        </div>
       </div>
     </div>
   </article>

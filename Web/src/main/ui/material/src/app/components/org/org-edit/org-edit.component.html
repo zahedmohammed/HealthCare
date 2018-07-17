@@ -6,12 +6,12 @@
             {{entry.name}}</h2>
         <div class="box box-default">
             <div class="box-body padding-xl">
-
+                <div class="box-body">
                 <form role="form" #heroForm="ngForm">
 
                     <div class="form-group row">
-                        <label for="name" class="col-md-1 control-label"></label>
-                        <div class="col-md-4">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input required disabled [(ngModel)]="entry.name" name="name" id="name"
                                        matInput placeholder="Organization name">
@@ -20,9 +20,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="orgType" class="col-md-1 control-label">
+                        <label for="orgType" class="col-md-0 control-label">
                         </label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input disabled [(ngModel)]="entry.orgType" name="orgType" id="orgType"
                                        matInput placeholder="Org Type">
@@ -32,9 +32,9 @@
 
 
                     <div class="form-group row">
-                        <label for="plan" class="col-md-1 control-label">
+                        <label for="plan" class="col-md-0 control-label">
                         </label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input disabled [(ngModel)]="entry.orgPlan" name="plan" id="plan"
                                        matInput placeholder="Billing Plan">
@@ -54,9 +54,9 @@
 
 
                     <div class="form-group row">
-                        <label for="company" class="col-md-1 control-label">
+                        <label for="company" class="col-md-0 control-label">
                         </label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input required [(ngModel)]="entry.company" name="company" id="company"
                                        matInput placeholder="Company">
@@ -66,9 +66,9 @@
 
 
                     <div class="form-group row">
-                        <label for="billingEmail" class="col-md-1 control-label">
+                        <label for="billingEmail" class="col-md-0 control-label">
                         </label>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input required [(ngModel)]="entry.billingEmail" name="billingEmail" id="billingEmail"
                                        matInput placeholder="Billing email">
@@ -78,7 +78,7 @@
 
 
                     <div class="form-group row">
-                        <div class="col-md-1"></div>
+                        <div class="col-md-0"></div>
                         <div class="col-md-8">
                             <button mat-raised-button color="primary" (click)="update();"
                                     class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
@@ -91,7 +91,7 @@
 
 
                 </form>
-
+                </div>
             </div>
         </div>
     </article>
