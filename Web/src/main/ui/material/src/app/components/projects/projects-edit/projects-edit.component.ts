@@ -12,7 +12,7 @@ import { APPCONFIG } from '../../../config';
 import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 import {SnackbarService}from '../../../services/snackbar.service';
-import { Http, Response} from '@angular/http';
+import {SuitDailogComponent} from "../../dialogs/suit-dailog/suit-dailog.component";
 
 @Component({
   selector: 'app-projects-edit',
@@ -29,6 +29,8 @@ export class ProjectsEditComponent implements OnInit {
   /*config;*/
   TestSuite;
   id;
+  suiteFile;
+  suiteFileData;
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService,
   private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
@@ -37,7 +39,7 @@ export class ProjectsEditComponent implements OnInit {
   ngOnInit() {
     this.AppConfig = APPCONFIG;
     this.route.params.subscribe(params => {
-      console.log(params);
+      //console.log(params);
       this.id = params['id'];
       if (params['id']) {
         this.getById(params['id']);
@@ -53,9 +55,15 @@ export class ProjectsEditComponent implements OnInit {
       console.log('index => ', tabChangeEvent.index);
       if (tabChangeEvent.index === 0) {
         this.getById(this.id);
-      } else if (tabChangeEvent.index === 1) {
-        this.getTestSuite(this.id);
       }
+      else if (tabChangeEvent.index === 1) {
+          this.getFiles(this.id);
+      }
+
+      else if (tabChangeEvent.index === 2) {
+          this.getTestSuite(this.id);
+      }
+
   }
 
   getById(id: string) {
@@ -160,6 +168,38 @@ delete() {
     });
   }
 
+  getFiles(id: string){
+      this.handler.activateLoader();
+      this.projectService.getFiles(id,this.page, this.pageSize).subscribe(results => {
+          this.handler.hideLoader();
+          if (this.handler.handle(results)) {
+              return;
+          }
+          this.suiteFile = results['data'];
+          this.length = results['totalElements'];
+      }, error => {
+          this.handler.hideLoader();
+          this.handler.error(error);
+      });
+  }
+
+    getFileDetail(fileId: string) {
+        this.handler.activateLoader();
+        this.projectService.getFilesDetails(this.id, fileId).subscribe(results => {
+            this.handler.hideLoader();
+            if (this.handler.handle(results)) {
+                return;
+            }
+            this.suiteFileData = results['data'];
+            var log =  this.suiteFileData.content;
+            this.showDialog(log);
+        }, error => {
+            this.handler.hideLoader();
+            this.handler.error(error);
+        });
+
+    }
+
   setAccount(account){
      this.project.account.accountType =  account.accountType;
   }
@@ -168,4 +208,19 @@ delete() {
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
   genPolicies = ['None', 'Create'];
 
+    length = 0;
+    page = 0;
+    pageSize = 20;
+    change(evt) {
+        this.page = evt['pageIndex'];
+        this.getFiles(this.id);
+    }
+
+    showDialog(log) {
+        this.dialog.open(SuitDailogComponent, {
+            width:'50%',
+            height:'80%',
+            data: log
+        });
+    }
 }

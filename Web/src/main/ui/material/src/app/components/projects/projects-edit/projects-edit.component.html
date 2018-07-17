@@ -13,204 +13,276 @@
                             <div class="box-body">
 
 
-        <div class="box1 box-default">
-            <div class="box-body padding-xl">
+                                <div class="box1 box-default">
+                                    <div class="box-body padding-xl">
 
-                <form role="form" #heroForm="ngForm">
+                                        <form role="form" #heroForm="ngForm">
 
-                    <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input [(ngModel)]="project.name" name="name" id="name"
-                                       matInput placeholder="Project name">
-                            </mat-input-container>
+                                            <div class="form-group row">
+                                                <label for="name" class="col-md-0 control-label"></label>
+                                                <div class="col-md-5">
+                                                    <mat-input-container class="full-width">
+                                                        <input [(ngModel)]="project.name" name="name" id="name"
+                                                               matInput placeholder="Project name">
+                                                    </mat-input-container>
 
-                        </div>
-                    </div>
+                                                </div>
+                                            </div>
 
-                    <div class="divider divider-dashed divider-lg pull-in"></div>
+                                            <div class="divider divider-dashed divider-lg pull-in"></div>
 
-                    <div [hidden]="project.account.accountType === 'Local' || !project.account.accountType">
-                        <div class="form-group row">
-                            <label for="name" class="col-md-0 control-label"></label>
-                            <div class="col-md-5">
-                                <mat-input-container class="full-width">
-                                    <input required [(ngModel)]="project.url" name="url" id="repo"
-                                           matInput placeholder="Repository URL">
-                                </mat-input-container>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="callout1 text-muted callout-info1">
-                                    <p>e.g. https://github.com/username/MyApp.git and for ssh use git@github.com:username/MyApp.git. Follow the below steps to create a
-                                        new
-                                        repo.
-                                        <br/>Step 1: Fork the <a target="_blank" [href]="AppConfig.fxSample">Sample
-                                            repository <i class="material-icons"
-                                                          style="font-size: 18px;">open_in_new</i></a>
-                                        <br/>Step 2: Update environments and jobs section in Fxfile.yaml.
-                                        <a target="_blank" [href]="AppConfig.fxSample"> Learn more <i
-                                                class="material-icons"
-                                                style="font-size: 18px;">open_in_new</i></a>
-                                    </p>
+                                            <div [hidden]="project.account.accountType === 'Local' || !project.account.accountType">
+                                                <div class="form-group row">
+                                                    <label for="name" class="col-md-0 control-label"></label>
+                                                    <div class="col-md-5">
+                                                        <mat-input-container class="full-width">
+                                                            <input required [(ngModel)]="project.url" name="url"
+                                                                   id="repo"
+                                                                   matInput placeholder="Repository URL">
+                                                        </mat-input-container>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="callout1 text-muted callout-info1">
+                                                            <p>e.g. https://github.com/username/MyApp.git and for ssh
+                                                                use git@github.com:username/MyApp.git. Follow the below
+                                                                steps to create a
+                                                                new
+                                                                repo.
+                                                                <br/>Step 1: Fork the <a target="_blank"
+                                                                                         [href]="AppConfig.fxSample">Sample
+                                                                    repository <i class="material-icons"
+                                                                                  style="font-size: 18px;">open_in_new</i></a>
+                                                                <br/>Step 2: Update environments and jobs section in
+                                                                Fxfile.yaml.
+                                                                <a target="_blank" [href]="AppConfig.fxSample"> Learn
+                                                                    more <i
+                                                                            class="material-icons"
+                                                                            style="font-size: 18px;">open_in_new</i></a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-md-0 control-label">
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="Repository Credentials" required
+                                                                        [(ngModel)]="project.account.id" name="type">
+                                                                <mat-option *ngFor="let account of accounts"
+                                                                            [value]="account.id">
+                                                                    {{account.name}} ({{account.accountType}})
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="callout1 text-muted callout-info1">
+                                                            <p>
+                                                                Register your git credentials in the <a
+                                                                    href="#/app/accounts/new">Accounts
+                                                                page</a>.
+                                                                <br/>
+                                                                Repository credentials are required if the repo is
+                                                                private or Auto-Code is
+                                                                enabled.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                                            <!-- Auto-Code -->
+
+                                            <div class="form-group row">
+                                                <label for="name" class="col-md-0 control-label"></label>
+                                                <div class="col-md-5">
+                                                    <mat-form-field>
+                                                        <mat-select placeholder="Auto-Code" required
+                                                                    [(ngModel)]="project.genPolicy"
+                                                                    name="Auto-Code">
+                                                            <mat-option *ngFor="let gen of genPolicies" [value]="gen">
+                                                                {{gen}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div class="callout1 text-muted callout-info1">
+                                                        <p>Auto-Code (automatic test coverage for your APIs).
+                                                            <br/>Continuously generates 5-point test coverage (Quality,
+                                                            Security, DOS,
+                                                            Injections, Data-Leak, Log-forging etc) for all project
+                                                            endpoints.
+                                                            <br/>Requires repository credentials for code check-in.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
+                                                <label for="name" class="col-md-0 control-label"></label>
+                                                <div class="col-md-5">
+                                                    <mat-input-container class="full-width">
+                                                        <input required [(ngModel)]="project.openAPISpec" name="spec"
+                                                               id="spec"
+                                                               matInput placeholder="OpenAPI Spec File">
+                                                    </mat-input-container>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div class="callout1 text-muted callout-info1">
+                                                        <p> e.g. https://ip/v2/api-docs or api-docs.json or
+                                                            api-docs.yaml. Auto-Code requires OpenAPISpec of your
+                                                            application to
+                                                            create security/functional test coverage. How-to generate
+                                                            OpenAPISpec for your Java, .Net
+                                                            and other applications.
+                                                            <a target="_blank"
+                                                               href="https://swagger.io/open-source-integrations/">
+                                                                Learn more <i class="material-icons"
+                                                                              style="font-size: 18px;"
+                                                            >open_in_new</i></a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="divider divider-dashed divider-lg pull-in"></div>
+
+                                            <div class="form-group row">
+                                                <div class="col-md-0"></div>
+                                                <div class="col-md-8">
+                                                    <button mat-raised-button color="primary" (click)="update();"
+                                                            class="btn-w-md no-margin-left"
+                                                            [disabled]="!heroForm.valid">Save
+                                                    </button>
+
+                                                    <button mat-button color="warn" class="btn-w-md"
+                                                            (click)="delete();">Delete
+                                                    </button>
+
+                                                    <button mat-button color="primary" class="btn-w-md"
+                                                            [routerLink]="['/app/projects']">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </section>
+                    </mat-tab>
 
-                        <div class="form-group row">
-                            <label class="col-md-0 control-label">
-                            </label>
-                            <div class="col-md-5">
-                                <mat-form-field>
-                                    <mat-select placeholder="Repository Credentials" required
-                                                [(ngModel)]="project.account.id" name="type">
-                                        <mat-option *ngFor="let account of accounts" [value]="account.id">
-                                            {{account.name}} ({{account.accountType}})
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="callout1 text-muted callout-info1">
-                                    <p>
-                                        Register your git credentials in the <a href="#/app/accounts/new">Accounts
-                                        page</a>.
-                                        <br/>
-                                        Repository credentials are required if the repo is private or Auto-Code is
-                                        enabled.
-                                    </p>
+                    <mat-tab label="Suites">
+                        <section class="box box-transparent">
+                            <div class="box-body padding-xl">
+                                <div class="box box-transparent">
+                                    <div class="box-body no-padding-h">
+
+                                        <div class="box box-default table-box mdl-shadow--2dp">
+                                            <table class="mdl-data-table table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <!-- <th class="mdl-data-table__cell&#45;&#45;non-numeric">#</th>-->
+                                                    <th class="mdl-data-table__cell--non-numeric">File-Name</th>
+                                                    <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Category</th>-->
+                                                    <th class="mdl-data-table__cell--non-numeric">Updated-date</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr *ngFor="let suiteData of suiteFile">
+                                                    <!-- <td class="mdl-data-table__cell&#45;&#45;non-numeric">1</td>-->
+                                                    <td class="mdl-data-table__cell--non-numeric bold">
+                                                        <a href="javascript:;" (click)="getFileDetail(suiteData.id)">{{suiteData.filename}}</a>
+                                                    </td>
+                                                    <td class="mdl-data-table__cell--non-numeric">
+                                                        {{suiteData.modifiedDate | date:'medium'}}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                    </div>
-
-                    <div class="divider divider-dashed divider-lg pull-in"></div>
-
-                    <!-- Auto-Code -->
-
-                    <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-form-field>
-                                <mat-select placeholder="Auto-Code" required [(ngModel)]="project.genPolicy"
-                                            name="Auto-Code">
-                                    <mat-option *ngFor="let gen of genPolicies" [value]="gen">
-                                        {{gen}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p>Auto-Code (automatic test coverage for your APIs).
-                                    <br/>Continuously generates 5-point test coverage (Quality, Security, DOS,
-                                    Injections, Data-Leak, Log-forging etc) for all project endpoints.
-                                    <br/>Requires repository credentials for code check-in.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
-                        <label for="name" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
-                                       matInput placeholder="OpenAPI Spec File">
-                            </mat-input-container>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p> e.g. https://ip/v2/api-docs or api-docs.json or api-docs.yaml. Auto-Code requires OpenAPISpec of your application to
-                                    create security/functional test coverage. How-to generate OpenAPISpec for your Java, .Net
-                                    and other applications.
-                                    <a target="_blank" href="https://swagger.io/open-source-integrations/">
-                                        Learn more <i class="material-icons"
-                                                      style="font-size: 18px;"
-                                    >open_in_new</i></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="divider divider-dashed divider-lg pull-in"></div>
-
-                    <div class="form-group row">
-                        <div class="col-md-0"></div>
-                        <div class="col-md-8">
-                            <button mat-raised-button color="primary" (click)="update();"
-                                    class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
-                            </button>
-
-                            <button mat-button color="warn" class="btn-w-md" (click)="delete();">Delete</button>
-
-                            <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects']">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-                            </div>
+                            <mat-paginator
+                                    [pageSize]="pageSize"
+                                    hidePageSize="true"
+                                    (page)="change($event)"
+                                    [length]="length">
+                            </mat-paginator>
                         </section>
                     </mat-tab>
 
                     <mat-tab label="Savings">
                         <section class="box box-transparent">
-                        <div class="box-body padding-xl">
-                            <div class="box box-transparent">
-                                <div class="box-body no-padding-h">
+                            <div class="box-body padding-xl">
+                                <div class="box box-transparent">
+                                    <div class="box-body no-padding-h">
 
-                                    <div class="box box-default table-box mdl-shadow--2dp">
-                                        <table class="mdl-data-table">
-                                            <thead>
-                                            <tr>
-                                                <th class="mdl-data-table__cell--non-numeric">#</th>
-                                                <th class="mdl-data-table__cell--non-numeric">Type</th>
-                                                <th class="mdl-data-table__cell--non-numeric">Formula</th>
-                                                <th>Savings</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td class="mdl-data-table__cell--non-numeric">1</td>
-                                                <td class="mdl-data-table__cell--non-numeric">AutoCode Coverage</td>
-                                                <td class="mdl-data-table__cell--non-numeric text-muted">Total test-suites checked-in by AutoCode</td>
-                                                <td> {{ TestSuite?.autoGenAllSuites }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="mdl-data-table__cell--non-numeric">2</td>
-                                                <td class="mdl-data-table__cell--non-numeric">Time savings</td>
-                                                <td class="mdl-data-table__cell--non-numeric text-muted">~(20 integration test per month per developer)</td>
-                                                <td> {{ TestSuite?.totalTimeSaving | number }} hrs</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="mdl-data-table__cell--non-numeric">3</td>
-                                                <td class="mdl-data-table__cell--non-numeric">Cost savings</td>
-                                                <td class="mdl-data-table__cell--non-numeric text-muted">~$50/hr per developer</td>
-                                                <td> ${{ TestSuite?.totalCostSaving | number}} </td>
-                                            </tr>
-                                            <tr class="bg-color-info font-weight-bold text-dark">
-                                                <td class="mdl-data-table__cell--non-numeric"></td>
-                                                <td class="mdl-data-table__cell--non-numeric">Total Value</td>
-                                                <td class="mdl-data-table__cell--non-numeric">Time saving + Cost saving</td>
-                                                <td>${{ TestSuite?.totalCostSaving | number}}  </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                        <div class="box box-default table-box mdl-shadow--2dp">
+                                            <table class="mdl-data-table">
+                                                <thead>
+                                                <tr>
+                                                    <th class="mdl-data-table__cell--non-numeric">#</th>
+                                                    <th class="mdl-data-table__cell--non-numeric">Type</th>
+                                                    <th class="mdl-data-table__cell--non-numeric">Formula</th>
+                                                    <th>Savings</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td class="mdl-data-table__cell--non-numeric">1</td>
+                                                    <td class="mdl-data-table__cell--non-numeric">AutoCode Coverage</td>
+                                                    <td class="mdl-data-table__cell--non-numeric text-muted">Total
+                                                        test-suites checked-in by AutoCode
+                                                    </td>
+                                                    <td> {{ TestSuite?.autoGenAllSuites }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="mdl-data-table__cell--non-numeric">2</td>
+                                                    <td class="mdl-data-table__cell--non-numeric">Time savings</td>
+                                                    <td class="mdl-data-table__cell--non-numeric text-muted">~(20
+                                                        integration test per month per developer)
+                                                    </td>
+                                                    <td> {{ TestSuite?.totalTimeSaving | number }} hrs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="mdl-data-table__cell--non-numeric">3</td>
+                                                    <td class="mdl-data-table__cell--non-numeric">Cost savings</td>
+                                                    <td class="mdl-data-table__cell--non-numeric text-muted">~$50/hr per
+                                                        developer
+                                                    </td>
+                                                    <td> ${{ TestSuite?.totalCostSaving | number}}</td>
+                                                </tr>
+                                                <tr class="bg-color-info font-weight-bold">
+                                                    <td class="mdl-data-table__cell--non-numeric"></td>
+                                                    <td class="mdl-data-table__cell--non-numeric">Total Value</td>
+                                                    <td class="mdl-data-table__cell--non-numeric">Time saving + Cost
+                                                        saving
+                                                    </td>
+                                                    <td>${{ TestSuite?.totalCostSaving | number}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         </section>
                     </mat-tab>
                 </mat-tab-group>
 
             </div>
         </div>
+
     </article>
-                        </section>
+
+</section>

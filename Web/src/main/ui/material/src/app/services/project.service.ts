@@ -42,4 +42,17 @@ export class ProjectService {
     return this.http.get(this.serviceUrl + "/count" );
   }
 
+  getFiles(id: string, page, pageSize){
+      let params = new HttpParams();
+      params = params.append('page', page);
+      params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/" + id + "/files", {params} )
+  }
+
+  getFilesDetails(id: string, fileId: string) {
+
+      return this.http.get(this.serviceUrl + "/" + id + "/files" + "/" + fileId);
+  }
+
+
 }
