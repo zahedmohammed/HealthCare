@@ -133,6 +133,13 @@ public class RunTaskRequestProcessor {
                 String _region = run.getJob().getRegions();
                 String runId = run.getId();
 
+                String orgName_ = null;
+                Optional<Project> projectOptional = projectRepository.findById(_project);
+                if (projectOptional.isPresent()){
+                    orgName_ = projectOptional.get().getOrg().getName();
+                }
+                final String orgName = orgName_;
+
                 run.getTask().setStatus(TaskStatus.PROCESSING);
                 runRepository.saveAndFlush(run);
 
@@ -179,16 +186,16 @@ public class RunTaskRequestProcessor {
 
                         copyRequests(task, testSuite);
 
-                        copyAuth(run, env, task, testSuite);
+                        copyAuth(run, env, task, testSuite, orgName);
 
                         copyAssertions(task, testSuite);
 
                         task.setEndpoint(getBaseUrl(env.getBaseUrl(), run.getJob().getProject().getOrg().getName()) + testSuite.getEndpoint());
 
                         // init & init.cleanup copy
-                        copy(testSuite.getInit(), task.getInit(), run, env, true);
+                        copy(testSuite.getInit(), task.getInit(), run, env, true, orgName);
                         // cleanup copy
-                        copy(testSuite.getCleanup(), task.getCleanup(), run, env, false);
+                        copy(testSuite.getCleanup(), task.getCleanup(), run, env, false, orgName);
 
                         // count tests
                         if (testSuite.getTestCases() != null && !testSuite.getTestCases().isEmpty()) {
@@ -251,7 +258,7 @@ public class RunTaskRequestProcessor {
         task.setTestCases(testCases);
     }
 
-    private void copyAuth(Run run, Environment env, BotTask task, TestSuite ds) {
+    private void copyAuth(Run run, Environment env, BotTask task, TestSuite ds, String orgName) {
         // if empty resolves it to Default
         // if NONE resolves it to none.
         // if value then finds and injects
@@ -259,7 +266,7 @@ public class RunTaskRequestProcessor {
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
-                    copyCred(task, cred);
+                    copyCred(task, cred, orgName);
                 }
             }
         } else if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "none")) {
@@ -267,20 +274,16 @@ public class RunTaskRequestProcessor {
         } else {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
-                    copyCred(task, cred);
+                    copyCred(task, cred, orgName);
                 }
             }
         }
     }
 
-    private void copyCred(BotTask task, Auth cred) {
+    private void copyCred(BotTask task, Auth cred, String orgName) {
 
         task.setAuth(authConverter.convertToDto(cred));
-        String orgName = null;
-        Optional<Project> projectOptional = projectRepository.findById(task.getProjectId());
-        if (projectOptional.isPresent()){
-            orgName = projectOptional.get().getOrg().getName();
-        }
+
 
         //task.setAuthType(cred.getAuthType());
         task.getAuth().setUsername(dataResolver.resolve(cred.getUsername(), orgName));
@@ -323,7 +326,7 @@ public class RunTaskRequestProcessor {
     }
 
 
-    private void copy(List<String> after, List<BotTask> tasks, Run run, Environment env, boolean copyCleanup) {
+    private void copy(List<String> after, List<BotTask> tasks, Run run, Environment env, boolean copyCleanup, String orgName) {
         if (CollectionUtils.isEmpty(after) || after.isEmpty()) {
             return;
         }
@@ -356,7 +359,7 @@ public class RunTaskRequestProcessor {
 
             copyRequests(afterTask, suite1);
 
-            copyAuth(run, env, afterTask, suite1);
+            copyAuth(run, env, afterTask, suite1, orgName);
 
             copyAssertions(afterTask, suite1);
 
@@ -365,7 +368,7 @@ public class RunTaskRequestProcessor {
             tasks.add(afterTask);
 
             if (copyCleanup) {
-                copy(suite1.getCleanup(), afterTask.getCleanup(), run, env, false);
+                copy(suite1.getCleanup(), afterTask.getCleanup(), run, env, false, orgName);
             }
         }
     }
