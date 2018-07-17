@@ -111,6 +111,13 @@ public class ProjectController {
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = { "/{id}/project-checksums-all" , "/{id}/files"}, method = RequestMethod.GET)
+    public Response<List<ProjectFile>> findAllFilesByProjectId(@PathVariable("id") String projectId){
+        return projectFileService.findAllFilesByProjectId(projectId, SecurityUtil.getOrgId());
+    }
+
+
+    @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/{projectId}/files/{id}", method = RequestMethod.GET)
     public Response<ProjectFile> findByProjectIdAndFileId(@PathVariable("projectId") String projectId, @PathVariable("id") String id) {
         return projectFileService.findById(id, SecurityUtil.getCurrentAuditor());

@@ -73,6 +73,17 @@ public class ProjectRestRepository extends GenericRestRespository<Project> {
 
     }
 
+    public Response<List<ProjectFile>> findProjectChecksumsAll(String projectId) {
+
+        HttpEntity<Void> request = new HttpEntity<>(getHeaders());
+
+        ResponseEntity<Response<List<ProjectFile>>> response = restTemplate.exchange(getUrl() + "/" + projectId + "/project-checksums-all", HttpMethod.GET, request, paramTypeRefMap.get(ProjectFile[].class));
+
+        //logger.info(response.getBody());
+        return response.getBody();
+
+    }
+
     public Response<Boolean> saveImports(ProjectImports projectImports, String projectId) {
 
         HttpEntity<ProjectImports> request = new HttpEntity<>(projectImports, getHeaders());

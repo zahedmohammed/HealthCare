@@ -731,6 +731,7 @@ public class FxCommandService {
             CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", String.format("No suites found in : [%s]", dataFolder.getAbsolutePath()));
             return;
         }
+
         files.stream().forEach(file -> {
 
             try {
@@ -963,6 +964,7 @@ public class FxCommandService {
     private boolean isChecksumPresent(List<ProjectFile> projectFiles, File file, String checksum) {
 
         if (projectFiles != null && !CollectionUtils.isEmpty(projectFiles)) {
+
             Optional<ProjectFile> projectFileOptional = projectFiles.stream().filter(pf -> org.apache.commons.lang3.StringUtils.equals(checksum, pf.getChecksum()))
                     .findFirst();
 
@@ -981,9 +983,11 @@ public class FxCommandService {
     }
 
     private List<ProjectFile> getProjectChecksums(String projectId) {
-        //final Response<List<ProjectFile>> projectFilesResponse = this.projectRestRepository.findProjectChecksums(projectId);
-       // return projectFilesResponse.getData();
-        return new ArrayList<ProjectFile>();
+        System.out.println("in getProjectChecksums");
+        final Response<List<ProjectFile>> projectFilesResponse = this.projectRestRepository.findProjectChecksumsAll(projectId);
+        System.out.println(" Files retrieved.... " + projectFilesResponse.getData().size());
+        return projectFilesResponse.getData();
+//        return new ArrayList<ProjectFile>();
     }
 
     private void lsJobs() {

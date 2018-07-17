@@ -21,4 +21,6 @@ public interface ProjectFileService extends GenericService<ProjectFile, String> 
     public Response<ProjectFile> saveFromDataSet(DataSet dto, String projectId);
 
     public Response<List<ProjectFile>> findByProjectId(String projectId, String user, org.springframework.data.domain.Pageable pageable);
+
+    public Response<List<ProjectFile>> findAllFilesByProjectId(String projectId, String user);
 }

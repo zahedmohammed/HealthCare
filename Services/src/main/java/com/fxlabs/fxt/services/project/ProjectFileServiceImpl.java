@@ -98,6 +98,12 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
         return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
+    @Override
+    public Response<List<ProjectFile>> findAllFilesByProjectId(String projectId, String org) {
+        List<com.fxlabs.fxt.dao.entity.project.ProjectFile> list = this.projectFileRepository.findByProjectId(projectId);
+        return new Response<>(converter.convertToDtos(list));
+    }
+
     private Response<ProjectFile> saveProjectFile(String projectId, String fileName, String content, String modified, String md5Hex) {
         Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileOptional = projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(projectId, fileName);
         com.fxlabs.fxt.dao.entity.project.ProjectFile projectFile = null;
