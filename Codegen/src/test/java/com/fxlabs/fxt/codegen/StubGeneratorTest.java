@@ -22,6 +22,6 @@ public class StubGeneratorTest {
         System.out.println("Testing...");
         StubGenerator service = new StubGenerator();
 
-        service.generate("http://petstore.swagger.io/v2/swagger.json", "/tmp", null, null, null);
+        //service.generate("http://petstore.swagger.io/v2/swagger.json", "/tmp", null, null, null);
     }
 }
