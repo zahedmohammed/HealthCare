@@ -3,20 +3,21 @@ import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { OrgService } from '../../../services/org.service';
 import { Org, OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
-
+import {SnackbarService}from '../../../services/snackbar.service';
+import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
 
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.scss'],
-  providers: [OrgService]
+  providers: [OrgService, SnackbarService]
 })
 export class UserEditComponent implements OnInit {
 
   entry: OrgUser = new OrgUser();
   org: Org = new Org();
   orgs;
-  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+  constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -60,11 +61,13 @@ export class UserEditComponent implements OnInit {
 
   update() {
     this.handler.activateLoader();
+    this.snackbarService.openSnackBar(this.entry.users.name + " saving...", "");
     this.orgService.updateOrgUser(this.org.id, this.entry.users.id, this.entry).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
+      this.snackbarService.openSnackBar(this.entry.users.name + " saved successfully...", "");
       this.router.navigate(['/app/orgs', this.org.id, 'users']);
     }, error => {
       this.handler.hideLoader();
