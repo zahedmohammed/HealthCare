@@ -129,7 +129,13 @@ public class MarketplaceDataProvider {
     }
 
     private String handleVault(MarketplaceDataTask task) {
-        return dataResolver.resolve(task.getImportName());
+
+        String orgName = null;
+        Optional<Project> projectOptional = projectRepository.findById(task.getProjectId());
+        if (projectOptional.isPresent()){
+            orgName = projectOptional.get().getOrg().getName();
+        }
+        return dataResolver.resolve(task.getImportName(), orgName);
     }
 
     private void loadRandom(String projectId, String testSuite, MarketplaceDataTask task) {

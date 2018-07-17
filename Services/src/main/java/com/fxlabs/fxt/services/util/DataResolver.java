@@ -24,7 +24,7 @@ public class DataResolver {
         this.vaultService = vaultService;
     }
 
-    public String resolve(String data) {
+    public String resolve(String data, String organisation) {
         if (StringUtils.isEmpty(data)) {
             return org.apache.commons.lang3.StringUtils.EMPTY;
         }
@@ -42,7 +42,7 @@ public class DataResolver {
 
         for (String key : patterns) {
             // send FxLabs/Key1 to VaultService
-            String val = vaultService.findByName(key).getData();
+            String val = vaultService.findByName(key, organisation).getData();
             response = StringUtils.replace(response, "{{@Vault." + key + "}}", val);
         }
 

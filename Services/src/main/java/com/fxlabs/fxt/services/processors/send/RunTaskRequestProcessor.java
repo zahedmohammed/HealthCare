@@ -2,14 +2,12 @@ package com.fxlabs.fxt.services.processors.send;
 
 import com.fxlabs.fxt.converters.project.AuthConverter;
 import com.fxlabs.fxt.converters.project.PoliciesConverter;
-import com.fxlabs.fxt.dao.entity.project.Auth;
-import com.fxlabs.fxt.dao.entity.project.Environment;
-import com.fxlabs.fxt.dao.entity.project.TestSuite;
-import com.fxlabs.fxt.dao.entity.project.TestSuiteType;
+import com.fxlabs.fxt.dao.entity.project.*;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
+import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
@@ -34,6 +32,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
@@ -57,12 +56,13 @@ public class RunTaskRequestProcessor {
     private DataResolver dataResolver;
     private AuthConverter authConverter;
     private TextEncryptor encryptor;
+    private ProjectRepository projectRepository;
 
     public RunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter,
                                    TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository,
                                    ClusterService clusterService, DataResolver dataResolver, AuthConverter authConverter,
-                                   TextEncryptor encryptor) {
+                                   TextEncryptor encryptor, ProjectRepository projectRepository) {
         this.botClientService = botClientService;
         this.testSuiteRepository = testSuiteRepository;
         this.runRepository = runRepository;
@@ -73,6 +73,7 @@ public class RunTaskRequestProcessor {
         this.dataResolver = dataResolver;
         this.authConverter = authConverter;
         this.encryptor = encryptor;
+        this.projectRepository = projectRepository;
     }
 
     public void process() {
@@ -182,7 +183,7 @@ public class RunTaskRequestProcessor {
 
                         copyAssertions(task, testSuite);
 
-                        task.setEndpoint(getBaseUrl(env.getBaseUrl()) + testSuite.getEndpoint());
+                        task.setEndpoint(getBaseUrl(env.getBaseUrl(), run.getJob().getProject().getOrg().getName()) + testSuite.getEndpoint());
 
                         // init & init.cleanup copy
                         copy(testSuite.getInit(), task.getInit(), run, env, true);
@@ -275,23 +276,28 @@ public class RunTaskRequestProcessor {
     private void copyCred(BotTask task, Auth cred) {
 
         task.setAuth(authConverter.convertToDto(cred));
+        String orgName = null;
+        Optional<Project> projectOptional = projectRepository.findById(task.getProjectId());
+        if (projectOptional.isPresent()){
+            orgName = projectOptional.get().getOrg().getName();
+        }
 
         //task.setAuthType(cred.getAuthType());
-        task.getAuth().setUsername(dataResolver.resolve(cred.getUsername()));
-        task.getAuth().setPassword(dataResolver.resolve(cred.getPassword()));
+        task.getAuth().setUsername(dataResolver.resolve(cred.getUsername(), orgName));
+        task.getAuth().setPassword(dataResolver.resolve(cred.getPassword(), orgName));
 
-        task.getAuth().setClientId(dataResolver.resolve(cred.getClientId()));
-        task.getAuth().setClientSecret(dataResolver.resolve(cred.getClientSecret()));
+        task.getAuth().setClientId(dataResolver.resolve(cred.getClientId(), orgName));
+        task.getAuth().setClientSecret(dataResolver.resolve(cred.getClientSecret(), orgName));
 
         // Token
-        task.getAuth().setHeader_1(dataResolver.resolve(cred.getHeader_1()));
-        task.getAuth().setHeader_2(dataResolver.resolve(cred.getHeader_2()));
-        task.getAuth().setHeader_3(dataResolver.resolve(cred.getHeader_3()));
+        task.getAuth().setHeader_1(dataResolver.resolve(cred.getHeader_1(), orgName));
+        task.getAuth().setHeader_2(dataResolver.resolve(cred.getHeader_2(), orgName));
+        task.getAuth().setHeader_3(dataResolver.resolve(cred.getHeader_3(), orgName));
 
     }
 
-    private String getBaseUrl(String url) {
-        return dataResolver.resolve(url);
+    private String getBaseUrl(String url, String orgName) {
+        return dataResolver.resolve(url, orgName);
     }
 
     private HttpMethod convert(com.fxlabs.fxt.dao.entity.project.HttpMethod httpMethod) {
@@ -354,7 +360,7 @@ public class RunTaskRequestProcessor {
 
             copyAssertions(afterTask, suite1);
 
-            afterTask.setEndpoint(getBaseUrl(env.getBaseUrl()) + suite1.getEndpoint());
+            afterTask.setEndpoint(getBaseUrl(env.getBaseUrl(), run.getJob().getProject().getOrg().getName()) + suite1.getEndpoint());
 
             tasks.add(afterTask);
 

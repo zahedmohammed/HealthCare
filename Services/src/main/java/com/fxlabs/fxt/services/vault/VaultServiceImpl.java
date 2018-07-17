@@ -135,21 +135,34 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
     }
 
     @Override
-    public Response<String> findByName(String name) {
+    public Response<String> findByName(String name, String organisation) {
         if (StringUtils.isEmpty(name)) {
             return new Response<>(StringUtils.EMPTY);
         }
-        String[] tokens = name.split("/");
-        String org = tokens[0];
-        String key = tokens[1];
+        if (name.contains("/")) {
+            String[] tokens = name.split("/");
+            String org = tokens[0];
+            String key = tokens[1];
 
-        Optional<Vault> vaultOptional = this.repository.findByOrgNameAndKey(org, key);
+            Optional<Vault> vaultOptional = this.repository.findByOrgNameAndKey(org, key);
 
-        if (!vaultOptional.isPresent()) {
-            return new Response<>(StringUtils.EMPTY);
+            if (!vaultOptional.isPresent()) {
+                return new Response<>(StringUtils.EMPTY);
+            }
+            return new Response<>(encryptor.decrypt(vaultOptional.get().getVal()));
+        } else {
+            if (StringUtils.isEmpty(organisation)) {
+                return new Response<>().withErrors(true);
+            }
+
+            Optional<Vault> vaultOptional = this.repository.findByOrgNameAndKey(organisation, name);
+
+            if (!vaultOptional.isPresent()) {
+                return new Response<>().withErrors(true);
+            }
+
+            return new Response<>(encryptor.decrypt(vaultOptional.get().getVal()));
         }
-
-        return new Response<>(encryptor.decrypt(vaultOptional.get().getVal()));
 
     }
 

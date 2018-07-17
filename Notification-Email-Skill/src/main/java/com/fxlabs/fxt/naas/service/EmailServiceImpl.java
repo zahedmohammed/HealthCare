@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
                 List<String> tos_ = Arrays.asList(tokensChannel);
                 for (String to_ : tos_) {
                     SimpleMailMessage message = new SimpleMailMessage();
-                    message.setTo(to_);
+                    message.setTo(to_.trim());
                     message.setSubject(subject);
                     message.setText(text);
                     //message.setFrom("FX Labs, Inc");

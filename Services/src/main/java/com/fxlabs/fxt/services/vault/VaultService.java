@@ -6,10 +6,11 @@ import com.fxlabs.fxt.services.base.GenericService;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface VaultService extends GenericService<Vault, String> {
 
-    public Response<String> findByName(String name);
+    public Response<String> findByName(String name, String organisation);
 
     Response<com.fxlabs.fxt.dto.vault.Vault> create(com.fxlabs.fxt.dto.vault.Vault dto, String org, String user);
 
