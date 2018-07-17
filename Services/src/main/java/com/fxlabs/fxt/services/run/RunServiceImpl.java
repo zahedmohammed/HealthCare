@@ -21,7 +21,6 @@ import com.fxlabs.fxt.services.project.ProjectService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +49,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService,
-                          /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository,
+            /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository,
                           TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter,
                           TestSuiteESRepository testSuiteESRepository, ProjectService projectService,
                           SuiteESRepository suiteESRepository, SuiteConverter suiteConverter) {
@@ -77,12 +76,12 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             if (!CollectionUtils.isEmpty(run.getAttributes())) {
                 region = run.getAttributes().get(RunConstants.REGION);
             }
-            if (StringUtils.isNotEmpty(region)){
+            if (StringUtils.isNotEmpty(region)) {
                 run.setRegions(region);
             } else {
                 run.setRegions(run.getJob().getRegions());
             }
-            if (run.getTask().getStartTime()!=null && run.getTask().getEndTime() != null) {
+            if (run.getTask().getStartTime() != null && run.getTask().getEndTime() != null) {
                 run.getTask().setTimeTaken(run.getTask().getEndTime().getTime() - run.getTask().getStartTime().getTime());
                 run.getTask().setTimeSaved(run.getTask().getTotalTime() - run.getTask().getTimeTaken());
             }
@@ -204,7 +203,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
         List<com.fxlabs.fxt.dao.entity.run.Run> allRuns = repository.findAllRunsByJobId(jobId);
         List<String> runIds = new ArrayList<>();
-        for (com.fxlabs.fxt.dao.entity.run.Run run : allRuns){
+        for (com.fxlabs.fxt.dao.entity.run.Run run : allRuns) {
             runIds.add(run.getId());
         }
 
@@ -216,10 +215,32 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
 
     @Override
-    public Response<List<Suite>> findSummaryByRunId(String runId, String user, Pageable pageable) {
+    public Response<List<Suite>> findSummaryByRunId(String runId, String org, Pageable pageable) {
 
+        // TODO check org is entitled to runId
         Page<com.fxlabs.fxt.dao.entity.run.Suite> page = this.suiteESRepository.findByRunId(runId, pageable);
 
+        List<Suite> dataSets = suiteConverter.convertToDtos(page.getContent());
+        return new Response<List<Suite>>(dataSets, page.getTotalElements(), page.getTotalPages());
+    }
+
+    @Override
+    public Response<List<Suite>> search(String runId, String category, String keyword, String org, Pageable pageable) {
+        // TODO check org is entitled to runId
+
+        // 1. filter by category and search string
+        // 2. filter by category
+        // 3. filter by search
+        Page<com.fxlabs.fxt.dao.entity.run.Suite> page = null;
+        if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword)) {
+            page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCase(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, pageable);
+        } else if (StringUtils.isNotEmpty(category) && StringUtils.isEmpty(keyword)) {
+            page = this.suiteESRepository.findByRunIdAndCategory(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), pageable);
+        } else if (StringUtils.isEmpty(category) && StringUtils.isNotEmpty(keyword)) {
+            page = this.suiteESRepository.findByRunIdAndSuiteNameContainingIgnoreCase(runId, keyword, pageable);
+        }
+
+        // filter by
         List<Suite> dataSets = suiteConverter.convertToDtos(page.getContent());
         return new Response<List<Suite>>(dataSets, page.getTotalElements(), page.getTotalPages());
     }
@@ -338,8 +359,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         long timeSaved = 0L;
 
         Run run = this.repository.findByRunId(runId);
-        if (run.getTask().getStartTime()!=null && run.getTask().getEndTime() != null)
-            timeSaved = run.getTask().getTotalTime() - ( run.getTask().getEndTime().getTime() - run.getTask().getStartTime().getTime() );
+        if (run.getTask().getStartTime() != null && run.getTask().getEndTime() != null)
+            timeSaved = run.getTask().getTotalTime() - (run.getTask().getEndTime().getTime() - run.getTask().getStartTime().getTime());
 
         savings.setTimeSaved(timeSaved);
 

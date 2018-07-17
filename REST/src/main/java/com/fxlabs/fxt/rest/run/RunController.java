@@ -56,8 +56,8 @@ public class RunController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "{jobId}/testSuite/test-suite-responses/{name}", method = RequestMethod.GET)
     public Response<List<TestSuiteResponse>> findResponsesByTestSuite(@PathVariable("jobId") String jobId, @PathVariable("name") String testSuite,
-                                                                  @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                                                  @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
+                                                                      @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                                      @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
         return runService.findByTestSuite(jobId, testSuite, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
@@ -65,9 +65,9 @@ public class RunController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}/test-suite-response/{name}", method = RequestMethod.GET)
     public Response<List<TestSuiteResponse>> findBySuiteId(@PathVariable("id") String id,
-                                         @PathVariable("name") String name,
-                                         @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                         @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
+                                                           @PathVariable("name") String name,
+                                                           @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                           @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
         return runService.findByPk(id, name, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
@@ -78,7 +78,18 @@ public class RunController {
                                                    @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return runService.findSummaryByRunId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, new Sort(Sort.Direction.DESC, "failed")));
+        return runService.findSummaryByRunId(id, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, new Sort(Sort.Direction.DESC, "failed")));
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/{id}/test-suite-summary/search", method = RequestMethod.GET)
+    public Response<List<Suite>> search(@PathVariable("id") String id,
+                                        @RequestParam(value = "category", required = false) String category,
+                                        @RequestParam(value = "keyword", required = false) String keyword,
+                                        @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                        @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
+    ) {
+        return runService.search(id, category, keyword, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, new Sort(Sort.Direction.DESC, "failed")));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

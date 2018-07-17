@@ -55,6 +55,15 @@ constructor(private http: HttpClient) {
     return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary", {params});
   }
 
+  search(runId:string, category:string, keyword:string, page, pageSize) {
+    let params = new HttpParams();
+    params = params.append('category', category);
+    params = params.append('keyword', keyword);
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary/search", {params});
+  }
+
   getTestSuiteResponseByName(id:string, name:string) {
     return this.http.get(this.serviceUrl + "/" + id + "/test-suite-response/" + name);
   }

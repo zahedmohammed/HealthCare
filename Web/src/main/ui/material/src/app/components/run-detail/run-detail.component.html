@@ -193,7 +193,14 @@
                 </div>
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-md-4">
+                <mat-input-container class="full-width">
+                    <input [(ngModel)]="keyword" name="search" id="search"
+                           matInput type="search" placeholder="Search suites..." (keyup.enter)="search()">
+                </mat-input-container>
+            </div>
+        </div>
     </div>
     <br/>
     <article class="article">

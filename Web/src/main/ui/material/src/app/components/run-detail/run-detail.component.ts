@@ -39,6 +39,8 @@ export class RunDetailComponent implements OnInit {
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
+  keyword;
+  category: string = '';
 
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
     private route: ActivatedRoute, private dialog: MatDialog, private handler: Handler) { }
@@ -140,6 +142,24 @@ export class RunDetailComponent implements OnInit {
   getSummary() {
     this.handler.activateLoader();
     this.runService.getSummary(this.id, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.suites = results['data'];
+      this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+  search() {
+    if (this.keyword == '') {
+      return this.getSummary();
+    }
+    this.handler.activateLoader();
+    this.runService.search(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
