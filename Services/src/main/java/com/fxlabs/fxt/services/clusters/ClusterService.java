@@ -23,7 +23,7 @@ public interface ClusterService extends GenericService<Cluster, String> {
 
     Response<List<Cluster>> findEntitled(Collection<String> orgs, Pageable pageable);
 
-    Response<Cluster> findByName(String id, String user, String orgName);
+    Response<Cluster> findByName(String name, String user);
 
     Response<Cluster> findById(String id, String user);
 
