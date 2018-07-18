@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -906,10 +907,23 @@ public class FxCommandService {
                     DataSet dataSet1 = dataSetResponse.getData();
 
                     //dataSet = jsonMapper.readValue(file, DataSet.class);
-                    JsonNode rootNode = jsonMapper.readTree(file);
-                    if (rootNode.isArray()) {
+                    Iterator<String> itr =  null;
+                    try {
+                        String[] strArr = {};
+                        strArr = jsonMapper.readValue(file, String[].class);
+                        List<String> listArr = Arrays.asList(strArr);
+                        itr = listArr.iterator();
+                    }
+                    catch (Exception ex){
+                        logger.warn(ex.getLocalizedMessage());
+//                        JsonNode rootNode = jsonMapper.readTree(file);
+//                        if (rootNode.isArray()) {
+//                            itr = rootNode.iterator();
+//                        }
+                    }
+                    if (itr != null) {
                         List<String> skip = new ArrayList<>();
-                        rootNode.iterator().forEachRemaining(item -> {
+                        itr.forEachRemaining(item -> {
                             skip.add(item.toString());
                         });
                         List<List<String>> batch = Lists.partition(skip, 10);
