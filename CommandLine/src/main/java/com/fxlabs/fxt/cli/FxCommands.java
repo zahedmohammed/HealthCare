@@ -4,6 +4,7 @@ import com.fxlabs.fxt.codegen.code.CodegenThreadUtils;
 import com.fxlabs.fxt.codegen.code.StubGenerator;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.users.OrgUsers;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.services.BotLogger;
 import com.fxlabs.fxt.sdk.services.CredUtils;
@@ -188,7 +189,7 @@ public class FxCommands {
     private void tryLogin() {
         try {
             System.out.println("Reading credentials from fx.properties ");
-            Response<Users> response = service.login();
+            Response<OrgUsers> response = service.login();
             if (response == null || response.isErrors() || response.getData() == null) {
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.RED,
@@ -208,13 +209,14 @@ public class FxCommands {
                 }
             }
             connected = true;
-            String name = response.getData().getName();
+            String name = response.getData().getUsers().getName();
             if (StringUtils.isEmpty(name)) {
-                name = response.getData().getEmail();
+                name = response.getData().getUsers().getEmail();
             }
+            String org = response.getData().getOrg().getName();
             System.out.println(
                     AnsiOutput.toString(AnsiColor.DEFAULT,
-                            String.format("Welcome %s, to %s!", name, this.url)
+                            String.format("\nWelcome %s! \nOrg [%s] \nFX server [%s]\n", name, org, this.url)
                             , AnsiColor.DEFAULT)
             );
         } catch (Exception e) {

@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.*;
+import com.fxlabs.fxt.dto.users.OrgUsers;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.beans.Config;
 import com.fxlabs.fxt.sdk.rest.*;
@@ -66,6 +67,8 @@ public class FxCommandService {
     @Autowired
     private UsersRestRepository usersRestRepository;
     @Autowired
+    private OrgRestRepository orgRestRepository;
+    @Autowired
     private ProjectRestRepository projectRestRepository;
     @Autowired
     private TestSuiteRestRepository testSuiteRestRepository;
@@ -83,8 +86,8 @@ public class FxCommandService {
     private Map<Long, String> logFiles = new ConcurrentHashMap<>();
     private Long LAST_RUN_ID = 0L;
 
-    public Response<Users> login() {
-        return this.usersRestRepository.findByLogin();
+    public Response<OrgUsers> login() {
+        return this.orgRestRepository.loginStatus();
     }
 
     public void loadAndRun(String projectDir, String projectName, String jobName, String region, String tags, String envName, String suites) {

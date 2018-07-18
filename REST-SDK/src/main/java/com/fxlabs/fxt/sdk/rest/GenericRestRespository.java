@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
+import com.fxlabs.fxt.dto.users.OrgUsers;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.services.CredUtils;
 import org.apache.commons.codec.binary.Base64;
@@ -41,6 +42,8 @@ public class GenericRestRespository<T> {
 
     static {
         paramTypeRefMap.put(Users.class, new ParameterizedTypeReference<Response<Users>>() {
+        });
+        paramTypeRefMap.put(OrgUsers.class, new ParameterizedTypeReference<Response<OrgUsers>>() {
         });
         paramTypeRefMap.put(Project.class, new ParameterizedTypeReference<Response<Project>>() {
         });
