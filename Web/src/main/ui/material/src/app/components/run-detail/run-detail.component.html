@@ -24,26 +24,7 @@
                     </h4>
                     <h6>{{run.task.description}}</h6>
                     <h6>Region: {{run.job?.regions}}</h6>
-                    <!--<h4>Test Duration: {{run.task.startTime | date:'short'}} - {{run.modifiedDate | date:'short'}}</h4>-->
                 </div>
-                <!--<div class="divider divider-solid divider-lg"></div>
-                <div class="card__title" *ngIf="run.stats != undefined">
-                    <h4>Statistics By Category (Total/Pass)</h4>
-                    <h4>Security (SQL Injection): {{run.stats.Security_SQL_Injection_Passed + run.stats.Security_SQL_Injection_Failed|| 0}}  / {{run.stats.Security_SQL_Injection_Passed || 0}} </h4>
-                    <h4>Security (DDOS): {{run.stats.Security_DDOS_Passed  + run.stats.Security_DDOS_Failed || 0}} / {{run.stats.Security_DDOS_Passed || 0}} </h4>
-                    <h4>Security (XSS): {{run.stats.Security_XSS_Passed || 0}} / {{run.stats.Security_XSS_Failed || 0}} </h4>
-                    <h4>Negative : {{run.stats.Negative_Passed + run.stats.Negative_Failed || 0}} / {{run.stats.Negative_Passed || 0}} </h4>
-                    <h4>Functional : {{run.stats.Bug_Passed + run.stats.Bug_Failed || 0}} / {{run.stats.Bug_Passed || 0}} </h4>
-                    <br/>
-                    <h4>Statistics By Severity</h4>
-                    <h4>Critical: {{run.stats.Critical_Passed + run.stats.Critical_Failed || 0}} / {{run.stats.Critical_Passed || 0}} </h4>
-                    <h4>Major : {{run.stats.Major_Passed + run.stats.Major_Failed || 0}} / {{run.stats.Major_Failed || 0}} </h4>
-                    <h4>Minor: {{run.stats.Minor_Passed + run.stats.Minor_Failed || 0}} / {{run.stats.Minor_Failed || 0}} </h4>
-                    <h4>Trivial : {{run.stats.Trivial_Passed + run.stats.Trivial_Failed || 0}} / {{run.stats.Trivial_Failed || 0}} </h4>
-                </div>
-
-                <div class="divider divider-solid divider-lg"></div>
-                <p class="card__desc" style="white-space: pre;">{{run.task.description}}</p>-->
             </div>
         </div>
     </div>
@@ -51,8 +32,8 @@
     <div class="no-breadcrumbs page-dashboard">
         <div class="row">
             <!-- Stats -->
-            <div class="col-xl-2 col-sm-6">
-                <div class="box box-default">
+            <div class="col-xl-2 col-sm-6 pointer" (click)="category='';search()">
+                <div class="box box-default pricing-table">
                     <div class="box-top">
                         <i class="material-icons color-info">assignment</i>
                     </div>
@@ -72,20 +53,20 @@
                     <div class="box-info">
                         <span>Test Executions</span>
                     </div>
-                    <div class="box-bottom">
+                    <div class="box-bottom text-muted">
                         <span>{{run.task['totalTests']}}</span>
                     </div>
                 </div>
             </div>
             <div class="col-xl-2 col-sm-6">
                 <div class="box box-default">
-                    <div class="box-top">
+                    <div class="box-top text-muted">
                         <i class="material-icons color-warning">data_usage</i>
                     </div>
                     <div class="box-info">
                         <span>Data</span>
                     </div>
-                    <div class="box-bottom">
+                    <div class="box-bottom text-muted">
                         <span>{{run.task['totalBytes'] | byteFormat}}</span>
                     </div>
                 </div>
@@ -98,7 +79,7 @@
                     <div class="box-info">
                         <span>Duration</span>
                     </div>
-                    <div class="box-bottom">
+                    <div class="box-bottom text-muted">
                         <span>{{run.task['totalTime'] | mstoDuration}}</span>
                     </div>
                 </div>
@@ -111,7 +92,7 @@
                     <div class="box-info">
                         <span>Fail</span>
                     </div>
-                    <div class="box-bottom">
+                    <div class="box-bottom text-muted">
                         <span>{{run.task['failedTests']}}</span>
                     </div>
                 </div>
@@ -124,7 +105,7 @@
                     <div class="box-info">
                         <span>Success Rate</span>
                     </div>
-                    <div class="box-bottom">
+                    <div class="box-bottom text-muted">
                         <span>{{success | percent}}</span>
                     </div>
                 </div>
@@ -133,8 +114,8 @@
 
         <div class="row">
             <!-- Security Stats -->
-            <div class="col-xl-2 col-sm-6">
-                <div class="box box-default">
+            <div class="col-xl-2 col-sm-6 pointer" (click)="category='SQL_Injection';search()">
+                <div class="box box-default pricing-table">
                     <div class="box-top">
                         <i class="fa fa-database color-danger"></i>
                     </div>
@@ -146,8 +127,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-sm-6">
-                <div class="box box-default">
+            <div class="col-xl-2 col-sm-6 pointer">
+                <div class="box box-default pricing-table" (click)="category='XSS_Injection';search()">
                     <div class="box-top">
                         <i class="fa fa-code color-danger"></i>
                     </div>
@@ -159,34 +140,34 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-sm-6">
-                <div class="box box-default">
+            <div class="col-xl-2 col-sm-6 pointer">
+                <div class="box box-default pricing-table" (click)="category='DDOS';search()">
                     <div class="box-top">
                         <i class="fa fa-globe color-danger"></i>
                     </div>
                     <div class="box-info">
-                        <span>DOS</span>
+                        <span>DDoS</span>
                     </div>
                     <div class="box-bottom">
                         <span>{{run.stats['DDOS_Passed']  + run.stats['DDOS_Failed'] || 0}} / {{run.stats['DDOS_Failed'] || 0}}</span>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-sm-6">
-                <div class="box box-default">
+            <div class="col-xl-2 col-sm-6 pointer">
+                <div class="box box-default pricing-table" (click)="category='UnSecured';search()">
                     <div class="box-top">
                         <i class="fa fa-user-secret color-danger"></i>
                     </div>
                     <div class="box-info">
-                        <span>RBAC</span>
+                        <span>Invalid Auth</span>
                     </div>
                     <div class="box-bottom">
                         <span>{{run.stats['UnSecured_Passed']  + run.stats['UnSecured_Failed'] || 0}} / {{run.stats['UnSecured_Failed'] || 0}}</span>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-sm-6">
-                <div class="box box-default">
+            <div class="col-xl-2 col-sm-6 pointer">
+                <div class="box box-default pricing-table" (click)="category='Functional';search()">
                     <div class="box-top">
                         <i class="fa fa-tasks color-danger"></i>
                     </div>
@@ -206,13 +187,28 @@
                     <div class="box-info">
                         <span>Critical</span>
                     </div>
-                    <div class="box-bottom">
+                    <div class="box-bottom text-muted">
                         <span>{{run.stats['Critical_Passed'] + run.stats['Critical_Failed'] || 0}} / {{run.stats['Critical_Failed'] || 0}}</span>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-md-4">
+                <mat-input-container class="full-width">
+                    <input [(ngModel)]="keyword" name="search" id="search"
+                           matInput type="search" placeholder="Search suites..." (keyup.enter)="search()">
+                </mat-input-container>
+            </div>
+            <div class="col-md-4">
+                <div class="full-width">
+                    <mat-chip-list>
+                        <mat-chip>Filter: </mat-chip>
+                        <mat-chip *ngIf="category">{{category}}</mat-chip>
+                    </mat-chip-list>
+                </div>
+            </div>
+        </div>
     </div>
     <br/>
     <article class="article">

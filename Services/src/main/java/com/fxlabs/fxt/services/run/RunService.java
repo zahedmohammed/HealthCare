@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.services.run;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.TestSuiteCategory;
+import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunSavings;
 import com.fxlabs.fxt.dto.run.Suite;
@@ -27,7 +29,9 @@ public interface RunService extends GenericService<Run, String> {
 
     Response<List<TestSuiteResponse>> findByPk(String id, String name, String user, Pageable pageable);
 
-    Response<List<Suite>> findSummaryByRunId(String runId, String user, Pageable pageable);
+    Response<List<Suite>> findSummaryByRunId(String runId, String org, Pageable pageable);
+
+    Response<List<Suite>> search(String runId, String category, String keyword, String org, Pageable pageable);
 
     Response<Long> count(String user, Pageable pageable);
 

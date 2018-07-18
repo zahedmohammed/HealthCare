@@ -1,5 +1,7 @@
 package com.fxlabs.fxt.dao.repository.es;
 
+import com.fxlabs.fxt.dao.entity.project.TestSuiteCategory;
+import com.fxlabs.fxt.dao.entity.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dao.entity.run.Suite;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,12 @@ import java.util.Optional;
 public interface SuiteESRepository extends ElasticsearchRepository<Suite, String> {
 
     Page<Suite> findByRunId(String runId, Pageable pageable);
+
+    Page<Suite> findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCase(String runId, TestSuiteCategory category, String keyword, Pageable pageable);
+
+    Page<Suite> findByRunIdAndCategory(String runId, TestSuiteCategory category, Pageable pageable);
+
+    Page<Suite> findByRunIdAndSuiteNameContainingIgnoreCase(String runId, String keyword, Pageable pageable);
 
     Optional<Suite> findById(String id);
 }
