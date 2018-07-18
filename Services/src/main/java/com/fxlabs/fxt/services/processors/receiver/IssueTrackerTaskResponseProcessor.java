@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseITRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseRepository;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.services.alerts.AlertService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,16 @@ public class IssueTrackerTaskResponseProcessor {
 
     public void process(ITTaskResponse task) {
         try {
+
+            if (task == null || StringUtils.isEmpty(task.getTestCaseResponseId())) {
+                logger.info("Invalid IssuerTracker Task response  id [{}]... ", task.getTestCaseResponseId());
+                return;
+            }
+
+
             logger.info("IssuerTracker Task response [{}]...", task.getProjectName());
+
+
 
             Optional<TestCaseResponse> optional = testCaseResponseESRepository.findById(task.getTestCaseResponseId());
 
