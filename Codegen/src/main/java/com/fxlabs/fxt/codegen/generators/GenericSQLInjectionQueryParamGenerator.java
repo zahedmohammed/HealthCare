@@ -30,20 +30,22 @@ public class GenericSQLInjectionQueryParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        List<TestSuiteMin> allTestSuites = new ArrayList<>();
-        if (method == io.swagger.models.HttpMethod.GET) {
-            for (Parameter param : op.getParameters()) {
-                if (param instanceof QueryParameter) {
-                    QueryParameter queryParam = (QueryParameter) param;
-                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + DB_NAME + "_" + queryParam.getName();
-                    List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-                    for (TestSuiteMin testSuite : testSuites) {
-                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@GenericSQLInjections}}");
-                    }
-                    allTestSuites.addAll(testSuites);
-                }
-            }
-        }
-        return allTestSuites;
+        return null;
+
+//        List<TestSuiteMin> allTestSuites = new ArrayList<>();
+//        if (method == io.swagger.models.HttpMethod.GET) {
+//            for (Parameter param : op.getParameters()) {
+//                if (param instanceof QueryParameter) {
+//                    QueryParameter queryParam = (QueryParameter) param;
+//                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + DB_NAME + "_" + queryParam.getName();
+//                    List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+//                    for (TestSuiteMin testSuite : testSuites) {
+//                        testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@GenericSQLInjections}}");
+//                    }
+//                    allTestSuites.addAll(testSuites);
+//                }
+//            }
+//        }
+//        return allTestSuites;
     }
 }

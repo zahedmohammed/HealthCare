@@ -58,6 +58,7 @@ public class AutoCodeConfigUtil {
         TYPE_CATEGORY_MAP.put("DDOS", TestSuiteCategory.DDOS);
         TYPE_CATEGORY_MAP.put("XSS_Injection", TestSuiteCategory.XSS_Injection);
         TYPE_CATEGORY_MAP.put("sql_injection", TestSuiteCategory.SQL_Injection);
+        TYPE_CATEGORY_MAP.put("sql_injection_timebound", TestSuiteCategory.SQL_Injection);
         TYPE_CATEGORY_MAP.put("Log_Forging", TestSuiteCategory.Log_Forging);
         TYPE_CATEGORY_MAP.put("invalid_datatype", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("special_chars", TestSuiteCategory.Negative);
