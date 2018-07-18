@@ -200,6 +200,14 @@
                            matInput type="search" placeholder="Search suites..." (keyup.enter)="search()">
                 </mat-input-container>
             </div>
+            <div class="col-md-4">
+                <div class="full-width">
+                    <mat-chip-list>
+                        <mat-chip>Filter: </mat-chip>
+                        <mat-chip *ngIf="category">{{category}}</mat-chip>
+                    </mat-chip-list>
+                </div>
+            </div>
         </div>
     </div>
     <br/>
