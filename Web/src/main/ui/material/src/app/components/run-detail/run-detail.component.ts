@@ -39,7 +39,7 @@ export class RunDetailComponent implements OnInit {
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
-  keyword;
+  keyword: string = '';
   category: string = '';
 
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
@@ -155,7 +155,7 @@ export class RunDetailComponent implements OnInit {
   }
 
   search() {
-    if (this.keyword == '') {
+    if (this.keyword == '' && this.category == '') {
       return this.getSummary();
     }
     this.handler.activateLoader();

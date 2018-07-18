@@ -231,6 +231,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         // 1. filter by category and search string
         // 2. filter by category
         // 3. filter by search
+        // 4. filter by severity and search string
+        // 5. filter by status(pass/fail) and search string
         Page<com.fxlabs.fxt.dao.entity.run.Suite> page = null;
         if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword)) {
             page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCase(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, pageable);
