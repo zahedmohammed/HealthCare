@@ -25,6 +25,9 @@ public class AutoCodeConfigUtil {
     private AutoCodeConfig config;
 
     public void setConfig(AutoCodeConfig config) {
+        if (config == null) {
+            return;
+        }
         if (this.config == null) {
             this.config = config;
             if (this.config.getTestSuites() != null) {

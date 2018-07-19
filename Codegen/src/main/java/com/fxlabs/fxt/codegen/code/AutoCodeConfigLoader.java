@@ -35,7 +35,7 @@ public class AutoCodeConfigLoader {
             }
             File configFile = FileUtils.getFile(new File(projectDir), "AutoCodeConfig.yaml");
 
-            if (configFile == null) {
+            if (configFile == null || !configFile.exists()) {
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.RED,
                                 String.format("AutoCodeConfig.yaml not found in project dir %s", projectDir)
