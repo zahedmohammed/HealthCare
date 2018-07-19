@@ -94,14 +94,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         if (StringUtils.isEmpty(name)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project name"));
         }
-        String[] tokens = name.split("/");
-        if (tokens.length != 2) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, String.format("Invalid project name [%s]. Valid e.g. 'org/project'", name)));
-        }
-        String org_ = tokens[0];
-        String proj = tokens[1];
 
-        Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByOrgNameAndNameAndInactive(org_, proj, false);
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = ((ProjectRepository) repository).findByOrgNameAndNameAndInactive(o, name, false);
 
         if (projectOptional.isPresent() && org.apache.commons.lang3.StringUtils.equals(projectOptional.get().getOrg().getId(), o))
             return new Response<Project>(converter.convertToDto(projectOptional.get()));

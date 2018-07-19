@@ -84,9 +84,9 @@ public class ProjectController {
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
-    @RequestMapping(value = "/find-by-name/{org}/{name}", method = RequestMethod.GET)
-    public Response<Project> findByProjectName(@PathVariable("org") String org, @PathVariable("name") String name) {
-        return projectService.findByOrgAndName(org + "/" + name, SecurityUtil.getOrgId());
+    @RequestMapping(value = "/find-by-name/{name}", method = RequestMethod.GET)
+    public Response<Project> findByProjectName(@PathVariable("name") String name) {
+        return projectService.findByOrgAndName(name, SecurityUtil.getOrgId());
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
@@ -103,7 +103,7 @@ public class ProjectController {
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
-    @RequestMapping(value = { "/{id}/project-checksums" , "/{id}/files"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/{id}/project-checksums", "/{id}/files"}, method = RequestMethod.GET)
     public Response<List<ProjectFile>> findByProjectId(@PathVariable("id") String projectId,
                                                        @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                        @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
@@ -111,8 +111,8 @@ public class ProjectController {
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
-    @RequestMapping(value = { "/{id}/project-checksums-all" , "/{id}/files-all"}, method = RequestMethod.GET)
-    public Response<List<ProjectFile>> findAllFilesByProjectId(@PathVariable("id") String projectId){
+    @RequestMapping(value = {"/{id}/project-checksums-all", "/{id}/files-all"}, method = RequestMethod.GET)
+    public Response<List<ProjectFile>> findAllFilesByProjectId(@PathVariable("id") String projectId) {
         return projectFileService.findAllFilesByProjectId(projectId, SecurityUtil.getOrgId());
     }
 

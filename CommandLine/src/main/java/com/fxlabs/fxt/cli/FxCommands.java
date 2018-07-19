@@ -62,14 +62,14 @@ public class FxCommands {
     }*/
 
     @ShellMethod(key = "run", value = "Executes job. \n e.g. \n" +
-            "run --dir /opt/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX \n" +
-            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --region FXLabs/US_WEST_1 \n" +
-            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --tags v2 \n" +
-            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FXLabs/FX_Test_Automation --job SANDBOX --suites \"personal_user_signup_ds,personal_user_signup_ds\"\n"
+            "run --dir /opt/FxLabs/FX_Test-Automation --project FX_Test_Automation --job SANDBOX \n" +
+            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FX_Test_Automation --job SANDBOX --region FXLabs/US_WEST_1 \n" +
+            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FX_Test_Automation --job SANDBOX --tags v2 \n" +
+            "run --dir /Users/intesarmohammed/Documents/projects/FxLabs/FX_Test-Automation --project FX_Test_Automation --job SANDBOX --suites \"personal_user_signup_ds,personal_user_signup_ds\"\n"
     )
 
     public void run(
-            @ShellOption(value = {"-p", "--project"}, help = "Project name e.g. org/project-name or FxLabs/Common") @Size(min = 3) String project,
+            @ShellOption(value = {"-p", "--project"}, help = "Project name e.g. project-name or MyTest") @Size(min = 3) String project,
             @ShellOption(value = {"-d", "--dir"}, help = "Project directory path e.g. /opt/Project1 or C:/Project1", defaultValue = "") String projectDir,
             @ShellOption(value = {"-j", "--job"}, help = "Job name from Fxfile.yaml e.g. Stg or Dev etc", defaultValue = "Default") String jobName,
             @ShellOption(value = {"-r", "--region"}, help = "Override bot region for the job e.g. org/region or FxLabs/US_WEST_1", defaultValue = "") String region,
