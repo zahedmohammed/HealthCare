@@ -269,7 +269,7 @@ public class RunTaskRequestProcessor {
                     copyCred(task, cred, orgName);
                 }
             }
-        } else if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "none")) {
+        } else if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "none") || org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "anonymous")) {
             // don't send auth
         } else {
             for (Auth cred : creds) {

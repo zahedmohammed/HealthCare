@@ -20,7 +20,8 @@ public enum TestSuiteCategory {
     DDOS("DDOS"),
     XSS_Injection("XSS_Injection"),
     SQL_Injection("SQL_Injection"),
-    Log_Forging("Log_Forging");
+    Log_Forging("Log_Forging"),
+    RBAC("RBAC");
 
 
 

@@ -60,6 +60,7 @@ public class AutoCodeConfigUtil {
         TYPE_CATEGORY_MAP.put("sql_injection", TestSuiteCategory.SQL_Injection);
         TYPE_CATEGORY_MAP.put("sql_injection_timebound", TestSuiteCategory.SQL_Injection);
         TYPE_CATEGORY_MAP.put("Log_Forging", TestSuiteCategory.Log_Forging);
+        TYPE_CATEGORY_MAP.put("rbac", TestSuiteCategory.RBAC);
         TYPE_CATEGORY_MAP.put("invalid_datatype", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("special_chars", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("null_value", TestSuiteCategory.Negative);
@@ -107,6 +108,17 @@ public class AutoCodeConfigUtil {
         return this.config.getLogForgingPatterns();
     }
 
+    // ################## TestSuite ######################
+    // type filter
+    public TestSuite get(String type) {
+
+        if (this.config.getTestSuites() == null || CollectionUtils.isEmpty(this.config.getTestSuites())) {
+            return null;
+        }
+
+        return this.config.getTestSuites().stream().filter(testSuite -> StringUtils.equals(testSuite.getType(), type)).findFirst().orElse(null);
+
+    }
     public List<String> getAssertions(String type) {
 
         if (this.config == null) return DEFAULT_ASSERTIONS;
@@ -178,7 +190,9 @@ public class AutoCodeConfigUtil {
         return DEFAULT_INACTIVE;
     }
 
-    // DDOS support
+    // ################## TestSuite end ######################
+
+    // ###################     DDOS support   ###################
     public boolean isDDOSSupportedMethod(io.swagger.models.HttpMethod method) {
         if (method == null) {
             return false;
@@ -258,18 +272,7 @@ public class AutoCodeConfigUtil {
         }
         return DEFAULT_DDOS_VALUE;
     }
-
-
-    // type filter
-    private TestSuite get(String type) {
-
-        if (this.config.getTestSuites() == null || CollectionUtils.isEmpty(this.config.getTestSuites())) {
-            return null;
-        }
-
-        return this.config.getTestSuites().stream().filter(testSuite -> StringUtils.equals(testSuite.getType(), type)).findFirst().orElse(null);
-
-    }
+    // ###################     DDOS support end   ###################
 
     // PropertyMapping
 

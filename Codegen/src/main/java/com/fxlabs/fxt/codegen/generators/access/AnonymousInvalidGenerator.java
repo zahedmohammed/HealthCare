@@ -16,7 +16,7 @@ import java.util.List;
 public class AnonymousInvalidGenerator extends AbstractGenerator {
 
     protected static final String SCENARIO = "anonymous_invalid";
-    protected static final String AUTH = "NONE";
+    protected static final String AUTH = "Anonymous";
     protected static final String OPERAND = "401";
 
     @Override

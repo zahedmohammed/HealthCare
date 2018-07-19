@@ -16,11 +16,15 @@ import java.io.Serializable;
 public class Match implements Serializable {
     private String name;
     private String value = "999";
+    private String pathPatterns;
+    private String denyRoles;
+    private String methods;
     //private Type type; // integer - supported // TODO
     //private Method method; // get - supported // TODO
     //private In in; // query - supported // TODO
 }
 
+/*
 enum In {
     query, body
 }
@@ -31,4 +35,4 @@ enum Type {
 
 enum Method {
     get, post, put, delete
-}
+}*/
