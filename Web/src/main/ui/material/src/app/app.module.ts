@@ -159,6 +159,7 @@ import {ByteFormatPipe}from './pipes/byte-format.pipe';
 import {RunHistoryComponent}from './components/analytics/run-history/run-history.component';
 import {SuperbotnetworkListComponent}from './components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component';
 import {DeleteDialogComponent}from './components/dialogs/delete-dialog/delete-dialog.component';
+import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.component';
 
 @NgModule({
   imports: [
