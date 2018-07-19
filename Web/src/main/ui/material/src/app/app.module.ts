@@ -159,7 +159,7 @@ import {ByteFormatPipe}from './pipes/byte-format.pipe';
 import {RunHistoryComponent}from './components/analytics/run-history/run-history.component';
 import {SuperbotnetworkListComponent}from './components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component';
 import {DeleteDialogComponent}from './components/dialogs/delete-dialog/delete-dialog.component';
-import { SuitDailogComponent } from './components/dialogs/suit-dailog/suit-dailog.component';
+import { ProjectSyncComponent } from './components/dialogs/project-sync/project-sync.component';
 
 @NgModule({
   imports: [
@@ -300,7 +300,9 @@ import { SuitDailogComponent } from './components/dialogs/suit-dailog/suit-dailo
     RunHistoryComponent,
     SuperbotnetworkListComponent,
     DeleteDialogComponent,
-    SuitDailogComponent
+    SuitDailogComponent,
+    ProjectsSyncComponent,
+    ProjectSyncComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],

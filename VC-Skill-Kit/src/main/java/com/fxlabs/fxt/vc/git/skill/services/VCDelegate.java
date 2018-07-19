@@ -20,8 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class VCDelegate {
@@ -58,6 +62,11 @@ public class VCDelegate {
             response = versionControlService.process(_task, path);
             response.setProjectId(task.getProjectId());
             response.setProjectName(task.getProjectName());
+
+           // 2.1. AutoCode -> delete([] categories)
+           // 2.1. AutoCode -> delete([] categories)
+           // 2.2. AutoCode -> run()
+            customizedFileDeletion(task, path);
 
             if (response.isSuccess() && !StringUtils.equals(response.getVcLastCommit(), task.getVcLastCommit())) {
 
@@ -119,5 +128,59 @@ public class VCDelegate {
         }
     }
 
+    private void customizedFileDeletion(VCTask task, String path) {
+        if (task.isDeleteAll()) {
+            delete(new File(path + "/test-suites/AutoCode"));
+        }
 
+        if (!CollectionUtils.isEmpty(task.getCategories()) && !task.isDeleteAll()) {
+            List<File> filesToDelete = new ArrayList<>();
+
+            task.getCategories().stream().forEach(category -> {
+                finder(category, filesToDelete, path);
+            });
+            filesToDelete.stream().forEach(f -> {
+                delete(f);
+            });
+
+        }
+    }
+
+
+    private void finder( String category, List<File> files, String path){
+        File dir = new File(path + "/test-suites/AutoCode");
+
+         List<File> list = new ArrayList<>();
+        if (dir.exists() && dir.isDirectory()) {
+            listfiles(dir, list);
+            for (File fileName : list) {
+                if (fileName.getName().toString().contains(category)) {
+                    files.add(fileName);
+                }
+            }
+        }
+    }
+
+    public boolean delete(File path) {
+        try {
+            org.apache.commons.io.FileUtils.deleteQuietly(path);
+            return true;
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+        }
+        return false;
+    }
+
+
+    public void listfiles(File directoryName, List<File> files) {
+        // Get all the files from a directory.
+        File[] fList = directoryName.listFiles();
+        for (File file : fList) {
+            if (file.isFile()) {
+                files.add(file);
+            } else if (file.isDirectory()) {
+                listfiles(new File(file.getAbsolutePath()), files);
+            }
+        }
+    }
 }

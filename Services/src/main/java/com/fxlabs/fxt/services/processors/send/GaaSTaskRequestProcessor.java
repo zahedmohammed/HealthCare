@@ -10,6 +10,7 @@ import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.GenPolicy;
+import com.fxlabs.fxt.dto.project.ProjectSync;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -23,6 +24,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -66,11 +69,11 @@ public class GaaSTaskRequestProcessor {
     public void process() {
         Stream<Project> projects = projectRepository.findByInactive(false);
         projects.forEach(project -> {
-            process(project);
+            process(project, null);
         });
     }
 
-    public void process(Project project) {
+    public void process(Project project, ProjectSync projectSync) {
         try {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
@@ -91,8 +94,10 @@ public class GaaSTaskRequestProcessor {
                 }
             }
             task.setVcLastCommit(project.getLastCommit());
-
-
+            if (projectSync != null){
+                task.setCategories(projectSync.getCategories());
+                task.setDeleteAll(projectSync.isDeleteAll());
+            }
             Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
 
             String ownerEmail = usersResponse.getData().getEmail();//projectUsersList.get(0).getUsers().getEmail();
@@ -114,7 +119,7 @@ public class GaaSTaskRequestProcessor {
             if (systemSettingOptional.isPresent()) {
                 task.setFxUrl(systemSettingOptional.get().getValue());
             } else {
-                task.setFxUrl("http://fx-control-plane:8080");
+                task.setFxUrl("http://localhost:8080");
             }
 
             amqpClientService.sendTask(task, gaaSQueue);

@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.ProjectImports;
+import com.fxlabs.fxt.dto.project.ProjectSync;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.ProjectFileService;
 import com.fxlabs.fxt.services.project.ProjectService;
@@ -93,6 +94,12 @@ public class ProjectController {
     @RequestMapping(value = "/{id}/project-imports", method = RequestMethod.POST)
     public Response<Boolean> saveImports(@RequestBody ProjectImports request) {
         return projectService.saveProjectImports(request, SecurityUtil.getOrgId());
+    }
+
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{id}/project-sync", method = RequestMethod.POST)
+    public Response<Boolean> sync(@RequestBody ProjectSync request) {
+        return projectService.saveProjectSync(request, SecurityUtil.getOrgId());
     }
 
 

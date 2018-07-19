@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectImports;
 import com.fxlabs.fxt.dto.project.ProjectSaving;
+import com.fxlabs.fxt.dto.project.ProjectSync;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface ProjectService extends GenericService<Project, String> {
 
@@ -31,6 +33,8 @@ public interface ProjectService extends GenericService<Project, String> {
     Response<Project> delete(String id, String user);
 
     Response<Boolean> saveProjectImports(ProjectImports projectImports, String user);
+
+    Response<Boolean> saveProjectSync(ProjectSync projectSync, String user);
 
     Response<Project> save(Project dto, String org, String user);
 

@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,6 +32,8 @@ public class VCTask implements Serializable {
     private String vcPassword;
     private String vcBranch;
     private String vcLastCommit;
+    private List<String> categories;
+    private boolean deleteAll = false;
 
 
 }

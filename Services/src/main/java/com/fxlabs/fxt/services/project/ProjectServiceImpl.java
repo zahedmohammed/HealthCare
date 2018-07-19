@@ -10,10 +10,7 @@ import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Account;
-import com.fxlabs.fxt.dto.project.GenPolicy;
-import com.fxlabs.fxt.dto.project.Project;
-import com.fxlabs.fxt.dto.project.ProjectImports;
-import com.fxlabs.fxt.dto.project.ProjectSaving;
+import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
@@ -247,7 +244,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
             // Create GaaS Task
             if (request.getAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
-                this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()));
+                this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()), null);
             }
 
         } catch (RuntimeException ex) {
@@ -351,7 +348,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.save(project, user);
 
         // Create GaaS Task
-        this.gaaSTaskRequestProcessor.process(converter.convertToEntity(project));
+        this.gaaSTaskRequestProcessor.process(converter.convertToEntity(project), null);
 
         return new Response<Project>();
     }
@@ -438,6 +435,37 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         saving.setSecurityCoverageCostSaving((long) saving.getAutoGenSecuritySuites() * suiteCodeHrs * suiteCodeCost);
 
         return new Response(saving);
+    }
+
+    @Override
+    public Response<Boolean> saveProjectSync(ProjectSync request, String org){
+
+        if (request == null || StringUtils.isEmpty(request.getProjectId())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for Sync Project "));
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(request.getProjectId(), org);
+        if (!optionalProject.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+
+        Project project = converter.convertToDto(optionalProject.get());
+        // check OpenAPISpec
+        if (project.getGenPolicy() != GenPolicy.Create || StringUtils.isEmpty(project.getOpenAPISpec())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "AutoCode option should be set to Create."));
+        }
+
+
+        // check account access
+        Response<Account> accountResponse = accountService.findById(project.getAccount().getId(), org);
+        if (accountResponse == null || accountResponse.isErrors()) {
+            return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+        }
+
+        // Create GaaS Task
+        this.gaaSTaskRequestProcessor.process(converter.convertToEntity(project), request);
+
+        return new Response<Boolean>(true);
     }
 
 
