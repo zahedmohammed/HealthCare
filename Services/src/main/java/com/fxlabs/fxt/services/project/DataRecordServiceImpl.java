@@ -73,6 +73,7 @@ public class DataRecordServiceImpl extends GenericServiceImpl<DataRecord, com.fx
         });
 
         ((DataRecordRepository) repository).deleteAll(dtos);
+        dataRecordESRepository.deleteAll(dtos);
 
         return new Response<String>("Deleted all Data Records for dataset " + datasetId);
 
