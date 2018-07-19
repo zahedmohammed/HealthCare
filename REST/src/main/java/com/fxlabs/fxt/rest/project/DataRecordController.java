@@ -62,5 +62,10 @@ public class DataRecordController {
         return service.delete(id, SecurityUtil.getCurrentAuditor());
     }
 
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/{dataset_id}/delete-all", method = RequestMethod.DELETE)
+    public Response<String> deleteAllByDataset(@PathVariable("dataset_id") String datasetId) {
+        return service.deleteAllByDataset(datasetId, SecurityUtil.getCurrentAuditor());
+    }
 
 }

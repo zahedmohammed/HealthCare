@@ -1,29 +1,21 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.DataRecordConverter;
-import com.fxlabs.fxt.converters.project.TestSuiteConverter;
 import com.fxlabs.fxt.dao.entity.project.DataRecord;
-import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.repository.es.DataRecordESRepository;
-import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.DataRecordRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
-import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.Project;
-import com.fxlabs.fxt.dto.project.TestSuiteType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
 /**
  * @author Mohammed Shoukath Ali
@@ -70,6 +62,21 @@ public class DataRecordServiceImpl extends GenericServiceImpl<DataRecord, com.fx
 
     }
 
+    @Override
+    public Response<String> deleteAllByDataset(String datasetId, String user) {
+
+        Stream<DataRecord> stream  = dataRecordESRepository.findByDataSet(datasetId);
+
+        List<DataRecord> dtos = new ArrayList<>();
+        stream.forEach(dataRecord -> {
+            dtos.add(dataRecord);
+        });
+
+        ((DataRecordRepository) repository).deleteAll(dtos);
+
+        return new Response<String>("Deleted all Data Records for dataset " + datasetId);
+
+    }
 
 
     @Override

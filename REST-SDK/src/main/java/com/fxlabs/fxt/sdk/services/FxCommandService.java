@@ -901,6 +901,7 @@ public class FxCommandService {
 
                     try {
                         dataSetResponse = dataSetRestRepository.save(dataSet);
+                        dataRecordRestRepository.deleteAllByDataset(dataSetResponse.getData().getId());
                     } catch (Exception e) {
                         logger.warn(e.getLocalizedMessage());
                         System.out.println(String.format("Failed loading [%s] with error [%s]", file.getName(), e.getLocalizedMessage()));
