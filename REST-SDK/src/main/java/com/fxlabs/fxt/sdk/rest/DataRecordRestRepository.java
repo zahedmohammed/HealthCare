@@ -25,14 +25,17 @@ public class DataRecordRestRepository extends GenericRestRespository<DataRecord>
         return CredUtils.url.get() + "/api/v1/data-records";
     }
 
-    public Response<String> deleteAllByDataset(String datasetId) {
+    public void deleteAllByDataset(String datasetId) {
 
-        HttpEntity<String> request = new HttpEntity<>(datasetId, this.getHeaders());
-        String url = getUrl();
+        try {
+            HttpEntity<String> request = new HttpEntity<>(datasetId, this.getHeaders());
+            String url = getUrl();
 
-        ResponseEntity<Response<String>> response = restTemplate.exchange(url + "/"+datasetId+"/delete-all", HttpMethod.DELETE, request, referenceList);
-
-        return response.getBody();
+            ResponseEntity<Response<String>> response = restTemplate.exchange(url + "/" + datasetId + "/delete-all", HttpMethod.DELETE, request, referenceList);
+        }catch(Exception ex){
+            logger.warn(ex.getLocalizedMessage());
+        }
+//        return response.getBody();
 
     }
 
