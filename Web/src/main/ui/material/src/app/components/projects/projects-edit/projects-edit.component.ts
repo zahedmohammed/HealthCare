@@ -13,6 +13,7 @@ import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from 
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 import {SnackbarService}from '../../../services/snackbar.service';
 import {SuitDailogComponent} from "../../dialogs/suit-dailog/suit-dailog.component";
+import { ProjectSync } from '../../../models/project-sync.model'; 
 
 @Component({
   selector: 'app-projects-edit',
@@ -29,6 +30,7 @@ export class ProjectsEditComponent implements OnInit {
   /*config;*/
   TestSuite;
   id;
+  projectSync: ProjectSync = new ProjectSync(); 
   suiteFile;
   suiteFileData;
   public AppConfig: any;
@@ -222,5 +224,19 @@ delete() {
             height:'80%',
             data: log
         });
+    }
+    projectSynchronization() {
+      this.showSpinner = true;
+      this.snackbarService.openSnackBar(this.project.name + " syncing...", "");
+      this.projectSync.projectId = this.project.id;
+      this.projectService.projectSync(this.projectSync).subscribe(results => {
+        this.handler.hideLoader();
+        if (this.handler.handle(results)) {
+          return;
+        }
+      }, error => {
+        this.handler.hideLoader();
+        this.handler.error(error);
+      });
     }
 }

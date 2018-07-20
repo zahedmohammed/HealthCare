@@ -182,10 +182,16 @@
 
                     <mat-tab label="Suites">
                         <section class="box box-transparent">
-                            <div class="box-body padding-xl">
+                            <div class="box-body padding-xl1">
                                 <div class="box box-transparent">
                                     <div class="box-body no-padding-h">
-
+                                        <div class="row">
+                                            <div class="col-lg-12 mb-2">
+                                                <button mat-raised-button color="primary" (click)="projectSynchronization();" class="btn-w-md float-right">
+                                                    <i class="material-icons">autorenew</i> &ngsp;AutoCode Sync
+                                                </button>
+                                            </div>
+                                        </div>
                                         <div class="box box-default table-box mdl-shadow--2dp">
                                             <table class="mdl-data-table table-striped">
                                                 <thead>

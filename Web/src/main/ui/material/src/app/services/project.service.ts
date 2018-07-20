@@ -5,7 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/toPromise';
 import { Project } from '../models/project.model';
-//import { ProjectSync } from '../models/project-sync.model';
+import { ProjectSync } from '../models/project-sync.model';
+
 
 @Injectable()
 export class ProjectService {
@@ -31,9 +32,7 @@ export class ProjectService {
     return this.http.post(this.serviceUrl, project);
   }
 
-// projectSync(projectsync: ProjectSync) {
- //   return this.http.post(this.serviceUrl + "/" +  project['id'] + "/project-sync", project);
-  //}
+
 
   update(project: Project) {
     return this.http.put(this.serviceUrl + "/" + project['id'], project);
@@ -59,5 +58,8 @@ export class ProjectService {
       return this.http.get(this.serviceUrl + "/" + id + "/files" + "/" + fileId);
   }
 
+  projectSync(projectsync: ProjectSync) {
+    return this.http.post(this.serviceUrl + "/" +  projectsync['id'] + "/project-sync", projectsync);
+  }
 
 }
