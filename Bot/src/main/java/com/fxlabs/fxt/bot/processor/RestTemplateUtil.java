@@ -274,7 +274,7 @@ public class RestTemplateUtil {
                 = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setHttpClient(httpClient);
 
-        int timeout = 10000;
+        int timeout = 15000;
         requestFactory.setConnectTimeout(timeout);
         requestFactory.setConnectionRequestTimeout(timeout);
         requestFactory.setReadTimeout(timeout);
