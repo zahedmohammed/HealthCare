@@ -18,6 +18,7 @@ import org.eclipse.jgit.transport.*;
 import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -27,6 +28,9 @@ import java.io.*;
 public class GitService implements VersionControlService {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Value(value = "${git.base.dir}")
+    private String gitBaseDir;
 
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
@@ -423,7 +427,7 @@ public class GitService implements VersionControlService {
         BufferedWriter bufferedWriter = null;
         File myFile = null;
         try {
-            myFile = new File("/opt/" + RandomStringUtils.randomAlphabetic(6));
+            myFile = new File(gitBaseDir + RandomStringUtils.randomAlphabetic(6));
             // check if file exist, otherwise create the file before writing
             if (!myFile.exists()) {
                 myFile.createNewFile();
