@@ -193,7 +193,7 @@ delete() {
                 return;
             }
             this.suiteFileData = results['data'];
-            var log =  this.suiteFileData.content;
+            var log =  this.suiteFileData;
             this.showDialog(log);
         }, error => {
             this.handler.hideLoader();

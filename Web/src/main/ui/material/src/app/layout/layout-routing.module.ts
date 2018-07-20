@@ -4,7 +4,8 @@ import { LayoutComponent } from './layout.component';
 
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
-import { JobslistComponent } from '../components/jobs-list/jobs-list.component';
+import { JobslistComponent } from '../components/jobs/jobs-list/jobs-list.component';
+import { JobDetailsComponent} from '../components/jobs/job-details/job-details.component';
 
 import { RunListComponent } from '../components/run-list/run-list.component';
 import { RunDetailComponent } from '../components/run-detail/run-detail.component';
@@ -97,6 +98,7 @@ const routes: Routes = [
       { path: 'projects/new', component: ProjectsNewComponent },
       { path: 'projects/:id', component: ProjectsEditComponent },
       { path: 'jobs', component: JobslistComponent },
+      { path: 'jobs/:id', component: JobDetailsComponent},
       { path: 'jobs/:jobId/runs', component: RunListComponent },
       { path: 'jobs/:jobId/runs/:runId', component: RunDetailComponent },
 

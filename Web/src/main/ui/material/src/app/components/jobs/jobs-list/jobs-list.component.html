@@ -26,7 +26,9 @@
                         </thead>
                         <tbody>
                         <tr *ngFor="let job of jobs">
-                            <td class="mdl-data-table__cell--non-numeric">{{job.project.name}}/{{job.name}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                <a href="javascript:;"
+                                   [routerLink]="['/app/jobs', job.id]">{{job.project.name}}/{{job.name}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.environment}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.issueTracker?.name}}</td>

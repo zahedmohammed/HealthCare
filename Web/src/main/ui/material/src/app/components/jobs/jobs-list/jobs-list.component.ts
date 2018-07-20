@@ -1,17 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
-import { JobsService } from '../../services/jobs.service';
-import { RunService } from '../../services/run.service';
-import { ProjectService } from '../../services/project.service';
-import { Base } from '../../models/base.model';
+import { JobsService } from '../../../services/jobs.service';
+import { RunService } from '../../../services/run.service';
+import { ProjectService } from '../../../services/project.service';
+import { Base } from '../../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
-import { Handler } from '../dialogs/handler/handler';
+import { Handler } from '../../dialogs/handler/handler';
 import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
-import { AdvRunComponent } from '../dialogs/adv-run/adv-run.component';
+import { AdvRunComponent } from '../../dialogs/adv-run/adv-run.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
-
 
 @Component({
   selector: 'app-jobs-list',

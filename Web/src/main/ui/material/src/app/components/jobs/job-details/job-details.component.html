@@ -1,0 +1,44 @@
+<section class="container with-maxwidth chapter">
+
+  <article class="article">
+    <h2 class="article-title">
+      <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>/{{jobs.name}}
+    </h2>
+    <div class="box box-default">
+      <div class="box-body">
+
+        <section class="bgfbox chapter page-terms">
+
+                <h4><i class="fa fa-clock-o"></i>&nbsp;Job</h4>
+                <p>Name : {{jobs.name}}</p>
+                <p>Cron : {{jobs.cron}}</p>
+                <p> <a href="javascript:;" [routerLink]="['/app/regions']"> Regions : {{jobs.regions}}</a></p>
+                <p>Tags : {{jobs.tags}}</p>
+        </section>
+        <hr>
+          <section class="bgfbox chapter page-terms">
+                <h4><i class="fa fa-envira"></i>&nbsp;Environment</h4>
+                <p>Name : {{jobs.environment}}</p>
+              <!--  <p>Url : {{jobs.baseUrl}}</p>
+                <p>Auths : {{jobs.auths}}</p>-->
+          </section>
+        <hr>
+            <section class="bgfbox chapter page-terms">
+                <h4><i class="fa fa-bug"></i>&nbsp;IssueTracker</h4>
+                <p>Name : {{jobs.issueTracker.name}}</p>
+                <p> <a href="javascript:;" [routerLink]="['/app/issues']">Url: {{jobs.issueTracker.url}}</a></p>
+                <p>Account : {{jobs.issueTracker.account}}</p>
+            </section>
+        <hr>
+        <section class="bgfbox chapter page-terms">
+                <h4><i class="fa fa-bell-o"></i>&nbsp;Notifications</h4>
+          <div  *ngFor="let job of jobs.notifications">
+                <p>Name : {{job.name}}</p>
+              <p> <a href="javascript:;" [routerLink]="['/app/notification-accounts']">Channel : {{job.channel}}</a></p>
+                <p>Account: {{job.account}}</p>
+            <hr>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article></section>

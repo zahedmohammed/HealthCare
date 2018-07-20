@@ -74,7 +74,8 @@ import {LayoutModule}from './layout/layout.module';
 import {SharedModule }from './shared/shared.module';
 // hmr
 //import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
-import {JobslistComponent}from './components/jobs-list/jobs-list.component';
+import {JobslistComponent} from "./components/jobs/jobs-list/jobs-list.component";
+import {JobDetailsComponent} from "./components/jobs/job-details/job-details.component";
 
 import {ProjectsListComponent}from './components/projects/projects-list/projects-list.component';
 import {ProjectsNewComponent}from './components/projects/projects-new/projects-new.component';
@@ -235,6 +236,7 @@ import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.c
     // Pages
     PageLayoutFullscreenComponent,
     JobslistComponent,
+    JobDetailsComponent,
     ProjectsListComponent,
     RegionsListComponent,
     RunListComponent,
