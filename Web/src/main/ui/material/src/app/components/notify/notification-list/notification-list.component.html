@@ -14,8 +14,8 @@
                 <h2 class="article-title1">
                     <button mat-button color="primary" class="btn-w-md pull-left"
                             [routerLink]="['/app/notification-accounts/new']">
-                        <mat-icon class="material-icons">add</mat-icon>
-                        NEW NOTIFICATION
+                        <i class="fa fa-plus"></i>
+                        Register Notification
                     </button>
                     <div class="divider divider-sm"></div>
                 </h2>
@@ -35,7 +35,7 @@
                         <tr *ngFor="let account of accounts">
                             <td class="mdl-data-table__cell--non-numeric bold">
                                 <a href="javascript:;"
-                                   [routerLink]="['/app/notification-accounts', account.id]">{{account.org.name}}/{{account.name}}</a>
+                                   [routerLink]="['/app/notification-accounts', account.id]">{{account.name}}</a>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric bold">{{account.account.accountType}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{account.channel}}</td>

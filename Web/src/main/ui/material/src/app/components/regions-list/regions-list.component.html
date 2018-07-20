@@ -16,8 +16,8 @@
                 <h2 class="article-title1">
                     <!--[routerLink]="['/app/regions/new']" -->
                     <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/regions/new']">
-                        <mat-icon class="material-icons">add</mat-icon>
-                        DEPLOY BOTS
+                        <i class="fa fa-plus"></i>
+                        Launch Bots
                     </button>
                     <span class="space"></span>
                     <button mat-raised-button color="warn" class="btn-w-md"
@@ -43,7 +43,7 @@
                         <tr *ngFor="let item of list">
                             <td class="mdl-data-table__cell--non-numeric">
                                 <a href="javascript:;"
-                                   [routerLink]="['/app/regions', item.id]">{{item.org.name}}/{{item.name}}</a></td>
+                                   [routerLink]="['/app/regions', item.id]">{{item.name}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="item.manual">{{item.region}}</td>
                             <td class="mdl-data-table__cell--non-numeric" [hidden]="!item.manual">Registered</td>
                             <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'shortDate'}}</td>

@@ -14,8 +14,8 @@
                 <h2 class="article-title1">
                     <button mat-button color="primary" class="btn-w-md pull-left"
                             [routerLink]="['/app/vault/new']">
-                        <mat-icon class="material-icons">add</mat-icon>
-                        NEW SECRET
+                        <i class="fa fa-plus"></i>
+                        Create Secret
                     </button>
                     <div class="divider divider-sm"></div>
                 </h2>
@@ -32,7 +32,7 @@
                         <tr *ngFor="let key of keys">
                             <td class="mdl-data-table__cell--non-numeric bold">
                                 <a href="javascript:;"
-                                   [routerLink]="['/app/vault', key.id]">{{key.org.name}}/{{key.key}}</a></td>
+                                   [routerLink]="['/app/vault', key.id]">{{key.key}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric">{{key.createdDate | date:'shortDate'}}</td>
 
                         </tr>
