@@ -450,10 +450,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         Project project = converter.convertToDto(optionalProject.get());
-        // check OpenAPISpec
-        if (project.getGenPolicy() != GenPolicy.Create || StringUtils.isEmpty(project.getOpenAPISpec())) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "AutoCode option should be set to Create."));
-        }
+//        // check OpenAPISpec
+//        if (project.getGenPolicy() != GenPolicy.Create || StringUtils.isEmpty(project.getOpenAPISpec())) {
+//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "AutoCode option should be set to Create."));
+//        }
 
 
         // check account access
