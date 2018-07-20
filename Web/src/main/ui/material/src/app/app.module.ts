@@ -161,6 +161,7 @@ import {RunHistoryComponent}from './components/analytics/run-history/run-history
 import {SuperbotnetworkListComponent}from './components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component';
 import {DeleteDialogComponent}from './components/dialogs/delete-dialog/delete-dialog.component';
 import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.component';
+import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-sync.component';
 
 @NgModule({
   imports: [
@@ -302,11 +303,12 @@ import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.c
     RunHistoryComponent,
     SuperbotnetworkListComponent,
     DeleteDialogComponent,
-    SuitDailogComponent
+    SuitDailogComponent,
+    ProjectsSyncComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
-  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent, SuitDailogComponent]
+  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent, SuitDailogComponent, ProjectsSyncComponent]
 })
 
 export class AppModule {

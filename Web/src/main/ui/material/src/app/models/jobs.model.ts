@@ -1,5 +1,6 @@
 export class Jobs {
     name: string;
+    cron: string;
     environment: string;
     tags: string;
     regions: string;
