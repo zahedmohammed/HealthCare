@@ -6,6 +6,7 @@ import com.fxlabs.fxt.vc.git.skill.services.VersionControlService;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.*;
@@ -22,7 +23,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 @Component
 public class GitService implements VersionControlService {
@@ -158,9 +160,8 @@ public class GitService implements VersionControlService {
 
     private Repository createRepository(String url, String username, String password, String branch, String path) {
 
-        File  privateKey = createFile(password);
-
         Repository repository = null;
+        File privateKey = null;
         try {
 
             CloneCommand cloneCommand = Git.cloneRepository()
@@ -171,23 +172,8 @@ public class GitService implements VersionControlService {
                 cloneCommand.setBranch(branch);
             }
 
-            if (StringUtils.isNotEmpty(username) && StringUtils.isNoneEmpty(password)) {
-                cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-            }
+            privateKey = setAuth(username, password, cloneCommand);
 
-            // ssh public/private key auth
-            if (StringUtils.isEmpty(username) && StringUtils.isNoneEmpty(password)) {
-
-
-                cloneCommand.setTransportConfigCallback(new TransportConfigCallback() {
-
-                    @Override
-                    public void configure(Transport transport) {
-                        SshTransport sshTransport = (SshTransport) transport;
-                        sshTransport.setSshSessionFactory(getSshSessionFactory(privateKey));
-                    }
-                });
-            }
 
             Git git = cloneCommand.call();
 
@@ -199,10 +185,8 @@ public class GitService implements VersionControlService {
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
-        }finally {
-            if (privateKey != null) {
-                deletePrivateKey(privateKey);
-            }
+        } finally {
+            deletePrivateKey(privateKey);
         }
 
         return repository;
@@ -223,23 +207,12 @@ public class GitService implements VersionControlService {
 
     private boolean pull(Repository repository, String username, String password) {
 
-        File  privateKey = createFile(password);
+        File privateKey = null;
         try {
             PullCommand pullCommand = new Git(repository).pull();
-            if (StringUtils.isNotEmpty(username)) {
-                pullCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-            }
 
-            // ssh public/private key auth
-            if (StringUtils.isEmpty(username) && StringUtils.isNoneEmpty(password)) {
-                pullCommand.setTransportConfigCallback(new TransportConfigCallback() {
-                    @Override
-                    public void configure(Transport transport) {
-                        SshTransport sshTransport = (SshTransport) transport;
-                        sshTransport.setSshSessionFactory(getSshSessionFactory(privateKey));
-                    }
-                });
-            }
+            privateKey = setAuth(username, password, pullCommand);
+
             return pullCommand.call().isSuccessful();
         } catch (GitAPIException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -274,14 +247,14 @@ public class GitService implements VersionControlService {
     @Override
     public String push(String path, String username, String password) {
 
-        File  privateKey = createFile(password);
+        File privateKey = null;
         try {
 
             taskLogger.get().append("Pushing changes").append("\n");
             logger.info("Pushing changes");
             Git git = Git.open(new File(path));
 
-            if(!isUnStagedFiles(git)) {
+            if (!isUnStagedFiles(git)) {
                 taskLogger.get().append("No un-staged files found.").append("\n");
                 logger.info("No un-staged files found.");
                 return "No un-staged files found.";
@@ -292,21 +265,8 @@ public class GitService implements VersionControlService {
             addAndCommit(git, "Fx Bot commit", ".");
 
             PushCommand pushCommand = git.push();
-            if (StringUtils.isNotEmpty(username)) {
-                pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-            }
 
-            // ssh public/private key auth
-            if (StringUtils.isEmpty(username) && StringUtils.isNoneEmpty(password)) {
-
-                pushCommand.setTransportConfigCallback(new TransportConfigCallback() {
-                    @Override
-                    public void configure(Transport transport) {
-                        SshTransport sshTransport = (SshTransport) transport;
-                        sshTransport.setSshSessionFactory(getSshSessionFactory(privateKey));
-                    }
-                });
-            }
+            privateKey = setAuth(username, password, pushCommand);
 
             pushCommand.call();
             taskLogger.get().append("Push successful!").append("\n");
@@ -318,7 +278,7 @@ public class GitService implements VersionControlService {
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
-        }finally {
+        } finally {
             deletePrivateKey(privateKey);
         }
 
@@ -399,17 +359,18 @@ public class GitService implements VersionControlService {
         return null;
     }
 
-    private  SshSessionFactory getSshSessionFactory(File file) {
+    private SshSessionFactory getSshSessionFactory(File file) {
         SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
             @Override
-            protected JSch createDefaultJSch(FS fs ) throws JSchException {
-                JSch defaultJSch = super.createDefaultJSch( fs );
-                defaultJSch.addIdentity(file.getAbsolutePath() );
+            protected JSch createDefaultJSch(FS fs) throws JSchException {
+                JSch defaultJSch = super.createDefaultJSch(fs);
+                defaultJSch.addIdentity(file.getAbsolutePath());
                 return defaultJSch;
             }
+
             @Override
-            protected void configure(OpenSshConfig.Host host, Session session ) {
-               // session.setPassword( password );
+            protected void configure(OpenSshConfig.Host host, Session session) {
+                // session.setPassword( password );
                 java.util.Properties config = new java.util.Properties();
                 config.put("StrictHostKeyChecking", "no");
                 session.setConfig(config);
@@ -420,32 +381,20 @@ public class GitService implements VersionControlService {
 
     private File createFile(String password) {
 
-        if (StringUtils.isEmpty(password)){
+        if (StringUtils.isEmpty(password)) {
             return null;
         }
-
-        BufferedWriter bufferedWriter = null;
         File myFile = null;
         try {
-            myFile = new File(gitBaseDir + RandomStringUtils.randomAlphabetic(6));
+            myFile = FileUtils.getFile(this.gitBaseDir, RandomStringUtils.randomAlphabetic(6));
             // check if file exist, otherwise create the file before writing
             if (!myFile.exists()) {
                 myFile.createNewFile();
             }
-            Writer writer = new FileWriter(myFile);
-            bufferedWriter = new BufferedWriter(writer);
-            if (bufferedWriter != null) {
-                bufferedWriter.write(password);
-            }
+            FileUtils.writeStringToFile(myFile, password, "UTF-8");
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (bufferedWriter != null) bufferedWriter.close();
-            } catch (Exception ex) {
-
-            }
         }
         return myFile;
     }
@@ -459,5 +408,26 @@ public class GitService implements VersionControlService {
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
         }
         return false;
+    }
+
+    private File setAuth(String username, String password, TransportCommand cloneCommand) {
+        // ssh public/private key auth
+        File privateKey = null;
+        if (StringUtils.startsWith(password, "-----BEGIN RSA PRIVATE KEY-----")) {
+            privateKey = createFile(password);
+            final File privateKey_ = privateKey;
+            cloneCommand.setTransportConfigCallback(new TransportConfigCallback() {
+                @Override
+                public void configure(Transport transport) {
+                    SshTransport sshTransport = (SshTransport) transport;
+                    sshTransport.setSshSessionFactory(getSshSessionFactory(privateKey_));
+                }
+            });
+
+        } else if (StringUtils.isNotEmpty(username) && StringUtils.isNoneEmpty(password)) {
+            cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+        }
+
+        return privateKey;
     }
 }

@@ -1,6 +1,5 @@
 package com.fxlabs.fxt.sdk.services;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.dto.base.Message;
@@ -10,14 +9,12 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.*;
 import com.fxlabs.fxt.dto.users.OrgUsers;
-import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.sdk.beans.Config;
 import com.fxlabs.fxt.sdk.rest.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -221,16 +218,17 @@ public class FxCommandService {
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
-            // ObjectMapper jasonMapper = new ObjectMapper();
-
             System.out.println("loading Fxfile.yaml...");
+
             CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", "Loading");
+
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
+
             File fxfile = FileUtils.getFile(new File(projectDir), "Fxfile.yaml");
 
-            if (fxfile == null) {
+            if (fxfile == null || !fxfile.exists()) {
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.RED,
                                 String.format("Invalid project dir %s. Fxfile.yaml not found.", projectDir)
@@ -239,7 +237,7 @@ public class FxCommandService {
                 return null;
             }
 
-            //new File(projectDir + "Fxfile.yml")
+            // TODO: load Fxfile.yaml
             Config config = yamlMapper.readValue(fxfile, Config.class);
 
             //System.out.println(config);
@@ -314,8 +312,6 @@ public class FxCommandService {
                     CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project name [%s] id [%s] updated", projectResponse.getData().getName(), projectResponse.getData().getId()));
                 }
             }
-
-            // create dataset
 
             loadSuites(projectDir, yamlMapper, project.getId(), projectFiles);
 
@@ -689,8 +685,8 @@ public class FxCommandService {
     private void getNotification(com.fxlabs.fxt.sdk.beans.Job jobProfile, Job job) {
         List<com.fxlabs.fxt.sdk.beans.JobNotification> projectNotifications = jobProfile.getNotifications();
         if (!CollectionUtils.isEmpty(projectNotifications)) {
-            List<com.fxlabs.fxt.dto.project.JobNotification> listNotification= new ArrayList<>();
-            for (com.fxlabs.fxt.sdk.beans.JobNotification jn : projectNotifications){
+            List<com.fxlabs.fxt.dto.project.JobNotification> listNotification = new ArrayList<>();
+            for (com.fxlabs.fxt.sdk.beans.JobNotification jn : projectNotifications) {
                 com.fxlabs.fxt.dto.project.JobNotification jn_ = new JobNotification();
                 jn_.setAccount(jn.getAccount());
                 jn_.setChannel(jn.getChannel());
@@ -720,7 +716,15 @@ public class FxCommandService {
         CredUtils.taskLogger.get().append(BotLogger.LogType.WARN, "Duplicate", "Note: All files need to have unique file name irrespective of the folder they are in.");
 
 
-        File dataFolder = new File(projectDir + "test-suites");
+        File dataFolder = FileUtils.getFile(projectDir);
+        if (dataFolder == null || !dataFolder.exists()) {
+            System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                    String.format("\nNo suites found in : [%s]", dataFolder.getAbsolutePath()),
+                    AnsiColor.DEFAULT));
+            logger.info("No suites found in : [%s]", dataFolder.getAbsolutePath());
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", String.format("No suites found in : [%s]", dataFolder.getAbsolutePath()));
+            return;
+        }
         Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"yaml"}, true);
 
         // TODO - If duplicate file names reject processing with error.
@@ -835,7 +839,15 @@ public class FxCommandService {
         CredUtils.taskLogger.get().append(BotLogger.LogType.WARN, "Duplicate", "Note: All files need to have unique file name irrespective of the folder they are in.");
 
 
-        File dataFolder = new File(projectDir + "test-suites");
+        File dataFolder = FileUtils.getFile(projectDir, "test-suites");
+        if (dataFolder == null || !dataFolder.exists()) {
+            System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
+                    String.format("\nNo data-records found in : [%s]", dataFolder.getAbsolutePath()),
+                    AnsiColor.DEFAULT));
+            logger.info("No data-records found in : [%s]", dataFolder.getAbsolutePath());
+            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", String.format("No data-records found in : [%s]", dataFolder.getAbsolutePath()));
+            return;
+        }
         Collection<File> files = FileUtils.listFiles(dataFolder, new String[]{"json"}, true);
 
         // TODO - If duplicate file names reject processing with error.
@@ -911,14 +923,13 @@ public class FxCommandService {
                     DataSet dataSet1 = dataSetResponse.getData();
 
                     //dataSet = jsonMapper.readValue(file, DataSet.class);
-                    Iterator<String> itr =  null;
+                    Iterator<String> itr = null;
                     try {
                         String[] strArr = {};
                         strArr = jsonMapper.readValue(file, String[].class);
                         List<String> listArr = Arrays.asList(strArr);
                         itr = listArr.iterator();
-                    }
-                    catch (Exception ex){
+                    } catch (Exception ex) {
                         logger.warn(ex.getLocalizedMessage());
 //                        JsonNode rootNode = jsonMapper.readTree(file);
 //                        if (rootNode.isArray()) {

@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,44 @@ public class StubGenerator {
     private AutoCodeConfigUtil autoCodeConfigUtil;
 
     private static final String DEFAULT_OPENAPISPEC_FILE = "OpenAPISpec.yaml";
+    private static final String AUTO_CODE_CONFIG_FILE = "AutoCodeConfig.yaml";
+    private static final String AUTO_CODE_CONFIG_FILE_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Sample/master/AutoCodeConfig.yaml";
+    private static final String FX_FILE = "Fxfile.yaml";
+    private static final String FX_FILE_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Sample/master/Fxfile.yaml";
+
+
+    /**
+     * Checks FXfile.yaml and AutoCodeConfig exists if not creates one.
+     * @param projectDir
+     */
+    public void setupFXConfig(String projectDir) {
+        try {
+            File fxfile = FileUtils.getFile(new File(projectDir), FX_FILE);
+            if (fxfile == null || !fxfile.exists()) {
+                try {
+                    FileUtils.copyURLToFile(new URL(FX_FILE_URL), fxfile);
+                    System.out.println(String.format("%s created successfully...", FX_FILE));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+
+            File autoCodeConfig = FileUtils.getFile(new File(projectDir), AUTO_CODE_CONFIG_FILE);
+            if (autoCodeConfig == null || !autoCodeConfig.exists()) {
+                try {
+                    FileUtils.copyURLToFile(new URL(AUTO_CODE_CONFIG_FILE_URL), autoCodeConfig);
+                    System.out.println(String.format("%s created successfully...", AUTO_CODE_CONFIG_FILE));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public int generate(String projectDir, String openAPISpec, String headerKey, String headerVal) {
 

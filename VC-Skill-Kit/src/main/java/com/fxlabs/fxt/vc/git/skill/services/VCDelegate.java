@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,28 +66,35 @@ public class VCDelegate {
             response.setProjectId(task.getProjectId());
             response.setProjectName(task.getProjectName());
 
-           // 2.1. AutoCode -> delete([] categories)
-           // 2.1. AutoCode -> delete([] categories)
-           // 2.2. AutoCode -> run()
-            customizedFileDeletion(task, path);
-
-            if (response.isSuccess() && !StringUtils.equals(response.getVcLastCommit(), task.getVcLastCommit())) {
+            if (response.isSuccess()) {
+                CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
+                // 1.2 Setup Fxfile.yaml & AutoCodeConfig.yaml
+                stubGenerator.setupFXConfig(path);
+                // 2.1. AutoCode -> delete([] categories)
+                // 2.1. AutoCode -> delete([] categories)
+                // 2.2. AutoCode -> run()
+                customizedFileDeletion(task, path);
 
                 if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
                     // TODO Generate tests
                     try {
                         // 2/4. Auto-Code
-                        CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
                         String openAPISpec = task.getOpenAPISpec();
                         int count = stubGenerator.generate(path, openAPISpec, null, null);
                         response.setAutoGenSuitesCount(count);
-                        // 3/4. Push to VC
-                        gitPushLogs = versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
                     } catch (Exception e) {
                         logger.warn(e.getLocalizedMessage(), e);
                         gitPushLogs = e.getLocalizedMessage();
                         //CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, "Push", e.getLocalizedMessage());
                     }
+                }
+
+                // 3/4. Push to VC
+                try {
+                    gitPushLogs = versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
+                } catch (Exception e) {
+                    logger.warn(e.getLocalizedMessage(), e);
+                    gitPushLogs = e.getLocalizedMessage();
                 }
 
                 CredUtils.taskLogger.set(new BotLogger());
@@ -151,10 +157,10 @@ public class VCDelegate {
     }
 
 
-    private void finder( String category, List<File> files, String path){
+    private void finder(String category, List<File> files, String path) {
         File dir = new File(path + "/test-suites/AutoCode");
 
-         List<File> list = new ArrayList<>();
+        List<File> list = new ArrayList<>();
         if (dir.exists() && dir.isDirectory()) {
             listfiles(dir, list);
             for (File fileName : list) {

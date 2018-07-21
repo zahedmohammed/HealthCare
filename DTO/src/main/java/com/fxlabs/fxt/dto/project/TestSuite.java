@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.dto.project;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TestSuite extends BaseDto<String> {
 
     private ProjectMinimalDto project;
