@@ -2,14 +2,18 @@ package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.TestSuiteConverter;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import com.fxlabs.fxt.dao.repository.es.ProjectFileESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,19 +35,22 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
     private TestSuiteESRepository testSuiteESRepository;
     private ProjectFileService projectFileService;
+    private ProjectFileESRepository projectFileESRepository;
     private ProjectService projectService;
     private ProjectRepository projectRepository;
     private TestSuiteRepository repository;
 
     @Autowired
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository,
-                                ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository) {
+                                ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository,
+                                ProjectFileESRepository projectFileESRepository) {
         super(repository, converter);
         this.repository = repository;
         this.testSuiteESRepository = testSuiteESRepository;
         this.projectFileService = projectFileService;
         this.projectService = projectService;
         this.projectRepository = projectRepository;
+        this.projectFileESRepository = projectFileESRepository;
     }
 
     @Override
@@ -93,6 +100,32 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 
+    }
+
+    @Override
+    public void testSuitesDelete(TestSuitesDeletedDto dto, String user) {
+
+        dto.getDeletedFileNames().stream().forEach(df -> {
+            Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(dto.getProjectId(), FilenameUtils.removeExtension(df));
+
+            TestSuite entity = null;
+            if (testSuiteOptional.isPresent()) {
+                entity = testSuiteOptional.get();
+            }
+
+            if (entity != null) {
+                repository.delete(entity);
+                testSuiteESRepository.delete(entity);
+                Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileResponse = this.projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(dto.getProjectId(), df);
+
+                if (projectFileResponse.isPresent()){
+                    this.projectFileService.delete(projectFileResponse.get().getId(), projectFileResponse.get().getCreatedBy());
+                    projectFileESRepository.delete(projectFileResponse.get());
+                }
+
+            }
+
+        });
     }
 
     @Override

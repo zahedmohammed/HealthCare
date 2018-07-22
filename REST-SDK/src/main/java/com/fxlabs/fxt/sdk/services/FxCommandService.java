@@ -2,10 +2,7 @@ package com.fxlabs.fxt.sdk.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fxlabs.fxt.dto.base.Message;
-import com.fxlabs.fxt.dto.base.NameDto;
-import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
-import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.run.*;
 import com.fxlabs.fxt.dto.users.OrgUsers;
@@ -814,6 +811,21 @@ public class FxCommandService {
                 logger.warn(e.getLocalizedMessage(), e);
             }
         });
+        Set<String> deletedFiles = getDeletedFiles(projectFiles, files);
+
+        if (!CollectionUtils.isEmpty(deletedFiles)) {
+            TestSuitesDeletedDto deletedProjectFilesDto = new TestSuitesDeletedDto();
+            deletedProjectFilesDto.setDeletedFileNames(deletedFiles);
+            deletedProjectFilesDto.setProjectId(projectId);
+            try {
+                testSuiteRestRepository.deleteTestSuitesByProject(deletedProjectFilesDto);
+            } catch (Exception e) {
+                logger.warn(e.getLocalizedMessage());
+                System.out.println(String.format("Failed deleting for projectId [%s] with error [%s]", projectId, e.getLocalizedMessage()));
+                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, projectId, String.format("Failed delting files from projectId [%s] with error [%s]", projectId, e.getLocalizedMessage()));
+                CredUtils.errors.set(Boolean.TRUE);
+            }
+        }
 
         System.out.println(AnsiOutput.toString(AnsiColor.BRIGHT_WHITE,
                 String.format("\nTotal Suites Loaded: [%s]", totalFiles),
@@ -1010,6 +1022,31 @@ public class FxCommandService {
         }
         return false;
     }
+
+    private Set<String> getDeletedFiles(List<ProjectFile> projectFiles, Collection<File> files) {
+
+        Set<String> fileNamesSet = new HashSet<>();
+        Set<String> fileNamesSetDeleted = new HashSet<>();
+
+        files.stream().forEach(file -> {
+            fileNamesSet.add(file.getName());
+        });
+
+        if (projectFiles != null && !CollectionUtils.isEmpty(projectFiles)) {
+
+            projectFiles.stream().forEach(pf -> {
+                if (!fileNamesSet.contains(pf.getFilename())) {
+
+                    fileNamesSetDeleted.add(pf.getFilename());
+                }
+            });
+
+        }
+
+        return fileNamesSetDeleted;
+    }
+
+
 
     private List<ProjectFile> getProjectChecksums(String projectId) {
         System.out.println("in getProjectChecksums");

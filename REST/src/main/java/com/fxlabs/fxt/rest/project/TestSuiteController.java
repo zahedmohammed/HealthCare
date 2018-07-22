@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.rest.project;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
 import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.TestSuiteService;
@@ -56,6 +57,13 @@ public class TestSuiteController {
     public Response<List<TestSuite>> create(@Valid @RequestBody List<TestSuite> dtos) {
         return service.save(dtos, SecurityUtil.getCurrentAuditor());
     }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/deletedtestsuites", method = RequestMethod.PUT)
+    public void deleteTestSuite(@Valid @RequestBody TestSuitesDeletedDto dtos) {
+        service.testSuitesDelete(dtos, SecurityUtil.getCurrentAuditor());
+    }
+
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)

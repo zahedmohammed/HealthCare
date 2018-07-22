@@ -128,6 +128,17 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
         return projectFileResponse;
     }
 
+    public Response<ProjectFile> findByProjectIdAndFilename(String projectId, String fileName){
+
+        Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileOptional = projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(projectId, fileName);
+        com.fxlabs.fxt.dao.entity.project.ProjectFile projectFile = null;
+        if (projectFileOptional.isPresent()) {
+            projectFile = projectFileOptional.get();
+            return new Response<>(converter.convertToDto(projectFile));
+        }
+        return null;
+    }
+
     @Override
     public void isUserEntitled(String s, String user) {
         // TODO

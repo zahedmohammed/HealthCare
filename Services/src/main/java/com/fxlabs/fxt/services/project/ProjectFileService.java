@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 public interface ProjectFileService extends GenericService<ProjectFile, String> {
 
@@ -21,6 +22,8 @@ public interface ProjectFileService extends GenericService<ProjectFile, String> 
     public Response<ProjectFile> saveFromDataSet(DataSet dto, String projectId);
 
     public Response<List<ProjectFile>> findByProjectId(String projectId, String user, org.springframework.data.domain.Pageable pageable);
+
+    public Response<ProjectFile> findByProjectIdAndFilename(String projectId, String fileName);
 
     public Response<List<ProjectFile>> findAllFilesByProjectId(String projectId, String user);
 }
