@@ -3,7 +3,7 @@ export class Jobs {
     cron: string;
     description: string;
     environment: string;
-    tags string[] = [];
+    tags: string[] = [];
     regions: string;
     issueTracker: Dto = new Dto();
     notifications: Noti[]=[];
