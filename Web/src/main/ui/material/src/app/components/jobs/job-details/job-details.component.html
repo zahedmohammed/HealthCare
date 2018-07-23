@@ -12,7 +12,7 @@
                 <h4><i class="fa fa-clock-o"></i>&nbsp;Job</h4>
                 <p>Name : {{jobs.name}}</p>
                 <p>Cron : {{jobs.cron}}</p>
-                <p> <a href="javascript:;" [routerLink]="['/app/regions']"> Regions : {{jobs.regions}}</a></p>
+                <p>Regions : <a href="javascript:;" [routerLink]="['/app/regions']">{{jobs.regions}}</a></p>
                 <p>Tags : {{jobs.tags}}</p>
         </section>
         <hr>
@@ -34,7 +34,7 @@
                 <h4><i class="fa fa-bell-o"></i>&nbsp;Notifications</h4>
           <div  *ngFor="let job of jobs.notifications">
                 <p>Name : {{job.name}}</p>
-              <p> <a href="javascript:;" [routerLink]="['/app/notification-accounts']">Channel : {{job.channel}}</a></p>
+              <p>Channel : <a href="javascript:;" [routerLink]="['/app/notification-accounts']"> {{job.channel}}</a></p>
                 <p>Account: {{job.account}}</p>
             <hr>
           </div>
