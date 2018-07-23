@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
-import { JobService } from '../../../services/jobs.service';
+import { JobsService } from '../../../services/jobs.service';
 import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../models/account.model';
 import { Project } from '../../../models/project.model';
-import { ProjectJob } from '../../../models/project-job.model';
+import { Job } from '../../../models/project-job.model';
 import { OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
@@ -17,18 +17,18 @@ import {SnackbarService}from '../../../services/snackbar.service';
   selector: 'app-projects-new',
   templateUrl: './projects-new.component.html',
   styleUrls: ['./projects-new.component.scss'],
-  providers: [ProjectService, OrgService, SnackbarService, JobService]
+  providers: [ProjectService, OrgService, SnackbarService, JobsService]
 })
 export class ProjectsNewComponent implements OnInit {
 
   showSpinner: boolean = false;
   project: Project = new Project();
-  projectJob: ProjectJob = new ProjectJob();
+  job: Job = new Job();
   orgs;
   accounts;
   /*config;*/
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService, private jobService: JobService,
+  constructor(private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
             private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar, private snackbarService: SnackbarService) {
     //this.project.genPolicy = "None";
   }
@@ -61,8 +61,8 @@ export class ProjectsNewComponent implements OnInit {
 
   createJob() {
     this.handler.activateLoader();
-      this.snackbarService.openSnackBar( this.projectJob.name + " creating...", "");
-      this.projectService.create(this.projectJob).subscribe(results => {
+      this.snackbarService.openSnackBar( this.job.name + " creating...", "");
+      this.jobsService.createJob(this.job).subscribe(results => {
         this.handler.hideLoader();
         if (this.handler.handle(results)) {
             return;

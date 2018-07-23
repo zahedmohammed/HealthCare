@@ -1,4 +1,4 @@
-export class Jobs {
+export class Job {
     name: string;
     cron: string;
     description: string;
