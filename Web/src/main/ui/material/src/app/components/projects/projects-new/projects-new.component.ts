@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
+import { JobService } from '../../../services/jobs.service';
 import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../models/account.model';
 import { Project } from '../../../models/project.model';
+import { ProjectJob } from '../../../models/project-job.model';
 import { OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
@@ -15,17 +17,19 @@ import {SnackbarService}from '../../../services/snackbar.service';
   selector: 'app-projects-new',
   templateUrl: './projects-new.component.html',
   styleUrls: ['./projects-new.component.scss'],
-  providers: [ProjectService, OrgService, SnackbarService]
+  providers: [ProjectService, OrgService, SnackbarService, JobService]
 })
 export class ProjectsNewComponent implements OnInit {
 
   showSpinner: boolean = false;
   project: Project = new Project();
+  projectJob: ProjectJob = new ProjectJob();
   orgs;
   accounts;
   /*config;*/
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar, private snackbarService: SnackbarService) {
+  constructor(private projectService: ProjectService, private accountService: AccountService, private jobService: JobService,
+            private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, public snackBar: MatSnackBar, private snackbarService: SnackbarService) {
     //this.project.genPolicy = "None";
   }
 
@@ -53,7 +57,26 @@ export class ProjectsNewComponent implements OnInit {
         this.handler.hideLoader();
         this.handler.error(error);
     });
-}
+  }
+
+  createJob() {
+    this.handler.activateLoader();
+      this.snackbarService.openSnackBar( this.projectJob.name + " creating...", "");
+      this.projectService.create(this.projectJob).subscribe(results => {
+        this.handler.hideLoader();
+        if (this.handler.handle(results)) {
+            return;
+        }
+       /* this.config.verticalPosition = 'top';
+        this.config.horizontalPosition = 'right';
+        this.config.duration = 3000;*/
+        this.snackbarService.openSnackBar(this.project.name + " created successfully", "");
+        this.router.navigate(['/app/projects']);
+    }, error => {
+        this.handler.hideLoader();
+        this.handler.error(error);
+    });
+  }
 
   getOrgs() {
     this.handler.activateLoader();

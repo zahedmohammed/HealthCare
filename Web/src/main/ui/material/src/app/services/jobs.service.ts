@@ -4,6 +4,7 @@ import { Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/toPromise';
+import { Job } from '../models/project-job.model';
 
 @Injectable()
 export class JobsService {
@@ -35,6 +36,10 @@ export class JobsService {
 
   getCountTests() {
     return this.http.get(this.serviceUrl + "/count-tests" );
+  }
+
+ createJob(obj: Job) {
+    return this.http.post(this.serviceUrl, obj);
   }
 
 }

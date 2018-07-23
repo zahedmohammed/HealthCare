@@ -105,6 +105,10 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     @Override
     public void testSuitesDelete(TestSuitesDeletedDto dto, String user) {
 
+        if (dto == null || StringUtils.isEmpty(dto.getProjectId())) {
+            throw new FxException("Invalid request for file's synchronization");
+        }
+
         dto.getDeletedFileNames().stream().forEach(df -> {
             Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(dto.getProjectId(), FilenameUtils.removeExtension(df));
 
@@ -112,7 +116,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             if (testSuiteOptional.isPresent()) {
                 entity = testSuiteOptional.get();
             }
-
+            logger.info("Deleting file [{}] from ProjectId [{}]", df, dto.getProjectId());
             if (entity != null) {
                 repository.delete(entity);
                 testSuiteESRepository.delete(entity);
