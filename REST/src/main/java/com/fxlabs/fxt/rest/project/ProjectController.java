@@ -129,7 +129,7 @@ public class ProjectController {
 
     @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/{projectId}/autocodeconfig", method = RequestMethod.POST)
-    public Response<AutoCodeConfig> f(@PathVariable("projectId") String projectId, @RequestBody AutoCodeConfig request) {
+    public Response<AutoCodeConfig> autoCodeConfigSave(@PathVariable("projectId") String projectId, @RequestBody AutoCodeConfig request) {
         return projectService.saveAutoCode(projectId, request, SecurityUtil.getOrgId());
     }
 
