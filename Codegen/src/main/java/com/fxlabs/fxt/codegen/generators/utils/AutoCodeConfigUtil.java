@@ -4,6 +4,7 @@ import com.fxlabs.fxt.codegen.code.AutoCodeConfig;
 import com.fxlabs.fxt.codegen.code.Database;
 import com.fxlabs.fxt.codegen.code.Match;
 import com.fxlabs.fxt.codegen.code.TestSuite;
+import com.fxlabs.fxt.dto.project.RequestMapping;
 import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import io.swagger.models.HttpMethod;
@@ -114,7 +115,6 @@ public class AutoCodeConfigUtil {
     // ################## TestSuite ######################
     // type filter
     public TestSuite get(String type) {
-
         if (this.config.getTestSuites() == null || CollectionUtils.isEmpty(this.config.getTestSuites())) {
             return null;
         }
@@ -280,7 +280,8 @@ public class AutoCodeConfigUtil {
     // PropertyMapping
 
     public String getPropertyMapping(String node, String property) {
-        if (this.config.getPropertyMapping() == null) {
+
+        if (this.config == null || this.config.getPropertyMapping() == null) {
             return null;
         }
 
@@ -294,6 +295,22 @@ public class AutoCodeConfigUtil {
 
         if (this.config.getPropertyMapping().containsKey(property)) {
             return this.config.getPropertyMapping().get(property);
+        }
+
+        return null;
+    }
+
+
+    public RequestMapping getRequestMapping(String endPoint, String method){
+
+        if (this.config == null || this.config.getRequestMappings() == null) {
+            return null;
+        }
+
+        for (RequestMapping mapping : config.getRequestMappings()){
+            if (StringUtils.equals(mapping.getEndPoint(), endPoint) && StringUtils.equals(mapping.getMethod(), method)) {
+                return mapping;
+            }
         }
 
         return null;

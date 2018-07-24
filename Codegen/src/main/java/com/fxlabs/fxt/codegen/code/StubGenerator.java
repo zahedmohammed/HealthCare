@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
+import com.fxlabs.fxt.dto.project.RequestMapping;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import io.swagger.models.*;
 import io.swagger.models.auth.AuthorizationValue;
+import io.swagger.models.parameters.BodyParameter;
+import io.swagger.models.parameters.Parameter;
 import io.swagger.models.properties.*;
 import io.swagger.parser.SwaggerCompatConverter;
 import io.swagger.parser.SwaggerParser;
@@ -16,12 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -41,6 +46,7 @@ public class StubGenerator {
     private static final String AUTO_CODE_CONFIG_FILE_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Sample/master/AutoCodeConfig.yaml";
     private static final String FX_FILE = "Fxfile.yaml";
     private static final String FX_FILE_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Sample/master/Fxfile.yaml";
+    private static final String REQUEST_MAPPINGS_FILE = "RequestMappings.yaml";
 
 
     /**
@@ -131,7 +137,42 @@ public class StubGenerator {
                 }
             }
 
+            List<RequestMapping> requestMappings = new ArrayList<>();
             List<TestSuiteMin> testSuites = new ArrayList<>();
+
+
+            for (String p : swagger.getPaths().keySet()) {
+                Path path = swagger.getPaths().get(p);
+
+                for (HttpMethod m : path.getOperationMap().keySet()) {
+                    Operation op = path.getOperationMap().get(m);
+                    // If mapping already found in the RequestMappings File, don't overwrite
+                    for (Parameter param : op.getParameters()) {
+                        if (!(param instanceof BodyParameter)) {
+                            continue;
+                        }
+                        Model model = ((BodyParameter) param).getSchema();
+                        if (model != null && org.apache.commons.lang3.StringUtils.isNotBlank(model.getReference())) {
+                            RequestMapping reqMapping = new RequestMapping();
+                            RequestMapping reqMapping_ = autoCodeConfigUtil.getRequestMapping(p, m.name());
+                            if (reqMapping_ != null) {
+                                reqMapping = reqMapping_;
+                            } else {
+                                String body = factory.getValid(model.getReference());
+                                reqMapping.setEndPoint(p);
+                                reqMapping.setMethod(m.name());
+                                reqMapping.setSampleBody(body);
+                                config.getRequestMappings().add(reqMapping);
+                            }
+                            requestMappings.add(reqMapping);
+                        }
+                    }
+                }
+
+            }
+
+
+
 
             //System.out.println("---- paths ----");
             //System.out.println (swagger.getPaths());
@@ -146,7 +187,7 @@ public class StubGenerator {
                 for (HttpMethod m : path.getOperationMap().keySet()) {
                     Operation op = path.getOperationMap().get(m);
 
-                    //System.out.println (p + " " + op.getOperationId());
+                    //System.out.println (p   " "   op.getOperationId());
                     testSuites.addAll(this.stubHandler.handle(p, m, op));
                     /*System.out.println (op.getOperationId());
                     System.out.println (op.getConsumes());
@@ -168,6 +209,8 @@ public class StubGenerator {
             //System.out.println(ts);
             //}
 
+            writeToRequestMappingsFile(requestMappings, projectDir);
+
             printTS(testSuites, projectDir);
 
             return testSuites.size();
@@ -178,6 +221,24 @@ public class StubGenerator {
         }
         return 0;
     }
+
+    private void writeToRequestMappingsFile(List<RequestMapping> sampleRequests, String dir){
+
+        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+        yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        if (CollectionUtils.isEmpty(sampleRequests)){
+            return;
+        }
+
+        try {
+            File file = new File(dir + "/"+REQUEST_MAPPINGS_FILE);
+            yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, sampleRequests);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
 
     private void printTS(List<TestSuiteMin> testSuites, String dir) {
         ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());

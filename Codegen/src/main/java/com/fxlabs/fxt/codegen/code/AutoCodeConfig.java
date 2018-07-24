@@ -1,12 +1,14 @@
 package com.fxlabs.fxt.codegen.code;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fxlabs.fxt.dto.project.RequestMapping;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +32,8 @@ public class AutoCodeConfig implements Serializable {
     private List<TestSuite> testSuites;
 
     private Map<String, String> propertyMapping;
+
+    private List<RequestMapping> requestMappings = new ArrayList<>();
 
 }
 
