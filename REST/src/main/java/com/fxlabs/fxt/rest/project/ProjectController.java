@@ -1,10 +1,7 @@
 package com.fxlabs.fxt.rest.project;
 
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.Project;
-import com.fxlabs.fxt.dto.project.ProjectFile;
-import com.fxlabs.fxt.dto.project.ProjectImports;
-import com.fxlabs.fxt.dto.project.ProjectSync;
+import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.ProjectFileService;
 import com.fxlabs.fxt.services.project.ProjectService;
@@ -128,6 +125,12 @@ public class ProjectController {
     @RequestMapping(value = "/{projectId}/files/{id}", method = RequestMethod.GET)
     public Response<ProjectFile> findByProjectIdAndFileId(@PathVariable("projectId") String projectId, @PathVariable("id") String id) {
         return projectFileService.findById(id, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{projectId}/autocodeconfig", method = RequestMethod.POST)
+    public Response<AutoCodeConfig> f(@PathVariable("projectId") String projectId, @RequestBody AutoCodeConfig request) {
+        return projectService.saveAutoCode(projectId, request, SecurityUtil.getOrgId());
     }
 
 }

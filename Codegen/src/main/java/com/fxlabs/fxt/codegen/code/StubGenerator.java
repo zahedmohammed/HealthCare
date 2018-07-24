@@ -45,9 +45,10 @@ public class StubGenerator {
 
     /**
      * Checks FXfile.yaml and AutoCodeConfig exists if not creates one.
+     *
      * @param projectDir
      */
-    public void setupFXConfig(String projectDir) {
+    public void setupFXConfig(String projectDir, com.fxlabs.fxt.dto.project.AutoCodeConfig autoCodeConfigContent) {
         try {
             File fxfile = FileUtils.getFile(new File(projectDir), FX_FILE);
             if (fxfile == null || !fxfile.exists()) {
@@ -61,7 +62,16 @@ public class StubGenerator {
             }
 
             File autoCodeConfig = FileUtils.getFile(new File(projectDir), AUTO_CODE_CONFIG_FILE);
-            if (autoCodeConfig == null || !autoCodeConfig.exists()) {
+
+            if(autoCodeConfigContent != null){
+                ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+                yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+                yamlMapper.writerWithDefaultPrettyPrinter().writeValue(autoCodeConfig, autoCodeConfigContent);
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, autoCodeConfig.getName(), "Written");
+            }
+
+
+            if (autoCodeConfig == null || !autoCodeConfig.exists() && autoCodeConfigContent == null) {
                 try {
                     FileUtils.copyURLToFile(new URL(AUTO_CODE_CONFIG_FILE_URL), autoCodeConfig);
                     System.out.println(String.format("%s created successfully...", AUTO_CODE_CONFIG_FILE));
@@ -70,6 +80,8 @@ public class StubGenerator {
                     System.err.println(e.getLocalizedMessage());
                 }
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

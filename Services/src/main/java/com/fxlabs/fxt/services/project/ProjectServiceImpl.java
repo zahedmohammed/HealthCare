@@ -468,5 +468,49 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return new Response<Boolean>(true);
     }
 
+    @Override
+    public Response<AutoCodeConfig> saveAutoCode(String projectId, AutoCodeConfig codeConfig, String orgId){
+
+        if (codeConfig == null || StringUtils.isEmpty(projectId)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for  Project Autocode configuaration"));
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(projectId, orgId);
+        if (!optionalProject.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+
+        Project project = converter.convertToDto(optionalProject.get());
+//        // check OpenAPISpec
+//        if (project.getGenPolicy() != GenPolicy.Create || StringUtils.isEmpty(project.getOpenAPISpec())) {
+//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "AutoCode option should be set to Create."));
+//        }
+
+
+        // check account access
+        Response<Account> accountResponse = accountService.findById(project.getAccount().getId(), orgId);
+        if (accountResponse == null || accountResponse.isErrors()) {
+            return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+        }
+
+        project.setGenPolicy(codeConfig.getGenPolicy());
+        if (codeConfig.getGenPolicy() == GenPolicy.Create) {
+            project.setOpenAPISpec(codeConfig.getOpenAPISpec());
+        } else {
+            project.setOpenAPISpec(null);
+        }
+
+        Response<Project> projectResponse = save(project);
+
+        if (projectResponse.isErrors()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Autocode config failed"));
+        }
+
+        // Create GaaS Task
+        this.gaaSTaskRequestProcessor.processAutoCodeconfig(converter.convertToEntity(project), codeConfig);
+
+        return new Response<>(codeConfig);
+    }
+
 
 }

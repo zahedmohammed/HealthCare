@@ -1,10 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.Project;
-import com.fxlabs.fxt.dto.project.ProjectImports;
-import com.fxlabs.fxt.dto.project.ProjectSaving;
-import com.fxlabs.fxt.dto.project.ProjectSync;
+import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
@@ -43,6 +40,8 @@ public interface ProjectService extends GenericService<Project, String> {
     Response<Project> add(Project request, String org, String owner);
 
     Response<ProjectSaving> getProjectSavings(String id, String org, String owner);
+
+    Response<AutoCodeConfig> saveAutoCode(String projectId, AutoCodeConfig codeConfig, String owner);
 
 
 }

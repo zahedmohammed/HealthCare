@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.AutoCodeConfig;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.project.ProjectSync;
 import com.fxlabs.fxt.dto.users.Users;
@@ -97,6 +98,61 @@ public class GaaSTaskRequestProcessor {
             if (projectSync != null){
                 task.setCategories(projectSync.getCategories());
                 task.setDeleteAll(projectSync.isDeleteAll());
+            }
+            Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
+
+            String ownerEmail = usersResponse.getData().getEmail();//projectUsersList.get(0).getUsers().getEmail();
+            Optional<UsersPassword> usersPasswordOptional = usersPasswordRepository.findByUsersEmailAndActive(ownerEmail, true);
+            if (!usersPasswordOptional.isPresent()) {
+                logger.warn("Ignoring Git sync for project with ID [{}] with name [{}] because of no valid owner is active.", project.getId(), project.getName());
+                return;
+            }
+
+            Response<String> accessKeyResponse = usersService.generate(ownerEmail, project.getOrg().getName());
+
+            String[] accessKey = accessKeyResponse.getData().split(":");
+
+            task.setProjectUser(accessKey[0]);
+            task.setProjectGrant(accessKey[1]);
+            //TODO
+
+            Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.base.url");
+            if (systemSettingOptional.isPresent()) {
+                task.setFxUrl(systemSettingOptional.get().getValue());
+            } else {
+                task.setFxUrl("http://fx-control-plane:8080");
+            }
+
+            amqpClientService.sendTask(task, gaaSQueue);
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+        }
+    }
+
+
+    public void processAutoCodeconfig(Project project, AutoCodeConfig codeConfig) {
+        try {
+            VCTask task = new VCTask();
+            task.setProjectId(project.getId());
+            task.setProjectName(project.getName());
+            if (project.getGenPolicy() != null && task.getGenPolicy() != GenPolicy.None) {
+                task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
+                task.setOpenAPISpec(project.getOpenAPISpec());
+            }
+            task.setVcUrl(project.getUrl());
+            task.setVcBranch(project.getBranch());
+
+            if (project.getAccount() != null) {
+                Optional<Account> accountOptional = accountRepository.findById(project.getAccount().getId());
+                Account account = accountOptional.isPresent() ? accountOptional.get() : null;
+                task.setVcUsername(account.getAccessKey());
+                if (StringUtils.isNotEmpty(account.getSecretKey())) {
+                    task.setVcPassword(encryptor.decrypt(account.getSecretKey()));
+                }
+            }
+            task.setVcLastCommit(project.getLastCommit());
+            if (codeConfig != null){
+                task.setAutoCodeConfig(codeConfig);
             }
             Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
 
