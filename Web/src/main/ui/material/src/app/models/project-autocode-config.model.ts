@@ -1,8 +1,15 @@
 export class AutoCodeConfig {
+    genPolicy: GenPolicy[] =[];
+    public openAPISpec: string;
     databases: Database[]=[];
     logForgingPatterns: String[]=[];
     testSuites: TestSuite[]=[];
     propertyMapping : Map<string, number>;
+}
+
+export class GenPolicy {
+    public None: string;
+    public Create: string;
 }
 
 export class Database {
@@ -10,7 +17,7 @@ export class Database {
     public version: string;
     public description: string;
     public inactive: boolean;
-}   
+}
 
 export class TestSuite {
     project: ProjectMinimalDto = new ProjectMinimalDto();
