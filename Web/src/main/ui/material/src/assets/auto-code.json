@@ -1,38 +1,5 @@
 {
-   "databases": [
-      {
-         "name": "MySQL",
-         "version": 5.7,
-         "description": "test",
-         "inactive": false
-      },
-      {
-         "name": "Oracle",
-         "version": "12c",
-         "description": "test",
-         "inactive": true
-      },
-      {
-         "name": "Postgres",
-         "version": 10,
-         "description": "test",
-         "inactive": true
-      },
-      {
-         "name": "SQLServer",
-         "version": 2017,
-         "description": "test",
-         "inactive": true
-      },
-      {
-         "name": "MongoDB",
-         "version": 4,
-         "description": "test",
-         "inactive": true
-      }
-   ],
-   "logForgingPatterns": null,
-   "testSuites": [
+   "generators": [
       {
          "type": "anonymous_invalid",
          "assertions": [
@@ -71,18 +38,40 @@
          "assertions": [
             "@StatusCode != 200"
          ],
-         "severity": "Critical"
+         "severity": "Critical",
+         "database":
+            {
+               "name": "MySQL",
+               "version": 5.7
+            }
       },
       {
          "type": "sql_injection_timebound",
          "assertions": [
             "@ResponseTime >= 5000"
          ],
-         "severity": "Critical"
+         "severity": "Critical",
+         "matches":
+            {
+               "pathPatterns": "/api/**",
+               "methods": null,
+               "sample": "account-create, account-update, ...",
+               "queryParams": "name,accessKey,...",
+               "bodyProperties": "name, key,..."
+            },
+         "database":
+         {
+            "name": "MySQL",
+            "version": 5.7
+         }
       },
       {
          "type": "log_forging",
          "postfix": "log_forging",
+         "patterns": [
+            "pattern1",
+            "pattern2"
+         ],
          "assertions": [
             "@StatusCode != 200"
          ],
@@ -110,7 +99,10 @@
          "severity": "Major"
       },
       {
-         "type": "special_chars\n- \"@StatusCode != 200\"",
+         "type": "special_chars",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
          "severity": "Minor"
       },
       {
