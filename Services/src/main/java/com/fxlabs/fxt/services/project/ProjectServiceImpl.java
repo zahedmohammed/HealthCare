@@ -196,14 +196,14 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // check auto-code
-            if (request.getGenPolicy() == null) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Auto-Code option should selected."));
-            }
-
-            // check OpenAPISpec
-            if (request.getGenPolicy() == GenPolicy.Create && StringUtils.isEmpty(request.getOpenAPISpec())) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "OpenAPISpec is required."));
-            }
+//            if (request.getGenPolicy() == null) {
+//                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Auto-Code option should selected."));
+//            }
+//
+//            // check OpenAPISpec
+//            if (request.getGenPolicy() == GenPolicy.Create && StringUtils.isEmpty(request.getOpenAPISpec())) {
+//                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "OpenAPISpec is required."));
+//            }
 
             // check name is not duplicate
             Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = this.projectRepository.findByNameIgnoreCaseAndOrgIdAndInactive(request.getName(), org, false);
@@ -473,6 +473,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         if (codeConfig == null || StringUtils.isEmpty(projectId)) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for  Project Autocode configuaration"));
+        }
+
+        if (codeConfig.getGenPolicy() == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Auto-Code option should selected."));
+        }
+
+        // check OpenAPISpec
+        if (codeConfig.getGenPolicy() == GenPolicy.Create && StringUtils.isEmpty(codeConfig.getOpenAPISpec())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "OpenAPISpec is required."));
         }
 
         Optional<com.fxlabs.fxt.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(projectId, orgId);
