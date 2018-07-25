@@ -24,7 +24,7 @@ import { AutoCodeConfig } from '../../../models/project-autocode-config.model';
 })
 export class StepTwoComponent implements OnInit {
   frmStepTwo: FormGroup;
-  show = true;
+  show = false;
   showSpinner: boolean = false;
   project: Project = new Project();
   // job: Jobs = new Jobs();

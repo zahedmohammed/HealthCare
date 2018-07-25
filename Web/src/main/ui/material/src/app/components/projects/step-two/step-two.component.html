@@ -14,7 +14,7 @@
                 <!-- <div class="box-body" *ngIf="big.checked"> -->
                     <div class="box-body">
 
-                        <form role="form" #heroForm="ngForm">        
+                        <!-- <form role="form" #heroForm="ngForm">         -->
   <div class="form-group row">
     <label for="name" class="col-md-0 control-label"></label>
     <div class="col-md-4">
@@ -26,7 +26,7 @@
                 </mat-option>
             </mat-select> -->
 
-            <mat-radio-group class="example-radio-group" [(ngModel)]="project.genPolicy" name="Auto Code Options">Auto-Code Options<br/><br/>
+            <mat-radio-group class="example-radio-group" [(ngModel)]="project.genPolicy">Auto-Code Options<br/><br/>
                 <mat-radio-button 
                 class="example-radio-button" 
                 [checked]="gen === 'Create'"
@@ -52,8 +52,8 @@
 </div>
 
 <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
-    <div class="col-md-12">
-    <mat-accordion *ngFor="let res of autoCodeConfig.generators">
+    <div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">
+    <mat-accordion>
         <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -62,23 +62,36 @@
               </mat-expansion-panel-header>
           
               <mat-form-field>
-                <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions' name="Assertions"></textarea>
+                <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
               </mat-form-field>
                    <br/>
                    <label>Severity</label>
-             <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity' name="Severity">
+             <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
             <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
               {{sev}}
             </mat-radio-button>
           </mat-radio-group>
           <br/>
-          <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' name="Active" checked>Active</mat-checkbox>
+          <div *ngIf='res.inactive === true'>
+          <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+        </div>
+<br/>
+          <mat-form-field>
+            <mat-select placeholder="Database" required
+                                name="Database">
+              <mat-option *ngFor="let res of autoCodeConfig.generators" [value]="res.database">
+                            {{res.database}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+
             </mat-expansion-panel>
-      </mat-accordion>      
+
+            
+
+      </mat-accordion>
 </div>
 </div>
-
-
 
 <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
     <label for="name" class="col-md-0 control-label"></label>
@@ -102,7 +115,18 @@
  
 </div>
 
-<div class="form-group row" *ngIf="project.genPolicy === 'Create'">
+<mat-card-actions>
+    <button color="primary" 
+    mat-raised-button matStepperNext 
+    class="nav-btn pull-right">Save & Next</button>
+</mat-card-actions>
+
+<!-- </form> -->
+
+</div>
+
+
+<!-- <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
     <label for="name" class="col-md-0 control-label"></label>
     <div class="col-md-5">
         <mat-form-field>
@@ -114,20 +138,7 @@
             </mat-select>
         </mat-form-field>
 </div>
-</div>
-
-<mat-card-actions>
-    <button color="primary" 
-    mat-raised-button matStepperNext 
-    class="nav-btn pull-right">Save & Next</button>
-</mat-card-actions>
-
-</form>
-
-</div>
-
-
-
+</div> -->
 
 <!-- </div> -->
 
