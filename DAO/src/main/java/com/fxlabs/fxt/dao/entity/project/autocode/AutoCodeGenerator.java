@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Mohammed Luqman Shareef
@@ -22,17 +23,16 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = false)
 public class AutoCodeGenerator extends BasicBaseEntity {
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "auto_code_config_id")
-    private AutoCodeConfig autoCodeConfig;
-
     private String type;
-    private String assertions;
+    @ElementCollection
+    private List<String> assertions;
     private TestSuiteSeverity severity;
-    private String database;
-
+    @Embedded
+    private Database database;
     @Column(name = "generator_inactive")
     protected boolean inactive = false;
+    @ElementCollection
+    private List<AutoCodeGeneratorMatches> autoCodeGeneratorMatches;
 
 }
 

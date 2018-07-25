@@ -1,23 +1,21 @@
-package com.fxlabs.fxt.dao.entity.project.autocode;
+package com.fxlabs.fxt.dto.project;
 
-import com.fxlabs.fxt.dao.entity.base.BasicBaseEntity;
-import com.fxlabs.fxt.dao.entity.project.TestSuiteSeverity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fxlabs.fxt.dto.base.BasicBaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import lombok.ToString;
 
 /**
- * @author Mohammed Luqman Shareef
+ * @author Mohammed Shoukath Ali
  */
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class AutoCodeGeneratorMatches extends BasicBaseEntity {
+@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AutoCodeGeneratorMatches extends BasicBaseDto {
 
     private String name;
     private String value;
