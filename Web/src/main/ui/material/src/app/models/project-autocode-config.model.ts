@@ -10,7 +10,7 @@ export class Categories {
     inactive: boolean;
     postfix: string;
     match: Matches[] = [];
-    database: Database;
+    database: Database = new Database();
 }
 
 export class Matches{
