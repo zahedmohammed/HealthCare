@@ -107,8 +107,7 @@ export class StepTwoComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.autoCodeConfig = results['generators'];
-      console.log(this.autoCodeConfig);
+      this.autoCodeConfig = results;
       //this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();

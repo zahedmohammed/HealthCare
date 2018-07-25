@@ -72,13 +72,13 @@
 </div> -->
 
 <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
-    <div class="col-md-12" *ngFor="let res of autoCodeResults">
+    <div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">
     <mat-accordion>
 
         <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  Type - {{ res }}
+                  Type - {{ res.type }}
                 </mat-panel-title>
               </mat-expansion-panel-header>
           
