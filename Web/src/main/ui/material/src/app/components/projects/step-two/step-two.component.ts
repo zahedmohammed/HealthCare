@@ -35,7 +35,7 @@ export class StepTwoComponent implements OnInit {
   severityGroup: string;
   severity: string[] = ['Critical', 'Major', 'Minor'];
   //autocodeConfig = new Array();
-  autoCodeResults: AutoCodeConfig = new AutoCodeConfig();
+  autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
   /*config;*/
   public AppConfig: any;
   constructor(private formBuilder: FormBuilder, 
@@ -107,8 +107,8 @@ export class StepTwoComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.autoCodeResults = results['data'];
-      console.log(this.autoCodeResults);
+      this.autoCodeConfig = results['generators'];
+      console.log(this.autoCodeConfig);
       //this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();

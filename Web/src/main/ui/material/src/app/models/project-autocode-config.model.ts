@@ -1,6 +1,6 @@
 export class AutoCodeConfig {
 
-    categories: Categories[]= [];
+    generators: Categories[]= [];
    
 }
 
