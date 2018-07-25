@@ -98,16 +98,25 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
 
       { path: 'projects', component: ProjectsListComponent },
+
       { path: 'projects/new', component: ProjectsNewComponent },
+      // { path: 'projects/new', component: ProjectsNewComponent,
+      //   children: 
+      //   [
+      //     { path: 'auto-code', component: StepTwoComponent },
+      //     { path: 'step-jobs', component: StepThreeComponent }
+      //   ]
+      // },
+      // { path: 'projects/auto-code', component: StepTwoComponent},
+      // { path: 'projects/step-jobs', component: StepThreeComponent},
+
       { path: 'projects/:id', component: ProjectsEditComponent },
       { path: 'jobs', component: JobslistComponent },
       { path: 'jobs/:id', component: JobDetailsComponent},
       { path: 'jobs/:jobId/runs', component: RunListComponent },
       { path: 'jobs/:jobId/runs/:runId', component: RunDetailComponent },
       //{ path: 'autocode', component: StepOneComponent},
-      { path: 'auto-code', component: StepTwoComponent},
-      { path: 'step-jobs', component: StepThreeComponent},
-
+      
       { path: 'messages', component: MessageListComponent },
       { path: 'message/:id', component: MessageDetailComponent },
 

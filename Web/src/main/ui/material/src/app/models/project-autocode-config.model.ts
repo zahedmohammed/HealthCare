@@ -1,5 +1,10 @@
 export class AutoCodeConfig {
 
+    categories: Categories[]= [];
+   
+}
+
+export class Categories {
     type: string;
     assertions: string[]= [];
     severity: string;
