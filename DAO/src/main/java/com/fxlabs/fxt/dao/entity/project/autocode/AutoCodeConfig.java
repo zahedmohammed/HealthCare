@@ -34,5 +34,8 @@ public class AutoCodeConfig extends BaseEntity {
     @Column(name = "open_api_spec_uri")
     private String openAPISpec;
 
+    @ElementCollection
+    private List<AutoCodeGenerator> generators;
+
 }
 

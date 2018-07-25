@@ -1,7 +1,6 @@
 export class AutoCodeConfig {
-
+    openAPISpec: string;
     generators: Categories[]= [];
-   
 }
 
 export class Categories {
