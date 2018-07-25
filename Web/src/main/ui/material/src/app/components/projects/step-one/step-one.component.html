@@ -1,100 +1,106 @@
 <mat-card>
-<!--
-	<form [formGroup]="frmStepOne">
+    <!--
+        <form [formGroup]="frmStepOne">
 
-        <mat-form-field>
-            <input matInput formControlName="name" placeholder="Name" required>
-        </mat-form-field>
-	
-  	<mat-card-actions>
-			<button mat-raised-button matStepperNext class="nav-btn pull-right">Next</button>
-		</mat-card-actions>
+            <mat-form-field>
+                <input matInput formControlName="name" placeholder="Name" required>
+            </mat-form-field>
 
-	</form>
--->
+          <mat-card-actions>
+                <button mat-raised-button matStepperNext class="nav-btn pull-right">Next</button>
+            </mat-card-actions>
 
-  <section class="container-fluid with-maxwidth chapter">
-    <article class="article1">
-<!--
-        <h5>New Project</h5>-->
+        </form>
+    -->
 
-        <div class="box1 box-default1">
-            <div class="box-body1">
-                <div class="box-body">
-                <form role="form" [formGroup]="frmStepOne" #heroForm="ngForm">
-<!-- Project details -->
+    <section class="container-fluid with-maxwidth chapter">
+        <article class="article1">
+            <!--
+                    <h5>New Project</h5>-->
 
-                    <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="project.name" formControlName="name" id="name"
-                                       matInput placeholder="Project name">
-                            </mat-input-container>
-                        </div>
-                    </div>
-                
-                    <div class="divider divider-dashed divider-lg pull-in"></div>
-                    <!-- Repository details -->
+            <div class="box1 box-default1">
+                <div class="box-body1">
+                    <div class="box-body">
+                        <form role="form" [formGroup]="frmStepOne" #heroForm="ngForm">
+                            <!-- Project details -->
 
-                   <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="project.url" formControlName="url" id="repo"
-                                       matInput placeholder="Repository URL">
-                            </mat-input-container>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p>e.g. https://github.com/username/MyApp.git or git@github.com:username/MyApp.git.
-                                    <br/>Note: The repository should be initialized. FX Bot will check-in Fxfile.yaml and AutoCodeConfig.yaml files into Git.
-                                    <br/>Step 1: Once Fxfile.yaml is available make changes to environments and jobs sections.
-                                    <br/>Step 2: Once AutoCodeConfig.yaml is available make changes to it according to your testing needs.
-                                    <a target="_blank" [href]="AppConfig.fxSample"> Learn more <i
-                                            class="material-icons"
-                                            style="font-size: 18px;">open_in_new</i></a>
-                                </p>
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="project.name" formControlName="name" id="name"
+                                               matInput placeholder="Project name">
+                                    </mat-input-container>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="col-md-0 control-label">
-                        </label>
-                        <div class="col-md-5">
-                            <mat-form-field>
-                                <mat-select placeholder="Repository Credentials" required
-                                            [(ngModel)]="project.account.id" formControlName="type">
-                                    <mat-option *ngFor="let account of accounts" [value]="account.id">
-                                        {{account.name}} ({{account.accountType}})
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p>
-                                    Register your git credentials in the <a href="#/app/accounts/new">Accounts
-                                    page</a>.
-                                    <br/>
-                                    Repository credentials are required if the repo is private or Auto-Code is enabled.
-                                </p>
+                            <div class="divider divider-dashed divider-lg pull-in"></div>
+                            <!-- Repository details -->
+
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="project.url" formControlName="url" id="repo"
+                                               matInput placeholder="Repository URL">
+                                    </mat-input-container>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>e.g. https://github.com/username/MyApp.git or
+                                            git@github.com:username/MyApp.git.
+                                            <br/>Note: The repository should be initialized. FX Bot will check-in
+                                            Fxfile.yaml and AutoCodeConfig.yaml files into Git.
+                                            <br/>Step 1: Once Fxfile.yaml is available make changes to environments and
+                                            jobs sections.
+                                            <br/>Step 2: Once AutoCodeConfig.yaml is available make changes to it
+                                            according to your testing needs.
+                                            <a target="_blank" [href]="AppConfig.fxSample"> Learn more <i
+                                                    class="material-icons"
+                                                    style="font-size: 18px;">open_in_new</i></a>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <mat-card-actions>
-                            <button mat-raised-button matStepperNext color="primary"
-                            class="nav-btn pull-right" 
-                            [disabled]="frmStepOne.invalid"
-                            (click)="create();">Save & Next</button>
-                    </mat-card-actions>
-</form>
-</div>
-</div>
-</div>
-</article>
 
-</section>
+                            <div class="form-group row">
+                                <label class="col-md-0 control-label">
+                                </label>
+                                <div class="col-md-5">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Repository Credentials" required
+                                                    [(ngModel)]="project.account.id" formControlName="type">
+                                            <mat-option *ngFor="let account of accounts" [value]="account.id">
+                                                {{account.name}} ({{account.accountType}})
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>
+                                            Register your git credentials in the <a href="#/app/accounts/new">Accounts
+                                            page</a>.
+                                            <br/>
+                                            Repository credentials are required if the repo is private or Auto-Code is
+                                            enabled.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-card-actions>
+                                <button mat-raised-button matStepperNext color="primary"
+                                        class="nav-btn pull-right"
+                                        [disabled]="frmStepOne.invalid"
+                                        (click)="create();">Save & Next
+                                </button>
+                            </mat-card-actions>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </section>
 
 </mat-card>
