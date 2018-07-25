@@ -10,12 +10,14 @@ import { Handler } from '../../dialogs/handler/handler';
 })
 export class ProjectsListComponent implements OnInit {
   projects;
+  autocodeConfig; 
   projectTitle:string = "Projects";
   showSpinner: boolean = false;
   constructor(private projectService: ProjectService, private handler: Handler) { }
 
   ngOnInit() {
     this.list();
+    this.listAutoCode();
   }
 
   list() {
@@ -27,6 +29,23 @@ export class ProjectsListComponent implements OnInit {
       }
       this.projects = results['data'];
       this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+  //For Autocode
+  listAutoCode() {
+    this.handler.activateLoader();
+    this.projectService.getAutoCodeConfig().subscribe(results => {
+      console.log(results);
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.autocodeConfig = results['data'];
+      //this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

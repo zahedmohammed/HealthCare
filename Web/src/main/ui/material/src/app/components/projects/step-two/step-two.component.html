@@ -1,0 +1,536 @@
+<mat-card>
+  <section class="container-fluid with-maxwidth chapter">
+    <article class="article1">
+<!--
+        <h5>New Project</h5>-->
+
+        <div class="box1211 box-default12">
+            <div class="box-body1">
+              
+                <!-- <div *ngIf="show"> -->
+                    <!-- <mat-checkbox #big type="checkbox" color="primary" name="size" (change)="0" check>Click Checkbox to Generate Auto-Code Options</mat-checkbox> -->
+                    
+
+                <!-- <div class="box-body" *ngIf="big.checked"> -->
+                    <div class="box-body">
+  <div class="form-group row">
+    <label for="name" class="col-md-0 control-label"></label>
+    <div class="col-md-4">
+        <!-- <mat-form-field> -->
+            <!-- <mat-select placeholder="Auto-Code" required [(ngModel)]="project.genPolicy"
+                        name="Auto-Code">
+                <mat-option *ngFor="let gen of genPolicies" [value]="gen">
+                    {{gen}}
+                </mat-option>
+            </mat-select> -->
+
+            <mat-radio-group class="example-radio-group" [(ngModel)]="project.genPolicy">Auto-Code Options<br/><br/>
+                <mat-radio-button 
+                class="example-radio-button" 
+                [checked]="gen === 'Create'"
+                *ngFor="let gen of genPolicies"
+                color="primary" 
+                [value]="gen">
+                  {{gen}}
+                </mat-radio-button>
+              </mat-radio-group>
+
+
+        <!-- </mat-form-field> -->
+    </div>
+    <div class="col-md-8">
+        <div class="callout1 text-muted callout-info1">
+            <p>Auto-Code (automatic test coverage for your APIs).
+                <br/>Continuously generates 5-point test coverage (Quality, Security, DOS,
+                Injections, Data-Leak, Log-forging etc) for all project endpoints.
+                <br/>Requires repository credentials for code check-in.
+            </p>
+        </div>
+    </div>
+</div>
+<!--
+<div class="form-group row" *ngIf="project.genPolicy === 'Create'">
+    <label for="name" class="col-md-0 control-label"></label>
+    <div class="col-md-5">
+        <mat-input-container class="full-width">
+            <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
+                   matInput placeholder="OpenAPI Spec URL">
+        </mat-input-container>
+    </div>
+    <div class="col-md-7">
+        <div class="callout1 text-muted callout-info1">
+            <p> e.g. https://ip/v2/api-docs. Auto-Code requires OpenAPISpec of your application to
+                create test/security coverage. How-to generate OpenAPISpec for your Java, .Net
+                and other applications.
+                <a target="_blank" href="https://swagger.io/open-source-integrations/">
+                    Learn more <i class="material-icons"
+                                  style="font-size: 18px;">open_in_new</i></a>
+            </p>
+        </div>
+    </div>
+ 
+</div> -->
+
+<div class="form-group row" *ngIf="project.genPolicy === 'Create'">
+    <div class="col-md-12">
+    <mat-accordion>
+
+        <!-- <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Databases
+              </mat-panel-title>
+              </mat-expansion-panel-header>
+        
+            
+              <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      MySQL
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <mat-form-field>
+                    <textarea matInput placeholder="Assertions"></textarea>
+                  </mat-form-field>
+                       
+                  <mat-form-field>
+                      <textarea matInput placeholder="Assertions"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <textarea matInput placeholder="Assertions"></textarea>
+                      </mat-form-field>
+
+                      <mat-form-field>
+                          <textarea matInput placeholder="Assertions"></textarea>
+                        </mat-form-field>
+                </mat-expansion-panel>
+
+
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Oracle
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <mat-form-field>
+                    <textarea matInput placeholder="Assertions"></textarea>
+                  </mat-form-field>
+                       
+                  <mat-form-field>
+                      <textarea matInput placeholder="Assertions"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <textarea matInput placeholder="Assertions"></textarea>
+                      </mat-form-field>
+
+                      <mat-form-field>
+                          <textarea matInput placeholder="Assertions"></textarea>
+                        </mat-form-field>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Postgres
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <mat-form-field>
+                    <textarea matInput placeholder="Assertions"></textarea>
+                  </mat-form-field>
+                       
+                  <mat-form-field>
+                      <textarea matInput placeholder="Assertions"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <textarea matInput placeholder="Assertions"></textarea>
+                      </mat-form-field>
+
+                      <mat-form-field>
+                          <textarea matInput placeholder="Assertions"></textarea>
+                        </mat-form-field>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        SQLServer
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <mat-form-field>
+                    <textarea matInput placeholder="Assertions"></textarea>
+                  </mat-form-field>
+                       
+                  <mat-form-field>
+                      <textarea matInput placeholder="Assertions"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <textarea matInput placeholder="Assertions"></textarea>
+                      </mat-form-field>
+
+                      <mat-form-field>
+                          <textarea matInput placeholder="Assertions"></textarea>
+                        </mat-form-field>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        MongoDB
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <mat-form-field>
+                    <textarea matInput placeholder="Assertions"></textarea>
+                  </mat-form-field>
+                       
+                  <mat-form-field>
+                      <textarea matInput placeholder="Assertions"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <textarea matInput placeholder="Assertions"></textarea>
+                      </mat-form-field>
+
+                      <mat-form-field>
+                          <textarea matInput placeholder="Assertions"></textarea>
+                        </mat-form-field>
+                </mat-expansion-panel>
+
+          </mat-expansion-panel> -->
+
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Type : anonymous_invalid
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      
+          <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+               
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : auth_invalid
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+        
+      
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <mat-checkbox type="checkbox" color="primary" name="size" (change)="0" check>Inactive</mat-checkbox>
+        </mat-expansion-panel>
+      
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : DDOS
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+        
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : XSS_Injection
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+               
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : sql_injection
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+               
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : sql_injection_timebound
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+               
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : log_forging
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+         
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : rbac
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+              
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : invalid_datatype
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+             
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : special_chars
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+              
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : negative_number
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+              
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : null_value
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+              
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : empty_value
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+              
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Type : create
+            </mat-panel-title>
+            <!-- <mat-panel-description>
+              Assertions, Severity, Inactive
+            </mat-panel-description> -->
+          </mat-expansion-panel-header>
+      <mat-form-field>
+            <textarea matInput placeholder="Assertions"></textarea>
+          </mat-form-field>
+         
+      
+         <mat-radio-group class="example-radio-group" [(ngModel)]="severityGroup">
+        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+          {{sev}}
+        </mat-radio-button>
+      </mat-radio-group>
+        </mat-expansion-panel>
+      </mat-accordion>
+</div>
+</div>
+</div>
+
+
+<mat-card-actions>
+    <button mat-raised-button matStepperNext class="nav-btn pull-right">Save & Next</button>
+</mat-card-actions>
+
+
+<!-- </div> -->
+
+</div>
+</div>
+</article>
+
+</section>
+
+
+</mat-card>

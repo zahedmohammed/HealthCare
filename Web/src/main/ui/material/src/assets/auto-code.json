@@ -1,0 +1,147 @@
+{
+   "databases": [
+      {
+         "name": "MySQL",
+         "version": 5.7,
+         "description": "test",
+         "inactive": false
+      },
+      {
+         "name": "Oracle",
+         "version": "12c",
+         "description": "test",
+         "inactive": true
+      },
+      {
+         "name": "Postgres",
+         "version": 10,
+         "description": "test",
+         "inactive": true
+      },
+      {
+         "name": "SQLServer",
+         "version": 2017,
+         "description": "test",
+         "inactive": true
+      },
+      {
+         "name": "MongoDB",
+         "version": 4,
+         "description": "test",
+         "inactive": true
+      }
+   ],
+   "logForgingPatterns": null,
+   "testSuites": [
+      {
+         "type": "anonymous_invalid",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Critical"
+      },
+      {
+         "type": "auth_invalid",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Critical"
+      },
+      {
+         "type": "DDOS",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Critical",
+         "matches": [
+            {
+               "name": "itemsPerPage"
+            }
+         ]
+      },
+      {
+         "type": "XSS_Injection",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Critical"
+      },
+      {
+         "type": "sql_injection",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Critical"
+      },
+      {
+         "type": "sql_injection_timebound",
+         "assertions": [
+            "@ResponseTime >= 5000"
+         ],
+         "severity": "Critical"
+      },
+      {
+         "type": "log_forging",
+         "postfix": "log_forging",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Critical"
+      },
+      {
+         "type": "rbac",
+         "assertions": [
+            "@StatusCode == 403"
+         ],
+         "severity": "Critical",
+         "matches": [
+            {
+               "pathPatterns": "/api/**",
+               "methods": null,
+               "denyRoles": "Anonymous"
+            }
+         ]
+      },
+      {
+         "type": "invalid_datatype",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Major"
+      },
+      {
+         "type": "special_chars\n- \"@StatusCode != 200\"",
+         "severity": "Minor"
+      },
+      {
+         "type": "negative_number",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Minor"
+      },
+      {
+         "type": "null_value",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Minor"
+      },
+      {
+         "type": "empty_value",
+         "assertions": [
+            "@StatusCode != 200"
+         ],
+         "severity": "Minor",
+         "inactive": null
+      },
+      {
+         "type": "create",
+         "assertions": [
+            "@StatusCode == 200"
+         ],
+         "severity": null,
+         "inactive": true
+      }
+   ]
+}

@@ -10,7 +10,8 @@ import { ProjectSync } from '../models/project-sync.model';
 
 @Injectable()
 export class ProjectService {
-  private serviceUrl = '/api/v1/projects'
+  private serviceUrl = '/api/v1/projects';
+  private autocodeURL = './assets/auto-code.json';
   constructor(private http: HttpClient) {
   }
 
@@ -60,6 +61,12 @@ export class ProjectService {
 
   projectSync(projectsync: ProjectSync) {
     return this.http.post(this.serviceUrl + "/" +  projectsync['id'] + "/project-sync", projectsync);
+  }
+
+  //Auto-code for testing from static json file
+
+  getAutoCodeConfig(){
+    return this.http.get(this.autocodeURL);
   }
 
 }

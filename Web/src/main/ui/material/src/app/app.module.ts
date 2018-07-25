@@ -2,7 +2,7 @@ import{NgModule, ApplicationRef}from '@angular/core';
 import {BrowserModule}from '@angular/platform-browser';
 import {HttpModule}from '@angular/http';
 import {HttpClientModule }from '@angular/common/http';
-import {FormsModule}from '@angular/forms';
+import {FormsModule, ReactiveFormsModule}from '@angular/forms';
 import {BrowserAnimationsModule}from '@angular/platform-browser/animations';
 import {NoopAnimationsModule}from '@angular/platform-browser/animations';
 
@@ -37,7 +37,8 @@ MatTableModule,
 MatTabsModule,
 MatToolbarModule,
 MatTooltipModule,
-MatStepperModule
+MatStepperModule,
+MatFormFieldModule
 }from '@angular/material';
 
 import {AppRoutingModule}from './app-routing.module';
@@ -161,13 +162,19 @@ import {RunHistoryComponent}from './components/analytics/run-history/run-history
 import {SuperbotnetworkListComponent}from './components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component';
 import {DeleteDialogComponent}from './components/dialogs/delete-dialog/delete-dialog.component';
 import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.component';
+
 import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-sync.component';
+import { CreateProfileComponent } from './components/projects/create-profile/create-profile.component';
+import { StepOneComponent } from './components/projects/step-one/step-one.component';
+import { StepTwoComponent } from './components/projects/step-two/step-two.component';
+import { StepThreeComponent } from './components/projects/step-three/step-three.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     NoopAnimationsModule,
     MatAutocompleteModule,
@@ -304,7 +311,11 @@ import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-
     SuperbotnetworkListComponent,
     DeleteDialogComponent,
     SuitDailogComponent,
-    ProjectsSyncComponent
+    ProjectsSyncComponent,
+    CreateProfileComponent,
+    StepOneComponent,
+    StepTwoComponent,
+    StepThreeComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
