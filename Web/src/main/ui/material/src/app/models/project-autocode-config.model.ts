@@ -10,7 +10,7 @@ export class Categories {
     inactive: boolean;
     postfix: string;
     match: Matches[] = [];
-    database: Databases[] = [];
+    database: Database;
 }
 
 export class Matches{
@@ -23,7 +23,7 @@ export class Matches{
     bodyProperties: string;
 }
 
-export class Databases{
+export class Database{
     name: string;
     version: number;
 }
