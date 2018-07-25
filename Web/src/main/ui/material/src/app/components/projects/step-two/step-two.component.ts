@@ -37,6 +37,7 @@ export class StepTwoComponent implements OnInit {
   //autocodeConfig = new Array();
   autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
   /*config;*/
+  //radioSelected:string;
   public AppConfig: any;
   constructor(private formBuilder: FormBuilder, 
     private projectService: ProjectService, 
