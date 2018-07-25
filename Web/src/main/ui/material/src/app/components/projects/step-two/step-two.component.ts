@@ -53,9 +53,9 @@ export class StepTwoComponent implements OnInit {
     //this.getOrgs();
     //this.getAccountsForProjectPage();
     this.listAutoCode();
-    this.frmStepTwo = this.formBuilder.group({
-      address: ['', Validators.required]
-  });
+  //   this.frmStepTwo = this.formBuilder.group({
+  //     address: ['', Validators.required]
+  // });
 
   }
 
