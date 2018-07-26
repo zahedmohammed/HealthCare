@@ -7,19 +7,19 @@
         <p class="text-muted">Continuous test automation & security for REST APIs.</p>
     </section>
 
-    <article class="article padding-lg-v1 article-dark article-bordered">
-        <div class="container-fluid with-maxwidth chapter">
+     <article class="article padding-lg-v1 article-dark article-bordered">
+      <!--  <div class="container-fluid with-maxwidth chapter">
 
             <article class="article">
                 <!--<h2 class="article-title">Continuous Test Automation for REST APIs. Ship fast, high-quality, & secure releases.</h2>-->
-                <h2 class="article-title1">
+               <!-- <h2 class="article-title1">
                     <button mat-button color="primary" class="btn-w-md pull-left" [routerLink]="['/app/projects/new']">
                         <i class="fa fa-plus"></i>
                         Create Project
                     </button>
                     <div class="divider divider-sm"></div>
                 </h2>
-                <br/>
+                 <br/> 
 
                 <div class="box box-default table-box mdl-shadow--2dp">
                     <table class="mdl-data-table">
@@ -53,8 +53,65 @@
                 >
                 </mat-paginator>
 
-            </article>
+            </article> 
 
-        </div>
+        </div>-->
     </article>
 </section>
+
+<section class="container-fluid with-maxwidth chapter">
+        <article class="article row">
+            <div class="col-xl-4 text-center mb-4">
+                <div class="ih-item ih-material card pricing-table">
+                    <a href="javascript:;" [routerLink]="['/app/projects/new']">
+                        <div class="card-header no-border bg-white">
+                            <h5 class="text-center">
+                                <i class="fa fa-plus" style="font-size: 35px"></i>
+                            </h5>
+                        </div>
+    
+                        <div class="card-footer no-border bg-white">
+                            <h6 class="text-primary">Create new project</h6>
+                        </div>
+                        <div class="info">
+                            <div class="info-mask bg-color-primary"></div>
+                            <div class="info-content">
+                                <div class="info-inner">
+                                    <h6 class="text-white">Create new project</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+    
+            <div class="col-xl-4 text-center mb-4" *ngFor="let project of projects">
+                <div class="ih-item ih-material card pricing-table">
+                    <a href="javascript:;" [routerLink]="['/app/projects', project.id]">
+                        <div class="card-header no-border bg-white">
+                            <h5 class="text-center">
+                                <i class="material-icons" style="font-size: 35px">security</i>
+                                <br>
+                            </h5>
+                        </div>
+                        <div class="card-footer no-border bg-white">
+                            <h6 class="text-primary">{{project.name}}</h6>
+                            <!-- <h6 class="text-primary">{{project.name}}</h6> -->
+                        </div>
+    
+                        <div class="info">
+                            <div class="info-mask bg-color-primary"></div>
+                            <div class="info-content">
+                                <div class="info-inner">
+                                    <h6 class="text-white no-margin">Version-Control: {{project.account.accountType}}</h6>
+                                    <span class="text-white">Created on: {{project.createdDate | date:'shortDate'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </article>
+    </section>
+    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+    </mat-paginator>
