@@ -35,6 +35,10 @@ public class AutoCodeConfig extends BaseEntity {
     private String openAPISpec;
 
     @ElementCollection
+    @CollectionTable(
+            name = "auto_code_config_generators",
+            joinColumns = @JoinColumn(name = "auto_code_config_id")
+    )
     private List<AutoCodeGenerator> generators;
 
 }

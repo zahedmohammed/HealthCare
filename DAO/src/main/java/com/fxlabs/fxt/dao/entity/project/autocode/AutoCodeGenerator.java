@@ -24,14 +24,23 @@ import java.util.List;
 public class AutoCodeGenerator extends BasicBaseEntity {
 
     private String type;
+
     @ElementCollection
     private List<String> assertions;
+
+    @Enumerated(EnumType.STRING)
     private TestSuiteSeverity severity;
+
     @Embedded
     private Database database;
-    @Column(name = "generator_inactive")
-    protected boolean inactive = false;
+
+    private boolean inactive = false;
+
     @ElementCollection
+    @CollectionTable(
+            name = "auto_code_generator_auto_code_generator_matches",
+            joinColumns = @JoinColumn(name = "auto_code_generator_id")
+    )
     private List<AutoCodeGeneratorMatches> autoCodeGeneratorMatches;
 
 }
