@@ -21,6 +21,7 @@ import static com.fxlabs.fxt.rest.base.BaseController.*;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @RestController
 @RequestMapping(PROJECTS_BASE)
@@ -133,5 +134,19 @@ public class ProjectController {
     public Response<AutoCodeConfig> autoCodeConfigSave(@PathVariable("projectId") String projectId, @RequestBody AutoCodeConfig request) {
         return projectService.saveAutoCode(projectId, request, SecurityUtil.getOrgId());
     }
+
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{projectId}/autocodeconfig", method = RequestMethod.GET)
+    public Response<AutoCodeConfig> getCodeConfigSave(@PathVariable("projectId") String projectId) {
+        return projectService.getAutoCodeById(projectId, SecurityUtil.getOrgId());
+    }
+
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/autocodeconfig", method = RequestMethod.GET)
+    public Response<AutoCodeConfig> getAutoCodeConfigDefaults() {
+        return projectService.getAutoCodeDefaults();
+    }
+
+
 
 }
