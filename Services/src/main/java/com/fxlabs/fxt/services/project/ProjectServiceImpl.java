@@ -1,5 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
+import com.fxlabs.fxt.converters.project.AutoCodeConfigConverter;
+import com.fxlabs.fxt.converters.project.AutoCodeGeneratorConverter;
 import com.fxlabs.fxt.converters.project.ProjectConverter;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.entity.users.Org;
@@ -47,19 +49,24 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private AccountService accountService;
     private SystemSettingService systemSettingService;
     private JobRepository jobRepository;
+    private AutoCodeConfigRepository autoCodeConfigRepository;
+    private AutoCodeConfigConverter autoCodeConfigConverter;
+    private AutoCodeGeneratorRepository autoCodeGeneratorRepository;
+    private AutoCodeGeneratorConverter autoCodeGeneratorConverter;
+
 
     private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
-                              OrgUsersRepository orgUsersRepository, JobRepository jobRepository,
+                              OrgUsersRepository orgUsersRepository, JobRepository jobRepository, AutoCodeConfigConverter autoCodeConfigConverter,
                               OrgRepository orgRepository, UsersRepository usersRepository,
-                              GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
+                              GaaSTaskRequestProcessor gaaSTaskRequestProcessor, AutoCodeConfigRepository autoCodeConfigRepository,
                               ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository,
-                              AccountService accountService, SystemSettingService systemSettingService) {
+                              AccountService accountService, SystemSettingService systemSettingService, AutoCodeGeneratorRepository autoCodeGeneratorRepository, AutoCodeGeneratorConverter autoCodeGeneratorConverter) {
 
         super(repository, converter);
-
+        this.autoCodeGeneratorConverter = autoCodeGeneratorConverter;
         this.projectRepository = repository;
         this.projectFileService = projectFileService;
         this.orgUsersRepository = orgUsersRepository;
@@ -72,6 +79,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.accountService = accountService;
         this.systemSettingService = systemSettingService;
         this.jobRepository = jobRepository;
+        this.autoCodeConfigRepository = autoCodeConfigRepository;
+        this.autoCodeConfigConverter = autoCodeConfigConverter;
+        this.autoCodeGeneratorRepository = autoCodeGeneratorRepository;
     }
 
 
@@ -501,19 +511,25 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         if (accountResponse == null || accountResponse.isErrors()) {
             return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
         }
+        codeConfig.setProject(project);
 
-        project.setGenPolicy(codeConfig.getGenPolicy());
-        if (codeConfig.getGenPolicy() == GenPolicy.Create) {
-            project.setOpenAPISpec(codeConfig.getOpenAPISpec());
-        } else {
-            project.setOpenAPISpec(null);
-        }
 
-        Response<Project> projectResponse = save(project);
+//        project.setGenPolicy(codeConfig.getGenPolicy());
+//        if (codeConfig.getGenPolicy() == GenPolicy.Create) {
+//            project.setOpenAPISpec(codeConfig.getOpenAPISpec());
+//        } else {
+//            project.setOpenAPISpec(null);
+//        }
+//        Response<Project> projectResponse = save(project);
+//        if (projectResponse.isErrors()) {
+//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Autocode config failed"));
+//        }
+        List<com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeGenerator> generators = autoCodeGeneratorRepository.saveAll(autoCodeGeneratorConverter.convertToEntities(codeConfig.getGenerators()));
 
-        if (projectResponse.isErrors()) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Autocode config failed"));
-        }
+        com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeConfig entity = autoCodeConfigConverter.convertToEntity(codeConfig);
+
+        entity.setGenerators(generators);
+        autoCodeConfigRepository.save(entity);
 
         // Create GaaS Task
         this.gaaSTaskRequestProcessor.processAutoCodeconfig(converter.convertToEntity(project), codeConfig);
