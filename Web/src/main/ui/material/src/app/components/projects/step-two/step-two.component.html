@@ -197,8 +197,8 @@
                                             
                                             <mat-form-field>
                                                 <mat-select placeholder="Database" required name="Database">
-                                                    <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
-                                                        {{res.database}}
+                                                    <mat-option  [value]="res.database.name">
+                                                        {{res.database.name}}
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
@@ -233,8 +233,8 @@
                                             <br/>
                                             <mat-form-field>
                                                 <mat-select placeholder="Database" required name="Database">
-                                                    <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
-                                                        {{res.database}}
+                                                    <mat-option  [value]="res.database.name">
+                                                        {{res.database.name}}
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
