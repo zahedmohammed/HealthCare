@@ -1,12 +1,18 @@
-
+<div class="box box-default">
+        <div class="box-body">
+            <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
+            <span class="text-muted"> > </span>
+            {{job.name}}
+        </div>
+    </div>
 <section class="container-fluid with-maxwidth chapter">
 
     <article class="article">
-        <h2 class="article-title">
+        <!-- <h2 class="article-title">
             <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
             /
-            <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}<!--</a>--> /
-            Runs</h2>
+            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]">{{job.name}}</a> /
+            Runs</h2> -->
         <mat-tab-group>
             <mat-tab label="Details">
                 <section class="box box-transparent">

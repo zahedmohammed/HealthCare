@@ -1,9 +1,13 @@
+<div class="box box-default"> 
+        <div class="box-body"> 
+                <a href="javascript:;" [routerLink]="['/app/orgs']">
+                     Organization </a> <span class="text-muted"> > </span>
+                        {{org.name}}
+        </div> 
+    </div> 
 <section class="container-fluid with-maxwidth chapter">
-
+        <br>
     <article class="article">
-        <h2 class="article-title">
-            <a href="javascript:;" [routerLink]="['/app/orgs']"> {{org.name}} </a>/ Users</h2>
-            <br/>
             <button mat-button color="primary" class="btn-w-md pull-right1"
                     [routerLink]="['/app/orgs', org.id, 'users', 'new']">
                 <i class="fa fa-plus"></i>

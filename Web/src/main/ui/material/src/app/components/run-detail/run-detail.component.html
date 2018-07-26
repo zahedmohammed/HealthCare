@@ -1,15 +1,25 @@
+<div class="box box-default">
+        <div class="box-body">
+            <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
+            <span class="text-muted"> > </span>
+            <a href="javascript:;" [routerLink]="['/app/jobs', job.id, 'runs']">{{job.name}}
+               </a>
+            <span class="text-muted"> > </span>
+            {{run.runId}}
+        </div>
+    </div>
 <section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter1">
-    <article class="article">
-        <h2 class="article-title">
+    <!-- <article class="article">
+         <h2 class="article-title">
             <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
             /
-            <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}
-            <!--</a>-->
-            /
+           <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> {{job.name}}
+            </a>
+           /
             <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs']"> Runs </a>
             / {{run.runId}}
-        </h2>
-    </article>
+        </h2> 
+    </article> -->
 
     <div class="box box-default table-box mdl-shadow--2dp">
         <div class="item-card card__horizontal1">
