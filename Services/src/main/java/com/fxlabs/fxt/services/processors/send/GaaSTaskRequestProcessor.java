@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.converters.project.AutoCodeConfigMinimalConverter;
 import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.users.SystemSetting;
@@ -10,6 +11,7 @@ import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.AutoCodeConfig;
+import com.fxlabs.fxt.dto.project.AutoCodeConfigMinimal;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.project.ProjectSync;
 import com.fxlabs.fxt.dto.users.Users;
@@ -62,6 +64,9 @@ public class GaaSTaskRequestProcessor {
 
     @Autowired
     private SystemSettingRepository systemSettingRepository;
+
+    @Autowired
+    private AutoCodeConfigMinimalConverter autoCodeConfigMinimalConverter;
 
     /**
      * List projects of type GIT
@@ -152,7 +157,12 @@ public class GaaSTaskRequestProcessor {
             }
             task.setVcLastCommit(project.getLastCommit());
             if (codeConfig != null){
-                task.setAutoCodeConfig(codeConfig);
+                AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(codeConfig);
+                task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
+                if (autoCodeConfigMinimal.getGenPolicy() != null && autoCodeConfigMinimal.getGenPolicy() != GenPolicy.None) {
+                    task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
+                    task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
+                }
             }
             Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
 

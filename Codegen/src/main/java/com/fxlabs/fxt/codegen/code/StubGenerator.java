@@ -54,7 +54,7 @@ public class StubGenerator {
      *
      * @param projectDir
      */
-    public void setupFXConfig(String projectDir, com.fxlabs.fxt.dto.project.AutoCodeConfig autoCodeConfigContent) {
+    public void setupFXConfig(String projectDir, com.fxlabs.fxt.dto.project.AutoCodeConfigMinimal autoCodeConfigContent) {
         try {
             File fxfile = FileUtils.getFile(new File(projectDir), FX_FILE);
             if (fxfile == null || !fxfile.exists()) {

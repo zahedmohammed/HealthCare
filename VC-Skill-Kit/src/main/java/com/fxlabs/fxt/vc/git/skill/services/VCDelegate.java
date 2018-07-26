@@ -5,6 +5,7 @@ package com.fxlabs.fxt.vc.git.skill.services;
 import com.fxlabs.fxt.codegen.code.CodegenThreadUtils;
 import com.fxlabs.fxt.codegen.code.StubGenerator;
 import com.fxlabs.fxt.dto.project.AutoCodeConfig;
+import com.fxlabs.fxt.dto.project.AutoCodeConfigMinimal;
 import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.vc.VCTask;
@@ -70,9 +71,9 @@ public class VCDelegate {
             if (response.isSuccess()) {
                 CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
                 // 1.2 Setup Fxfile.yaml & AutoCodeConfig.yaml
-                AutoCodeConfig autoCodeConfigContent = null;
-                if (task.getAutoCodeConfig() != null) {
-                    autoCodeConfigContent = task.getAutoCodeConfig();
+                AutoCodeConfigMinimal autoCodeConfigContent = null;
+                if (task.getAutoCodeConfigMinimal() != null) {
+                    autoCodeConfigContent = task.getAutoCodeConfigMinimal();
                 }
 
                 stubGenerator.setupFXConfig(path, autoCodeConfigContent);
