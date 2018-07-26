@@ -60,6 +60,39 @@ export class StepTwoComponent implements OnInit {
 
   }
 
+  getById(id: string) {
+    this.showSpinner = true;
+    this.projectService.getAutoCodeConfigByProjectId(id).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.project = results['data'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+   createAutoCodeConfig() {
+     this.handler.activateLoader();
+       this.snackbarService.openSnackBar( this.project.name + " autocode config saving...", "");
+       this.projectService.saveAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
+         this.handler.hideLoader();
+         if (this.handler.handle(results)) {
+             return;
+         }
+        this.autoCodeConfig = results['data'];
+         this.snackbarService.openSnackBar(this.project.name + " created successfully", "");
+         this.router.navigate(['/app/auto-code']);
+     }, error => {
+       this.handler.hideLoader();
+       this.handler.error(error);
+     });
+   }
+
+
+
   // create() {
   //   this.handler.activateLoader();
   //     this.snackbarService.openSnackBar( this.project.name + " creating...", "");

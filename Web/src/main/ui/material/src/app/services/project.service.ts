@@ -6,6 +6,7 @@ import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/toPromise';
 import { Project } from '../models/project.model';
 import { ProjectSync } from '../models/project-sync.model';
+import { AutoCodeConfig } from '../models/project-autocode-config.model';
 
 
 @Injectable()
@@ -62,6 +63,15 @@ export class ProjectService {
   projectSync(projectsync: ProjectSync) {
     return this.http.post(this.serviceUrl + "/" +  projectsync['id'] + "/project-sync", projectsync);
   }
+
+  saveAutoCodeConfig(autoCodeConfig: AutoCodeConfig, projectId: string) {
+    return this.http.post(this.serviceUrl + "/" +  projectId + "/autocodeconfig", autoCodeConfig);
+  }
+
+ getAutoCodeConfigByProjectId(projectId: string) {
+    return this.http.get(this.serviceUrl + "/" + projectId + "/autocodeconfig");
+  }
+
 
   //Auto-code for testing from static json file
 
