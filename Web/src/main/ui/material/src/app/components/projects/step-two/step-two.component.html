@@ -51,8 +51,34 @@
     </div>
 </div>
 
+
 <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
-    <div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <label for="name" class="col-md-0 control-label"></label>
+        <div class="col-md-5">
+            <mat-input-container class="full-width">
+                <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
+                       matInput placeholder="OpenAPI Spec URL">
+            </mat-input-container>
+        </div>
+        <div class="col-md-7">
+            <div class="callout1 text-muted callout-info1">
+                <p> e.g. https://ip/v2/api-docs. Auto-Code requires OpenAPISpec of your application to
+                    create test/security coverage. How-to generate OpenAPISpec for your Java, .Net
+                    and other applications.
+                    <a target="_blank" href="https://swagger.io/open-source-integrations/">
+                        Learn more <i class="material-icons"
+                                      style="font-size: 18px;">open_in_new</i></a>
+                </p>
+            </div>
+        </div>
+     
+    </div>
+
+
+<div class="form-group row" *ngIf="project.genPolicy === 'Create'">
+    <!-- <div class="col-md-12" *ngFor="let res of autoCodeConfig"> -->
+            <div class="col-md-12" *ngFor="let res of autoCodeConfig">
+                <div *ngIf='res.type === "anonymous_invalid"'>
     <mat-accordion>
         <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -62,7 +88,7 @@
               </mat-expansion-panel-header>
           
               <mat-form-field>
-                <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions' rows="3" cols="150"></textarea>
               </mat-form-field>
                    <br/>
                    <label>Severity</label>
@@ -71,45 +97,522 @@
               {{sev}}
             </mat-radio-button>
           </mat-radio-group>
-          <br/>
+          <!-- <br/>
           <div *ngIf='res.inactive === true'>
           <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
-        </div>
+        </div> 
 <br/>
           <mat-form-field>
             <mat-select placeholder="Database" required
                                 name="Database">
-              <mat-option *ngFor="let res of autoCodeConfig.generators" [value]="res.database">
+              <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
                             {{res.database}}
               </mat-option>
             </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
       </mat-expansion-panel>
       </mat-accordion>
-</div>
+    </div>
 </div>
 
-<div class="form-group row" *ngIf="project.genPolicy === 'Create'">
-    <label for="name" class="col-md-0 control-label"></label>
-    <div class="col-md-5">
-        <mat-input-container class="full-width">
-            <input required [(ngModel)]="project.openAPISpec" name="spec" id="spec"
-                   matInput placeholder="OpenAPI Spec URL">
-        </mat-input-container>
-    </div>
-    <div class="col-md-7">
-        <div class="callout1 text-muted callout-info1">
-            <p> e.g. https://ip/v2/api-docs. Auto-Code requires OpenAPISpec of your application to
-                create test/security coverage. How-to generate OpenAPISpec for your Java, .Net
-                and other applications.
-                <a target="_blank" href="https://swagger.io/open-source-integrations/">
-                    Learn more <i class="material-icons"
-                                  style="font-size: 18px;">open_in_new</i></a>
-            </p>
-        </div>
-    </div>
- 
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "auth_invalid"'>
+      <mat-accordion>
+            <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <b>Type - {{ res.type }}</b>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <mat-form-field>
+                    <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                  </mat-form-field>
+                       <br/>
+                       <label>Severity</label>
+                 <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                  {{sev}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <!-- <br/>
+              <div *ngIf='res.inactive === true'>
+              <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+            </div>
+    <br/>
+              <mat-form-field>
+                <mat-select placeholder="Database" required
+                                    name="Database">
+                  <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                {{res.database}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+          </mat-expansion-panel>
+          </mat-accordion>
+          </div>
 </div>
+
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "DDOS"'>
+          <mat-accordion>
+                <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <b>Type - {{ res.type }}</b>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                  
+                      <mat-form-field>
+                        <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                      </mat-form-field>
+                           <br/>
+                           <label>Severity</label>
+                     <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                    <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                      {{sev}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                  <br/>
+                  <mat-form-field>
+                        <textarea matInput placeholder="Matches" [(ngModel)]='res.matches.name'></textarea>
+                      </mat-form-field>
+                  <!-- <br/>
+                  <div *ngIf='res.inactive === true'>
+                  <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+                </div>
+        <br/>
+                  <mat-form-field>
+                    <mat-select placeholder="Database" required
+                                        name="Database">
+                      <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                    {{res.database}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+              </mat-expansion-panel>
+              </mat-accordion>
+              </div>
+              </div>
+
+              <div class="col-md-12" *ngFor="let res of autoCodeConfig">
+                    <div *ngIf='res.type === "XSS_Injection"'>
+              <mat-accordion>
+                    <mat-expansion-panel>
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              <b>Type - {{ res.type }}</b>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                      
+                          <mat-form-field>
+                            <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                          </mat-form-field>
+                               <br/>
+                               <label>Severity</label>
+                         <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                          {{sev}}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                      <!-- <br/>
+                      <div *ngIf='res.inactive === true'>
+                      <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+                    </div>
+            <br/>
+                      <mat-form-field>
+                        <mat-select placeholder="Database" required
+                                            name="Database">
+                          <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                        {{res.database}}
+                          </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+                  </mat-expansion-panel>
+                  </mat-accordion>
+                  </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "sql_injection"'>
+                  <mat-accordion>
+                        <mat-expansion-panel>
+                              <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                  <b>Type - {{ res.type }}</b>
+                                </mat-panel-title>
+                              </mat-expansion-panel-header>
+                          
+                              <mat-form-field>
+                                <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                              </mat-form-field>
+                                   <br/>
+                                   <label>Severity</label>
+                             <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                            <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                              {{sev}}
+                            </mat-radio-button>
+                          </mat-radio-group>
+                          <br/>
+                          <!-- <div *ngIf='res.inactive === true'>
+                          <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+                        </div>
+                <br/> -->
+                          <mat-form-field>
+                            <mat-select placeholder="Database" required
+                                                name="Database">
+                              <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                            {{res.database}}
+                              </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                      </mat-expansion-panel>
+                      </mat-accordion>
+                      </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "sql_injection_timebound"'>
+                      <mat-accordion>
+                            <mat-expansion-panel>
+                                  <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                      <b>Type - {{ res.type }}</b>
+                                    </mat-panel-title>
+                                  </mat-expansion-panel-header>
+                              
+                                  <mat-form-field>
+                                    <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                  </mat-form-field>
+                                       <br/>
+                                       <label>Severity</label>
+                                 <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                  {{sev}}
+                                </mat-radio-button>
+                              </mat-radio-group>
+                              <br/>
+                              <mat-form-field>
+                                    <textarea matInput placeholder="Matches" [(ngModel)]='res.matches.pathPatterns'></textarea>
+                                  </mat-form-field>
+                    <br/>
+                              <mat-form-field>
+                                <mat-select placeholder="Database" required
+                                                    name="Database">
+                                  <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                {{res.database}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                          </mat-expansion-panel>
+                          </mat-accordion>
+                          </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "log_forging"'>
+                          <mat-accordion>
+                                <mat-expansion-panel>
+                                      <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                          <b>Type - {{ res.type }}</b>
+                                        </mat-panel-title>
+                                      </mat-expansion-panel-header>
+                                      <mat-form-field>
+                                            <textarea matInput placeholder="Postfix" [(ngModel)]='res.postfix'></textarea>
+                                          </mat-form-field>
+<br/>
+                                          <mat-form-field>
+                                                <textarea matInput placeholder="Patterns" [(ngModel)]='res.patterns'></textarea>
+                                              </mat-form-field>
+                                              <br/>
+                                      <mat-form-field>
+                                        <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                      </mat-form-field>
+                                           <br/>
+                                           <label>Severity</label>
+                                     <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                    <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                      {{sev}}
+                                    </mat-radio-button>
+                                  </mat-radio-group>
+                                  <!-- <br/>
+                                  <div *ngIf='res.inactive === true'>
+                                  <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+                                </div>
+                        <br/>
+                                  <mat-form-field>
+                                    <mat-select placeholder="Database" required
+                                                        name="Database">
+                                      <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                    {{res.database}}
+                                      </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+                              </mat-expansion-panel>
+                              </mat-accordion>
+                              </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "rbac"'>
+                              <mat-accordion>
+                                    <mat-expansion-panel>
+                                          <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                              <b>Type - {{ res.type }}</b>
+                                            </mat-panel-title>
+                                          </mat-expansion-panel-header>
+                                      
+                                          <mat-form-field>
+                                            <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                          </mat-form-field>
+                                               <br/>
+                                               <label>Severity</label>
+                                         <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                          {{sev}}
+                                        </mat-radio-button>
+                                      </mat-radio-group>
+                                      <br/>
+                                      <mat-form-field>
+                                            <textarea matInput placeholder="Matches" [(ngModel)]='res.matches'></textarea>
+                                          </mat-form-field>
+                            <!-- <br/>
+                                      <mat-form-field>
+                                        <mat-select placeholder="Database" required
+                                                            name="Database">
+                                          <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                        {{res.database}}
+                                          </mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+                                  </mat-expansion-panel>
+                                  </mat-accordion>
+                                  </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "invalid_datatype"'>
+                                  <mat-accordion>
+                                        <mat-expansion-panel>
+                                              <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                  <b>Type - {{ res.type }}</b>
+                                                </mat-panel-title>
+                                              </mat-expansion-panel-header>
+                                          
+                                              <mat-form-field>
+                                                <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                              </mat-form-field>
+                                                   <br/>
+                                                   <label>Severity</label>
+                                             <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                            <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                              {{sev}}
+                                            </mat-radio-button>
+                                          </mat-radio-group>
+                                          <!-- <br/>
+                                          <div *ngIf='res.inactive === true'>
+                                          <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+                                        </div>
+                                <br/>
+                                          <mat-form-field>
+                                            <mat-select placeholder="Database" required
+                                                                name="Database">
+                                              <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                            {{res.database}}
+                                              </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+                                      </mat-expansion-panel>
+                                      </mat-accordion>
+                                      </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "special_chars"'>
+                                      <mat-accordion>
+                                            <mat-expansion-panel>
+                                                  <mat-expansion-panel-header>
+                                                    <mat-panel-title>
+                                                      <b>Type - {{ res.type }}</b>
+                                                    </mat-panel-title>
+                                                  </mat-expansion-panel-header>
+                                              
+                                                  <mat-form-field>
+                                                    <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                                  </mat-form-field>
+                                                       <br/>
+                                                       <label>Severity</label>
+                                                 <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                                <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                                  {{sev}}
+                                                </mat-radio-button>
+                                              </mat-radio-group>
+                                              <!-- <br/>
+                                              <div *ngIf='res.inactive === true'>
+                                              <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+                                            </div>
+                                    <br/>
+                                              <mat-form-field>
+                                                <mat-select placeholder="Database" required
+                                                                    name="Database">
+                                                  <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                                {{res.database}}
+                                                  </mat-option>
+                                                </mat-select>
+                                            </mat-form-field> -->
+                                          </mat-expansion-panel>
+                                          </mat-accordion>
+                                          </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "negative_number"'>
+                                          <mat-accordion>
+                                                <mat-expansion-panel>
+                                                      <mat-expansion-panel-header>
+                                                        <mat-panel-title>
+                                                          <b>Type - {{ res.type }}</b>
+                                                        </mat-panel-title>
+                                                      </mat-expansion-panel-header>
+                                                  
+                                                      <mat-form-field>
+                                                        <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                                      </mat-form-field>
+                                                           <br/>
+                                                           <label>Severity</label>
+                                                     <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                                    <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                                      {{sev}}
+                                                    </mat-radio-button>
+                                                  </mat-radio-group>
+                                                  <!-- <br/>
+                                                  <div *ngIf='res.inactive === true'>
+                                                  <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+                                                </div>
+                                        <br/>
+                                                  <mat-form-field>
+                                                    <mat-select placeholder="Database" required
+                                                                        name="Database">
+                                                      <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                                    {{res.database}}
+                                                      </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field> -->
+                                              </mat-expansion-panel>
+                                              </mat-accordion>
+                                              </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "null_value"'>
+                                              <mat-accordion>
+                                                    <mat-expansion-panel>
+                                                          <mat-expansion-panel-header>
+                                                            <mat-panel-title>
+                                                              <b>Type - {{ res.type }}</b>
+                                                            </mat-panel-title>
+                                                          </mat-expansion-panel-header>
+                                                      
+                                                          <mat-form-field>
+                                                            <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                                          </mat-form-field>
+                                                               <br/>
+                                                               <label>Severity</label>
+                                                         <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                                        <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                                          {{sev}}
+                                                        </mat-radio-button>
+                                                      </mat-radio-group>
+                                                      <!-- <br/>
+                                                      <div *ngIf='res.inactive === true'>
+                                                      <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active - {{res.inactive}}</mat-checkbox>
+                                                    </div>
+                                            <br/>
+                                                      <mat-form-field>
+                                                        <mat-select placeholder="Database" required
+                                                                            name="Database">
+                                                          <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                                        {{res.database}}
+                                                          </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field> -->
+                                                  </mat-expansion-panel>
+                                                  </mat-accordion>
+                                                  </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "empty_value"'>
+                                                  <mat-accordion>
+                                                        <mat-expansion-panel>
+                                                              <mat-expansion-panel-header>
+                                                                <mat-panel-title>
+                                                                  <b>Type - {{ res.type }}</b>
+                                                                </mat-panel-title>
+                                                              </mat-expansion-panel-header>
+                                                          
+                                                              <mat-form-field>
+                                                                <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                                              </mat-form-field>
+                                                                   <br/>
+                                                                   <label>Severity</label>
+                                                             <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                                            <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                                              {{sev}}
+                                                            </mat-radio-button>
+                                                          </mat-radio-group>
+                                                          <br/>
+                                                          <div *ngIf='res.inactive === true'>
+                                                          <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active</mat-checkbox>
+                                                        </div>
+                                                <!-- <br/>
+                                                          <mat-form-field>
+                                                            <mat-select placeholder="Database" required
+                                                                                name="Database">
+                                                              <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                                            {{res.database}}
+                                                              </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field> -->
+                                                      </mat-expansion-panel>
+                                                      </mat-accordion>
+                                                      </div>
+</div>
+<div class="col-md-12" *ngFor="let res of autoCodeConfig">
+        <div *ngIf='res.type === "create"'>
+                                                      <mat-accordion>
+                                                            <mat-expansion-panel>
+                                                                  <mat-expansion-panel-header>
+                                                                    <mat-panel-title>
+                                                                      <b>Type - {{ res.type }}</b>
+                                                                    </mat-panel-title>
+                                                                  </mat-expansion-panel-header>
+                                                              
+                                                                  <mat-form-field>
+                                                                    <textarea matInput placeholder="Assertions" [(ngModel)]='res.assertions'></textarea>
+                                                                  </mat-form-field>
+                                                                       <br/>
+                                                                       <label>Severity</label>
+                                                                 <mat-radio-group class="example-radio-group" [(ngModel)]='res.severity'>
+                                                                <mat-radio-button color="primary" class="example-radio-button" *ngFor="let sev of severity" [value]="sev">
+                                                                  {{sev}}
+                                                                </mat-radio-button>
+                                                              </mat-radio-group>
+                                                              <br/>
+                                                              <div *ngIf='res.inactive === true'>
+                                                              <mat-checkbox type="checkbox" color="primary" [(ngModel)]='res.inactive' checked>Active</mat-checkbox>
+                                                            </div>
+                                                    <!-- <br/>
+                                                              <mat-form-field>
+                                                                <mat-select placeholder="Database" required
+                                                                                    name="Database">
+                                                                  <mat-option *ngFor="let res of autoCodeConfig" [value]="res.database">
+                                                                                {{res.database}}
+                                                                  </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field> -->
+                                                          </mat-expansion-panel>
+                                                          </mat-accordion>
+                                                          </div>
+</div>
+
+</div>
+
+
 
 <mat-card-actions>
     <button color="primary" 
@@ -119,7 +622,7 @@
 
 <!-- </form> -->
 
-</div>
+
 
 
 <!-- <div class="form-group row" *ngIf="project.genPolicy === 'Create'">
@@ -137,7 +640,7 @@
 </div> -->
 
 <!-- </div> -->
-
+</div>
 </div>
 </div>
 </article>

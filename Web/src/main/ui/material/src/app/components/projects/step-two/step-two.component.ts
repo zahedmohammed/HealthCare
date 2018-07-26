@@ -23,7 +23,7 @@ import { AutoCodeConfig } from '../../../models/project-autocode-config.model';
   providers: [ProjectService, OrgService, SnackbarService]
 })
 export class StepTwoComponent implements OnInit {
-  frmStepTwo: FormGroup;
+  stepTwoForm: FormGroup;
   show = false;
   showSpinner: boolean = false;
   project: Project = new Project();
@@ -56,6 +56,13 @@ export class StepTwoComponent implements OnInit {
     this.listAutoCode();
   //   this.frmStepTwo = this.formBuilder.group({
   //     address: ['', Validators.required]
+  // });
+
+  // this.stepTwoForm = new FormGroup({
+  //   autocode: new FormControl(),
+  //   spec: new FormControl(),
+  //   severity: new FormControl(),
+
   // });
 
   }
