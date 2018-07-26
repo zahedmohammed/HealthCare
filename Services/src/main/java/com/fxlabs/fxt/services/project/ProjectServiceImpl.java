@@ -17,6 +17,7 @@ import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import com.fxlabs.fxt.services.users.SystemSettingService;
+import com.fxlabs.fxt.services.util.AutoCodeConfigServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -535,6 +536,28 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.gaaSTaskRequestProcessor.processAutoCodeconfig(converter.convertToEntity(project), codeConfig);
 
         return new Response<>(codeConfig);
+    }
+
+    @Override
+    public Response<AutoCodeConfig> getAutoCodeDefaults(){
+        return new Response<>(AutoCodeConfigServiceUtil.getAutoCodeConfig());
+    }
+
+    @Override
+    public Response<AutoCodeConfig> getAutoCodeById(String projectId, String orgId){
+
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(projectId, orgId);
+        if (!optionalProject.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+
+
+        Optional<com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeConfig> entityOptional = autoCodeConfigRepository.findByProjectId(projectId);
+        if (!entityOptional.isPresent()) {
+            return new Response<>(AutoCodeConfigServiceUtil.getAutoCodeConfig());
+        }
+
+        return new Response<>(autoCodeConfigConverter.convertToDto(entityOptional.get()));
     }
 
 

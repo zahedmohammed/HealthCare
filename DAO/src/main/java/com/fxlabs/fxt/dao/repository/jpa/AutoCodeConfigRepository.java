@@ -15,4 +15,6 @@ import java.util.stream.Stream;
  */
 public interface AutoCodeConfigRepository extends JpaRepository<AutoCodeConfig, String> {
 
+
+    Optional<AutoCodeConfig> findByProjectId(String projectId);
 }
