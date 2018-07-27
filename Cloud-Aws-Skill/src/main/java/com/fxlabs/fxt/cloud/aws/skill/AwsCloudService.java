@@ -425,14 +425,25 @@ public class AwsCloudService implements CloudService {
             }
         }
 
+        DescribeSubnetsRequest describeSubnetsWithId = new DescribeSubnetsRequest();
 
-        DescribeSubnetsRequest describeSubnetsRequest = new DescribeSubnetsRequest();
-        DescribeSubnetsResult describeSubnetsIdResult = awsService.describeSubnets(describeSubnetsRequest);
-        List<Subnet> describeSubnetsIdsResult = response.getSubnets();
+        DescribeSubnetsResult describeSubnetsIdResult = awsService.describeSubnets(describeSubnetsWithId.withSubnetIds(subnet_));
+        List<Subnet> describeSubnetsIdsResult = describeSubnetsIdResult.getSubnets();
 
-        logger.info("Found  [{}] subnets in region [{}] for subnet Id search", response.getSubnets().size(), getRegion(opts));
+        logger.info("Found  [{}] subnets in region [{}] for subnet Id search", describeSubnetsIdResult.getSubnets().size(), getRegion(opts));
 
-        for (Subnet subnet : subnets) {
+        for (Subnet subnet : describeSubnetsIdsResult) {
+            if (subnet.getSubnetId().equals(subnet_))
+                return subnet.getSubnetId();
+        }
+
+
+        DescribeSubnetsResult describeSubnetResult = awsService.describeSubnets();
+        List<Subnet> describeSubnetAllResult = describeSubnetResult.getSubnets();
+
+        logger.info("Found  [{}] subnets in region [{}] for subnet all search in region", describeSubnetResult.getSubnets().size(), getRegion(opts));
+
+        for (Subnet subnet : describeSubnetAllResult) {
             if (subnet.isDefaultForAz())
                 return subnet.getSubnetId();
         }
