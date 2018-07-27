@@ -129,7 +129,7 @@ public class RunTaskRequestProcessor {
                 String _project = run.getJob().getProject().getName();
                 String _job = run.getJob().getName();
                 String _jobId = run.getJob().getId();
-                String _env = run.getJob().getEnvironment();
+                String _env = run.getJob().getEnvironment().getName();
                 String _region = run.getJob().getRegions();
                 String runId = run.getId();
 
@@ -392,10 +392,10 @@ public class RunTaskRequestProcessor {
         if (run.getAttributes().containsKey(RunConstants.ENV)) {
             envName = run.getAttributes().get(RunConstants.ENV);
         } else {
-            envName = run.getJob().getEnvironment();
+            envName = run.getJob().getEnvironment().getName();
         }
 
-        Environment env = findEvn(run.getJob().getProject().getId(), envName);
+        Environment env = run.getJob().getEnvironment();
         // TODO - Fail if not a valid env.
         if (env == null) {
             //run.getTask().setStatus(TaskStatus.FAIL);

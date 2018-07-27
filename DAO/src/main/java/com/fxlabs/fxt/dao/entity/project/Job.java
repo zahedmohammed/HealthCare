@@ -30,8 +30,12 @@ public class Job extends BaseEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    //@ManyToOne(cascade = CascadeType.REFRESH)
-    private String environment;
+//    //@ManyToOne(cascade = CascadeType.REFRESH)
+//    private String environment;
+
+    @OneToOne
+    @JoinColumn(name = "job_environment_id")
+    private Environment environment;
 
     @ElementCollection
     private List<String> tags;
