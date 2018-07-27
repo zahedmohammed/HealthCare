@@ -26,7 +26,7 @@ public class Job extends BaseDto<String> {
     private String refId;
     private String description;
 
-    private String environment;
+    private Environment environment;
 
     private List<String> tags;
 
