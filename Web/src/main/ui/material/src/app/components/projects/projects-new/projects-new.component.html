@@ -221,7 +221,7 @@
                                 <div class="col-md-5">
                                     <mat-form-field>
                                         <mat-select placeholder="Authentication Type" required
-                                                    [(ngModel)]="env.authType" formControlName="authTypeCtrl"
+                                                    [(ngModel)]="env.auths[0].authType" formControlName="authTypeCtrl"
                                                     name="type">
                                             <mat-option *ngFor="let type of authTypes" [value]="type">
                                                 {{type}}
@@ -231,12 +231,12 @@
                                 </div>
                             </div>
 
-                            <div *ngIf="env.authType === 'Basic'">
+                            <div *ngIf="env.auths[0].authType === 'Basic'">
                                 <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.username" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].username" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="Username">
                                         </mat-input-container>
                                     </div>
@@ -246,14 +246,14 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.password" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].password" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="Password">
                                         </mat-input-container>
                                     </div>
                                 </div>
                             </div>
 
-                            <div *ngIf="env.authType === 'OAuth_2_0'">
+                            <div *ngIf="env.auths[0].authType === 'OAuth_2_0'">
 
                                 <div class="form-group row">
                                     <label class="col-md-0 control-label">
@@ -261,7 +261,7 @@
                                     <div class="col-md-5">
                                         <mat-form-field>
                                             <mat-select placeholder="Authentication Type"
-                                                        [(ngModel)]="env.grantType" [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="env.auths[0].grantType" [ngModelOptions]="{standalone: true}"
                                                         name="type">
                                                 <mat-option *ngFor="let grant of grantTypes" [value]="grant">
                                                     {{grant}}
@@ -276,7 +276,7 @@
                                         <label for="name" class="col-md-0 control-label"></label>
                                         <div class="col-md-5">
                                             <mat-input-container class="full-width">
-                                                <input [(ngModel)]="env.username"
+                                                <input [(ngModel)]="env.auths[0].username"
                                                        [ngModelOptions]="{standalone: true}"
                                                        matInput placeholder="Username">
                                             </mat-input-container>
@@ -287,7 +287,7 @@
                                         <label for="name" class="col-md-0 control-label"></label>
                                         <div class="col-md-5">
                                             <mat-input-container class="full-width">
-                                                <input [(ngModel)]="env.password"
+                                                <input [(ngModel)]="env.auths[0].password"
                                                        [ngModelOptions]="{standalone: true}"
                                                        matInput placeholder="Password">
                                             </mat-input-container>
@@ -299,7 +299,7 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.clientId" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].clientId" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="ClientId">
                                         </mat-input-container>
                                     </div>
@@ -309,7 +309,7 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.clientSecret" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].clientSecret" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="ClientSecret">
                                         </mat-input-container>
                                     </div>
@@ -319,7 +319,7 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.id" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].id" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="Id">
                                         </mat-input-container>
                                     </div>
@@ -329,7 +329,7 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.accessTokenUri" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].accessTokenUri" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="AccessToken Uri">
                                         </mat-input-container>
                                     </div>
@@ -345,7 +345,7 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.userAuthorizationUri" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].userAuthorizationUri" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="UserAuthorization Uri">
                                         </mat-input-container>
                                     </div>
@@ -356,7 +356,7 @@
                                     <div class="col-md-5">
                                         <mat-form-field>
                                             <mat-select placeholder="Client Authentication Scheme"
-                                                        [(ngModel)]="env.clientAuthenticationScheme" [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="env.auths[0].clientAuthenticationScheme" [ngModelOptions]="{standalone: true}"
                                                         name="type">
                                                 <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
                                                     {{scheme}}
@@ -371,7 +371,7 @@
                                     <div class="col-md-5">
                                         <mat-form-field>
                                             <mat-select placeholder="Authorization Scheme"
-                                                        [(ngModel)]="env.authorizationScheme" [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="env.auths[0].authorizationScheme" [ngModelOptions]="{standalone: true}"
                                                         name="type">
                                                 <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
                                                     {{scheme}}
@@ -386,7 +386,7 @@
                                     <div class="col-md-5">
                                         <mat-form-field>
                                             <mat-select placeholder="Scope"
-                                                        [(ngModel)]="env.scope" [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="env.auths[0].scope" [ngModelOptions]="{standalone: true}"
                                                         name="type">
                                                 <mat-option *ngFor="let scope of scopeTypes" [value]="scope">
                                                     {{scope}}
@@ -399,12 +399,12 @@
 
                             </div>
 
-                            <div *ngIf="env.authType === 'Token'">
+                            <div *ngIf="env.auths[0].authType === 'Token'">
                                 <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.header_1" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].header_1" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="Header 1">
                                         </mat-input-container>
                                     </div>
@@ -420,7 +420,7 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.header_2"
+                                            <input [(ngModel)]="env.auths[0].header_2"
                                                    [ngModelOptions]="{standalone: true}" matInput
                                                    placeholder="Header 2">
                                         </mat-input-container>

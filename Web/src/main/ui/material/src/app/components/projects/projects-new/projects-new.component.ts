@@ -7,7 +7,7 @@ import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../models/account.model';
 import { Project } from '../../../models/project.model';
 import { AutoCodeConfig } from '../../../models/project-autocode-config.model';
-import { Env } from '../../../models/project-env.model';
+import { Env, Auth } from '../../../models/project-env.model';
 import { Job } from '../../../models/project-job.model';
 import { OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
@@ -32,11 +32,12 @@ export class ProjectsNewComponent implements OnInit {
   env: Env = new Env();
   orgs;
   accounts;
-  matStepper MatStepper;
+  matStepper;// MatStepper;
 
   isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
 
   authTypes = ['Basic', 'OAuth_2_0' , 'Token'];
   grantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
@@ -54,6 +55,7 @@ export class ProjectsNewComponent implements OnInit {
   ngOnInit() {
     this.AppConfig = APPCONFIG;
     this.getAccountsForProjectPage();
+    this.env.auths[0] = new Auth();
     this.firstFormGroup = this._formBuilder.group({
       nameCtrl: ['', Validators.required],
       urlCtrl: ['', Validators.required],
@@ -62,19 +64,14 @@ export class ProjectsNewComponent implements OnInit {
     this.secondFormGroup = this._formBuilder.group({
       openAPISpec: ['', Validators.required]
     });
+
     this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', Validators.required],
       urlCtrl:  ['', Validators.required],
       authTypeCtrl:  ['', Validators.required],
-
-
-
-
-
-
     });
 
-    this.fourthFormGroup = this._formBuilder.group({
+    /*this.fourthFormGroup = this._formBuilder.group({
       usernameCtrl:  ['', Validators.required],
       passwordCtrl:  ['', Validators.required],
     });
@@ -83,7 +80,7 @@ export class ProjectsNewComponent implements OnInit {
       header1Ctrl:  ['', Validators.required],
     });
 
-    /*grantTypeCtrl:  ['', Validators.required],
+    grantTypeCtrl:  ['', Validators.required],
       clientIdCtrl:  ['', Validators.required],
       clientSecretCtrl:  ['', Validators.required],
       accessTokenUriCtrl:  ['', Validators.required],
@@ -111,7 +108,7 @@ export class ProjectsNewComponent implements OnInit {
             return;
         }
         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
-        this.project = results.data;
+        this.project = results['data'];
         this.matStepper.next();
         this.getAutoCode();
     }, error => {
@@ -129,6 +126,7 @@ export class ProjectsNewComponent implements OnInit {
         return;
       }
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saved successfully", "");
+      this.project = results['data'];
       this.matStepper.next();
       this.getAutoCode();
     }, error => {
@@ -143,7 +141,7 @@ export class ProjectsNewComponent implements OnInit {
         if (this.handler.handle(results)) {
         return;
       }
-      this.autoCodeConfig = results.data;
+      this.autoCodeConfig = results['data'];
       console.log(this.autoCodeConfig);
     });
   }
@@ -157,7 +155,7 @@ export class ProjectsNewComponent implements OnInit {
         if (this.handler.handle(results)) {
         return;
       }
-      this.autoCodeConfig = results.data;
+      this.autoCodeConfig = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
       this.matStepper.next();
     }, error => {
@@ -175,7 +173,7 @@ export class ProjectsNewComponent implements OnInit {
         if (this.handler.handle(results)) {
         return;
       }
-      this.autoCodeConfig = results.data;
+      this.autoCodeConfig = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saved successfully", "");
       this.router.navigate(['/app/projects']);
     }, error => {

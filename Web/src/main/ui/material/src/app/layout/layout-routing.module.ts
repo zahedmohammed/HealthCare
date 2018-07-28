@@ -84,9 +84,7 @@ import { SkillsVersionControlComponent } from '../components/skills/skills-versi
 import { SkillsBotDeploymentComponent } from '../components/skills/skills-bot-deployment/skills-bot-deployment.component';
 import { SkillsIssueTrackerComponent } from '../components/skills/skills-issue-tracker/skills-issue-tracker.component';
 import { SkillsAnalyticsComponent } from '../components/skills/skills-analytics/skills-analytics.component';
-import { StepThreeComponent } from './../components/projects/step-three/step-three.component';
-import { StepTwoComponent } from './../components/projects/step-two/step-two.component';
-import { StepOneComponent } from './../components/projects/step-one/step-one.component';
+
 
 const routes: Routes = [
   {

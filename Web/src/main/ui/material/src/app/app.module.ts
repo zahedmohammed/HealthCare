@@ -164,10 +164,6 @@ import {DeleteDialogComponent}from './components/dialogs/delete-dialog/delete-di
 import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.component';
 
 import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-sync.component';
-import { CreateProfileComponent } from './components/projects/create-profile/create-profile.component';
-import { StepOneComponent } from './components/projects/step-one/step-one.component';
-import { StepTwoComponent } from './components/projects/step-two/step-two.component';
-import { StepThreeComponent } from './components/projects/step-three/step-three.component';
 
 @NgModule({
   imports: [
@@ -311,11 +307,7 @@ import { StepThreeComponent } from './components/projects/step-three/step-three.
     SuperbotnetworkListComponent,
     DeleteDialogComponent,
     SuitDailogComponent,
-    ProjectsSyncComponent,
-    CreateProfileComponent,
-    StepOneComponent,
-    StepTwoComponent,
-    StepThreeComponent
+    ProjectsSyncComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
