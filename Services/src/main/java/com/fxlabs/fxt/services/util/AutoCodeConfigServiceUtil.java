@@ -13,9 +13,11 @@ import java.util.Map;
 public class AutoCodeConfigServiceUtil {
 
 
-    public static AutoCodeConfig getAutoCodeConfig(){
+    public static AutoCodeConfig getAutoCodeConfig(Project project) {
 
-        AutoCodeConfig autoCodeConfig  = new AutoCodeConfig();
+        AutoCodeConfig autoCodeConfig = new AutoCodeConfig();
+
+        autoCodeConfig.setProject(project);
         autoCodeConfig.setGenPolicy(GenPolicy.Create);
 
         List<AutoCodeGenerator> autoCodeGenerators = new ArrayList<>();
@@ -46,7 +48,7 @@ public class AutoCodeConfigServiceUtil {
 
         create.setType("create");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         create.setAssertions(assertions);
 
@@ -61,7 +63,7 @@ public class AutoCodeConfigServiceUtil {
 
         empty_value.setType("empty_value");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         empty_value.setAssertions(assertions);
         return empty_value;
@@ -74,7 +76,7 @@ public class AutoCodeConfigServiceUtil {
         null_value.setSeverity(TestSuiteSeverity.Critical);
         null_value.setType("anonymous_invalid");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         null_value.setAssertions(assertions);
 
@@ -83,14 +85,14 @@ public class AutoCodeConfigServiceUtil {
 
     private static AutoCodeGenerator getSpecial_chars() {
         AutoCodeGenerator special_chars = new AutoCodeGenerator();
-        special_chars .setInactive(false);
-        special_chars .setSeverity(TestSuiteSeverity.Critical);
+        special_chars.setInactive(false);
+        special_chars.setSeverity(TestSuiteSeverity.Critical);
 
-        special_chars .setType("special_chars ");
+        special_chars.setType("special_chars ");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
-        special_chars .setAssertions(assertions);
+        special_chars.setAssertions(assertions);
         return special_chars;
     }
 
@@ -101,7 +103,7 @@ public class AutoCodeConfigServiceUtil {
         invalid_datatype.setSeverity(TestSuiteSeverity.Critical);
         invalid_datatype.setType("invalid_datatype");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         invalid_datatype.setAssertions(assertions);
 
@@ -115,7 +117,7 @@ public class AutoCodeConfigServiceUtil {
         rbac.setSeverity(TestSuiteSeverity.Critical);
         rbac.setType("rbac");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         rbac.setAssertions(assertions);
 
@@ -129,7 +131,7 @@ public class AutoCodeConfigServiceUtil {
 
         log_Forging.setType("log_Forging");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         log_Forging.setAssertions(assertions);
 
@@ -143,7 +145,7 @@ public class AutoCodeConfigServiceUtil {
         sql_injection_timebound.setSeverity(TestSuiteSeverity.Critical);
         sql_injection_timebound.setType("sql_injection_timebound");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@ResponseTime >= 5000");
         sql_injection_timebound.setAssertions(assertions);
 
@@ -157,13 +159,13 @@ public class AutoCodeConfigServiceUtil {
 
     private static AutoCodeGenerator getSql_injection() {
 
-         AutoCodeGenerator sql_injection = new AutoCodeGenerator();
+        AutoCodeGenerator sql_injection = new AutoCodeGenerator();
         sql_injection.setInactive(false);
 
         sql_injection.setSeverity(TestSuiteSeverity.Critical);
         sql_injection.setType("sql_injection");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         sql_injection.setAssertions(assertions);
 
@@ -181,7 +183,7 @@ public class AutoCodeConfigServiceUtil {
         XSS_Injection.setType("XSS_Injection");
 
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         XSS_Injection.setAssertions(assertions);
 
@@ -196,7 +198,7 @@ public class AutoCodeConfigServiceUtil {
         ddos.setSeverity(TestSuiteSeverity.Critical);
         ddos.setType("ddos");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         ddos.setAssertions(assertions);
 
@@ -210,7 +212,7 @@ public class AutoCodeConfigServiceUtil {
         auth_invalid.setSeverity(TestSuiteSeverity.Critical);
         auth_invalid.setType("auth_invalid");
 
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
         auth_invalid.setAssertions(assertions);
 
@@ -222,7 +224,7 @@ public class AutoCodeConfigServiceUtil {
         anonymous_invalid.setInactive(false);
         anonymous_invalid.setSeverity(TestSuiteSeverity.Critical);
         anonymous_invalid.setType("anonymous_invalid");
-        List<String> assertions= new ArrayList<>();
+        List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
 
         anonymous_invalid.setAssertions(assertions);
@@ -254,7 +256,6 @@ public class AutoCodeConfigServiceUtil {
         TYPE_CATEGORY_MAP.put("create", TestSuiteCategory.Functional);
 
     }
-
 
 
 }

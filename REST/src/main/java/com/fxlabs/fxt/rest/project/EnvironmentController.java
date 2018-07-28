@@ -42,13 +42,13 @@ public class EnvironmentController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<Environment>> create(@Valid @RequestBody List<Environment> dtos) {
-        return service.save(dtos, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
+        return null;//service.save(dtos, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Environment> create(@Valid @RequestBody Environment dto) {
-        return service.save(dto, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
+        return service.create(dto, dto.getProjectId(), com.fxlabs.fxt.rest.base.SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

@@ -1,4 +1,5 @@
 export class AutoCodeConfig {
+    genPolicy: string;
     openAPISpec: string;
     generators: Categories[]= [];
 }
@@ -6,6 +7,7 @@ export class AutoCodeConfig {
 export class Categories {
     type: string;
     assertions: string[]= [];
+    assertionsText: string;
     severity: string;
     inactive: boolean;
     postfix: string;

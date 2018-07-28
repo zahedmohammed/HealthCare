@@ -8,9 +8,6 @@ import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.clusters.Account;
-import com.fxlabs.fxt.dto.project.AutoCodeConfig;
-import com.fxlabs.fxt.dto.project.GenPolicy;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
@@ -46,7 +43,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
 
     @Override
-    public Response<List<com.fxlabs.fxt.dto.project.Environment>> findByProjectId(String projectId, String user) {
+    public Response<List<com.fxlabs.fxt.dto.project.Environment>> findByProjectId(String projectId, String org) {
         List<Environment> environments = environmentRepository.findByProjectId(projectId);
         return new Response<>(converter.convertToDtos(environments));
     }
@@ -75,36 +72,37 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
     @Override
     public void isUserEntitled(String id, String user) {
-        Optional<Environment> environmentOptional = environmentRepository.findById(id);
+        /*Optional<Environment> environmentOptional = environmentRepository.findById(id);
         if (!environmentOptional.isPresent()) {
             throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, id));
         }
-        projectService.isUserEntitled(environmentOptional.get().getProjectId(), user);
+        projectService.isUserEntitled(environmentOptional.get().getProjectId(), user);*/
     }
 
     @Override
-    public Response<com.fxlabs.fxt.dto.project.Environment> create(com.fxlabs.fxt.dto.project.Environment environment, String projectId, String owenr, String orgId){
+    public Response<com.fxlabs.fxt.dto.project.Environment> create(com.fxlabs.fxt.dto.project.Environment environment, String projectId, String orgId) {
 
-        if (environment == null || StringUtils.isEmpty(projectId)) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for  Project Env configuaration"));
+        if (environment == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project environment"));
         }
 
-        if (environment.getName() == null && environment.getBaseUrl() == null) {
+        if (StringUtils.isEmpty(environment.getName())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Name is empty."));
         }
 
-        if (environment.getBaseUrl() == null) {
+        if (StringUtils.isEmpty(environment.getBaseUrl())) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Url is empty."));
         }
 
-        Response<Project> optionalProject = projectService.findById(projectId, owenr);
-        if (!optionalProject.isErrors() || optionalProject.getData() == null) {
+        Response<Project> optionalProject = projectService.findById(projectId, orgId);
+        if (optionalProject.isErrors() || optionalProject.getData() == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
-//        - Name: Dev                [Default value]
-//        - Environment:             [Autocomplete options]
-//        - Region: FXLabs/US_WEST_1 [Autocomplete options]
-//        - Cron:  0 15 10 ? * *     [Autocomplete options]
+        environment.setProjectId(optionalProject.getData().getId());
+        //        - Name: Dev                [Default value]
+        //        - Environment:             [Autocomplete options]
+        //        - Region: FXLabs/US_WEST_1 [Autocomplete options]
+        //        - Cron:  0 15 10 ? * *     [Autocomplete options]
         Response<com.fxlabs.fxt.dto.project.Environment> environmentResponse = save(environment);
 
         Job job = new Job();

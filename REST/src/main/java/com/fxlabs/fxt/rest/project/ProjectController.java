@@ -3,6 +3,7 @@ package com.fxlabs.fxt.rest.project;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
+import com.fxlabs.fxt.services.project.EnvironmentService;
 import com.fxlabs.fxt.services.project.ProjectFileService;
 import com.fxlabs.fxt.services.project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,17 @@ public class ProjectController {
 
     private ProjectFileService projectFileService;
     private ProjectService projectService;
+    private EnvironmentService environmentService;
+
     private static final String SAVINGS = "/savings";
 
 
     @Autowired
     public ProjectController(
-            ProjectService projectService, ProjectFileService projectFileService) {
+            ProjectService projectService, ProjectFileService projectFileService, EnvironmentService environmentService) {
         this.projectService = projectService;
         this.projectFileService = projectFileService;
+        this.environmentService = environmentService;
     }
 
     @Secured({ROLE_USER})
@@ -142,11 +146,15 @@ public class ProjectController {
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
-    @RequestMapping(value = "/autocodeconfig", method = RequestMethod.GET)
-    public Response<AutoCodeConfig> getAutoCodeConfigDefaults() {
-        return projectService.getAutoCodeDefaults();
+    @RequestMapping(value = "/{projectId}/env", method = RequestMethod.GET)
+    public Response<List<Environment>> getEnvs(@PathVariable("projectId") String projectId) {
+        return environmentService.findByProjectId(projectId, SecurityUtil.getOrgId());
     }
 
-
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{projectId}/env", method = RequestMethod.POST)
+    public Response<Environment> saveEnv(@PathVariable("projectId") String projectId, @RequestBody Environment request) {
+        return environmentService.create(request, projectId, SecurityUtil.getOrgId());
+    }
 
 }

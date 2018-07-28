@@ -21,6 +21,7 @@ public class AutoCodeGenerator extends BasicBaseDto {
 
     private String type;
     private List<String> assertions;
+    private String assertionsText;
     private TestSuiteSeverity severity;
     private Database database;
     protected boolean inactive = false;

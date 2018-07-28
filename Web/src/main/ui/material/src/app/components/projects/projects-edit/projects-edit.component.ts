@@ -13,7 +13,7 @@ import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from 
 import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 import {SnackbarService}from '../../../services/snackbar.service';
 import {SuitDailogComponent} from "../../dialogs/suit-dailog/suit-dailog.component";
-import { ProjectSync } from '../../../models/project-sync.model'; 
+import { ProjectSync } from '../../../models/project-sync.model';
 
 @Component({
   selector: 'app-projects-edit',
@@ -101,7 +101,7 @@ export class ProjectsEditComponent implements OnInit {
     });
   }
 
-delete() {
+    delete() {
     let dialogRef = this.dialog.open(DeleteDialogComponent, {
         data: {
             project: this.project

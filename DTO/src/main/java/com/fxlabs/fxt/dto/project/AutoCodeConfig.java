@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fxlabs.fxt.dto.base.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Map;
 @NoArgsConstructor
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AutoCodeConfig implements Serializable {
+public class AutoCodeConfig  extends BaseDto<String> {
 
     private static final long serialVersionUID = 1L;
 

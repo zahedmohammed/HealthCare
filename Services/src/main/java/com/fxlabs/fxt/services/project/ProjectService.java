@@ -43,8 +43,6 @@ public interface ProjectService extends GenericService<Project, String> {
 
     Response<AutoCodeConfig> saveAutoCode(String projectId, AutoCodeConfig codeConfig, String owner);
 
-    Response<AutoCodeConfig> getAutoCodeDefaults();
-
     Response<AutoCodeConfig> getAutoCodeById(String projectId, String orgId);
 
 
