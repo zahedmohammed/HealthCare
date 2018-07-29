@@ -8,7 +8,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscreen.component';
 
 const AppRoutes: Routes = [
-  { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/app/projects', pathMatch: 'full' },
   //{ path: 'app', component: LayoutComponent },
   //{ path: 'extra', loadChildren: './extra-pages/extra-pages.module#ExtraPagesModule' },
   //{ path: 'fullscreen', component: PageLayoutFullscreenComponent },

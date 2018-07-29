@@ -16,6 +16,7 @@ export class Dto {
 export class Noti {
 
     name: string;
+    to: string;
     channel: string;
     account: string;
 

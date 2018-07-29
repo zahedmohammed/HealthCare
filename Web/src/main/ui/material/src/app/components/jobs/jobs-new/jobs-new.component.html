@@ -1,3 +1,186 @@
-<p>
-  jobs-new works!
-</p>
+<div class="box box-default">
+    <div class="box-body">
+        <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs', 'new']"> Projects &nbsp; </a> <span
+            class="text-muted"> > </span> &nbsp;
+        <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> Jobs </a> &nbsp; <span class="text-muted"> > </span>
+        &nbsp; New
+    </div>
+</div>
+
+<section class="container-fluid with-maxwidth chapter">
+
+    <br/>
+    <article class="article">
+        <div class="box box-default">
+            <div class="box-body">
+
+                <mat-horizontal-stepper [linear]="true" #stepper>
+
+                    <mat-step [stepControl]="firstFormGroup">
+                        <form [formGroup]="firstFormGroup">
+                            <ng-template matStepLabel>Job Details</ng-template>
+
+                            <div class="form-group row"></div>
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="job.name" formControlName="nameCtrl" id="name"
+                                               matInput placeholder="Job name">
+                                    </mat-input-container>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-0 control-label">
+                                </label>
+                                <div class="col-md-5">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Environment"
+                                                    [(ngModel)]="job.environment" [ngModelOptions]="{standalone: true}">
+                                            <mat-option *ngFor="let env of envs" [value]="env.id">
+                                                {{env.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input [(ngModel)]="job.regions" [ngModelOptions]="{standalone: true}"
+                                               matInput placeholder="Bot Region">
+                                    </mat-input-container>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input [(ngModel)]="job.cron" [ngModelOptions]="{standalone: true}"
+                                               matInput placeholder="Cron Expression">
+                                    </mat-input-container>
+                                </div>
+                            </div>
+
+                            <div>
+                                <mat-card-actions>
+                                    <button mat-raised-button color="primary"
+                                            class="nav-btn"
+                                            [disabled]="firstFormGroup.invalid"
+                                            matStepperNext
+                                            >Next
+                                    </button>
+                                </mat-card-actions>
+                            </div>
+                        </form>
+                    </mat-step>
+
+
+                    <mat-step [stepControl]="secondFormGroup">
+                      <form [formGroup]="secondFormGroup">
+                        <ng-template matStepLabel>Issue-Tracker</ng-template>
+
+                          <div class="form-group row">
+                              <label for="name" class="col-md-0 control-label"></label>
+                              <div class="col-md-5">
+                                  <mat-input-container class="full-width">
+                                      <input [(ngModel)]="job.issueTracker.url"  [ngModelOptions]="{standalone: true}"
+                                             matInput placeholder="Issue-Tracker URL">
+                                  </mat-input-container>
+                              </div>
+                          </div>
+
+                          <div class="form-group row">
+                              <label class="col-md-0 control-label">
+                              </label>
+                              <div class="col-md-5">
+                                  <mat-form-field>
+                                      <mat-select placeholder="Account"
+                                                  [(ngModel)]="job.issueTracker.account"  [ngModelOptions]="{standalone: true}">
+                                          <mat-option *ngFor="let account of accounts" [value]="account.id">
+                                              {{account.name}}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                              </div>
+                          </div>
+
+                        <div>
+                          <mat-card-actions>
+                            <button mat-raised-button color="primary"
+                                    class="nav-btn"
+                                    [disabled]="secondFormGroup.invalid"
+                                    matStepperNext
+                                    >Next
+                            </button>
+                          </mat-card-actions>
+                          <button mat-button matStepperPrevious>Back</button>
+                        </div>
+                      </form>
+                    </mat-step>
+
+                    <mat-step [stepControl]="thirdFormGroup">
+                        <form [formGroup]="thirdFormGroup">
+                            <ng-template matStepLabel>Notifications</ng-template>
+
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input [(ngModel)]="job.notifications[0].to"  [ngModelOptions]="{standalone: true}"
+                                               matInput placeholder="Emails">
+                                    </mat-input-container>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input [(ngModel)]="job.notifications[1].channel"  [ngModelOptions]="{standalone: true}"
+                                               matInput placeholder="Slack Channel">
+                                    </mat-input-container>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-0 control-label">
+                                </label>
+                                <div class="col-md-5">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Slack Account"
+                                                    [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
+                                            <mat-option *ngFor="let account of accounts" [value]="account.id">
+                                                {{account.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div>
+                                    <mat-card-actions>
+                                        <button mat-raised-button color="primary"
+                                                class="nav-btn"
+                                                [disabled]="thirdFormGroup.invalid"
+                                                (click)="saveJob();">Save & Complete
+                                        </button>
+                                        <button mat-button matStepperPrevious>Back</button>
+                                    </mat-card-actions>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-step>
+
+                </mat-horizontal-stepper>
+
+            </div>
+        </div>
+    </article>
+</section>
