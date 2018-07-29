@@ -27,6 +27,11 @@ export class JobsNewComponent implements OnInit {
   project: Project = new Project();
   job: Jobs = new Jobs();
 
+  context: string = "New";
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+
   constructor(private projectService: ProjectService, private jobsService: JobsService,
             private route: ActivatedRoute, private router: Router, private handler: Handler,
             public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder) { }
