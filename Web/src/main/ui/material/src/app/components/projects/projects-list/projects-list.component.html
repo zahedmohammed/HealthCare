@@ -16,9 +16,11 @@
                             <div class="card__image">
                                 <!--<img alt="product" [src]="product.img"/>-->
                                 <p class="text-center">
-                                <span><button mat-icon-button [routerLink]="['/app/projects/new']"> <mat-icon
-                                        class="material-icons text-muted">add_circle_outline</mat-icon> </button></span>
-                                    New Project
+                                <span>
+                                    <h5>New Project</h5>
+                                    <br/>
+                                    <h6>Start testing your APIs with auto test coverage</h6>
+                                </span>
                                 </p>
                             </div>
                         </a>
@@ -38,13 +40,16 @@
                         <a href="javascript:;" [routerLink]="['/app/projects', project.id]">
                             <div class="card__image">
                                 <!--<img alt="product" [src]="product.img"/>-->
-                                <p class="text-center">{{project.name}}</p>
+                                <h5 class="text-center">{{project.name}}</h5>
+                                <br/>
+                                <h6>Create Date: {{project.createdDate | date:'short'}}</h6>
+                                <h6>Modified Date: {{project.modifiedDate | date:'short'}}</h6>
                             </div>
                         </a>
                         <div class="card__body card-white">
                             <div class="card__title">
-                            <span><button mat-icon-button [routerLink]="['/app/projects', project.id]"> <mat-icon
-                                    class="material-icons text-muted">edit</mat-icon> </button></span>
+                                <span><button mat-icon-button [routerLink]="['/app/projects', project.id]"> <mat-icon
+                                        class="material-icons text-muted">edit</mat-icon> </button></span>
                             </div>
                             <div class="card__price">
                                 <span><button mat-button class="btn-w-md" [routerLink]="['/app/projects', project.id]">Test Suites</button></span>
@@ -56,7 +61,6 @@
         </section>
     </article>
 </section>
-
 
 
 <mat-paginator [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
