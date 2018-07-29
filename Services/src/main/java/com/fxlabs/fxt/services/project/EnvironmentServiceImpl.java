@@ -43,7 +43,12 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
 
     @Override
-    public Response<List<com.fxlabs.fxt.dto.project.Environment>> findByProjectId(String projectId, String org) {
+    public Response<List<com.fxlabs.fxt.dto.project.Environment>> findByProjectId(String projectId, String orgId) {
+        Response<Project> optionalProject = projectService.findById(projectId, orgId);
+        if (optionalProject.isErrors() || optionalProject.getData() == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+
         List<Environment> environments = environmentRepository.findByProjectId(projectId);
         return new Response<>(converter.convertToDtos(environments));
     }
@@ -114,6 +119,46 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         jobRepository.save(job);
 
         return environmentResponse;
+    }
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.Environment> update(com.fxlabs.fxt.dto.project.Environment environment, String projectId, String orgId) {
+
+        if (environment == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project environment"));
+        }
+
+        if (StringUtils.isEmpty(environment.getName())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Name is empty."));
+        }
+
+        if (StringUtils.isEmpty(environment.getBaseUrl())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Url is empty."));
+        }
+
+        Response<Project> optionalProject = projectService.findById(projectId, orgId);
+        if (optionalProject.isErrors() || optionalProject.getData() == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+        environment.setProjectId(optionalProject.getData().getId());
+
+        Response<com.fxlabs.fxt.dto.project.Environment> environmentResponse = save(environment);
+
+        return environmentResponse;
+    }
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.Environment> delete(String projectId, String envId, String orgId) {
+
+        Response<List<com.fxlabs.fxt.dto.project.Environment>> environments = findByProjectId(projectId, orgId);
+
+        environments.getData().forEach(env -> {
+            if (StringUtils.equals(env.getId(), envId)) {
+                delete(envId, orgId);
+            }
+        });
+
+        return new Response<>();
     }
 
 

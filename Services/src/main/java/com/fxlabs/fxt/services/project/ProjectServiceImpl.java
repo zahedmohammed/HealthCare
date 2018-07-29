@@ -356,12 +356,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
         project.setAccount(request.getAccount());
 
-        this.save(project, user);
+        return this.save(project, user);
 
-        // Create GaaS Task
-        //  this.gaaSTaskRequestProcessor.process(converter.convertToEntity(project), null);
-
-        return new Response<Project>();
     }
 
     @Override

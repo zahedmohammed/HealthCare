@@ -13,9 +13,13 @@ import java.util.List;
  */
 public interface EnvironmentService extends GenericService<Environment, String> {
 
-    public Response<List<Environment>> findByProjectId(String projectId, String org);
+    Response<List<Environment>> findByProjectId(String projectId, String org);
 
     Response<Long> count(String user, Pageable pageable);
 
-    public Response<Environment> create(Environment environment, String projectId, String orgId);
+    Response<Environment> create(Environment environment, String projectId, String orgId);
+
+    Response<com.fxlabs.fxt.dto.project.Environment> update(com.fxlabs.fxt.dto.project.Environment environment, String projectId, String orgId);
+
+    Response<com.fxlabs.fxt.dto.project.Environment> delete(String projectId, String envId, String orgId);
 }

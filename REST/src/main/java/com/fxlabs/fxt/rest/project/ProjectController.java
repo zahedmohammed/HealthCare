@@ -153,8 +153,20 @@ public class ProjectController {
 
     @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/{projectId}/env", method = RequestMethod.POST)
-    public Response<Environment> saveEnv(@PathVariable("projectId") String projectId, @RequestBody Environment request) {
+    public Response<Environment> addEnv(@PathVariable("projectId") String projectId, @RequestBody Environment request) {
         return environmentService.create(request, projectId, SecurityUtil.getOrgId());
+    }
+
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{projectId}/env/{envId}", method = RequestMethod.PUT)
+    public Response<Environment> saveEnv(@PathVariable("projectId") String projectId, @PathVariable("envId") String envId, @RequestBody Environment request) {
+        return environmentService.update(request, projectId, SecurityUtil.getOrgId());
+    }
+
+    @Secured(ROLE_PROJECT_MANAGER)
+    @RequestMapping(value = "/{projectId}/env/{envId}", method = RequestMethod.DELETE)
+    public Response<Environment> saveEnv(@PathVariable("projectId") String projectId, @PathVariable("envId") String envId) {
+        return environmentService.delete(projectId, envId, SecurityUtil.getOrgId());
     }
 
 }
