@@ -23,8 +23,8 @@ public class Database implements Serializable {
 
     private String name ;
     private String version;
-    private String description;
-
-    private boolean inactive;
+//    private String description;
+//
+//    private boolean inactive;
 
 }

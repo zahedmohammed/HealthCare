@@ -23,7 +23,7 @@ import java.util.List;
 @Component(value = "oracleSqlInjectionQueryParamGenerator")
 public class OracleSQLInjectionQueryParamGenerator extends AbstractGenerator {
 
-    protected static final String SCENARIO = "sql_injection";
+    protected static final String GENERATOR_TYPE = "sql_injection";
     protected static final String PARAM_TYPE = "path_param";
     protected static final String AUTH = "Default";
     protected static final String OPERAND = "200";
@@ -32,10 +32,10 @@ public class OracleSQLInjectionQueryParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        if (! configUtil.isDB(DB_NAME)){
+        if (! configUtil.isDB(GENERATOR_TYPE,DB_NAME)){
             return null;
         }
-        String dbVersion = configUtil.getDBVersion(DB_NAME);
+        String dbVersion = configUtil.getDBVersion(GENERATOR_TYPE,DB_NAME);
 
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
@@ -43,8 +43,8 @@ public class OracleSQLInjectionQueryParamGenerator extends AbstractGenerator {
             for (Parameter param : op.getParameters()) {
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
-                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + DB_NAME + "_" + queryParam.getName();
-                    List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(GENERATOR_TYPE) + "_" + DB_NAME + "_" + queryParam.getName();
+                    List<TestSuiteMin> testSuites = build(op, path, postFix, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@OracleSQLInjections}}");
                     }

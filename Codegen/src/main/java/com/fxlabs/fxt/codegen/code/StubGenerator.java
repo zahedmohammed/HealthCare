@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
 import com.fxlabs.fxt.dto.project.RequestMapping;
+import com.fxlabs.fxt.dto.project.ResourceSample;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import io.swagger.models.*;
 import io.swagger.models.auth.AuthorizationValue;
@@ -46,8 +47,7 @@ public class StubGenerator {
     private static final String AUTO_CODE_CONFIG_FILE_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Sample/master/AutoCodeConfig.yaml";
     private static final String FX_FILE = "Fxfile.yaml";
     private static final String FX_FILE_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Sample/master/Fxfile.yaml";
-    private static final String REQUEST_MAPPINGS_FILE = "RequestMappings.yaml";
-
+    private static final String RESOURCE_SAMPLES_FILE = "ResourceSamples.json";
 
     /**
      * Checks FXfile.yaml and AutoCodeConfig exists if not creates one.
@@ -137,9 +137,8 @@ public class StubGenerator {
                 }
             }
 
-            List<RequestMapping> requestMappings = new ArrayList<>();
+            List<ResourceSample> resourceSamples = new ArrayList<>();
             List<TestSuiteMin> testSuites = new ArrayList<>();
-
 
             for (String p : swagger.getPaths().keySet()) {
                 Path path = swagger.getPaths().get(p);
@@ -153,27 +152,35 @@ public class StubGenerator {
                         }
                         Model model = ((BodyParameter) param).getSchema();
                         if (model != null && org.apache.commons.lang3.StringUtils.isNotBlank(model.getReference())) {
-                            RequestMapping reqMapping = new RequestMapping();
-                            RequestMapping reqMapping_ = autoCodeConfigUtil.getRequestMapping(p, m.name());
-                            if (reqMapping_ != null) {
-                                reqMapping = reqMapping_;
-                            } else {
-                                String body = factory.getValid(model.getReference());
-                                reqMapping.setEndPoint(p);
-                                reqMapping.setMethod(m.name());
-                                reqMapping.setSampleBody(body);
-                                config.getRequestMappings().add(reqMapping);
+
+                            String ref = model.getReference();
+                            if (org.apache.commons.lang3.StringUtils.isBlank(ref) || ref.lastIndexOf("/") == -1) {
+                                continue;
                             }
-                            requestMappings.add(reqMapping);
+                            String resourceName = ref.substring(ref.lastIndexOf("/") + 1);
+                            if (m == HttpMethod.POST){
+                                resourceName += "-Create";
+                            }
+                            if (m == HttpMethod.PUT){
+                                resourceName += "-Update";
+                            }
+                            ResourceSample resourceSample  = new ResourceSample();
+                            ResourceSample resourceSample_ = autoCodeConfigUtil.getResourceSamples(resourceName);
+
+                            if (resourceSample_ != null) {
+                                resourceSample = resourceSample_;
+                            } else {
+                                String body = factory.getValid(ref);
+                                resourceSample.setResource(resourceName);
+                                resourceSample.setSample(body);
+//                                config.getResourceSamples().add(resourceSample);
+                            }
+                            resourceSamples.add(resourceSample);
                         }
                     }
                 }
 
             }
-
-
-
-
             //System.out.println("---- paths ----");
             //System.out.println (swagger.getPaths());
             for (String p : swagger.getPaths().keySet()) {
@@ -209,7 +216,7 @@ public class StubGenerator {
             //System.out.println(ts);
             //}
 
-            writeToRequestMappingsFile(requestMappings, projectDir);
+            writeToResourceSampleFile(resourceSamples, projectDir);
 
             printTS(testSuites, projectDir);
 
@@ -222,17 +229,17 @@ public class StubGenerator {
         return 0;
     }
 
-    private void writeToRequestMappingsFile(List<RequestMapping> sampleRequests, String dir){
+    private void writeToResourceSampleFile(List<ResourceSample> sampleRequests, String dir){
 
-        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-        yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        ObjectMapper yamlMapper = new ObjectMapper();
+//        yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         if (CollectionUtils.isEmpty(sampleRequests)){
             return;
         }
 
         try {
-            File file = new File(dir + "/"+REQUEST_MAPPINGS_FILE);
+            File file = new File(dir + "/"+RESOURCE_SAMPLES_FILE);
             yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, sampleRequests);
         }catch (Exception ex){
             ex.printStackTrace();

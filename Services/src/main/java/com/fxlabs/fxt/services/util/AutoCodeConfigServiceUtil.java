@@ -50,6 +50,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         create.setAssertions(assertions);
 
         return create;
@@ -65,6 +68,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         empty_value.setAssertions(assertions);
         return empty_value;
     }
@@ -78,6 +84,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         null_value.setAssertions(assertions);
 
         return null_value;
@@ -92,6 +101,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         special_chars.setAssertions(assertions);
         return special_chars;
     }
@@ -105,6 +117,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         invalid_datatype.setAssertions(assertions);
 
         return invalid_datatype;
@@ -119,6 +134,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         rbac.setAssertions(assertions);
 
         return rbac;
@@ -133,6 +151,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         log_Forging.setAssertions(assertions);
 
         return log_Forging;
@@ -147,6 +168,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@ResponseTime >= 5000");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         sql_injection_timebound.setAssertions(assertions);
 
 
@@ -154,6 +178,14 @@ public class AutoCodeConfigServiceUtil {
         db.setName("MySQL");
         db.setVersion("5.7");
         sql_injection_timebound.setDatabase(db);
+
+        AutoCodeGeneratorMatches matches = new AutoCodeGeneratorMatches();
+        matches.setBodyProperties("id,name");
+        matches.setResourceSamples("User-Create");
+
+        List<AutoCodeGeneratorMatches > matchesList = new ArrayList<>();
+        sql_injection_timebound.setAutoCodeGeneratorMatches(matchesList);
+
         return sql_injection_timebound;
     }
 
@@ -167,6 +199,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         sql_injection.setAssertions(assertions);
 
         Database db = new Database();
@@ -182,9 +217,11 @@ public class AutoCodeConfigServiceUtil {
         XSS_Injection.setSeverity(TestSuiteSeverity.Critical);
         XSS_Injection.setType("XSS_Injection");
 
-
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         XSS_Injection.setAssertions(assertions);
 
         return XSS_Injection;
@@ -200,6 +237,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
         ddos.setAssertions(assertions);
 
         return ddos;

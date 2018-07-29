@@ -18,7 +18,7 @@ import java.util.List;
 @Component(value = "SQLServerSqlInjectionPathParamGenerator")
 public class SQLServerSQLInjectionPathParamGenerator extends AbstractGenerator {
 
-    protected static final String SCENARIO = "sql_injection";
+    protected static final String GENERATOR_TYPE = "sql_injection";
     protected static final String PARAM_TYPE = "path_param";
     protected static final String AUTH = "Default";// BASIC
     protected static final String OPERAND = "200";
@@ -29,10 +29,10 @@ public class SQLServerSQLInjectionPathParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        if (! configUtil.isDB(DB_NAME)){
+        if (! configUtil.isDB(GENERATOR_TYPE,DB_NAME)){
             return null;
         }
-        String dbVersion = configUtil.getDBVersion(DB_NAME);
+        String dbVersion = configUtil.getDBVersion(GENERATOR_TYPE,DB_NAME);
 
 
         Policies policies =  new Policies();
@@ -56,8 +56,8 @@ public class SQLServerSQLInjectionPathParamGenerator extends AbstractGenerator {
 //                }
                 if (param instanceof PathParameter) {
                     PathParameter pathParam = (PathParameter) param;
-                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + DB_NAME + "_" + pathParam.getName();
-                    List<TestSuiteMin> testSuites = build(op, path, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, false);
+                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(GENERATOR_TYPE) + "_" + DB_NAME + "_" + pathParam.getName();
+                    List<TestSuiteMin> testSuites = build(op, path, postFix,GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, false);
                     for (TestSuiteMin testSuite : testSuites) {
                         String _path = path.replace("{" + pathParam.getName() + "}", "{{"+INJECTION_DATASET+"}}");
                         testSuite.setEndpoint(_path);

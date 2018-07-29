@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.codegen.generators.rbac;
 
+import com.fxlabs.fxt.codegen.code.Generator;
 import com.fxlabs.fxt.codegen.code.Match;
 import com.fxlabs.fxt.codegen.code.TestSuite;
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
@@ -39,20 +40,21 @@ public class RBACGenerator extends AbstractGenerator {
         // No need to build body
         // only assertions and auth are required post path pattern matches
 
-        TestSuite testSuite = configUtil.get(SCENARIO);
-        if (testSuite == null || testSuite.isInactive()) {
-            System.err.println("No RBAC configuration found or RBAC is inactive...");
+        Generator generator = configUtil.get(SCENARIO);
+        if (generator == null || generator.isInactive()) {
+//            System.err.println("No RBAC configuration found or RBAC is inactive...");
             return null;
         }
 
-        if (CollectionUtils.isEmpty(testSuite.getMatches())) {
-            System.err.println("No RBAC matches configuration found...");
+        if (CollectionUtils.isEmpty(generator.getAutoCodeGeneratorMatches())) {
+//            System.err.println("No RBAC matches configuration found...");
             return null;
         }
 
         final String path_ = path;
         Match match = null;
-        for (Match m : testSuite.getMatches()) {
+
+        for (Match m : generator.getAutoCodeGeneratorMatches()) {
             if (StringUtils.isEmpty(m.getPathPatterns())) {
                 continue;
             }
@@ -75,7 +77,7 @@ public class RBACGenerator extends AbstractGenerator {
 
         String postFix = configUtil.getTestSuitePostfix(SCENARIO);
 
-        List<String> assertions = testSuite.getAssertions();
+        List<String> assertions = generator.getAssertions();
         if (CollectionUtils.isEmpty(assertions)) {
             assertions = Arrays.asList("@StatusCode == 403");
         }

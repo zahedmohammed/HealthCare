@@ -8,14 +8,12 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
-import com.fxlabs.fxt.dto.project.Policies;
-import com.fxlabs.fxt.dto.project.RequestMapping;
-import com.fxlabs.fxt.dto.project.TestSuiteMin;
-import com.fxlabs.fxt.dto.project.TestSuiteType;
+import com.fxlabs.fxt.dto.project.*;
 import io.swagger.models.Model;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.Parameter;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -28,7 +26,7 @@ import java.util.List;
 @Component(value = "mySQLTimeboundSqlInjectionPostGenerator")
 public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
 
-    protected static final String SCENARIO = "sql_injection_timebound";
+    protected static final String GENERATOR_TYPE = "sql_injection_timebound";
     protected static final String PARAM_TYPE = "post";
     protected static final String AUTH = "Default";// BASIC
     protected static final String INJECTION_DATASET = "@MySQLTimeboundSQLInjections";
@@ -42,10 +40,10 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
             return null;
         }
 
-        if (! configUtil.isDB(DB_NAME)){
+        if (! configUtil.isDB(GENERATOR_TYPE,DB_NAME)){
             return null;
         }
-        String dbVersion = configUtil.getDBVersion(DB_NAME);
+        String dbVersion = configUtil.getDBVersion(GENERATOR_TYPE,DB_NAME);
 
         Policies policies =  new Policies();
         policies.setRepeatModule(INJECTION_DATASET);
@@ -63,53 +61,83 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
             return null;
         }
 
-        String postFix =  configUtil.getTestSuitePostfix(SCENARIO); //PARAM_TYPE + "_" +
+        String postFix =  configUtil.getTestSuitePostfix(GENERATOR_TYPE); //PARAM_TYPE + "_" +
         List<TestSuiteMin> list = new ArrayList<>();
         String testcase = null;
 
-        RequestMapping requestMapping = configUtil.getRequestMapping(path, "POST");
-        if (requestMapping == null || requestMapping.getSampleBody() == null ) {
-//            testcase = factory.getValid(model.getReference());
-//            list = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-//            if (!CollectionUtils.isEmpty(list)) {
-//                buildTestCase(list.get(0), 1, testcase);
-//            }
+        // check for method from config
+
+
+        String resSampleMappings = configUtil.getResourceSampleMappings(GENERATOR_TYPE);
+        if ( StringUtils.isBlank(resSampleMappings)) {
+            return null;
         }else{
-            String sampleBody = requestMapping.getSampleBody();
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-            JsonNode node = null;
-            try {
-
-                List<String> sqlProperties = requestMapping.getSqlProperties();
-
-                int index = 1;
-                if (! CollectionUtils.isEmpty(sqlProperties)) {
-                    for (String prop : sqlProperties) {
-                        node = mapper.readTree(sampleBody);
-
-                        TreeNode node_ = node.path(prop);
-                        if ( node_.isMissingNode() ){
-                            System.out.println(prop + " is missing:("  );
-                            continue;
-                        }
-                        // TODO: handle nested objects
-
-
-                        ((ObjectNode) node).put(prop,"{{" + INJECTION_DATASET + "}}");
-                        testcase = mapper.writeValueAsString(node);
-
-                        List<TestSuiteMin> list_ = build(op, path, postFix + "_" + prop, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, false);
-                        buildTestCase(list_.get(0), index++, testcase);
-                        list.add(list_.get(0));
-                    }
-                }else{
-                    System.out.println("No SQL Properties for  " + requestMapping.getEndPoint());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            String[] resSampleMappingsArr = resSampleMappings.split(",");
+            if (ArrayUtils.isEmpty(resSampleMappingsArr)){
+                return null;
             }
+
+            for( String resName : resSampleMappingsArr)
+            {
+                String sampleBody = configUtil.getResourceSample(GENERATOR_TYPE, resName);
+                if (StringUtils.isBlank(sampleBody)){
+                    continue;
+                }
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+                JsonNode node = null;
+                try {
+
+                    String bodyProperties = configUtil.getBodyProperties(GENERATOR_TYPE); //TODO: get from config requestMapping.getSqlProperties();
+
+                    System.out.println("Body properties..............");
+                    if (StringUtils.isBlank(bodyProperties)){
+                        // TODO: If no bodyProperties defined, use defaults
+                        return null;
+                    }
+
+                    String[] sqlProperties = bodyProperties.split(",");
+
+                    System.out.println("splitte. " + sqlProperties.length);
+
+                    int index = 1;
+                    if (! ArrayUtils.isEmpty(sqlProperties)) {
+                        for (String prop : sqlProperties) {
+                            System.out.println("Prop: " + prop);
+                            node = mapper.readTree(sampleBody);
+                            TreeNode node_ = node.path(prop);
+                            if ( node_.isMissingNode() ){
+                                System.out.println(prop + " is missing:("  );
+                                continue;
+                            }
+                            // TODO: handle nested objects
+
+                            ((ObjectNode) node).put(prop,"{{" + INJECTION_DATASET + "}}");
+                            testcase = mapper.writeValueAsString(node);
+
+                            List<TestSuiteMin> list_ = build(op, path, postFix + "_" + prop, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, false);
+                            buildTestCase(list_.get(0), index++, testcase);
+                            list.add(list_.get(0));
+                        }
+                    }else{
+                        System.out.println("No SQL Properties for  " + resName);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
         }
+
+
+
+//        ResourceSample resourceSample = configUtil.getResourceSamples (path);
+
+
+
+
         return list;
     }
 

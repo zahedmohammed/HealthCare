@@ -19,6 +19,11 @@ public class Match implements Serializable {
     private String pathPatterns;
     private String denyRoles;
     private String methods;
+    private String resourceSamples;
+    private String queryParams;
+    private String bodyProperties;
+
+
     //private Type type; // integer - supported // TODO
     //private Method method; // get - supported // TODO
     //private In in; // query - supported // TODO

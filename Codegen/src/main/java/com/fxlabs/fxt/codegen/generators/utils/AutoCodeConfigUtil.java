@@ -1,12 +1,10 @@
 package com.fxlabs.fxt.codegen.generators.utils;
 
+import com.fxlabs.fxt.codegen.code.*;
 import com.fxlabs.fxt.codegen.code.AutoCodeConfig;
 import com.fxlabs.fxt.codegen.code.Database;
-import com.fxlabs.fxt.codegen.code.Match;
 import com.fxlabs.fxt.codegen.code.TestSuite;
-import com.fxlabs.fxt.dto.project.RequestMapping;
-import com.fxlabs.fxt.dto.project.TestSuiteCategory;
-import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
+import com.fxlabs.fxt.dto.project.*;
 import io.swagger.models.HttpMethod;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.QueryParameter;
@@ -31,11 +29,11 @@ public class AutoCodeConfigUtil {
         }
         if (this.config == null) {
             this.config = config;
-            if (this.config.getTestSuites() != null) {
-                this.config.getTestSuites().forEach(System.out::println);
-                System.out.println("");
-                System.out.println(this.config.getPropertyMapping());
-            }
+//            if (this.config.getTestSuites() != null) {
+//                this.config.getTestSuites().forEach(System.out::println);
+//                System.out.println("");
+//                System.out.println(this.config.getPropertyMapping());
+//            }
         }
     }
 
@@ -73,69 +71,157 @@ public class AutoCodeConfigUtil {
 
     }
 
-    public boolean isDB(String dbName) {
+//    public boolean isDB(String dbName) {
+//
+//        // For now, returning true for every DB (if config file is not present) so that TestSuites for all DBs are generated.
+//        //TODO: If we make AutoCodeConfig.yaml mandatory with entries of DB, we need to return false here.
+//        if (this.config == null) return true;
+//
+//        boolean isDBGivenName = false;
+//        if (!CollectionUtils.isEmpty(this.config.getGenerators()) &&
+//                !CollectionUtils.isEmpty(this.config.getDatabases())) {
+//            for (Database db : this.config.getDatabases()) {
+//                if (StringUtils.equalsIgnoreCase(db.getName(), dbName)) {
+//                    if (!db.isInactive())
+//                        return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
-        // For now, returning true for every DB (if config file is not present) so that TestSuites for all DBs are generated.
-        //TODO: If we make AutoCodeConfig.yaml mandatory with entries of DB, we need to return false here.
-        if (this.config == null) return true;
+
+    public boolean isDB(String generatorType, String dbName) {
+
+        if (this.config == null) return false;
 
         boolean isDBGivenName = false;
-        if (!CollectionUtils.isEmpty(this.config.getDatabases())) {
-            for (Database db : this.config.getDatabases()) {
-                if (StringUtils.equalsIgnoreCase(db.getName(), dbName)) {
-                    if (!db.isInactive())
-                        return true;
+        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+            for (Generator gen : this.config.getGenerators()) {
+                if (gen.getDatabase()!=null && StringUtils.equalsIgnoreCase(gen.getDatabase().getName(), dbName)) {
+                    return true;
                 }
             }
         }
         return false;
     }
 
-    public String getDBVersion(String dbName) {
-
+    public String getResourceSample(String generatorType, String resourceName) {
         if (this.config == null) return null;
+        boolean isDBGivenName = false;
+        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+            for (Generator gen : this.config.getGenerators()) {
+                if (! CollectionUtils.isEmpty( gen.getAutoCodeGeneratorMatches()) ) {
+                    Match match = gen.getAutoCodeGeneratorMatches().get(0);
+                    if (match != null){
+                        if ( StringUtils.containsIgnoreCase(match.getResourceSamples(),resourceName)){
+                            ResourceSample resSample = getResourceSamples(resourceName);
+                            return resSample == null ? null: resSample.getSample();
+                        }
+                    }
 
-        String version = null;
-        if (!CollectionUtils.isEmpty(this.config.getDatabases())) {
-            for (Database db : this.config.getDatabases()) {
-                if (StringUtils.equalsIgnoreCase(db.getName(), dbName)) {
-                    version = db.getVersion();
                 }
             }
         }
-        return version;
+        return null;
+    }
+
+    public String getQueryParams(String generatorType) {
+        if (this.config == null) return null;
+        boolean isDBGivenName = false;
+        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+            for (Generator gen : this.config.getGenerators()) {
+                if (! CollectionUtils.isEmpty( gen.getAutoCodeGeneratorMatches()) ) {
+                    Match match = gen.getAutoCodeGeneratorMatches().get(0);
+                    if (match != null){
+                        return match.getQueryParams();
+                    }
+
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getBodyProperties(String generatorType) {
+        if (this.config == null) return null;
+        boolean isDBGivenName = false;
+        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+            for (Generator gen : this.config.getGenerators()) {
+                if (! CollectionUtils.isEmpty( gen.getAutoCodeGeneratorMatches()) ) {
+                    Match match = gen.getAutoCodeGeneratorMatches().get(0);
+                    if (match != null){
+                        return match.getBodyProperties();
+                    }
+
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getResourceSampleMappings(String generatorType) {
+        if (this.config == null) return null;
+        boolean isDBGivenName = false;
+        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+            for (Generator gen : this.config.getGenerators()) {
+                if (! CollectionUtils.isEmpty( gen.getAutoCodeGeneratorMatches()) ) {
+                    Match match = gen.getAutoCodeGeneratorMatches().get(0);
+                    if (match != null){
+                        return match.getResourceSamples();
+                    }
+
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getDBVersion(String generatorType, String dbName) {
+        if (this.config == null) return null;
+        boolean isDBGivenName = false;
+        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+            for (Generator gen : this.config.getGenerators()) {
+                if (gen.getDatabase()!=null && StringUtils.equalsIgnoreCase(gen.getDatabase().getName(), dbName)) {
+                    return gen.getDatabase().getVersion();
+                }
+            }
+        }
+        return null;
     }
 
     public List<String> getLogForgingPatterns() {
         if (this.config == null) return null;
 
-        return this.config.getLogForgingPatterns();
+        Generator gen = get("log_forging");
+
+        return gen == null ? null : gen.getLogForgingPatterns();
     }
 
     // ################## TestSuite ######################
     // type filter
-    public TestSuite get(String type) {
-        if (this.config.getTestSuites() == null || CollectionUtils.isEmpty(this.config.getTestSuites())) {
+    public Generator get(String type) {
+        if (this.config.getGenerators() == null || CollectionUtils.isEmpty(this.config.getGenerators())) {
             return null;
         }
 
-        return this.config.getTestSuites().stream().filter(testSuite -> StringUtils.equals(testSuite.getType(), type)).findFirst().orElse(null);
-
+        return this.config.getGenerators().stream().filter(generator -> StringUtils.equals(generator.getType(), type)).findFirst().orElse(null);
+//        return null;
     }
     public List<String> getAssertions(String type) {
 
         if (this.config == null) return DEFAULT_ASSERTIONS;
 
         String version = null;
-        if (!CollectionUtils.isEmpty(this.config.getTestSuites())) {
-            for (TestSuite ts : this.config.getTestSuites()) {
-                if (StringUtils.equalsIgnoreCase(ts.getType(), type)) {
-                    if (CollectionUtils.isEmpty(ts.getAssertions()) ||
-                            ts.getAssertions().get(0) == null ||
-                            ts.getAssertions().get(0).equalsIgnoreCase("null")) {
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
+            for (Generator gen: this.config.getGenerators()) {
+                if (StringUtils.equalsIgnoreCase(gen.getType(), type)) {
+                    if (CollectionUtils.isEmpty(gen.getAssertions()) ||
+                            gen.getAssertions().get(0) == null ||
+                            gen.getAssertions().get(0).equalsIgnoreCase("null")) {
                         return DEFAULT_ASSERTIONS;
                     } else {
-                        return ts.getAssertions();
+                        return gen.getAssertions();
                     }
                 }
             }
@@ -149,11 +235,11 @@ public class AutoCodeConfigUtil {
         if (this.config == null) return severity;
 
         String version = null;
-        if (!CollectionUtils.isEmpty(this.config.getTestSuites())) {
-            for (TestSuite ts : this.config.getTestSuites()) {
-                if (StringUtils.equalsIgnoreCase(ts.getType(), type)) {
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
+            for (Generator gen: this.config.getGenerators()) {
+                if (StringUtils.equalsIgnoreCase(gen.getType(), type)) {
                     try {
-                        severity = TestSuiteSeverity.valueOf(ts.getSeverity());
+                        severity = TestSuiteSeverity.valueOf(gen.getSeverity());
                     } catch (Exception ex) {
                     }
                     break;
@@ -172,10 +258,10 @@ public class AutoCodeConfigUtil {
         if (this.config == null) return type;
 
         String version = null;
-        if (!CollectionUtils.isEmpty(this.config.getTestSuites())) {
-            for (TestSuite ts : this.config.getTestSuites()) {
-                if (StringUtils.equalsIgnoreCase(ts.getType(), type)) {
-                    return ts.getPostfix() != null ? ts.getPostfix() : ts.getType();
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
+            for (Generator gen: this.config.getGenerators()) {
+                if (StringUtils.equalsIgnoreCase(gen.getType(), type)) {
+                    return gen.getPostfix() != null ? gen.getPostfix() : gen.getType();
                 }
             }
         }
@@ -184,10 +270,10 @@ public class AutoCodeConfigUtil {
 
     public boolean isInactive(String type) {
 
-        TestSuite ts = get(type);
-        if (ts != null) {
+        Generator gen = get(type);
+        if (gen != null) {
             //System.out.println(" ########## " + type + " " + ts.isInactive());
-            return ts.isInactive();
+            return gen.isInactive();
         }
         //System.out.println(" ########## " + type + "  " + DEFAULT_INACTIVE);
         return DEFAULT_INACTIVE;
@@ -236,11 +322,11 @@ public class AutoCodeConfigUtil {
             return false;
         }
 
-        TestSuite ts = get("DDOS");
+        Generator gen = get("DDOS");
 
         boolean isPresent = false;
-        if (ts != null && !CollectionUtils.isEmpty(ts.getMatches())) {
-            isPresent = ts.getMatches().stream().filter(match ->
+        if (gen != null && !CollectionUtils.isEmpty(gen.getAutoCodeGeneratorMatches())) {
+            isPresent = gen.getAutoCodeGeneratorMatches().stream().filter(match ->
                     StringUtils.equalsIgnoreCase(match.getName(), name)).findFirst().isPresent();
         }
 
@@ -254,13 +340,13 @@ public class AutoCodeConfigUtil {
         if (StringUtils.isEmpty(name)) {
             return DEFAULT_DDOS_VALUE;
         }
-        TestSuite ts = get("DDOS");
+        Generator gen= get("DDOS");
 
-        if (ts == null || CollectionUtils.isEmpty(ts.getMatches())) {
+        if (gen == null || CollectionUtils.isEmpty(gen.getAutoCodeGeneratorMatches())) {
             return DEFAULT_DDOS_VALUE;
         }
 
-        Optional<Match> matchOptional = ts.getMatches().stream().filter(match ->
+        Optional<Match> matchOptional = gen.getAutoCodeGeneratorMatches().stream().filter(match ->
                 StringUtils.equals(match.getName(), name)).findFirst();
 
         if (matchOptional.isPresent()) {
@@ -301,15 +387,15 @@ public class AutoCodeConfigUtil {
     }
 
 
-    public RequestMapping getRequestMapping(String endPoint, String method){
+    public ResourceSample getResourceSamples(String resource){
 
-        if (this.config == null || this.config.getRequestMappings() == null) {
+        if (this.config == null || this.config.getResourceSamples()  == null) {
             return null;
         }
 
-        for (RequestMapping mapping : config.getRequestMappings()){
-            if (StringUtils.equals(mapping.getEndPoint(), endPoint) && StringUtils.equals(mapping.getMethod(), method)) {
-                return mapping;
+        for (ResourceSample sample : config.getResourceSamples()){
+            if (StringUtils.equals(sample.getResource(), resource)) {
+                return sample;
             }
         }
 
