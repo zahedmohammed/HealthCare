@@ -164,6 +164,8 @@ import {DeleteDialogComponent}from './components/dialogs/delete-dialog/delete-di
 import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.component';
 
 import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-sync.component';
+import { JobsNewComponent } from './components/jobs/jobs-new/jobs-new.component';
+import { JobsEditComponent } from './components/jobs/jobs-edit/jobs-edit.component';
 
 @NgModule({
   imports: [
@@ -307,7 +309,9 @@ import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-
     SuperbotnetworkListComponent,
     DeleteDialogComponent,
     SuitDailogComponent,
-    ProjectsSyncComponent
+    ProjectsSyncComponent,
+    JobsNewComponent,
+    JobsEditComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],

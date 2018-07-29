@@ -7,6 +7,9 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 
 import { JobslistComponent } from '../components/jobs/jobs-list/jobs-list.component';
 import { JobDetailsComponent} from '../components/jobs/job-details/job-details.component';
+import { JobsNewComponent } from '../components/jobs/jobs-new/jobs-new.component';
+import { JobsEditComponent } from '../components/jobs/jobs-edit/jobs-edit.component';
+
 
 import { RunListComponent } from '../components/run-list/run-list.component';
 import { RunDetailComponent } from '../components/run-detail/run-detail.component';
@@ -101,6 +104,9 @@ const routes: Routes = [
       { path: 'projects/:id/edit', component: ProjectsNewComponent },
       { path: 'projects/:id/test-suites', component: ProjectsEditComponent },
       { path: 'projects/:id/jobs', component: JobslistComponent },
+      { path: 'projects/:id/jobs/new', component: JobsNewComponent },
+      { path: 'projects/:id/jobs/:jobId/edit', component: JobsEditComponent },
+
       { path: 'jobs/:id', component: JobDetailsComponent},
       { path: 'jobs/:jobId/runs', component: RunListComponent },
       { path: 'jobs/:jobId/runs/:runId', component: RunDetailComponent },
