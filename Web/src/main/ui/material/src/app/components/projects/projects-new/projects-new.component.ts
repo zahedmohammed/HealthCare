@@ -26,6 +26,7 @@ import { MatStepper } from '@angular/material';
 export class ProjectsNewComponent implements OnInit {
 
   showSpinner: boolean = false;
+  id: string;
   project: Project = new Project();
   autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
   job: Job = new Job();
@@ -33,6 +34,8 @@ export class ProjectsNewComponent implements OnInit {
   orgs;
   accounts;
   matStepper;// MatStepper;
+
+  context: string = "New";
 
   isLinear = false;
   firstFormGroup: FormGroup;
@@ -55,6 +58,12 @@ export class ProjectsNewComponent implements OnInit {
   ngOnInit() {
     this.AppConfig = APPCONFIG;
     this.getAccountsForProjectPage();
+    this.route.params.subscribe(params => {
+      this.id = params['id'];
+      if (this.id) {
+        this.loadProject(this.id);
+      }
+    });
     this.env.auths[0] = new Auth();
     this.firstFormGroup = this._formBuilder.group({
       nameCtrl: ['', Validators.required],
@@ -88,6 +97,21 @@ export class ProjectsNewComponent implements OnInit {
       authorizationSchemeCtrl:  ['', Validators.required],
       scopeCtrl:  ['', Validators.required]*/
 
+  }
+
+  loadProject(id: string) {
+    this.handler.activateLoader();
+    this.projectService.getById(id).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.project = results['data'];
+      this.context = this.project.name + " > Edit";
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
   }
 
   save(matStepper) {

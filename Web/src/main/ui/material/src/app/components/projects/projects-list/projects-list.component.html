@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-xl-3 col-lg-6" *ngFor="let project of projects">
                     <a href="javascript:;" class="item-card">
-                        <a href="javascript:;" [routerLink]="['/app/projects', project.id]">
+                        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
                             <div class="card__image">
                                 <!--<img alt="product" [src]="product.img"/>-->
                                 <h5 class="text-center">{{project.name}}</h5>
@@ -48,11 +48,11 @@
                         </a>
                         <div class="card__body card-white">
                             <div class="card__title">
-                                <span><button mat-icon-button [routerLink]="['/app/projects', project.id]"> <mat-icon
+                                <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'edit']"> <mat-icon
                                         class="material-icons text-muted">edit</mat-icon> </button></span>
                             </div>
                             <div class="card__price">
-                                <span><button mat-button class="btn-w-md" [routerLink]="['/app/projects', project.id]">Test Suites</button></span>
+                                <span><button mat-button class="btn-w-md" [routerLink]="['/app/projects', project.id, 'test-suites']">Test Suites</button></span>
                             </div>
                         </div>
                     </a>

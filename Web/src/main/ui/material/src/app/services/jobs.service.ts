@@ -26,8 +26,11 @@ export class JobsService {
   /**
    * Get the jobs in observable from endpoint
    */
-  getJobs(id: string) {
-    return this.http.get(this.serviceUrl + "/project-id/" + id);
+  getJobs(id: string, page, pageSize) {
+    let params = new HttpParams();
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/project-id/" + id, {params});
   }
 
   getCountJobs() {

@@ -43,12 +43,8 @@ export class ProjectsEditComponent implements OnInit {
     this.route.params.subscribe(params => {
       //console.log(params);
       this.id = params['id'];
-      if (params['id']) {
-        this.getById(params['id']);
-        //this.getOrgs();
-        this.getAccountsForProjectPage();
-        /*this.config = new MatSnackBarConfig();*/
-      }
+      this.getFiles(this.id);
+      this.getById(this.id);
     });
   }
 
@@ -56,13 +52,9 @@ export class ProjectsEditComponent implements OnInit {
       //console.log('tabChangeEvent => ', tabChangeEvent);
       console.log('index => ', tabChangeEvent.index);
       if (tabChangeEvent.index === 0) {
-        this.getById(this.id);
-      }
-      else if (tabChangeEvent.index === 1) {
           this.getFiles(this.id);
       }
-
-      else if (tabChangeEvent.index === 2) {
+      else if (tabChangeEvent.index === 1) {
           this.getTestSuite(this.id);
       }
 

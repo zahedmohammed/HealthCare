@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class JobslistComponent implements OnInit {
 
+  id; // project id
   jobs;
   projectId: string = "";
   project: Base = new Base();
@@ -32,8 +33,10 @@ export class JobslistComponent implements OnInit {
   ngOnInit() {   
     this.handler.activateLoader();
     this.route.params.subscribe(params => {
+      this.id = params['id'];
       console.log(params);
-      this.list();
+      this.loadProject(this.id);
+      this.list(this.id);
     });
     /*let timer = Observable.timer(1, 10000);
     this._clockSubscription = timer.subscribe(t => {
@@ -59,9 +62,9 @@ export class JobslistComponent implements OnInit {
     });
   }
 
-  list() {
+  list(id: string) {
     this.handler.activateLoader();
-    this.jobsService.get(this.page, this.pageSize).subscribe(results => {
+    this.jobsService.getJobs(id, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
@@ -79,7 +82,7 @@ export class JobslistComponent implements OnInit {
   pageSize = 20;
   change(evt) {
     this.page = evt['pageIndex'];
-    this.list();
+    this.list(this.id);
   }
 
   runJob(id: string) {
