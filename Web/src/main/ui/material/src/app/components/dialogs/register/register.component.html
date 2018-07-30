@@ -1,0 +1,201 @@
+<section class="container-fluid with-maxwidth chapter">
+<article class="article">
+  <div class="box box-default">
+      <div class="box-body padding-xl">
+          <div class="box-body">
+          <form role="form" #heroForm="ngForm">
+            
+            <!-- Registration Form on Modal Dialog Box Start -->
+
+            <!-- Name Start -->
+            <div class="form-group row">
+              <label for="name" class="col-md-0 control-label"></label>
+              <div class="col-md-5">
+                  <mat-input-container class="full-width">
+                      <input required [(ngModel)]="entry.name" name="name" id="name"
+                             matInput placeholder="Name">
+                  </mat-input-container>
+              </div>
+          </div>
+          <!-- Name End -->
+
+          <!-- Conditional Select Field for Different Account Types. Eg. Git, Bitbucket, GitLab, Github -->
+          <div class="form-group row">
+            <label class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+                <mat-form-field>
+                    <mat-select placeholder="Account Type" required [(ngModel)]="entry.accountType"
+                                name="type">
+                        <mat-option *ngFor="let type of accountTypes" [value]="type">
+                            {{type}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- Conditional Select Field for Different Account Types. Eg. Git, Bitbucket, GitLab, Github End -->             
+
+              <!-- Git  Start    -->
+              <div class="form-group row" *ngIf="entry.accountType === 'Git'">
+                <label for="gitAccessKey" class="col-md-0 control-label">
+                </label>
+                <div  class="col-md-5">
+                    <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'" >
+                        <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitAccessKey"
+                               matInput type="text" placeholder="Access-Key">
+                    </mat-input-container>
+                </div>
+                <div class="col-md-7">
+                    <div class="callout1 text-muted callout-info1">
+                        <p>
+                            Git is a version control system for tracking changes in computer files and
+                            coordinating
+                            work on those files among multiple people. It is primarily used for source code
+                            management in software development, but it can be used to keep track of changes in
+                            any set of
+                            files. As a distributed revision control system it is aimed at speed, data
+                            integrity, and support for distributed, non-linear workflows
+                            <br/><a target="_blank"
+                                    href="https://git-scm.com/">Click here to know more<i class="material-icons"
+                                                                                          style="font-size: 18px;">open_in_new</i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" *ngIf="entry.accountType === 'Git'">
+                <label for="gitSecret" class="col-md-0 control-label">
+                </label>
+                <div class="col-md-5">
+                    <mat-input-container class="full-width" >
+                        <input required [(ngModel)]="entry.secretKey" name="secret" id="gitSecret"
+                               matInput type="password" placeholder="Secret-Key">
+                    </mat-input-container>
+                </div>
+            </div>
+            <!-- Git  End    -->
+
+           
+            <!-- GitHub Start  -->
+            <div class="form-group row" *ngIf="entry.accountType === 'GitHub'">
+              <label for="gitHubAccessKey" class="col-md-0 control-label">
+              </label>
+              <div   class="col-md-5">
+                  <mat-input-container class="full-width">
+                      <input  [(ngModel)]="entry.accessKey" name="accessKey" id="gitHubAccessKey"
+                             matInput type="text" placeholder="Username/Access-Key">
+                  </mat-input-container>
+              </div>
+              <div class="col-md-7">
+                  <div class="callout1 text-muted callout-info1">
+                      <p>GitHub access keys
+                          <a target="_blank"
+                             href="https://github.com/settings/tokens">&nbsp;learn more. <i
+                                  class="material-icons"
+                                  style="font-size: 18px;">open_in_new</i></a>
+                      </p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="form-group row" *ngIf="entry.accountType === 'GitHub'">
+              <label for="gitHubSecret" class="col-md-0 control-label">
+              </label>
+              <div  class="col-md-5">
+                  <mat-input-container class="full-width">
+                      <textarea [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
+                                matInput type="password" placeholder="Password/Private-Key"></textarea>
+                  </mat-input-container>
+              </div>
+              <div class="col-md-7">
+                  <div class="callout1 text-muted callout-info1">
+                      <p>
+                          Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                      </p>
+                  </div>
+              </div>
+          </div>
+          <!-- GitHub End  -->
+       
+          <!-- BitBucket  Start    -->
+          <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
+            <label for="bitBucketAccessKey" class="col-md-0 control-label">
+            </label>
+            <div  class="col-md-5">
+                <mat-input-container class="full-width">
+                    <input [(ngModel)]="entry.accessKey" name="accessKey" id="bitBucketAccessKey"
+                           matInput type="text" placeholder="Username/Access-Key">
+                </mat-input-container>
+            </div>
+            <div class="col-md-7">
+                <div class="callout1 text-muted callout-info1">
+                    <p>BitBucket access keys
+                        <a target="_blank"
+                           href="https://bitbucket.org">&nbsp;learn more.<i class="material-icons"
+                                                                            style="font-size: 18px;">open_in_new</i></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
+            <label for="bitBucketSecret" class="col-md-0 control-label">
+            </label>
+            <div  class="col-md-5">
+                <mat-input-container class="full-width">
+                    <textarea [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
+                              matInput type="password" placeholder="Password/Private-Key"></textarea>
+                </mat-input-container>
+            </div>
+            <div class="col-md-7">
+                <div class="callout1 text-muted callout-info1">
+                    <p>
+                        Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- BitBucket  End    -->
+
+        <div class="form-group row" *ngIf="entry.accountType == 'GitLab' || entry.accountType === 'Microsoft_VSTS_Git'">
+          <label for="accessKey" class="col-md-0 control-label">
+          </label>
+          <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
+              <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
+                  <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="accessKey"
+                         matInput type="text" placeholder="Access-Key/Username">
+              </mat-input-container>
+          </div>
+      </div>
+
+      <div class="form-group row" *ngIf="entry.accountType == 'GitLab' || entry.accountType === 'Microsoft_VSTS_Git'">
+          <label for="secret" class="col-md-0 control-label">
+          </label>
+          <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
+              <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                         matInput type="password" placeholder="Secret-Key/Password">
+              </mat-input-container>
+          </div>
+      </div>
+
+          
+
+              <div class="form-group row">
+                  <div class="col-md-0"></div>
+                  <div class="col-md-8">
+                      <button [disabled]="!heroForm.valid" mat-raised-button color="primary" (click)="create();"
+                              class="btn-w-md no-margin-left">Register
+                      </button>
+                      <button mat-button type="button" color="primary" class="btn-w-md" (click)="close();">Cancel
+                      </button>
+                  </div>
+              </div>
+
+          </form>
+          </div>
+      </div>
+  </div>
+</article>
+</section>

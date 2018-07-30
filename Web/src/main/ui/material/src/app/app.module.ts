@@ -167,6 +167,7 @@ import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-
 import { JobsNewComponent } from './components/jobs/jobs-new/jobs-new.component';
 import { JobsEditComponent } from './components/jobs/jobs-edit/jobs-edit.component';
 import { ProjectsManageComponent } from './components/projects/projects-manage/projects-manage.component';
+import { RegisterComponent } from './components/dialogs/register/register.component';
 
 @NgModule({
   imports: [
@@ -313,11 +314,12 @@ import { ProjectsManageComponent } from './components/projects/projects-manage/p
     ProjectsSyncComponent,
     JobsNewComponent,
     JobsEditComponent,
-    ProjectsManageComponent
+    ProjectsManageComponent,
+    RegisterComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
-  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent, SuitDailogComponent, ProjectsSyncComponent]
+  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent, SuitDailogComponent, ProjectsSyncComponent, RegisterComponent]
 })
 
 export class AppModule {
