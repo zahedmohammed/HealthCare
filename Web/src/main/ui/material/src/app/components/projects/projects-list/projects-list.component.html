@@ -11,23 +11,25 @@
         <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
             <div class="row">
                 <div class="col-xl-3 col-lg-6">
-                    <a href="javascript:;" class="item-card">
+                    <a href="javascript:;" class="item-card" color="red">
                         <a href="javascript:;" [routerLink]="['/app/projects/new']">
                             <div class="card__image">
                                 <!--<img alt="product" [src]="product.img"/>-->
                                 <p class="text-center">
                                 <span>
-                                    <h5>New Project</h5>
+                                    <h5>Add Project</h5>
                                     <br/>
-                                    <h6>Start testing your APIs with auto test coverage</h6>
+                                    <span class="text-muted">Start testing your APIs with auto security & functional coverage</span>
                                 </span>
                                 </p>
                             </div>
                         </a>
                         <div class="card__body card-white">
                             <div class="card__title">
-                            <span><button mat-icon-button [routerLink]="['/app/projects/new']"> <mat-icon
-                                    class="material-icons text-muted">add_circle_outline</mat-icon> </button></span>
+                            <span>
+                                <button mat-icon-button [routerLink]="['/app/projects/new']" matTooltip="Add Project" matTooltipPosition="above"> <mat-icon
+                                        class="material-icons text-muted">add</mat-icon> </button>
+                            </span>
                             </div>
                             <div class="card__price">
                                 <span></span>
@@ -37,22 +39,24 @@
                 </div>
                 <div class="col-xl-3 col-lg-6" *ngFor="let project of projects">
                     <a href="javascript:;" class="item-card">
-                        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
+                        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']" matTooltip="Go to jobs" matTooltipPosition="above">
                             <div class="card__image">
                                 <!--<img alt="product" [src]="product.img"/>-->
                                 <h5 class="text-center">{{project.name}}</h5>
                                 <br/>
-                                <h6>Create Date: {{project.createdDate | date:'short'}}</h6>
-                                <h6>Modified Date: {{project.modifiedDate | date:'short'}}</h6>
+                                <span class="text-muted">Create Date: {{project.createdDate | date:'short'}}</span><br/>
+                                <span class="text-muted">Modified Date: {{project.modifiedDate | date:'short'}}</span>
                             </div>
                         </a>
                         <div class="card__body card-white">
                             <div class="card__title">
-                                <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'manage']"> <mat-icon
+                                <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'manage']" matTooltip="Edit" matTooltipPosition="above"> <mat-icon
                                         class="material-icons text-muted">edit</mat-icon> </button></span>
                             </div>
                             <div class="card__price">
-                                <span><button mat-button class="btn-w-md" [routerLink]="['/app/projects', project.id, 'test-suites']">Test Suites</button></span>
+                                <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'test-suites']" matTooltip="Test Suites" matTooltipPosition="above"> <mat-icon
+                                        class="material-icons text-muted">code</mat-icon> </button>
+                                    </span>
                             </div>
                         </div>
                     </a>
