@@ -34,7 +34,7 @@
                             <td class="mdl-data-table__cell--non-numeric">
                                 <a href="javascript:;"
                                    [routerLink]="['/app/projects', id, 'jobs', job.id, 'edit']">{{job.project.name}}/{{job.name}}</a></td>
-                            <td class="mdl-data-table__cell--non-numeric">{{job.environment}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{job.environment?.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.issueTracker?.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
