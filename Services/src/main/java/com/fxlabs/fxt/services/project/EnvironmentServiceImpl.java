@@ -80,6 +80,19 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
     }
 
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.project.Environment>> save(List<com.fxlabs.fxt.dto.project.Environment> envs, String projectId, String org) {
+        for (com.fxlabs.fxt.dto.project.Environment env : envs) {
+            if (StringUtils.isEmpty(env.getId())) {
+                create(env, projectId, org);
+            } else {
+                update(env, projectId, org);
+            }
+        }
+        return findByProjectId(projectId, org);
+    }
+
     @Override
     public void isUserEntitled(String id, String user) {
         /*Optional<Environment> environmentOptional = environmentRepository.findById(id);

@@ -22,4 +22,6 @@ public interface EnvironmentService extends GenericService<Environment, String> 
     Response<com.fxlabs.fxt.dto.project.Environment> update(com.fxlabs.fxt.dto.project.Environment environment, String projectId, String orgId);
 
     Response<com.fxlabs.fxt.dto.project.Environment> delete(String projectId, String envId, String orgId);
+
+    Response<List<Environment>> save(List<Environment> envs, String projectId, String org);
 }

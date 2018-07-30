@@ -55,7 +55,6 @@ export class ProjectService {
   }
 
   getFilesDetails(id: string, fileId: string) {
-
       return this.http.get(this.serviceUrl + "/" + id + "/files" + "/" + fileId);
   }
 
@@ -73,6 +72,14 @@ export class ProjectService {
 
   saveEnv(env: Env, projectId: string) {
     return this.http.post(this.serviceUrl + "/" +  projectId + "/env", env);
+  }
+
+  saveEnvs(envs: Env[], projectId: string) {
+    return this.http.post(this.serviceUrl + "/" +  projectId + "/envs", envs);
+  }
+
+  getEnvs(projectId: string) {
+    return this.http.get(this.serviceUrl + "/" +  projectId + "/env");
   }
 
 
