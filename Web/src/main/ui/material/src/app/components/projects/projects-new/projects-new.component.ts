@@ -198,7 +198,7 @@ export class ProjectsNewComponent implements OnInit {
         if (this.handler.handle(results)) {
         return;
       }
-      this.autoCodeConfig = results['data'];
+      this.env = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saved successfully", "");
       this.router.navigate(['/app/projects']);
     }, error => {
