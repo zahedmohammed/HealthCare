@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { RegisterComponent } from './../../dialogs/register/register.component';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
@@ -12,7 +13,7 @@ import { Job } from '../../../models/project-job.model';
 import { OrgUser } from '../../../models/org.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
@@ -51,7 +52,7 @@ export class ProjectsNewComponent implements OnInit {
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
             private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
-            public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder) {
+            public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) {
 
   }
 
@@ -222,6 +223,17 @@ export class ProjectsNewComponent implements OnInit {
 
   setAccount(account){
      this.project.account.accountType =  account.accountType;
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(RegisterComponent, {
+      width:'50%',
+        height:'85%'
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(result);
+    // });
   }
 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];

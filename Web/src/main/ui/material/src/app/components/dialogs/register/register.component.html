@@ -1,4 +1,5 @@
 <section class="container-fluid with-maxwidth chapter">
+    <h2 mat-dialog-title>New Account</h2>
 <article class="article">
   <div class="box box-default">
       <div class="box-body padding-xl">
@@ -188,7 +189,7 @@
                       <button [disabled]="!heroForm.valid" mat-raised-button color="primary" (click)="create();"
                               class="btn-w-md no-margin-left">Register
                       </button>
-                      <button mat-button type="button" color="primary" class="btn-w-md" (click)="close();">Cancel
+                      <button mat-button type="button" color="primary" class="btn-w-md" (click)="onClose();">Cancel
                       </button>
                   </div>
               </div>

@@ -15,16 +15,15 @@ import {Handler}from '../../dialogs/handler/handler';
 })
 export class RegisterComponent implements OnInit{
   entry: Account = new Account();
-  accountTypes = [
-    'Git', 'GitHub', 'BitBucket', 'GitLab'
-    ];
+  accountTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab'];
   constructor(private accountService: AccountService, 
     private orgService: OrgService,
     private handler: Handler, 
     private snackbarService: SnackbarService,
     private route: ActivatedRoute, 
     private router: Router,
-    public dialogRef: MatDialogRef<RegisterComponent>) {}
+    public dialogRef: MatDialogRef<RegisterComponent>,
+    private dialog: MatDialog) {}
 
   ngOnInit() {
   }
@@ -38,14 +37,41 @@ export class RegisterComponent implements OnInit{
         return;
       }
     this.snackbarService.openSnackBar(this.entry.name + " registered successfully", "");
-    this.dialogRef.close();
-    this.router.navigate(['/app/accounts']);
+    this.onClose();
+    //this.refresh();
+    this.router.navigate(['/app/projects/new']);    
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
-  close(){
+
+  // create1(){
+  //   this.dialogRef.afterClosed().subscribe(result => {
+  //     this.snackbarService.openSnackBar(this.entry.name + " registering...", "");
+  //     if (result != null) {
+  //         this.handler.activateLoader();
+  //         this.accountService.create(this.entry).subscribe(results => {
+  //             this.handler.hideLoader();
+  //             if (this.handler.handle(results)) {
+  //                 return;
+  //             }
+  //             this.snackbarService.openSnackBar(this.entry.name + " registered successfully", "");
+  //             this.dialogRef.close();
+  //             this.router.navigate(['/app/projects/new']);
+  //         }, error => {
+  //             this.handler.hideLoader();
+  //             this.handler.error(error);
+
+  //         });
+  //     }
+  // });
+  // }
+
+  onClose(){
     this.dialogRef.close();
   }
+  refresh() {
+    location.reload()
+    }
 }
