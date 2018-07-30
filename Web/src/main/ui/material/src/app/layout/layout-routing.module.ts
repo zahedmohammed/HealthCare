@@ -19,6 +19,7 @@ import { RunHistoryComponent } from '../components/analytics/run-history/run-his
 import { ProjectsListComponent } from '../components/projects/projects-list/projects-list.component';
 import { ProjectsNewComponent } from '../components/projects/projects-new/projects-new.component';
 import { ProjectsEditComponent } from '../components/projects/projects-edit/projects-edit.component';
+import { ProjectsManageComponent } from '../components/projects/projects-manage/projects-manage.component';
 
 import { RegionsListComponent } from '../components/regions-list/regions-list.component';
 import { RegionEditComponent } from '../components/regions/region-edit/region-edit.component';
@@ -102,6 +103,7 @@ const routes: Routes = [
 
       { path: 'projects/new', component: ProjectsNewComponent },
       { path: 'projects/:id/edit', component: ProjectsNewComponent },
+      { path: 'projects/:id/manage', component: ProjectsManageComponent },
       { path: 'projects/:id/test-suites', component: ProjectsEditComponent },
       { path: 'projects/:id/jobs', component: JobslistComponent },
       { path: 'projects/:id/jobs/new', component: JobsNewComponent },

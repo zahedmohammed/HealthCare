@@ -166,6 +166,7 @@ import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.c
 import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-sync.component';
 import { JobsNewComponent } from './components/jobs/jobs-new/jobs-new.component';
 import { JobsEditComponent } from './components/jobs/jobs-edit/jobs-edit.component';
+import { ProjectsManageComponent } from './components/projects/projects-manage/projects-manage.component';
 
 @NgModule({
   imports: [
@@ -311,7 +312,8 @@ import { JobsEditComponent } from './components/jobs/jobs-edit/jobs-edit.compone
     SuitDailogComponent,
     ProjectsSyncComponent,
     JobsNewComponent,
-    JobsEditComponent
+    JobsEditComponent,
+    ProjectsManageComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
