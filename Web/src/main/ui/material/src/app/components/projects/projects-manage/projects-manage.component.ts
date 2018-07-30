@@ -209,17 +209,17 @@ showSpinner: boolean = false;
       }
       this.envs = results['data'];
       if (!this.envs) {
-        this.envs = [];
+        /*this.envs = [];
         env: Env = new Env();
         env.auths[0] = new Auth();
-        this.envs[0] = env;
+        this.envs[0] = env;*/
       }
       console.log(this.envs);
     });
   }
 
   saveEnv() {
-    console.log(this.env);
+    console.log(this.envs);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
 
     this.projectService.saveEnvs(this.envs, this.project.id).subscribe(results => {
