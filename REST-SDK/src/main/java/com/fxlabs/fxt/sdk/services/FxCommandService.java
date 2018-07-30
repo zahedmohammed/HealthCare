@@ -223,19 +223,19 @@ public class FxCommandService {
                 projectDir += "/";
             }
 
-            File fxfile = FileUtils.getFile(new File(projectDir), "Fxfile.yaml");
+           // File fxfile = FileUtils.getFile(new File(projectDir), "Fxfile.yaml");
 
-            if (fxfile == null || !fxfile.exists()) {
-                System.out.println(
-                        AnsiOutput.toString(AnsiColor.RED,
-                                String.format("Invalid project dir %s. Fxfile.yaml not found.", projectDir)
-                                , AnsiColor.DEFAULT)
-                );
-                return null;
-            }
+//            if (fxfile == null || !fxfile.exists()) {
+//                System.out.println(
+//                        AnsiOutput.toString(AnsiColor.RED,
+//                                String.format("Invalid project dir %s. Fxfile.yaml not found.", projectDir)
+//                                , AnsiColor.DEFAULT)
+//                );
+//                return null;
+//            }
 
             // TODO: load Fxfile.yaml
-            Config config = yamlMapper.readValue(fxfile, Config.class);
+//            Config config = yamlMapper.readValue(fxfile, Config.class);
 
             //System.out.println(config);
 
@@ -249,7 +249,7 @@ public class FxCommandService {
 
             if (project == null) {
 
-                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, config.getName(), String.format("No project with name [%s] found on FxServer", config.getName()));
+//                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, config.getName(), String.format("No project with name [%s] found on FxServer", config.getName()));
                 CredUtils.errors.set(Boolean.TRUE);
                 return null;
 
@@ -274,41 +274,41 @@ public class FxCommandService {
             }
 
 
-            System.out.println(String.format("Fxfile.yaml project [%s] found...", config.getName()));
-            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", String.format("Fxfile.yaml project [%s] found...", config.getName()));
+//            System.out.println(String.format("Fxfile.yaml project [%s] found...", config.getName()));
+//            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", String.format("Fxfile.yaml project [%s] found...", config.getName()));
 
             projectFiles = getProjectChecksums(project.getId());
 
-            String checksum = null;
-            try {
-                String fxfileContent = FileUtils.readFileToString(fxfile, "UTF-8");
-                checksum = DigestUtils.md5Hex(fxfileContent);
-            } catch (IOException e) {
-                logger.warn(e.getLocalizedMessage());
-                System.out.println(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
-                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, fxfile.getName(), String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
-                CredUtils.errors.set(Boolean.TRUE);
-            }
+//            String checksum = null;
+//            try {
+//                String fxfileContent = FileUtils.readFileToString(fxfile, "UTF-8");
+//                checksum = DigestUtils.md5Hex(fxfileContent);
+//            } catch (IOException e) {
+//                logger.warn(e.getLocalizedMessage());
+//                System.out.println(String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
+//                CredUtils.taskLogger.get().append(BotLogger.LogType.ERROR, fxfile.getName(), String.format("Failed loading [%s] file content with error [%s]", fxfile.getName(), e.getLocalizedMessage()));
+//                CredUtils.errors.set(Boolean.TRUE);
+//            }
 
             //System.out.println(projectFiles);
             //System.out.println("Fxfile.yaml checksum: " + checksum);
 
-            if (!isChecksumPresent(projectFiles, fxfile, checksum)) {
-
-                Response<Project> projectResponse = updateProject(project, config, fxfile, checksum);
-
-                if (projectResponse.isErrors()) {
-                    System.err.println(projectResponse.getMessages());
-                }
-                if (projectResponse.getData() != null) {
-                    System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
-                            String.format("%s [Synced]",
-                                    org.apache.commons.lang3.StringUtils.rightPad(fxfile.getName(), 113)),
-                            AnsiColor.DEFAULT));
-                    //System.out.println(String.format("         : %s [Synced]", projectResponse.getData().getId()));
-                    CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project name [%s] id [%s] updated", projectResponse.getData().getName(), projectResponse.getData().getId()));
-                }
-            }
+//            if (!isChecksumPresent(projectFiles, fxfile, checksum)) {
+//
+//                Response<Project> projectResponse = updateProject(project, config, fxfile, checksum);
+//
+//                if (projectResponse.isErrors()) {
+//                    System.err.println(projectResponse.getMessages());
+//                }
+//                if (projectResponse.getData() != null) {
+//                    System.out.println(AnsiOutput.toString(AnsiColor.GREEN,
+//                            String.format("%s [Synced]",
+//                                    org.apache.commons.lang3.StringUtils.rightPad(fxfile.getName(), 113)),
+//                            AnsiColor.DEFAULT));
+//                    //System.out.println(String.format("         : %s [Synced]", projectResponse.getData().getId()));
+//                    CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, fxfile.getName(), String.format("Project name [%s] id [%s] updated", projectResponse.getData().getName(), projectResponse.getData().getId()));
+//                }
+//            }
 
             loadSuites(projectDir, yamlMapper, project.getId(), projectFiles);
 
@@ -650,7 +650,7 @@ public class FxCommandService {
             job.setTags(jobProfile.getTags());
             getNotification(jobProfile, job);
 
-            job.setEnvironment(jobProfile.getEnvironment());
+            job.setEnvironment(getEnvironment(jobProfile, projectId));
 
             job.setRegions(jobProfile.getRegions());
             job.setCron(jobProfile.getCron());
@@ -677,6 +677,47 @@ public class FxCommandService {
             job.setIssueTracker(issueTracker1);
         }
 
+    }
+
+    private Environment getEnvironment(com.fxlabs.fxt.sdk.beans.Job jobProfile, String projectId) {
+
+        com.fxlabs.fxt.sdk.beans.Environment jobProfileEnvironment = jobProfile.getEnvironment();
+        Environment environment = new Environment();
+
+        if (jobProfileEnvironment != null) {
+            environment.setBaseUrl(jobProfileEnvironment.getBaseUrl());
+            environment.setName(jobProfileEnvironment.getName());
+            environment.setDescription(jobProfileEnvironment.getDescription());
+            environment.setAuths(getAuths(jobProfileEnvironment));
+            environment.setProjectId(projectId);
+            environment.setRefId(jobProfileEnvironment.getRefId());
+        }
+
+        return environment;
+    }
+
+    private List<Auth> getAuths(com.fxlabs.fxt.sdk.beans.Environment jobProfileEnvironment) {
+
+        List<Auth> auths = new ArrayList<>();
+        for (com.fxlabs.fxt.sdk.beans.Auth auth :jobProfileEnvironment.getAuths()) {
+            Auth authDto = new Auth();
+            authDto.setAuthType(AuthType.valueOf(auth.getAuthType().toString()));
+            authDto.setAccessTokenUri(auth.getAccessTokenUri());
+            authDto.setUsername(auth.getUsername());
+            authDto.setPassword(auth.getPassword());
+            authDto.setClientSecret(auth.getClientSecret());
+            authDto.setAuthorizationScheme(AuthenticationScheme.valueOf(auth.getAuthorizationScheme().toString()));
+            authDto.setClientId(auth.getClientId());
+            authDto.setHeader_1(auth.getHeader_1());
+            authDto.setHeader_2(auth.getHeader_2());
+            authDto.setHeader_3(auth.getHeader_3());
+            authDto.setGrantType(GrantType.valueOf(auth.getGrantType().toString()));
+            authDto.setId(auth.getId());
+            authDto.setName(auth.getName());
+            auths.add(authDto);
+        }
+
+        return auths;
     }
 
     private void getNotification(com.fxlabs.fxt.sdk.beans.Job jobProfile, Job job) {
@@ -740,6 +781,10 @@ public class FxCommandService {
         files.stream().forEach(file -> {
 
             try {
+
+                if (file.getName().contains("Fxfile")) {
+                    return;
+                }
                 TestSuite testSuite = null;
                 String testSuiteContent = null;
                 final String checksum;

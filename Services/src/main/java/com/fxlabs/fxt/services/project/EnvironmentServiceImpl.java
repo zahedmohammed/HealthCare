@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.EnvironmentConverter;
+import com.fxlabs.fxt.converters.project.JobConverter;
+import com.fxlabs.fxt.converters.project.ProjectConverter;
 import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
@@ -32,13 +34,16 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
     private EnvironmentRepository environmentRepository;
     private ProjectService projectService;
     private JobRepository jobRepository;
+    private ProjectConverter projectConverter;
 
     @Autowired
-    public EnvironmentServiceImpl(EnvironmentRepository repository, JobRepository jobRepository, EnvironmentConverter converter, ProjectService projectService) {
+    public EnvironmentServiceImpl(EnvironmentRepository repository, JobRepository jobRepository, ProjectConverter projectConverter,
+                                  EnvironmentConverter converter, ProjectService projectService) {
         super(repository, converter);
         this.environmentRepository = repository;
         this.projectService = projectService;
         this.jobRepository = jobRepository;
+        this.projectConverter = projectConverter;
     }
 
 
@@ -115,6 +120,8 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         job.setEnvironment(converter.convertToEntity(environmentResponse.getData()));
         job.setCron("0 15 10 ? * *");
         job.setRegions("FXLabs/US_WEST_1");
+        job.setInactive(false);
+        job.setProject(projectConverter.convertToEntity(optionalProject.getData()));
 
         jobRepository.save(job);
 
