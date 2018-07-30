@@ -56,16 +56,17 @@ public class StubGenerator {
      */
     public void setupFXConfig(String projectDir, com.fxlabs.fxt.dto.project.AutoCodeConfigMinimal autoCodeConfigContent) {
         try {
-            File fxfile = FileUtils.getFile(new File(projectDir), FX_FILE);
-            if (fxfile == null || !fxfile.exists()) {
-                try {
-                    FileUtils.copyURLToFile(new URL(FX_FILE_URL), fxfile);
-                    System.out.println(String.format("%s created successfully...", FX_FILE));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.err.println(e.getLocalizedMessage());
-                }
-            }
+            //disable Fxfile creation as part of UX Fix
+//            File fxfile = FileUtils.getFile(new File(projectDir), FX_FILE);
+//            if (fxfile == null || !fxfile.exists()) {
+//                try {
+//                    FileUtils.copyURLToFile(new URL(FX_FILE_URL), fxfile);
+//                    System.out.println(String.format("%s created successfully...", FX_FILE));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    System.err.println(e.getLocalizedMessage());
+//                }
+//            }
 
             File autoCodeConfig = FileUtils.getFile(new File(projectDir), AUTO_CODE_CONFIG_FILE);
 
