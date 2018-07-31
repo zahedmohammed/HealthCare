@@ -38,40 +38,15 @@ export class RegisterComponent implements OnInit{
       }
     this.snackbarService.openSnackBar(this.entry.name + " registered successfully", "");
     this.onClose();
-    //this.refresh();
-    this.router.navigate(['/app/projects/new']);    
+    this.router.navigateByUrl('/app/projects', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/app/projects/new'])); 
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
 
-  // create1(){
-  //   this.dialogRef.afterClosed().subscribe(result => {
-  //     this.snackbarService.openSnackBar(this.entry.name + " registering...", "");
-  //     if (result != null) {
-  //         this.handler.activateLoader();
-  //         this.accountService.create(this.entry).subscribe(results => {
-  //             this.handler.hideLoader();
-  //             if (this.handler.handle(results)) {
-  //                 return;
-  //             }
-  //             this.snackbarService.openSnackBar(this.entry.name + " registered successfully", "");
-  //             this.dialogRef.close();
-  //             this.router.navigate(['/app/projects/new']);
-  //         }, error => {
-  //             this.handler.hideLoader();
-  //             this.handler.error(error);
-
-  //         });
-  //     }
-  // });
-  // }
-
   onClose(){
     this.dialogRef.close();
   }
-  refresh() {
-    location.reload()
-    }
 }
