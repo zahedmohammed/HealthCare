@@ -82,7 +82,7 @@
 
                     <mat-step [stepControl]="secondFormGroup">
                       <form [formGroup]="secondFormGroup">
-                        <ng-template matStepLabel>Issue-Tracker</ng-template>
+                        <ng-template matStepLabel>Auto Bug Management</ng-template>
 
                           <div class="form-group row">
                               <label for="name" class="col-md-0 control-label"></label>
@@ -92,6 +92,12 @@
                                              matInput placeholder="Issue-Tracker URL">
                                   </mat-input-container>
                               </div>
+                              <div class="col-md-7">
+                                  <div class="callout1 text-muted callout-info1">
+                                      <p>e.g. https://github.com/username/MyApp
+                                      </p>
+                                  </div>
+                              </div>
                           </div>
 
                           <div class="form-group row">
@@ -99,7 +105,7 @@
                               </label>
                               <div class="col-md-5">
                                   <mat-form-field>
-                                      <mat-select placeholder="Account"
+                                      <mat-select placeholder="Credentials"
                                                   [(ngModel)]="job.issueTracker.account"  [ngModelOptions]="{standalone: true}">
                                           <mat-option *ngFor="let account of accounts" [value]="account.id">
                                               {{account.name}}
@@ -153,7 +159,7 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-form-field>
-                                        <mat-select placeholder="Slack Account"
+                                        <mat-select placeholder="Slack Credentials"
                                                     [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
                                             <mat-option *ngFor="let account of accounts" [value]="account.id">
                                                 {{account.name}}
