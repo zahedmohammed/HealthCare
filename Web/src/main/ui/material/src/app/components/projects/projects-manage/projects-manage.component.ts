@@ -32,6 +32,7 @@ showSpinner: boolean = false;
   autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
   job: Job = new Job();
   envs: Env[] = [];
+  env: Env;
   orgs;
   accounts;
   matStepper;// MatStepper;
@@ -199,6 +200,16 @@ showSpinner: boolean = false;
     this.matStepper = matStepper;
     this.matStepper.next();
     this.getEnvs();
+  }
+
+  addEnv() {
+    this.env = new Env();
+    this.env.auths.push(new Auth);
+    this.envs.push(this.env);
+  }
+
+  addAuth(e : Env) {
+    e.auths.push(new Auth);
   }
 
   getEnvs() {
