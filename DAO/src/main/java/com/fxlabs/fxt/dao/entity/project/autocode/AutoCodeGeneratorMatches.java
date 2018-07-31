@@ -12,12 +12,12 @@ import javax.persistence.*;
 /**
  * @author Mohammed Luqman Shareef
  */
-@Entity
+@Embeddable
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class AutoCodeGeneratorMatches extends BasicBaseEntity {
+public class AutoCodeGeneratorMatches {
 
     private String name;
     private String value;

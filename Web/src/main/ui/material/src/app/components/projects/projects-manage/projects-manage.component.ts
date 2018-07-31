@@ -266,6 +266,23 @@ env.auths.push({});
     });
   }
 
+  delete() {
+    var r = confirm("Are you sure you want to delete '" + this.project.name + "'?");
+    if (r == true) {
+      this.projectService.delete(this.project).subscribe(results => {
+          if (this.handler.handle(results)) {
+            return;
+          }
+          this.snackbarService.openSnackBar("'Project '" + this.project.name + "' deleted", "");
+          this.router.navigate(['/app/projects']);
+        }, error => {
+          this.handler.hideLoader();
+          this.handler.error(error);
+      });
+
+    }
+  }
+
   setAccount(account){
      this.project.account.accountType =  account.accountType;
   }

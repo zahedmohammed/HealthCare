@@ -25,7 +25,7 @@ public class AutoCodeGenerator extends BasicBaseDto {
     private TestSuiteSeverity severity;
     private Database database;
     protected boolean inactive = false;
-    private List<AutoCodeGeneratorMatches> autoCodeGeneratorMatches;
+    private List<AutoCodeGeneratorMatches> matches;
 
 }
 

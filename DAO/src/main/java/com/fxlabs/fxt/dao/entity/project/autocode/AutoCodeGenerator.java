@@ -38,10 +38,10 @@ public class AutoCodeGenerator extends BasicBaseEntity {
 
     @ElementCollection
     @CollectionTable(
-            name = "auto_code_generator_auto_code_generator_matches",
-            joinColumns = @JoinColumn(name = "auto_code_generator_id")
+            name = "auto_code_generator_matches",
+            joinColumns = @JoinColumn(name = "id")
     )
-    private List<AutoCodeGeneratorMatches> autoCodeGeneratorMatches;
+    private List<AutoCodeGeneratorMatches> matches;
 
 }
 
