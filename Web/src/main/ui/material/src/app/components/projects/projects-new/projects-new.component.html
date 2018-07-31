@@ -125,15 +125,6 @@
                                                         <b>{{ res.type }}</b>
                                                     </mat-panel-title>
                                                 </mat-expansion-panel-header>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <mat-input-container class="full-width">
-                                                                <textarea matInput placeholder="Assertions"
-                                                                          [(ngModel)]='res.assertionsText'
-                                                                          [ngModelOptions]="{standalone: true}"></textarea>
-                                                        </mat-input-container>
-                                                    </div>
-                                                </div>
                                                 <div *ngIf="res.type === 'ddos'">
                                                     <div class="row">
                                                         <div class="col-md-6">
@@ -144,7 +135,30 @@
                                                             </mat-input-container>
                                                         </div>
                                                     </div>
-
+                                                </div>
+                                                <div *ngIf="res.type === 'sql_injection_timebound'">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <mat-form-field>
+                                                                <mat-select placeholder="Database Type" required
+                                                                            [(ngModel)]="res.database.name" [ngModelOptions]="{standalone: true}"
+                                                                            name="type">
+                                                                    <mat-option *ngFor="let db of dbs" [value]="db">
+                                                                        {{db}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <mat-input-container class="full-width">
+                                                                <textarea matInput placeholder="Assertions"
+                                                                          [(ngModel)]='res.assertionsText'
+                                                                          [ngModelOptions]="{standalone: true}"></textarea>
+                                                        </mat-input-container>
+                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6">

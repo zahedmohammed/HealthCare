@@ -239,6 +239,7 @@ export class ProjectsNewComponent implements OnInit {
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
   genPolicies = ['None', 'Create'];
+  dbs = ['MySQL', 'Oracle', 'Postgres', 'SQLServer', 'MongoDB'];
 
 }
 
