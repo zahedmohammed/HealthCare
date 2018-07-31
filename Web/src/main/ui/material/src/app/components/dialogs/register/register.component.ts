@@ -38,9 +38,8 @@ export class RegisterComponent implements OnInit{
       }
     this.snackbarService.openSnackBar(this.entry.name + " registered successfully", "");
     this.onClose();
-    //this.refresh();
-    //this.accountService.update(this.entry);
-    this.router.navigate(['/app/projects/new']);    
+    this.router.navigateByUrl('/app/projects', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/app/projects/new'])); 
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -49,9 +48,5 @@ export class RegisterComponent implements OnInit{
 
   onClose(){
     this.dialogRef.close();
-    //this.accountService.update(this.entry);
   }
-  // refresh() {
-  //   location.reload()
-  //   }
 }
