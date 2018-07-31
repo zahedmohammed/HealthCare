@@ -130,11 +130,40 @@ public class AutoCodeConfigServiceUtil {
         rbac.setType("rbac");
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@StatusCode != 200");
-        assertions.add("@StatusCode != 401");
-        assertions.add("@StatusCode != 404");
-        assertions.add("@StatusCode != 500");
+        assertions.add("@StatusCode == 403");
         rbac.setAssertions(assertions);
+
+        List<AutoCodeGeneratorMatches > matchesList = new ArrayList<>();
+
+        AutoCodeGeneratorMatches admin = new AutoCodeGeneratorMatches();
+        admin.setName("Admin access");
+        admin.setPathPatterns("/api/v1/orgs/**, /api/v1/accounts/**");
+        admin.setMethods("Post, Put, Delete");
+        admin.setDenyRoles("Writer, Reader");
+        matchesList.add(admin);
+
+        AutoCodeGeneratorMatches writer = new AutoCodeGeneratorMatches();
+        writer.setName("Writer access");
+        writer.setPathPatterns("/api/v1/projects/**, /api/v1/regions/**");
+        writer.setMethods("Post, Put, Delete");
+        writer.setDenyRoles("Reader");
+        matchesList.add(writer);
+
+        AutoCodeGeneratorMatches collaborator = new AutoCodeGeneratorMatches();
+        collaborator.setName("Collaborator access");
+        collaborator.setPathPatterns("/api/v1/projects/**");
+        collaborator.setMethods("Post, Delete");
+        collaborator.setDenyRoles("Collaborator");
+        matchesList.add(collaborator);
+
+        AutoCodeGeneratorMatches reader = new AutoCodeGeneratorMatches();
+        reader.setName("Reader access");
+        reader.setPathPatterns("/api/v1/**");
+        reader.setMethods("Get, Post, Put, Delete");
+        reader.setDenyRoles("Other");
+        matchesList.add(reader);
+
+        rbac.setMatches(matchesList);
 
         return rbac;
     }

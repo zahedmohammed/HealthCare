@@ -18,6 +18,7 @@ import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
 import { ChangeDetectorRef,Input} from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-projects-manage',
   templateUrl: './projects-manage.component.html',
@@ -69,6 +70,8 @@ availableAuthtype:String;
       this.id = params['id'];
       if (this.id) {
         this.loadProject(this.id);
+        this.getAutoCode();
+        this.getEnvs();
       }
     });
 
@@ -170,11 +173,10 @@ availableAuthtype:String;
   gotoAutoCode(matStepper) {
     this.matStepper = matStepper;
     this.matStepper.next();
-    this.getAutoCode();
   }
 
   getAutoCode() {
-    this.projectService.getAutoCodeConfig(this.project.id).subscribe(results => {
+    this.projectService.getAutoCodeConfig(this.id).subscribe(results => {
        this.handler.hideLoader();
         if (this.handler.handle(results)) {
         return;
@@ -205,7 +207,6 @@ availableAuthtype:String;
   gotoEnv(matStepper) {
     this.matStepper = matStepper;
     this.matStepper.next();
-    this.getEnvs();
   }
 
   addEnv() {
@@ -218,7 +219,7 @@ env.auths.push({});
   }
 
   getEnvs() {
-    this.projectService.getEnvs(this.project.id).subscribe(results => {
+    this.projectService.getEnvs(this.id).subscribe(results => {
        this.handler.hideLoader();
         if (this.handler.handle(results)) {
         return;
