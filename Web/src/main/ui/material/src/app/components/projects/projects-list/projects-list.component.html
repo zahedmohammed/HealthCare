@@ -11,15 +11,17 @@
         <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
             <div class="row">
                 <div class="col-xl-3 col-lg-6">
-                    <a href="javascript:;" class="item-card" color="red">
+                    <a href="javascript:;" class="item-card bg-color-primary">
                         <a href="javascript:;" [routerLink]="['/app/projects/new']">
                             <div class="card__image">
                                 <!--<img alt="product" [src]="product.img"/>-->
-                                <p class="text-center">
+                                <p class="text-center text-white">
                                 <span>
-                                    <h5>Add Project</h5>
+                                    <button mat-icon-button > <mat-icon
+                                            class="material-icons">add</mat-icon> </button>
+                                    <h5 style="color:white">Add Project</h5>
                                     <br/>
-                                    <span class="text-muted">Start testing your APIs with auto security & functional coverage</span>
+                                    <!--<span class="text-muted">Start testing your APIs with auto security & functional coverage</span>-->
                                 </span>
                                 </p>
                             </div>
@@ -43,6 +45,7 @@
                             <div class="card__image">
                                 <!--<img alt="product" [src]="product.img"/>-->
                                 <h5 class="text-center">{{project.name}}</h5>
+                                <h5>(Jobs)</h5>
                                 <br/>
                                 <span class="text-muted">Create Date: {{project.createdDate | date:'short'}}</span><br/>
                                 <span class="text-muted">Modified Date: {{project.modifiedDate | date:'short'}}</span>
