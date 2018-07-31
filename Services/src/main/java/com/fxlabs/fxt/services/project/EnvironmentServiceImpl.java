@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.converters.project.EnvironmentConverter;
 import com.fxlabs.fxt.converters.project.JobConverter;
 import com.fxlabs.fxt.converters.project.ProjectConverter;
+import com.fxlabs.fxt.dao.entity.project.Auth;
 import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -55,6 +58,13 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         }
 
         List<Environment> environments = environmentRepository.findByProjectId(projectId);
+
+        if (environments == null || CollectionUtils.isEmpty(environments)) {
+            environments = new ArrayList<>();
+            Environment env = new Environment();
+            env.setAuths(Arrays.asList(new Auth()));
+            environments.add(env);
+        }
         return new Response<>(converter.convertToDtos(environments));
     }
 

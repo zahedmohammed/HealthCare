@@ -134,6 +134,18 @@
                                                         </mat-input-container>
                                                     </div>
                                                 </div>
+                                                <div *ngIf="res.type === 'ddos'">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <mat-input-container class="full-width">
+                                                                <textarea matInput placeholder="Page size query param names e.g. Default params: pageSize, page_size, maxResults, max_results"
+                                                                          [(ngModel)]='res.matches[0].name'
+                                                                          [ngModelOptions]="{standalone: true}"></textarea>
+                                                            </mat-input-container>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <mat-checkbox [(ngModel)]="res.inactive"

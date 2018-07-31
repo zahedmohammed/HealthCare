@@ -2,10 +2,7 @@ package com.fxlabs.fxt.services.util;
 
 import com.fxlabs.fxt.dto.project.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Mohammed Shoukath Ali
@@ -184,7 +181,7 @@ public class AutoCodeConfigServiceUtil {
         matches.setResourceSamples("User-Create");
 
         List<AutoCodeGeneratorMatches > matchesList = new ArrayList<>();
-        sql_injection_timebound.setAutoCodeGeneratorMatches(matchesList);
+        sql_injection_timebound.setMatches(matchesList);
 
         return sql_injection_timebound;
     }
@@ -241,6 +238,10 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
         assertions.add("@StatusCode != 500");
         ddos.setAssertions(assertions);
+
+        AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
+        match.setName("pageSize, page_size, maxResults, max_results");
+        ddos.setMatches(Arrays.asList(match));
 
         return ddos;
     }
