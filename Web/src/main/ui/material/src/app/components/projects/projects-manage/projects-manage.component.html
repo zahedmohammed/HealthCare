@@ -193,7 +193,7 @@
                     <label for="name" class="col-md-0 control-label"></label>
                     <div class="col-md-5">
                       <mat-input-container class="full-width">
-                        <input required [(ngModel)]="env.name" formControlName="nameCtrl"
+                        <input  [(ngModel)]="env.name" formControlName="nameCtrl"
                                matInput placeholder="Env name">
                       </mat-input-container>
                     </div>
@@ -203,7 +203,7 @@
                     <label for="name" class="col-md-0 control-label"></label>
                     <div class="col-md-5">
                       <mat-input-container class="full-width">
-                        <input required [(ngModel)]="env.baseUrl" formControlName="urlCtrl"
+                        <input  [(ngModel)]="env.baseUrl" formControlName="urlCtrl"
                                matInput placeholder="Base URL">
                       </mat-input-container>
                     </div>
@@ -215,12 +215,12 @@
                     </div>
                   </div>
 
-                  <div  *ngFor="let auth of env.auths">
-
+                  <div  *ngFor="let auth of env.auths; let i = index">
+                    <span>#{{(i+1)}}..</span>
                       <div class="form-group row">
                           <label for="name" class="col-md-0 control-label"></label>
                           <div class="col-md-5">
-                              <mat-input-container class="full-width">
+                              <mat-input-container required class="full-width">
                                   <input [(ngModel)]="auth.name" [ngModelOptions]="{standalone: true}"
                                          matInput placeholder="Auth Name">
                               </mat-input-container>
@@ -232,17 +232,18 @@
                         </label>
                         <div class="col-md-5">
                           <mat-form-field>
-                            <mat-select placeholder="Authentication Type" required
-                                        [(ngModel)]="auth.authType" formControlName="authTypeCtrl"
-                                        name="type">
-                              <mat-option *ngFor="let type of authTypes" [value]="type">
-                                {{type}}
-                              </mat-option>
+                            <mat-select placeholder="Authentication Type"    [(value)]="auth.authType">
+                              <mat-option value="Token" (click)="auth.authType='Token';">Token</mat-option>
+                              <mat-option value="OAuth_2_0" (click)="auth.authType='OAuth_2_0';">OAuth 2.0</mat-option>
+                              <mat-option value="Basic" (click)="auth.authType='Basic';">Basic</mat-option>
                             </mat-select>
                           </mat-form-field>
+                          <input type="hidden"   formControlName="authTypeCtrl"  [(ngModel)]="auth.authType">
+
+                          <!--input   formControlName="typeCtrl"  [(ngModel)]="auth.authType"/-->
+
                         </div>
                       </div>
-
                       <div *ngIf="auth.authType === 'Basic' || auth.authType === 'BASIC'">
                         <div class="form-group row">
                           <label for="name" class="col-md-0 control-label"></label>

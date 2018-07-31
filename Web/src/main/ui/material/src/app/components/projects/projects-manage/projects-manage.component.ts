@@ -17,7 +17,7 @@ import { MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DAT
 import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
-
+import { ChangeDetectorRef,Input} from '@angular/core';
 @Component({
   selector: 'app-projects-manage',
   templateUrl: './projects-manage.component.html',
@@ -29,13 +29,15 @@ export class ProjectsManageComponent implements OnInit {
 showSpinner: boolean = false;
   id: string;
   project: Project = new Project();
+auth: Auth = new Auth();
   autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
   job: Job = new Job();
   envs: Env[] = [];
+@Input() data: Observable<any>;
   env: Env;
   orgs;
   accounts;
-  matStepper;// MatStepper;
+  matStepper;// MatStepper;@Input()
 
   context: string = "New";
 
@@ -51,9 +53,12 @@ showSpinner: boolean = false;
 
 
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
+numberOfTicks=0;
+availableAuthtype:String;
+  constructor(private ref: ChangeDetectorRef,private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
             private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
             public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) {
+ console.log('Hello PhotoComponent Component');
 
   }
 
@@ -106,6 +111,7 @@ showSpinner: boolean = false;
     this.projectService.getById(id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
+
         return;
       }
       this.project = results['data'];
@@ -207,9 +213,8 @@ showSpinner: boolean = false;
     this.env.auths.push(new Auth);
     this.envs.push(this.env);
   }
-
-  addAuth(e : Env) {
-    e.auths.push(new Auth);
+  addAuth(env) {
+env.auths.push({});
   }
 
   getEnvs() {
