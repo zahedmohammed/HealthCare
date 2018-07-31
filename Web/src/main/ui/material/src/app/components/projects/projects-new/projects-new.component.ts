@@ -228,7 +228,7 @@ export class ProjectsNewComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(RegisterComponent, {
       width:'50%',
-        height:'85%'
+        height:'65%'
     });
 
     // dialogRef.afterClosed().subscribe(result => {
