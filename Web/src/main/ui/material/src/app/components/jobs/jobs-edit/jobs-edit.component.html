@@ -1,8 +1,11 @@
 <div class="box box-default">
   <div class="box-body">
-    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs', 'new']"> Projects &nbsp; </a> <span
-          class="text-muted"> > </span> &nbsp;
-    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> Jobs </a> &nbsp; <span class="text-muted"> > </span>
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs', 'new']"> Projects </a> 
+    &nbsp;<span class="text-muted"> > </span> &nbsp;
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']">{{project.name}}</a>
+    &nbsp;<span class="text-muted"> > </span> &nbsp;
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> Jobs </a>
+    &nbsp;<span class="text-muted"> > </span> &nbsp;
     &nbsp; New
   </div>
 </div>
