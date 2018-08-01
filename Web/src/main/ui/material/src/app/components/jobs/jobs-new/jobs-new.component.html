@@ -38,7 +38,7 @@
                                     <mat-form-field>
                                         <mat-select placeholder="Environment"
                                                     [(ngModel)]="job.environment" [ngModelOptions]="{standalone: true}">
-                                            <mat-option *ngFor="let env of envs" [value]="env.id">
+                                            <mat-option *ngFor="let env of envs" [value]="env">
                                                 {{env.name}}
                                             </mat-option>
                                         </mat-select>
@@ -50,9 +50,14 @@
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input [(ngModel)]="job.regions" [ngModelOptions]="{standalone: true}"
+                                        <input [(ngModel)]="job.regions" [ngModelOptions]="{standalone: true}" [matAutocomplete]="autoRegions"
                                                matInput placeholder="Bot Region">
                                     </mat-input-container>
+                                    <mat-autocomplete #autoRegions="matAutocomplete">
+                                        <mat-option *ngFor="let option of regions" [value]="option">
+                                            {{option}}
+                                        </mat-option>
+                                    </mat-autocomplete>
                                 </div>
                             </div>
 
@@ -60,9 +65,14 @@
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input [(ngModel)]="job.cron" [ngModelOptions]="{standalone: true}"
+                                        <input [(ngModel)]="job.cron" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto"
                                                matInput placeholder="Cron Expression">
                                     </mat-input-container>
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                        <mat-option *ngFor="let option of crons" [value]="option.exp">
+                                            {{option.exp}} - <small>{{option.desc}}</small>
+                                        </mat-option>
+                                    </mat-autocomplete>
                                 </div>
                             </div>
 
@@ -78,7 +88,6 @@
                             </div>
                         </form>
                     </mat-step>
-
 
                     <mat-step [stepControl]="secondFormGroup">
                       <form [formGroup]="secondFormGroup">
@@ -107,7 +116,7 @@
                                   <mat-form-field>
                                       <mat-select placeholder="Credentials"
                                                   [(ngModel)]="job.issueTracker.account"  [ngModelOptions]="{standalone: true}">
-                                          <mat-option *ngFor="let account of accounts" [value]="account.id">
+                                          <mat-option *ngFor="let account of itAccounts" [value]="account.id">
                                               {{account.name}}
                                           </mat-option>
                                       </mat-select>
@@ -161,7 +170,7 @@
                                     <mat-form-field>
                                         <mat-select placeholder="Slack Credentials"
                                                     [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
-                                            <mat-option *ngFor="let account of accounts" [value]="account.id">
+                                            <mat-option *ngFor="let account of notifyAccounts" [value]="account.id">
                                                 {{account.name}}
                                             </mat-option>
                                         </mat-select>

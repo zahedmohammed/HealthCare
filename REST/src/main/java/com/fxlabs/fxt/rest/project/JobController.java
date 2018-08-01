@@ -74,5 +74,4 @@ public class JobController {
         return service.delete(id, SecurityUtil.getCurrentAuditor());
     }
 
-
 }

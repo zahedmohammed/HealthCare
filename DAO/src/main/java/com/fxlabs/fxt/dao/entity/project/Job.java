@@ -47,7 +47,7 @@ public class Job extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date nextFire;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "job_issue_tracker_id")
     private JobIssueTracker issueTracker;
 

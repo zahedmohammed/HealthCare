@@ -4,7 +4,7 @@ import { Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/toPromise';
-import { Job } from '../models/project-job.model';
+import { Jobs, Noti, Cron } from '../models/jobs.model';
 
 @Injectable()
 export class JobsService {
@@ -41,8 +41,16 @@ export class JobsService {
     return this.http.get(this.serviceUrl + "/count-tests" );
   }
 
- createJob(obj: Job) {
+  create(obj: Jobs) {
     return this.http.post(this.serviceUrl, obj);
+  }
+
+  update(obj: Jobs) {
+    return this.http.put(this.serviceUrl, obj);
+  }
+
+  delete(obj: Jobs) {
+    return this.http.delete(this.serviceUrl + "/" + obj['id']);
   }
 
 }

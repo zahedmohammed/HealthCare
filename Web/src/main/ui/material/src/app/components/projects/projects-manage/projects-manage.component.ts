@@ -226,10 +226,6 @@ env.auths.push({});
       }
       this.envs = results['data'];
       if (!this.envs) {
-        /*this.envs = [];
-        env: Env = new Env();
-        env.auths[0] = new Auth();
-        this.envs[0] = env;*/
       }
       console.log(this.envs);
     });
