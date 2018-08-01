@@ -531,6 +531,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         entity.setGenerators(generators);
         entity = autoCodeConfigRepository.save(entity);
+        saveProjectImports(AutoCodeConfigServiceUtil.getAutoCodeConfigImports(projectId), project.getOrg().getId());
 
         // Create GaaS Task
         this.gaaSTaskRequestProcessor.processAutoCodeconfig(converter.convertToEntity(project), codeConfig);

@@ -37,6 +37,22 @@ public class AutoCodeConfigServiceUtil {
 
     }
 
+    public static ProjectImports getAutoCodeConfigImports(String projectId) {
+
+        ProjectImports projectImports = new ProjectImports();
+        projectImports.setProjectId(projectId);
+        Map<String, String> importsMap = new HashMap<>();
+
+        importsMap.put("@MySQLTimeboundSQLInjections", "FXLabs/Common/MySQL-TimeBound-SQL_Injection_Strings");
+        importsMap.put("@PostgresTimeboundSQLInjections", "FXLabs/Common/PostGreSQL-TimeBound-SQL_Injection_Strings");
+        importsMap.put("@SQLServerTimeboundSQLInjections", "FXLabs/Common/SQLServer-TimeBound-SQL_Injection_Strings");
+        importsMap.put("@OracleTimeboundSQLInjections", "FXLabs/Common/MySQL-TimeBound-SQL_Injection_Strings");
+
+        projectImports.setImports(importsMap);
+
+        return projectImports;
+    }
+
     private static AutoCodeGenerator getCreate() {
 
         AutoCodeGenerator create = new AutoCodeGenerator();
