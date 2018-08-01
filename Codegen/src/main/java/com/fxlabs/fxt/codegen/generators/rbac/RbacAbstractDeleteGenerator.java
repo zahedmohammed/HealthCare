@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.codegen.generators.rbac;
 
+import com.fxlabs.fxt.codegen.code.Generator;
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
 import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
@@ -17,12 +18,20 @@ import java.util.List;
 @Component(value = "rbacAbstractDeleteGenerator")
 public class RbacAbstractDeleteGenerator extends AbstractGenerator {
 
+    protected static final String SCENARIO = "rbac";
     protected static final String POSTFIX = "rbac_delete_abstract";
     protected static final String AUTH = "";
     protected static final String OPERAND = "200";
 
     @Override
     public List<TestSuiteMin> generate(String path, HttpMethod method, Operation op) {
+
+
+        Generator generator = configUtil.get(SCENARIO);
+        if (generator == null || generator.isInactive()) {
+//            System.err.println("No RBAC configuration found or RBAC is inactive...");
+            return null;
+        }
 
 
         // Only POST
