@@ -392,7 +392,9 @@ public class RunTaskRequestProcessor {
         if (run.getAttributes().containsKey(RunConstants.ENV)) {
             envName = run.getAttributes().get(RunConstants.ENV);
         } else {
-            envName = run.getJob().getEnvironment().getName();
+            if (run.getJob().getEnvironment() != null) {
+                envName = run.getJob().getEnvironment().getName();
+            }
         }
 
         Environment env = run.getJob().getEnvironment();
