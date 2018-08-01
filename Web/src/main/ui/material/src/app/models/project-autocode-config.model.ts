@@ -10,6 +10,9 @@ export class Categories {
     assertionsText: string;
     severity: string;
     inactive: boolean;
+    displayHeaderLabel: string;
+    displayHeaderDescription: string;
+    assertionDescription: string;
     postfix: string;
     match: Matches[] = [];
     database: Database = new Database();

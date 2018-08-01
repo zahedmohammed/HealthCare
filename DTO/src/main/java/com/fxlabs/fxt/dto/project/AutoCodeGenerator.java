@@ -20,6 +20,9 @@ import java.util.List;
 public class AutoCodeGenerator extends BasicBaseDto {
 
     private String type;
+    private String displayHeaderDescription;
+    private String displayHeaderLabel;
+    private String assertionDescription;
     private List<String> assertions;
     private String assertionsText;
     private TestSuiteSeverity severity;

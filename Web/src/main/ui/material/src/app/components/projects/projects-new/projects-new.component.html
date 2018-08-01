@@ -122,9 +122,12 @@
                                             <mat-expansion-panel>
                                                 <mat-expansion-panel-header>
                                                     <mat-panel-title>
-                                                        <b>{{ res.type }}</b>
+                                                        <b>{{ res.displayHeaderLabel }}</b>
                                                     </mat-panel-title>
                                                 </mat-expansion-panel-header>
+                                                <div class="mb-3">
+                                                    {{res.displayHeaderDescription}}
+                                                </div>
                                                 <div *ngIf="res.type === 'ddos'">
                                                     <div class="row">
                                                         <div class="col-md-6">
@@ -136,7 +139,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div *ngIf="res.type === 'sql_injection_timebound'">
+                                                <div *ngIf="res.type === 'sql_injection'">
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <mat-form-field>
@@ -200,6 +203,12 @@
                                                                           [ngModelOptions]="{standalone: true}"></textarea>
                                                         </mat-input-container>
                                                     </div>
+                                                    <div class="col-md-7">
+                                                        <div class="callout1 text-muted callout-info1">
+                                                            <p> {{res.assertionDescription}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -208,8 +217,6 @@
                                                         </mat-checkbox>
                                                     </div>
                                                 </div>
-
-
                                             </mat-expansion-panel>
                                         </mat-accordion>
 
