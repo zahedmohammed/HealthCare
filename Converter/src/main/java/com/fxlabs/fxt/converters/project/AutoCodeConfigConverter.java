@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
@@ -35,10 +36,12 @@ public abstract class AutoCodeConfigConverter implements BaseConverter<AutoCodeC
         dest.getGenerators().forEach(g -> {
             if (!StringUtils.isEmpty(g.getAssertionsText())) {
                 try {
-                    List<String> list = Arrays.asList(StringUtils.split(g.getAssertionsText(), "\n"));
+                    List<String> list = Arrays.asList(g.getAssertionsText().split("\n"));
                     g.setAssertions(list);
                 } catch (NullPointerException npe) {
                 }
+            } else {
+                g.setAssertions(new ArrayList<>());
             }
         });
     }
