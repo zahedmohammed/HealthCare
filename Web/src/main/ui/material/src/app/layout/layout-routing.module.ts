@@ -110,8 +110,8 @@ const routes: Routes = [
       { path: 'projects/:id/jobs/:jobId/edit', component: JobsEditComponent },
 
       { path: 'jobs/:id', component: JobDetailsComponent},
-      { path: 'jobs/:jobId/runs', component: RunListComponent },
-      { path: 'jobs/:jobId/runs/:runId', component: RunDetailComponent },
+      { path: 'projects/:projectId/jobs/:jobId/runs', component: RunListComponent },
+      { path: 'projects/:projectId/jobs/:jobId/runs/:runId', component: RunDetailComponent },
       //{ path: 'autocode', component: StepOneComponent},
       
       { path: 'messages', component: MessageListComponent },

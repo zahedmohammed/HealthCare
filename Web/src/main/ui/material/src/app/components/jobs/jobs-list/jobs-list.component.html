@@ -1,12 +1,11 @@
+<div class="box box-default">
+    <div class="box-body">
+        <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
+        &nbsp;<span class="text-muted"> > </span> &nbsp;{{project.name}}
+        &nbsp;<span class="text-muted"> > </span> &nbsp;Jobs
+    </div>
+</div>
 <section class="chapter page-terms">
-
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Jobs</h1>
-        </div>
-        <p class="text-muted">Schedule jobs using cron expression in Project's Fxfile or run them ad-hoc.</p>
-    </section>
-
     <article class="article padding-lg-v1 article-dark article-bordered">
         <div class="container-fluid with-maxwidth chapter">
             <article class="article">
@@ -41,7 +40,7 @@
                             <td class="mdl-data-table__cell--non-numeric">
                                 <!--<a href="javascript:;" (click)="runJob(job.id)">Run</a> &nbsp;-->
                                 <a href="javascript:;" (click)="advRun(job)">Run</a> &nbsp;
-                                <a href="javascript:;" [routerLink]="['/app/jobs', job.id, 'runs']">History</a> &nbsp;
+                                <a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']">History</a> &nbsp;
                             </td>
                         </tr>
                         </tbody>

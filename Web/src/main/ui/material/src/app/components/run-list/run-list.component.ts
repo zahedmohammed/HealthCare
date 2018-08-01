@@ -17,10 +17,11 @@ import { Subscription } from 'rxjs/Subscription';
   providers: [JobsService, RunService, ProjectService]
 })
 export class RunListComponent implements OnInit {
+  id;
   list;
   times;
   totalTimeSaved = 0;
-  projectId:string = "";
+  projectId;
   jobId:string =  "";
   title:string = "";
   project: Base = new Base();
@@ -34,8 +35,8 @@ export class RunListComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       console.log(params);
-      if (params['id']) {
-       this.projectId = params['id'];
+      if (params['projectId']) {
+       this.projectId = params['projectId'];
        this.loadProject(this.projectId);
       }
       if (params['jobId']) {

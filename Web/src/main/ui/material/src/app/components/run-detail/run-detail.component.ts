@@ -48,8 +48,8 @@ export class RunDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       console.log(params);
-      if (params['id']) {
-       this.projectId = params['id'];
+      if (params['projectId']) {
+       this.projectId = params['projectId'];
        this.loadProject(this.projectId);
       }
       if (params['jobId']) {
