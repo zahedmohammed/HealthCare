@@ -171,4 +171,21 @@ export class JobsEditComponent implements OnInit {
     });
   }
 
+  delete() {
+    var r = confirm("Are you sure you want to delete '" + this.job.name + "'?");
+    if (r == true) {
+      this.jobsService.delete(this.job).subscribe(results => {
+          if (this.handler.handle(results)) {
+            return;
+          }
+          this.snackbarService.openSnackBar("'Job '" + this.job.name + "' deleted", "");
+          this.router.navigate(['/app/projects', this.id, 'jobs']);
+        }, error => {
+          this.handler.hideLoader();
+          this.handler.error(error);
+      });
+
+    }
+  }
+
 }
