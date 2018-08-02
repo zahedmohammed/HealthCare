@@ -5,7 +5,7 @@ function makeAppConfig() {
 
   const AppConfig = {
     brand: 'FX Labs, Inc',
-    productName: 'Fx',
+    productName: 'FX',
     user: 'User',
     year,
     layoutBoxed: false,               // true, false
