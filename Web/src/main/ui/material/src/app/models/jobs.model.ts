@@ -1,7 +1,7 @@
 export class Jobs {
     name: string;
     cron: string;
-    environment: string;
+    environment: EnvDto = new EnvDto();
     tags: string[] = [];
     regions: string;
     issueTracker: Dto = new Dto();
@@ -12,10 +12,18 @@ export class Jobs {
 }
 
 export class Dto {
+    id: string;
     name: string;
+    url: string;
+}
+
+export class EnvDto {
+id: string;
+name: string;
 }
 
 export class Noti {
+    id: string;
     name: string;
     to: string;
     channel: string;

@@ -39,7 +39,7 @@
                 </label>
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
-                    <input required [(ngModel)]="job.environment" id="env"
+                    <input required [(ngModel)]="job.environment.name" [ngModelOptions]="{standalone: true}"
                            matInput placeholder="Environment">
                   </mat-input-container>
                   <!--<mat-form-field>-->
