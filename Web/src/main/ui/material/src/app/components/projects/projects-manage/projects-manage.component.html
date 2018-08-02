@@ -6,7 +6,17 @@
 
 <section class="container-fluid with-maxwidth chapter">
 
-  <br/>
+  <mat-toolbar class="rounded">
+    <span style="flex: 1 1 auto;"></span>
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"><small>Jobs</small></a> &nbsp;&nbsp;
+
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']"><small>Environment</small></a> &nbsp;&nbsp;
+
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']"><small>Test Suites</small></a> &nbsp;&nbsp;
+
+    <small >Edit </small>&nbsp;&nbsp;
+  </mat-toolbar>
+
   <article class="article">
     <div class="box box-default">
       <div class="box-body">

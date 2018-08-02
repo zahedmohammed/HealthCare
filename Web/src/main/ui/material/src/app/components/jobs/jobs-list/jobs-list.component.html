@@ -2,16 +2,36 @@
     <div class="box-body">
         <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
         &nbsp;<span class="text-muted"> > </span> &nbsp;{{project.name}}
-        &nbsp;<span class="text-muted"> > </span> &nbsp;Jobs
+        <!--&nbsp;<span class="text-muted"> > </span> &nbsp;Jobs -->
     </div>
 </div>
-<section class="chapter page-terms">
-    <article class="article padding-lg-v1 article-dark">
-        <div class="container-fluid with-maxwidth chapter">
-            <article class="article">
+
+<section class="container-fluid with-maxwidth chapter">
+
+    <mat-toolbar class="rounded">
+        <span style="flex: 1 1 auto;"></span>
+        <small class="space">Jobs</small> &nbsp;&nbsp;
+
+        <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
+            <small>Environment</small>
+        </a> &nbsp;&nbsp;
+
+        <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']">
+            <small>Test Suites</small>
+        </a> &nbsp;&nbsp;
+
+        <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
+            <small>Edit</small>
+        </a> &nbsp;&nbsp;
+    </mat-toolbar>
+
+    <article class="article">
+        <div class="box box-default">
+            <div class="box-body">
                 <h2 class="article-title1">
                     <!--[routerLink]="['/app/regions/new']" -->
-                    <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects', id, 'jobs', 'new']">
+                    <button mat-button color="primary" class="btn-w-md"
+                            [routerLink]="['/app/projects', id, 'jobs', 'new']">
                         <i class="fa fa-plus"></i>
                         Create Job
                     </button>
@@ -40,22 +60,24 @@
                             <td class="mdl-data-table__cell--non-numeric">
                                 <!--<a href="javascript:;" (click)="runJob(job.id)">Run</a> &nbsp;-->
                                 <a href="javascript:;" (click)="advRun(job)">Run</a> &nbsp;
-                                <a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']">History</a> &nbsp;
+                                <a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']">History</a>
+                                &nbsp;
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <mat-paginator [hidden]="length <= pageSize"
-                               [pageSize]="pageSize"
-                               hidePageSize="true"
-                               (page)="change($event)"
-                               [length]="length"
-                >
-                </mat-paginator>
-
-            </article>
+            </div>
         </div>
+
+        <mat-paginator [hidden]="length <= pageSize"
+                       [pageSize]="pageSize"
+                       hidePageSize="true"
+                       (page)="change($event)"
+                       [length]="length"
+        >
+        </mat-paginator>
+
     </article>
+
 </section>
