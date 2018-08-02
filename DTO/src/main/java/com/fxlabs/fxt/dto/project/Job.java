@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,9 +37,9 @@ public class Job extends BaseDto<String> {
 
     private Date nextFire;
 
-    private JobIssueTracker issueTracker;
+    private JobIssueTracker issueTracker = new JobIssueTracker();
 
-    private List<JobNotification> notifications;
+    private List<JobNotification> notifications = new ArrayList<>();
 
 }
 
