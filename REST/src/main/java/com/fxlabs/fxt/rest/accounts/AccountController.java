@@ -50,32 +50,32 @@ public class AccountController {
         return accountService.findByAccountType(accountType, SecurityUtil.getOrgId());
     }
 
-    @Secured(ROLE_ADMIN)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Account> findById(@PathVariable("id") String id) {
         return accountService.findById(id, SecurityUtil.getOrgId());
     }
 
-    @Secured(ROLE_ADMIN)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/batch", method = RequestMethod.POST)
     public Response<List<Account>> create(@Valid @RequestBody List<Account> dtos) {
         //return service.save(dtos);
         return null;
     }
 
-    @Secured(ROLE_ADMIN)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Account> create(@Valid @RequestBody Account dto) {
         return accountService.create(dto, SecurityUtil.getOrgId());
     }
 
-    @Secured(ROLE_ADMIN)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Response<Account> update(@Valid @RequestBody Account dto) {
         return accountService.update(dto, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured(ROLE_ADMIN)
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Account> delete(@PathVariable("id") String id) {
         return accountService.delete(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
