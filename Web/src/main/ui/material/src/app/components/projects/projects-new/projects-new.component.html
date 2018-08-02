@@ -21,10 +21,11 @@
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
-                                    <mat-input-container class="full-width">
+                                    <mat-form-field class="full-width">
                                         <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name"
                                                matInput placeholder="Project name">
-                                    </mat-input-container>
+                                        <mat-error>valid project name should be between 4 & 25 characters</mat-error>
+                                    </mat-form-field>
                                 </div>
                             </div>
 
@@ -33,10 +34,11 @@
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
-                                    <mat-input-container class="full-width">
+                                    <mat-form-field class="full-width">
                                         <input required [(ngModel)]="project.url" formControlName="urlCtrl" id="repo"
                                                matInput placeholder="Repository URL">
-                                    </mat-input-container>
+                                        <mat-error> please enter valid url (e.g.https://github.com/username/MyApp.git) </mat-error>
+                                    </mat-form-field>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
@@ -58,6 +60,7 @@
                                                 {{account.name}} ({{account.accountType}})
                                             </mat-option>
                                         </mat-select>
+                                        <mat-error > please select repository </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-7">
