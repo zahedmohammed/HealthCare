@@ -38,8 +38,9 @@ export class RegisterComponent implements OnInit{
       }
     this.snackbarService.openSnackBar(this.entry.name + " registered successfully", "");
     this.onClose();
-    this.router.navigateByUrl('/app/projects', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/app/projects/new'])); 
+    // this.router.navigateByUrl('/app/projects', {skipLocationChange: true}).then(()=>
+    //   this.router.navigate(['/app/projects/new']));
+    
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

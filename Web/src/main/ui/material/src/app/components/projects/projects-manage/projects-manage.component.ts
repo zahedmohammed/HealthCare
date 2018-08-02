@@ -290,9 +290,9 @@ env.auths.push({});
         height:'85%'
     });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(result);
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getAccountsForProjectPage();
+    });
   }
 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];

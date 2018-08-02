@@ -123,7 +123,7 @@ export class ProjectsNewComponent implements OnInit {
         this.create();
     }
   }
-
+  
   create() {
     this.handler.activateLoader();
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' creating...", "");
@@ -225,15 +225,14 @@ export class ProjectsNewComponent implements OnInit {
      this.project.account.accountType =  account.accountType;
   }
 
-  openDialog(): void {
+  openDialog() {
     const dialogRef = this.dialog.open(RegisterComponent, {
       width:'50%',
         height:'65%'
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(result);
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getAccountsForProjectPage();
+    });
   }
 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
