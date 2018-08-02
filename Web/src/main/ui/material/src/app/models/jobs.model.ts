@@ -18,8 +18,8 @@ export class Dto {
 }
 
 export class EnvDto {
-id: string;
-name: string;
+    id: string;
+    name: string;
 }
 
 export class Noti {

@@ -13,6 +13,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -49,7 +50,7 @@ public class ClusterController {
     public Response<List<Cluster>> findEntitled(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
 
-        Collection<String> orgs = Arrays.asList(SecurityUtil.getOrgId());
+        Collection<String> orgs = new ArrayList<String>(Arrays.asList(SecurityUtil.getOrgId()));
         Response<Org> orgResponse = null;
         try {
             orgResponse = orgService.findByName("FXLabs");
