@@ -38,14 +38,18 @@
                 <label class="col-md-0 control-label">
                 </label>
                 <div class="col-md-5">
-                  <mat-form-field>
-                    <mat-select placeholder="Environment"
-                                [(ngModel)]="job.environment" [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let env of envs" [value]="env">
-                        {{env.name}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  <mat-input-container class="full-width">
+                    <input required [(ngModel)]="job.environment" id="env"
+                           matInput placeholder="Environment">
+                  </mat-input-container>
+                  <!--<mat-form-field>-->
+                    <!--<mat-select placeholder="Environment"-->
+                                <!--[(ngModel)]="job.environment" [ngModelOptions]="{standalone: true}">-->
+                      <!--<mat-option *ngFor="let env of envs" [value]="env">-->
+                        <!--{{env.name}}-->
+                      <!--</mat-option>-->
+                    <!--</mat-select>-->
+                  <!--</mat-form-field>-->
                 </div>
               </div>
 

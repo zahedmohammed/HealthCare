@@ -6,11 +6,13 @@ import com.fxlabs.fxt.converters.project.ProjectConverter;
 import com.fxlabs.fxt.dao.entity.project.Auth;
 import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.project.Job;
+import com.fxlabs.fxt.dao.entity.project.JobNotification;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.JobIssueTracker;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
@@ -144,6 +146,31 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         job.setCron("0 15 10 ? * *");
         job.setRegions("FXLabs/US_WEST_1");
         job.setInactive(false);
+
+        //Setting default issuetracker
+        com.fxlabs.fxt.dao.entity.project.JobIssueTracker jobIssueTracker = new com.fxlabs.fxt.dao.entity.project.JobIssueTracker();
+        jobIssueTracker.setUrl("<<changeme>>");
+        jobIssueTracker.setAccount("Default_GitHub");
+        jobIssueTracker.setName("FXLabs/Dev-IssueTracker");
+        job.setIssueTracker(jobIssueTracker);
+
+        //Setting default notification
+
+        List<JobNotification> listNotification = new ArrayList<>();
+        JobNotification jnEmail = new JobNotification();
+        jnEmail.setName("FXLabs/Dev-Email-Notification");
+        jnEmail.setTo("<<changeme>>");
+        jnEmail.setAccount("Default_Email");
+        listNotification.add(jnEmail);
+
+
+        JobNotification jn = new JobNotification();
+        jn.setAccount("FXLabs/Dev-Slack-Notification");
+        jn.setName("Default_Slack");
+        jn.setChannel("<<changeme>>");
+        listNotification.add(jn);
+        job.setNotifications(listNotification);
+
         job.setProject(projectConverter.convertToEntity(optionalProject.getData()));
 
         jobRepository.save(job);
