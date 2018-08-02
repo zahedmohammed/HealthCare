@@ -2,8 +2,10 @@ package com.fxlabs.fxt.rest.clusters;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
+import com.fxlabs.fxt.dto.users.Org;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.clusters.ClusterService;
+import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.users.OrgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -47,7 +49,17 @@ public class ClusterController {
     public Response<List<Cluster>> findEntitled(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                 @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
 
-        Collection<String> orgs = Arrays.asList(SecurityUtil.getOrgId(), orgService.findByName("FXLabs").getData().getId());
+        Collection<String> orgs = Arrays.asList(SecurityUtil.getOrgId());
+        Response<Org> orgResponse = null;
+        try {
+            orgResponse = orgService.findByName("FXLabs");
+        } catch (FxException e) {}
+        if (orgResponse != null && !orgResponse.isErrors() && orgResponse.getData() != null) {
+            String fXLabsOrg = orgResponse.getData().getId();
+            orgs.add(fXLabsOrg);
+        }
+
+
         return clusterService.findEntitled(orgs, PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 

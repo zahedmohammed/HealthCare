@@ -308,7 +308,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
         Optional<Org> orgOptional = this.orgRepository.findByName(orgName);
         if (!orgOptional.isPresent()) {
-            throw new FxException("User  not entitled to the resource");
+            throw new FxException("User not entitled to the resource");
         }
         return new Response<>(converter.convertToDto(orgOptional.get()));
 
