@@ -38,7 +38,8 @@
 @media only screen and (min-width: $l_screen_md_min) {
   .app-header {
     .brand {
-      width: $l_sidebar_width_sm;
+      //width: $l_sidebar_width_sm;
+      width: 220px;
     }
   }
 }
