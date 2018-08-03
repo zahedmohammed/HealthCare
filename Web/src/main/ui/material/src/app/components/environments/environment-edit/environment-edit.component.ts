@@ -56,8 +56,7 @@ items: any[] = [];
 
   }
   addAuthentication(){
-
-    this.env.auths.push({});
+    //this.env.auths.push({});
   }
   ngOnInit() {
     this.AppConfig = APPCONFIG;

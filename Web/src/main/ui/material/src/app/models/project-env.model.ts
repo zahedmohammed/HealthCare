@@ -1,4 +1,5 @@
 export class Env {
+    id: string;
     projectId: string;
     name: string;
     refId: string;
