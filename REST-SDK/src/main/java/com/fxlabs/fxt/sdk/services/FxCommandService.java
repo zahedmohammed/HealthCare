@@ -782,7 +782,7 @@ public class FxCommandService {
 
             try {
 
-                if (file.getName().contains("Fxfile")) {
+                if (file.getName().contains("Fxfile") && file.getName().contains("RequestMappings")) {
                     return;
                 }
                 TestSuite testSuite = null;
