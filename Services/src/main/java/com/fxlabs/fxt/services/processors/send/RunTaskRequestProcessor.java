@@ -79,18 +79,22 @@ public class RunTaskRequestProcessor {
     public void process() {
 
         //logger.info("started...");
-        List<Run> runs = runRepository.findByStatus(TaskStatus.WAITING, PageRequest.of(0, 500));
+        List<Run> runs = runRepository.findByStatus(TaskStatus.WAITING, PageRequest.of(0, 20));
 
         runs.forEach(run -> {
 
             try {
                 Environment env = validateEnvironment(run);
                 if (env == null) {
+                    run.getTask().setStatus(TaskStatus.FAIL);
+                    runRepository.saveAndFlush(run);
                     return;
                 }
 
                 final String region = validateRegion(run);
                 if (region == null) {
+                    run.getTask().setStatus(TaskStatus.FAIL);
+                    runRepository.saveAndFlush(run);
                     return;
                 }
 
