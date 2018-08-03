@@ -23,7 +23,7 @@
                 <div class="form-group row"></div>
               
                 <div class="form-group row">
-                    <label for="name" class="col-md-0 control-label"></label>
+                    <!--label for="name" class="col-md-0 control-label"></label-->
                     <div class="col-md-5">
                         <mat-form-field class="full-width">
                             <input required [(ngModel)]="env.name" formControlName="nameCtrl"
@@ -34,7 +34,7 @@
                 </div>
               
                 <div class="form-group row">
-                    <label for="name" class="col-md-0 control-label"></label>
+                    <!--label for="name" class="col-md-0 control-label"></label-->
                     <div class="col-md-5">
                         <mat-form-field class="full-width">
                             <input required [(ngModel)]="env.baseUrl" formControlName="urlCtrl"
@@ -42,6 +42,7 @@
                             <mat-error> please enter valid url</mat-error>
                         </mat-form-field>
                     </div>
+
                     <div class="col-md-7">
                         <div class="callout1 text-muted callout-info1">
                             <p>e.g. https://myapp/api/v1.
@@ -54,26 +55,20 @@
                     <label class="col-md-0 control-label">
                     </label>
                     <div class="col-md-5">
-                        <!--mat-form-field>
-                            <mat-select   placeholder="Authentication Type"
-                            [(value)]="auth.authType"  name="type">
-                                <mat-option *ngFor="let type of authTypes" (click)="auth.authType=type;">
-                                    {{type}}
-                                </mat-option>
+                        <mat-form-field>
+                            <mat-select   [(value)]="auth.authType">
+                                <mat-option ng-click="auth.authType='Basic';auth.authType1='Basic';" value="Basic">Basic</mat-option>
+                                <mat-option ng-click="auth.authType='OAuth_2_0';auth.authType1='OAuth_2_0';"  value="OAuth_2_0">OAuth_2_0</mat-option>
+                                <mat-option ng-click="auth.authType='Token';auth.authType1='Token';"  value="Token">Token</mat-option>
                             </mat-select>
-                            <mat-error>Please select Authentication </mat-error>
-                        </mat-form-field-->
-                        ${{auth.authType}}$
-                         <mat-input-container class="full-width">
-                                <input [(ngModel)]="auth.authType" [ngModelOptions]="{standalone: true}"
-                                     hidden="true"  matInput placeholder="Auth Type">
-                            </mat-input-container>
+                        </mat-form-field>
                     </div>
+
                 </div>
               
-                <!--div *ngIf="auth.authType == 'Basic'">
+                <div *ngIf="auth.authType == 'Basic'">
                     <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
+                        <label  class="col-md-0 control-label"></label>
                         <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input [(ngModel)]="auth.username" [ngModelOptions]="{standalone: true}"
@@ -83,7 +78,7 @@
                     </div>
               
                     <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
+                        <label  class="col-md-0 control-label"></label>
                         <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input type="password" [(ngModel)]="auth.password" [ngModelOptions]="{standalone: true}"
@@ -266,7 +261,7 @@
                             </mat-input-container>
                         </div>
                     </div>
-                </div-->
+                </div>
               </div>
               <a (click)="addAuthentication()">Add Authentication</a>
                 <div>

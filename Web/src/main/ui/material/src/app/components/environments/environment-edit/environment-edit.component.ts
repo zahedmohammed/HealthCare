@@ -30,7 +30,7 @@ export class EnvironmentEditComponent implements OnInit {
   envId:string;
   project: Project = new Project();
   autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
-  env: any;//Env = new Env();
+  env: Env = new Env();
   env1:any;
   orgs;
   accounts;
@@ -39,8 +39,6 @@ export class EnvironmentEditComponent implements OnInit {
   context: string = "Edit";
 
   isLinear = false;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
 
   authTypes = ['Basic', 'OAuth_2_0' , 'Token'];
@@ -77,7 +75,7 @@ export class EnvironmentEditComponent implements OnInit {
     this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       urlCtrl:  ['', Validators.required],
-      authTypeCtrl:  ['', Validators.required],
+     // authTypeCtrl:  ['', Validators.required],
     });
 
     /*this.fourthFormGroup = this._formBuilder.group({
