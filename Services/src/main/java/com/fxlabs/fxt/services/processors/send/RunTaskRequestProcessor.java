@@ -79,7 +79,7 @@ public class RunTaskRequestProcessor {
     public void process() {
 
         //logger.info("started...");
-        List<Run> runs = runRepository.findByStatus(TaskStatus.WAITING, PageRequest.of(0, 20));
+        List<Run> runs = runRepository.findByStatus(TaskStatus.WAITING, PageRequest.of(0, 500));
 
         runs.forEach(run -> {
 
@@ -124,7 +124,7 @@ public class RunTaskRequestProcessor {
                     list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
                 }
 
-                boolean generateTestCaseResponse = !StringUtils.isEmpty(run.getJob().getIssueTracker());
+                boolean generateTestCaseResponse = isGenerateTestCaseResponse(run);
                 String _projectId = run.getJob().getProject().getId();
                 String _project = run.getJob().getProject().getName();
                 String _job = run.getJob().getName();
@@ -222,6 +222,13 @@ public class RunTaskRequestProcessor {
             }
 
         });
+    }
+
+    private boolean isGenerateTestCaseResponse(Run run) {
+        if (run.getJob().getIssueTracker() == null) {
+            return false;
+        }
+        return !StringUtils.isEmpty(run.getJob().getIssueTracker().getName());
     }
 
     private void copyAssertions(BotTask task, TestSuite ds) {
