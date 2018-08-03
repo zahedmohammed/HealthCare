@@ -49,26 +49,29 @@
                         </div>
                     </div>
                 </div>
-              <div  *ngFor="let auth of env.auths" >
+              <div  *ngFor="let auth of env.auths; let i=index" >
                 <div class="form-group row">
                     <label class="col-md-0 control-label">
                     </label>
                     <div class="col-md-5">
-                        <mat-form-field>
-                            <mat-select placeholder="Authentication Type" required
-                                        [(ngModel)]="auth.authType" formControlName="authTypeCtrl"
-                                        name="type">
-                                <mat-option *ngFor="let type of authTypes" [value]="type">
+                        <!--mat-form-field>
+                            <mat-select   placeholder="Authentication Type"
+                            [(value)]="auth.authType"  name="type">
+                                <mat-option *ngFor="let type of authTypes" (click)="auth.authType=type;">
                                     {{type}}
                                 </mat-option>
                             </mat-select>
                             <mat-error>Please select Authentication </mat-error>
-                        </mat-form-field>
-                        <input type="hidden"  [(ngModel)]="auth.authType" formControlName="authTypeCtrl"/>
+                        </mat-form-field-->
+                        ${{auth.authType}}$
+                         <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.authType" [ngModelOptions]="{standalone: true}"
+                                     hidden="true"  matInput placeholder="Auth Type">
+                            </mat-input-container>
                     </div>
                 </div>
               
-                <div *ngIf="auth.authType == 'Basic'">
+                <!--div *ngIf="auth.authType == 'Basic'">
                     <div class="form-group row">
                         <label for="name" class="col-md-0 control-label"></label>
                         <div class="col-md-5">
@@ -97,10 +100,10 @@
                         </label>
                         <div class="col-md-5">
                             <mat-form-field>
-                                <mat-select placeholder="Authentication Type"
+                                <mat-select placeholder="grantTypes Type"
                                             [(ngModel)]="auth.grantType" [ngModelOptions]="{standalone: true}"
                                             name="type">
-                                    <mat-option *ngFor="let grant of grantTypes" [value]="grant">
+                                    <mat-option *ngFor="let grant of authTypesgrantTypes" [value]="grant">
                                         {{grant}}
                                     </mat-option>
                                 </mat-select>
@@ -236,7 +239,7 @@
               
                 </div>
               
-                <div *ngIf="auth.authType === 'Token'">
+                <div *ngIf="auth.authType == 'Token'">
                     <div class="form-group row">
                         <label for="name" class="col-md-0 control-label"></label>
                         <div class="col-md-5">
@@ -263,8 +266,9 @@
                             </mat-input-container>
                         </div>
                     </div>
-                </div>
+                </div-->
               </div>
+              <a (click)="addAuthentication()">Add Authentication</a>
                 <div>
                     <mat-card-actions>
                         <button mat-raised-button color="primary"

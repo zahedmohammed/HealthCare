@@ -30,7 +30,8 @@ export class EnvironmentEditComponent implements OnInit {
   envId:string;
   project: Project = new Project();
   autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
-  env: Env = new Env();
+  env: any;//Env = new Env();
+  env1:any;
   orgs;
   accounts;
   matStepper;// MatStepper;
@@ -54,7 +55,10 @@ export class EnvironmentEditComponent implements OnInit {
             public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) {
 
   }
+  addAuthentication(){
 
+    this.env.auths.push({});
+  }
   ngOnInit() {
     this.AppConfig = APPCONFIG;
     this.getAccountsForProjectPage();
@@ -128,7 +132,9 @@ export class EnvironmentEditComponent implements OnInit {
      let k:Auth = new Auth();
      if(this.env.auths.length==0) this.env.auths=[k];
           console.log(this.env);
-    }, error => {
+          this.env1=this.env;
+          this.env1 = Object.assign({}, this.env);
+    }, error => {this.env
       this.handler.hideLoader();
       this.handler.error(error);
     });
