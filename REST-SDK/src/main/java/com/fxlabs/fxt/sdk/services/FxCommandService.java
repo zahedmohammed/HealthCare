@@ -215,9 +215,9 @@ public class FxCommandService {
 
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
-            System.out.println("loading Fxfile.yaml...");
+//            System.out.println("loading Fxfile.yaml...");
 
-            CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", "Loading");
+ //           CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Fxfile.yaml", "Loading");
 
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
