@@ -1,257 +1,283 @@
-<form [formGroup]="thirdFormGroup">
-  <ng-template matStepLabel>API Environment</ng-template>
-
-  <div class="form-group row"></div>
-
-  <div class="form-group row">
-      <label for="name" class="col-md-0 control-label"></label>
-      <div class="col-md-5">
-          <mat-form-field class="full-width">
-              <input required [(ngModel)]="env.name" formControlName="nameCtrl"
-                     matInput placeholder="Env name">
-              <mat-error>Name should be between 3 & 25 characters</mat-error>
-          </mat-form-field>
-      </div>
+<div class="box box-default">
+    <div class="box-body">
+      <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs', 'new']"> Projects </a> 
+      &nbsp;<span class="text-muted"> > </span> &nbsp;
+      <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']">{{project.name}}</a>
+      &nbsp;<span class="text-muted"> > </span> &nbsp;
+      <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']"> Enironment </a>
+      &nbsp;<span class="text-muted"> > </span> &nbsp;
+      &nbsp; Edit
+    </div>
   </div>
-
-  <div class="form-group row">
-      <label for="name" class="col-md-0 control-label"></label>
-      <div class="col-md-5">
-          <mat-form-field class="full-width">
-              <input required [(ngModel)]="env.baseUrl" formControlName="urlCtrl"
-                     matInput placeholder="Base URL">
-              <mat-error> please enter valid url</mat-error>
-          </mat-form-field>
-      </div>
-      <div class="col-md-7">
-          <div class="callout1 text-muted callout-info1">
-              <p>e.g. https://myapp/api/v1.
-              </p>
-          </div>
-      </div>
-  </div>
-<div  *ngFor="let auth of env.auths" >
-  <div class="form-group row">
-      <label class="col-md-0 control-label">
-      </label>
-      <div class="col-md-5">
-          <mat-form-field>
-              <mat-select placeholder="Authentication Type" required
-                          [(ngModel)]="auth.authType" formControlName="authTypeCtrl"
-                          name="type">
-                  <mat-option *ngFor="let type of authTypes" [value]="type">
-                      {{type}}
-                  </mat-option>
-              </mat-select>
-              <mat-error>Please select Authentication </mat-error>
-          </mat-form-field>
-      </div>
-  </div>
-
-  <div *ngIf="auth.authType == 'Basic'">
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input [(ngModel)]="auth.username" [ngModelOptions]="{standalone: true}"
-                         matInput placeholder="Username">
-              </mat-input-container>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input type="password" [(ngModel)]="auth.password" [ngModelOptions]="{standalone: true}"
-                         matInput placeholder="Password">
-              </mat-input-container>
-          </div>
-      </div>
-  </div>
-
-  <div *ngIf="auth.authType == 'OAuth_2_0'">
-
-      <div class="form-group row">
-          <label class="col-md-0 control-label">
-          </label>
-          <div class="col-md-5">
-              <mat-form-field>
-                  <mat-select placeholder="Authentication Type"
-                              [(ngModel)]="auth.grantType" [ngModelOptions]="{standalone: true}"
-                              name="type">
-                      <mat-option *ngFor="let grant of grantTypes" [value]="grant">
-                          {{grant}}
-                      </mat-option>
-                  </mat-select>
-              </mat-form-field>
-          </div>
-      </div>
-
-      <div *ngIf="env.grantType == 'password'">
-          <div class="form-group row">
-              <label for="name" class="col-md-0 control-label"></label>
-              <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                      <input [(ngModel)]="auth.username"
-                             [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Username">
-                  </mat-input-container>
+  
+  <section class="container-fluid with-maxwidth chapter">
+  
+    <br/>
+    <article class="article">
+      <div class="box box-default">
+        <div class="box-body">
+  
+            <form [formGroup]="thirdFormGroup">
+                <ng-template matStepLabel>API Environment</ng-template>
+              
+                <div class="form-group row"></div>
+              
+                <div class="form-group row">
+                    <label for="name" class="col-md-0 control-label"></label>
+                    <div class="col-md-5">
+                        <mat-form-field class="full-width">
+                            <input required [(ngModel)]="env.name" formControlName="nameCtrl"
+                                   matInput placeholder="Env name">
+                            <mat-error>Name should be between 3 & 25 characters</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+              
+                <div class="form-group row">
+                    <label for="name" class="col-md-0 control-label"></label>
+                    <div class="col-md-5">
+                        <mat-form-field class="full-width">
+                            <input required [(ngModel)]="env.baseUrl" formControlName="urlCtrl"
+                                   matInput placeholder="Base URL">
+                            <mat-error> please enter valid url</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="callout1 text-muted callout-info1">
+                            <p>e.g. https://myapp/api/v1.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+              <div  *ngFor="let auth of env.auths" >
+                <div class="form-group row">
+                    <label class="col-md-0 control-label">
+                    </label>
+                    <div class="col-md-5">
+                        <mat-form-field>
+                            <mat-select placeholder="Authentication Type" required
+                                        [(ngModel)]="auth.authType" formControlName="authTypeCtrl"
+                                        name="type">
+                                <mat-option *ngFor="let type of authTypes" [value]="type">
+                                    {{type}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Please select Authentication </mat-error>
+                        </mat-form-field>
+                        <input type="hidden"  [(ngModel)]="auth.authType" formControlName="authTypeCtrl"/>
+                    </div>
+                </div>
+              
+                <div *ngIf="auth.authType == 'Basic'">
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.username" [ngModelOptions]="{standalone: true}"
+                                       matInput placeholder="Username">
+                            </mat-input-container>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input type="password" [(ngModel)]="auth.password" [ngModelOptions]="{standalone: true}"
+                                       matInput placeholder="Password">
+                            </mat-input-container>
+                        </div>
+                    </div>
+                </div>
+              
+                <div *ngIf="auth.authType == 'OAuth_2_0'">
+              
+                    <div class="form-group row">
+                        <label class="col-md-0 control-label">
+                        </label>
+                        <div class="col-md-5">
+                            <mat-form-field>
+                                <mat-select placeholder="Authentication Type"
+                                            [(ngModel)]="auth.grantType" [ngModelOptions]="{standalone: true}"
+                                            name="type">
+                                    <mat-option *ngFor="let grant of grantTypes" [value]="grant">
+                                        {{grant}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+              
+                    <div *ngIf="env.grantType == 'password'">
+                        <div class="form-group row">
+                            <label for="name" class="col-md-0 control-label"></label>
+                            <div class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input [(ngModel)]="auth.username"
+                                           [ngModelOptions]="{standalone: true}"
+                                           matInput placeholder="Username">
+                                </mat-input-container>
+                            </div>
+                        </div>
+              
+                        <div class="form-group row">
+                            <label for="name" class="col-md-0 control-label"></label>
+                            <div class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input [(ngModel)]="auth.password"
+                                           [ngModelOptions]="{standalone: true}"
+                                           matInput placeholder="Password">
+                                </mat-input-container>
+                            </div>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.clientId" [ngModelOptions]="{standalone: true}"
+                                       matInput placeholder="ClientId">
+                            </mat-input-container>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.clientSecret" [ngModelOptions]="{standalone: true}"
+                                       matInput placeholder="ClientSecret">
+                            </mat-input-container>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.id" [ngModelOptions]="{standalone: true}"
+                                       matInput placeholder="Id">
+                            </mat-input-container>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.accessTokenUri" [ngModelOptions]="{standalone: true}"
+                                       matInput placeholder="AccessToken Uri">
+                            </mat-input-container>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p>e.g. http://<>/token
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.userAuthorizationUri" [ngModelOptions]="{standalone: true}"
+                                       matInput placeholder="UserAuthorization Uri">
+                            </mat-input-container>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-form-field>
+                                <mat-select placeholder="Client Authentication Scheme"
+                                            [(ngModel)]="auth.clientAuthenticationScheme" [ngModelOptions]="{standalone: true}"
+                                            name="type">
+                                    <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
+                                        {{scheme}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-form-field>
+                                <mat-select placeholder="Authorization Scheme"
+                                            [(ngModel)]="auth.authorizationScheme" [ngModelOptions]="{standalone: true}"
+                                            name="type">
+                                    <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
+                                        {{scheme}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-form-field>
+                                <mat-select placeholder="Scope"
+                                            [(ngModel)]="auth.scope" [ngModelOptions]="{standalone: true}"
+                                            name="type">
+                                    <mat-option *ngFor="let scope of scopeTypes" [value]="scope">
+                                        {{scope}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+              
+              
+                </div>
+              
+                <div *ngIf="auth.authType === 'Token'">
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.header_1" [ngModelOptions]="{standalone: true}"
+                                       matInput placeholder="Header 1">
+                            </mat-input-container>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p>e.g. cookie: JWTTOKEN=Token or Authorization: key
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+              
+                    <div class="form-group row">
+                        <label for="name" class="col-md-0 control-label"></label>
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="auth.header_2"
+                                       [ngModelOptions]="{standalone: true}" matInput
+                                       placeholder="Header 2">
+                            </mat-input-container>
+                        </div>
+                    </div>
+                </div>
               </div>
-          </div>
-
-          <div class="form-group row">
-              <label for="name" class="col-md-0 control-label"></label>
-              <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                      <input [(ngModel)]="auth.password"
-                             [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Password">
-                  </mat-input-container>
-              </div>
-          </div>
+                <div>
+                    <mat-card-actions>
+                        <button mat-raised-button color="primary"
+                                class="nav-btn"
+                                [disabled]="thirdFormGroup.invalid"
+                                (click)="saveEnv(thirdFormGroup);">Save & Complete
+                        </button>
+                        <!---->
+                    </mat-card-actions>
+                </div>
+              </form>
+  
+        </div>
       </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input [(ngModel)]="auth.clientId" [ngModelOptions]="{standalone: true}"
-                         matInput placeholder="ClientId">
-              </mat-input-container>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input [(ngModel)]="auth.clientSecret" [ngModelOptions]="{standalone: true}"
-                         matInput placeholder="ClientSecret">
-              </mat-input-container>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input [(ngModel)]="auth.id" [ngModelOptions]="{standalone: true}"
-                         matInput placeholder="Id">
-              </mat-input-container>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input [(ngModel)]="auth.accessTokenUri" [ngModelOptions]="{standalone: true}"
-                         matInput placeholder="AccessToken Uri">
-              </mat-input-container>
-          </div>
-          <div class="col-md-7">
-              <div class="callout1 text-muted callout-info1">
-                  <p>e.g. http://<>/token
-                  </p>
-              </div>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input [(ngModel)]="auth.userAuthorizationUri" [ngModelOptions]="{standalone: true}"
-                         matInput placeholder="UserAuthorization Uri">
-              </mat-input-container>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-form-field>
-                  <mat-select placeholder="Client Authentication Scheme"
-                              [(ngModel)]="auth.clientAuthenticationScheme" [ngModelOptions]="{standalone: true}"
-                              name="type">
-                      <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
-                          {{scheme}}
-                      </mat-option>
-                  </mat-select>
-              </mat-form-field>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-form-field>
-                  <mat-select placeholder="Authorization Scheme"
-                              [(ngModel)]="auth.authorizationScheme" [ngModelOptions]="{standalone: true}"
-                              name="type">
-                      <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
-                          {{scheme}}
-                      </mat-option>
-                  </mat-select>
-              </mat-form-field>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-form-field>
-                  <mat-select placeholder="Scope"
-                              [(ngModel)]="auth.scope" [ngModelOptions]="{standalone: true}"
-                              name="type">
-                      <mat-option *ngFor="let scope of scopeTypes" [value]="scope">
-                          {{scope}}
-                      </mat-option>
-                  </mat-select>
-              </mat-form-field>
-          </div>
-      </div>
-
-
-  </div>
-
-  <div *ngIf="auth.authType === 'Token'">
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input [(ngModel)]="auth.header_1" [ngModelOptions]="{standalone: true}"
-                         matInput placeholder="Header 1">
-              </mat-input-container>
-          </div>
-          <div class="col-md-7">
-              <div class="callout1 text-muted callout-info1">
-                  <p>e.g. cookie: JWTTOKEN=Token or Authorization: key
-                  </p>
-              </div>
-          </div>
-      </div>
-
-      <div class="form-group row">
-          <label for="name" class="col-md-0 control-label"></label>
-          <div class="col-md-5">
-              <mat-input-container class="full-width">
-                  <input [(ngModel)]="auth.header_2"
-                         [ngModelOptions]="{standalone: true}" matInput
-                         placeholder="Header 2">
-              </mat-input-container>
-          </div>
-      </div>
-  </div>
-</div>
-  <div>
-      <mat-card-actions>
-          <button mat-raised-button color="primary"
-                  class="nav-btn"
-                  [disabled]="thirdFormGroup.invalid"
-                  (click)="saveEnv();">Save & Complete
-          </button>
-      </mat-card-actions>
-  </div>
-</form>
+    </article>
+  </section>

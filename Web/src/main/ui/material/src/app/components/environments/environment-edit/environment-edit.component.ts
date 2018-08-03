@@ -117,10 +117,11 @@ export class EnvironmentEditComponent implements OnInit {
         return;
       }
       var envs = results['data'];
-      for(var i=0;envs.length-1;i++)
+      for(var i=0;i<envs.length;i++)
       {
        let a:any;
         a=envs[i];
+        if(a!=null)
         if(this.envId=a.id) this.env=a;
       }
      // this.context = this.project.name + " > Edit";
@@ -206,11 +207,11 @@ export class EnvironmentEditComponent implements OnInit {
     });
   }
 
-  saveEnv() {
+  saveEnv(obj) {
     console.log(this.env);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
 
-    this.projectService.saveEnv(this.env, this.project.id).subscribe(results => {
+    this.projectService.updateEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
         if (this.handler.handle(results)) {
         return;
