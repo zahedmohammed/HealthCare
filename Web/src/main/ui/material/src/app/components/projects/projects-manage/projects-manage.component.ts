@@ -197,7 +197,7 @@ availableAuthtype:String;
       }
       this.autoCodeConfig = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
-//   this.matStepper.next();
+     this.matStepper.next();
       this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
     }, error => {
       this.handler.hideLoader();
