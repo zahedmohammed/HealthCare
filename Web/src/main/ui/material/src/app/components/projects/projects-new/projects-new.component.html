@@ -24,7 +24,7 @@
                                     <mat-form-field class="full-width">
                                         <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name"
                                                matInput placeholder="Project name">
-                                        <mat-error>valid project name should be between 4 & 25 characters</mat-error>
+                                        <mat-error>Name should be between 3 & 25 characters</mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                     <mat-form-field class="full-width">
                                         <input required [(ngModel)]="project.url" formControlName="urlCtrl" id="repo"
                                                matInput placeholder="Repository URL">
-                                        <mat-error> please enter valid url (e.g.https://github.com/username/MyApp.git) </mat-error>
+                                        <mat-error> please enter valid url</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-7">
@@ -95,11 +95,12 @@
                                 <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
-                                        <mat-input-container class="full-width">
+                                        <mat-form-field class="full-width">
                                             <input required [(ngModel)]="autoCodeConfig.openAPISpec" name="spec"
                                                    id="spec" matInput placeholder="OpenAPISpec URL/file"
                                                    formControlName="openAPISpec">
-                                        </mat-input-container>
+                                            <mat-error> please enter valid url</mat-error>
+                                        </mat-form-field>
                                     </div>
                                     <div class="col-md-7">
                                         <div class="callout1 text-muted callout-info1">
@@ -252,20 +253,22 @@
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
-                                    <mat-input-container class="full-width">
+                                    <mat-form-field class="full-width">
                                         <input required [(ngModel)]="env.name" formControlName="nameCtrl"
                                                matInput placeholder="Env name">
-                                    </mat-input-container>
+                                        <mat-error>Name should be between 3 & 25 characters</mat-error>
+                                    </mat-form-field>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
-                                    <mat-input-container class="full-width">
+                                    <mat-form-field class="full-width">
                                         <input required [(ngModel)]="env.baseUrl" formControlName="urlCtrl"
                                                matInput placeholder="Base URL">
-                                    </mat-input-container>
+                                        <mat-error> please enter valid url</mat-error>
+                                    </mat-form-field>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
@@ -287,6 +290,7 @@
                                                 {{type}}
                                             </mat-option>
                                         </mat-select>
+                                        <mat-error > please select Authentication </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -306,7 +310,7 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.auths[0].password" [ngModelOptions]="{standalone: true}"
+                                            <input type="password" [(ngModel)]="env.auths[0].password" [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="Password">
                                         </mat-input-container>
                                     </div>

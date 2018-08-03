@@ -67,8 +67,8 @@ export class ProjectsNewComponent implements OnInit {
     });
     this.env.auths[0] = new Auth();
     this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(25)])],
-      urlCtrl: ['', [Validators.required, Validators.pattern(/^(https:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?.git$/)]],
+      nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
+      urlCtrl: ['', [Validators.required]],
       typeCtrl: ['', Validators.required ]
     });
     this.secondFormGroup = this._formBuilder.group({
@@ -76,7 +76,7 @@ export class ProjectsNewComponent implements OnInit {
     });
 
     this.thirdFormGroup = this._formBuilder.group({
-      nameCtrl: ['', Validators.required],
+      nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       urlCtrl:  ['', Validators.required],
       authTypeCtrl:  ['', Validators.required],
     });
