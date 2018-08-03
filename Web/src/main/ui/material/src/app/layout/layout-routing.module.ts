@@ -88,7 +88,8 @@ import { SkillsVersionControlComponent } from '../components/skills/skills-versi
 import { SkillsBotDeploymentComponent } from '../components/skills/skills-bot-deployment/skills-bot-deployment.component';
 import { SkillsIssueTrackerComponent } from '../components/skills/skills-issue-tracker/skills-issue-tracker.component';
 import { SkillsAnalyticsComponent } from '../components/skills/skills-analytics/skills-analytics.component';
-
+import { EnvironmentNewComponent } from '../components/environments/environment-new/environment-new.component';
+import { EnvironmentListComponent } from '../components/environments/environment-list/environment-list.component';
 
 const routes: Routes = [
   {
@@ -104,6 +105,8 @@ const routes: Routes = [
       { path: 'projects/new', component: ProjectsNewComponent },
       { path: 'projects/:id/edit', component: ProjectsNewComponent },
       { path: 'projects/:id/manage', component: ProjectsManageComponent },
+      { path: 'projects/:id/environments', component: EnvironmentListComponent },
+      { path: 'projects/:id/environments/new', component: EnvironmentNewComponent },
       { path: 'projects/:id/test-suites', component: ProjectsEditComponent },
       { path: 'projects/:id/jobs', component: JobslistComponent },
       { path: 'projects/:id/jobs/new', component: JobsNewComponent },

@@ -168,6 +168,8 @@ import { JobsNewComponent } from './components/jobs/jobs-new/jobs-new.component'
 import { JobsEditComponent } from './components/jobs/jobs-edit/jobs-edit.component';
 import { ProjectsManageComponent } from './components/projects/projects-manage/projects-manage.component';
 import { RegisterComponent } from './components/dialogs/register/register.component';
+import { EnvironmentNewComponent } from './components/environments/environment-new/environment-new.component';
+import { EnvironmentListComponent } from './components/environments/environment-list/environment-list.component';
 
 @NgModule({
   imports: [
@@ -315,7 +317,9 @@ import { RegisterComponent } from './components/dialogs/register/register.compon
     JobsNewComponent,
     JobsEditComponent,
     ProjectsManageComponent,
-    RegisterComponent
+    RegisterComponent,
+    EnvironmentNewComponent,
+    EnvironmentListComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
