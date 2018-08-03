@@ -17,26 +17,25 @@ import { MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DAT
 import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
-
 @Component({
-  selector: 'app-projects-new',
-  templateUrl: './projects-new.component.html',
-  styleUrls: ['./projects-new.component.scss'],
+  selector: 'app-environment-edit',
+  templateUrl: './environment-edit.component.html',
+  styleUrls: ['./environment-edit.component.scss'],
   providers: [ProjectService, OrgService, SnackbarService, JobsService]
 })
-export class ProjectsNewComponent implements OnInit {
+export class EnvironmentEditComponent implements OnInit {
 
   showSpinner: boolean = false;
   id: string;
+  envId:string;
   project: Project = new Project();
   autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
-  job: Job = new Job();
   env: Env = new Env();
   orgs;
   accounts;
   matStepper;// MatStepper;
 
-  context: string = "New";
+  context: string = "Edit";
 
   isLinear = false;
   firstFormGroup: FormGroup;
@@ -64,17 +63,13 @@ export class ProjectsNewComponent implements OnInit {
       if (this.id) {
         this.loadProject(this.id);
       }
+      
+      this.envId = params['envId'];
+      if (this.envId) {
+        this.loadEnv(this.id);
+      }
     });
-    this.env.auths[0] = new Auth();
-    this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
-      urlCtrl: ['', [Validators.required]],
-      typeCtrl: ['', Validators.required ]
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      openAPISpec: ['', Validators.required]
-    });
-
+   
     this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       urlCtrl:  ['', Validators.required],
@@ -114,7 +109,29 @@ export class ProjectsNewComponent implements OnInit {
       this.handler.error(error);
     });
   }
-
+  loadEnv(id: string) {
+    this.handler.activateLoader();
+    this.projectService.getEnvListByProjectId(id).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      var envs = results['data'];
+      for(var i=0;envs.length-1;i++)
+      {
+       let a:any;
+        a=envs[i];
+        if(this.envId=a.id) this.env=a;
+      }
+     // this.context = this.project.name + " > Edit";
+     let k:Auth = new Auth();
+     if(this.env.auths.length==0) this.env.auths=[k];
+          console.log(this.env);
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
   save(matStepper) {
     this.matStepper = matStepper;
     if (this.project.id) {
@@ -240,5 +257,5 @@ export class ProjectsNewComponent implements OnInit {
   genPolicies = ['None', 'Create'];
   dbs = ['MySQL', 'Oracle', 'Postgres', 'SQLServer', 'MongoDB'];
 
-}
 
+}

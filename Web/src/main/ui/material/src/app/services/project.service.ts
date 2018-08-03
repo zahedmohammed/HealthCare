@@ -30,7 +30,12 @@ export class ProjectService {
   getById(id: string) {
     return this.http.get(this.serviceUrl + "/" + id);
   }
-
+  getEnvListByProjectId(id: string) {
+    return this.http.get(this.serviceUrl + "/" + id+"/env");
+  }
+  getEnvByProjectIdAndEnvId(id: string,envid:string) {
+    return this.http.get(this.serviceUrl + "/" + id+"/env/"+envid);
+  }
   create(project: Project) {
     return this.http.post(this.serviceUrl, project);
   }

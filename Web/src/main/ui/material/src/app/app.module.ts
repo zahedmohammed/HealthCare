@@ -170,6 +170,7 @@ import { ProjectsManageComponent } from './components/projects/projects-manage/p
 import { RegisterComponent } from './components/dialogs/register/register.component';
 import { EnvironmentNewComponent } from './components/environments/environment-new/environment-new.component';
 import { EnvironmentListComponent } from './components/environments/environment-list/environment-list.component';
+import { EnvironmentEditComponent } from './components/environments/environment-edit/environment-edit.component';
 
 @NgModule({
   imports: [
@@ -319,7 +320,8 @@ import { EnvironmentListComponent } from './components/environments/environment-
     ProjectsManageComponent,
     RegisterComponent,
     EnvironmentNewComponent,
-    EnvironmentListComponent
+    EnvironmentListComponent,
+    EnvironmentEditComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
