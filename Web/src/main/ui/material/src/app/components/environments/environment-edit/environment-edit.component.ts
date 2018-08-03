@@ -15,7 +15,8 @@ import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
 import { MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SnackbarService } from '../../../services/snackbar.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators , FormArray} from '@angular/forms';
+
 import { MatStepper } from '@angular/material';
 @Component({
   selector: 'app-environment-edit',
@@ -46,7 +47,8 @@ export class EnvironmentEditComponent implements OnInit {
   schemeTypes = ['form', 'header', 'none', 'query'];
   scopeTypes= ['read', 'write'];
 
-
+orderForm: FormGroup;
+items: any[] = [];
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
             private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
@@ -76,6 +78,7 @@ export class EnvironmentEditComponent implements OnInit {
       nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       urlCtrl:  ['', Validators.required],
      // authTypeCtrl:  ['', Validators.required],
+items: this._formBuilder.array([  ])
     });
 
     /*this.fourthFormGroup = this._formBuilder.group({
@@ -96,7 +99,64 @@ export class EnvironmentEditComponent implements OnInit {
       scopeCtrl:  ['', Validators.required]*/
 
   }
-
+addItem(): void {
+  this.items = this.thirdFormGroup.get('items') as FormArray;
+  this.items.push(this.createItem());
+}
+addItem1(obj): void {
+  this.items = this.thirdFormGroup.get('items') as FormArray;
+  this.items.push(this.createItem1(obj));
+}
+geInfo(obj){
+console.log("sss");
+}
+createItem(): FormGroup {
+  return this._formBuilder.group({
+  accessTokenUri:null,
+authType: [null, Validators.required]
+authorizationScheme:null,
+clientAuthenticationScheme:null,
+clientId:null,
+clientSecret:null,
+grantType:null,
+header_1:null,
+header_2:null,
+header_3:null,
+id:null,
+name:null,
+password:null,
+preEstablishedRedirectUri:null,
+scope:null,
+tokenName:null,
+useCurrentUri:null,
+userAuthorizationUri:null,
+username:null
+  });
+}
+createItem1(obj:Auth): FormGroup {
+  var k= this._formBuilder.group({
+  accessTokenUri:'',
+authType: [obj.authType, Validators.required]
+authorizationScheme:obj.authorizationScheme,
+clientAuthenticationScheme:obj.clientAuthenticationScheme,
+clientId:obj.clientId,
+clientSecret:obj.clientSecret,
+grantType:obj.grantType,
+header_1:obj.header_1,
+header_2:obj.header_2,
+header_3:obj.header_3,
+id:obj.id,
+name:obj.name,
+password:obj.password,
+preEstablishedRedirectUri:obj.preEstablishedRedirectUri,
+scope:obj.scope,
+tokenName:obj.tokenName,
+useCurrentUri:obj.useCurrentUri,
+userAuthorizationUri:obj.userAuthorizationUri,
+username:obj.username
+  });
+return k;
+}
    loadProject(id: string) {
     this.handler.activateLoader();
     this.projectService.getById(id).subscribe(results => {
@@ -129,9 +189,8 @@ export class EnvironmentEditComponent implements OnInit {
      // this.context = this.project.name + " > Edit";
      let k:Auth = new Auth();
      if(this.env.auths.length==0) this.env.auths=[k];
-          console.log(this.env);
-          this.env1=this.env;
-          this.env1 = Object.assign({}, this.env);
+          for(var i=0;i<this.env.auths.length;i++) this.addItem1(this.env.auths[i]);
+
     }, error => {this.env
       this.handler.hideLoader();
       this.handler.error(error);
@@ -210,11 +269,15 @@ export class EnvironmentEditComponent implements OnInit {
       this.handler.error(error);
     });
   }
-
+removeItem(i: number) {
+    // remove address from the list
+    const control = <FormArray>this.thirdFormGroup.controls['items'];
+    control.removeAt(i);
+}
   saveEnv(obj) {
     console.log(this.env);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
-
+this.env.auths=this.items.value;
     this.projectService.updateEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
         if (this.handler.handle(results)) {
