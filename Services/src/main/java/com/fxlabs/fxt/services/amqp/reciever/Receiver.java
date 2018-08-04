@@ -3,15 +3,18 @@ package com.fxlabs.fxt.services.amqp.reciever;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
 import com.fxlabs.fxt.dto.clusters.ClusterPing;
+import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
 import com.fxlabs.fxt.dto.project.MarketplaceDataTask;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.Suite;
+import com.fxlabs.fxt.services.events.RemoteEventService;
 import com.fxlabs.fxt.services.processors.receiver.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,6 +51,9 @@ public class Receiver {
 
     @Autowired
     private CloudResponseProcessor cloudResponseProcessor;
+
+    @Autowired
+    private RemoteEventService eventService;
 
     public void receiveMessage(BotTask task) {
         logger.info("Received BotTask [{}]", task.getId());
@@ -87,6 +93,12 @@ public class Receiver {
     public void receiveMessage(CloudTaskResponse task) {
         logger.info("Received CloudTaskResponse task [{}]", task.getId());
         cloudResponseProcessor.process(task);
+    }
+
+    @RabbitListener(queues = "#{autoDeleteFanoutQueue.name}")
+    public void receiveMessage(Event event) {
+        logger.info("Received event [{}]", event.getName());
+        this.eventService.onEvent(event);
     }
 
 

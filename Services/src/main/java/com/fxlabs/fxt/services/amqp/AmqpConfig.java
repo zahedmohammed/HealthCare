@@ -27,6 +27,21 @@ public class AmqpConfig {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Bean
+    public FanoutExchange fanoutExchange(@Value("${fx.fanout.exchange}") String exchange) {
+        return new FanoutExchange(exchange);
+    }
+
+    @Bean(name = "autoDeleteFanoutQueue")
+    public Queue autoDeleteQueue1() {
+        return new AnonymousQueue();
+    }
+
+    @Bean
+    public Binding binding1(FanoutExchange fanout, @Qualifier("autoDeleteFanoutQueue") Queue autoDeleteQueue1) {
+        return BindingBuilder.bind(autoDeleteQueue1).to(fanout);
+    }
+
+    @Bean
     public TopicExchange exchange(@Value("${fx.exchange}") String exchange) {
         return new TopicExchange(exchange);
     }

@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.amqp.sender;
 
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.PingTask;
+import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTask;
@@ -22,9 +23,11 @@ public interface AmqpClientService {
 
     public void sendTask(TestCaseResponse task, String region);
 
-    void sendTask(CloudTask task, String region);
+    public void sendTask(CloudTask task, String region);
 
-    String sendTask(PingTask task, String region);
+    public String sendTask(PingTask task, String region);
 
     public void sendTask(NotificationTask task, String region);
+
+    public void sendEvent(Event event);
 }

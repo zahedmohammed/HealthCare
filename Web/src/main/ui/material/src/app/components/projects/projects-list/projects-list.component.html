@@ -1,6 +1,10 @@
 <div class="box box-default">
     <div class="box-body">
-        Projects
+        <article class="article padding-lg-v1 article-dark article-bordered">
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                Projects
+            </section>
+        </article>
     </div>
 </div>
 
@@ -17,7 +21,7 @@
                                 <!--<img alt="product" [src]="product.img"/>-->
                                 <p class="text-center text-white">
                                 <span>
-                                    <button mat-icon-button > <mat-icon
+                                    <button mat-icon-button> <mat-icon
                                             class="material-icons">add</mat-icon> </button>
                                     <h5 style="color:white">Add Project</h5>
                                     <br/>
@@ -29,7 +33,8 @@
                         <div class="card__body card-white">
                             <div class="card__title">
                             <span>
-                                <button mat-icon-button [routerLink]="['/app/projects/new']" matTooltip="Add Project" matTooltipPosition="above"> <mat-icon
+                                <button mat-icon-button [routerLink]="['/app/projects/new']" matTooltip="Add Project"
+                                        matTooltipPosition="above"> <mat-icon
                                         class="material-icons text-muted">add</mat-icon> </button>
                             </span>
                             </div>
@@ -41,7 +46,8 @@
                 </div>
                 <div class="col-xl-3 col-lg-6" *ngFor="let project of projects">
                     <a href="javascript:;" class="item-card">
-                        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']" matTooltip="Go to jobs" matTooltipPosition="above">
+                        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"
+                           matTooltip="Go to jobs" matTooltipPosition="above">
                             <div class="card__image">
                                 <!--<img alt="product" [src]="product.img"/>-->
                                 <h5 class="text-center text-muted">{{project.name}}</h5>
@@ -50,23 +56,23 @@
                                 <span class="text-muted">Create Date: {{project.createdDate | date:'short'}}</span><br/>
                                 <span class="text-muted">Modified Date: {{project.modifiedDate | date:'short'}}</span> -->
                             </div>
-                        <!-- </a> -->
-                        <div class="card__body card-white">
-                            <!-- <div class="card__title">
-                                <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'manage']" matTooltip="Edit" matTooltipPosition="above"> <mat-icon
-                                        class="material-icons text-muted">edit</mat-icon> </button></span>
+                            <!-- </a> -->
+                            <div class="card__body card-white">
+                                <!-- <div class="card__title">
+                                    <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'manage']" matTooltip="Edit" matTooltipPosition="above"> <mat-icon
+                                            class="material-icons text-muted">edit</mat-icon> </button></span>
+                                </div>
+                                <div class="card__price">
+                                    <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'test-suites']" matTooltip="Test Suites" matTooltipPosition="above"> <mat-icon
+                                            class="material-icons text-muted">code</mat-icon> </button>
+                                        </span>
+                                </div> -->
+                                <div class="card__title">
+                                    <span class="text-muted">Created  : {{project.createdDate | date:'medium'}}</span><br/>
+                                    <span class="text-muted">Modified : {{project.modifiedDate | date:'medium'}}</span>
+                                </div>
                             </div>
-                            <div class="card__price">
-                                <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'test-suites']" matTooltip="Test Suites" matTooltipPosition="above"> <mat-icon
-                                        class="material-icons text-muted">code</mat-icon> </button>
-                                    </span>
-                            </div> -->
-                            <div class="card__title">
-                            <span class="text-muted">Created  : {{project.createdDate | date:'medium'}}</span><br/>
-                            <span class="text-muted">Modified : {{project.modifiedDate | date:'medium'}}</span>
-                        </div>
-                        </div>
-                    </a>
+                        </a>
                     </a>
                 </div>
             </div>
