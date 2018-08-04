@@ -48,7 +48,7 @@ export class EnvironmentNewComponent implements OnInit {
   scopeTypes= ['read', 'write'];
 
 orderForm: FormGroup;
-items: any[] = [];
+items: FormArray;
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
             private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
@@ -65,7 +65,7 @@ items: any[] = [];
       nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       urlCtrl:  ['', Validators.required],
      // authTypeCtrl:  ['', Validators.required],
-items: this._formBuilder.array([  ])
+items: this._formBuilder.array([ this.createItem() ])
     });
     this.route.params.subscribe(params => {
       this.id = params['id'];
@@ -105,11 +105,11 @@ this.addItem1(this.env.auths[0]);
   }
 addItem(): void {
   this.items = this.thirdFormGroup.get('items') as FormArray;
-  this.items.push(this.createItem());
+ this.items.push(this.createItem());
 }
 addItem1(obj): void {
-  this.items = this.thirdFormGroup.get('items') as FormArray;
-  this.items.push(this.createItem1(obj));
+ // this.items = this.thirdFormGroup.get('items') as FormArray;
+ // this.items.push(this.createItem1(obj));
 }
 geInfo(obj){
 console.log("sss");
@@ -287,7 +287,7 @@ removeItem(i: number) {
   saveEnv(obj) {
     console.log(this.env);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
-this.env.auths=this.items.value;
+//this.env.auths=this.items.value;
     this.projectService.updateEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
         if (this.handler.handle(results)) {

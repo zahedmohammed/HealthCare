@@ -48,7 +48,8 @@ export class EnvironmentEditComponent implements OnInit {
   scopeTypes= ['read', 'write'];
 
 orderForm: FormGroup;
-items: any[] = [];
+//items: any[] = [];
+items: FormArray;
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
             private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
@@ -73,29 +74,13 @@ items: any[] = [];
       }
     });
    
-    this.thirdFormGroup = this._formBuilder.group({
+  this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       urlCtrl:  ['', Validators.required],
      // authTypeCtrl:  ['', Validators.required],
-items: this._formBuilder.array([  ])
+items: this._formBuilder.array([ this.createItem() ])
+//items: this.items
     });
-
-    /*this.fourthFormGroup = this._formBuilder.group({
-      usernameCtrl:  ['', Validators.required],
-      passwordCtrl:  ['', Validators.required],
-    });
-
-    this.fifthFormGroup = this._formBuilder.group({
-      header1Ctrl:  ['', Validators.required],
-    });
-
-    grantTypeCtrl:  ['', Validators.required],
-      clientIdCtrl:  ['', Validators.required],
-      clientSecretCtrl:  ['', Validators.required],
-      accessTokenUriCtrl:  ['', Validators.required],
-      clientAuthenticationSchemeCtrl:  ['', Validators.required],
-      authorizationSchemeCtrl:  ['', Validators.required],
-      scopeCtrl:  ['', Validators.required]*/
 
   }
 addItem(): void {
@@ -166,6 +151,7 @@ return k;
         return;
       }
       this.project = results['data'];
+
       this.context = this.project.name + " > Edit";
     }, error => {
       this.handler.hideLoader();
