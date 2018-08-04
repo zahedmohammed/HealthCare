@@ -220,7 +220,7 @@ env.auths.push({});
   }
 
   getEnvs() {
-    this.projectService.getEnvs(this.id).subscribe(results => {
+    this.projectService.getEnvsByProjectId(this.id).subscribe(results => {
        this.handler.hideLoader();
         if (this.handler.handle(results)) {
         return;
