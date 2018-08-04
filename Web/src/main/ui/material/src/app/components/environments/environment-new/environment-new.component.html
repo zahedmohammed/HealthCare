@@ -6,7 +6,7 @@
         &nbsp;<span class="text-muted"> > </span> &nbsp;
         <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']"> Enironment </a>
         &nbsp;<span class="text-muted"> > </span> &nbsp;
-        &nbsp; New
+        &nbsp; Edit
     </div>
 </div>
 
@@ -55,11 +55,14 @@
                          *ngFor="let item of thirdFormGroup.get('items').controls; let i = index;">
                         <div [formGroupName]="i">
                             <!--input formControlName="authType" placeholder="Item name"-->
-                            <button mat-button color="primary" class="btn-w-md"  (click)="removeItem(i)"
-                            >
-                                <i class="fa fa-minus"></i>
-                                Remove Authentication
-                            </button>
+
+
+                            <div class="form-group row">
+                                <label  class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <span >{{i+1}}# Authentication.... </span>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label  class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
@@ -279,15 +282,21 @@
                                 </div>
                             </div>
                             <!--End For Loop -->
+                            <button mat-button color="primary" class="btn-w-md m-l-27"  (click)="removeItem(i)"
+                            >
+                                <i class="fa fa-minus"></i>
+                                Remove Authentication
+                            </button>
                         </div>
                     </div>
-                    <button mat-button color="primary" class="btn-w-md"  (click)="addItem()"
-                    >
-                        <i class="fa fa-plus"></i>
-                        Add Authentication
-                    </button>
+
                     <div>
                         <mat-card-actions>
+                            <button mat-button color="primary" class="btn-w-md"  (click)="addItem()"
+                            >
+                                <i class="fa fa-plus"></i>
+                                Add Authentication
+                            </button>
                             <button mat-raised-button color="primary"
                                     class="nav-btn"
                                     [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"
