@@ -91,6 +91,9 @@ import { SkillsAnalyticsComponent } from '../components/skills/skills-analytics/
 import { EnvironmentNewComponent } from '../components/environments/environment-new/environment-new.component';
 import { EnvironmentListComponent } from '../components/environments/environment-list/environment-list.component';
 import { EnvironmentEditComponent } from '../components/environments/environment-edit/environment-edit.component';
+import { TestSuiteListComponent } from '../components/testsuites/test-suite-list/test-suite-list.component';
+
+
 
 const routes: Routes = [
   {
@@ -109,7 +112,7 @@ const routes: Routes = [
       { path: 'projects/:id/environments', component: EnvironmentListComponent },
       { path: 'projects/:id/environments/new', component: EnvironmentNewComponent },
       { path: 'projects/:id/environments/:envId/edit', component: EnvironmentEditComponent },
-      { path: 'projects/:id/test-suites', component: ProjectsEditComponent },
+      { path: 'projects/:id/test-suites', component: TestSuiteListComponent },
       { path: 'projects/:id/jobs', component: JobslistComponent },
       { path: 'projects/:id/jobs/new', component: JobsNewComponent },
       { path: 'projects/:id/jobs/:jobId/edit', component: JobsEditComponent },

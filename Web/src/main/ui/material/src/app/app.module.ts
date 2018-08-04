@@ -171,6 +171,9 @@ import { RegisterComponent } from './components/dialogs/register/register.compon
 import { EnvironmentNewComponent } from './components/environments/environment-new/environment-new.component';
 import { EnvironmentListComponent } from './components/environments/environment-list/environment-list.component';
 import { EnvironmentEditComponent } from './components/environments/environment-edit/environment-edit.component';
+import { TestSuiteListComponent } from './components/testsuites/test-suite-list/test-suite-list.component';
+import { TestSuiteEditComponent } from './components/testsuites/test-suite-edit/test-suite-edit.component';
+import { TestSuiteNewComponent } from './components/testsuites/test-suite-new/test-suite-new.component';
 
 @NgModule({
   imports: [
@@ -321,7 +324,10 @@ import { EnvironmentEditComponent } from './components/environments/environment-
     RegisterComponent,
     EnvironmentNewComponent,
     EnvironmentListComponent,
-    EnvironmentEditComponent
+    EnvironmentEditComponent,
+    TestSuiteListComponent,
+    TestSuiteEditComponent,
+    TestSuiteNewComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
