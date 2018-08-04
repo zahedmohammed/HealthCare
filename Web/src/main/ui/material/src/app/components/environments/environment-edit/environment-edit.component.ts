@@ -1,23 +1,23 @@
-import { RegisterComponent } from './../../dialogs/register/register.component';
-import { Component, OnInit, Inject } from '@angular/core';
-import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
-import { ProjectService } from '../../../services/project.service';
-import { OrgService } from '../../../services/org.service';
-import { JobsService } from '../../../services/jobs.service';
-import { AccountService } from '../../../services/account.service';
-import { Account } from '../../../models/account.model';
-import { Project } from '../../../models/project.model';
-import { AutoCodeConfig } from '../../../models/project-autocode-config.model';
-import { Env, Auth } from '../../../models/project-env.model';
-import { Job } from '../../../models/project-job.model';
-import { OrgUser } from '../../../models/org.model';
-import { Handler } from '../../dialogs/handler/handler';
-import { APPCONFIG } from '../../../config';
-import { MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { SnackbarService } from '../../../services/snackbar.service';
-import { FormBuilder, FormGroup, Validators , FormArray} from '@angular/forms';
+import{RegisterComponent}from'./../../dialogs/register/register.component';
+import { Component, OnInit, Inject}from '@angular/core';
+import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
+import {ProjectService}from '../../../services/project.service';
+import {OrgService }from '../../../services/org.service';
+import {JobsService}from '../../../services/jobs.service';
+import {AccountService}from '../../../services/account.service';
+import {Account} from '../../../models/account.model';
+import {Project}from '../../../models/project.model';
+import {AutoCodeConfig}from '../../../models/project-autocode-config.model';
+import {Env, Auth }from '../../../models/project-env.model';
+import {Job}from '../../../models/project-job.model';
+import {OrgUser}from '../../../models/org.model';
+import {Handler} from '../../dialogs/handler/handler';
+import {APPCONFIG} from '../../../config';
+import {MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA}from '@angular/material';
+import {SnackbarService} from '../../../services/snackbar.service';
+import {FormBuilder, FormGroup, Validators , FormArray}from '@angular/forms';
 
-import { MatStepper } from '@angular/material';
+import {MatStepper}from '@angular/material';
 @Component({
   selector: 'app-environment-edit',
   templateUrl: './environment-edit.component.html',
@@ -156,6 +156,8 @@ username:obj.username
   });
 return k;
 }
+
+
    loadProject(id: string) {
     this.handler.activateLoader();
     this.projectService.getById(id).subscribe(results => {
@@ -170,9 +172,11 @@ return k;
       this.handler.error(error);
     });
   }
+
+
   loadEnv(id: string) {
     this.handler.activateLoader();
-    this.projectService.getEnvListByProjectId(id).subscribe(results => {
+    this.projectService.getEnvsByProjectId(id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
@@ -195,6 +199,8 @@ return k;
       this.handler.error(error);
     });
   }
+
+
   save(matStepper) {
     this.matStepper = matStepper;
     if (this.project.id) {

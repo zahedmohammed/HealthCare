@@ -63,7 +63,7 @@ export class EnvironmentListComponent implements OnInit {
 
   list(id: string) {
     this.handler.activateLoader();
-    this.projectService.getEnvs(id).subscribe(results => {
+    this.projectService.getEnvsByProjectId(id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
