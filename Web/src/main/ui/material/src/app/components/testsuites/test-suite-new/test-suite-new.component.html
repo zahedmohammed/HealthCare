@@ -1,3 +1,81 @@
-<p>
-  test-suite-new works!
-</p>
+<div class="box box-default">
+  <div class="box-body">
+    <a href="javascript:;" [routerLink]="['/app/projects']"> Projects &nbsp; </a>
+    <span class="text-muted"> > </span> &nbsp;
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> {{project.name}} </a>
+    <span class="text-muted"> > </span> &nbsp;
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> Test Suite </a> &nbsp; <span class="text-muted"> > </span>
+    &nbsp; New
+  </div>
+</div>
+<section class="container-fluid with-maxwidth chapter">
+
+  <br/>
+  <article class="article">
+    <div class="box box-default">
+      <div class="box-body">
+
+        <mat-horizontal-stepper  #stepper>
+
+
+          <mat-step [stepControl]="thirdFormGroup">
+            <form [formGroup]="thirdFormGroup">
+              <ng-template matStepLabel>Notifications</ng-template>
+
+              <div class="form-group row">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
+                  <mat-input-container class="full-width">
+                    <input [(ngModel)]="job.notifications[0].to"  [ngModelOptions]="{standalone: true}"
+                           matInput placeholder="Emails">
+                  </mat-input-container>
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
+                  <mat-input-container class="full-width">
+                    <input [(ngModel)]="job.notifications[1].channel"  [ngModelOptions]="{standalone: true}"
+                           matInput placeholder="Slack Channel">
+                  </mat-input-container>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-md-0 control-label">
+                </label>
+                <div class="col-md-5">
+                  <mat-form-field>
+                    <mat-select placeholder="Slack Credentials"
+                                [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
+                      <mat-option *ngFor="let account of notifyAccounts" [value]="account.id">
+                        {{account.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <mat-card-actions>
+                    <button mat-raised-button color="primary"
+                            class="nav-btn"
+                            [disabled]="thirdFormGroup.invalid"
+                            (click)="saveJob();">Save & Complete
+                    </button>
+                    <button mat-button matStepperPrevious>Back</button>
+                  </mat-card-actions>
+                </div>
+              </div>
+            </form>
+          </mat-step>
+
+        </mat-horizontal-stepper>
+
+      </div>
+    </div>
+  </article>
+</section>
