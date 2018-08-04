@@ -129,6 +129,10 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Url is empty."));
         }
 
+        if (StringUtils.isEmpty(projectId)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project."));
+        }
+
         Response<Project> optionalProject = projectService.findById(projectId, orgId);
         if (optionalProject.isErrors() || optionalProject.getData() == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));

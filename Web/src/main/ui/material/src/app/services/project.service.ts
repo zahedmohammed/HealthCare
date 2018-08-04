@@ -72,7 +72,7 @@ export class ProjectService {
   }
 
   saveEnv(env: Env, projectId: string) {
-    return this.http.post(this.serviceUrl + "/" +  projectId + "/env", env);
+    return this.http.post(this.envServiceUrl, env);
   }
   updateEnv(env: Env, projectId: string) {
     return this.http.put(this.serviceUrl + "/" +  projectId + "/env/" + env.id, env);
