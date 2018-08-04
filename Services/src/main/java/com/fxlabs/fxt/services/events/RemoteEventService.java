@@ -29,10 +29,12 @@ public class RemoteEventService {
         emitter.onTimeout(() -> this.emitters.remove(emitter));
 
         return emitter;
+
+        // TODO - Send last 30 mins events pageSize 10 order by status (in_progress)
     }
 
     public void onEvent(Event event) {
-        // TODO - persists event
+        // TODO - persists event (DAO, Entity, Converter, Flyway)
         // TODO - check event exists and update
         logger.info("Event msg [{}] org [{}]", event.getName(), event.getOrg().getName());
         List<SseEmitter> deadEmitters = new ArrayList<>();
