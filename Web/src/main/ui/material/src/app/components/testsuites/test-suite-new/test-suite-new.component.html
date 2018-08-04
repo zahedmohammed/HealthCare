@@ -15,30 +15,25 @@
     <div class="box box-default">
       <div class="box-body">
 
-        <mat-horizontal-stepper  #stepper>
-
-
-          <mat-step [stepControl]="thirdFormGroup">
+test suite new
             <form [formGroup]="thirdFormGroup">
-              <ng-template matStepLabel>Notifications</ng-template>
 
               <div class="form-group row">
-                <label for="name" class="col-md-0 control-label"></label>
+                <!--label for="name" class="col-md-0 control-label"></label-->
                 <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <input [(ngModel)]="job.notifications[0].to"  [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Emails">
-                  </mat-input-container>
+                  <mat-form-field class="full-width">
+                    <input required [(ngModel)]="testSuite.name" formControlName="nameCtrl"
+                           matInput placeholder="Test Suite name">
+                    <mat-error>Name should be between 3 & 25 characters</mat-error>
+                  </mat-form-field>
                 </div>
               </div>
-
-
               <div class="form-group row">
                 <label for="name" class="col-md-0 control-label"></label>
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
-                    <input [(ngModel)]="job.notifications[1].channel"  [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Slack Channel">
+                    <input [(ngModel)]="testSuite.description" [ngModelOptions]="{standalone: true}"
+                           matInput placeholder="Description">
                   </mat-input-container>
                 </div>
               </div>
@@ -48,16 +43,17 @@
                 </label>
                 <div class="col-md-5">
                   <mat-form-field>
-                    <mat-select placeholder="Slack Credentials"
-                                [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let account of notifyAccounts" [value]="account.id">
-                        {{account.name}}
+                    <mat-select placeholder=" Type" required
+                                formControlName="testSuite.type"
+                                name="type">
+                      <mat-option *ngFor="let type of types" [value]="type">
+                        {{type}}
                       </mat-option>
                     </mat-select>
+                    <mat-error>Please select Type </mat-error>
                   </mat-form-field>
                 </div>
               </div>
-
               <div>
                 <div>
                   <mat-card-actions>
@@ -66,14 +62,10 @@
                             [disabled]="thirdFormGroup.invalid"
                             (click)="saveJob();">Save & Complete
                     </button>
-                    <button mat-button matStepperPrevious>Back</button>
                   </mat-card-actions>
                 </div>
               </div>
             </form>
-          </mat-step>
-
-        </mat-horizontal-stepper>
 
       </div>
     </div>
