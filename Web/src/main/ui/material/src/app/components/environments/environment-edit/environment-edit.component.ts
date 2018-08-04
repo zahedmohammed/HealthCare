@@ -112,7 +112,7 @@ console.log("sss");
 createItem(): FormGroup {
   return this._formBuilder.group({
   accessTokenUri:null,
-authType: [null, Validators.required]
+authType: [null, Validators.required],
 authorizationScheme:null,
 clientAuthenticationScheme:null,
 clientId:null,
@@ -135,7 +135,7 @@ username:null
 createItem1(obj:Auth): FormGroup {
   var k= this._formBuilder.group({
   accessTokenUri:'',
-authType: [obj.authType, Validators.required]
+authType: [obj.authType, Validators.required],
 authorizationScheme:obj.authorizationScheme,
 clientAuthenticationScheme:obj.clientAuthenticationScheme,
 clientId:obj.clientId,

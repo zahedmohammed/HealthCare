@@ -63,9 +63,9 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
         if (environments == null || CollectionUtils.isEmpty(environments)) {
             environments = new ArrayList<>();
-            Environment env = new Environment();
-            env.setAuths(Arrays.asList(new Auth()));
-            environments.add(env);
+//            Environment env = new Environment();
+//            env.setAuths(Arrays.asList(new Auth()));
+//            environments.add(env);
         }
         return new Response<>(converter.convertToDtos(environments));
     }

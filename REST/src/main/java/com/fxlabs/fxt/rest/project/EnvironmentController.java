@@ -30,7 +30,7 @@ public class EnvironmentController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/project-id/{id}", method = RequestMethod.GET)
     public Response<List<Environment>> findByProjectId(@PathVariable("id") String projectId) {
-        return service.findByProjectId(projectId, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
+        return service.findByProjectId(projectId, com.fxlabs.fxt.rest.base.SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

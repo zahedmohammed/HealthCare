@@ -13,6 +13,7 @@ import { Env } from '../models/project-env.model';
 @Injectable()
 export class ProjectService {
   private serviceUrl = '/api/v1/projects';
+  private envServiceUrl = '/api/v1/envs';
   private autocodeURL = './assets/auto-code.json';
   constructor(private http: HttpClient) {
   }
@@ -33,8 +34,8 @@ export class ProjectService {
   getEnvListByProjectId(id: string) {
     return this.http.get(this.serviceUrl + "/" + id+"/env");
   }
-  getEnvByProjectIdAndEnvId(id: string,envid:string) {
-    return this.http.get(this.serviceUrl + "/" + id+"/env/"+envid);
+  getEnvByProjectIdAndEnvId(id: string, envid:string) {
+    return this.http.get(this.envServiceUrl + "/" + envid);
   }
   create(project: Project) {
     return this.http.post(this.serviceUrl, project);
@@ -79,14 +80,14 @@ export class ProjectService {
     return this.http.post(this.serviceUrl + "/" +  projectId + "/env", env);
   }
   updateEnv(env: Env, projectId: string) {
-    return this.http.put(this.serviceUrl + "/" +  projectId + "/env/"+env.id, env);
+    return this.http.put(this.serviceUrl + "/" +  projectId + "/env/" + env.id, env);
   }
   saveEnvs(envs: Env[], projectId: string) {
     return this.http.post(this.serviceUrl + "/" +  projectId + "/envs", envs);
   }
 
   getEnvs(projectId: string) {
-    return this.http.get(this.serviceUrl + "/" +  projectId + "/env");
+    return this.http.get(this.envServiceUrl + "/project-id/" +  projectId);
   }
 
 
