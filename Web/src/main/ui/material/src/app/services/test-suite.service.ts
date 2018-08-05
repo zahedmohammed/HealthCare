@@ -26,5 +26,7 @@ constructor(private http: HttpClient) {
   search(keyword: string) {
     return this.http.get(this.serviceUrl + "/search/" + keyword);
   }
-
+  create(obj: TestSuite) {
+    return this.http.post(this.serviceUrl, obj);
+  }
 }

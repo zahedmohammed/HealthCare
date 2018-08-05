@@ -15,7 +15,6 @@
     <div class="box box-default">
       <div class="box-body">
 
-test suite new
             <form [formGroup]="thirdFormGroup">
 
               <div class="form-group row">
@@ -98,8 +97,8 @@ test suite new
               </div>
               <!-- Test case Start -->
 
-              <div formArrayName="items"
-                   *ngFor="let item of thirdFormGroup.get('items').controls; let i = index;">
+              <div formArrayName="testCases"
+                   *ngFor="let item of thirdFormGroup.get('testCases').controls; let i = index;">
                 <div [formGroupName]="i">
                   <!--input formControlName="authType" placeholder="Item name"-->
 
@@ -143,21 +142,58 @@ test suite new
 <!-- Test case End -->
 
               <div>
-                <!--div class="form-group row">
+                <div class="form-group row">
                   <label for="name" class="col-md-0 control-label"></label>
                   <div class="col-md-5">
                     <mat-input-container class="full-width">
-                      <input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Auth,ex :Default">
+                      <input [(ngModel)]="testSuite.assertion" [ngModelOptions]="{standalone: true}"
+                             matInput placeholder="Assertion seperated with  , ">
                     </mat-input-container>
                   </div>
-                </div-->
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-0 control-label"></label>
+                  <div class="col-md-5">
+                    <mat-input-container class="full-width">
+                      <input [(ngModel)]="testSuite.tags" [ngModelOptions]="{standalone: true}"
+                             matInput placeholder="Tags seperated with  , ">
+                    </mat-input-container>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-0 control-label"></label>
+                  <div class="col-md-5">
+                    <mat-input-container class="full-width">
+                      <input [(ngModel)]="testSuite.authors" [ngModelOptions]="{standalone: true}"
+                             matInput placeholder="Authors seperated with  , ">
+                    </mat-input-container>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-0 control-label"></label>
+                  <div class="col-md-5">
+                    <mat-input-container class="full-width">
+                      <input [(ngModel)]="testSuite.init" [ngModelOptions]="{standalone: true}"
+                             matInput placeholder="Init seperated with  , ">
+                    </mat-input-container>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="name" class="col-md-0 control-label"></label>
+                  <div class="col-md-5">
+                    <mat-input-container class="full-width">
+                      <input [(ngModel)]="testSuite.cleanup" [ngModelOptions]="{standalone: true}"
+                             matInput placeholder="Cleanup seperated with  , ">
+                    </mat-input-container>
+                  </div>
+                </div>
                 <div>
+
                   <mat-card-actions>
                     <button mat-raised-button color="primary"
                             class="nav-btn"
                             [disabled]="thirdFormGroup.invalid"
-                            (click)="saveJob();">Save & Complete
+                            (click)="saveTestSuite();">Save & Complete
                     </button>
                   </mat-card-actions>
                 </div>
