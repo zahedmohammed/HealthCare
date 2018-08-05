@@ -152,16 +152,23 @@
 
               <div>
                 <div class="form-group row">
-                  <label for="name" class="col-md-0 control-label"></label>
-                  <div class="col-md-5">
+                  <label  class="col-md-0 control-label"></label>
+                  <div class="col-md-6">
                     <mat-input-container class="full-width">
-                      <input [(ngModel)]="testSuite1.assertion" [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Assertion seperated with  , ">
+                          <textarea matInput placeholder="Assertions"
+                                    [(ngModel)]='testSuite.assertionsText'
+                                    [ngModelOptions]="{standalone: true}"></textarea>
                     </mat-input-container>
                   </div>
+                  <!--<div class="col-md-5">-->
+                    <!--<mat-input-container class="full-width">-->
+                      <!--<input [(ngModel)]="testSuite1.assertion" [ngModelOptions]="{standalone: true}"-->
+                             <!--matInput placeholder="Assertion seperated with  , ">-->
+                    <!--</mat-input-container>-->
+                  <!--</div>-->
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-md-0 control-label"></label>
+                  <label class="col-md-0 control-label"></label>
                   <div class="col-md-5">
                     <mat-input-container class="full-width">
                       <input [(ngModel)]="testSuite1.headers" [ngModelOptions]="{standalone: true}"
@@ -170,21 +177,31 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-md-0 control-label"></label>
+                  <label class="col-md-0 control-label"></label>
                   <div class="col-md-5">
                     <mat-input-container class="full-width">
-                      <input [(ngModel)]="testSuite1.tags" [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Tags seperated with  , ">
+                          <textarea matInput placeholder="Tags"
+                                    [(ngModel)]='testSuite.tagsText'
+                                    [ngModelOptions]="{standalone: true}"></textarea>
                     </mat-input-container>
+                    <!--<mat-input-container class="full-width">-->
+                      <!--<input [(ngModel)]="testSuite1.tags" [ngModelOptions]="{standalone: true}"-->
+                             <!--matInput placeholder="Tags seperated with  , ">-->
+                    <!--</mat-input-container>-->
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-md-0 control-label"></label>
+                  <label class="col-md-0 control-label"></label>
                   <div class="col-md-5">
                     <mat-input-container class="full-width">
-                      <input [(ngModel)]="testSuite1.authors" [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Authors seperated with  , ">
+                          <textarea matInput placeholder="Authors"
+                                    [(ngModel)]='testSuite.authorsText'
+                                    [ngModelOptions]="{standalone: true}"></textarea>
                     </mat-input-container>
+                    <!--<mat-input-container class="full-width">-->
+                      <!--<input [(ngModel)]="testSuite1.authors" [ngModelOptions]="{standalone: true}"-->
+                             <!--matInput placeholder="Authors seperated with  , ">-->
+                    <!--</mat-input-container>-->
                   </div>
                 </div>
                 <div class="form-group row">

@@ -63,14 +63,6 @@ public class TestSuiteController {
         return service.save(dtos, SecurityUtil.getCurrentAuditor());
     }
 
-/*
-    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response<TestSuite> createTestSuite(@Valid @RequestBody TestSuite dto) {
-      //  return service.save(dto, SecurityUtil.getCurrentAuditor());
-       return  null;
-    }
-*/
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/deletedtestsuites", method = RequestMethod.PUT)
     public void deleteTestSuite(@Valid @RequestBody TestSuitesDeletedDto dtos) {
@@ -81,7 +73,7 @@ public class TestSuiteController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<TestSuite> create(@Valid @RequestBody TestSuite dto) {
-        return service.save(dto, SecurityUtil.getCurrentAuditor());
+        return service.create(dto, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

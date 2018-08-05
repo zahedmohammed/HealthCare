@@ -2,19 +2,22 @@
     i: string;
     name: string;
     description: string;
-endpoint: string;
+    endpoint: string;
     project: Project = new Project();
     auth: string;
-type:string;
-method: string;
+    type:string;
+    method: string;
+    assertionsText: string;
     assertions:string[];
     headers:string[];
     assertion: string[];
+    tagsText: string;
     tags:string[];
+    authorsText: string;
     authors:string[];
     init:string[];
     cleanup:string[];
-testCases:TestCase[] =[];
+    testCases:TestCase[] =[];
  //   policies:Policies=new Policy();
 }
 

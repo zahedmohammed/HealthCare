@@ -13,10 +13,14 @@ import java.util.List;
  * @author Mohammed Shoukath Ali
  */
 public interface TestSuiteService extends GenericService<TestSuite, String> {
+
+
     Response<Long> count(String user, Pageable pageable);
     Response<List<TestSuite>> search(String keyword, String user, Pageable pageable);
     Response<List<TestSuite>> findByProjectId(String id, String user, Pageable pageable);
 
+    public Response<TestSuite> findById(String id, String orgId);
 
+    public Response<TestSuite> create(TestSuite dto, String id);
     public void testSuitesDelete(TestSuitesDeletedDto dto, String user);
 }

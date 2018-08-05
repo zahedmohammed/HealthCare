@@ -75,19 +75,19 @@ testCases: this._formBuilder.array([  ])
       }
       this.testSuite = results['data'];
      let k:TestCase = new TestCase();
-if(this.testSuite.assertions!=null)
-this.testSuite1.assertion=this.testSuite.assertions.join(",");
-if(this.testSuite.headers!=null)
-this.testSuite1.headers=this.testSuite.headers.join(",");
-if(this.testSuite.tags!=null)
-this.testSuite1.tags=this.testSuite.tags.join(",");
-if(this.testSuite.authors!=null)
-this.testSuite1.authors=this.testSuite.authors.join(",");
-if(this.testSuite.init!=null)
-this.testSuite1.init=this.testSuite.init.join(",");
-if(this.testSuite.cleanup!=null)
-this.testSuite1.cleanup=this.testSuite.cleanup.join(",");
- if(this.testSuite.testCases.length==0 ) this.testSuite.testCases=[k];
+    if(this.testSuite.assertions!=null)
+        this.testSuite1.assertion=this.testSuite.assertions.join(",");
+    if(this.testSuite.headers!=null)
+        this.testSuite1.headers=this.testSuite.headers.join(",");
+    if(this.testSuite.tags!=null)
+        this.testSuite1.tags=this.testSuite.tags.join(",");
+    if(this.testSuite.authors!=null)
+        this.testSuite1.authors=this.testSuite.authors.join(",");
+    if(this.testSuite.init!=null)
+        this.testSuite1.init=this.testSuite.init.join(",");
+    if(this.testSuite.cleanup!=null)
+        this.testSuite1.cleanup=this.testSuite.cleanup.join(",");
+     if(this.testSuite.testCases.length==0 ) this.testSuite.testCases=[k];
           for(var i=0;i<this.testSuite.testCases.length;i++) this.addItem1(this.testSuite.testCases[i]);
 //this.thirdFormGroup.value.type=this.testSuite.type;
 console.log(this.thirdFormGroup);

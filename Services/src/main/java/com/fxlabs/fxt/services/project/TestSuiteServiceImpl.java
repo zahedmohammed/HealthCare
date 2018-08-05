@@ -39,11 +39,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     private ProjectService projectService;
     private ProjectRepository projectRepository;
     private TestSuiteRepository repository;
+    private TestSuiteConverter testSuiteConverter;
 
     @Autowired
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository,
                                 ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository,
-                                ProjectFileESRepository projectFileESRepository) {
+                                ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter) {
         super(repository, converter);
         this.repository = repository;
         this.testSuiteESRepository = testSuiteESRepository;
@@ -51,6 +52,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         this.projectService = projectService;
         this.projectRepository = projectRepository;
         this.projectFileESRepository = projectFileESRepository;
+        this.testSuiteConverter = testSuiteConverter;
     }
 
     @Override
@@ -62,20 +64,34 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     @Override
     public Response<List<com.fxlabs.fxt.dto.project.TestSuite>> search(String keyword, String user, Pageable pageable) {
         Page<TestSuite> page = testSuiteESRepository.findByPublishToMarketplaceAndNameStartsWithIgnoreCase(Boolean.TRUE, keyword, pageable);
-        return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+        List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
+
+        testSuites.forEach(testSuite -> {
+            testSuiteConverter.copyArraysToText(testSuite);
+        });
+
+        return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
     }
     @Override
     public Response<List<com.fxlabs.fxt.dto.project.TestSuite>> findByProjectId(String id, String user, Pageable pageable) {
         Page<TestSuite> page = testSuiteESRepository.findByProjectId(id,pageable);
-        return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+
+        List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
+
+        testSuites.forEach(testSuite -> {
+            testSuiteConverter.copyArraysToText(testSuite);
+        });
+
+        return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
     }
     @Override
-    public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> create(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
 
 //        String fileName = testSuite.getProps().get(Project.FILE_NAME);
 //        if (StringUtils.contains(fileName, "-")){
 //            throw new FxException(String.format("FileName [%s] should not contain hypen '-'.", fileName));
 //        }
+
         Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
         TestSuite entity = null;
@@ -83,6 +99,8 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             entity = testSuiteOptional.get();
             testSuite.setId(entity.getId());
         }
+
+        testSuiteConverter.copyTextToArray(testSuite);
 
         // type
         if (testSuite.getType() == null) {
@@ -105,6 +123,20 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 
     }
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> findById(String id, String org) {
+        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findById(id);
+
+        if (!testSuiteOptional.isPresent()) {
+            throw new FxException("Invalid request for test-suite");
+        }
+        com.fxlabs.fxt.dto.project.TestSuite dto = converter.convertToDto(testSuiteOptional.get());
+        testSuiteConverter.copyArraysToText(dto);
+
+        return new Response<>(dto);
+    }
+
 
     @Override
     public void testSuitesDelete(TestSuitesDeletedDto dto, String user) {
