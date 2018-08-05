@@ -7,11 +7,12 @@ endpoint: string;
     auth: string;
 type:string;
 method: string;
-    assertion: string;
-    tags:string;
-    authors:string;
-    init:string;
-    cleanup:string;
+    headers:string[];
+    assertion: string[];
+    tags:string[];
+    authors:string[];
+    init:string[];
+    cleanup:string[];
 testCases:TestCase[] =[];
  //   policies:Policies=new Policy();
 }

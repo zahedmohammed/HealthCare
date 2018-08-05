@@ -33,6 +33,7 @@ testCases: FormArray;
 
   types: string[] = ["Suite", "Abstract", "Dataset", "Consulting_Services", "AI_Skills"];
 methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
+ testSuite1:any={assertion:''};
 
   context: string = "New";
   firstFormGroup: FormGroup;
@@ -110,7 +111,18 @@ this.testSuite.project=this.project;
 saveTestSuite(){
 var groupVal=this.thirdFormGroup.value;
 this.testSuite.testCases=groupVal.testCases;
-console.log(this.testSuite);
+if(this.testSuite1.headers!=null)
+this.testSuite.headers=this.testSuite1.headers.split(",");
+ if(this.testSuite1.tags!=null)
+this.testSuite.tags=this.testSuite1.tags.split(",");
+ if(this.testSuite1.authors!=null)
+this.testSuite.authors=this.testSuite1.authors.split(",");
+ if(this.testSuite1.authors!=null)
+this.testSuite.init=this.testSuite1.init.split(",");
+ if(this.testSuite1.cleanup!=null)
+this.testSuite.cleanup=this.testSuite1.cleanup.split(",");
+
+//console.log(this.testSuite);
 this.handler.activateLoader();
       this.snackbarService.openSnackBar("'TestSuite '" + this.testSuite.name + "' creating...", "");
       this.testSuiteService.create(this.testSuite).subscribe(results => {
@@ -118,7 +130,8 @@ this.handler.activateLoader();
         if (this.handler.handle(results)) {
             return;
         }
-        this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
+        this.snackbarService.openSnackBar("'TestSuite '" + this.project.name + "' created successfully", "");
+        this.router.navigate(['/app/projects', this.id, 'test-suites']);
        // this.project = results['data'];
 
     }, error => {
