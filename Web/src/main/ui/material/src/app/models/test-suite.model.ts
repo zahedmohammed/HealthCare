@@ -7,6 +7,7 @@ endpoint: string;
     auth: string;
 type:string;
 method: string;
+    assertions:string[];
     headers:string[];
     assertion: string[];
     tags:string[];

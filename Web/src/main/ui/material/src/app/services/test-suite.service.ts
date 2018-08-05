@@ -23,7 +23,7 @@ constructor(private http: HttpClient) {
     params = params.append('pageSize', pageSize);
     return this.http.get(this.serviceUrl+"/project-id/"+id, {params});
   }
- getByTestSuiteId(id,page, pageSize) {
+ getByTestSuiteId(id) {
     let params = new HttpParams();
   //  params = params.append('page', page);
   //  params = params.append('pageSize', pageSize);
