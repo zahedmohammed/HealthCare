@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
-import { JobsService } from '../../../services/jobs.service';
+import { TestSuiteService } from '../../../services/test-suite.service';
 import { RunService } from '../../../services/run.service';
 import { ProjectService } from '../../../services/project.service';
 import { Base } from '../../../models/base.model';
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
 selector: 'app-test-suite-list',
   templateUrl: './test-suite-list.component.html',
   styleUrls: ['./test-suite-list.component.scss'],
-  providers: [JobsService, RunService, ProjectService]
+  providers: [TestSuiteService, RunService, ProjectService]
 })
 export class TestSuiteListComponent implements OnInit {
 
@@ -27,7 +27,7 @@ export class TestSuiteListComponent implements OnInit {
   showSpinner: boolean = false;
   //private _clockSubscription: Subscription;
 
-  constructor(private jobsService: JobsService, private runService: RunService, private dialog: MatDialog,
+  constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
@@ -64,7 +64,8 @@ export class TestSuiteListComponent implements OnInit {
 
   list(id: string) {
     this.handler.activateLoader();
-    this.jobsService.getJobs(id, this.page, this.pageSize).subscribe(results => {
+
+    this.testSuiteService.get(id, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

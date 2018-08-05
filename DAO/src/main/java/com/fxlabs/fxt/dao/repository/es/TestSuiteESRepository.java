@@ -27,6 +27,7 @@ public interface TestSuiteESRepository extends ElasticsearchRepository<TestSuite
     Page<TestSuite> findByPublishToMarketplaceAndNameStartsWithIgnoreCase(Boolean isPublished, String name, Pageable pageable);
 
     Stream<TestSuite> findByProjectIdAndTypeAndTagsIn(String projectId, String type, List<String> tags);
+    Page<TestSuite> findByProjectId(String projectId, Pageable pageable);
 
     Stream<TestSuite> findByProjectIdAndType(String projectId, String type);
 

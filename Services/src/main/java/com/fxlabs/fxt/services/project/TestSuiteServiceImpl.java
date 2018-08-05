@@ -64,7 +64,11 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         Page<TestSuite> page = testSuiteESRepository.findByPublishToMarketplaceAndNameStartsWithIgnoreCase(Boolean.TRUE, keyword, pageable);
         return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
-
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.project.TestSuite>> findByProjectId(String id, String user, Pageable pageable) {
+        Page<TestSuite> page = testSuiteESRepository.findByProjectId(id,pageable);
+        return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+    }
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> save(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
 

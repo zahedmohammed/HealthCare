@@ -16,17 +16,17 @@ constructor(private http: HttpClient) {
   /**
    * Get observable from endpoint
    */
-  get(page, pageSize) {
+  get(id,page, pageSize) {
     let params = new HttpParams();
     params = params.append('page', page);
     params = params.append('pageSize', pageSize);
-    return this.http.get(this.serviceUrl, {params});
+    return this.http.get(this.serviceUrl+"/project-id/"+id, {params});
   }
 
   search(keyword: string) {
     return this.http.get(this.serviceUrl + "/search/" + keyword);
   }
-  create(obj: TestSuite) {
+  create(obj: Jobs) {
     return this.http.post(this.serviceUrl, obj);
   }
 }
