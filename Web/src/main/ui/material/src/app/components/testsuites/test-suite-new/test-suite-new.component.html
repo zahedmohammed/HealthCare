@@ -37,14 +37,22 @@ test suite new
                   </mat-input-container>
                 </div>
               </div>
-
+              <!--div class="form-group row">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
+                  <mat-input-container class="full-width">
+                    <input [(ngModel)]="testSuite.type" [ngModelOptions]="{standalone: true}"
+                           matInput placeholder="Type">
+                  </mat-input-container>
+                </div>
+              </div-->
               <div class="form-group row">
                 <label class="col-md-0 control-label">
                 </label>
                 <div class="col-md-5">
                   <mat-form-field>
-                    <mat-select placeholder=" Type" required
-                                formControlName="testSuite.type"
+                    <mat-select placeholder="type" required
+                                formControlName="type"
                                 name="type">
                       <mat-option *ngFor="let type of types" [value]="type">
                         {{type}}
@@ -54,7 +62,96 @@ test suite new
                   </mat-form-field>
                 </div>
               </div>
+              <div class="form-group row">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
+                  <mat-input-container class="full-width">
+                    <input [(ngModel)]="testSuite.endpoint" [ngModelOptions]="{standalone: true}"
+                           matInput placeholder="End Point">
+                  </mat-input-container>
+                </div>
+              </div>
+              <!--div class="form-group row">
+                <label class="col-md-0 control-label">
+                </label>
+                <div class="col-md-5">
+                  <mat-form-field>
+                    <mat-select placeholder="Method" required
+                                formControlName="testSuite.method"
+                                name="type">
+                      <mat-option *ngFor="let type of methods" [value]="type">
+                        {{type}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Please select Methods </mat-error>
+                  </mat-form-field>
+                </div>
+              </div-->
+              <div class="form-group row">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
+                  <mat-input-container class="full-width">
+                    <input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}"
+                           matInput placeholder="Auth,ex :Default">
+                  </mat-input-container>
+                </div>
+              </div>
+              <!-- Test case Start -->
+
+              <div formArrayName="items"
+                   *ngFor="let item of thirdFormGroup.get('items').controls; let i = index;">
+                <div [formGroupName]="i">
+                  <!--input formControlName="authType" placeholder="Item name"-->
+
+
+                  <div class="form-group row">
+                    <label  class="col-md-0 control-label"></label>
+                    <div class="col-md-5">
+                      <span >{{i+1}}# TestCase.... </span>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label  class="col-md-0 control-label"></label>
+                    <div class="col-md-5">
+                      <mat-input-container class="full-width">
+                        <input  formControlName="body"
+                                matInput placeholder="Body">
+                      </mat-input-container>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label  class="col-md-0 control-label"></label>
+                    <div class="col-md-5">
+                      <mat-slide-toggle color="primary" checked="true"  formControlName="inactive"> In Active </mat-slide-toggle>
+                      <span class="space space-md"></span>
+                    </div>
+                  </div>
+
+                  <!--End For Loop -->
+                  <button mat-button color="primary" class="btn-w-md m-l-27"  (click)="removeItem(i)"
+                  >
+                    <i class="fa fa-minus"></i>
+                    Remove Test Case
+                  </button>
+                </div>
+              </div>
+              <button mat-button color="primary" class="btn-w-md"  (click)="addItem()"
+              >
+                <i class="fa fa-plus"></i>
+                Add Test Case
+              </button>
+<!-- Test case End -->
+
               <div>
+                <!--div class="form-group row">
+                  <label for="name" class="col-md-0 control-label"></label>
+                  <div class="col-md-5">
+                    <mat-input-container class="full-width">
+                      <input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}"
+                             matInput placeholder="Auth,ex :Default">
+                    </mat-input-container>
+                  </div>
+                </div-->
                 <div>
                   <mat-card-actions>
                     <button mat-raised-button color="primary"

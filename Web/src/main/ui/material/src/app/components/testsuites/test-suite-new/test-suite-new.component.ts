@@ -5,7 +5,6 @@ import { JobsService } from '../../../services/jobs.service';
 import { ProjectService } from '../../../services/project.service';
 import { Project } from '../../../models/project.model';
 import { Jobs, Noti, Cron } from '../../../models/jobs.model';
-import { Env, Auth } from '../../../models/project-env.model';
 import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../models/account.model';
 import { Handler } from '../../dialogs/handler/handler';
@@ -13,10 +12,10 @@ import { APPCONFIG } from '../../../config';
 import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 import { SnackbarService}from '../../../services/snackbar.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material';
-import { TestSuite} from '../../../models/test-suite.model';
 
+import {FormBuilder, FormGroup, Validators , FormArray}from '@angular/forms';
+import { MatStepper } from '@angular/material';
+import { TestSuite,TestCase} from '../../../models/test-suite.model';
 
 
 @Component({
@@ -29,10 +28,10 @@ export class TestSuiteNewComponent implements OnInit {
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
-
+items: FormArray;
 
   types: string[] = ["Suite", "Abstract", "Dataset", "Consulting_Services", "AI_Skills"];
-
+methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
 
   context: string = "New";
   firstFormGroup: FormGroup;
@@ -56,10 +55,42 @@ export class TestSuiteNewComponent implements OnInit {
     });
     this.thirdFormGroup = this._formBuilder.group({
  nameCtrl:  ['', Validators.required],
+items: this._formBuilder.array([ this.createItem() ])
+type:'',
     });
 
   }
-
+removeItem(i: number) {
+    // remove address from the list
+    const control = <FormArray>this.thirdFormGroup.controls['items'];
+    control.removeAt(i);
+}
+addItem(): void {
+  this.items = this.thirdFormGroup.get('items') as FormArray;
+  this.items.push(this.createItem());
+}
+addItem1(obj): void {
+  this.items = this.thirdFormGroup.get('items') as FormArray;
+  this.items.push(this.createItem1(obj));
+}
+geInfo(obj){
+console.log("sss");
+}
+createItem(): FormGroup {
+  return this._formBuilder.group({
+  id:null,
+body: [null, Validators.required],
+inactive:null
+  });
+}
+createItem1(obj:TestCase): FormGroup {
+  var k= this._formBuilder.group({
+  id:obj.id,
+body: [obj.body, Validators.required],
+inactive:obj.inactive
+  });
+return k;
+}
   loadProject(id: string) {
     this.handler.activateLoader();
     this.projectService.getById(id).subscribe(results => {

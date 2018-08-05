@@ -1,15 +1,21 @@
-export class TestSuite {
-
-    id: string;
+    export class TestSuite {
+    i: string;
     name: string;
-    type: string;
+    type1: string;
     description: string;
-    visibility: string;
+endpoint: string;
     project: Project = new Project();
-    category: string;
-    severity: string;
-
+    auth: string;
+type:string;
+method: string;
+testCases:TestCase =new TestCase();
 }
+export class TestCase{
+id: string;
+body: string;
+inactive:string;
+}
+
 export class Project {
   id: string;
   name: string;
