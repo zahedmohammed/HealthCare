@@ -1,6 +1,11 @@
 <div class="box box-default">
-    <div class="box-body">
-        <a href="javascript:;" [routerLink]="['/app/projects']"> Projects &nbsp; </a> <span class="text-muted"> > </span> &nbsp; {{context}}
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                <a href="javascript:;" [routerLink]="['/app/projects']"> Projects &nbsp; </a> <span class="text-muted"> > </span>
+                &nbsp; {{context}}
+            </section>
+        </article>
     </div>
 </div>
 
@@ -60,7 +65,7 @@
                                                 {{account.name}} ({{account.accountType}})
                                             </mat-option>
                                         </mat-select>
-                                        <mat-error>Please select repository </mat-error>
+                                        <mat-error>Please select repository</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-7">
@@ -136,7 +141,8 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <mat-input-container class="full-width">
-                                                                <textarea matInput placeholder="Page size query param names e.g. Default params: pageSize, page_size, maxResults, max_results"
+                                                                <textarea matInput
+                                                                          placeholder="Page size query param names e.g. Default params: pageSize, page_size, maxResults, max_results"
                                                                           [(ngModel)]='res.matches[0].name'
                                                                           [ngModelOptions]="{standalone: true}"></textarea>
                                                             </mat-input-container>
@@ -148,7 +154,8 @@
                                                         <div class="col-md-6">
                                                             <mat-form-field>
                                                                 <mat-select placeholder="Database Type" required
-                                                                            [(ngModel)]="res.database.name" [ngModelOptions]="{standalone: true}"
+                                                                            [(ngModel)]="res.database.name"
+                                                                            [ngModelOptions]="{standalone: true}"
                                                                             name="type">
                                                                     <mat-option *ngFor="let db of dbs" [value]="db">
                                                                         {{db}}
@@ -164,7 +171,8 @@
                                                             <label for="name" class="col-md-0 control-label"></label>
                                                             <div class="col-md-5">
                                                                 <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.name" [ngModelOptions]="{standalone: true}"
+                                                                    <input [(ngModel)]="m.name"
+                                                                           [ngModelOptions]="{standalone: true}"
                                                                            matInput placeholder="Description">
                                                                 </mat-input-container>
                                                             </div>
@@ -173,7 +181,8 @@
                                                             <label for="name" class="col-md-0 control-label"></label>
                                                             <div class="col-md-5">
                                                                 <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.pathPatterns" [ngModelOptions]="{standalone: true}"
+                                                                    <input [(ngModel)]="m.pathPatterns"
+                                                                           [ngModelOptions]="{standalone: true}"
                                                                            matInput placeholder="Path patterns">
                                                                 </mat-input-container>
                                                             </div>
@@ -182,7 +191,8 @@
                                                             <label for="name" class="col-md-0 control-label"></label>
                                                             <div class="col-md-5">
                                                                 <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.methods" [ngModelOptions]="{standalone: true}"
+                                                                    <input [(ngModel)]="m.methods"
+                                                                           [ngModelOptions]="{standalone: true}"
                                                                            matInput placeholder="Http methods">
                                                                 </mat-input-container>
                                                             </div>
@@ -191,7 +201,8 @@
                                                             <label for="name" class="col-md-0 control-label"></label>
                                                             <div class="col-md-5">
                                                                 <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.denyRoles" [ngModelOptions]="{standalone: true}"
+                                                                    <input [(ngModel)]="m.denyRoles"
+                                                                           [ngModelOptions]="{standalone: true}"
                                                                            matInput placeholder="Access denied to">
                                                                 </mat-input-container>
                                                             </div>
@@ -290,7 +301,7 @@
                                                 {{type}}
                                             </mat-option>
                                         </mat-select>
-                                        <mat-error>Please select Authentication </mat-error>
+                                        <mat-error>Please select Authentication</mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -300,7 +311,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.auths[0].username" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].username"
+                                                   [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="Username">
                                         </mat-input-container>
                                     </div>
@@ -310,7 +322,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input type="password" [(ngModel)]="env.auths[0].password" [ngModelOptions]="{standalone: true}"
+                                            <input type="password" [(ngModel)]="env.auths[0].password"
+                                                   [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="Password">
                                         </mat-input-container>
                                     </div>
@@ -325,7 +338,8 @@
                                     <div class="col-md-5">
                                         <mat-form-field>
                                             <mat-select placeholder="Authentication Type"
-                                                        [(ngModel)]="env.auths[0].grantType" [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="env.auths[0].grantType"
+                                                        [ngModelOptions]="{standalone: true}"
                                                         name="type">
                                                 <mat-option *ngFor="let grant of grantTypes" [value]="grant">
                                                     {{grant}}
@@ -363,7 +377,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.auths[0].clientId" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].clientId"
+                                                   [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="ClientId">
                                         </mat-input-container>
                                     </div>
@@ -373,7 +388,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.auths[0].clientSecret" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].clientSecret"
+                                                   [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="ClientSecret">
                                         </mat-input-container>
                                     </div>
@@ -393,7 +409,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.auths[0].accessTokenUri" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].accessTokenUri"
+                                                   [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="AccessToken Uri">
                                         </mat-input-container>
                                     </div>
@@ -409,7 +426,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.auths[0].userAuthorizationUri" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].userAuthorizationUri"
+                                                   [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="UserAuthorization Uri">
                                         </mat-input-container>
                                     </div>
@@ -420,7 +438,8 @@
                                     <div class="col-md-5">
                                         <mat-form-field>
                                             <mat-select placeholder="Client Authentication Scheme"
-                                                        [(ngModel)]="env.auths[0].clientAuthenticationScheme" [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="env.auths[0].clientAuthenticationScheme"
+                                                        [ngModelOptions]="{standalone: true}"
                                                         name="type">
                                                 <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
                                                     {{scheme}}
@@ -435,7 +454,8 @@
                                     <div class="col-md-5">
                                         <mat-form-field>
                                             <mat-select placeholder="Authorization Scheme"
-                                                        [(ngModel)]="env.auths[0].authorizationScheme" [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="env.auths[0].authorizationScheme"
+                                                        [ngModelOptions]="{standalone: true}"
                                                         name="type">
                                                 <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
                                                     {{scheme}}
@@ -450,7 +470,8 @@
                                     <div class="col-md-5">
                                         <mat-form-field>
                                             <mat-select placeholder="Scope"
-                                                        [(ngModel)]="env.auths[0].scope" [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="env.auths[0].scope"
+                                                        [ngModelOptions]="{standalone: true}"
                                                         name="type">
                                                 <mat-option *ngFor="let scope of scopeTypes" [value]="scope">
                                                     {{scope}}
@@ -468,7 +489,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.auths[0].header_1" [ngModelOptions]="{standalone: true}"
+                                            <input [(ngModel)]="env.auths[0].header_1"
+                                                   [ngModelOptions]="{standalone: true}"
                                                    matInput placeholder="Header 1">
                                         </mat-input-container>
                                     </div>

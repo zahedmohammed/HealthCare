@@ -1,6 +1,6 @@
 <div class="box box-default">
-    <div class="box-body">
-        <article class="article padding-lg-v1 article-dark article-bordered">
+    <div>
+        <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
                 Projects
             </section>
@@ -25,23 +25,21 @@
                                             class="material-icons">add</mat-icon> </button>
                                     <h5 style="color:white">Add Project</h5>
                                     <br/>
-                                    <!--<span class="text-muted">Start testing your APIs with auto security & functional coverage</span>-->
                                 </span>
                                 </p>
                             </div>
-                        </a>
-                        <div class="card__body card-white">
-                            <div class="card__title">
+
+                            <div class="card__body card-white">
+                                <div class="card__title">
                             <span>
-                                <button mat-icon-button [routerLink]="['/app/projects/new']" matTooltip="Add Project"
-                                        matTooltipPosition="above"> <mat-icon
-                                        class="material-icons text-muted">add</mat-icon> </button>
+                                <h6> .</h6>
+                                <h4 class="text-muted"> .</h4>
                             </span>
+                                </div>
+                                <div class="card__price">
+                                </div>
                             </div>
-                            <!-- <div class="card__price">
-                                <span></span>
-                            </div> -->
-                        </div>
+                        </a>
                     </a>
                 </div>
                 <div class="col-xl-3 col-lg-6" *ngFor="let project of projects">
@@ -49,27 +47,15 @@
                         <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"
                            matTooltip="Go to jobs" matTooltipPosition="above">
                             <div class="card__image">
-                                <!--<img alt="product" [src]="product.img"/>-->
-                                <h5 class="text-center text-muted">{{project.name}}</h5>
-                                <!-- <h5>(Jobs)</h5> -->
-                                <!-- <br/>
-                                <span class="text-muted">Create Date: {{project.createdDate | date:'short'}}</span><br/>
-                                <span class="text-muted">Modified Date: {{project.modifiedDate | date:'short'}}</span> -->
+                                <h5 class="text-center text-muted1">{{project.name}}</h5>
                             </div>
                             <!-- </a> -->
                             <div class="card__body card-white">
-                                <!-- <div class="card__title">
-                                    <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'manage']" matTooltip="Edit" matTooltipPosition="above"> <mat-icon
-                                            class="material-icons text-muted">edit</mat-icon> </button></span>
+                                <div class="card__title">
+                                    <h6>Create date</h6>
+                                    <h4 class="text-muted">{{project.createdDate | date:'short'}}</h4>
                                 </div>
                                 <div class="card__price">
-                                    <span><button mat-icon-button [routerLink]="['/app/projects', project.id, 'test-suites']" matTooltip="Test Suites" matTooltipPosition="above"> <mat-icon
-                                            class="material-icons text-muted">code</mat-icon> </button>
-                                        </span>
-                                </div> -->
-                                <div class="card__title">
-                                    <span class="text-muted">Created  : {{project.createdDate | date:'medium'}}</span><br/>
-                                    <span class="text-muted">Modified : {{project.modifiedDate | date:'medium'}}</span>
                                 </div>
                             </div>
                         </a>
@@ -81,6 +67,6 @@
 </section>
 
 
-<mat-paginator [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+<mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
                [length]="length">
 </mat-paginator>
