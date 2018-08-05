@@ -21,7 +21,7 @@ selector: 'app-test-suite-list',
 export class TestSuiteListComponent implements OnInit {
 
   id; // project id
-  jobs;
+  testsuites;
   projectId: string = "";
   project: Base = new Base();
   showSpinner: boolean = false;
@@ -38,14 +38,6 @@ export class TestSuiteListComponent implements OnInit {
       this.loadProject(this.id);
       this.list(this.id);
     });
-    /*let timer = Observable.timer(1, 10000);
-    this._clockSubscription = timer.subscribe(t => {
-      this.list();
-    });*/
-  }
-
-  ngOnDestroy(): void {
-    //this._clockSubscription.unsubscribe();
   }
 
   loadProject(id: string) {
@@ -70,7 +62,7 @@ export class TestSuiteListComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.jobs = results['data'];
+      this.testsuites = results['data'];
       this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
@@ -86,29 +78,4 @@ export class TestSuiteListComponent implements OnInit {
     this.list(this.id);
   }
 
-  runJob(id: string) {
-    this.handler.activateLoader();
-    this.runService.run(id).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      //this.jobs = results['data'];
-      this.router.navigate(['/app/jobs/' , id, 'runs']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  advRun(job) {
-    const dialogRef = this.dialog.open(AdvRunComponent, {
-        width:'50%',
-        height:'85%',
-        data: job
-    });
-     dialogRef.afterClosed().subscribe(result => {
-      this.router.navigate(['/app/projects/' , job.project.id,  'jobs', job.id, 'runs']);
-    });
-  }
 }

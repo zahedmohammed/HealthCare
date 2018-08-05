@@ -25,14 +25,15 @@ import { TestSuite,TestCase} from '../../../models/test-suite.model';
   styleUrls: ['./test-suite-new.component.scss'],
   providers: [ProjectService, SnackbarService,]
 })
+
 export class TestSuiteNewComponent implements OnInit {
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
-testCases: FormArray;
+  testCases: FormArray;
 
   types: string[] = ["Suite", "Abstract", "Dataset", "Consulting_Services", "AI_Skills"];
-methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
+  methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
  testSuite1:any={assertion:''};
 
   context: string = "New";
@@ -50,9 +51,6 @@ methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS",
       this.id = params['id'];
       if (this.id) {
         this.loadProject(this.id);
-     //   this.getEnvs();
-     //   this.getITAccounts();
-     //   this.getNotifyAccounts();
       }
     });
     this.thirdFormGroup = this._formBuilder.group({
@@ -61,37 +59,37 @@ methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS",
         type:''
     });
   }
-removeItem(i: number) {
-    // remove address from the list
-    const control = <FormArray>this.thirdFormGroup.controls['testCases'];
-    control.removeAt(i);
-}
-addItem(): void {
-  this.testCases = this.thirdFormGroup.get('testCases') as FormArray;
-  this.testCases.push(this.createItem());
-}
-addItem1(obj): void {
-  this.testCases = this.thirdFormGroup.get('testCases') as FormArray;
-  this.testCases.push(this.createItem1(obj));
-}
-geInfo(obj){
-console.log("sss");
-}
-createItem(): FormGroup {
-  return this._formBuilder.group({
-  id:null,
-body: [null, Validators.required],
-inactive:null
-  });
-}
-createItem1(obj:TestCase): FormGroup {
-  var k= this._formBuilder.group({
-  id:obj.id,
-    body: [obj.body, Validators.required],
-    inactive:obj.inactive
-  });
-return k;
-}
+  removeItem(i: number) {
+      // remove address from the list
+      const control = <FormArray>this.thirdFormGroup.controls['testCases'];
+      control.removeAt(i);
+  }
+  addItem(): void {
+    this.testCases = this.thirdFormGroup.get('testCases') as FormArray;
+    this.testCases.push(this.createItem());
+  }
+  addItem1(obj): void {
+    this.testCases = this.thirdFormGroup.get('testCases') as FormArray;
+    this.testCases.push(this.createItem1(obj));
+  }
+  geInfo(obj){
+    console.log("sss");
+  }
+  createItem(): FormGroup {
+    return this._formBuilder.group({
+        id:null,
+        body: [null, Validators.required],
+        inactive:null
+    });
+  }
+  createItem1(obj:TestCase): FormGroup {
+    var k= this._formBuilder.group({
+    id:obj.id,
+      body: [obj.body, Validators.required],
+      inactive:obj.inactive
+    });
+  return k;
+  }
   loadProject(id: string) {
     this.handler.activateLoader();
     this.projectService.getById(id).subscribe(results => {
@@ -101,13 +99,13 @@ return k;
       }
       this.project = results['data'];
       this.testSuite.project=this.project;
-      //this.job['project'] = this.project;
-     // this.context = this.project.name + " > Edit";
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
+
+
   saveTestSuite(){
     var groupVal=this.thirdFormGroup.value;
     this.testSuite.testCases=groupVal.testCases;
