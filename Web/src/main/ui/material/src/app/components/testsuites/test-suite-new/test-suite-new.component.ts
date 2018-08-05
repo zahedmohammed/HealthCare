@@ -111,12 +111,6 @@ return k;
   saveTestSuite(){
     var groupVal=this.thirdFormGroup.value;
     this.testSuite.testCases=groupVal.testCases;
-    if(this.testSuite1.headers!=null)
-    this.testSuite.headers=this.testSuite1.headers.split(",");
-   if(this.testSuite1.cleanup!=null)
-    this.testSuite.cleanup=this.testSuite1.cleanup.split(",");
-
-  //console.log(this.testSuite);
       this.handler.activateLoader();
           this.snackbarService.openSnackBar("'TestSuite '" + this.testSuite.name + "' creating...", "");
           this.testSuiteService.create(this.testSuite).subscribe(results => {

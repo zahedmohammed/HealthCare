@@ -31,13 +31,25 @@ public class TestSuite extends BaseDto<String> {
     private String endpoint;
     private HttpMethod method;
     private String auth;
+
+    private String headersText;
     private List<String> headers = new ArrayList<>();
+
     private List<TestCase> testCases = new ArrayList<>();
+
+    private String assertionsText;
     private List<String> assertions = new ArrayList<>();
+
+    private String tagsText;
     private List<String> tags = new ArrayList<>();
+
+    private String authorsText;
     private List<String> authors = new ArrayList<>();
 
+    private String initText;
     private List<String> init = new ArrayList<>();
+
+    private String cleanupText;
     private List<String> cleanup = new ArrayList<>();
 
     private Policies policies;

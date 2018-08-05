@@ -91,7 +91,7 @@
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Auth,ex :Default">
+                           matInput placeholder="Auth Name">
                   </mat-input-container>
                 </div>
               </div>
@@ -122,8 +122,8 @@
                     <label  class="col-md-0 control-label"></label>
                     <div class="col-md-5">
                       <mat-input-container class="full-width">
-                        <input  formControlName="body"
-                                matInput placeholder="Body">
+                        <textarea  formControlName="body"
+                                   matInput placeholder="Body"></textarea>
                       </mat-input-container>
                     </div>
                   </div>
@@ -160,19 +160,13 @@
                                     [ngModelOptions]="{standalone: true}"></textarea>
                     </mat-input-container>
                   </div>
-                  <!--<div class="col-md-5">-->
-                    <!--<mat-input-container class="full-width">-->
-                      <!--<input [(ngModel)]="testSuite1.assertion" [ngModelOptions]="{standalone: true}"-->
-                             <!--matInput placeholder="Assertion seperated with  , ">-->
-                    <!--</mat-input-container>-->
-                  <!--</div>-->
                 </div>
                 <div class="form-group row">
                   <label class="col-md-0 control-label"></label>
                   <div class="col-md-5">
                     <mat-input-container class="full-width">
-                      <input [(ngModel)]="testSuite1.headers" [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Headers seperated with  , ">
+                      <textarea [(ngModel)]="testSuite.headers" [ngModelOptions]="{standalone: true}"
+                                matInput placeholder="Headers"></textarea>
                     </mat-input-container>
                   </div>
                 </div>
@@ -184,10 +178,6 @@
                                     [(ngModel)]='testSuite.tagsText'
                                     [ngModelOptions]="{standalone: true}"></textarea>
                     </mat-input-container>
-                    <!--<mat-input-container class="full-width">-->
-                      <!--<input [(ngModel)]="testSuite1.tags" [ngModelOptions]="{standalone: true}"-->
-                             <!--matInput placeholder="Tags seperated with  , ">-->
-                    <!--</mat-input-container>-->
                   </div>
                 </div>
                 <div class="form-group row">
@@ -198,27 +188,24 @@
                                     [(ngModel)]='testSuite.authorsText'
                                     [ngModelOptions]="{standalone: true}"></textarea>
                     </mat-input-container>
-                    <!--<mat-input-container class="full-width">-->
-                      <!--<input [(ngModel)]="testSuite1.authors" [ngModelOptions]="{standalone: true}"-->
-                             <!--matInput placeholder="Authors seperated with  , ">-->
-                    <!--</mat-input-container>-->
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-md-0 control-label"></label>
+                  <label class="col-md-0 control-label"></label>
                   <div class="col-md-5">
                     <mat-input-container class="full-width">
-                      <input [(ngModel)]="testSuite1.init" [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Init seperated with  , ">
+                          <textarea matInput placeholder="Init"
+                                    [(ngModel)]='testSuite.initText'
+                                    [ngModelOptions]="{standalone: true}"></textarea>
                     </mat-input-container>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="name" class="col-md-0 control-label"></label>
+                  <label class="col-md-0 control-label"></label>
                   <div class="col-md-5">
                     <mat-input-container class="full-width">
-                      <input [(ngModel)]="testSuite1.cleanup" [ngModelOptions]="{standalone: true}"
-                             matInput placeholder="Cleanup seperated with  , ">
+                      <textarea [(ngModel)]="testSuite.cleanupText" [ngModelOptions]="{standalone: true}"
+                                matInput placeholder="Cleanup"></textarea>
                     </mat-input-container>
                   </div>
                 </div>

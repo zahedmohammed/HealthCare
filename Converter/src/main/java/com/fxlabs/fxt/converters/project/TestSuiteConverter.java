@@ -26,24 +26,48 @@ public abstract class TestSuiteConverter implements BaseConverter<TestSuite, com
             StringJoiner joiner = new StringJoiner("\n");
             dest.getAssertions().forEach(a -> {
                 joiner.add(a);
-                dest.setAssertionsText(joiner.toString());
             });
+            dest.setAssertionsText(joiner.toString());
         }
 
         if (!CollectionUtils.isEmpty(dest.getTags())) {
             StringJoiner joiner = new StringJoiner("\n");
-            dest.getAssertions().forEach(a -> {
+            dest.getTags().forEach(a -> {
                 joiner.add(a);
-                dest.setTagsText(joiner.toString());
             });
+            dest.setTagsText(joiner.toString());
         }
 
         if (!CollectionUtils.isEmpty(dest.getAuthors())) {
             StringJoiner joiner = new StringJoiner("\n");
-            dest.getAssertions().forEach(a -> {
+            dest.getAuthors().forEach(a -> {
                 joiner.add(a);
-                dest.setAuthorsText(joiner.toString());
             });
+            dest.setAuthorsText(joiner.toString());
+        }
+
+        if (!CollectionUtils.isEmpty(dest.getInit())) {
+            StringJoiner joiner = new StringJoiner("\n");
+            dest.getInit().forEach(a -> {
+                joiner.add(a);
+            });
+            dest.setInitText(joiner.toString());
+        }
+
+        if (!CollectionUtils.isEmpty(dest.getCleanup())) {
+            StringJoiner joiner = new StringJoiner("\n");
+            dest.getCleanup().forEach(a -> {
+                joiner.add(a);
+            });
+            dest.setCleanupText(joiner.toString());
+        }
+
+        if (!CollectionUtils.isEmpty(dest.getHeaders())) {
+            StringJoiner joiner = new StringJoiner("\n");
+            dest.getHeaders().forEach(a -> {
+                joiner.add(a);
+            });
+            dest.setHeadersText(joiner.toString());
         }
     }
 
@@ -81,6 +105,37 @@ public abstract class TestSuiteConverter implements BaseConverter<TestSuite, com
         } else {
             dest.setAuthors(new ArrayList<>());
         }
+
+        if (!StringUtils.isEmpty(dest.getInitText())) {
+            try {
+                List<String> list = Arrays.asList(dest.getInitText().split("\n"));
+                dest.setInit(list);
+            } catch (NullPointerException npe) {
+            }
+        } else {
+            dest.setInit(new ArrayList<>());
+        }
+
+        if (!StringUtils.isEmpty(dest.getHeadersText())) {
+            try {
+                List<String> list = Arrays.asList(dest.getHeadersText().split("\n"));
+                dest.setHeaders(list);
+            } catch (NullPointerException npe) {
+            }
+        } else {
+            dest.setHeaders(new ArrayList<>());
+        }
+
+        if (!StringUtils.isEmpty(dest.getCleanupText())) {
+            try {
+                List<String> list = Arrays.asList(dest.getCleanupText().split("\n"));
+                dest.setCleanup(list);
+            } catch (NullPointerException npe) {
+            }
+        } else {
+            dest.setCleanup(new ArrayList<>());
+        }
+
 
 
     }

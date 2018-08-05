@@ -7,16 +7,27 @@
     auth: string;
     type:string;
     method: string;
+
     assertionsText: string;
     assertions:string[];
+
+    headersText: string;
     headers:string[];
+
     assertion: string[];
+
     tagsText: string;
     tags:string[];
+
     authorsText: string;
     authors:string[];
+
+    initText: string;
     init:string[];
+
+    cleanupText: string;
     cleanup:string[];
+
     testCases:TestCase[] =[];
  //   policies:Policies=new Policy();
 }
