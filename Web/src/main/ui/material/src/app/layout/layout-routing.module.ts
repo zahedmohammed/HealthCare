@@ -93,6 +93,7 @@ import { EnvironmentListComponent } from '../components/environments/environment
 import { EnvironmentEditComponent } from '../components/environments/environment-edit/environment-edit.component';
 import { TestSuiteListComponent } from '../components/testsuites/test-suite-list/test-suite-list.component';
 import { TestSuiteNewComponent } from '../components/testsuites/test-suite-new/test-suite-new.component';
+import { TestSuiteEditComponent } from '../components/testsuites/test-suite-edit/test-suite-edit.component';
 
 
 
@@ -115,6 +116,8 @@ const routes: Routes = [
       { path: 'projects/:id/environments/:envId/edit', component: EnvironmentEditComponent },
       { path: 'projects/:id/test-suites', component: TestSuiteListComponent },
       { path: 'projects/:id/test-suites/new', component: TestSuiteNewComponent },
+      { path: 'projects/:id/test-suites/:testSuiteId/edit', component: TestSuiteEditComponent },
+
       { path: 'projects/:id/jobs', component: JobslistComponent },
       { path: 'projects/:id/jobs/new', component: JobsNewComponent },
       { path: 'projects/:id/jobs/:jobId/edit', component: JobsEditComponent },

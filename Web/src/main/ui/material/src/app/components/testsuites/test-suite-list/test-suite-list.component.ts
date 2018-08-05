@@ -65,7 +65,7 @@ export class TestSuiteListComponent implements OnInit {
   list(id: string) {
     this.handler.activateLoader();
 
-    this.testSuiteService.get(id, this.page, this.pageSize).subscribe(results => {
+    this.testSuiteService.getById(id, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
