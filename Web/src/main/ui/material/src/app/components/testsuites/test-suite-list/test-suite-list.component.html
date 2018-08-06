@@ -43,6 +43,9 @@
             <thead>
             <tr>
               <th class="mdl-data-table__cell--non-numeric">name</th>
+              <th class="mdl-data-table__cell--non-numeric">Type</th>
+              <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Author</th>-->
+              <th class="mdl-data-table__cell--non-numeric">Modified Date</th>
               <!--th class="mdl-data-table__cell--non-numeric">Env</th>
               <th class="mdl-data-table__cell--non-numeric">Bot-Region</th>
               <th class="mdl-data-table__cell--non-numeric">Issue-Tracker</th>
@@ -55,6 +58,10 @@
               <td class="mdl-data-table__cell--non-numeric">
                 <a href="javascript:;"
                    [routerLink]="['/app/projects', id, 'test-suites', testsuite.id, 'edit']">{{testsuite.name}}</a></td>
+              <td class="mdl-data-table__cell--non-numeric">{{testsuite.type}}</td>
+              <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{testsuite.createdBy}}</td>-->
+              <td class="mdl-data-table__cell--non-numeric">{{testsuite.createdDate | date:'shortDate'}}</td>
+
               <!--td class="mdl-data-table__cell--non-numeric">{{job.environment?.name}}</td>
               <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
               <td class="mdl-data-table__cell--non-numeric">{{job.issueTracker?.name}}</td>
