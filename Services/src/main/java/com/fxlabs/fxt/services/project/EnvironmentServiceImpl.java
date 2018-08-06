@@ -115,6 +115,19 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
     }
 
     @Override
+    public Response<com.fxlabs.fxt.dto.project.Environment> findById(String id, String org) {
+        Optional<Environment> optionalEnvironment = ((EnvironmentRepository) repository).findById(id);
+
+        if (!optionalEnvironment.isPresent()) {
+            throw new FxException("Invalid request for Environment");
+        }
+        com.fxlabs.fxt.dto.project.Environment dto = converter.convertToDto(optionalEnvironment.get());
+       // testSuiteConverter.copyArraysToText(dto);
+
+        return new Response<>(dto);
+    }
+
+    @Override
     public Response<com.fxlabs.fxt.dto.project.Environment> create(com.fxlabs.fxt.dto.project.Environment environment, String projectId, String orgId) {
 
         if (environment == null) {

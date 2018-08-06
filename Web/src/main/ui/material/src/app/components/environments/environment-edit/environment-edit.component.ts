@@ -70,7 +70,7 @@ items: FormArray;
       
       this.envId = params['envId'];
       if (this.envId) {
-        this.loadEnv(this.id);
+        this.loadEnv(this.id, this.envId);
       }
     });
    
@@ -160,22 +160,15 @@ return k;
   }
 
 
-  loadEnv(id: string) {
+  loadEnv(id: string, envId: string) {
     this.handler.activateLoader();
-    this.projectService.getEnvsByProjectId(id).subscribe(results => {
+    this.projectService.getEnvById(envId).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      var envs = results['data'];
-      for(var i=0;i<envs.length;i++)
-      {
-       let a:any;
-        a=envs[i];
-        if(a!=null)
-        if(this.envId=a.id) this.env=a;
-      }
-     // this.context = this.project.name + " > Edit";
+    this.env = results['data'];
+
      let k:Auth = new Auth();
      if(this.env.auths.length==0) this.env.auths=[k];
           for(var i=0;i<this.env.auths.length;i++) this.addItem1(this.env.auths[i]);

@@ -17,6 +17,8 @@ public interface EnvironmentService extends GenericService<Environment, String> 
 
     Response<Long> count(String user, Pageable pageable);
 
+    public Response<Environment> findById(String id, String orgId);
+
     Response<Environment> create(Environment environment, String projectId, String orgId);
 
     Response<com.fxlabs.fxt.dto.project.Environment> update(com.fxlabs.fxt.dto.project.Environment environment, String projectId, String orgId);

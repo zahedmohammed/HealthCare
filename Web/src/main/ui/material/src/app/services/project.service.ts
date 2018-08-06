@@ -85,7 +85,7 @@ export class ProjectService {
     return this.http.get(this.envServiceUrl + "/project-id/" +  projectId);
   }
 
-   getEnvByProjectIdAndEnvId(id: string, envid:string) {
+ getEnvById(envid:string) {
     return this.http.get(this.envServiceUrl + "/" + envid);
   }
 
