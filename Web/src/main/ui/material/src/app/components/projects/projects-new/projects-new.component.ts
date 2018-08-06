@@ -82,6 +82,7 @@ export class ProjectsNewComponent implements OnInit {
     });
 
     /*this.fourthFormGroup = this._formBuilder.group({
+      authNameCtrl:  ['', Validators.required],
       usernameCtrl:  ['', Validators.required],
       passwordCtrl:  ['', Validators.required],
     });

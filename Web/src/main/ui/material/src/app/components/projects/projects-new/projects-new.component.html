@@ -293,7 +293,7 @@
                                 <label  class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input  [(ngModel)]="env.auths[0].name" formControlName="name"
+                                        <input  [(ngModel)]="env.auths[0].name"   [ngModelOptions]="{standalone: true}"
                                                 matInput placeholder="Auth Name">
                                     </mat-input-container>
                                 </div>

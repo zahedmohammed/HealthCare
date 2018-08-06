@@ -78,7 +78,7 @@ items: FormArray;
       nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       urlCtrl:  ['', Validators.required],
      // authTypeCtrl:  ['', Validators.required],
-items: this._formBuilder.array([ this.createItem() ])
+      items: this._formBuilder.array([ this.createItem() ])
 //items: this.items
     });
 
@@ -236,23 +236,7 @@ return k;
     });
   }
 
-  saveAutoCode() {
-    console.log(this.autoCodeConfig);
-    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saving...", "");
 
-    this.projectService.saveAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
-      this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-        return;
-      }
-      this.autoCodeConfig = results['data'];
-      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
-      this.matStepper.next();
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
 removeItem(i: number) {
     // remove address from the list
     const control = <FormArray>this.thirdFormGroup.controls['items'];
@@ -261,7 +245,7 @@ removeItem(i: number) {
   saveEnv(obj) {
     console.log(this.env);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
-this.env.auths=this.items.value;
+    this.env.auths=this.items.value;
     this.projectService.updateEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
         if (this.handler.handle(results)) {
@@ -269,7 +253,7 @@ this.env.auths=this.items.value;
       }
       this.env = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saved successfully", "");
-      this.router.navigate(['/app/projects']);
+        this.router.navigate(['/app/projects', this.project.id, 'environments']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
