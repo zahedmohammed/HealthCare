@@ -78,7 +78,7 @@ items: FormArray;
       nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       urlCtrl:  ['', Validators.required],
      // authTypeCtrl:  ['', Validators.required],
-      items: this._formBuilder.array([ this.createItem() ])
+      items: this._formBuilder.array([  ])
 //items: this.items
     });
 
