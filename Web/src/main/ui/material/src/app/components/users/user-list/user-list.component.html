@@ -1,13 +1,27 @@
-<div class="box box-default"> 
+<div class="box box-default">
+        <div>
+            <article>
+                <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                        <a href="javascript:;" [routerLink]="['/app/orgs']">
+                            Organizations&nbsp;</a>
+                            <!-- <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users']">
+                             <span class="text-muted"> > </span>{{org.name}}</a> -->
+                             <span class="text-muted"> &nbsp;>&nbsp; </span>{{org.name}}
+                             <span class="text-muted"> &nbsp;>&nbsp; </span>Users
+                </section>
+            </article>
+        </div>
+    </div>
+
+<!-- <div class="box box-default"> 
         <div class="box-body"> 
                 <a href="javascript:;" [routerLink]="['/app/orgs']">
                      Organizations </a>
-                     <!-- <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users']">
-                      <span class="text-muted"> > </span>{{org.name}}</a> -->
+                     
                       <span class="text-muted"> > </span>{{org.name}}
                       <span class="text-muted"> > </span>Users
         </div> 
-    </div> 
+    </div>  -->
 <section class="container-fluid with-maxwidth chapter">
         <br>
     <article class="article">
