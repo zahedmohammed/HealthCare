@@ -192,7 +192,7 @@ export class ProjectsNewComponent implements OnInit {
   saveEnv() {
     console.log(this.env);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
-
+    this.env.projectId = this.project.id;
     this.projectService.saveEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
         if (this.handler.handle(results)) {
