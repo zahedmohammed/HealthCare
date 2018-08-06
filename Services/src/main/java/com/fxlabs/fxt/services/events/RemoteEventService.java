@@ -1,19 +1,34 @@
 package com.fxlabs.fxt.services.events;
 
+import com.fxlabs.fxt.converters.alerts.EventConverter;
+import com.fxlabs.fxt.dao.entity.event.Entity;
+import com.fxlabs.fxt.dao.entity.event.Type;
+import com.fxlabs.fxt.dao.repository.jpa.EventRepository;
 import com.fxlabs.fxt.dto.events.Event;
+import com.fxlabs.fxt.dto.events.Status;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.type.EntityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class RemoteEventService {
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private EventConverter eventConverter;
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
     private final CopyOnWriteArrayList<EmitterWrapper> emitters = new CopyOnWriteArrayList<>();
@@ -35,7 +50,36 @@ public class RemoteEventService {
 
     public void onEvent(Event event) {
         // TODO - persists event (DAO, Entity, Converter, Flyway)
+
+        if (event == null) {
+            return;
+        }
+
+        if (event.getEntityType() == null || StringUtils.isEmpty(event.getEntityType().toString())) {
+            return;
+        }
+
+        if (event.getEventType() == null || StringUtils.isEmpty(event.getEventType().toString())) {
+            return;
+        }
+
+
+        if (StringUtils.isEmpty(event.getEntityId())) {
+            return;
+        }
+
         // TODO - check event exists and update
+        Optional<com.fxlabs.fxt.dao.entity.event.Event> optionalEntity = eventRepository.findByEntityTypeAndEventTypeAndEntityId(Entity.valueOf(event.getEntityType().toString()), Type.valueOf(event.getEventType().toString()), event.getEntityId());
+
+        if (optionalEntity.isPresent()) {
+            com.fxlabs.fxt.dao.entity.event.Event entity = optionalEntity.get();
+            entity.setStatus(com.fxlabs.fxt.dao.entity.event.Status.valueOf(event.getStatus().toString()));
+            eventRepository.save(entity);
+        } else {
+            com.fxlabs.fxt.dao.entity.event.Event eventEntity = eventConverter.convertToEntity(event);
+            eventRepository.save(eventEntity);
+        }
+
         logger.info("Event msg [{}] org [{}]", event.getName(), event.getOrg().getName());
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.emitters.forEach(wrapper -> {
