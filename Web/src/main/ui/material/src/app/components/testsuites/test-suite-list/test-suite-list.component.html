@@ -28,7 +28,7 @@
     </a>&nbsp;&nbsp;
 
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
-      <small>Environment</small>
+      <small>Environments</small>
     </a> &nbsp;&nbsp;
 
     <!--a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']"-->
@@ -43,15 +43,17 @@
   <article class="article">
     <div class="box box-default">
       <div class="box-body">
-        <h2 class="article-title1">
-          <!--[routerLink]="['/app/regions/new']" -->
-          <button mat-button color="primary" class="btn-w-md"
-                  [routerLink]="['/app/projects', id, 'test-suites', 'new']">
-            <i class="fa fa-plus"></i>
-            New Test Suite
-          </button>
-          <p class="text-muted float-right">Total Test Suites: {{length}}</p>
-        </h2>
+        <div class="row">
+          <div class="col-md-10">
+            <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects', id, 'test-suites', 'new']">
+              <i class="fa fa-plus"></i>
+              New Test Suite
+            </button>
+          </div>
+          <div class="col-md-2">
+            <p class="text-muted float-right">Total Test Suites: {{length}}</p>
+          </div>
+        </div>
         <div class="box box-default table-box mdl-shadow--2dp">
           <table class="mdl-data-table">
             <thead>

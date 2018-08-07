@@ -2,7 +2,7 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                Accounts
+                Credentials
             </section>
         </article>
     </div>
@@ -24,7 +24,7 @@
                     <button mat-button color="primary" class="btn-w-md pull-left"
                             [routerLink]="['/app/accounts/new']">
                         <i class="fa fa-plus"></i>
-                        New Account
+                        New Credential
                     </button>
                     <p class="text-muted float-right">Total Credentials: {{length}}</p>
                     <div class="divider divider-sm"></div>
@@ -52,13 +52,8 @@
                     </table>
                 </div>
 
-                <mat-paginator [hidden]="length <= pageSize"
-                               [pageSize]="pageSize"
-                               hidePageSize="true"
-                               (page)="change($event)"
-                               [length]="length"
-                >
-                </mat-paginator>
+        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+        </mat-paginator>
 
             </article>
         </div>
