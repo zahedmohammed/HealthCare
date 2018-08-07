@@ -269,6 +269,13 @@ public class GitService implements VersionControlService {
             privateKey = setAuth(username, password, pushCommand);
 
             pushCommand.call();
+
+            if (isMissingFiles(git)) {
+                removeAndCommit(git, "Fx Bot commit", ".");
+                PushCommand pushCommandRemove = git.push();
+                privateKey = setAuth(username, password, pushCommandRemove);
+                pushCommandRemove.call();
+            }
             taskLogger.get().append("Push successful!").append("\n");
             logger.info("Push successful!");
             // TODO hand response
@@ -316,8 +323,31 @@ public class GitService implements VersionControlService {
         return false;
     }
 
+
+    private boolean isMissingFiles(Git git) {
+        Status status = null;
+        try {
+            status = git.status().call();
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+            return false;
+        }
+
+        if (!CollectionUtils.isEmpty(status.getMissing())) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     private void addAndCommit(Git git, String message, String pathToAdd) {
         add(git, pathToAdd);
+        commit(git, message);
+    }
+
+    private void removeAndCommit(Git git, String message, String pathToAdd) {
         remove(git, pathToAdd);
         commit(git, message);
     }
