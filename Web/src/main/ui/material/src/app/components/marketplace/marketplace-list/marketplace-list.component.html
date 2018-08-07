@@ -1,17 +1,26 @@
+<div class="box box-default">
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                Marketplace
+            </section>
+        </article>
+    </div>
+</div>
 <section class="chapter page-terms">
 
-    <section class="hero">
+    <!-- <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">Marketplace</h1>
         </div>
         <p class="text-muted">Discover, Publish & Reuse - Expert exchange, DataSets, AI Skills, & Professional Services.</p>
-    </section>
+    </section> -->
 
-    <article class="article padding-lg-v1 article-dark article-bordered">
+    <article class="article padding-lg-v1 article-dark">
         <div class="container-fluid with-maxwidth chapter">
 
             <article class="article">
-                <div class="">
+                <div>
                     <mat-form-field>
                         <mat-select placeholder="Category" name="Category">
                             <mat-option *ngFor="let category of types" [value]="category">
@@ -23,6 +32,7 @@
                         <input #box (keyup.enter)="search(box.value)" name="search"
                                matInput placeholder="search...">
                     </mat-input-container>
+                    <p class="text-muted float-right">Total Marketplaces: {{length}}</p>
                 </div>
                 <br/>
                 <div>

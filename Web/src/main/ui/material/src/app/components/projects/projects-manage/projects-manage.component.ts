@@ -52,7 +52,6 @@ auth: Auth = new Auth();
   schemeTypes = ['form', 'header', 'none', 'query'];
   scopeTypes= ['read', 'write'];
 
-
   public AppConfig: any;
 numberOfTicks=0;
 availableAuthtype:String;
@@ -118,7 +117,7 @@ availableAuthtype:String;
         return;
       }
       this.project = results['data'];
-      this.context = this.project.name + " > Edit";
+      // this.context = this.project.name + " > Edit";
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

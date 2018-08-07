@@ -1,31 +1,40 @@
+<div class="box box-default">
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                Test Bots
+            </section>
+        </article>
+    </div>
+</div>
 <section class="chapter page-terms">
 
-    <section class="hero">
+    <!-- <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">Test Bots</h1>
         </div>
         <p class="text-muted">Launch test execution bots across private/public cloud regions.
             Test from regions where your customers are.</p>
-    </section>
+    </section> -->
 
-    <article class="article padding-lg-v1 article-dark article-bordered">
+    <article class="article padding-lg-v1 article-dark">
 
-        <div class="container-fluid with-maxwidth chapter">
-
-            <article class="article">
-                <h2 class="article-title1">
-                    <!--[routerLink]="['/app/regions/new']" -->
-                    <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/regions/new']">
-                        <i class="fa fa-plus"></i>
-                        New Bots
-                    </button>
-                    <span class="space"></span>
-                    <button mat-raised-button color="warn" class="btn-w-md"
-                            [routerLink]="['/app/superbotnetwork']">Super-Bot-Network
-                    </button>
-                    <div class="divider divider-sm"></div>
-                </h2>
-                <br/>
+    <div class="container-fluid with-maxwidth chapter">
+    
+        <article class="article">
+            <h2 class="article-title1">
+                <!--[routerLink]="['/app/regions/new']" -->
+                <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/regions/new']">
+                    <i class="fa fa-plus"></i>
+                    New Bots
+                </button>
+                <span class="space"></span>
+                <button mat-raised-button color="warn" class="btn-w-md" [routerLink]="['/app/superbotnetwork']">Super-Bot-Network
+                </button>
+                <p class="text-muted float-right">Total bots: {{length}}</p>
+                <div class="divider divider-sm"></div>
+            </h2>
+            <br/>
 
                 <div class="box box-default table-box mdl-shadow--2dp">
                     <table class="mdl-data-table">

@@ -1,17 +1,17 @@
 <div class="box box-default">
-        <div>
-            <article>
-                <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                        <a href="javascript:;" [routerLink]="['/app/orgs']">
-                            Organizations&nbsp;</a>
-                            <!-- <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users']">
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                <a href="javascript:;" [routerLink]="['/app/orgs']">
+                    Organizations&nbsp;</a>
+                <!-- <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users']">
                              <span class="text-muted"> > </span>{{org.name}}</a> -->
-                             <span class="text-muted"> &nbsp;>&nbsp; </span>{{org.name}}
-                             <span class="text-muted"> &nbsp;>&nbsp; </span>Users
-                </section>
-            </article>
-        </div>
+                <span class="text-muted"> &nbsp;>&nbsp; </span>{{org.name}}
+                <span class="text-muted"> &nbsp;>&nbsp; </span>Users
+            </section>
+        </article>
     </div>
+</div>
 
 <!-- <div class="box box-default"> 
         <div class="box-body"> 
@@ -30,6 +30,7 @@
                 <i class="fa fa-plus"></i>
                 New User
             </button>
+            <p class="text-muted float-right">Total users: {{length}}</p>
             <div class="divider divider-sm"></div>
         
         <div class="box box-default table-box mdl-shadow--2dp">
