@@ -318,6 +318,7 @@ public class GitService implements VersionControlService {
 
     private void addAndCommit(Git git, String message, String pathToAdd) {
         add(git, pathToAdd);
+        remove(git, pathToAdd);
         commit(git, message);
     }
 
@@ -337,6 +338,20 @@ public class GitService implements VersionControlService {
         AddCommand add = git.add();
         try {
             add.addFilepattern(pathToAdd).call();
+            return true;
+        } catch (GitAPIException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
+            return false;
+        }
+
+    }
+
+
+    private boolean remove(Git git, String pathToAdd) {
+        RmCommand rm = git.rm();
+        try {
+            git.add().setUpdate(true).addFilepattern(pathToAdd).call();
             return true;
         } catch (GitAPIException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);

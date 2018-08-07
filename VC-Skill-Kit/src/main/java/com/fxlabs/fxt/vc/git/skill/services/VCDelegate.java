@@ -3,11 +3,9 @@ package com.fxlabs.fxt.vc.git.skill.services;
 //import com.fxlabs.fxt.codegen.code.StubGenerator;
 
 import com.fxlabs.fxt.codegen.code.CodegenThreadUtils;
+import com.fxlabs.fxt.codegen.code.Generator;
 import com.fxlabs.fxt.codegen.code.StubGenerator;
-import com.fxlabs.fxt.dto.project.AutoCodeConfig;
-import com.fxlabs.fxt.dto.project.AutoCodeConfigMinimal;
-import com.fxlabs.fxt.dto.project.GenPolicy;
-import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.sdk.services.BotLogger;
@@ -80,6 +78,7 @@ public class VCDelegate {
                 // 2.1. AutoCode -> delete([] categories)
                 // 2.1. AutoCode -> delete([] categories)
                 // 2.2. AutoCode -> run()
+                getInactiveCategoriesForDeletion(task);
                 customizedFileDeletion(task, path);
 
                 if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
@@ -145,6 +144,27 @@ public class VCDelegate {
         }
     }
 
+    private void getInactiveCategoriesForDeletion(VCTask task) {
+
+
+        if (task.getAutoCodeConfigMinimal() != null) {
+
+            AutoCodeConfigMinimal minimal = task.getAutoCodeConfigMinimal();
+
+            if (CollectionUtils.isEmpty(task.getCategories())) {
+                task.setCategories(new ArrayList<>());
+            }
+            for (AutoCodeGeneratorMinimal generator : minimal.getGenerators()) {
+
+                if (generator.isInactive()) {
+                    task.getCategories().add(generator.getType());
+                }
+
+            }
+        }
+
+    }
+
     private void customizedFileDeletion(VCTask task, String path) {
         if (task.isDeleteAll()) {
             delete(new File(path + "/test-suites/AutoCode"));
@@ -180,7 +200,7 @@ public class VCDelegate {
 
     public boolean delete(File path) {
         try {
-            org.apache.commons.io.FileUtils.deleteQuietly(path);
+            boolean deleted = org.apache.commons.io.FileUtils.deleteQuietly(path);
             return true;
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
