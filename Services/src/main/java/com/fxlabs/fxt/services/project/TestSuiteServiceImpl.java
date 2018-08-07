@@ -100,6 +100,47 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             testSuite.setId(entity.getId());
         }
 
+      //  testSuiteConverter.copyTextToArray(testSuite);
+
+        // type
+        if (testSuite.getType() == null) {
+            testSuite.setType(TestSuiteType.SUITE);
+        }
+
+        TestSuite ts = converter.convertToEntity(testSuite);
+
+        if (!testSuiteOptional.isPresent()) {
+            Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(testSuite.getProject().getId());
+            ts.setProject(project.get());
+        }
+
+        entity = ((TestSuiteRepository) repository).save(ts);
+        testSuiteESRepository.save(entity);
+
+        // project_file
+        this.projectFileService.saveFromTestSuite(testSuite, ts.getProject().getId());
+
+        return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
+
+    }
+
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> createFromUI(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
+
+//        String fileName = testSuite.getProps().get(Project.FILE_NAME);
+//        if (StringUtils.contains(fileName, "-")){
+//            throw new FxException(String.format("FileName [%s] should not contain hypen '-'.", fileName));
+//        }
+
+        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
+
+        TestSuite entity = null;
+        if (testSuiteOptional.isPresent()) {
+            entity = testSuiteOptional.get();
+            testSuite.setId(entity.getId());
+        }
+
         testSuiteConverter.copyTextToArray(testSuite);
 
         // type
@@ -123,6 +164,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 
     }
+
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> findById(String id, String org) {

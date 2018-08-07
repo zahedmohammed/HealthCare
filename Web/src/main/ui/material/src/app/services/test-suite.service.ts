@@ -39,7 +39,7 @@ constructor(private http: HttpClient) {
     return this.http.get(this.serviceUrl + "/search/" + keyword);
   }
   create(obj: TestSuite) {
-    return this.http.post(this.serviceUrl, obj);
+    return this.http.post(this.serviceUrl + "/ui", obj);
   }
  update(obj: TestSuite) {
     return this.http.put(this.serviceUrl, obj);
