@@ -75,35 +75,37 @@
         <ul class="list-unstyled float-right">
             <li class="list-inline-item" [routerLink]="['/app/messages']">
               <button mat-button class="md-button header-btn" >
-                <i class="material-icons" >notifications_none</i>
+                <!-- <i class="material-icons" >notifications_none</i> -->
                 <!--<span class="badge">3</span>-->
               </button>
               </li>
           <li>
             <button mat-button [matMenuTriggerFor]="menu" class="md-button header-btn">
-              <i class="material-icons">
+              <mat-icon>
                 person_outline
-              </i>
+              </mat-icon>
               <span>{{entry.users.name}} ({{entry.org.name}})</span>
             </button>
           </li> 
-          <li><button mat-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay><i class="material-icons">search</i></button></li>
+          <li><button mat-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay><mat-icon>search</mat-icon></button></li>
           
       </ul>
       </div>
 
 
     
-<mat-menu #menu="matMenu" [overlapTrigger]="false">
+<mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
     <ul class="list-unstyled float-right">
-        <li class="pr-5">
-      <button mat-menu-item [routerLink]="['/app/orgs']"><i class="nav-icon material-icons">domain</i>&nbsp; &nbsp; <span class="nav-text">Org & Users</span></button>
-      <button mat-menu-item [routerLink]="['/app/accounts']"><i class="nav-icon material-icons">vpn_key</i>&nbsp; &nbsp; <span class="nav-text">Accounts</span></button>
-      <button mat-menu-item [routerLink]="['/app/vault']"><i class="nav-icon material-icons">security</i>&nbsp; &nbsp; <span class="nav-text">Vault</span></button>
-      <button mat-menu-item [routerLink]="['/app/regions']"><i class="nav-icon material-icons">cloud_queue</i>&nbsp; &nbsp; <span class="nav-text">Test Bots</span></button>
-      <button mat-menu-item [routerLink]="['/app/marketplace']"><i class="nav-icon material-icons">shopping_cart</i>&nbsp; &nbsp; <span class="nav-text">Marketplace</span></button>
+        <li>
+      <button mat-menu-item [routerLink]="['/app/accounts']" ><mat-icon>vpn_key</mat-icon><span>Credentials</span></button>
+      <button mat-menu-item [routerLink]="['/app/vault']"><mat-icon>security</mat-icon><span>Vault</span></button>
+      <button mat-menu-item [routerLink]="['/app/messages']"><mat-icon>notifications_none</mat-icon><span>Activities</span></button>
+       <button mat-menu-item [routerLink]="['/app/regions']"><mat-icon>cloud_queue</mat-icon><span>Test Bots</span></button>
+      <button mat-menu-item [routerLink]="['/app/marketplace']"><mat-icon>shopping_cart</mat-icon><span>Marketplace</span></button>
+      <button mat-menu-item [routerLink]="['/app/orgs']"><mat-icon>domain</mat-icon><span>Orgs</span></button>
+
       <!-- <button mat-menu-item href="/logout"><i class="material-icons">power_settings_new</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Sign out</span></button> -->
-      <a href="/logout" mat-menu-item><i class="nav-icon material-icons">power_settings_new</i>&nbsp; &nbsp; <span class="nav-text">Sign out</span></a>
+      <a href="/logout" mat-menu-item><mat-icon>power_settings_new</mat-icon><span>Sign out</span></a>
   </li>
   <!-- <li><a mat-button [routerLink]="['/app/vault']"><i class="nav-icon material-icons">security</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Vault</span></a></li>
   <li><a mat-button [routerLink]="['/app/regions']"><i class="nav-icon material-icons">cloud_queue</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Test Bots</span></a></li>
