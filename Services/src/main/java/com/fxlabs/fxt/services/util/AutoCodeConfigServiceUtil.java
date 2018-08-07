@@ -244,7 +244,7 @@ public class AutoCodeConfigServiceUtil {
         sql_injection_timebound.setAssertionDescription("Successful test suite response codes are 200 or 408. UnSuccessful test suite response codes are 400, 404, 500.");
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@ResponseTime >= 5000");
+        assertions.add("@ResponseTime < 7000");
         assertions.add("@StatusCode != 401");
         assertions.add("@StatusCode != 404");
         assertions.add("@StatusCode != 500");
