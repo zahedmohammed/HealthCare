@@ -68,7 +68,7 @@
               <mat-form-field>
                 <mat-select placeholder="type" required
                             [(ngModel)]="testSuite.type"
-                            name="type">
+                            name="type" [ngModelOptions]="{standalone: true}">
                   <mat-option *ngFor="let type of types" [value]="type">
                     {{type}}
                   </mat-option>
