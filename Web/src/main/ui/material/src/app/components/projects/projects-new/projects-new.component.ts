@@ -219,7 +219,6 @@ export class ProjectsNewComponent implements OnInit {
       if (results['data'] != null ){
         this.env  =  results['data'][0];
       }
-      this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
