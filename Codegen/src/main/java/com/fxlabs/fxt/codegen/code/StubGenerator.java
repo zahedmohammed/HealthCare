@@ -78,15 +78,15 @@ public class StubGenerator {
             }
 
 
-            if (autoCodeConfig == null || !autoCodeConfig.exists() && autoCodeConfigContent == null) {
-                try {
-                    FileUtils.copyURLToFile(new URL(AUTO_CODE_CONFIG_FILE_URL), autoCodeConfig);
-                    System.out.println(String.format("%s created successfully...", AUTO_CODE_CONFIG_FILE));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.err.println(e.getLocalizedMessage());
-                }
-            }
+//            if (autoCodeConfig == null || !autoCodeConfig.exists() && autoCodeConfigContent == null) {
+//                try {
+//                    FileUtils.copyURLToFile(new URL(AUTO_CODE_CONFIG_FILE_URL), autoCodeConfig);
+//                    System.out.println(String.format("%s created successfully...", AUTO_CODE_CONFIG_FILE));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    System.err.println(e.getLocalizedMessage());
+//                }
+//            }
 
 
         } catch (Exception e) {
