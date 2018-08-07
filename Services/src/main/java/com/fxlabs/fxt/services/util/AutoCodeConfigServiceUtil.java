@@ -31,6 +31,7 @@ public class AutoCodeConfigServiceUtil {
         autoCodeGenerators.add(getSpecial_chars());
         autoCodeGenerators.add(getNull_value());
         autoCodeGenerators.add(getEmpty_value());
+        autoCodeGenerators.add(getNegagtive_Number());
         autoCodeGenerators.add(getCreate());
         autoCodeConfig.setGenerators(autoCodeGenerators);
         return autoCodeConfig;
@@ -95,6 +96,28 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 500");
         empty_value.setAssertions(assertions);
         return empty_value;
+    }
+
+    private static AutoCodeGenerator getNegagtive_Number() {
+
+        AutoCodeGenerator negative_number = new AutoCodeGenerator();
+        negative_number.setInactive(false);
+        negative_number.setSeverity(TestSuiteSeverity.Critical);
+
+        negative_number.setType("negative_number");
+
+        negative_number.setDisplayHeaderLabel("Negative Number");
+        negative_number.setDisplayHeaderDescription("Negative Number is a negative test case for paramertes of numeric data type to check how APIs behave when negative values are sent.");
+        negative_number.setAssertionDescription("Successful test suite response code is 400, 403, 406 and 500. UnSuccessful test suite response code is 200.");
+
+
+        List<String> assertions = new ArrayList<>();
+        assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode != 401");
+        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode != 500");
+        negative_number.setAssertions(assertions);
+        return negative_number;
     }
 
     private static AutoCodeGenerator getNull_value() {
@@ -238,7 +261,7 @@ public class AutoCodeConfigServiceUtil {
 
         sql_injection_timebound.setInactive(false);
         sql_injection_timebound.setSeverity(TestSuiteSeverity.Critical);
-        sql_injection_timebound.setType("sql_injection");
+        sql_injection_timebound.setType("sql_injection_timebound");
         sql_injection_timebound.setDisplayHeaderLabel("SQL Injection");
         sql_injection_timebound.setDisplayHeaderDescription("SQL injection attacks are a type of injection attack, in which SQL commands are injected into data-plane input in order to affect the execution of predefined SQL commands.");
         sql_injection_timebound.setAssertionDescription("Successful test suite response codes are 200 or 408. UnSuccessful test suite response codes are 400, 404, 500.");
@@ -316,7 +339,7 @@ public class AutoCodeConfigServiceUtil {
         ddos.setInactive(false);
 
         ddos.setSeverity(TestSuiteSeverity.Critical);
-        ddos.setType("ddos");
+        ddos.setType("DDOS");
 
         ddos.setDisplayHeaderLabel("Distributed Denial of Service");
         ddos.setDisplayHeaderDescription("A Distributed Denial of Service (DDoS) attack is an attempt to make an online service unavailable by overwhelming it with traffic from multiple sources.");
