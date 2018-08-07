@@ -174,6 +174,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         //Setting default notification
 
         List<JobNotification> listNotification = new ArrayList<>();
+        
         JobNotification jnEmail = new JobNotification();
         jnEmail.setName("FXLabs/Dev-Email-Notification");
         jnEmail.setTo("<<changeme>>");
