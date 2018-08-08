@@ -62,7 +62,7 @@ items: FormArray;
     this.AppConfig = APPCONFIG;
     this.getAccountsForProjectPage();
     this.thirdFormGroup = this._formBuilder.group({
-      nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
+      nameCtrl: ['', [Validators.required]],
       urlCtrl:  ['', Validators.required],
      // authTypeCtrl:  ['', Validators.required],
 items: this._formBuilder.array([ this.createItem() ])
