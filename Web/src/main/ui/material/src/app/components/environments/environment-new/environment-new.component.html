@@ -45,8 +45,14 @@
                             <mat-form-field class="full-width">
                                 <input required [(ngModel)]="env.name" formControlName="nameCtrl"
                                        matInput placeholder="Env name">
-                                <mat-error>Name should be between 3 & 25 characters</mat-error>
+                                <mat-error>Required</mat-error>
                             </mat-form-field>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="callout1 text-muted callout-info1">
+                                <p> e.g. Dev, Stg, QA, UAT, or Nightly etc
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -56,7 +62,7 @@
                             <mat-form-field class="full-width">
                                 <input required [(ngModel)]="env.baseUrl" formControlName="urlCtrl"
                                        matInput placeholder="Base URL">
-                                <mat-error> please enter valid url</mat-error>
+                                <mat-error>Required</mat-error>
                             </mat-form-field>
                         </div>
 
@@ -84,8 +90,9 @@
                                 <label  class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input  formControlName="name"
+                                        <input required formControlName="name"
                                                 matInput placeholder="Name">
+                                        <mat-error>Required</mat-error>
                                     </mat-input-container>
                                 </div>
                             </div>
@@ -101,7 +108,7 @@
                                                 {{type}}
                                             </mat-option>
                                         </mat-select>
-                                        <mat-error>Please select Authentication </mat-error>
+                                        <mat-error>Required</mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -110,8 +117,9 @@
                                     <label  class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input  formControlName="username"
+                                            <input required formControlName="username"
                                                     matInput placeholder="Username">
+                                            <mat-error>Required</mat-error>
                                         </mat-input-container>
                                     </div>
                                 </div>
@@ -120,8 +128,9 @@
                                     <label  class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input type="password"  formControlName="password"
+                                            <input required type="password"  formControlName="password"
                                                    matInput placeholder="Password">
+                                            <mat-error>Required</mat-error>
                                         </mat-input-container>
                                     </div>
                                 </div>
