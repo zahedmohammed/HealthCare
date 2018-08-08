@@ -12,7 +12,7 @@ export class OrgService {
   private serviceUrl = '/api/v1/orgs';
   constructor(private http: HttpClient) {
   }
-public messages:any;
+
   getByUser() {
     return this.http.get(this.serviceUrl + "/by-user");
   }
