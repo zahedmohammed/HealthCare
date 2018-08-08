@@ -46,7 +46,7 @@
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Env</th>
                             <th class="mdl-data-table__cell--non-numeric">Bot-Region</th>
-                            <th class="mdl-data-table__cell--non-numeric">Issue-Tracker</th>
+                           <!-- <th class="mdl-data-table__cell&#45;&#45;non-numeric"></th>-->
                             <th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
                             <th class="mdl-data-table__cell--non-numeric"></th>
                         </tr>
@@ -58,7 +58,7 @@
                                    [routerLink]="['/app/projects', id, 'jobs', job.id, 'edit']">{{job.name}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.environment?.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{job.issueTracker?.name}}</td>
+                            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
                             <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
                             <td class="mdl-data-table__cell--non-numeric">
                                 <!--<a href="javascript:;" (click)="runJob(job.id)">Run</a> &nbsp;-->
