@@ -61,7 +61,7 @@ export class AdvRunComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.router.navigate(['/app/jobs/' , this.data.id, 'runs']);
+      this.router.navigate(['/app/projects/' , this.data.project.id,  'jobs', this.data.id, 'runs']);
     }, error => {
       this.handler.error(error);
     });

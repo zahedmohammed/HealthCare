@@ -102,12 +102,12 @@ export class JobslistComponent implements OnInit {
 
   advRun(job) {
     const dialogRef = this.dialog.open(AdvRunComponent, {
-        width:'50%',
-        height:'85%',
+        width:'600px',
+        //height:'85%',
         data: job
     });
      dialogRef.afterClosed().subscribe(result => {
-      this.router.navigate(['/app/projects/' , job.project.id,  'jobs', job.id, 'runs']);
+      //this.router.navigate(['/app/projects/' , job.project.id,  'jobs', job.id, 'runs']);
     });
   }
 }
