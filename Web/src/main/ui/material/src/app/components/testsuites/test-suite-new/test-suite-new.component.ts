@@ -31,9 +31,22 @@ export class TestSuiteNewComponent implements OnInit {
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
   testCases: FormArray;
+advance:boolean=    false;
+severities:any[]=[{id:"Critical",value:"Critical"},{id:"Major",value: "Major"},{id:"Minor",value: "Minor"},{id:"Trivial",value: "Trivial"}];
+methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HEAD", "PATCH"];
+categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative", "Weak_Password", "Security_UnSecured", "Security_DDOS","Security_XSS","Security_SQL_Injection","UnSecured","DDOS","XSS_Injection","SQL_Injection","Log_Forging","RBAC"];
+ types: any[] = [{id:"SUITE",value:"Suite"},{id:"ABSTRACT",value: "Abstract"}];//,{id:"DATASET",value: "Dataset"},{id:"CONSULTING_SERVICES",value: "Consulting_Services"},{id:"AI_SKILLS",value: "AI_Skills"}];
+ testSuite1:any={assertion:''};
+onChange(e: Event) {
+          this.advance = e.checked;
 
-  types: string[] = ["Suite", "Abstract", "Dataset", "Consulting_Services", "AI_Skills"];
-  methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
+    }
+onChangeType(e: Event) {
+ if (e.checked == true)
+          this.testSuite.type = 'SUITE';
+ else
+          this.testSuite.type = 'ABSTRACT';
+    }
  testSuite1:any={assertion:''};
 
   context: string = "New";
@@ -98,7 +111,15 @@ export class TestSuiteNewComponent implements OnInit {
         return;
       }
       this.project = results['data'];
+this.testSuite.type='ABSTRACT';
+this.testSuite.method='POST';
+this.testSuite.category='Functional';
+this.testSuite.severity='Major';
+this.testSuite.inactive=false;
+this.testSuite.auth='Default';
+
       this.testSuite.project=this.project;
+
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

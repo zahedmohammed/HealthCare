@@ -33,7 +33,7 @@ testSuiteId:string;
 testCases: FormArray;
 advance:boolean=    false;
 severities:any[]=[{id:"Critical",value:"Critical"},{id:"Major",value: "Major"},{id:"Minor",value: "Minor"},{id:"Trivial",value: "Trivial"}];
-methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
+methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HEAD", "PATCH"];
 categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative", "Weak_Password", "Security_UnSecured", "Security_DDOS","Security_XSS","Security_SQL_Injection","UnSecured","DDOS","XSS_Injection","SQL_Injection","Log_Forging","RBAC"];
  types: any[] = [{id:"SUITE",value:"Suite"},{id:"ABSTRACT",value: "Abstract"}];//,{id:"DATASET",value: "Dataset"},{id:"CONSULTING_SERVICES",value: "Consulting_Services"},{id:"AI_SKILLS",value: "AI_Skills"}];
  testSuite1:any={assertion:''};
