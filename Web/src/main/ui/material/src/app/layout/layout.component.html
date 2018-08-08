@@ -6,9 +6,47 @@
 
   <div class="app-content-wrapper">
     <div class="app-content">
-      <div class="full-height">
-        <router-outlet></router-outlet>
+      <div class="row no-margin-both">
+
+        <div class="col-md-10">
+          <div class="full-height">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+        <!--<div class="col-md-2 hidden1">-->
+          <!--<div _ngcontent-c4="" class="box box-default" style="margin-left: -16%;margin-bottom: 80px;">-->
+            <!--<div _ngcontent-c4="">-->
+              <!--<article _ngcontent-c4="">-->
+                <!--<section _ngcontent-c4="" class="container-fluid with-maxwidth no-breadcrumbs chapter">-->
+                 <!--&nbsp;-->
+                <!--</section>-->
+              <!--</article>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="row">-->
+            <!--<div class="col-md-12">-->
+              <!--<div class="box box-default">-->
+                <!--<div class="box-header">Executor Status</div>-->
+                <!--<div class="box-body">-->
+                  <!--<mat-list>-->
+                    <!--<mat-list-item *ngFor="let message of messages">-->
+                     <!--&nbsp; <a *ngIf="message.subject=='/projects'" href="javascript:;" [routerLink]="['/app/projects']">  <h5 mat-line>  {{message.subject}} </h5></a>-->
+                      <!--<img mat-list-avatar [src]="message.avatar" alt="avatar">-->
+                      <!--<h3 *ngIf="message.subject!='/projects'" mat-line>  {{message.subject}} </h3>-->
+
+                    <!--</mat-list-item>-->
+                  <!--</mat-list>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+          <!--</div>-->
+        <!--</div>-->
+
       </div>
+
+
     </div>
 
     <my-app-footer></my-app-footer>

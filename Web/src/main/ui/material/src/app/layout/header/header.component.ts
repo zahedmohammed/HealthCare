@@ -22,7 +22,7 @@ export class AppHeaderComponent implements OnInit {
   ngOnInit() {
     this.AppConfig = APPCONFIG;
     this.getLoggedInUser();
-    this.connect();
+  //  this.connect();
   }
 
   getLoggedInUser() {
@@ -39,13 +39,13 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  connect(): void {
-   /* let source = new EventSource('/api/v1/events/register');
+ /* connect(): void {
+    let source = new EventSource('/api/v1/events/register');
     source.addEventListener('message', message => {
         let event = JSON.parse(message.data);
         console.log(event);
         // TODO - display & update events in the Tasks window.
-    });*/
+    });
   }
-
+*/
 }
