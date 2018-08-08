@@ -1,5 +1,5 @@
     export class TestSuite {
-    i: string;
+    id: string;
     name: string;
     description: string;
     endpoint: string;
@@ -7,6 +7,9 @@
     auth: string;
     type:string;
     method: string;
+    inAcive:boolean;
+    category:string;
+    severity:string;
 
     assertionsText: string;
     assertions:string[];

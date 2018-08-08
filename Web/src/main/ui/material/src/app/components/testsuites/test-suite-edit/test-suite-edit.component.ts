@@ -31,11 +31,22 @@ export class TestSuiteEditComponent implements OnInit {
   testSuite: TestSuite = new TestSuite();
 testSuiteId:string;
 testCases: FormArray;
-
-  types: string[] = ["Suite", "Abstract", "Dataset", "Consulting_Services", "AI_Skills"];
+advance:boolean=    false;
+severities:any[]=[{id:"Critical",value:"Critical"},{id:"Major",value: "Major"},{id:"Minor",value: "Minor"},{id:"Trivial",value: "Trivial"}];
 methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"];
+categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative", "Weak_Password", "Security_UnSecured", "Security_DDOS","Security_XSS","Security_SQL_Injection","UnSecured","DDOS","XSS_Injection","SQL_Injection","Log_Forging","RBAC"];
+ types: any[] = [{id:"SUITE",value:"Suite"},{id:"ABSTRACT",value: "Abstract"}];//,{id:"DATASET",value: "Dataset"},{id:"CONSULTING_SERVICES",value: "Consulting_Services"},{id:"AI_SKILLS",value: "AI_Skills"}];
  testSuite1:any={assertion:''};
+onChange(e: Event) {
+          this.advance = e.checked;
 
+    }
+onChangeType(e: Event) {
+ if (e.checked == true)
+          this.testSuite.type = 'SUITE';
+ else
+          this.testSuite.type = 'ABSTRACT';
+    }
   context: string = "New";
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -103,16 +114,14 @@ methods: string[] = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS",
   createItem(): FormGroup {
     return this._formBuilder.group({
       id:null,
-      body: [null, Validators.required],
-      inactive:null
+      body: [null, Validators.required]
     });
   }
 
   createItem1(obj:TestCase): FormGroup {
     var k= this._formBuilder.group({
       id:obj.id,
-      body: [obj.body, Validators.required],
-      inactive:obj.inactive
+      body: [obj.body, Validators.required]
     });
     return k;
   }
