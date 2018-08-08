@@ -37,17 +37,7 @@ methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HE
 categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative", "Weak_Password", "Security_UnSecured", "Security_DDOS","Security_XSS","Security_SQL_Injection","UnSecured","DDOS","XSS_Injection","SQL_Injection","Log_Forging","RBAC"];
  types: any[] = [{id:"SUITE",value:"Suite"},{id:"ABSTRACT",value: "Abstract"}];//,{id:"DATASET",value: "Dataset"},{id:"CONSULTING_SERVICES",value: "Consulting_Services"},{id:"AI_SKILLS",value: "AI_Skills"}];
  testSuite1:any={assertion:''};
-onChange(e: Event) {
-          this.advance = e.checked;
 
-    }
-onChangeType(e: Event) {
- if (e.checked == true)
-          this.testSuite.type = 'SUITE';
- else
-          this.testSuite.type = 'ABSTRACT';
-    }
- testSuite1:any={assertion:''};
 
   context: string = "New";
   firstFormGroup: FormGroup;

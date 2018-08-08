@@ -7,7 +7,7 @@
     auth: string;
     type:string;
     method: string;
-    inAcive:boolean;
+    inactive:boolean;
     category:string;
     severity:string;
 
