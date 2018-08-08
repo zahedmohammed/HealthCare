@@ -15,8 +15,9 @@ import {Handler}from '../../dialogs/handler/handler';
 })
 export class RegisterComponent implements OnInit{
   entry: Account = new Account();
-  accountTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab'];
-  constructor(private accountService: AccountService, 
+  accountTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git'];
+  isValid: boolean = true;
+  constructor(private accountService: AccountService,
     private orgService: OrgService,
     private handler: Handler, 
     private snackbarService: SnackbarService,
@@ -50,4 +51,8 @@ export class RegisterComponent implements OnInit{
   onClose(){
     this.dialogRef.close();
   }
+
+    changeValue(valid: boolean) {
+        this.isValid = valid;
+    }
 }

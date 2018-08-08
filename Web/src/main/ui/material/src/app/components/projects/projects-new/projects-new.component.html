@@ -22,15 +22,20 @@
                         <form [formGroup]="firstFormGroup">
                             <ng-template matStepLabel>Project Registration</ng-template>
 
-                            <div class="form-group row"></div>
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
-                                <div class="col-md-5">
-                                    <mat-form-field class="full-width">
+                                <div class="col-md-5 no-margin-bottom">
+                                    <mat-input-container class="full-width">
                                         <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name"
-                                               matInput placeholder="Project name">
-                                        <mat-error>Name should be between 3 & 25 characters</mat-error>
-                                    </mat-form-field>
+                                               matInput placeholder="Project name" autocomplete="off">
+                                        <mat-error>Required</mat-error>
+                                    </mat-input-container>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>e.g. MyApp
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -39,11 +44,11 @@
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
-                                    <mat-form-field class="full-width">
+                                    <mat-input-container class="full-width">
                                         <input required [(ngModel)]="project.url" formControlName="urlCtrl" id="repo"
-                                               matInput placeholder="Repository URL">
-                                        <mat-error>Please enter valid url</mat-error>
-                                    </mat-form-field>
+                                               matInput placeholder="Repository URL"  autocomplete="off">
+                                        <mat-error>Required</mat-error>
+                                    </mat-input-container>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
@@ -65,13 +70,13 @@
                                                 {{account.name}} ({{account.accountType}})
                                             </mat-option>
                                         </mat-select>
-                                        <mat-error>Please select repository</mat-error>
+                                        <mat-error>Required</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
                                         <p>
-                                            <a href="javascript:;" (click)="openDialog()">Add credentials</a>
+                                            <a href="javascript:;" (click)="openDialog()">New credentials</a>
                                             <br/>
                                             Credentials are required for automatic test creation and check-in.
                                         </p>
@@ -103,8 +108,8 @@
                                         <mat-form-field class="full-width">
                                             <input required [(ngModel)]="autoCodeConfig.openAPISpec" name="spec"
                                                    id="spec" matInput placeholder="OpenAPISpec URL/file"
-                                                   formControlName="openAPISpec">
-                                            <mat-error>Please enter valid url</mat-error>
+                                                   formControlName="openAPISpec" autocomplete="off">
+                                            <mat-error>Required</mat-error>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-md-7">
@@ -228,7 +233,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <mat-checkbox [(ngModel)]="res.inactive"
-                                                                      [ngModelOptions]="{standalone: true}">Inactive
+                                                                      [ngModelOptions]="{standalone: true}" color="primary">Skip
                                                         </mat-checkbox>
                                                     </div>
                                                 </div>
@@ -266,9 +271,15 @@
                                 <div class="col-md-5">
                                     <mat-form-field class="full-width">
                                         <input required [(ngModel)]="env.name" formControlName="nameCtrl"
-                                               matInput placeholder="Env name">
-                                        <mat-error>Name should be between 3 & 25 characters</mat-error>
+                                               matInput placeholder="Env name" autocomplete="off">
+                                        <mat-error>Required</mat-error>
                                     </mat-form-field>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>e.g. Dev, Stg, QA, UAT, or Nightly etc
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -277,13 +288,13 @@
                                 <div class="col-md-5">
                                     <mat-form-field class="full-width">
                                         <input required [(ngModel)]="env.baseUrl" formControlName="urlCtrl"
-                                               matInput placeholder="Base URL">
-                                        <mat-error> please enter valid url</mat-error>
+                                               matInput placeholder="Base URL" autocomplete="off">
+                                        <mat-error>Required</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
-                                        <p>e.g. https://myapp/api/v1.
+                                        <p>e.g. https://myapp
                                         </p>
                                     </div>
                                 </div>
@@ -293,8 +304,9 @@
                                 <label  class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input  [(ngModel)]="env.auths[0].name" disabled [ngModelOptions]="{standalone: true}"
+                                        <input required  [(ngModel)]="env.auths[0].name" disabled [ngModelOptions]="{standalone: true}"
                                                 matInput placeholder="Auth Name">
+                                        <mat-error>Required</mat-error>
                                     </mat-input-container>
                                 </div>
                             </div>
@@ -311,7 +323,7 @@
                                                 {{type}}
                                             </mat-option>
                                         </mat-select>
-                                        <mat-error>Please select Authentication</mat-error>
+                                        <mat-error>Required</mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -321,9 +333,9 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input [(ngModel)]="env.auths[0].username"
-                                                   [ngModelOptions]="{standalone: true}"
+                                            <input required [(ngModel)]="env.auths[0].username" formControlName="usernameCtrl"
                                                    matInput placeholder="Username">
+                                            <mat-error>Required</mat-error>
                                         </mat-input-container>
                                     </div>
                                 </div>
@@ -332,9 +344,9 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input type="password" [(ngModel)]="env.auths[0].password"
-                                                   [ngModelOptions]="{standalone: true}"
+                                            <input required type="password" [(ngModel)]="env.auths[0].password" formControlName="pswCtrl"
                                                    matInput placeholder="Password">
+                                            <mat-error>Required</mat-error>
                                         </mat-input-container>
                                     </div>
                                 </div>
@@ -536,8 +548,6 @@
                             </div>
                         </form>
                     </mat-step>
-
-
                 </mat-horizontal-stepper>
 
             </div>

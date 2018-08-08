@@ -35,6 +35,7 @@ export class ProjectsNewComponent implements OnInit {
   orgs;
   accounts;
   matStepper;// MatStepper;
+  flag = false;
 
   context: string = "New";
 
@@ -47,6 +48,7 @@ export class ProjectsNewComponent implements OnInit {
   authTypesgrantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
   schemeTypes = ['form', 'header', 'none', 'query'];
   scopeTypes= ['read', 'write'];
+
 
 
   public AppConfig: any;
@@ -66,20 +68,22 @@ export class ProjectsNewComponent implements OnInit {
       }
     });
     this.env.auths[0] = new Auth();
-    this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
-      urlCtrl: ['', [Validators.required]],
-      typeCtrl: ['', Validators.required ]
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      openAPISpec: ['', Validators.required]
-    });
+      this.firstFormGroup = this._formBuilder.group({
+          nameCtrl: ['', Validators.required],
+          urlCtrl: ['', Validators.required],
+          typeCtrl: ['', Validators.required ]
+      });
+      this.secondFormGroup = this._formBuilder.group({
+          openAPISpec: ['', Validators.required]
+      });
 
-    this.thirdFormGroup = this._formBuilder.group({
-      nameCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
-      urlCtrl:  ['', Validators.required],
-      authTypeCtrl:  ['', Validators.required],
-    });
+      this.thirdFormGroup = this._formBuilder.group({
+          nameCtrl: ['', [Validators.required]],
+          urlCtrl:  ['', Validators.required],
+          authTypeCtrl:  ['', Validators.required],
+          usernameCtrl: ['', Validators.required],
+          pswCtrl:['', Validators.required]
+      });
 
     /*this.fourthFormGroup = this._formBuilder.group({
       authNameCtrl:  ['', Validators.required],
@@ -100,7 +104,6 @@ export class ProjectsNewComponent implements OnInit {
       scopeCtrl:  ['', Validators.required]*/
 
   }
-
    loadProject(id: string) {
     this.handler.activateLoader();
     this.projectService.getById(id).subscribe(results => {

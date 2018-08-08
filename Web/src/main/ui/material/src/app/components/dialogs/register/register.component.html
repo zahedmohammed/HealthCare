@@ -1,5 +1,5 @@
 <section class="container-fluid with-maxwidth chapter">
-    <h2 mat-dialog-title>New Account</h2>
+    <h2 mat-dialog-title>New Credentials</h2>
 <article class="article">
   <!-- <div class="box box-default">
       <div class="box-body padding-xl">
@@ -14,9 +14,17 @@
               <div class="col-md-5">
                   <mat-input-container class="full-width">
                       <input required [(ngModel)]="entry.name" name="name" id="name"
-                             matInput placeholder="Name">
+                             matInput placeholder="Name" autocomplete="off">
+                      <mat-error>Required</mat-error>
                   </mat-input-container>
               </div>
+                <div class="col-md-7">
+                    <div class="callout1 text-muted callout-info1">
+                        <p>
+                            e.g. Developer-FX
+                        </p>
+                    </div>
+                </div>
           </div>
           <!-- Name End -->
 
@@ -26,27 +34,33 @@
             </label>
             <div class="col-md-5">
                 <mat-form-field>
-                    <mat-select placeholder="Account Type" required [(ngModel)]="entry.accountType"
+                    <mat-select placeholder="Repository Type" required [(ngModel)]="entry.accountType"
                                 name="type">
                         <mat-option *ngFor="let type of accountTypes" [value]="type">
                             {{type}}
                         </mat-option>
                     </mat-select>
+                    <mat-error>Required</mat-error>
                 </mat-form-field>
             </div>
         </div>
         <!-- Conditional Select Field for Different Account Types. Eg. Git, Bitbucket, GitLab, Github End -->             
 
               <!-- Git  Start    -->
-              <div class="form-group row" *ngIf="entry.accountType === 'Git'">
-                <label for="gitAccessKey" class="col-md-0 control-label">
-                </label>
-                <div  class="col-md-5">
+              <div class="form-group" *ngIf="entry.accountType === 'Git'">
+                  <mat-radio-group class="ui-md-radio-group-inline">
+                      <mat-radio-button color="primary" value="user" name="rad2" checked="checked" (click)= "changeValue(true)">Username</mat-radio-button>
+                      <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
+                  </mat-radio-group>
+                  <div *ngIf="isValid; else elseGit" class="row">
+                    <label for="gitAccessKey" class="col-md-0 control-label">
+                    </label>
+                      <div  class="col-md-5">
                     <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'" >
                         <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitAccessKey"
-                               matInput type="text" placeholder="Access-Key">
+                               matInput type="text" placeholder="Username" autocomplete="off">
                     </mat-input-container>
-                </div>
+                  </div>
                 <div class="col-md-7">
                     <div class="callout1 text-muted callout-info1">
                         <p>
@@ -63,70 +77,112 @@
                         </p>
                     </div>
                 </div>
+                      <label for="gitSecret" class="col-md-0 control-label">
+                      </label>
+                      <div class="col-md-5">
+                          <mat-input-container class="full-width" >
+                              <input required [(ngModel)]="entry.secretKey" name="secret" id="gitSecret"
+                                     matInput type="password" placeholder="Password">
+                          </mat-input-container>
+                      </div>
             </div>
-
-            <div class="form-group row" *ngIf="entry.accountType === 'Git'">
-                <label for="gitSecret" class="col-md-0 control-label">
-                </label>
-                <div class="col-md-5">
-                    <mat-input-container class="full-width" >
-                        <input required [(ngModel)]="entry.secretKey" name="secret" id="gitSecret"
-                               matInput type="password" placeholder="Secret-Key">
-                    </mat-input-container>
-                </div>
-            </div>
+                  <ng-template #elseGit>
+                      <div class="form-group row">
+                          <label for="gitHubSecret" class="col-md-0 control-label">
+                          </label>
+                          <div  class="col-md-5">
+                              <mat-input-container class="full-width">
+                      <textarea [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
+                                matInput type="password" placeholder="Password/Private-Key"></textarea>
+                              </mat-input-container>
+                          </div>
+                          <div class="col-md-7">
+                              <div class="callout1 text-muted callout-info1">
+                                  <p>
+                                      Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </ng-template>
+              </div>
             <!-- Git  End    -->
 
            
             <!-- GitHub Start  -->
-            <div class="form-group row" *ngIf="entry.accountType === 'GitHub'">
-              <label for="gitHubAccessKey" class="col-md-0 control-label">
-              </label>
-              <div   class="col-md-5">
-                  <mat-input-container class="full-width">
-                      <input  [(ngModel)]="entry.accessKey" name="accessKey" id="gitHubAccessKey"
-                             matInput type="text" placeholder="Username/Access-Key">
-                  </mat-input-container>
-              </div>
-              <div class="col-md-7">
-                  <div class="callout1 text-muted callout-info1">
-                      <p>GitHub access keys
-                          <a target="_blank"
-                             href="https://github.com/settings/tokens">&nbsp;learn more. <i
-                                  class="material-icons"
-                                  style="font-size: 18px;">open_in_new</i></a>
-                      </p>
+            <div class="form-group" *ngIf="entry.accountType === 'GitHub'">
+                <mat-radio-group class="ui-md-radio-group-inline">
+                    <mat-radio-button color="primary" value="user" name="rad2" checked="checked" (click)= "changeValue(true)">Username</mat-radio-button>
+                    <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
+                </mat-radio-group>
+
+              <div *ngIf="isValid; else elseBlock" class="row">
+                  <label for="gitHubAccessKey" class="col-md-0 control-label">
+                  </label>
+                  <div  class="col-md-5">
+                      <mat-input-container class="full-width">
+                          <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitHubAccessKey"
+                                  matInput type="text" placeholder="Username" autocomplete="off">
+                          <mat-error>Required</mat-error>
+                      </mat-input-container>
+                      <mat-input-container class="full-width">
+                          <input required [(ngModel)]="entry.secretKey" name="secret" id="gitHubsecretKey"
+                                 matInput type="password" placeholder="Password" autocomplete="off">
+                          <mat-error>Required</mat-error>
+                      </mat-input-container>
+                  </div>
+                  <div class="col-md-7">
+                      <div class="callout1 text-muted callout-info1">
+                          <p>GitHub access keys
+                              <a target="_blank"
+                                 href="https://github.com/settings/tokens">&nbsp;learn more. <i
+                                      class="material-icons"
+                                      style="font-size: 18px;">open_in_new</i></a>
+                          </p>
+                      </div>
                   </div>
               </div>
-          </div>
 
-          <div class="form-group row" *ngIf="entry.accountType === 'GitHub'">
-              <label for="gitHubSecret" class="col-md-0 control-label">
-              </label>
-              <div  class="col-md-5">
-                  <mat-input-container class="full-width">
+              <ng-template #elseBlock>
+                  <div class="form-group row">
+                      <label for="gitHubSecret" class="col-md-0 control-label">
+                      </label>
+                      <div  class="col-md-5">
+                          <mat-input-container class="full-width">
                       <textarea [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
                                 matInput type="password" placeholder="Password/Private-Key"></textarea>
-                  </mat-input-container>
-              </div>
-              <div class="col-md-7">
-                  <div class="callout1 text-muted callout-info1">
-                      <p>
-                          Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
-                      </p>
+                          </mat-input-container>
+                      </div>
+                      <div class="col-md-7">
+                          <div class="callout1 text-muted callout-info1">
+                              <p>
+                                  Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                              </p>
+                          </div>
+                      </div>
                   </div>
-              </div>
-          </div>
+              </ng-template>
+            </div>
           <!-- GitHub End  -->
        
           <!-- BitBucket  Start    -->
-          <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
+          <div class="form-group" *ngIf="entry.accountType === 'BitBucket'">
+              <mat-radio-group class="ui-md-radio-group-inline">
+                  <mat-radio-button color="primary" value="user" name="rad2" checked="checked" (click)= "changeValue(true)">Username</mat-radio-button>
+                  <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
+              </mat-radio-group>
+              <div *ngIf="isValid; else elseBlock" class="row">
             <label for="bitBucketAccessKey" class="col-md-0 control-label">
             </label>
             <div  class="col-md-5">
                 <mat-input-container class="full-width">
                     <input [(ngModel)]="entry.accessKey" name="accessKey" id="bitBucketAccessKey"
-                           matInput type="text" placeholder="Username/Access-Key">
+                           matInput type="text" placeholder="Username">
+                </mat-input-container>
+                <mat-input-container class="full-width">
+                    <input required [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecretKey"
+                           matInput type="password" placeholder="Password" autocomplete="off">
+                    <mat-error>Required</mat-error>
                 </mat-input-container>
             </div>
             <div class="col-md-7">
@@ -138,56 +194,140 @@
                     </p>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
-            <label for="bitBucketSecret" class="col-md-0 control-label">
-            </label>
-            <div  class="col-md-5">
-                <mat-input-container class="full-width">
+            </div>
+              <ng-template #elseBlock>
+              <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
+                  <label for="bitBucketSecret" class="col-md-0 control-label">
+                  </label>
+                  <div  class="col-md-5">
+                      <mat-input-container class="full-width">
                     <textarea [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
                               matInput type="password" placeholder="Password/Private-Key"></textarea>
-                </mat-input-container>
-            </div>
-            <div class="col-md-7">
-                <div class="callout1 text-muted callout-info1">
-                    <p>
-                        Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
-                    </p>
-                </div>
-            </div>
-        </div>
+                      </mat-input-container>
+                  </div>
+                  <div class="col-md-7">
+                      <div class="callout1 text-muted callout-info1">
+                          <p>
+                              Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                          </p>
+                      </div>
+                  </div>
+              </div>
+              </ng-template>
+          </div>
+
+
         <!-- BitBucket  End    -->
 
-        <div class="form-group row" *ngIf="entry.accountType == 'GitLab' || entry.accountType === 'Microsoft_VSTS_Git'">
-          <label for="accessKey" class="col-md-0 control-label">
-          </label>
+        <div class="form-group" *ngIf="entry.accountType == 'GitLab'">
+            <mat-radio-group class="ui-md-radio-group-inline">
+                <mat-radio-button color="primary" value="user" name="rad2" checked="checked" (click)= "changeValue(true)">Username</mat-radio-button>
+                <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="isValid; else elseBlock" class="row">
+                <label for="accessKey" class="col-md-0 control-label">
+                </label>
           <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
               <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
                   <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="accessKey"
-                         matInput type="text" placeholder="Access-Key/Username">
+                         matInput type="text" placeholder="Username">
               </mat-input-container>
-          </div>
-      </div>
-
-      <div class="form-group row" *ngIf="entry.accountType == 'GitLab' || entry.accountType === 'Microsoft_VSTS_Git'">
-          <label for="secret" class="col-md-0 control-label">
-          </label>
-          <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
               <mat-input-container class="full-width">
                   <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
-                         matInput type="password" placeholder="Secret-Key/Password">
+                         matInput type="password" placeholder="Password">
               </mat-input-container>
           </div>
+            </div>
       </div>
+          <ng-template #elseBlock>
+              <div class="form-group row">
+                  <label for="secret" class="col-md-0 control-label">
+                  </label>
+                  <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
+                      <mat-input-container class="full-width">
+                          <textarea required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                                    matInput type="password" placeholder="Password/PrivateKey"></textarea>
+                      </mat-input-container>
+                  </div>
+              </div>
+      </ng-template>
 
+               <!--Start Microsoft_TFS_Git-->
+              <div class="form-group" *ngIf="entry.accountType == 'Microsoft_TFS_Git'">
+                  <mat-radio-group class="ui-md-radio-group-inline">
+                      <mat-radio-button color="primary" value="user" name="rad2" checked="checked" (click)= "changeValue(true)">Username</mat-radio-button>
+                      <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
+                  </mat-radio-group>
+                  <div *ngIf="isValid; else elseBlock" class="row">
+                      <label for="accessKey" class="col-md-0 control-label">
+                      </label>
+                      <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
+                          <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
+                              <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="accessKey"
+                                     matInput type="text" placeholder="Username">
+                          </mat-input-container>
+                          <mat-input-container class="full-width">
+                              <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                                     matInput type="password" placeholder="Password">
+                          </mat-input-container>
+                      </div>
+                  </div>
+              </div>
+              <ng-template #elseBlock>
+                  <div class="form-group row">
+                      <label for="secret" class="col-md-0 control-label">
+                      </label>
+                      <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
+                          <mat-input-container class="full-width">
+                          <textarea required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                                    matInput type="password" placeholder="Password/PrivateKey"></textarea>
+                          </mat-input-container>
+                      </div>
+                  </div>
+              </ng-template>
+              <!--End Microsoft_TFS_Git-->
+
+              <!--Start Microsoft_VSTS_Git-->
+              <div class="form-group" *ngIf="entry.accountType == 'Microsoft_VSTS_Git'">
+                  <mat-radio-group class="ui-md-radio-group-inline">
+                      <mat-radio-button color="primary" value="user" name="rad2" checked="checked" (click)= "changeValue(true)">Username</mat-radio-button>
+                      <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
+                  </mat-radio-group>
+                  <div *ngIf="isValid; else elseBlock" class="row">
+                      <label for="accessKey" class="col-md-0 control-label">
+                      </label>
+                      <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
+                          <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
+                              <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="accessKey"
+                                     matInput type="text" placeholder="Username">
+                          </mat-input-container>
+                          <mat-input-container class="full-width">
+                              <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                                     matInput type="password" placeholder="Password">
+                          </mat-input-container>
+                      </div>
+                  </div>
+              </div>
+              <ng-template #elseBlock>
+                  <div class="form-group row">
+                      <label for="secret" class="col-md-0 control-label">
+                      </label>
+                      <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
+                          <mat-input-container class="full-width">
+                          <textarea required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                                    matInput type="password" placeholder="Password/PrivateKey"></textarea>
+                          </mat-input-container>
+                      </div>
+                  </div>
+              </ng-template>
+              <!--End Microsoft_VSTS_Git-->
           
 
               <div class="form-group row">
                   <div class="col-md-0"></div>
                   <div class="col-md-8">
                       <button [disabled]="!heroForm.valid" mat-raised-button color="primary" (click)="create();"
-                              class="btn-w-md no-margin-left">Register
+                              class="btn-w-md no-margin-left">Add
                       </button>
                       <button mat-button type="button" color="primary" class="btn-w-md" (click)="onClose();">Cancel
                       </button>

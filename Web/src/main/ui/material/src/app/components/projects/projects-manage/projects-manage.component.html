@@ -47,8 +47,15 @@
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name"
-                           matInput placeholder="Project name">
+                           matInput placeholder="Project name" autocomplete="off">
+                    <mat-error>Required</mat-error>
                   </mat-input-container>
+                </div>
+                <div class="col-md-7">
+                  <div class="callout1 text-muted callout-info1">
+                    <p>e.g. MyApp
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -59,7 +66,8 @@
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input required [(ngModel)]="project.url" formControlName="urlCtrl" id="repo"
-                           matInput placeholder="Repository URL">
+                           matInput placeholder="Repository URL" autocomplete="off">
+                    <mat-error>Required</mat-error>
                   </mat-input-container>
                 </div>
                 <div class="col-md-7">
@@ -82,12 +90,13 @@
                         {{account.name}} ({{account.accountType}})
                       </mat-option>
                     </mat-select>
+                    <mat-error>Required</mat-error>
                   </mat-form-field>
                 </div>
                 <div class="col-md-7">
                   <div class="callout1 text-muted callout-info1">
                     <p>
-                        <a href="javascript:;" (click)="openDialog()">Add credentials</a>
+                        <a href="javascript:;" (click)="openDialog()">New credentials</a>
                         <br/>
                         Credentials are required for automatic test creation and check-in.
                   </div>
@@ -134,7 +143,8 @@
                     <mat-input-container class="full-width">
                       <input required [(ngModel)]="autoCodeConfig.openAPISpec" name="spec"
                              id="spec" matInput placeholder="OpenAPISpec URL/file"
-                             formControlName="openAPISpec">
+                             formControlName="openAPISpec" autocomplete="off">
+                      <mat-error>Required</mat-error>
                     </mat-input-container>
                   </div>
                   <div class="col-md-7">
@@ -253,7 +263,7 @@
                         <div class="row">
                           <div class="col-md-6">
                             <mat-checkbox [(ngModel)]="res.inactive"
-                                          [ngModelOptions]="{standalone: true}">Inactive
+                                          [ngModelOptions]="{standalone: true}">Skip
                             </mat-checkbox>
                           </div>
                         </div>
