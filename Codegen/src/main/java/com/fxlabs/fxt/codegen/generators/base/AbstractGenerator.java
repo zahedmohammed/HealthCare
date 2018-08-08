@@ -9,6 +9,8 @@ import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -107,6 +109,7 @@ public abstract class AbstractGenerator implements Generator {
         String name = joiner.add(method.name().toLowerCase())
                 .add(postfix).toString();
 
+        name = CaseUtils.toCamelCase(name, true, '_','-');
         testSuite.setName(name);
 
         return this;
