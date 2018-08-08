@@ -18,16 +18,20 @@
 
     <article class="article padding-lg-v1 article-dark">
         <div class="container-fluid with-maxwidth chapter">
-
             <article class="article">
-                <h2 class="article-title1">
+
+            <div class="row">
+                <div class="col-md-10">
                     <button mat-button color="primary" class="btn-w-md pull-left" [routerLink]="['/app/orgs/new']">
                         <i class="fa fa-plus"></i>
                         New Organization
                     </button>
+                </div>
+                <div class="col-md-2">
                     <p class="text-muted float-right">Total Organizations: {{length}}</p>
-                    <div class="divider divider-sm"></div>
-                </h2>
+                </div>
+            </div>
+            <div class="divider divider-sm"></div>
                 <br/>
 
                 <div class="box box-default table-box mdl-shadow--2dp">

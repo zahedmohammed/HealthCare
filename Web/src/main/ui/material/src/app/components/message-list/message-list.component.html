@@ -19,15 +19,14 @@
     <article class="article padding-lg-v1 article-dark">
         <div class="container-fluid with-maxwidth chapter">
             <article class="article">
-                <div class="box box-default">
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-10"></div>
-                    <div class="col-md-2">
-                        <p class="text-muted float-right">Total Activities: {{length}}</p>
-                    </div>
-                </div>
-                <div class="box box-default table-box mdl-shadow--2dp">                        
+                    <div class="row">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2">
+                                <p class="text-muted float-right">Total Activities: {{length}}</p>
+                            </div>
+                        </div>
+
+                <div class="box box-default table-box mdl-shadow--2dp">
                     <table class="mdl-data-table">
                         <thead>
                         <tr>
@@ -51,11 +50,12 @@
                         </tbody>
                     </table>
                 </div>
-                </div>
-                </div>
+
+<mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+</mat-paginator>
+
             </article>
+
         </div>
     </article>
 </section>
-<mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
-    </mat-paginator>
