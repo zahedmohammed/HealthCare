@@ -31,6 +31,8 @@ public class MySQLSQLInjectionQueryParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
+        String endPoint = path;
+
         if (! configUtil.isDB(GENERATOR_TYPE, DB_NAME)){
             return null;
         }
@@ -52,7 +54,7 @@ public class MySQLSQLInjectionQueryParamGenerator extends AbstractGenerator {
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
                     String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(GENERATOR_TYPE) + "_" + DB_NAME + "_" + queryParam.getName();
-                    List<TestSuiteMin> testSuites = build(op, path, postFix,GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, false);
+                    List<TestSuiteMin> testSuites = build(op, path, endPoint, postFix,GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
                     for (TestSuiteMin testSuite : testSuites) {
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{"+INJECTION_DATASET+"}}");
                     }

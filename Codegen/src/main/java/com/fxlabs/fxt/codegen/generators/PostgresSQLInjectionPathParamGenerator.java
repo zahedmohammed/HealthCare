@@ -29,6 +29,8 @@ public class PostgresSQLInjectionPathParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
+        String endPoint = path;
+
         if (! configUtil.isDB(GENERATOR_TYPE,DB_NAME)){
             return null;
         }
@@ -57,7 +59,7 @@ public class PostgresSQLInjectionPathParamGenerator extends AbstractGenerator {
                 if (param instanceof PathParameter) {
                     PathParameter pathParam = (PathParameter) param;
                     String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(GENERATOR_TYPE) + "_" + DB_NAME + "_" + pathParam.getName();
-                    List<TestSuiteMin> testSuites = build(op, path, postFix, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, false);
+                    List<TestSuiteMin> testSuites = build(op, path, endPoint, postFix, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
                     for (TestSuiteMin testSuite : testSuites) {
                         String _path = path.replace("{" + pathParam.getName() + "}", "{{"+INJECTION_DATASET+"}}");
                         testSuite.setEndpoint(_path);

@@ -25,7 +25,7 @@ public class AutoCodeGeneratorMinimal implements Serializable{
     private TestSuiteSeverity severity;
     private Database database;
     protected boolean inactive = false;
-    private List<AutoCodeGeneratorMatchesMinimal> autoCodeGeneratorMatches;
+    private List<AutoCodeGeneratorMatchesMinimal> matches;
 
 }
 

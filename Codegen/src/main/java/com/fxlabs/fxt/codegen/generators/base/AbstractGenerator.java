@@ -45,17 +45,17 @@ public abstract class AbstractGenerator implements Generator {
 
     public List<TestSuiteMin> build(Operation op, String path, String postfix, String scenario, String description, TestSuiteType testSuiteType,
                                     io.swagger.models.HttpMethod method, String tag, String auth) {
-        return build(op, path, postfix, scenario, description, testSuiteType, method, tag, auth, null, false);
+        return build(op, path, path, postfix, scenario, description, testSuiteType, method, tag, auth, null);
     }
 
-    public List<TestSuiteMin> build(Operation op, String path, String postfix, String type, String description, TestSuiteType testSuiteType,
-                                    io.swagger.models.HttpMethod method, String tag, String auth, Policies policies, boolean inactive) {
+    public List<TestSuiteMin> build(Operation op, String path, String endPoint, String postfix, String type, String description, TestSuiteType testSuiteType,
+                                    io.swagger.models.HttpMethod method, String tag, String auth, Policies policies) {
 
         TestSuiteMin testSuite = new TestSuiteMin();
         testSuite.setSeverity(configUtil.getTestSuiteSeverity(type));
         testSuite.setCategory(configUtil.getTestSuiteCategory(type));
         addAssertions(testSuite, configUtil.getAssertions(type));
-        inactive = configUtil.isInactive(type);
+        boolean inactive = configUtil.isInactive(type);
 
         List<TestSuiteMin> list = new ArrayList<>();
 
@@ -73,7 +73,7 @@ public abstract class AbstractGenerator implements Generator {
                 .buildDescription(testSuite, description)
                 .buildType(testSuite, testSuiteType)
                 .buildMethod(testSuite, method)
-                .buildEndpoint(testSuite, path, op)
+                .buildEndpoint(testSuite, endPoint, op)
                 .buildHeader(testSuite, op)
                 // TODO buildTestCase(testSuite)
                 // TODO buildAssertion(testSuite, )
@@ -99,6 +99,7 @@ public abstract class AbstractGenerator implements Generator {
     protected AbstractGenerator buildName(TestSuiteMin testSuite, String path, io.swagger.models.HttpMethod method, String postfix) {
 
         //System.out.println("path : " + path);
+
 
         String base = NameUtil.extract(path);
         StringJoiner joiner = new StringJoiner("_");

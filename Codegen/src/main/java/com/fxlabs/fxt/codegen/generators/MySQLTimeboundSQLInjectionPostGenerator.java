@@ -35,6 +35,9 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
 
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
+
+        String endPoint = path;
+
         // Only POST
         if (method != io.swagger.models.HttpMethod.POST) {
             return null;
@@ -115,7 +118,7 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
                             ((ObjectNode) node).put(prop,"{{" + INJECTION_DATASET + "}}");
                             testcase = mapper.writeValueAsString(node);
 
-                            List<TestSuiteMin> list_ = build(op, path, postFix + "_" + prop, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, false);
+                            List<TestSuiteMin> list_ = build(op, path, endPoint, postFix + "_" + prop, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
                             buildTestCase(list_.get(0), index++, testcase);
                             list.add(list_.get(0));
                         }

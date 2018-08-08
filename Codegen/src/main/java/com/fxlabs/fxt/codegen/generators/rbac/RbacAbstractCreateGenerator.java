@@ -25,6 +25,7 @@ public class RbacAbstractCreateGenerator extends AbstractGenerator {
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
 
+
         // Only POST
         if (method != io.swagger.models.HttpMethod.POST) {
             return null;
@@ -47,7 +48,7 @@ public class RbacAbstractCreateGenerator extends AbstractGenerator {
 
         String testcase = factory.getValid(model.getReference());
 
-        List<TestSuiteMin> list = build(op, path, POSTFIX, SCENARIO, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH, null, true);
+        List<TestSuiteMin> list = build(op, path, POSTFIX, SCENARIO, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH);
 
         // TODO - if Security required
 
