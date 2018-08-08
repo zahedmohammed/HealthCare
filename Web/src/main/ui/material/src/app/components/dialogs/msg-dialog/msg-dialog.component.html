@@ -1,13 +1,9 @@
-<div class="page-err1">
-    <div class="err-container">
-        <div class="err">
-            <h3>Wire Logs</h3>
-            <br/>
-            <p style="white-space: pre;">{{data}}</p>
-        </div>
+<h2 mat-dialog-title>Wire Logs</h2>
 
-        <div class="err-body">
-            <button mat-button type="button" color="primary" (click)="dialogRef.close()">Close</button>
-        </div>
-    </div>
-</div>
+<mat-dialog-content class="mat-typography">
+    <p class="fluid-container" style="white-space: pre;">{{data}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="dialogRef.close()">Ok</button>
+</mat-dialog-actions>
