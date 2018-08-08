@@ -28,6 +28,8 @@ public class TestSuite extends BaseEntity {
 
     private String name;
 
+    private String parent;
+
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String description;
