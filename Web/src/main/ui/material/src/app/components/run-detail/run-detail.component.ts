@@ -197,7 +197,7 @@ export class RunDetailComponent implements OnInit {
   showDialog(msg) {
     this.dialog.open(MsgDialogComponent, {
         width:'100%',
-        height:'90%',
+        //height:'90%',
         data: msg
     });
   }

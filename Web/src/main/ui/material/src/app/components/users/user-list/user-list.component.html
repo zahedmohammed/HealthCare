@@ -25,12 +25,17 @@
 <section class="container-fluid with-maxwidth chapter">
         <br>
     <article class="article">
-            <button mat-button color="primary" class="btn-w-md pull-right1"
-                    [routerLink]="['/app/orgs', org.id, 'users', 'new']">
-                <i class="fa fa-plus"></i>
-                New User
-            </button>
-            <p class="text-muted float-right">Total users: {{length}}</p>
+        <div class="row">
+            <div class="col-md-10">
+                <button mat-button color="primary" class="btn-w-md pull-right1" [routerLink]="['/app/orgs', org.id, 'users', 'new']">
+                    <i class="fa fa-plus"></i>
+                    New User
+                </button>
+            </div>
+            <div class="col-md-2">
+                <p class="text-muted float-right">Total users: {{length}}</p>
+            </div>
+        </div>
             <div class="divider divider-sm"></div>
         
         <div class="box box-default table-box mdl-shadow--2dp">

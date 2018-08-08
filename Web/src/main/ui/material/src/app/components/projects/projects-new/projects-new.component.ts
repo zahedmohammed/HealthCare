@@ -183,6 +183,7 @@ export class ProjectsNewComponent implements OnInit {
       }
       this.autoCodeConfig = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
+      this.getEnvByProjectId(this.project.id);
       this.matStepper.next();
     }, error => {
       this.handler.hideLoader();
@@ -202,6 +203,22 @@ export class ProjectsNewComponent implements OnInit {
       this.env = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saved successfully", "");
       this.router.navigate(['/app/projects']);
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+   getEnvByProjectId(id: string) {
+    this.handler.activateLoader();
+    this.projectService.getEnvsByProjectId(id).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      if (results['data'] != null ){
+        this.env  =  results['data'][0];
+      }
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

@@ -27,6 +27,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private AutoCodeConfigConverter autoCodeConfigConverter;
     private AutoCodeGeneratorRepository autoCodeGeneratorRepository;
     private AutoCodeGeneratorConverter autoCodeGeneratorConverter;
+    private EnvironmentRepository environmentRepository;
 
 
     private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
@@ -61,7 +63,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter, ProjectFileService projectFileService,
                               OrgUsersRepository orgUsersRepository, JobRepository jobRepository, AutoCodeConfigConverter autoCodeConfigConverter,
-                              OrgRepository orgRepository, UsersRepository usersRepository,
+                              OrgRepository orgRepository, UsersRepository usersRepository, EnvironmentRepository environmentRepository,
                               GaaSTaskRequestProcessor gaaSTaskRequestProcessor, AutoCodeConfigRepository autoCodeConfigRepository,
                               ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository,
                               AccountService accountService, SystemSettingService systemSettingService, AutoCodeGeneratorRepository autoCodeGeneratorRepository, AutoCodeGeneratorConverter autoCodeGeneratorConverter) {
@@ -83,6 +85,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.autoCodeConfigRepository = autoCodeConfigRepository;
         this.autoCodeConfigConverter = autoCodeConfigConverter;
         this.autoCodeGeneratorRepository = autoCodeGeneratorRepository;
+        this.environmentRepository = environmentRepository;
     }
 
 
@@ -257,6 +260,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             if (request.getAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
                 this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()), null);
             }
+
+            com.fxlabs.fxt.dao.entity.project.Environment environment = new com.fxlabs.fxt.dao.entity.project.Environment();
+            environment.setProjectId(projectResponse.getData().getId());
+            environment.setName("Default");
+            environment.setBaseUrl("<<changeme>>");
+            com.fxlabs.fxt.dao.entity.project.Auth auth = new com.fxlabs.fxt.dao.entity.project.Auth();
+            auth.setName("Default");
+            environment.setAuths(new ArrayList<com.fxlabs.fxt.dao.entity.project.Auth>() {{ add(auth);}});
+            environmentRepository.save(environment);
 
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);

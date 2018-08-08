@@ -48,7 +48,7 @@ public class AutoCodeConfigUtil {
     private static final List<String> DEFAULT_ASSERTIONS = new ArrayList<>();
     private static final TestSuiteCategory DEFAULT_CATEGORY = TestSuiteCategory.Functional;
     private static final TestSuiteSeverity DEFAULT_SEVERITY = TestSuiteSeverity.Major;
-    private static final boolean DEFAULT_INACTIVE = false;
+    private static final boolean DEFAULT_INACTIVE = true;
 
     private static final Map<String, TestSuiteCategory> TYPE_CATEGORY_MAP = new HashMap<>();
 
