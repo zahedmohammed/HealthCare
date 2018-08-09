@@ -32,7 +32,7 @@
     <br/>
     <article class="article">
         <div class="box box-default">
-            <div class="box-body">
+            <div class="box-body ml-4">
 
                 <form [formGroup]="thirdFormGroup">
                     <ng-template matStepLabel>API Environment</ng-template>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
-                                <p> e.g. Dev, Stg, QA, UAT, or Nightly etc
+                                <p class="mt-4"> e.g. Dev, Stg, QA, UAT, or Nightly etc
                                 </p>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
 
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
-                                <p>e.g. https://myapp
+                                <p class="mt-4">e.g. https://myapp
                                 </p>
                             </div>
                         </div>
@@ -94,6 +94,12 @@
                                                 matInput placeholder="Name" autocomplete="off">
                                         <mat-error>Required</mat-error>
                                     </mat-input-container>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p class="mt-4">Note: Every environment should have "Default" and "Invalid_Auth" authentications
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -217,7 +223,7 @@
                                     </div>
                                     <div class="col-md-7">
                                         <div class="callout1 text-muted callout-info1">
-                                            <p>e.g. http://<>/token
+                                            <p class="mt-4">e.g. http://<>/token
                                             </p>
                                         </div>
                                     </div>

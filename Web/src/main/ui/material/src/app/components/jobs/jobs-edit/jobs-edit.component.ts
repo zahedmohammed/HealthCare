@@ -32,7 +32,8 @@ export class JobsEditComponent implements OnInit {
   project: Project = new Project();
   job: Jobs = new Jobs();
   envs: Env;
-  itAccounts: Account[];
+  //itAccounts: Account[];
+  itAccounts: Array<Account> = [];
   notifyAccounts: Account[];
   crons: Cron[] = [
   ];
@@ -40,9 +41,7 @@ export class JobsEditComponent implements OnInit {
 
   regions: string[] = ["FXLabs/US_WEST_1", "FXLabs/US_WEST_2", "FXLabs/US_EAST_1", "FXLabs/US_EAST_2", "FXLabs/EU_WEST_1", "FXLabs/EU_CENTRAL_1", "FXLabs/SA_EAST_1"]
 
-  accountTypes = [
-      '--- Issue-Trackers ---', 'GitHub', 'Jira'
-  ];
+  accountTypes = ['GitHub', 'Jira'];
 
   context: string = "New";
   firstFormGroup: FormGroup;
@@ -63,7 +62,6 @@ export class JobsEditComponent implements OnInit {
       if (this.id) {
         //this.loadProject(this.id);
         this.getEnvs();
-        this.getITAccounts();
         this.getNotifyAccounts();
       }
       if (this.jobId) {
@@ -131,14 +129,19 @@ export class JobsEditComponent implements OnInit {
     });
   }
 
-  getITAccounts() {
+    getITAccountsByAccountType(accountType: string) {
     this.handler.activateLoader();
     this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.itAccounts = results['data'];
+        this.itAccounts = new Array();
+        for (let entry of results['data']) {
+            if(entry.accountType == accountType){
+                this.itAccounts.push(entry);
+            }
+        }
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

@@ -29,7 +29,7 @@
   <br/>
   <article class="article">
     <div class="box box-default">
-      <div class="box-body">
+      <div class="box-body ml-4">
 
         <form [formGroup]="thirdFormGroup">
 
@@ -38,8 +38,8 @@
             <div class="col-md-5">
               <mat-form-field class="full-width">
                 <input required [(ngModel)]="testSuite.name" formControlName="nameCtrl"
-                       matInput placeholder="Test Suite name">
-                <mat-error>Name should be between 3 & 25 characters</mat-error>
+                       matInput placeholder="Test Suite name" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -48,7 +48,7 @@
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input [(ngModel)]="testSuite.endpoint" [ngModelOptions]="{standalone: true}"
-                       matInput placeholder="End Point">
+                       matInput placeholder="End Point" autocomplete="off">
               </mat-input-container>
             </div>
           </div>
@@ -74,7 +74,7 @@
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input  formControlName="id"
-                            matInput placeholder="Id">
+                            matInput placeholder="Id" autocomplete="off">
                   </mat-input-container>
                 </div>
               </div>
@@ -83,7 +83,7 @@
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <textarea  formControlName="body"
-                               matInput placeholder="Body"></textarea>
+                               matInput placeholder="Body" autocomplete="off"></textarea>
                   </mat-input-container>
                 </div>
               </div>
@@ -103,7 +103,7 @@
               <mat-input-container class="full-width">
                           <textarea matInput placeholder="Assertions"
                                     [(ngModel)]='testSuite.assertionsText'
-                                    [ngModelOptions]="{standalone: true}"></textarea>
+                                    [ngModelOptions]="{standalone: true}" autocomplete="off"></textarea>
               </mat-input-container>
             </div>
           </div>
@@ -140,7 +140,7 @@
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input [(ngModel)]="testSuite.description" [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Description">
+                           matInput placeholder="Description" autocomplete="off">
                   </mat-input-container>
                 </div>
               </div>
@@ -179,7 +179,7 @@
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Auth Name">
+                           matInput placeholder="Auth Name" autocomplete="off">
                   </mat-input-container>
                 </div>
               </div>
@@ -190,7 +190,7 @@
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
                     <input [(ngModel)]="testSuite.headers" [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Headers">
+                           matInput placeholder="Headers" autocomplete="off">
                   </mat-input-container>
                 </div>
               </div>
@@ -234,7 +234,7 @@
                   <mat-input-container class="full-width">
                           <textarea matInput placeholder="Tags"
                                     [(ngModel)]='testSuite.tagsText'
-                                    [ngModelOptions]="{standalone: true}"></textarea>
+                                    [ngModelOptions]="{standalone: true}" autocomplete="off"></textarea>
                   </mat-input-container>
                 </div>
               </div>
@@ -245,7 +245,7 @@
                   <mat-input-container class="full-width">
                           <textarea matInput placeholder="Authors"
                                     [(ngModel)]='testSuite.authorsText'
-                                    [ngModelOptions]="{standalone: true}"></textarea>
+                                    [ngModelOptions]="{standalone: true}" autocomplete="off"></textarea>
                   </mat-input-container>
                 </div>
               </div>

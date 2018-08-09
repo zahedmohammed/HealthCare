@@ -58,7 +58,8 @@
                         <div class="col-md-5">
                             <mat-input-container class="full-width">
                                 <input required [(ngModel)]="entry.name" name="name" id="name"
-                                       matInput placeholder="Name">
+                                       matInput placeholder="Name" autocomplete="off">
+                                <mat-error>Required</mat-error>
                             </mat-input-container>
                         </div>
                     </div>
@@ -75,6 +76,7 @@
                                         {{type}}
                                     </mat-option>
                                 </mat-select>
+                                <mat-error>Required</mat-error>
                             </mat-form-field>
                         </div>
                     </div>
