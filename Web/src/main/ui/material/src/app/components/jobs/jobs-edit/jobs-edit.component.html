@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-md-7">
                   <div class="callout1 text-muted callout-info1">
-                    <p> e.g. Dev, Stg, QA, UAT, or Nightly etc
+                    <p class="mt-4"> e.g. Dev, Stg, QA, UAT, or Nightly etc
                     </p>
                   </div>
                 </div>
@@ -136,7 +136,7 @@
                 </div>
                 <div class="col-md-7">
                   <div class="callout1 text-muted callout-info1">
-                    <p>e.g. https://github.com/username/MyApp
+                    <p class="mt-4">e.g. https://github.com/username/MyApp
                     </p>
                   </div>
                 </div>
@@ -147,9 +147,9 @@
                 </label>
                 <div class="col-md-5">
                   <mat-form-field>
-                    <mat-select placeholder="Account Type (Optional)" required [(ngModel)]="entry.accountType"
+                    <mat-select placeholder="Account Type (Optional)" [(ngModel)]="entry.accountType"
                                 name="type" [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let type of accountTypes" [value]="type">
+                      <mat-option *ngFor="let type of accountTypes" [value]="type" (click)="getITAccountsByAccountType(type);">
                         {{type}}
                       </mat-option>
                     </mat-select>
