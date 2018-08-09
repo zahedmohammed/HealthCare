@@ -71,11 +71,7 @@ items: FormArray;
       if (this.id) {
         this.loadProject(this.id);
       }
-        this.env.auths[0] = new Auth();
-        let k:Auth = new Auth();
-        this.env.auths.push(k);
-        this.addItem1(this.env.auths[0]);
-
+        this.addItem();
     });
 
 
@@ -157,33 +153,6 @@ return k;
     });
   }
 
-
-  loadEnv(id: string) {
-    this.handler.activateLoader();
-    this.projectService.getEnvsByProjectId(id).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      var envs = results['data'];
-      for(var i=0;i<envs.length;i++)
-      {
-       let a:any;
-        a=envs[i];
-        if(a!=null)
-        if(this.envId=a.id) this.env=a;
-      }
-     // this.context = this.project.name + " > Edit";
-     let k:Auth = new Auth();
-     if(this.env.auths.length==0) this.env.auths=[k];
-          for(var i=0;i<this.env.auths.length;i++) this.addItem1(this.env.auths[i]);
-
-    }, error => {this.env
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
 removeItem(i: number) {
     // remove address from the list
     const control = <FormArray>this.thirdFormGroup.controls['items'];
@@ -209,12 +178,5 @@ removeItem(i: number) {
       this.handler.error(error);
     });
   }
-
-
-  projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
-  visibilities = ['PRIVATE', 'ORG_PUBLIC'];
-  genPolicies = ['None', 'Create'];
-  dbs = ['MySQL', 'Oracle', 'Postgres', 'SQLServer', 'MongoDB'];
-
 
 }
