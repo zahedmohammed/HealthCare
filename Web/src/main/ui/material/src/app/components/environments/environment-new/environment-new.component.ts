@@ -60,47 +60,26 @@ items: FormArray;
   }
   ngOnInit() {
     this.AppConfig = APPCONFIG;
-    this.getAccountsForProjectPage();
     this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', [Validators.required]],
       urlCtrl:  ['', Validators.required],
      // authTypeCtrl:  ['', Validators.required],
-items: this._formBuilder.array([ this.createItem() ])
+      items: this._formBuilder.array([  ])
     });
     this.route.params.subscribe(params => {
       this.id = params['id'];
       if (this.id) {
         this.loadProject(this.id);
       }
+        this.env.auths[0] = new Auth();
+        let k:Auth = new Auth();
+        this.env.auths.push(k);
+        this.addItem1(this.env.auths[0]);
 
-      this.envId = params['envId'];
-      if (this.envId) {
-        this.loadEnv(this.id);
-      } else{
-let k:Auth = new Auth();
-this.env.auths.push(k);
-this.addItem1(this.env.auths[0]);
-      }
     });
 
 
 
-    /*this.fourthFormGroup = this._formBuilder.group({
-      usernameCtrl:  ['', Validators.required],
-      passwordCtrl:  ['', Validators.required],
-    });
-
-    this.fifthFormGroup = this._formBuilder.group({
-      header1Ctrl:  ['', Validators.required],
-    });
-
-    grantTypeCtrl:  ['', Validators.required],
-      clientIdCtrl:  ['', Validators.required],
-      clientSecretCtrl:  ['', Validators.required],
-      accessTokenUriCtrl:  ['', Validators.required],
-      clientAuthenticationSchemeCtrl:  ['', Validators.required],
-      authorizationSchemeCtrl:  ['', Validators.required],
-      scopeCtrl:  ['', Validators.required]*/
 
   }
 addItem(): void {
@@ -114,29 +93,29 @@ addItem1(obj): void {
 geInfo(obj){
 console.log("sss");
 }
-createItem(): FormGroup {
-  return this._formBuilder.group({
-  accessTokenUri:null,
-authType: [null, Validators.required],
-authorizationScheme:null,
-clientAuthenticationScheme:null,
-clientId:null,
-clientSecret:null,
-grantType:null,
-header_1:null,
-header_2:null,
-header_3:null,
-id:null,
-name:null,
-password:null,
-preEstablishedRedirectUri:null,
-scope:null,
-tokenName:null,
-useCurrentUri:null,
-userAuthorizationUri:null,
-username:null
-  });
-}
+    createItem(): FormGroup {
+        return this._formBuilder.group({
+            accessTokenUri:null,
+            authType: [null, Validators.required],
+            authorizationScheme:null,
+            clientAuthenticationScheme:null,
+            clientId:null,
+            clientSecret:null,
+            grantType:null,
+            header_1:null,
+            header_2:null,
+            header_3:null,
+            id:null,
+            name:null,
+            password:null,
+            preEstablishedRedirectUri:null,
+            scope:null,
+            tokenName:null,
+            useCurrentUri:null,
+            userAuthorizationUri:null,
+            username:null
+        });
+    }
 createItem1(obj:Auth): FormGroup {
   var k= this._formBuilder.group({
   accessTokenUri:'',
@@ -205,90 +184,19 @@ return k;
     });
   }
 
-
-  save(matStepper) {
-    this.matStepper = matStepper;
-    if (this.project.id) {
-        this.update();
-    } else {
-        this.create();
-    }
-  }
-
-  create() {
-    this.handler.activateLoader();
-      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' creating...", "");
-      this.projectService.create(this.project).subscribe(results => {
-        this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-            return;
-        }
-        this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
-        this.project = results['data'];
-        this.matStepper.next();
-        this.getAutoCode();
-    }, error => {
-        this.handler.hideLoader();
-        this.handler.error(error);
-    });
-  }
-
-  update() {
-    console.log(this.project);
-    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saving...", "");
-    this.projectService.update(this.project).subscribe(results => {
-      this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-        return;
-      }
-      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saved successfully", "");
-      this.project = results['data'];
-      this.matStepper.next();
-      this.getAutoCode();
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getAutoCode() {
-    this.projectService.getAutoCodeConfig(this.project.id).subscribe(results => {
-       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-        return;
-      }
-      this.autoCodeConfig = results['data'];
-      console.log(this.autoCodeConfig);
-    });
-  }
-
-  saveAutoCode() {
-    console.log(this.autoCodeConfig);
-    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saving...", "");
-
-    this.projectService.saveAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
-      this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-        return;
-      }
-      this.autoCodeConfig = results['data'];
-      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
-      this.matStepper.next();
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
 removeItem(i: number) {
     // remove address from the list
     const control = <FormArray>this.thirdFormGroup.controls['items'];
     control.removeAt(i);
 }
+
+
   saveEnv(obj) {
-    console.log(this.env);
+    this.env.projectId = this.project.id;
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
-//this.env.auths=this.items.value;
-    this.projectService.updateEnv(this.env, this.project.id).subscribe(results => {
+    this.env.auths=this.items.value;
+
+    this.projectService.saveEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
         if (this.handler.handle(results)) {
         return;
@@ -302,33 +210,6 @@ removeItem(i: number) {
     });
   }
 
-  getAccountsForProjectPage() {
-    this.handler.activateLoader();
-    this.accountService.getAccountByAccountType('PROJECT').subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.accounts = results['data'];
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  setAccount(account){
-     this.project.account.accountType =  account.accountType;
-  }
-
-  openDialog() {
-    const dialogRef = this.dialog.open(RegisterComponent, {
-      width:'50%',
-        height:'65%'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getAccountsForProjectPage();
-    });
-  }
 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
