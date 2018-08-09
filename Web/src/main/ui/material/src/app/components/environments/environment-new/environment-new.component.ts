@@ -203,7 +203,7 @@ removeItem(i: number) {
       }
       this.env = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saved successfully", "");
-      this.router.navigate(['/app/projects']);
+      this.router.navigate(['/app/projects' , this.project.id , 'environments']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
