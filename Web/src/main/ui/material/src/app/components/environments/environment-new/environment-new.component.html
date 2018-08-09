@@ -314,29 +314,24 @@
                                 </div>
                             </div>
                             <!--End For Loop -->
-                            <button mat-button color="primary" class="btn-w-md m-l-27"  (click)="removeItem(i)"
-                            >
-                                <i class="fa fa-minus"></i>
-                                Remove Authentication
-                            </button>
                         </div>
                     </div>
 
                     <div>
                         <mat-card-actions>
-                            <button mat-button color="primary" class="btn-w-md"  (click)="addItem()"
-                            >
+                            <button mat-button color="primary" class="btn-w-md" (click)="addItem()">
                                 <i class="fa fa-plus"></i>
                                 Add Authentication
                             </button>
-                            <button mat-raised-button color="primary"
-                                    class="nav-btn"
-                                    [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"
-                                    (click)="saveEnv(thirdFormGroup);">Create Environment
-                            </button>
-                            <!--"-->
+                            <button mat-button color="primary" class="btn-w-md" (click)="removeItem(i)">
+                                    <i class="fa fa-minus"></i>
+                                    Remove Authentication
+                                </button>
                         </mat-card-actions>
                     </div>
+                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"
+                                (click)="saveEnv(thirdFormGroup);">Create Environment
+                            </button>
                 </form>
 
             </div>
