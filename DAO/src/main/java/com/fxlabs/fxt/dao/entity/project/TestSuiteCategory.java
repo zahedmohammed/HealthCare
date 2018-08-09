@@ -5,7 +5,7 @@ package com.fxlabs.fxt.dao.entity.project;
  */
 public enum TestSuiteCategory {
 
-//    Bug("Bug"),
+    Bug("Bug"),
 //    Use_Case("Use_Case"),
     Functional("Functional"),
 //    Positive("Positive"),
