@@ -34,11 +34,13 @@ constructor(private http: HttpClient) {
 
   advRun(jobId: string, region: string, tags: string, suites: string,categories: string[]) {
    var cat = "";
+   if(categories){
     for (let categorie of categories) {
       console.log(categorie);
        cat = cat + categorie+", " ; 
 
   }
+}
 
     let params = new HttpParams();
     params = params.append('region', region);
