@@ -171,8 +171,8 @@ public class ProjectController {
 
     @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/{projectId}/env/{envId}", method = RequestMethod.DELETE)
-    public Response<Environment> saveEnv(@PathVariable("projectId") String projectId, @PathVariable("envId") String envId) {
-        return environmentService.delete(projectId, envId, SecurityUtil.getOrgId());
+    public Response<Environment> deleteEnv(@PathVariable("projectId") String projectId, @PathVariable("envId") String envId) {
+        return environmentService.delete(envId, SecurityUtil.getCurrentAuditor());
     }
 
 }

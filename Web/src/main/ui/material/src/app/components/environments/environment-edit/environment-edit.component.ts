@@ -83,6 +83,24 @@ items: FormArray;
     });
 
   }
+
+  delete() {
+    var r = confirm("Are you sure you want to delete '" + this.env.name + "'?");
+    if (r == true) {
+      this.projectService.deleteEnv(this.env).subscribe(results => {
+          if (this.handler.handle(results)) {
+            return;
+          }
+          this.snackbarService.openSnackBar("'Environment '" + this.env.name + "' deleted", "");
+           this.router.navigate(['/app/projects', this.id, 'environments']);
+        }, error => {
+          this.handler.hideLoader();
+          this.handler.error(error);
+      });
+
+    }
+  }
+
 addItem(): void {
   this.items = this.thirdFormGroup.get('items') as FormArray;
   this.items.push(this.createItem());
@@ -117,30 +135,30 @@ userAuthorizationUri:null,
 username:null
   });
 }
-createItem1(obj:Auth): FormGroup {
-  var k= this._formBuilder.group({
-  accessTokenUri:'',
-authType: [obj.authType, Validators.required],
-authorizationScheme:obj.authorizationScheme,
-clientAuthenticationScheme:obj.clientAuthenticationScheme,
-clientId:obj.clientId,
-clientSecret:obj.clientSecret,
-grantType:obj.grantType,
-header_1:obj.header_1,
-header_2:obj.header_2,
-header_3:obj.header_3,
-id:obj.id,
-name:obj.name,
-password:obj.password,
-preEstablishedRedirectUri:obj.preEstablishedRedirectUri,
-scope:obj.scope,
-tokenName:obj.tokenName,
-useCurrentUri:obj.useCurrentUri,
-userAuthorizationUri:obj.userAuthorizationUri,
-username:obj.username
-  });
-return k;
-}
+  createItem1(obj:Auth): FormGroup {
+      var k= this._formBuilder.group({
+      accessTokenUri:'',
+    authType: [obj.authType, Validators.required],
+    authorizationScheme:obj.authorizationScheme,
+    clientAuthenticationScheme:obj.clientAuthenticationScheme,
+    clientId:obj.clientId,
+    clientSecret:obj.clientSecret,
+    grantType:obj.grantType,
+    header_1:obj.header_1,
+    header_2:obj.header_2,
+    header_3:obj.header_3,
+    id:obj.id,
+    name:obj.name,
+    password:obj.password,
+    preEstablishedRedirectUri:obj.preEstablishedRedirectUri,
+    scope:obj.scope,
+    tokenName:obj.tokenName,
+    useCurrentUri:obj.useCurrentUri,
+    userAuthorizationUri:obj.userAuthorizationUri,
+    username:obj.username
+      });
+    return k;
+  }
 
 
    loadProject(id: string) {

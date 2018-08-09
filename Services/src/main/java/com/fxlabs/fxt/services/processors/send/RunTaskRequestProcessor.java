@@ -389,7 +389,7 @@ public class RunTaskRequestProcessor {
 
     private Environment findEvn(String projectId, String env) {
 
-        List<Environment> envs = environmentRepository.findByProjectId(projectId);
+        List<Environment> envs = environmentRepository.findByProjectIdAndInactive(projectId, false);
         Environment env_ = null;
         for (Environment environment : envs) {
             if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(env, environment.getName())) {

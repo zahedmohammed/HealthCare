@@ -85,6 +85,10 @@ export class ProjectService {
     return this.http.get(this.envServiceUrl + "/project-id/" +  projectId);
   }
 
+  deleteEnv(env: Env) {
+    return this.http.delete(this.envServiceUrl + "/" + env.id);
+  }
+
  getEnvById(envid:string) {
     return this.http.get(this.envServiceUrl + "/" + envid);
   }

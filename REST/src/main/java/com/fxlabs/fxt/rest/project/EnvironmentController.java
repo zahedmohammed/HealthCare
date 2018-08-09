@@ -2,6 +2,7 @@ package com.fxlabs.fxt.rest.project;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Environment;
+import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.EnvironmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -62,6 +63,5 @@ public class EnvironmentController {
     public Response<Environment> delete(@PathVariable("id") String id) {
         return service.delete(id, com.fxlabs.fxt.rest.base.SecurityUtil.getCurrentAuditor());
     }
-
 
 }

@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Service
 @Transactional
@@ -59,7 +60,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
 
-        List<Environment> environments = environmentRepository.findByProjectId(projectId);
+        List<Environment> environments = environmentRepository.findByProjectIdAndInactive(projectId, false);
 
         if (environments == null || CollectionUtils.isEmpty(environments)) {
             environments = new ArrayList<>();
@@ -116,7 +117,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.Environment> findById(String id, String org) {
-        Optional<Environment> optionalEnvironment = ((EnvironmentRepository) repository).findById(id);
+        Optional<Environment> optionalEnvironment = ((EnvironmentRepository) repository).findByIdAndInactive(id, false);
 
         if (!optionalEnvironment.isPresent()) {
             throw new FxException("Invalid request for Environment");
@@ -223,17 +224,26 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
     }
 
     @Override
-    public Response<com.fxlabs.fxt.dto.project.Environment> delete(String projectId, String envId, String orgId) {
+    public Response<com.fxlabs.fxt.dto.project.Environment> delete(String envId, String userId) {
 
-        Response<List<com.fxlabs.fxt.dto.project.Environment>> environments = findByProjectId(projectId, orgId);
 
-        environments.getData().forEach(env -> {
-            if (StringUtils.equals(env.getId(), envId)) {
-                delete(envId, orgId);
-            }
-        });
+        Response<com.fxlabs.fxt.dto.project.Environment> environment = findById(envId, userId);
 
-        return new Response<>();
+        if (environment.isErrors()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Env"));
+        }
+
+        List<Job> jobs = jobRepository.findByEnvironmentIdAndInactive(envId, false);
+
+        if (!CollectionUtils.isEmpty(jobs)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Environment used by active job(s)"));
+        }
+
+        com.fxlabs.fxt.dto.project.Environment data = environment.getData();
+        data.setInactive(true);
+        environmentRepository.save(converter.convertToEntity(data));
+
+        return environment;
     }
 
 
