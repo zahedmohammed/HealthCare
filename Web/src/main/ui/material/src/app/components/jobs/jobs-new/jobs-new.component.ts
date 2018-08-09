@@ -30,7 +30,8 @@ export class JobsNewComponent implements OnInit {
   project: Project = new Project();
   job: Jobs = new Jobs();
   envs: Env;
-  itAccounts: Account[];
+  //itAccounts: Account[];
+  itAccounts: Array<Account> = [];
   notifyAccounts: Account[];
   entry: Account = new Account();
 
@@ -60,7 +61,6 @@ export class JobsNewComponent implements OnInit {
       if (this.id) {
         this.loadProject(this.id);
         this.getEnvs();
-        this.getITAccounts();
         this.getNotifyAccounts();
       }
     });
@@ -110,19 +110,29 @@ export class JobsNewComponent implements OnInit {
     });
   }
 
-  getITAccounts() {
+
+  getITAccountsByAccountType(accountType: string) {
     this.handler.activateLoader();
     this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.itAccounts = results['data'];
+      //this.itAccounts = results['data'];
+      this.itAccounts = new Array();
+        for (let entry of results['data']) {
+            if(entry.accountType == accountType){
+                this.itAccounts.push(entry);
+            }
+        }
+
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
+
+
 
   getNotifyAccounts() {
     this.handler.activateLoader();

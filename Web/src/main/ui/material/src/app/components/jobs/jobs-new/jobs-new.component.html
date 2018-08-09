@@ -134,7 +134,7 @@
                                   <mat-form-field>
                                       <mat-select placeholder="Account Type (Optional)" required [(ngModel)]="entry.accountType"
                                                   name="type" [ngModelOptions]="{standalone: true}">
-                                          <mat-option *ngFor="let type of accountTypes" [value]="type">
+                                          <mat-option *ngFor="let type of accountTypes" [value]="type" (click)="getITAccountsByAccountType(type);">
                                               {{type}}
                                           </mat-option>
                                       </mat-select>
