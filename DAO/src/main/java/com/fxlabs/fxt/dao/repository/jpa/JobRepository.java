@@ -18,6 +18,8 @@ public interface JobRepository extends JpaRepository<Job, String> {
 
     List<Job> findByIssueTrackerName(String issueTracker);
 
+    List<Job> findByEnvironmentIdAndInactive(String env, boolean inactive);
+
     Long countByProjectIdAndInactive(String project, boolean inactive);
 
     Stream<Job> findByNextFireBetweenAndInactive(Date start, Date end, boolean inative);
