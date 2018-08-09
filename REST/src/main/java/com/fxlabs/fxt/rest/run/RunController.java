@@ -105,10 +105,11 @@ public class RunController {
                              @RequestParam(value = "region", required = false) String region,
                              @RequestParam(value = "tags", required = false) String tags,
                              @RequestParam(value = "env", required = false) String env,
-                             @RequestParam(value = "suites", required = false) String suites) {
+                             @RequestParam(value = "suites", required = false) String suites,
+                             @RequestParam(value = "categories", required = false) String categories) {
 
 
-        return runService.run(id, region, tags, env, suites, SecurityUtil.getCurrentAuditor());
+        return runService.run(id, region, tags, env, suites, categories, SecurityUtil.getCurrentAuditor());
     }
 
 

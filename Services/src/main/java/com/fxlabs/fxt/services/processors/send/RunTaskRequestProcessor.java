@@ -116,6 +116,16 @@ public class RunTaskRequestProcessor {
                     tags = run.getJob().getTags();
                 }
 
+                final List<String> categories;
+                String _categories = run.getAttributes().get(RunConstants.TAGS);
+                if (!StringUtils.isEmpty(_categories)) {
+                    String[] tokens = org.apache.commons.lang3.StringUtils.split(_categories, ",");
+                    categories = Arrays.asList(tokens);
+                } else {
+                    categories = null;
+                }
+
+
                 logger.info("Sending Job [{}] to region [{}]...", run.getJob().getName(), region);
 
                 // TODO - Filter Suites by Overridden-suites, Overridden-Tags, tags.
@@ -124,6 +134,8 @@ public class RunTaskRequestProcessor {
                     list = testSuiteESRepository.findByProjectIdAndNameIn(run.getJob().getProject().getId(), suites);
                 } else if (!CollectionUtils.isEmpty(tags)) {
                     list = testSuiteESRepository.findByProjectIdAndTypeAndTagsIn(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString(), tags);
+                } else if (!CollectionUtils.isEmpty(categories)) {
+                    list = testSuiteESRepository.findByProjectIdAndTypeAndCategoryIn(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString(), categories);
                 } else {
                     list = testSuiteESRepository.findByProjectIdAndType(run.getJob().getProject().getId(), TestSuiteType.SUITE.toString());
                 }

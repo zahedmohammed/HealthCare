@@ -98,7 +98,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
 
     @Override
-    public Response<com.fxlabs.fxt.dto.run.Run> run(String jobId, String region, String tags, String env, String suites, String user) {
+    public Response<com.fxlabs.fxt.dto.run.Run> run(String jobId, String region, String tags, String env, String suites, String categories, String user) {
         Response<com.fxlabs.fxt.dto.run.Run> response = null;
         try {
 
@@ -130,6 +130,10 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             if (StringUtils.isNotEmpty(suites)) {
                 attributes.put(RunConstants.SUITES, suites);
             }
+            if (StringUtils.isNotEmpty(categories)) {
+                attributes.put(RunConstants.CATEGORIES, categories);
+            }
+
             run.setAttributes(attributes);
 
             // Create Task

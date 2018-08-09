@@ -49,7 +49,7 @@ public class JobCronTaskProcessor {
                 }
 
                 //Users users = projectUsers.get(0).getUsers();
-                Response<com.fxlabs.fxt.dto.run.Run> runResponse = runService.run(job.getId(), null, null, null, null, null);
+                Response<com.fxlabs.fxt.dto.run.Run> runResponse = runService.run(job.getId(), null, null, null, null, null,null);
                 if (runResponse.isErrors()) {
                     for (Message m : runResponse.getMessages())
                         logger.warn(m.getValue());

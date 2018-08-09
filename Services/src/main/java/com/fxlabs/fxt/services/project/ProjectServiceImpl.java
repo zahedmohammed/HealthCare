@@ -571,9 +571,28 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             response = new Response<>(AutoCodeConfigServiceUtil.getAutoCodeConfig(converter.convertToDto(optionalProject.get())));
         }
 
+        updateGenerators(response.getData().getGenerators(), AutoCodeConfigServiceUtil.getAutoCodeConfig(null).getGenerators());
         autoCodeConfigConverter.copyAssertionsToText(response.getData());
 
         return response;
+    }
+
+    private void updateGenerators(List<AutoCodeGenerator> projGenerator, List<AutoCodeGenerator> defaultGenerators) {
+
+        for (AutoCodeGenerator gen : defaultGenerators){
+            boolean found = false;
+            for ( AutoCodeGenerator pGen : projGenerator){
+                if (gen.getType().equals(pGen.getType())){
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                projGenerator.add(gen);
+            }
+        }
+
+
     }
 
 

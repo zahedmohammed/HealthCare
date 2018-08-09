@@ -21,7 +21,7 @@ public interface RunService extends GenericService<Run, String> {
 
     Response<List<com.fxlabs.fxt.dto.run.Run>> findByJobIdForSaving(String jobId, String user, Pageable pageable);
 
-    Response<Run> run(String jobId, String region, String tags, String env, String suites, String user);
+    Response<Run> run(String jobId, String region, String tags, String env, String suites, String categories, String user);
 
     Response<List<TestSuiteResponse>> findByRunId(String runId, String user, Pageable pageable);
 

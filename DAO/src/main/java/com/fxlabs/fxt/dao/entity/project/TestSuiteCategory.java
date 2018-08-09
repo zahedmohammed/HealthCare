@@ -5,23 +5,24 @@ package com.fxlabs.fxt.dao.entity.project;
  */
 public enum TestSuiteCategory {
 
-    Bug("Bug"),
-    Use_Case("Use_Case"),
+//    Bug("Bug"),
+//    Use_Case("Use_Case"),
     Functional("Functional"),
-    Positive("Positive"),
+//    Positive("Positive"),
     Negative("Negative"),
-    Weak_Password ("Weak_Password"),
-    Security_UnSecured("Security_UnSecured"),
-    Security_DDOS("Security_DDOS"),
-    Security_XSS("Security_XSS"),
-    Security_SQL_Injection("Security_SQL_Injection"),
+//    Weak_Password ("Weak_Password"),
+//    Security_UnSecured("Security_UnSecured"),
+//    Security_DDOS("Security_DDOS"),
+//    Security_XSS("Security_XSS"),
+//    Security_SQL_Injection("Security_SQL_Injection"),
 
     UnSecured("UnSecured"),
     DDOS("DDOS"),
     XSS_Injection("XSS_Injection"),
     SQL_Injection("SQL_Injection"),
     Log_Forging("Log_Forging"),
-    RBAC("RBAC");
+    RBAC("RBAC"),
+    HelloWorld("HelloWorld");
 
     private final String category;
 
