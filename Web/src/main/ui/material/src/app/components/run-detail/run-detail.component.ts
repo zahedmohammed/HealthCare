@@ -106,7 +106,7 @@ export class RunDetailComponent implements OnInit {
         this.size += this.suites[i].size;
         this.time += this.suites[i].time;
     }*/
-    this.success = this.run.task['totalTests'] / (this.run.task['totalTests'] + this.run.task['failedTests']);
+    this.success = (this.run.task['totalTests'] - this.run.task['failedTests']) / (this.run.task['totalTests']);
     //this.duration = Date.parse(this.run.modifiedDate) - Date.parse(this.run.task.startTime);
   }
 
