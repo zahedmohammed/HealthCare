@@ -139,7 +139,7 @@ public class RunTaskRequestProcessor {
 
                 String orgName_ = null;
                 Optional<Project> projectOptional = projectRepository.findById(_project);
-                if (projectOptional.isPresent()){
+                if (projectOptional.isPresent()) {
                     orgName_ = projectOptional.get().getOrg().getName();
                 }
                 final String orgName = orgName_;
@@ -293,8 +293,11 @@ public class RunTaskRequestProcessor {
 
     private void copyCred(BotTask task, Auth cred, String orgName) {
 
-        task.setAuth(authConverter.convertToDto(cred));
+        if (cred != null && cred.getAuthType() != null && cred.getAuthType() == AuthType.No_Authentication) {
+            return;
+        }
 
+        task.setAuth(authConverter.convertToDto(cred));
 
         //task.setAuthType(cred.getAuthType());
         task.getAuth().setUsername(dataResolver.resolve(cred.getUsername(), orgName));

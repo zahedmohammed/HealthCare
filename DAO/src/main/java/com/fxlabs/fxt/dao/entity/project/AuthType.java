@@ -5,5 +5,5 @@ package com.fxlabs.fxt.dao.entity.project;
  */
 public enum AuthType {
 
-    Basic, BASIC, BasicAuth, OAuth_2_0, Token
+    Basic, BASIC, BasicAuth, OAuth_2_0, Token, No_Authentication
 }

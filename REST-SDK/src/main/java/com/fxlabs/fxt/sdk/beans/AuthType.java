@@ -5,5 +5,5 @@ package com.fxlabs.fxt.sdk.beans;
  */
 public enum AuthType {
 
-    Basic, BASIC, BasicAuth, OAuth_2_0, Token
+    Basic, BASIC, BasicAuth, OAuth_2_0, Token, No_Authentication
 }
