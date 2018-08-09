@@ -777,12 +777,16 @@ public class FxCommandService {
             CredUtils.taskLogger.get().append(BotLogger.LogType.INFO, "", String.format("No suites found in : [%s]", dataFolder.getAbsolutePath()));
             return;
         }
+        Set<String> ignorList = new HashSet<String>();
+        ignorList.add("Fxfile");
+        ignorList.add("RequestMappings");
+        ignorList.add("AutoCodeConfig.yaml");
 
         files.stream().forEach(file -> {
 
             try {
 
-                if (file.getName().contains("Fxfile") || file.getName().contains("RequestMappings")) {
+                if (ignorList.contains(file.getName())) {
                     return;
                 }
                 TestSuite testSuite = null;
