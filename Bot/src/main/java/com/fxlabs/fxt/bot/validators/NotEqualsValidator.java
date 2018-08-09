@@ -27,7 +27,7 @@ public class NotEqualsValidator extends Validator {
     }
 
     protected void validationFailed(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
-        context.setResult("pass");
+        context.setResult("fail");
         String msg = String.format("Assertion [%s] failed, not expecting [%s] but found [%s]", assertion, operand2, operand1);
         //logger.debug(msg);
         context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
