@@ -33,8 +33,15 @@
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
                                         <input required [(ngModel)]="job.name" formControlName="nameCtrl" id="name"
-                                               matInput placeholder="Job name">
+                                               matInput placeholder="Job name" autocomplete="off">
+                                        <mat-error>Required</mat-error>
                                     </mat-input-container>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p> e.g. Dev, Stg, QA, UAT, or Nightly etc
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -43,13 +50,15 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-form-field>
-                                        <mat-select placeholder="Environment"
-                                                    [(ngModel)]="job.environment" [ngModelOptions]="{standalone: true}">
-                                            <mat-option *ngFor="let env of envs" [value]="env">
+                                        <mat-select  placeholder="Environment" required
+                                                    [(ngModel)]="job.environment.id" [ngModelOptions]="{standalone: true}">
+                                            <mat-option *ngFor="let env of envs" [value]="env.id">
                                                 {{env.name}}
                                             </mat-option>
                                         </mat-select>
+                                        <mat-error>Required</mat-error>
                                     </mat-form-field>
+
                                 </div>
                             </div>
 
@@ -57,13 +66,15 @@
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input [(ngModel)]="job.regions" [ngModelOptions]="{standalone: true}" [matAutocomplete]="autoRegions"
+                                        <input required [(ngModel)]="job.regions" [ngModelOptions]="{standalone: true}" [matAutocomplete]="autoRegions"
                                                matInput placeholder="Bot Region">
+                                        <mat-error>Required</mat-error>
                                     </mat-input-container>
                                     <mat-autocomplete #autoRegions="matAutocomplete">
                                         <mat-option *ngFor="let option of regions" [value]="option">
                                             {{option}}
                                         </mat-option>
+
                                     </mat-autocomplete>
                                 </div>
                             </div>
@@ -105,7 +116,7 @@
                               <div class="col-md-5">
                                   <mat-input-container class="full-width">
                                       <input [(ngModel)]="job.issueTracker.url"  [ngModelOptions]="{standalone: true}"
-                                             matInput placeholder="Issue-Tracker URL">
+                                             matInput placeholder="Issue-Tracker URL (Optional)" autocomplete="off">
                                   </mat-input-container>
                               </div>
                               <div class="col-md-7">
@@ -116,12 +127,27 @@
                               </div>
                           </div>
 
-                          <div class="form-group row">
+                          <div class="form-group row" >
                               <label class="col-md-0 control-label">
                               </label>
                               <div class="col-md-5">
                                   <mat-form-field>
-                                      <mat-select placeholder="Credentials"
+                                      <mat-select placeholder="Account Type (Optional)" required [(ngModel)]="entry.accountType"
+                                                  name="type" [ngModelOptions]="{standalone: true}">
+                                          <mat-option *ngFor="let type of accountTypes" [value]="type">
+                                              {{type}}
+                                          </mat-option>
+                                      </mat-select>
+                                  </mat-form-field>
+                              </div>
+                          </div>
+
+                          <div class="form-group row" *ngIf="entry.accountType === 'GitHub' || entry.accountType === 'Jira'">
+                              <label class="col-md-0 control-label">
+                              </label>
+                              <div class="col-md-5">
+                                  <mat-form-field>
+                                      <mat-select placeholder="Credentials (Optional)"
                                                   [(ngModel)]="job.issueTracker.account"  [ngModelOptions]="{standalone: true}">
                                           <mat-option *ngFor="let account of itAccounts" [value]="account.id">
                                               {{account.name}}
@@ -154,19 +180,33 @@
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
                                         <input [(ngModel)]="job.notifications[0].to"  [ngModelOptions]="{standalone: true}"
-                                               matInput placeholder="Emails">
+                                               matInput placeholder="Emails (Optional)" autocomplete="off">
                                     </mat-input-container>
+                                </div>
+                                <div class="col-md-7">
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>e.g. me@company.com, team@company.com etc</p>
                                 </div>
                             </div>
 
+                            </div>
 
+
+
+                            <hr>
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
                                         <input [(ngModel)]="job.notifications[1].channel"  [ngModelOptions]="{standalone: true}"
-                                               matInput placeholder="Slack Channel">
+                                               matInput placeholder="Slack Channel (Optional)">
                                     </mat-input-container>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>e.g. Engineering</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -175,7 +215,7 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-form-field>
-                                        <mat-select placeholder="Slack Credentials"
+                                        <mat-select placeholder="Slack Credentials (Optional)"
                                                     [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
                                             <mat-option *ngFor="let account of notifyAccounts" [value]="account.id">
                                                 {{account.name}}

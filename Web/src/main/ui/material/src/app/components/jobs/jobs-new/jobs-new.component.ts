@@ -32,12 +32,16 @@ export class JobsNewComponent implements OnInit {
   envs: Env;
   itAccounts: Account[];
   notifyAccounts: Account[];
-  crons: Cron[] = [
+  entry: Account = new Account();
+
+    crons: Cron[] = [
   ];
 
   regions: string[] = ["FXLabs/US_WEST_1", "FXLabs/US_WEST_2", "FXLabs/US_EAST_1", "FXLabs/US_EAST_2", "FXLabs/EU_WEST_1", "FXLabs/EU_CENTRAL_1", "FXLabs/SA_EAST_1"]
 
-
+  accountTypes = [
+      '--- Issue-Trackers ---', 'GitHub', 'Jira'
+  ];
   context: string = "New";
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
