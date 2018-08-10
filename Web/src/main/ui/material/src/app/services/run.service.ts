@@ -4,6 +4,7 @@ import { Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/toPromise';
+import { Categories } from '../models/project-autocode-config.model';
 
 @Injectable()
 export class RunService {
@@ -31,12 +32,20 @@ constructor(private http: HttpClient) {
     return this.http.post(this.serviceUrl + "/job/" + jobId, null);
   }
 
-  advRun(jobId: string, region: string, tags: string, suites: string) {
+  advRun(jobId: string, region: string, tags: string, suites: string,categories: string[]) {
+   var cat = "";
+    for (let categorie of categories) {
+      console.log(categorie);
+       cat = cat + categorie+", " ; 
+
+  }
+
     let params = new HttpParams();
     params = params.append('region', region);
     params = params.append('tags', tags);
     params = params.append('suites', suites);
-    console.log("JobId: " + jobId + " Region: " + region);
+    params = params.append('categories',cat);
+    console.log("JobId: " + jobId + " Region: " + region );
     return this.http.post(this.serviceUrl + "/job/" + jobId, null, {params});
   }
 

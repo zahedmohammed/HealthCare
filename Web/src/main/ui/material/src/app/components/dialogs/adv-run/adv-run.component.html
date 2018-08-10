@@ -21,6 +21,20 @@
             </div>
 
             <div class="form-group row">
+                <label class="col-md-4 control-label">Categories </label>
+                <div class="col-md-8">
+                    <mat-form-field>
+                        <mat-select placeholder="Categories" [(ngModel)]="category" name="category" multiple >
+                            <mat-option *ngFor="let categorie of categories" [value]="categorie">
+                                {{categorie}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
                 <label class="col-md-4 control-label">
                     Bot Region
                 </label>

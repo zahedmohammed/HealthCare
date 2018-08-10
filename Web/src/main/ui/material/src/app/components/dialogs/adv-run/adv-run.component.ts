@@ -4,6 +4,7 @@ import {RunService}from '../../../services/run.service';
 import {MatDialogRef,MAT_DIALOG_DATA }from '@angular/material';
 import {RegionsService}from '../../../services/regions.service';
 import {Handler}from '../handler/handler';
+import { Categories } from '../../../models/project-autocode-config.model';
 
 @Component({
   selector: 'app-adv-run',
@@ -22,7 +23,9 @@ export class AdvRunComponent implements OnInit {
   tags_;
   suites;
   newRegion;
-
+  categories: string[]=[];
+  newCategories: string[]=[];
+  category: string[];
   constructor(private regionService: RegionsService, private runService: RunService, private router: Router, private handler: Handler,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AdvRunComponent>
@@ -34,6 +37,8 @@ export class AdvRunComponent implements OnInit {
     this.tags_ = '';//this.data.tags.join(',');
     this.suites = '';
     //alert(this.tags_);
+    this.categories=['HelloWorld','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+    this.newCategories=this.data.category;
   }
 
   get() {
@@ -55,8 +60,12 @@ export class AdvRunComponent implements OnInit {
     if (this.regions) {
       this.newRegion = this.regions['org']['name'] + "/" + this.regions['name'];
     }
-    this.dialogRef.close()
-    this.runService.advRun(this.data.id, this.newRegion, this.tags_, this.suites).subscribe(results => {
+    if(this.category){
+      this.newCategories=this.category['data'];
+
+    }
+     this.dialogRef.close()
+    this.runService.advRun(this.data.id, this.newRegion, this.tags_, this.suites,this.category).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
