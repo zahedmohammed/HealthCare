@@ -24,7 +24,6 @@ export class AdvRunComponent implements OnInit {
   suites;
   newRegion;
   categories: string[]=[];
-  newCategories: string[]=[];
   category: string[];
   constructor(private regionService: RegionsService, private runService: RunService, private router: Router, private handler: Handler,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -38,8 +37,7 @@ export class AdvRunComponent implements OnInit {
     this.suites = '';
     //alert(this.tags_);
     this.categories=['HelloWorld','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
-    this.newCategories=this.data.category;
-  }
+   }
 
   get() {
     this.handler.activateLoader();
@@ -60,11 +58,7 @@ export class AdvRunComponent implements OnInit {
     if (this.regions) {
       this.newRegion = this.regions['org']['name'] + "/" + this.regions['name'];
     }
-    if(this.category){
-      this.newCategories=this.category['data'];
-
-    }
-     this.dialogRef.close()
+      this.dialogRef.close()
     this.runService.advRun(this.data.id, this.newRegion, this.tags_, this.suites,this.category).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
