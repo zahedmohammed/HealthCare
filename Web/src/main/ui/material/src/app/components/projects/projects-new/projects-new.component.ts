@@ -210,9 +210,9 @@ if(obj=='No_Authentication'){
     });
   }
 
-  saveEnv(obj) {
+  saveEnv() {
     console.log(this.env);
-   /* this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
+    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
     this.env.projectId = this.project.id;
     this.projectService.saveEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
@@ -225,7 +225,7 @@ if(obj=='No_Authentication'){
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
-    });*/
+    });
   }
 
    getEnvByProjectId(id: string) {
