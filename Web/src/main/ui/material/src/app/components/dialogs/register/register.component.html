@@ -35,7 +35,7 @@
             <div class="col-md-5">
                 <mat-form-field>
                     <mat-select placeholder="Repository Type" required [(ngModel)]="entry.accountType"
-                                name="type">
+                                name="type" (change)="changeValue(true)">
                         <mat-option *ngFor="let type of accountTypes" [value]="type">
                             {{type}}
                         </mat-option>
@@ -49,7 +49,7 @@
               <!-- Git  Start    -->
               <div class="form-group" *ngIf="entry.accountType === 'Git'">
                   <mat-radio-group class="ui-md-radio-group-inline">
-                      <mat-radio-button color="primary" value="user" name="rad2" checked="checked" (click)="changeValue(true)">Username</mat-radio-button>
+                      <mat-radio-button color="primary" value="user" name="rad2" checked="checked" (click)="changeValue(true)" >Username</mat-radio-button>
                       <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
                   </mat-radio-group>
                   <div *ngIf="isValid; else elseGit" class="row">
@@ -95,7 +95,7 @@
                           <div  class="col-md-5">
                               <mat-input-container class="full-width">
                                <textarea rows="5" [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
-                                matInput type="password" placeholder="Password/Private-Key" required autocomplete="off"></textarea>
+                                matInput placeholder="Private-Key" required autocomplete="off"></textarea>
                                   <mat-error>Required</mat-error>
                               </mat-input-container>
                           </div>
@@ -154,7 +154,7 @@
                       <div  class="col-md-5">
                           <mat-input-container class="full-width">
                       <textarea rows="5" [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
-                                matInput type="password" placeholder="Password/Private-Key" required autocomplete="off"></textarea>
+                                matInput type="password" placeholder="Private-Key" required autocomplete="off"></textarea>
                               <mat-error>Required</mat-error>
                           </mat-input-container>
                       </div>
@@ -208,7 +208,7 @@
                   <div  class="col-md-5">
                       <mat-input-container class="full-width">
                     <textarea required rows="5" [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
-                              matInput type="password" placeholder="Password/Private-Key" autocomplete="off"></textarea>
+                              matInput type="password" placeholder="Private-Key" autocomplete="off"></textarea>
                           <mat-error>Required</mat-error>
                       </mat-input-container>
                   </div>
@@ -232,16 +232,16 @@
                 <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
             </mat-radio-group>
             <div *ngIf="isValid; else elseGitLab" class="row">
-                <label for="accessKey" class="col-md-0 control-label">
+                <label for="gitLabAccessKey" class="col-md-0 control-label">
                 </label>
           <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
               <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
-                  <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="accessKey"
+                  <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="gitLabAccessKey"
                          matInput type="text" placeholder="Username" autocomplete="off">
                   <mat-error>Required</mat-error>
               </mat-input-container>
               <mat-input-container class="full-width">
-                  <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                  <input required [(ngModel)]="entry.secretKey" name="secret" id="gitLabSecret"
                          matInput type="password" placeholder="Password">
                   <mat-error>Required</mat-error>
               </mat-input-container>
@@ -254,10 +254,17 @@
                   </label>
                   <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
                       <mat-input-container class="full-width">
-                          <textarea required rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="secret"
-                                    matInput type="password" placeholder="Password/PrivateKey" autocomplete="off"></textarea>
+                          <textarea required rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="gitLabPrivateKey"
+                                    matInput type="password" placeholder="PrivateKey" autocomplete="off"></textarea>
                           <mat-error>Required</mat-error>
                       </mat-input-container>
+                  </div>
+                  <div class="col-md-7">
+                      <div class="callout1 text-muted callout-info1">
+                          <p>
+                              Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                          </p>
+                      </div>
                   </div>
               </div>
       </ng-template>
@@ -269,19 +276,29 @@
                       <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
                   </mat-radio-group>
                   <div *ngIf="isValid; else elseMicrosoft_TFS_Git" class="row">
-                      <label for="accessKey" class="col-md-0 control-label">
+                      <label for="MsTfsAccessKey" class="col-md-0 control-label">
                       </label>
                       <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
                           <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
-                              <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="accessKey"
+                              <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="MsTfsAccessKey"
                                      matInput type="text" placeholder="Username">
                               <mat-error>Required</mat-error>
                           </mat-input-container>
                           <mat-input-container class="full-width">
-                              <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                              <input required [(ngModel)]="entry.secretKey" name="secret" id="MsTfsSecret"
                                      matInput type="password" placeholder="Password" autocomplete="off">
                               <mat-error>Required</mat-error>
                           </mat-input-container>
+                      </div>
+                      <div class="col-md-7">
+                          <div class="callout1 text-muted callout-info1">
+                              <p>Microsoft TFS access keys
+                                  <a target="_blank"
+                                     href="https://www.visualstudio.com/tfs/">&nbsp;learn more.<i
+                                          class="material-icons"
+                                          style="font-size: 18px;">open_in_new</i></a>
+                              </p>
+                          </div>
                       </div>
                   </div>
               </div>
@@ -291,10 +308,18 @@
                       </label>
                       <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
                           <mat-input-container class="full-width">
-                          <textarea rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="secret"
-                                    matInput type="password" placeholder="Password/PrivateKey" autocomplete="off"></textarea>
+                          <textarea rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="MsTfsPrivate"
+                                    matInput type="password" placeholder="PrivateKey" autocomplete="off"></textarea>
                               <mat-error>Required</mat-error>
                           </mat-input-container>
+                      </div>
+                      <div class="col-md-7">
+                          <div class="callout1 text-muted callout-info1">
+                              <p>
+                                  Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                              </p>
+                          </div>
+
                       </div>
                   </div>
               </ng-template>
@@ -307,16 +332,16 @@
                       <mat-radio-button color="primary" value="ssh" name="rad2" (click)= "changeValue(false)">SSH Key</mat-radio-button>
                   </mat-radio-group>
                   <div *ngIf="isValid; else elseMicrosoft_VSTS_Git" class="row">
-                      <label for="accessKey" class="col-md-0 control-label">
+                      <label for="MsVstcAcessKey" class="col-md-0 control-label">
                       </label>
                       <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
                           <mat-input-container class="full-width" *ngIf="entry.accountType != 'Slack'">
-                              <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="accessKey"
+                              <input required [(ngModel)]="entry.accessKey"  name="accessKey" id="MsVstcAcessKey"
                                      matInput type="text" placeholder="Username" autocomplete="off">
                               <mat-error>Required</mat-error>
                           </mat-input-container>
                           <mat-input-container class="full-width">
-                              <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
+                              <input required [(ngModel)]="entry.secretKey" name="secret" id="MsVstSecret"
                                      matInput type="password" placeholder="Password" autocomplete="off">
                               <mat-error>Required</mat-error>
                           </mat-input-container>
@@ -330,9 +355,17 @@
                       <div  *ngIf="entry.accountType != 'Self_Hosted'" class="col-md-5">
                           <mat-input-container class="full-width">
                           <textarea rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="secret"
-                                    matInput type="password" placeholder="Password/PrivateKey" autocomplete="off"></textarea>
+                                    matInput type="password" placeholder="PrivateKey" autocomplete="off"></textarea>
                               <mat-error>Required</mat-error>
                           </mat-input-container>
+                      </div>
+                      <div class="col-md-7">
+                          <div class="callout1 text-muted callout-info1">
+                              <p>
+                                  Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                              </p>
+                          </div>
+
                       </div>
                   </div>
               </ng-template>

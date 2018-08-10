@@ -52,7 +52,10 @@ export class RegisterComponent implements OnInit{
     this.dialogRef.close();
   }
 
-    changeValue(valid: boolean) {
-        this.isValid = valid;
-    }
+  changeValue(valid: boolean) {
+      this.isValid = valid;
+  }
+
+
+
 }
