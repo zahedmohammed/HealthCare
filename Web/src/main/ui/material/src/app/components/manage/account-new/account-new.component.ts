@@ -19,6 +19,7 @@ export class AccountNewComponent implements OnInit {
   orgs;
   entry: Account = new Account();
   cloudShow: boolean = true;
+  isValid: boolean = true;
   cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
   //accountTypes = [ 'VERSION_CONTROL', 'ISSUE_TRACKER', 'CLOUD', 'NOTIFICATION'];
   accountTypes = [
@@ -69,5 +70,9 @@ export class AccountNewComponent implements OnInit {
   }
 
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
+
+    changeValue(valid: boolean) {
+        this.isValid = valid;
+    }
 
 }
