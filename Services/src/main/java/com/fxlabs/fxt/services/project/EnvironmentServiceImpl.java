@@ -1,9 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.EnvironmentConverter;
-import com.fxlabs.fxt.converters.project.JobConverter;
 import com.fxlabs.fxt.converters.project.ProjectConverter;
-import com.fxlabs.fxt.dao.entity.project.Auth;
 import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.entity.project.JobNotification;
@@ -12,19 +10,19 @@ import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.JobIssueTracker;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -54,21 +52,21 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
 
     @Override
-    public Response<List<com.fxlabs.fxt.dto.project.Environment>> findByProjectId(String projectId, String orgId) {
+    public Response<List<com.fxlabs.fxt.dto.project.Environment>> findByProjectId(String projectId, String orgId, PageRequest pageable) {
         Response<Project> optionalProject = projectService.findById(projectId, orgId);
         if (optionalProject.isErrors() || optionalProject.getData() == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
 
-        List<Environment> environments = environmentRepository.findByProjectIdAndInactive(projectId, false);
+        Page<Environment> page = environmentRepository.findByProjectIdAndInactive(projectId, false, pageable);
 
-        if (environments == null || CollectionUtils.isEmpty(environments)) {
-            environments = new ArrayList<>();
-//            Environment env = new Environment();
-//            env.setAuths(Arrays.asList(new Auth()));
-//            environments.add(env);
-        }
-        return new Response<>(converter.convertToDtos(environments));
+//        if (environments == null || CollectionUtils.isEmpty(environments.getContent())) {
+//            environments = new ArrayList<>();
+////            Environment env = new Environment();
+////            env.setAuths(Arrays.asList(new Auth()));
+////            environments.add(env);
+//        }
+        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
@@ -103,7 +101,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
                 update(env, projectId, org);
             }
         }
-        return findByProjectId(projectId, org);
+        return findByProjectId(projectId, org, new PageRequest(0,20));
     }
 
     @Override

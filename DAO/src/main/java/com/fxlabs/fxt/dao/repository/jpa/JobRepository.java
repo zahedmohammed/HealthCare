@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.repository.jpa;
 
 import com.fxlabs.fxt.dao.entity.project.Job;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,7 +15,9 @@ import java.util.stream.Stream;
  */
 public interface JobRepository extends JpaRepository<Job, String> {
 
-    List<Job> findByProjectIdAndInactive(String project, boolean inactive, Pageable pageable);
+    Page<Job> findByProjectIdAndInactive(String project, boolean inactive, Pageable pageable);
+
+    List<Job> findAllByProjectIdAndInactive(String project, boolean inactive);
 
     List<Job> findByIssueTrackerName(String issueTracker);
 

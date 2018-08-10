@@ -125,7 +125,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Project project = converter.convertToDto(optionalProject.get());
         project.setInactive(true);
-        List<Job> responseJobs = jobRepository.findByProjectIdAndInactive(id, false, PageRequest.of(0, 20, new Sort(Sort.Direction.DESC, "createdDate")));
+        List<Job> responseJobs = jobRepository.findAllByProjectIdAndInactive(id, false);
         for (Job job : responseJobs) {
             job.setInactive(true);
         }

@@ -147,8 +147,10 @@ public class ProjectController {
 
     @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/{projectId}/env", method = RequestMethod.GET)
-    public Response<List<Environment>> getEnvs(@PathVariable("projectId") String projectId) {
-        return environmentService.findByProjectId(projectId, SecurityUtil.getOrgId());
+    public Response<List<Environment>> getEnvs(@PathVariable("projectId") String projectId,
+                                               @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                               @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return environmentService.findByProjectId(projectId, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
