@@ -117,7 +117,7 @@ public class RunTaskRequestProcessor {
                 }
 
                 final List<String> categories;
-                String _categories = run.getAttributes().get(RunConstants.TAGS);
+                String _categories = run.getAttributes().get(RunConstants.CATEGORIES);
                 if (!StringUtils.isEmpty(_categories)) {
                     String[] tokens = org.apache.commons.lang3.StringUtils.split(_categories, ",");
                     categories = Arrays.asList(tokens);

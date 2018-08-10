@@ -45,7 +45,7 @@ public class TestSuite extends BaseEntity {
     private String auth;
 
     @Enumerated(EnumType.STRING)
-    private TestSuiteCategory category = TestSuiteCategory.Bug;
+    private TestSuiteCategory category = TestSuiteCategory.Functional;
 
     @Enumerated(EnumType.STRING)
     private TestSuiteSeverity severity = TestSuiteSeverity.Major;
@@ -87,7 +87,7 @@ public class TestSuite extends BaseEntity {
             this.type = TestSuiteType.SUITE;
         }
         if (category == null) {
-            this.category = TestSuiteCategory.Bug;
+            this.category = TestSuiteCategory.Functional;
         }
         if (severity == null) {
             this.severity = TestSuiteSeverity.Major;
