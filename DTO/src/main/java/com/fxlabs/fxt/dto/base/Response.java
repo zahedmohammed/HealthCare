@@ -21,8 +21,8 @@ public class Response<D> implements Serializable {
     private boolean errors = false;
     private List<Message> messages = new ArrayList<>();
     private D data;
-    private Integer totalPages = 1;
-    private Long totalElements = 1L;
+    private Integer totalPages = 0;
+    private Long totalElements = 0L;
 
     public Response(D data) {
         this.requestId = "None";
