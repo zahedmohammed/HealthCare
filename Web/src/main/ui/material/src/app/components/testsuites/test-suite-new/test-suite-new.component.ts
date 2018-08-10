@@ -101,12 +101,12 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
         return;
       }
       this.project = results['data'];
-this.testSuite.type='ABSTRACT';
-this.testSuite.method='POST';
-this.testSuite.category='Functional';
-this.testSuite.severity='Major';
-this.testSuite.inactive=false;
-this.testSuite.auth='Default';
+      this.testSuite.type='SUITE';
+      this.testSuite.method='POST';
+      this.testSuite.category='Functional';
+      this.testSuite.severity='Major';
+      this.testSuite.inactive=false;
+      this.testSuite.auth='Default';
 
       this.testSuite.project=this.project;
 
