@@ -267,8 +267,7 @@ export class ProjectsNewComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(RegisterComponent, {
-      width:'50%',
-        height:'65%'
+      width:'800px'
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getAccountsForProjectPage();

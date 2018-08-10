@@ -286,8 +286,7 @@ env.auths.push({});
 
   openDialog(): void {
     const dialogRef = this.dialog.open(RegisterComponent, {
-      width:'50%',
-        height:'85%'
+      width:'800px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
