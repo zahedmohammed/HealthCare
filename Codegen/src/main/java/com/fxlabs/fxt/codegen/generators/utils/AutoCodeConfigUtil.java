@@ -68,7 +68,7 @@ public class AutoCodeConfigUtil {
         TYPE_CATEGORY_MAP.put("null_value", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("empty_value", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("create", TestSuiteCategory.Functional);
-        TYPE_CATEGORY_MAP.put("no_params", TestSuiteCategory.HelloWorld);
+        TYPE_CATEGORY_MAP.put("no_params", TestSuiteCategory.SimpleGET);
 
     }
 

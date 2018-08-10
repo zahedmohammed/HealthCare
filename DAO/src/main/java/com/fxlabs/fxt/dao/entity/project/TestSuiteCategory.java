@@ -22,7 +22,8 @@ public enum TestSuiteCategory {
     SQL_Injection("SQL_Injection"),
     Log_Forging("Log_Forging"),
     RBAC("RBAC"),
-    HelloWorld("HelloWorld");
+    HelloWorld("HelloWorld"),
+    SimpleGET("SimpleGET");
 
     private final String category;
 

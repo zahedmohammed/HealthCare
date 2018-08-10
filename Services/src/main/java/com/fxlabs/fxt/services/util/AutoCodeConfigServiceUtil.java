@@ -408,8 +408,8 @@ public class AutoCodeConfigServiceUtil {
         no_params_get.setSeverity(TestSuiteSeverity.Major);
         no_params_get.setType("no_params");
 
-        no_params_get.setDisplayHeaderLabel("Hello World");
-        no_params_get.setDisplayHeaderDescription("Hello world is a suite to test the simple GET APIs with no query or path params.");
+        no_params_get.setDisplayHeaderLabel("Simple GET");
+        no_params_get.setDisplayHeaderDescription("Simple GET is a suite to test the plain GET APIs with no query or path params.");
         no_params_get.setAssertionDescription("Successful test suite response code is 200. UnSuccessful test suite response code is anything other than 200.");
 
 
@@ -443,7 +443,7 @@ public class AutoCodeConfigServiceUtil {
         TYPE_CATEGORY_MAP.put("null_value", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("empty_value", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("create", TestSuiteCategory.Functional);
-        TYPE_CATEGORY_MAP.put("no_params", TestSuiteCategory.HelloWorld);
+        TYPE_CATEGORY_MAP.put("no_params", TestSuiteCategory.SimpleGET);
 
     }
 
