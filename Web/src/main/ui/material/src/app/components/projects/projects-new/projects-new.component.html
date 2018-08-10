@@ -316,10 +316,10 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-form-field>
-                                        <mat-select placeholder="Authentication Type" required
+                                        <mat-select placeholder="Authentication Type" required (selectionChange)="setAuthType($event.value)"
                                                     [(ngModel)]="env.auths[0].authType" formControlName="authTypeCtrl"
                                                     name="type">
-                                            <mat-option *ngFor="let type of authTypes" [value]="type">
+                                            <mat-option (click)="setAuthType(type)" *ngFor="let type of authTypes" [value]="type">
                                                 {{type}}
                                             </mat-option>
                                         </mat-select>
@@ -540,10 +540,10 @@
                                 <mat-card-actions>
                                     <button mat-raised-button color="primary"
                                             class="nav-btn"
-                                            [disabled]="thirdFormGroup.invalid"
-                                            (click)="saveEnv();">Save & Complete
+                                           [disabled]="thirdFormGroup.invalid"
+                                            (click)="saveEnv(thirdFormGroup);">Save & Complete
                                     </button>
-                                </mat-card-actions>
+                                </mat-card-actions><!-- -->
                                 <button mat-button matStepperPrevious>Back</button>
                             </div>
                         </form>

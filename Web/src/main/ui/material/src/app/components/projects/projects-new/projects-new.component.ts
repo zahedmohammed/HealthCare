@@ -81,8 +81,8 @@ export class ProjectsNewComponent implements OnInit {
           nameCtrl: ['', [Validators.required]],
           urlCtrl:  ['', Validators.required],
           authTypeCtrl:  ['', Validators.required],
-          usernameCtrl: ['', Validators.required],
-          pswCtrl:['', Validators.required]
+          usernameCtrl: [''],
+          pswCtrl:['']
       });
 
     /*this.fourthFormGroup = this._formBuilder.group({
@@ -102,6 +102,22 @@ export class ProjectsNewComponent implements OnInit {
       clientAuthenticationSchemeCtrl:  ['', Validators.required],
       authorizationSchemeCtrl:  ['', Validators.required],
       scopeCtrl:  ['', Validators.required]*/
+
+  }
+  setAuthType(obj){
+    this.env.auths[0].authType=obj;
+if(obj=='No_Authentication'){
+  this.thirdFormGroup.controls["pswCtrl"].setValidators([]);
+  this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
+  this.thirdFormGroup.controls["usernameCtrl"].setValidators([]);
+  this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
+}else {
+  this.thirdFormGroup.controls["pswCtrl"].setValidators([Validators.required]);
+  this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
+  this.thirdFormGroup.controls["usernameCtrl"].setValidators([Validators.required]);
+  this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
+ 
+}
 
   }
    loadProject(id: string) {
@@ -194,9 +210,9 @@ export class ProjectsNewComponent implements OnInit {
     });
   }
 
-  saveEnv() {
+  saveEnv(obj) {
     console.log(this.env);
-    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
+   /* this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
     this.env.projectId = this.project.id;
     this.projectService.saveEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
@@ -209,7 +225,7 @@ export class ProjectsNewComponent implements OnInit {
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
-    });
+    });*/
   }
 
    getEnvByProjectId(id: string) {
