@@ -83,7 +83,11 @@
                             <div class="form-group row">
                                 <label  class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
-                                    <span >{{i+1}}# Authentication.... </span>
+                                    <span >{{i+1}}# Authentication.... 
+                                        <button style="min-width: auto;" mat-button class="btn-w-md" (click)="removeItem(i)">
+                                            <i class="fa fa-trash" style="font-size: 20px;"></i>
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -322,16 +326,15 @@
                             <button mat-button color="primary" class="btn-w-md" (click)="addItem()">
                                 <i class="fa fa-plus"></i>
                                 Add Authentication
+                            </button><br>
+                            <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"
+                                (click)="saveEnv(thirdFormGroup);">Create Environment
                             </button>
-                            <button mat-button color="primary" class="btn-w-md" (click)="removeItem(i)">
-                                    <i class="fa fa-minus"></i>
-                                    Remove Authentication
+                            <button mat-button class="nav-btn" [routerLink]="['/app/projects', id, 'environments']">Cancel
                                 </button>
                         </mat-card-actions>
                     </div>
-                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"
-                                (click)="saveEnv(thirdFormGroup);">Create Environment
-                            </button>
+                    
                 </form>
 
             </div>
