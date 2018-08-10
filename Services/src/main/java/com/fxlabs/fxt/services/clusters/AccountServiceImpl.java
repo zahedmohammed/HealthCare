@@ -144,14 +144,14 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 break;
             case GitHub:
             case BitBucket:
-                if (StringUtils.isEmpty(dto.getAccessKey()) && StringUtils.isEmpty(dto.getSecretKey())) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account details for Version Control access"));
-                }
-                break;
             case Git:
             case GitLab:
             case Microsoft_TFS_Git:
             case Microsoft_VSTS_Git:
+                if (StringUtils.isEmpty(dto.getAccessKey()) && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account details for Version Control access"));
+                }
+                break;
             case Jira:
             case AWS:
                 if (StringUtils.isEmpty(dto.getAccessKey())) {
