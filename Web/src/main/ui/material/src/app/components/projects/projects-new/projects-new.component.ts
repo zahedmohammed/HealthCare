@@ -1,22 +1,22 @@
-import { RegisterComponent } from './../../dialogs/register/register.component';
-import { Component, OnInit, Inject } from '@angular/core';
-import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
-import { ProjectService } from '../../../services/project.service';
-import { OrgService } from '../../../services/org.service';
-import { JobsService } from '../../../services/jobs.service';
-import { AccountService } from '../../../services/account.service';
-import { Account } from '../../../models/account.model';
-import { Project } from '../../../models/project.model';
-import { AutoCodeConfig } from '../../../models/project-autocode-config.model';
-import { Env, Auth } from '../../../models/project-env.model';
-import { Job } from '../../../models/project-job.model';
-import { OrgUser } from '../../../models/org.model';
-import { Handler } from '../../dialogs/handler/handler';
-import { APPCONFIG } from '../../../config';
-import { MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { SnackbarService } from '../../../services/snackbar.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material';
+import{RegisterComponent}from'./../../dialogs/register/register.component';
+import { Component, OnInit, Inject}from '@angular/core';
+import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
+import {ProjectService}from '../../../services/project.service';
+import {OrgService }from '../../../services/org.service';
+import {JobsService}from '../../../services/jobs.service';
+import {AccountService}from '../../../services/account.service';
+import {Account} from '../../../models/account.model';
+import {Project}from '../../../models/project.model';
+import {AutoCodeConfig}from '../../../models/project-autocode-config.model';
+import {Env, Auth }from '../../../models/project-env.model';
+import {Job}from '../../../models/project-job.model';
+import {OrgUser}from '../../../models/org.model';
+import {Handler} from '../../dialogs/handler/handler';
+import {APPCONFIG} from '../../../config';
+import {MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA}from '@angular/material';
+import {SnackbarService} from '../../../services/snackbar.service';
+import {FormBuilder, FormGroup, Validators}from '@angular/forms';
+import {MatStepper} from '@angular/material';
 
 @Component({
   selector: 'app-projects-new',
@@ -67,23 +67,26 @@ export class ProjectsNewComponent implements OnInit {
         this.loadProject(this.id);
       }
     });
-    this.env.auths[0] = new Auth();
-      this.firstFormGroup = this._formBuilder.group({
-          nameCtrl: ['', Validators.required],
-          urlCtrl: ['', Validators.required],
-          typeCtrl: ['', Validators.required ]
-      });
-      this.secondFormGroup = this._formBuilder.group({
-          openAPISpec: ['', Validators.required]
-      });
 
-      this.thirdFormGroup = this._formBuilder.group({
-          nameCtrl: ['', [Validators.required]],
-          urlCtrl:  ['', Validators.required],
-          authTypeCtrl:  ['', Validators.required],
-          usernameCtrl: [''],
-          pswCtrl:['']
-      });
+    this.env.auths[0] = new Auth();
+    this.env.auths[0].name = "Default";
+
+    this.firstFormGroup = this._formBuilder.group({
+      nameCtrl: ['', Validators.required],
+      urlCtrl: ['', Validators.required],
+      typeCtrl: ['', Validators.required ]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      openAPISpec: ['', Validators.required]
+    });
+
+    this.thirdFormGroup = this._formBuilder.group({
+      nameCtrl: ['', [Validators.required]],
+      urlCtrl:  ['', Validators.required],
+      authTypeCtrl:  ['', Validators.required],
+      usernameCtrl: [''],
+      pswCtrl:['']
+    });
 
     /*this.fourthFormGroup = this._formBuilder.group({
       authNameCtrl:  ['', Validators.required],
@@ -106,18 +109,18 @@ export class ProjectsNewComponent implements OnInit {
   }
   setAuthType(obj){
     this.env.auths[0].authType=obj;
-if(obj=='No_Authentication'){
-  this.thirdFormGroup.controls["pswCtrl"].setValidators([]);
-  this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
-  this.thirdFormGroup.controls["usernameCtrl"].setValidators([]);
-  this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
-}else {
-  this.thirdFormGroup.controls["pswCtrl"].setValidators([Validators.required]);
-  this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
-  this.thirdFormGroup.controls["usernameCtrl"].setValidators([Validators.required]);
-  this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
- 
-}
+    if(obj=='No_Authentication'){
+      this.thirdFormGroup.controls["pswCtrl"].setValidators([]);
+      this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
+      this.thirdFormGroup.controls["usernameCtrl"].setValidators([]);
+      this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
+    }else {
+      this.thirdFormGroup.controls["pswCtrl"].setValidators([Validators.required]);
+      this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
+      this.thirdFormGroup.controls["usernameCtrl"].setValidators([Validators.required]);
+      this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
+
+    }
 
   }
    loadProject(id: string) {

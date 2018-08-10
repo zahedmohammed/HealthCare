@@ -46,15 +46,31 @@
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
                                         <input required [(ngModel)]="project.url" formControlName="urlCtrl" id="repo"
-                                               matInput placeholder="Repository URL"  autocomplete="off">
+                                               matInput placeholder="Git Repository URL" autocomplete="off">
                                         <mat-error>Required</mat-error>
                                     </mat-input-container>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
-                                        <p class="mt-4">e.g. https://github.com/username/MyApp.git or
-                                            git@github.com:username/MyApp.git.
-                                        </p>
+                                        <div class="mt-4">
+                                            e.g. 'https://github.com/username/MyApp' or 'git@github.com:username/MyApp.git' if using SSH <br/><br/>
+                                            <a href="javascript:;">Why Git Repository?</a><br/>
+                                            <ul>
+                                                <li>FX treats tests as code</li>
+                                                <li>FX automatically creates and checks-in the security & functional
+                                                    tests
+                                                    into
+                                                    your test repository
+                                                </li>
+                                                <li>Your developers can update and add new tests in the same test
+                                                    repository
+                                                </li>
+                                                <li>FX needs a brand new (initialized) repository. Note this is not your
+                                                    app's
+                                                    source code repository
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -63,29 +79,31 @@
                                 <label class="col-md-0 control-label">
                                 </label>
                                 <div class="col-md-5">
-                                    <mat-form-field>
-                                        <mat-select placeholder="Repository Credentials" required
+                                    <mat-input-container class="full-width">
+                                        <mat-select placeholder="Git Repository Credentials" required
                                                     [(ngModel)]="project.account.id" formControlName="typeCtrl">
                                             <mat-option *ngFor="let account of accounts" [value]="account.id">
                                                 {{account.name}} ({{account.accountType}})
                                             </mat-option>
                                         </mat-select>
                                         <mat-error>Required</mat-error>
-                                    </mat-form-field>
+                                    </mat-input-container>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
                                         <p>
                                             <a href="javascript:;" (click)="openDialog()">New credentials</a>
                                             <br/>
-                                            Credentials are required for automatic test creation and check-in.
+                                            A user with read/write access to the test repository. <br/>
+                                            Note: You can create a new 'FX' user with read/write access to the test
+                                            repository.
                                         </p>
                                     </div>
                                 </div>
                             </div>
-
+                            <br/>
                             <div>
-                                <mat-card-actions>
+                                <mat-card-actions class="pull-right">
                                     <button mat-raised-button color="primary"
                                             class="nav-btn"
                                             [disabled]="firstFormGroup.invalid"
@@ -157,7 +175,7 @@
                                                 <div *ngIf="res.type === 'sql_injection'">
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <mat-form-field>
+                                                            <mat-form-field class="full-width">
                                                                 <mat-select placeholder="Database Type" required
                                                                             [(ngModel)]="res.database.name"
                                                                             [ngModelOptions]="{standalone: true}"
@@ -233,7 +251,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <mat-checkbox [(ngModel)]="res.inactive"
-                                                                      [ngModelOptions]="{standalone: true}" color="primary">Skip
+                                                                      [ngModelOptions]="{standalone: true}"
+                                                                      color="primary">Skip
                                                         </mat-checkbox>
                                                     </div>
                                                 </div>
@@ -248,14 +267,14 @@
                             </div>
 
                             <div>
-                                <mat-card-actions>
+                                <mat-card-actions class="pull-right">
+                                    <button mat-button matStepperPrevious>Back</button>&nbsp;
                                     <button mat-raised-button color="primary"
                                             class="nav-btn"
                                             [disabled]="secondFormGroup.invalid"
                                             (click)="saveAutoCode();">Generate & Next
                                     </button>
                                 </mat-card-actions>
-                                <button mat-button matStepperPrevious>Back</button>
                             </div>
                         </form>
                     </mat-step>
@@ -300,26 +319,29 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label  class="col-md-0 control-label"></label>
+                            <!--<div class="form-group row">
+                                <label class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input required  [(ngModel)]="env.auths[0].name" disabled [ngModelOptions]="{standalone: true}"
-                                                matInput placeholder="Auth Name">
+                                        <input required [(ngModel)]="env.auths[0].name" disabled
+                                               [ngModelOptions]="{standalone: true}"
+                                               matInput placeholder="Auth Name">
                                         <mat-error>Required</mat-error>
                                     </mat-input-container>
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="form-group row">
                                 <label class="col-md-0 control-label">
                                 </label>
                                 <div class="col-md-5">
-                                    <mat-form-field>
-                                        <mat-select placeholder="Authentication Type" required (selectionChange)="setAuthType($event.value)"
+                                    <mat-form-field class="full-width">
+                                        <mat-select placeholder="Authentication Type" required
+                                                    (selectionChange)="setAuthType($event.value)"
                                                     [(ngModel)]="env.auths[0].authType" formControlName="authTypeCtrl"
                                                     name="type">
-                                            <mat-option (click)="setAuthType(type)" *ngFor="let type of authTypes" [value]="type">
+                                            <mat-option (click)="setAuthType(type)" *ngFor="let type of authTypes"
+                                                        [value]="type">
                                                 {{type}}
                                             </mat-option>
                                         </mat-select>
@@ -333,7 +355,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input required [(ngModel)]="env.auths[0].username" formControlName="usernameCtrl"
+                                            <input required [(ngModel)]="env.auths[0].username"
+                                                   formControlName="usernameCtrl"
                                                    matInput placeholder="Username">
                                             <mat-error>Required</mat-error>
                                         </mat-input-container>
@@ -344,7 +367,8 @@
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input required type="password" [(ngModel)]="env.auths[0].password" formControlName="pswCtrl"
+                                            <input required type="password" [(ngModel)]="env.auths[0].password"
+                                                   formControlName="pswCtrl"
                                                    matInput placeholder="Password">
                                             <mat-error>Required</mat-error>
                                         </mat-input-container>
@@ -358,7 +382,7 @@
                                     <label class="col-md-0 control-label">
                                     </label>
                                     <div class="col-md-5">
-                                        <mat-form-field>
+                                        <mat-form-field class="full-width">
                                             <mat-select placeholder="Authentication Type"
                                                         [(ngModel)]="env.auths[0].grantType"
                                                         [ngModelOptions]="{standalone: true}"
@@ -458,7 +482,7 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
-                                        <mat-form-field>
+                                        <mat-form-field class="full-width">
                                             <mat-select placeholder="Client Authentication Scheme"
                                                         [(ngModel)]="env.auths[0].clientAuthenticationScheme"
                                                         [ngModelOptions]="{standalone: true}"
@@ -474,7 +498,7 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
-                                        <mat-form-field>
+                                        <mat-form-field class="full-width">
                                             <mat-select placeholder="Authorization Scheme"
                                                         [(ngModel)]="env.auths[0].authorizationScheme"
                                                         [ngModelOptions]="{standalone: true}"
@@ -490,7 +514,7 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
-                                        <mat-form-field>
+                                        <mat-form-field class="full-width">
                                             <mat-select placeholder="Scope"
                                                         [(ngModel)]="env.auths[0].scope"
                                                         [ngModelOptions]="{standalone: true}"
@@ -537,17 +561,19 @@
                             </div>
 
                             <div>
-                                <mat-card-actions>
+                                <mat-card-actions class="pull-right">
+                                    <button mat-button matStepperPrevious>Back</button>&nbsp;
                                     <button mat-raised-button color="primary"
                                             class="nav-btn"
-                                           [disabled]="thirdFormGroup.invalid"
+                                            [disabled]="thirdFormGroup.invalid"
                                             (click)="saveEnv();">Save & Complete
                                     </button>
                                 </mat-card-actions><!-- -->
-                                <button mat-button matStepperPrevious>Back</button>
+
                             </div>
                         </form>
                     </mat-step>
+
                 </mat-horizontal-stepper>
 
             </div>
