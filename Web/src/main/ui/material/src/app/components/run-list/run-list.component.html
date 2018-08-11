@@ -43,7 +43,6 @@
             <table class="mdl-data-table">
                 <thead>
                 <tr>
-                    <th class="mdl-data-table__cell--non-numeric">No</th>
                     <th class="mdl-data-table__cell--non-numeric">Region</th>
                     <th class="mdl-data-table__cell--non-numeric">Date</th>
                     <th class="mdl-data-table__cell--non-numeric">Pass/Fail</th>
@@ -52,14 +51,11 @@
                     <th class="mdl-data-table__cell--non-numeric">Total Time</th>
                     <!--<th class="mdl-data-table__cell--non-numeric">Actual Time</th>-->
                     <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    <th class="mdl-data-table__cell--non-numeric">No</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let item of list">
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <!-- <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a> -->
-                        <a href="javascript:;" [routerLink]="['/app/projects' , projectId, 'jobs' , job.id, 'runs', item.id]">#{{item.runId}}</a>
-                    </td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.regions}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>
@@ -73,6 +69,10 @@
                         <span *ngIf="item.task.status == 'COMPLETED'" class="text-success">{{item.task.status}}</span>
                         <span *ngIf="item.task.status != 'COMPLETED' && item.task.status != 'PROCESSING'" class="text-danger">{{item.task.status}}</span>
                         <span *ngIf="item.task.status == 'PROCESSING'" class="text-warning"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{item.task.status}}</span>
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <!-- <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a> -->
+                        <a href="javascript:;" [routerLink]="['/app/projects' , projectId, 'jobs' , job.id, 'runs', item.id]">#{{item.runId}}</a>
                     </td>
                 </tr>
                 </tbody>
