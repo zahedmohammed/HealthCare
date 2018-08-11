@@ -22,26 +22,18 @@
     <div class="container-fluid with-maxwidth chapter">
     
         <article class="article">
-            <div class="row">
-                <div class="col-md-10">
-                    <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/regions/new']">
-                        <i class="fa fa-plus"></i>
-                        New Test Bot
-                    </button>
-                    <span class="space"></span>
-                    <button mat-raised-button color="warn" class="btn-w-md" [routerLink]="['/app/superbotnetwork']">Super-Bot-Network
-                    </button>
-                </div>
-                <div class="col-md-2">
-                    <p class="text-muted float-right">Total ({{length}})</p>
-            
-                </div>
-            </div>
-                <!--[routerLink]="['/app/regions/new']" -->
-                
+            <h2 class="article-title1">
+                <button mat-button color="primary" class="btn-w-md pull-left text-justify" [routerLink]="['/app/regions/new']">
+                    <i class="fa fa-plus"></i>
+                    New Test Bot
+                </button>
+                <button mat-raised-button color="warn" class="btn-w-md pull-left" [routerLink]="['/app/superbotnetwork']">
+                    Super-Bot-Network
+                </button>
+                <p class="text-muted float-right">Total ({{length}})</p>
                 <div class="divider divider-sm"></div>
+            </h2>
             <br/>
-
                 <div class="box box-default table-box mdl-shadow--2dp">
                     <table class="mdl-data-table">
                         <thead>
