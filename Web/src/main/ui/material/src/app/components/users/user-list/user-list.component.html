@@ -23,59 +23,49 @@
         </div> 
     </div>  -->
 <section class="container-fluid with-maxwidth chapter">
-        <br>
     <article class="article">
-        <div class="row">
-            <div class="col-md-10">
-                <button mat-button color="primary" class="btn-w-md pull-right1" [routerLink]="['/app/orgs', org.id, 'users', 'new']">
-                    <i class="fa fa-plus"></i>
-                    New User
-                </button>
-            </div>
-            <div class="col-md-2">
-                <p class="text-muted float-right">Total ({{length}})</p>
-            </div>
-        </div>
+        <h2 class="article-title1">
+            <button mat-button color="primary" class="btn-w-md pull-left text-justify" [routerLink]="['/app/orgs', org.id, 'users', 'new']">
+                <i class="fa fa-plus"></i>
+                New User
+            </button>
+            <p class="text-muted float-right">Total ({{length}})</p>
             <div class="divider divider-sm"></div>
-        
+        </h2>
+        <br/>
+
         <div class="box box-default table-box mdl-shadow--2dp">
             <table class="mdl-data-table">
                 <thead>
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric">Name</th>
-                    <!--<th class="mdl-data-table__cell--non-numeric">Username</th>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">Name</th>
+                        <!--<th class="mdl-data-table__cell--non-numeric">Username</th>
                     <th class="mdl-data-table__cell--non-numeric">Active</th>-->
-                    <th class="mdl-data-table__cell--non-numeric">Role</th>
-                    <th class="mdl-data-table__cell--non-numeric">Status</th>
-                    <th class="mdl-data-table__cell--non-numeric">Create-date</th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                </tr>
+                        <th class="mdl-data-table__cell--non-numeric">Role</th>
+                        <th class="mdl-data-table__cell--non-numeric">Status</th>
+                        <th class="mdl-data-table__cell--non-numeric">Create-date</th>
+                        <th class="mdl-data-table__cell--non-numeric"></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let orgUser of orgUsers">
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id]">{{orgUser.users.name}}</a>
-                    </td>
-                    <!--<td class="mdl-data-table__cell--non-numeric">{{orgUser.users.username}}</td>
+                    <tr *ngFor="let orgUser of orgUsers">
+                        <td class="mdl-data-table__cell--non-numeric">
+                            <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id]">{{orgUser.users.name}}</a>
+                        </td>
+                        <!--<td class="mdl-data-table__cell--non-numeric">{{orgUser.users.username}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{!orgUser.users.inactive}}</td>-->
-                    <td class="mdl-data-table__cell--non-numeric">{{orgUser.orgRole}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{orgUser.status}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{orgUser.createdDate | date:'shortDate'}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;"
-                           [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id, 'password-reset']">Password</a>
-                    </td>
-                </tr>
+                        <td class="mdl-data-table__cell--non-numeric">{{orgUser.orgRole}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{orgUser.status}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{orgUser.createdDate | date:'shortDate'}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id, 'password-reset']">Password</a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
 
-        <mat-paginator [hidden]="length <= pageSize"
-                       [pageSize]="pageSize"
-                       hidePageSize="true"
-                       (page)="change($event)"
-                       [length]="length"
-        >
+        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
         </mat-paginator>
 
     </article>
