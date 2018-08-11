@@ -1,58 +1,58 @@
-
 <h2 mat-dialog-title>{{data.name}}</h2>
 
 <mat-dialog-content class="mat-typography">
-        <form role="form" #heroForm="ngForm">
+    <form role="form" #heroForm="ngForm">
 
-            <div class="form-group row">
-                <label class="col-md-4 control-label">Environment</label>
-                <div class="col-md-8">
-                    <span>{{data.environment?.name}}</span>
-                </div>
+        <div class="form-group row">
+            <label class="col-md-3 control-label">Environment</label>
+            <div class="col-md-8">
+                <span>{{data.environment?.name}}</span>
             </div>
+        </div>
 
-            <div class="form-group row">
-                <label class="col-md-4 control-label">Test Suites</label>
-                <div class="col-md-8">
-                    <mat-input-container>
-                        <input matInput [(ngModel)]="suites" placeholder="comma separated suite names" name="name">
-                    </mat-input-container>
-                </div>
+        <div class="form-group row">
+            <label class="col-md-3 control-label">Test Suites Filter</label>
+            <div class="col-md-8">
+                <mat-input-container class="full-width">
+                    <input matInput [(ngModel)]="suites" placeholder="comma separated test suite names" name="name">
+                </mat-input-container>
             </div>
+        </div>
 
-            <div class="form-group row">
-                <label class="col-md-4 control-label">Categories </label>
-                <div class="col-md-8">
-                    <mat-form-field>
-                        <mat-select placeholder="Categories" [(ngModel)]="category" name="category" multiple >
-                            <mat-option *ngFor="let categorie of categories" [value]="categorie">
-                                {{categorie}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+        <div class="form-group row">
+            <label class="col-md-3 control-label">Category Filter </label>
+            <div class="col-md-8">
+                <mat-form-field class="full-width">
+                    <mat-select placeholder="Filter categories" [(ngModel)]="category" name="category" multiple>
+                        <mat-option *ngFor="let categorie of categories" [value]="categorie">
+                            {{categorie}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
+        </div>
 
 
-            <div class="form-group row">
-                <label class="col-md-4 control-label">
-                    Bot Region
-                </label>
-                <div class="col-md-8">
-                    <mat-form-field>
-                        <mat-select placeholder="{{data.regions}}" [(ngModel)]="regions" name="regions">
-                            <mat-option *ngFor="let region of list" [value]="region">
-                                {{region.org.name}}/{{region.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+        <div class="form-group row">
+            <label class="col-md-3 control-label">
+                Bot Region
+            </label>
+            <div class="col-md-8">
+                <mat-form-field class="full-width">
+                    <mat-select placeholder="{{data.regions}}" [(ngModel)]="regions" name="regions">
+                        <mat-option *ngFor="let region of list" [value]="region">
+                            {{region.org.name}}/{{region.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
+        </div>
 
-        </form>
+    </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" (click)="run();" class="btn-w-md no-margin-left" cdkFocusInitial>Run</button>
+    <button mat-button [mat-dialog-close]="true" (click)="run();" class="btn-w-md no-margin-left" cdkFocusInitial>Run
+    </button>
 </mat-dialog-actions>

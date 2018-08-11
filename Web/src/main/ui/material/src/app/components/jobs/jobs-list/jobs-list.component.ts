@@ -102,7 +102,7 @@ export class JobslistComponent implements OnInit {
 
   advRun(job) {
     const dialogRef = this.dialog.open(AdvRunComponent, {
-        width:'600px',
+        width:'800px',
         //height:'85%',
         data: job
     });
