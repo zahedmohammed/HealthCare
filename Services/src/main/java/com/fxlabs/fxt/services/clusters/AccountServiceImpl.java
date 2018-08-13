@@ -215,16 +215,16 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Data"));
                 }
                 break;
-            case GitHub:
-            case BitBucket:
-                if (StringUtils.isEmpty(dto.getAccessKey()) && StringUtils.isEmpty(dto.getSecretKey())) {
-                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Username/Access-Key and Password/Secret-Key/SS is empty"));
-                }
-                break;
             case Git:
             case GitLab:
             case Microsoft_TFS_Git:
             case Microsoft_VSTS_Git:
+            case GitHub:
+            case BitBucket:
+                if (StringUtils.isEmpty(dto.getAccessKey()) && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid credentials"));
+                }
+                break;
             case Jira:
             case AWS:
                 if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
