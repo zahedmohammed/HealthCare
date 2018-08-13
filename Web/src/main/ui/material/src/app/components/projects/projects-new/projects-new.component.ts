@@ -45,7 +45,7 @@ export class ProjectsNewComponent implements OnInit {
   thirdFormGroup: FormGroup;
 
   authTypes = ['Basic', 'OAuth_2_0' , 'Token', 'No_Authentication'];
-  authTypesgrantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
+  grantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
   schemeTypes = ['form', 'header', 'none', 'query'];
   scopeTypes= ['read', 'write'];
 
@@ -107,14 +107,16 @@ export class ProjectsNewComponent implements OnInit {
       scopeCtrl:  ['', Validators.required]*/
 
   }
+
+
   setAuthType(obj){
     this.env.auths[0].authType=obj;
-    if(obj=='No_Authentication'){
+    if (obj=='No_Authentication' || obj =='OAuth_2_0'|| obj=='Token' ) {
       this.thirdFormGroup.controls["pswCtrl"].setValidators([]);
       this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
       this.thirdFormGroup.controls["usernameCtrl"].setValidators([]);
       this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
-    }else {
+    } else {
       this.thirdFormGroup.controls["pswCtrl"].setValidators([Validators.required]);
       this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
       this.thirdFormGroup.controls["usernameCtrl"].setValidators([Validators.required]);
@@ -123,6 +125,8 @@ export class ProjectsNewComponent implements OnInit {
     }
 
   }
+
+
    loadProject(id: string) {
     this.handler.activateLoader();
     this.projectService.getById(id).subscribe(results => {
