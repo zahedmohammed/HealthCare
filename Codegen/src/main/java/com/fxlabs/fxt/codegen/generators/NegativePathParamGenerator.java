@@ -53,7 +53,8 @@ public class NegativePathParamGenerator extends AbstractGenerator {
                         List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                         for (TestSuiteMin testSuite : testSuites) {
                             String name = pathParam.getName();
-                            path = path.replace("\\{"+name+"\\}" , "-1");
+                            String endPoint = testSuite.getEndpoint();
+                            endPoint = endPoint.replace("\\{"+name+"\\}" , "-1");
                             testSuite.setEndpoint(path );
                         }
                         allTestSuites.addAll(testSuites);
