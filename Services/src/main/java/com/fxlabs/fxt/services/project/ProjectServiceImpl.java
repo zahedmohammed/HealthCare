@@ -261,14 +261,14 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()), null);
             }
 
-            com.fxlabs.fxt.dao.entity.project.Environment environment = new com.fxlabs.fxt.dao.entity.project.Environment();
-            environment.setProjectId(projectResponse.getData().getId());
-            environment.setName("Default");
-            environment.setBaseUrl("<<changeme>>");
-            com.fxlabs.fxt.dao.entity.project.Auth auth = new com.fxlabs.fxt.dao.entity.project.Auth();
-            auth.setName("Default");
-            environment.setAuths(new ArrayList<com.fxlabs.fxt.dao.entity.project.Auth>() {{ add(auth);}});
-            environmentRepository.save(environment);
+//            com.fxlabs.fxt.dao.entity.project.Environment environment = new com.fxlabs.fxt.dao.entity.project.Environment();
+//            environment.setProjectId(projectResponse.getData().getId());
+//            environment.setName("Default");
+//            environment.setBaseUrl("<<changeme>>");
+//            com.fxlabs.fxt.dao.entity.project.Auth auth = new com.fxlabs.fxt.dao.entity.project.Auth();
+//            auth.setName("Default");
+//            environment.setAuths(new ArrayList<com.fxlabs.fxt.dao.entity.project.Auth>() {{ add(auth);}});
+//            environmentRepository.save(environment);
 
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
