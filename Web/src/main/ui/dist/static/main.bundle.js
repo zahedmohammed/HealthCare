@@ -6631,7 +6631,7 @@ var ProjectsNewComponent = (function () {
             }
             _this.autoCodeConfig = results['data'];
             _this.snackbarService.openSnackBar("'Project '" + _this.project.name + "' AutoCode saved successfully", "");
-            _this.getEnvByProjectId(_this.project.id);
+            //this.getEnvByProjectId(this.project.id);
             _this.matStepper.next();
         }, function (error) {
             _this.handler.hideLoader();
