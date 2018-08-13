@@ -300,7 +300,7 @@
                         </label>
                         <div  class="col-md-5">
                             <mat-input-container class="full-width mt-3">
-                                <textarea required [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
+                                <textarea rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
                                           matInput placeholder="Private-Key"></textarea>
                                 <mat-error>Required</mat-error>
                             </mat-input-container>
@@ -361,7 +361,7 @@
                         <div class="col-md-5">
                             <mat-input-container class="full-width mt-3" >
                                 <textarea rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="gitPrivateKey"
-                                          matInput placeholder="PrivateKey" autocomplete="off"></textarea>
+                                          matInput placeholder="Private-Key" autocomplete="off"></textarea>
                                 <mat-error>Required</mat-error>
                             </mat-input-container>
                         </div>
@@ -419,7 +419,7 @@
                             <div class="col-md-5">
                                 <mat-input-container class="full-width mt-3">
                                     <textarea rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="microsoftTfsSecretSsh"
-                                              matInput placeholder="PrivateKey" autocomplete="off"></textarea>
+                                              matInput placeholder="Private-Key" autocomplete="off"></textarea>
                                     <mat-error>Required</mat-error>
                                 </mat-input-container>
                             </div>
@@ -469,7 +469,7 @@
                             <div class="col-md-5">
                                 <mat-input-container class="full-width mt-3">
                                     <textarea rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="microsoftStsSecretSsh"
-                                              matInput placeholder="PrivateKey" autocomplete="off"></textarea>
+                                              matInput placeholder="Private-Key" autocomplete="off"></textarea>
                                     <mat-error>Required</mat-error>
                                 </mat-input-container>
                             </div>
