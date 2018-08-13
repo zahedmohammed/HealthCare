@@ -23,6 +23,11 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
+        // TODO buildTestCase(testSuite)
+        if (method == io.swagger.models.HttpMethod.POST || method == io.swagger.models.HttpMethod.PUT) {
+            return null;
+        }
+
         String endPoint = path;
 
         for (Parameter param : op.getParameters()) {
@@ -30,15 +35,14 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
                 QueryParameter queryParam = (QueryParameter) param;
                 String name = queryParam.getName();
                 String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@RandomInteger}}";
-                endPoint = path.replaceAll("\\{" + name + "\\}", defaultVal);
+                endPoint = endPoint.replaceAll("\\{" + name + "\\}", defaultVal);
             }
             if (param instanceof PathParameter) {
                 PathParameter queryParam = (PathParameter) param;
                 String name = queryParam.getName();
                 String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@Random}}";
-                endPoint = path.replaceAll("\\{"+name+"\\}" , defaultVal);
+                endPoint = endPoint.replaceAll("\\{"+name+"\\}" , defaultVal);
             }
-
         }
 
         Policies policies = null;
@@ -48,10 +52,6 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
 
         // TODO - if Security required
 
-        // TODO buildTestCase(testSuite)
-        if (method == io.swagger.models.HttpMethod.POST || method == io.swagger.models.HttpMethod.PUT) {
-
-        }
 
         return list;
 

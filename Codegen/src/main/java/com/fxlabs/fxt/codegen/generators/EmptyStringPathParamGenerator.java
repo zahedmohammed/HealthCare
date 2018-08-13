@@ -29,28 +29,30 @@ public class EmptyStringPathParamGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        List<TestSuiteMin> allTestSuites = new ArrayList<>();
-        if (method == io.swagger.models.HttpMethod.GET) {
+        return null;
 
-            for (Parameter param : op.getParameters()) {
-                if (!(param instanceof PathParameter)) {
-                    continue;
-                }
-                PathParameter pathParam = (PathParameter) param;
-                if (!"string".equals(pathParam.getType()) || !pathParam.getRequired()) {
-                    continue;
-                }
-                String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + pathParam.getName();
-                List<TestSuiteMin> testSuites = build(op, path, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-
-                for (TestSuiteMin testSuite : testSuites) {
-                    String _path = path.replace("{" + pathParam.getName() + "}", "");
-                    testSuite.setEndpoint(_path);
-                }
-                allTestSuites.addAll(testSuites);
-            }
-        }
-        return allTestSuites;
+//        List<TestSuiteMin> allTestSuites = new ArrayList<>();
+//        if (method == io.swagger.models.HttpMethod.GET) {
+//
+//            for (Parameter param : op.getParameters()) {
+//                if (!(param instanceof PathParameter)) {
+//                    continue;
+//                }
+//                PathParameter pathParam = (PathParameter) param;
+//                if (!"string".equals(pathParam.getType()) || !pathParam.getRequired()) {
+//                    continue;
+//                }
+//                String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + pathParam.getName();
+//                List<TestSuiteMin> testSuites = build(op, path, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+//
+//                for (TestSuiteMin testSuite : testSuites) {
+//                    String _path = path.replace("{" + pathParam.getName() + "}", "");
+//                    testSuite.setEndpoint(_path);
+//                }
+//                allTestSuites.addAll(testSuites);
+//            }
+//        }
+//        return allTestSuites;
 
     }
 }
