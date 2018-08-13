@@ -110,7 +110,7 @@
                                 <label class="col-md-0 control-label">
                                 </label>
                                 <div class="col-md-5">
-                                    <mat-form-field>
+                                    <mat-form-field class="full-width">
                                         <mat-select placeholder="Authentication Type" required
                                                     formControlName="authType"
                                                     name="authType">
@@ -153,7 +153,7 @@
                                     <label class="col-md-0 control-label">
                                     </label>
                                     <div class="col-md-5">
-                                        <mat-form-field>
+                                        <mat-form-field class="full-width">
                                             <mat-select placeholder="grantTypes Type"
                                                         formControlName="grantType"
                                                         name="type">
@@ -246,7 +246,7 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
-                                        <mat-form-field>
+                                        <mat-form-field class="full-width">
                                             <mat-select placeholder="Client Authentication Scheme"
                                                         formControlName="clientAuthenticationScheme"
                                                         name="type">
@@ -261,7 +261,7 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
-                                        <mat-form-field>
+                                        <mat-form-field class="full-width">
                                             <mat-select placeholder="Authorization Scheme"
                                                         formControlName="authorizationScheme"
                                                         name="type">
@@ -276,7 +276,7 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
-                                        <mat-form-field>
+                                        <mat-form-field class="full-width">
                                             <mat-select placeholder="Scope"
                                                         formControlName="scope"
                                                         name="type">
@@ -322,11 +322,11 @@
                     </div>
 
                     <div>
-                        <mat-card-actions>
                             <button mat-button color="primary" class="btn-w-md" (click)="addItem()">
-                                <i class="fa fa-plus"></i>
-                                Add Authentication
-                            </button><br>
+                                    <i class="fa fa-plus"></i>
+                                    Add Authentication
+                                </button>
+                        <mat-card-actions class="pull-right">
                             <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"
                                 (click)="saveEnv(thirdFormGroup);">Create Environment
                             </button>

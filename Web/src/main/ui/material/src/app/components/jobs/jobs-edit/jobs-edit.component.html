@@ -66,7 +66,7 @@
                            matInput placeholder="Environment" autocomplete="off">
                     <mat-error>Required</mat-error>
                   </mat-input-container>
-                  <!--<mat-form-field>-->
+                  <!--<mat-form-field class="full-width">-->
                     <!--<mat-select placeholder="Environment"-->
                                 <!--[(ngModel)]="job.environment" [ngModelOptions]="{standalone: true}">-->
                       <!--<mat-option *ngFor="let env of envs" [value]="env">-->
@@ -110,7 +110,7 @@
               </div>
 
               <div>
-                <mat-card-actions>
+                <mat-card-actions class="pull-right">
                   <button mat-raised-button color="primary"
                           class="nav-btn"
                           [disabled]="firstFormGroup.invalid"
@@ -146,7 +146,7 @@
                 <label class="col-md-0 control-label">
                 </label>
                 <div class="col-md-5">
-                  <mat-form-field>
+                  <mat-form-field class="full-width">
                     <mat-select placeholder="Account Type (Optional)" [(ngModel)]="entry.accountType"
                                 name="type" [ngModelOptions]="{standalone: true}">
                       <mat-option *ngFor="let type of accountTypes" [value]="type" (click)="getITAccountsByAccountType(type);">
@@ -161,7 +161,7 @@
                 <label class="col-md-0 control-label">
                 </label>
                 <div class="col-md-5">
-                  <mat-form-field>
+                  <mat-form-field class="full-width">
                     <mat-select placeholder="Credentials (Optional)"
                                 [(ngModel)]="job.issueTracker.account"  [ngModelOptions]="{standalone: true}">
                       <mat-option *ngFor="let account of itAccounts" [value]="account.id">
@@ -173,7 +173,7 @@
               </div>
 
               <div>
-                <mat-card-actions>
+                <mat-card-actions  class="pull-right">
                   <button mat-raised-button color="primary"
                           class="nav-btn"
                           [disabled]="secondFormGroup.invalid"
@@ -181,7 +181,7 @@
                   >Next
                   </button>
                 </mat-card-actions>
-                <button mat-button matStepperPrevious>Back</button>
+                <button  class="pull-right" mat-button matStepperPrevious>Back</button>
               </div>
             </form>
           </mat-step>
@@ -215,7 +215,7 @@
                 <label class="col-md-0 control-label">
                 </label>
                 <div class="col-md-5">
-                  <mat-form-field>
+                  <mat-form-field class="full-width">
                     <mat-select placeholder="Slack Credentials (Optional)"
                                 [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
                       <mat-option *ngFor="let account of notifyAccounts" [value]="account.id">
@@ -228,7 +228,7 @@
 
               <div>
                 <div>
-                  <mat-card-actions>
+                  <mat-card-actions class="pull-right">
                     <button mat-raised-button color="primary"
                             class="nav-btn"
                             [disabled]="thirdFormGroup.invalid"

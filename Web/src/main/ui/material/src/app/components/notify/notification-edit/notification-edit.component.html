@@ -25,7 +25,7 @@
             <!--<label class="col-md-0 control-label">-->
             <!--</label>-->
             <!--<div class="col-md-5">-->
-              <!--<mat-form-field>-->
+              <!--<mat-form-field class="full-width">-->
                 <!--<mat-select placeholder="Notification Type" disabled required [(ngModel)]="entry.type" name="type">-->
                   <!--<mat-option *ngFor="let type of types" [value]="type">-->
                     <!--{{type}}-->
@@ -52,7 +52,7 @@
             <label class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
-              <mat-form-field>
+              <mat-form-field class="full-width">
                 <mat-select placeholder="Account" required [(ngModel)]="entry.account.id" name="account">
                   <mat-option *ngFor="let account of accounts" [value]="account.id" (click)="setAccount(account);">
                     {{account.name}} ({{account.accountType}})

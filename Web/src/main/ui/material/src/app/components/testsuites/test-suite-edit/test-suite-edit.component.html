@@ -199,7 +199,7 @@
                 </label>
                 <div class="col-md-5">
 
-                  <mat-form-field>
+                  <mat-form-field class="full-width">
                     <mat-select placeholder="Category"
                                 [(ngModel)]="testSuite.category"
                                 name="category" [ngModelOptions]="{standalone: true}">
@@ -215,7 +215,7 @@
                 <label class="col-md-0 control-label">
                 </label>
                 <div class="col-md-5">
-                  <mat-form-field>
+                  <mat-form-field class="full-width">
                     <mat-select placeholder="Severity"
                                 [(ngModel)]="testSuite.severity"
                                 name="severity" [ngModelOptions]="{standalone: true}">
@@ -271,7 +271,7 @@
 
             <div>
 
-              <mat-card-actions>
+              <mat-card-actions class="pull-right">
                 <button mat-raised-button color="primary"
                         class="nav-btn"
                         [disabled]="thirdFormGroup.invalid"
