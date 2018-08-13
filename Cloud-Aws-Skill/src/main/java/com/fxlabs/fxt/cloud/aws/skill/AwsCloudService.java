@@ -424,17 +424,20 @@ public class AwsCloudService implements CloudService {
                 }
             }
         }
+        try {
+            DescribeSubnetsRequest describeSubnetsWithId = new DescribeSubnetsRequest();
 
-        DescribeSubnetsRequest describeSubnetsWithId = new DescribeSubnetsRequest();
+            DescribeSubnetsResult describeSubnetsIdResult = awsService.describeSubnets(describeSubnetsWithId.withSubnetIds(subnet_));
+            List<Subnet> describeSubnetsIdsResult = describeSubnetsIdResult.getSubnets();
 
-        DescribeSubnetsResult describeSubnetsIdResult = awsService.describeSubnets(describeSubnetsWithId.withSubnetIds(subnet_));
-        List<Subnet> describeSubnetsIdsResult = describeSubnetsIdResult.getSubnets();
+            logger.info("Found  [{}] subnets in region [{}] for subnet Id search", describeSubnetsIdResult.getSubnets().size(), getRegion(opts));
 
-        logger.info("Found  [{}] subnets in region [{}] for subnet Id search", describeSubnetsIdResult.getSubnets().size(), getRegion(opts));
-
-        for (Subnet subnet : describeSubnetsIdsResult) {
-            if (subnet.getSubnetId().equals(subnet_))
-                return subnet.getSubnetId();
+            for (Subnet subnet : describeSubnetsIdsResult) {
+                if (subnet.getSubnetId().equals(subnet_))
+                    return subnet.getSubnetId();
+            }
+        } catch (Exception ex) {
+            logger.info("No Subnet found with name [{}]. Searching for default subnet", subnet_);
         }
 
 
