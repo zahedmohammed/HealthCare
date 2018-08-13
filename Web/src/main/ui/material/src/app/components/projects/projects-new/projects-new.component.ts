@@ -209,7 +209,7 @@ export class ProjectsNewComponent implements OnInit {
       }
       this.autoCodeConfig = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
-      this.getEnvByProjectId(this.project.id);
+      //this.getEnvByProjectId(this.project.id);
       this.matStepper.next();
     }, error => {
       this.handler.hideLoader();
