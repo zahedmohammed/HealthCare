@@ -90,7 +90,7 @@ public class ProjectController {
     @Secured(ROLE_PROJECT_MANAGER)
     @RequestMapping(value = "/find-by-name/{name}", method = RequestMethod.GET)
     public Response<Project> findByProjectName(@PathVariable("name") String name) {
-        return projectService.findByOrgAndName(name, SecurityUtil.getOrgId());
+        return projectService.findByOrgAndName(name, SecurityUtil.getOrg().getName());
     }
 
     @Secured(ROLE_PROJECT_MANAGER)
