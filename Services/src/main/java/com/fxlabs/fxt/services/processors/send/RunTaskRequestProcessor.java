@@ -234,6 +234,8 @@ public class RunTaskRequestProcessor {
                 run.getTask().setTotalTests(total.get());
                 runRepository.saveAndFlush(run);
             } catch (Exception ex) {
+                run.getTask().setStatus(TaskStatus.FAIL);
+                runRepository.saveAndFlush(run);
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
 
