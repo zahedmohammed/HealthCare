@@ -437,7 +437,7 @@ public class AwsCloudService implements CloudService {
                     return subnet.getSubnetId();
             }
         } catch (Exception ex) {
-            logger.info("No Subnet found with name [{}]. Searching for default subnet", subnet_);
+            logger.info("No Subnet found with name [{}] in region [{}]. Searching for default subnet", subnet_, getRegion(opts));
         }
 
 
