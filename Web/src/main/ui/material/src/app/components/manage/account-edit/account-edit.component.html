@@ -27,8 +27,16 @@
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.name" name="name" id="name"
-                       matInput placeholder="Name">
+                       matInput placeholder="Name" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
+            </div>
+            <div class="col-md-6">
+              <div class="callout1 text-muted callout-info1">
+                <p class="mt-4">
+                  e.g. Developer-FX
+                </p>
+              </div>
             </div>
           </div>
 
@@ -46,25 +54,46 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="entry.accountType == 'GitLab' || entry.accountType === 'Microsoft_VSTS_Git'">
+          <div class="form-group row" *ngIf="entry.accountType == 'GitLab' && entry.secretKey !=null && entry.accessKey !=null">
             <label for="accessKey" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="accessKey"
-                       matInput type="text" placeholder="Access-Key/Username">
+                       matInput type="text" placeholder="Username" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="entry.accountType == 'GitLab' || entry.accountType === 'Microsoft_VSTS_Git'">
+          <div class="form-group row" *ngIf="entry.accountType == 'GitLab' && entry.secretKey !=null && entry.accessKey !=null">
             <label for="secret" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="secret"
-                       matInput type="password" placeholder="Secret-Key/Password">
+                       matInput type="password" placeholder="Password" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="entry.accountType == 'GitLab' && entry.secretKey !=null && entry.accessKey === null">
+            <label for="secret" class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <textarea required rows="5" [(ngModel)]="entry.secretKey" name="secret" id="GitLabPrivateKey"
+                          matInput type="password" placeholder="Private-Key"></textarea>
+                <mat-error>Required</mat-error>
+              </mat-input-container>
+            </div>
+            <div class="col-md-6">
+              <div class="callout1 text-muted callout-info1">
+                <p>
+                  Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                </p>
+              </div>
             </div>
           </div>
 
@@ -195,13 +224,14 @@
           <!-- AWS  End    -->
 
           <!-- BitBucket  Start    -->
-          <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
+          <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'  && entry.secretKey !=null && entry.accessKey !=null">
             <label for="bitBucketAccessKey" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="bitBucketAccessKey"
-                       matInput type="text" placeholder="Username/Access-Key">
+                       matInput type="text" placeholder="Username" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
             <div class="col-md-7">
@@ -215,13 +245,26 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'">
+          <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'  && entry.secretKey !=null && entry.accessKey !=null">
             <label for="bitBucketSecret" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
-                <textarea [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
-                          matInput type="password" placeholder="Password/Private-Key"></textarea>
+                <input required [(ngModel)]="entry.secretKey" name="secret" id="bitBucketSecret"
+                       matInput type="password" placeholder="Password" autocomplete="off">
+                <mat-error>Required</mat-error>
+              </mat-input-container>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'  && entry.secretKey !=null && entry.accessKey ===null">
+            <label for="bitBucketSecret" class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <textarea required rows="5" [(ngModel)]="entry.secretKey" name="secret" id="bitBucketPrivateKey"
+                          matInput type="password" placeholder="Private-Key"></textarea>
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
               <div class="col-md-7">
@@ -234,13 +277,14 @@
           </div>
           <!-- BitBucket  End    -->
           <!-- Git  Start    -->
-          <div class="form-group row" *ngIf="entry.accountType === 'Git'">
+          <div class="form-group row" *ngIf="entry.accountType === 'Git' && entry.secretKey !=null && entry.accessKey !=null">
             <label for="gitAccessKey" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitAccessKey"
-                       matInput type="text" placeholder="Access-Key">
+                       matInput type="text" placeholder="Username" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
             <div class="col-md-7">
@@ -257,25 +301,47 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="entry.accountType === 'Git'">
+          <div class="form-group row" *ngIf="entry.accountType === 'Git' && entry.secretKey !=null && entry.accessKey !=null">
             <label for="gitSecret" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="gitSecret"
-                       matInput type="password" placeholder="Secret-Key">
+                       matInput type="password" placeholder="Passsword" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
           </div>
+
+          <div class="form-group row" *ngIf="entry.accountType === 'Git' && entry.secretKey !=null && entry.accessKey === null">
+            <label for="gitSecret" class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <textarea rows="5" required [(ngModel)]="entry.secretKey" name="secret" id="gitPrivakte-Key"
+                          matInput type="password" placeholder="Privakte-Key"></textarea>
+              </mat-input-container>
+            </div>
+            <div class="col-md-6">
+              <div class="callout1 text-muted callout-info1">
+                <p>
+                  Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                </p>
+              </div>
+
+            </div>
+          </div>
           <!-- Git  End    -->
+
           <!-- Microsoft TFS  Start    -->
-          <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_TFS_Git'">
+          <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_TFS_Git' && entry.secretKey !=null && entry.accessKey !=null">
             <label for="microsoftTfsAccessKey" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="microsoftTfsAccessKey"
-                       matInput type="text" placeholder="Username/Accesskey">
+                       matInput type="text" placeholder="Username" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
             <div class="col-md-7">
@@ -289,25 +355,101 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_TFS_Git'">
+          <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_TFS_Git' && entry.secretKey !=null && entry.accessKey != null">
             <label for="microsoftTfsSecret" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.secretKey" name="secret" id="microsoftTfsSecret"
-                       matInput type="password" placeholder="Password/SecretKey">
+                       matInput type="password" placeholder="Password" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
           </div>
+
+          <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_TFS_Git' && entry.secretKey !=null && entry.accessKey === null">
+            <label for="microsoftTfsSecret" class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <textarea required rows="5" [(ngModel)]="entry.secretKey" name="secret" id="microsoftTfsPrivateKey"
+                          matInput type="password" placeholder="Private-Key"></textarea>
+                <mat-error>Required</mat-error>
+              </mat-input-container>
+            </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>
+                  Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                </p>
+              </div>
+            </div>
+          </div>
           <!-- Microsoft TFS  End    -->
+
+          <!-- Microsoft STS  Start    -->
+          <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_VSTS_Git' && entry.secretKey !=null && entry.accessKey !=null">
+            <label for="microsoftTfsAccessKey" class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.accessKey" name="accessKey" id="microsoftStsAccessKey"
+                       matInput type="text" placeholder="Username" autocomplete="off">
+              </mat-input-container>
+            </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>Microsoft TFS access keys
+                  <a target="_blank"
+                     href="https://www.visualstudio.com/tfs/">&nbsp;learn more.<i class="material-icons"
+                                                                                  style="font-size: 18px;">open_in_new</i></a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_VSTS_Git' && entry.secretKey !=null && entry.accessKey != null">
+            <label for="microsoftTfsSecret" class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="entry.secretKey" name="secret" id="microsoftSTsSecret"
+                       matInput type="password" placeholder="Password" autocomplete="off">
+                <mat-error>Required</mat-error>
+              </mat-input-container>
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf="entry.accountType === 'Microsoft_VSTS_Git' && entry.secretKey !=null && entry.accessKey === null">
+            <label for="microsoftTfsSecret" class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <textarea required rows="5" [(ngModel)]="entry.secretKey" name="secret" id="microsoftStsPrivateKey"
+                          matInput type="password" placeholder="Private-Key"></textarea>
+                <mat-error>Required</mat-error>
+              </mat-input-container>
+            </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>
+                  Note: Private-key begins with "-----BEGIN RSA PRIVATE KEY-----"
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Microsoft STS  End    -->
+
+
           <!-- GitHub Start  -->
-          <div class="form-group row" *ngIf="entry.accountType === 'GitHub'">
+          <div class="form-group row" *ngIf="entry.accountType === 'GitHub' && entry.secretKey !=null && entry.accessKey !=null">
             <label for="gitHubAccessKey" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
                 <input required [(ngModel)]="entry.accessKey" name="accessKey" id="gitHubAccessKey"
-                       matInput type="text" placeholder="Username/Access-Key">
+                       matInput type="text" placeholder="Username" autocomplete="off">
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
             <div class="col-md-7">
@@ -321,13 +463,25 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="entry.accountType === 'GitHub'">
+          <div class="form-group row" *ngIf="entry.accountType === 'GitHub' && entry.secretKey !=null && entry.accessKey !=null">
             <label for="gitHubSecret" class="col-md-0 control-label">
             </label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
-                <textarea  [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
-                          matInput type="password" placeholder="Password/Private-Key"></textarea>
+                <input required [(ngModel)]="entry.secretKey" name="secret" id="gitHubSecret"
+                           matInput type="password" placeholder="Password" autocomplete="off">
+                <mat-error>Required</mat-error>
+              </mat-input-container>
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="entry.accountType === 'GitHub' && entry.secretKey !=null && entry.accessKey === null">
+            <label for="gitHubSecret" class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <textarea required rows="5" [(ngModel)]="entry.secretKey" name="secret" id="gitHubPrivateKey"
+                          matInput type="password" placeholder="Private-Key"></textarea>
+                <mat-error>Required</mat-error>
               </mat-input-container>
             </div>
               <div class="col-md-7">
