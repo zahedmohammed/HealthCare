@@ -22,12 +22,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Service
 @Transactional
@@ -209,6 +211,40 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         });
     }
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.project.TestSuite>> search(String projectId, String category, String keyword, String org, String user, Pageable pageable) {
+        // TODO check org is entitled to runId
+
+        // 1. filter by category and search string
+        // 2. filter by category
+        // 3. filter by search
+        // 4. filter by severity and search string
+        // 5. filter by status(pass/fail) and search string
+
+
+        Page<com.fxlabs.fxt.dto.project.TestSuite> page = null;
+        if (StringUtils.isNotEmpty(keyword)) {
+            Optional<TestSuite> optional = this.testSuiteESRepository.findByProjectIdAndName(projectId, keyword);
+
+            // filter by
+
+            if (optional.isPresent()) {
+
+                List<TestSuite> entiTestSuites = new ArrayList<>();
+                entiTestSuites.add(optional.get());
+                List<com.fxlabs.fxt.dto.project.TestSuite> dataSets = converter.convertToDtos(entiTestSuites);
+                return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(dataSets);
+            }
+
+        } else {
+            return findByProjectId(projectId, user, pageable);
+        }
+
+        return new Response<>();
+    }
+
+
 
     @Override
     public Response<Long> count(String user, Pageable pageable) {

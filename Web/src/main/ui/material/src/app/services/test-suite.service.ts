@@ -48,4 +48,13 @@ constructor(private http: HttpClient) {
   delete(obj: TestSuite) {
     return this.http.delete(this.serviceUrl + "/" + obj['id']);
   }
+
+ search(projectId:string, category:string, keyword:string, page, pageSize) {
+    let params = new HttpParams();
+    params = params.append('category', category);
+    params = params.append('keyword', keyword);
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/" + projectId + "/test-suite/search", {params});
+  }
 }

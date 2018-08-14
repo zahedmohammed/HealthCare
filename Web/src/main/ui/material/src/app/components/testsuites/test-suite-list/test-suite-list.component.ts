@@ -83,23 +83,22 @@ export class TestSuiteListComponent implements OnInit {
     this.page = evt['pageIndex'];
     this.list(this.id);
   }
+
   search() {
-    if (this.keyword == '' && this.category == '') {
-      return this.getSummary();
-    }
     this.handler.activateLoader();
-    this.runService.search(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
+    this.testSuiteService.search(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.suites = results['data'];
+      this.testsuites = results['data'];
       this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
+
   getSummary() {
     this.handler.activateLoader();
     this.runService.getSummary(this.id, this.page, this.pageSize).subscribe(results => {
@@ -107,7 +106,7 @@ export class TestSuiteListComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.suites = results['data'];
+      this.testsuites = results['data'];
       this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();

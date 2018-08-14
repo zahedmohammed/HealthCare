@@ -25,4 +25,6 @@ public interface TestSuiteService extends GenericService<TestSuite, String> {
 
     public Response<TestSuite> createFromUI(TestSuite dto, String id);
     public void testSuitesDelete(TestSuitesDeletedDto dto, String user);
+
+    Response<List<TestSuite>> search(String runId, String category, String keyword, String org, String user, Pageable pageable);
 }
