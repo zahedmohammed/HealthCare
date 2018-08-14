@@ -49,7 +49,7 @@ constructor(private http: HttpClient) {
     return this.http.delete(this.serviceUrl + "/" + obj['id']);
   }
 
- search(projectId:string, category:string, keyword:string, page, pageSize) {
+ searchTestSuite(projectId:string, category:string, keyword:string, page, pageSize) {
     let params = new HttpParams();
     params = params.append('category', category);
     params = params.append('keyword', keyword);

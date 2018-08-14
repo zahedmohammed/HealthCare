@@ -86,7 +86,7 @@ export class TestSuiteListComponent implements OnInit {
 
   search() {
     this.handler.activateLoader();
-    this.testSuiteService.search(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
+    this.testSuiteService.searchTestSuite(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
