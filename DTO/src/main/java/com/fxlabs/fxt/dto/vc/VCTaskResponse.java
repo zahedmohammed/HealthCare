@@ -27,4 +27,6 @@ public class VCTaskResponse implements Serializable {
 
     private int autoGenSuitesCount;
 
+    private String taskId;
+
 }

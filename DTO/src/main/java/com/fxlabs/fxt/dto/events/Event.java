@@ -30,6 +30,8 @@ public class Event extends BaseDto<String> {
     private String entityId;
     private String name;
 
+    private String taskId;
+
     private String link;
 
     private String user;

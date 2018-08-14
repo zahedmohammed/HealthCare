@@ -9,7 +9,12 @@ import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
 import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
+import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.events.Entity;
+import com.fxlabs.fxt.dto.events.Event;
+import com.fxlabs.fxt.dto.events.Status;
+import com.fxlabs.fxt.dto.events.Type;
 import com.fxlabs.fxt.dto.project.AutoCodeConfig;
 import com.fxlabs.fxt.dto.project.AutoCodeConfigMinimal;
 import com.fxlabs.fxt.dto.project.GenPolicy;
@@ -17,8 +22,11 @@ import com.fxlabs.fxt.dto.project.ProjectSync;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
+import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.users.UsersService;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.type.EntityType;
 import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +75,9 @@ public class GaaSTaskRequestProcessor {
 
     @Autowired
     private AutoCodeConfigMinimalConverter autoCodeConfigMinimalConverter;
+
+    @Autowired
+    private LocalEventPublisher localEventPublisher;
 
     /**
      * List projects of type GIT
@@ -125,9 +136,16 @@ public class GaaSTaskRequestProcessor {
             if (systemSettingOptional.isPresent()) {
                 task.setFxUrl(systemSettingOptional.get().getValue());
             } else {
-                task.setFxUrl("http://fx-control-plane:8080");
+                task.setFxUrl("http://localhost:8080");
             }
 
+            //Sending event
+            task.setTaskId(RandomStringUtils.random(16));
+            try {
+                projectSyncEvent(project, Status.In_progress, Entity.Project, task.getTaskId());
+            } catch (Exception ex) {
+                logger.warn("Exception sending project sync event");
+            }
             amqpClientService.sendTask(task, gaaSQueue);
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
@@ -188,10 +206,52 @@ public class GaaSTaskRequestProcessor {
                 task.setFxUrl("http://fx-control-plane:8080");
             }
 
+            //Sending event
+            task.setTaskId(RandomStringUtils.randomAlphanumeric(16));
+            try {
+                projectSyncEvent(project, Status.In_progress, Entity.Project, task.getTaskId());
+            } catch (Exception ex) {
+                logger.warn("Exception sending project sync event");
+            }
+
+
             amqpClientService.sendTask(task, gaaSQueue);
         } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         }
+    }
+
+
+    public void projectSyncEvent(Project project, Status status, Entity entityType, String taskId) {
+
+        if (project == null || status == null || entityType == null) {
+
+            logger.info("Invalid event for project sync" );
+            return;
+        }
+
+
+        Event event = new Event();
+        //event.setId(project.getId());
+
+        event.setTaskId(taskId);
+
+        event.setName(project.getName());
+        event.setLink("/projects");
+        event.setUser(project.getCreatedBy());
+        event.setEntityType(entityType);
+        event.setEventType(Type.Sync);
+        event.setEntityId(project.getId());
+
+        event.setStatus(status);
+        NameDto org = new NameDto();
+        org.setName(project.getOrg().getName());
+        org.setId(project.getOrg().getId());
+        event.setOrg(org);
+
+
+        logger.info("Sending event for publish on project [{}] and status [{}] for task type [{}]" , project.getId(), status.toString(), event.getName());
+        localEventPublisher.publish(event);
     }
 
 }

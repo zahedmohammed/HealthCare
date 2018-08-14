@@ -132,7 +132,7 @@ public class VCDelegate {
 
             response.setLogs(gitPullLogs + "\n" + codegenLogs + "\n" + gitPushLogs + "\n" + controlPlanePushLogs);
             logger.info(response.toString());
-
+            response.setTaskId(task.getTaskId());
             sender.sendTask(response);
 
         } catch (RuntimeException ex) {

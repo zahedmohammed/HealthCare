@@ -68,8 +68,12 @@ public class RemoteEventService {
             return;
         }
 
+        if (StringUtils.isEmpty(event.getTaskId())) {
+            return;
+        }
+
         // TODO - check event exists and update
-        Optional<com.fxlabs.fxt.dao.entity.event.Event> optionalEntity = eventRepository.findByEntityTypeAndEventTypeAndEntityId(Entity.valueOf(event.getEntityType().toString()), Type.valueOf(event.getEventType().toString()), event.getEntityId());
+        Optional<com.fxlabs.fxt.dao.entity.event.Event> optionalEntity = eventRepository.findByEntityTypeAndEntityIdAndTaskId(com.fxlabs.fxt.dao.entity.event.Entity.valueOf(event.getEntityType().toString()), event.getEntityId(), event.getTaskId());
 
         if (optionalEntity.isPresent()) {
             com.fxlabs.fxt.dao.entity.event.Event entity = optionalEntity.get();

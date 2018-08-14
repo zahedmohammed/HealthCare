@@ -5,9 +5,15 @@ import com.fxlabs.fxt.dao.entity.users.ProjectRole;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dto.alerts.*;
 import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.events.Entity;
+import com.fxlabs.fxt.dto.events.Event;
+import com.fxlabs.fxt.dto.events.Status;
+import com.fxlabs.fxt.dto.events.Type;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.services.alerts.AlertService;
+import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.project.ProjectService;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +40,10 @@ public class GitTaskResponseProcessor {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+
+    @Autowired
+    private LocalEventPublisher localEventPublisher;
 
     public void process(VCTaskResponse task) {
         try {
@@ -74,13 +84,54 @@ public class GitTaskResponseProcessor {
                 o.setId(project.getOrg().getId());
                 alert.setOrg(o);
                 alert.setRefName(project.getName());
+
+                try {
+                    projectSyncEvent(project, Status.Done, Entity.Project, task.getTaskId());
+                } catch (Exception ex) {
+                    logger.warn("Exception sending project sync event");
+                }
             }
 
             alertService.save(alert);
 
 
+
+
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         }
+    }
+
+
+    public void projectSyncEvent(Project project, Status status, Entity entityType, String taskId) {
+
+        if (project == null || status == null || entityType == null) {
+
+            logger.info("Invalid event for project sync" );
+            return;
+        }
+
+
+        Event event = new Event();
+        //event.setId(project.getId());
+
+        event.setTaskId(taskId);
+
+        event.setName(project.getName());
+        event.setLink("/projects");
+        event.setUser(project.getCreatedBy());
+        event.setEntityType(entityType);
+        event.setEventType(Type.Sync);
+        event.setEntityId(project.getId());
+
+        event.setStatus(status);
+        NameDto org = new NameDto();
+        org.setName(project.getOrg().getName());
+        org.setId(project.getOrg().getId());
+        event.setOrg(org);
+
+
+        logger.info("Received response for publish on project [{}] and status [{}] for task type [{}]" , project.getId(), status.toString(), event.getName());
+        localEventPublisher.publish(event);
     }
 }

@@ -16,5 +16,5 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, String> {
 
 
-    Optional<Event> findByEntityTypeAndEventTypeAndEntityId(Entity entityType, Type type, String entityId);
+    Optional<Event> findByEntityTypeAndEntityIdAndTaskId(Entity entityType, String entityId, String taskId);
 }

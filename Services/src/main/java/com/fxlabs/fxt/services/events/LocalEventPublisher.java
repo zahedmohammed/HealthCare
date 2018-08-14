@@ -41,19 +41,19 @@ public class LocalEventPublisher {
     }
 
 
-    // TODO - Remove it - only for testing.
-    @Scheduled(fixedRate = 15000)
-    public void doSomething() {
-        Event event = new Event();
-        event.setId(RandomStringUtils.random(13));
-        event.setName("Project sync");
-        event.setLink("/projects");
-        NameDto org = new NameDto();
-        org.setName("Default");
-        org.setId("4028b881620688c001620689a3210000");
-        event.setOrg(org);
-        event.setUser("Administrator");
-        publish(event);
-    }
+//    // TODO - Remove it - only for testing.
+//    @Scheduled(fixedRate = 15000)
+//    public void doSomething() {
+//        Event event = new Event();
+//        event.setId(RandomStringUtils.random(13));
+//        event.setName("Project sync");
+//        event.setLink("/projects");
+//        NameDto org = new NameDto();
+//        org.setName("Default");
+//        org.setId("4028b881620688c001620689a3210000");
+//        event.setOrg(org);
+//        event.setUser("Administrator");
+//        publish(event);
+//    }
 
 }
