@@ -29,6 +29,7 @@ export class TestSuiteEditComponent implements OnInit {
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
+  isValid: boolean = true;
 testSuiteId:string;
 testCases: FormArray;
 advance:boolean=    false;
@@ -152,4 +153,7 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
               this.handler.error(error);
           });
       }
+      switch(valid: boolean) { 
+        this.isValid = valid; 
+      } 
   }

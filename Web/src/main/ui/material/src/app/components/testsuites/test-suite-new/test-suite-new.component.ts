@@ -31,6 +31,7 @@ export class TestSuiteNewComponent implements OnInit {
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
   testCases: FormArray;
+  isValid: boolean = true; 
 advance:boolean=    false;
 severities:any[]=[{id:"Critical",value:"Critical"},{id:"Major",value: "Major"},{id:"Minor",value: "Minor"},{id:"Trivial",value: "Trivial"}];
 methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HEAD", "PATCH"];
@@ -136,4 +137,7 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
             this.handler.error(error);
         });
       }
+      switch(valid: boolean) { 
+            this.isValid = valid; 
+          } 
 }

@@ -20,8 +20,22 @@
 </div> -->
 
 <section class="container-fluid with-maxwidth chapter">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-input-container class="full-width">
+          <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search suites..." (keyup.enter)="search()">
+        </mat-input-container>
+      </div>
+      <div class="col-md-4">
+        <div class="full-width">
+          <mat-chip-list>
+            <mat-chip>Filter: </mat-chip>
+            <mat-chip *ngIf="category">{{category}}</mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
 
-  <mat-toolbar class="rounded">
+  <mat-toolbar class="rounded col-md-4">
     <span style="flex: 1 1 auto;"></span>
     <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
       <small class="space">Jobs</small>
@@ -38,7 +52,7 @@
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
       <small>Edit</small>
     </a> &nbsp;&nbsp;
-  </mat-toolbar>
+  </mat-toolbar></div>
 
   <article class="article">
     <div class="box box-default">

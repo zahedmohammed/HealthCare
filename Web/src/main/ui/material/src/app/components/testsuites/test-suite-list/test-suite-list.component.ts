@@ -25,6 +25,9 @@ export class TestSuiteListComponent implements OnInit {
   projectId: string = "";
   project: Base = new Base();
   showSpinner: boolean = false;
+  keyword: string = '';
+  category: string = '';
+  suites;
   //private _clockSubscription: Subscription;
 
   constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,
@@ -76,6 +79,37 @@ export class TestSuiteListComponent implements OnInit {
   change(evt) {
     this.page = evt['pageIndex'];
     this.list(this.id);
+  }
+  search() {
+    if (this.keyword == '' && this.category == '') {
+      return this.getSummary();
+    }
+    this.handler.activateLoader();
+    this.runService.search(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.suites = results['data'];
+      this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+  getSummary() {
+    this.handler.activateLoader();
+    this.runService.getSummary(this.id, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.suites = results['data'];
+      this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
   }
 
 }
