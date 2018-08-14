@@ -11,12 +11,14 @@ import { AdvRunComponent } from '../../dialogs/adv-run/adv-run.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
+import { ProjectSync } from '../../../models/project-sync.model';
+import {SnackbarService}from '../../../services/snackbar.service';
 
 @Component({
 selector: 'app-test-suite-list',
   templateUrl: './test-suite-list.component.html',
   styleUrls: ['./test-suite-list.component.scss'],
-  providers: [TestSuiteService, RunService, ProjectService]
+  providers: [TestSuiteService, RunService, ProjectService, SnackbarService]
 })
 export class TestSuiteListComponent implements OnInit {
 
@@ -28,10 +30,11 @@ export class TestSuiteListComponent implements OnInit {
   keyword: string = '';
   category: string = '';
   suites;
+  projectSync: ProjectSync = new ProjectSync();
   //private _clockSubscription: Subscription;
 
   constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,
-    private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+    private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.handler.activateLoader();
@@ -106,6 +109,21 @@ export class TestSuiteListComponent implements OnInit {
       }
       this.suites = results['data'];
       this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+  sync() {
+    this.showSpinner = true;
+    this.snackbarService.openSnackBar(this.project.name + " syncing...", "");
+    this.projectSync.projectId = this.project.id;
+    this.projectService.projectSync(this.projectSync).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.snackbarService.openSnackBar(this.project.name + " synced successfully", "");
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
