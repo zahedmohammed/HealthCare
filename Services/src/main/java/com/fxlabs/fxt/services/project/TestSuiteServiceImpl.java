@@ -158,7 +158,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
 
         entity = ((TestSuiteRepository) repository).save(ts);
-        testSuiteESRepository.save(entity);
+        if (entity!=null && entity.getId()!=null) {
+            testSuiteESRepository.save(entity);
+        }
 
         // project_file
         this.projectFileService.saveFromTestSuite(testSuite, ts.getProject().getId());
