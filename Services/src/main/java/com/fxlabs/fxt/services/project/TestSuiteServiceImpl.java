@@ -225,25 +225,25 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         // 5. filter by status(pass/fail) and search string
 
 
-        Page<com.fxlabs.fxt.dto.project.TestSuite> page = null;
         if (StringUtils.isNotEmpty(keyword)) {
-            Optional<TestSuite> optional = this.testSuiteESRepository.findByProjectIdAndName(projectId, keyword);
+
+            Page<TestSuite> page = this.testSuiteESRepository.findByProjectIdAndNameContainingIgnoreCase(projectId, keyword, pageable);
 
             // filter by
 
-            if (optional.isPresent()) {
+            List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
 
-                List<TestSuite> entiTestSuites = new ArrayList<>();
-                entiTestSuites.add(optional.get());
-                List<com.fxlabs.fxt.dto.project.TestSuite> dataSets = converter.convertToDtos(entiTestSuites);
-                return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(dataSets);
-            }
+            testSuites.forEach(testSuite -> {
+                testSuiteConverter.copyArraysToText(testSuite);
+            });
+
+            return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
 
         } else {
             return findByProjectId(projectId, user, pageable);
         }
 
-        return new Response<>();
+        //return new Response<>();
     }
 
 

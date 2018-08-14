@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.repository.es;
 
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import com.fxlabs.fxt.dao.entity.run.Suite;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
@@ -36,5 +37,7 @@ public interface TestSuiteESRepository extends ElasticsearchRepository<TestSuite
 
     Stream<TestSuite> findByProjectIdAndNameIn(String projectId, List<String> name);
 
-    Optional<TestSuite> findByProjectIdAndName(String projectId, String name);
+    Page<TestSuite> findByProjectIdAndNameContainingIgnoreCase(String projectId, String name,  Pageable pageable);
+
+    //Page<Suite> findByRunIdAndSuiteNameContainingIgnoreCase(String runId, String keyword, Pageable pageable);
 }
