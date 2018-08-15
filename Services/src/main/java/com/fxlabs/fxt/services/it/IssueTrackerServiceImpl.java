@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.it;
 
+import com.fxlabs.fxt.converters.project.JobIssueTrackerConverter;
 import com.fxlabs.fxt.converters.skills.IssueTrackerConverter;
 import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.skills.TaskResult;
@@ -12,6 +13,7 @@ import com.fxlabs.fxt.dto.it.IssueTracker;
 import com.fxlabs.fxt.dto.it.IssueTrackerSaving;
 import com.fxlabs.fxt.dto.it.State;
 import com.fxlabs.fxt.dto.project.Job;
+import com.fxlabs.fxt.dto.project.JobIssueTracker;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
@@ -53,6 +55,8 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     private SystemSettingService systemSettingService;
     private JobService jobService;
     private RunService runService;
+    private JobIssueTrackerRepository jobIssueTrackerRepository;
+    private JobIssueTrackerConverter jobIssueTrackerConverter;
 
     public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
 
@@ -61,7 +65,9 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
     public IssueTrackerServiceImpl(IssueTrackerRepository repository, IssueTrackerConverter converter,
                                    UsersRepository usersRepository, OrgUsersRepository orgUsersRepository,
                                    AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository, RunService runService,
-                                   ClusterRepository clusterRepository, AccountService accountService, SystemSettingService systemSettingService,  JobService jobService) {
+                                   ClusterRepository clusterRepository, AccountService accountService, SystemSettingService systemSettingService,
+                                   JobService jobService, JobIssueTrackerRepository jobIssueTrackerRepository,
+                                   JobIssueTrackerConverter jobIssueTrackerConverter) {
         super(repository, converter);
 
         this.repository = repository;
@@ -75,6 +81,9 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
         this.systemSettingService = systemSettingService;
         this.jobService = jobService;
         this.runService = runService;
+        this.jobIssueTrackerRepository = jobIssueTrackerRepository;
+        this.jobIssueTrackerConverter = jobIssueTrackerConverter;
+
 //        this.systemSettingRepository = systemSettingRepository;
     }
 
@@ -203,6 +212,23 @@ public class IssueTrackerServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.d
 
 
     @Override
+    public Response<JobIssueTracker> findJobIsseTrackerById(String id) {
+        if (StringUtils.isEmpty(id)) {
+            return new Response<>().withErrors(true);
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.project.JobIssueTracker> optional = jobIssueTrackerRepository.findByIdAndInactive(id, false);
+
+        if (!optional.isPresent()) {
+            return new Response<>().withErrors(true);
+        }
+
+        return new Response<>(jobIssueTrackerConverter.convertToDto(optional.get()));
+
+    }
+
+
+        @Override
     public Response<IssueTracker> findByName(String name, String organisation) {
         if (StringUtils.isEmpty(name)) {
             return new Response<>().withErrors(true);

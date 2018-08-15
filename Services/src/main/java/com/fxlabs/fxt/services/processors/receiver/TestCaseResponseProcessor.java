@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseITESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.it.IssueTracker;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -165,29 +166,35 @@ public class TestCaseResponseProcessor {
             return null;
         }
 
-        Response<IssueTracker> issueTrackerResponse = skillSubscriptionService.findByName(job.getIssueTracker().getName(), job.getProject().getOrg().getName());
+//        Response<IssueTracker> issueTrackerResponse = skillSubscriptionService.findByName(job.getIssueTracker().getName(), job.getProject().getOrg().getName());
+        Response<com.fxlabs.fxt.dto.project.JobIssueTracker> issueTrackerResponse = skillSubscriptionService.findJobIsseTrackerById(job.getIssueTracker().getId());
 
         if (issueTrackerResponse.getData() == null || issueTrackerResponse.getData().getAccount() == null) {
             return null;
         }
         //prop1 will have host url
-        if (StringUtils.isEmpty(issueTrackerResponse.getData().getProp1())) {
+        if (StringUtils.isEmpty(issueTrackerResponse.getData().getUrl())) {
             return null;
         }
 
-        tc.setIssueTrackerHost(issueTrackerResponse.getData().getProp1());
-        tc.setIssueTrackerProjectName(issueTrackerResponse.getData().getProp2());
-        tc.setUsername(issueTrackerResponse.getData().getAccount().getAccessKey());
+        tc.setIssueTrackerHost(issueTrackerResponse.getData().getUrl());
+        tc.setIssueTrackerProjectName(job.getProject().getName());
 
-        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(issueTrackerResponse.getData().getAccount().getId());
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(issueTrackerResponse.getData().getAccount());
         com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.isPresent() ? accountOptional.get() : null;
+
+        if (account == null) {
+            return null;
+        }
+
+        tc.setUsername(account.getAccessKey());
         if (!StringUtils.isEmpty(account.getSecretKey())) {
             tc.setPassword(encryptor.decrypt(account.getSecretKey()));
         }
 
         //TODO get key from different source
 
-        switch (issueTrackerResponse.getData().getAccount().getAccountType()) {
+        switch (account.getAccountType()) {
             case GitHub:
                 return itaasQueue;
             case Jira:
