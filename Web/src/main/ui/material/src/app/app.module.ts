@@ -174,6 +174,7 @@ import { EnvironmentEditComponent } from './components/environments/environment-
 import { TestSuiteListComponent } from './components/testsuites/test-suite-list/test-suite-list.component';
 import { TestSuiteEditComponent } from './components/testsuites/test-suite-edit/test-suite-edit.component';
 import { TestSuiteNewComponent } from './components/testsuites/test-suite-new/test-suite-new.component';
+import { AutoSyncComponent } from './components/dialogs/auto-sync/auto-sync.component';
 
 @NgModule({
   imports: [
@@ -327,11 +328,12 @@ import { TestSuiteNewComponent } from './components/testsuites/test-suite-new/te
     EnvironmentEditComponent,
     TestSuiteListComponent,
     TestSuiteEditComponent,
-    TestSuiteNewComponent
+    TestSuiteNewComponent,
+    AutoSyncComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
-  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent, SuitDailogComponent, ProjectsSyncComponent, RegisterComponent]
+  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent, SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent]
 })
 
 export class AppModule {

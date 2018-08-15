@@ -6,8 +6,8 @@ import { ProjectService } from '../../../services/project.service';
 import { Base } from '../../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 import { Handler } from '../../dialogs/handler/handler';
-import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
-import { AdvRunComponent } from '../../dialogs/adv-run/adv-run.component';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { AutoSyncComponent } from '../../dialogs/auto-sync/auto-sync.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
@@ -113,20 +113,12 @@ export class TestSuiteListComponent implements OnInit {
       this.handler.error(error);
     });
   }
-  sync() {
-    this.showSpinner = true;
-    this.snackbarService.openSnackBar(this.project.name + " syncing...", "");
-    this.projectSync.projectId = this.project.id;
-    this.projectService.projectSync(this.projectSync).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.snackbarService.openSnackBar(this.project.name + " synced successfully", "");
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
+  open() {
+    const dialogRef = this.dialog.open(AutoSyncComponent, {
+      data: this.project
+  });
+   dialogRef.afterClosed().subscribe(result => {
+  });
   }
 
 }
