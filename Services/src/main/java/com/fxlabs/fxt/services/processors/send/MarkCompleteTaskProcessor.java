@@ -138,44 +138,69 @@ public class MarkCompleteTaskProcessor {
 
             for (JobNotification jn : run.getJob().getNotifications()) {
 
-                if (StringUtils.isEmpty(jn.getName()) || StringUtils.isEmpty(run.getJob().getCreatedBy())) {
-                    logger.info("Ignoring notification invalid data");
-                    return;
+//                if (StringUtils.isEmpty(jn.getName()) || StringUtils.isEmpty(run.getJob().getCreatedBy())) {
+//                    logger.info("Ignoring notification invalid data");
+//                    return;
+//                }
+
+                if (! org.apache.commons.lang3.StringUtils.isBlank(jn.getTo())){
+
+                    // Project-name, Job-name, Run-Id, Status, Pass/Fail and Region etc.
+                    StringBuilder subjet = new StringBuilder();
+
+                    subjet.append("#"+run.getRunId()+". ");
+//                    subjet.append("(");
+                    subjet.append(run.getJob().getProject().getName());
+                    subjet.append(" > ");
+                    subjet.append(run.getJob().getName());
+//                    subjet.append(")");
+                    subjet.append(" - ");
+                    subjet.append(run.getTask().getTotalTestCompleted()+"(passed)");
+                    subjet.append(" / ");
+                    subjet.append(run.getTask().getFailedTests()+"(failed)");
+                    subjet.append(" - ");
+                    subjet.append("Status: "+run.getTask().getStatus().toString());
+                    subjet.append(" - ");
+                    subjet.append("Region: "+run.getJob().getRegions());
+
+                    sendEmailTask(jn.getTo(), subjet.toString(), formatBody(run));
                 }
 
-                Response<Notification> notificationResponse = notificationAccountService.findByName(jn.getName(), run.getJob().getProject().getOrg().getName());
+                //TODO: Slack notification
 
-                if (notificationResponse.isErrors() || notificationResponse.getData() == null) {
-                    logger.info("Notification Account not found for name [{}]", jn.getName());
-                    return;
-                }
-
-                Notification notification = notificationResponse.getData();
-                NotificationTask task = new NotificationTask();
-                task.setId(run.getId());
-                Map<String, String> opts = new HashMap<>();
-                switch (notification.getAccount().getAccountType()) {
-                    case Slack:
-                        if (notification.getAccount() == null || StringUtils.isEmpty(notification.getAccount().getSecretKey())) {
-                            logger.info("Notification Token not found for account [{}]", notification.getId());
-                            break;
-                        }
-                        String token = notification.getAccount().getSecretKey();
-                        token = encryptor.decrypt(token);
-                        opts.put("TOKEN", token);
-                        opts.put("MESSAGE", formatBody(run));
-                        opts.put("CHANNELS", notification.getChannel());
-                        task.setOpts(opts);
-                        amqpClientService.sendTask(task, slackNotificationQueue);
-                        break;
-                    case Email:
-                        //logger.info("Notification Account Type email not supported");
-                        sendEmailTask(notification.getChannel(), "Job #" + run.getRunId(), formatBody(run));
-                        break;
-
-                    default:
-                        logger.info("Notification Account type [{}] not supported", notification.getType());
-                }
+//                Response<Notification> notificationResponse = notificationAccountService.findByName(jn.getName(), run.getJob().getProject().getOrg().getName());
+//
+//                if (notificationResponse.isErrors() || notificationResponse.getData() == null) {
+//                    logger.info("Notification Account not found for name [{}]", jn.getName());
+//                    return;
+//                }
+//
+//                Notification notification = notificationResponse.getData();
+//                NotificationTask task = new NotificationTask();
+//                task.setId(run.getId());
+//                Map<String, String> opts = new HashMap<>();
+//                switch (notification.getAccount().getAccountType()) {
+//                    case Slack:
+//                        if (notification.getAccount() == null || StringUtils.isEmpty(notification.getAccount().getSecretKey())) {
+//                            logger.info("Notification Token not found for account [{}]", notification.getId());
+//                            break;
+//                        }
+//                        String token = notification.getAccount().getSecretKey();
+//                        token = encryptor.decrypt(token);
+//                        opts.put("TOKEN", token);
+//                        opts.put("MESSAGE", formatBody(run));
+//                        opts.put("CHANNELS", notification.getChannel());
+//                        task.setOpts(opts);
+//                        amqpClientService.sendTask(task, slackNotificationQueue);
+//                        break;
+//                    case Email:
+//                        //logger.info("Notification Account Type email not supported");
+//                        sendEmailTask(notification.getChannel(), "Job #" + run.getRunId(), formatBody(run));
+//                        break;
+//
+//                    default:
+//                        logger.info("Notification Account type [{}] not supported", notification.getType());
+//                }
             }
 
         } catch (Exception e) {
