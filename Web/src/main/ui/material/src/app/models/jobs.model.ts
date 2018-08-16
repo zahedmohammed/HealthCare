@@ -15,6 +15,7 @@ export class Dto {
     id: string;
     name: string;
     url: string;
+    accountType: string;
 }
 
 export class EnvDto {

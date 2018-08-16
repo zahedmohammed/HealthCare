@@ -2,6 +2,7 @@ package com.fxlabs.fxt.dto.project;
 
 
 import com.fxlabs.fxt.dto.base.BaseDto;
+import com.fxlabs.fxt.dto.clusters.AccountType;
 import lombok.*;
 
 import java.io.Serializable;
@@ -23,4 +24,7 @@ public class JobIssueTracker implements Serializable {
     private String name;
     private String url;
     private String account = "Default_GitHub";
+    private AccountType accountType;
+
+
 }

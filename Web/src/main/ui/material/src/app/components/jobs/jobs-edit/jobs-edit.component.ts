@@ -109,6 +109,7 @@ export class JobsEditComponent implements OnInit {
         return;
       }
       this.job = results['data'];
+        this.getITAccountsByAccountType(this.job.issueTracker.accountType);
       this.loadProject();
     }, error => {
       this.handler.hideLoader();
