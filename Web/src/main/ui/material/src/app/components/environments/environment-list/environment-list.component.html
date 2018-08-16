@@ -77,7 +77,7 @@
                                [routerLink]="['/app/projects', id, 'environments', env.id, 'edit']">{{env.name}}</a></td>
                         <td class="mdl-data-table__cell--non-numeric">{{env.baseUrl}}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{env.auths.length}}</td>                        
-                        <td class="mdl-data-table__cell--non-numeric">{{env.modifiedDate}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{env.modifiedDate | date}}</td>
                         <!--td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
                         <td class="mdl-data-table__cell--non-numeric">
                             <a href="javascript:;" (click)="advRun(job)">Run</a> &nbsp;
