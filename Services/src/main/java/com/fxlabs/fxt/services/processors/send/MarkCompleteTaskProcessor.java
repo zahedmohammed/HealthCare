@@ -1,15 +1,22 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.entity.project.JobNotification;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
+import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.events.Entity;
+import com.fxlabs.fxt.dto.events.Event;
+import com.fxlabs.fxt.dto.events.Status;
+import com.fxlabs.fxt.dto.events.Type;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
 import com.fxlabs.fxt.dto.notify.Notification;
 import com.fxlabs.fxt.dto.task.EmailTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
+import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.notify.NotificationService;
 import com.fxlabs.fxt.services.run.TestSuiteResponseService;
 import com.fxlabs.fxt.services.users.SystemSettingService;
@@ -67,6 +74,9 @@ public class MarkCompleteTaskProcessor {
     @Autowired
     private SystemSettingService systemSettingService;
 
+    @Autowired
+    private LocalEventPublisher localEventPublisher;
+
     private final static Collection<TaskStatus> statuses = Arrays.asList(TaskStatus.PROCESSING, TaskStatus.COMPLETED);
 
     /**
@@ -116,6 +126,14 @@ public class MarkCompleteTaskProcessor {
 
                     if (run.getTask().getStatus().equals(TaskStatus.COMPLETED) && !oldStatus.equals(TaskStatus.COMPLETED)) {
                         sendNotification(run);
+
+                        try {
+                            projectSyncEvent(run.getJob(), Status.Done, Entity.Job, run.getId());
+                        } catch (Exception ex) {
+                            logger.warn(ex.getLocalizedMessage());
+                        }
+
+
                     }
 
 
@@ -266,6 +284,39 @@ public class MarkCompleteTaskProcessor {
         }
 
         return value;
+    }
+
+
+    public void projectSyncEvent(Job job, Status status, Entity entityType, String taskId) {
+
+        if (job == null || status == null || entityType == null) {
+
+            logger.info("Invalid event for project sync" );
+            return;
+        }
+
+
+        Event event = new Event();
+        //event.setId(project.getId());
+
+        event.setTaskId(taskId);
+
+        event.setName(job.getName());
+        event.setLink("/projects");
+        event.setUser(job.getCreatedBy());
+        event.setEntityType(entityType);
+        event.setEventType(Type.Run);
+        event.setEntityId(job.getId());
+
+        event.setStatus(status);
+        NameDto org = new NameDto();
+        org.setName(job.getProject().getOrg().getName());
+        org.setId(job.getProject().getOrg().getId());
+        event.setOrg(org);
+
+
+        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]" , job.getId(), status.toString(), event.getEventType());
+        localEventPublisher.publish(event);
     }
 }
 

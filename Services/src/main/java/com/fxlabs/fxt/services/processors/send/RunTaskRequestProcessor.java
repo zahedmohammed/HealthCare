@@ -10,19 +10,27 @@ import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
+import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
+import com.fxlabs.fxt.dto.events.Entity;
+import com.fxlabs.fxt.dto.events.Event;
+import com.fxlabs.fxt.dto.events.Status;
+import com.fxlabs.fxt.dto.events.Type;
 import com.fxlabs.fxt.dto.project.HttpMethod;
 import com.fxlabs.fxt.dto.project.TestCase;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.run.RunConstants;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.clusters.ClusterService;
+import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.util.DataResolver;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,9 +65,10 @@ public class RunTaskRequestProcessor {
     private AuthConverter authConverter;
     private TextEncryptor encryptor;
     private ProjectRepository projectRepository;
+    private LocalEventPublisher localEventPublisher;
 
     public RunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
-                                   RunRepository runRepository, PoliciesConverter policiesConverter,
+                                   RunRepository runRepository, PoliciesConverter policiesConverter, LocalEventPublisher localEventPublisher,
                                    TestSuiteESRepository testSuiteESRepository, EnvironmentRepository environmentRepository,
                                    ClusterService clusterService, DataResolver dataResolver, AuthConverter authConverter,
                                    TextEncryptor encryptor, ProjectRepository projectRepository) {
@@ -74,6 +83,7 @@ public class RunTaskRequestProcessor {
         this.authConverter = authConverter;
         this.encryptor = encryptor;
         this.projectRepository = projectRepository;
+        this.localEventPublisher = localEventPublisher;
     }
 
     public void process() {
@@ -158,6 +168,12 @@ public class RunTaskRequestProcessor {
 
                 run.getTask().setStatus(TaskStatus.PROCESSING);
                 runRepository.saveAndFlush(run);
+
+                try {
+                    projectSyncEvent(run.getJob(), Status.In_progress, Entity.Job, run.getId());
+                } catch (Exception ex) {
+                    logger.warn(ex.getLocalizedMessage());
+                }
 
                 AtomicLong total = new AtomicLong(0);
 
@@ -474,6 +490,39 @@ public class RunTaskRequestProcessor {
             return false;
         }
         return true;
+    }
+
+
+    public void projectSyncEvent(Job job, Status status, Entity entityType, String taskId) {
+
+        if (job == null || status == null || entityType == null) {
+
+            logger.info("Invalid event for project sync" );
+            return;
+        }
+
+
+        Event event = new Event();
+        //event.setId(project.getId());
+
+        event.setTaskId(taskId);
+
+        event.setName(job.getName());
+        event.setLink("/projects");
+        event.setUser(job.getCreatedBy());
+        event.setEntityType(entityType);
+        event.setEventType(Type.Run);
+        event.setEntityId(job.getId());
+
+        event.setStatus(status);
+        NameDto org = new NameDto();
+        org.setName(job.getProject().getOrg().getName());
+        org.setId(job.getProject().getOrg().getId());
+        event.setOrg(org);
+
+
+        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]" , job.getId(), status.toString(), event.getEventType());
+        localEventPublisher.publish(event);
     }
 
 }
