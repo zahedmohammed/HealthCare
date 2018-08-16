@@ -1,11 +1,15 @@
 <meta name="author" content="Syed Abdul Rasheed">
-<h2 mat-dialog-title>Auto-sync ({{project.name}})</h2>
+<h2 mat-dialog-title>AutoCode
+    <small>Auto-Generate new test suites.</small>
+</h2>
 
-<mat-dialog-content class="mat-typography d-inline">
-    <mat-checkbox [(ngModel)]="projectSync.deleteAll">Delete All</mat-checkbox>
+<mat-dialog-content class="mat-typography">
+    <mat-checkbox [(ngModel)]="projectSync.deleteAll">Delete All & Re-Generate </mat-checkbox>
+    <br>
+    <small> Delete the previously auto-generated test suites and re-generate all.</small>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" (click)="synchronization()" cdkFocusInitial>Sync
+    <button mat-button [mat-dialog-close]="true" (click)="synchronization()" cdkFocusInitial>Generate
     </button>
 </mat-dialog-actions>
