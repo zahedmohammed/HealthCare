@@ -73,32 +73,34 @@
                         </div>
                     </div>
 
-                    <div formArrayName="items"
-                         *ngFor="let item of thirdFormGroup.get('items').controls; let i = index;">
+                    <hr>
+                    <div formArrayName="items" *ngFor="let item of thirdFormGroup.get('items').controls; let i = index;">
                         <div [formGroupName]="i">
                             <!--input formControlName="authType" placeholder="Item name"-->
 
 
                             <div class="form-group row">
-                                <label  class="col-md-0 control-label"></label>
+                                <label class="col-md-1 control-label"></label>
                                 <div class="col-md-5">
-                                    <span >{{i+1}}# Authentication.... 
-                                        <button style="min-width: auto;" mat-button class="btn-w-md" (click)="removeItem(i)">
-                                            <i class="fa fa-trash" style="font-size: 20px;"></i>
-                                        </button>
+                                    <small>Authentication #{{i+1}}</small>
+                                </div>
+                                <div class="col-md-5">
+                                    <span>
+                                        <a href="javascript:;"  (click)="removeItem(i)">
+                                            <i class="fa fa-minus"></i> Remove
+                                        </a>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label  class="col-md-0 control-label"></label>
+                                <label class="col-md-1 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input required formControlName="name"
-                                                matInput placeholder="Name" autocomplete="off">
+                                        <input required formControlName="name" matInput placeholder="Name" autocomplete="off">
                                         <mat-error>Required</mat-error>
                                     </mat-input-container>
                                 </div>
-                                <div class="col-md-7">
+                                <div class="col-md-5">
                                     <div class="callout1 text-muted callout-info1">
                                         <p class="mt-4">Note: Every environment should have "Default" and "Invalid_Auth" authentications
                                         </p>
@@ -106,13 +108,11 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-0 control-label">
+                                <label class="col-md-1 control-label">
                                 </label>
                                 <div class="col-md-5">
                                     <mat-form-field class="full-width">
-                                        <mat-select placeholder="Authentication Type" required
-                                                    formControlName="authType"
-                                                    name="authType">
+                                        <mat-select placeholder="Authentication Type" required formControlName="authType" name="authType">
                                             <mat-option *ngFor="let type of authTypes" [value]="type">
                                                 {{type}}
                                             </mat-option>
@@ -121,41 +121,39 @@
                                     </mat-form-field>
                                 </div>
                             </div>
+
+                            <!-- Basic -->
                             <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.authType.value == 'Basic'">
                                 <div class="form-group row">
-                                    <label  class="col-md-0 control-label"></label>
+                                    <label class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input required formControlName="username"
-                                                    matInput placeholder="Username" autocomplete="off">
+                                            <input required formControlName="username" matInput placeholder="Username" autocomplete="off">
                                             <mat-error>Required</mat-error>
                                         </mat-input-container>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label  class="col-md-0 control-label"></label>
+                                    <label class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input required type="password"  formControlName="password"
-                                                   matInput placeholder="Password" autocomplete="off">
+                                            <input required type="password" formControlName="password" matInput placeholder="Password" autocomplete="off">
                                             <mat-error>Required</mat-error>
                                         </mat-input-container>
                                     </div>
                                 </div>
                             </div>
-                            <!--OAUTH -->
 
+                            <!--OAUTH -->
                             <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.authType.value  == 'OAuth_2_0'">
 
                                 <div class="form-group row">
-                                    <label class="col-md-0 control-label">
+                                    <label class="col-md-1 control-label">
                                     </label>
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
-                                            <mat-select placeholder="grantTypes Type"
-                                                        formControlName="grantType"
-                                                        name="type">
+                                            <mat-select placeholder="grantTypes Type" formControlName="grantType" name="type">
                                                 <mat-option *ngFor="let grant of authTypesgrantTypes" [value]="grant">
                                                     {{grant}}
                                                 </mat-option>
@@ -166,89 +164,81 @@
 
                                 <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value == 'password'">
                                     <div class="form-group row">
-                                        <label for="name" class="col-md-0 control-label"></label>
+                                        <label for="name" class="col-md-1 control-label"></label>
                                         <div class="col-md-5">
                                             <mat-input-container class="full-width">
-                                                <input formControlName="username"
-                                                       matInput placeholder="Username" autocomplete="off">
+                                                <input formControlName="username" matInput placeholder="Username">
                                             </mat-input-container>
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="name" class="col-md-0 control-label"></label>
+                                        <label for="name" class="col-md-1 control-label"></label>
                                         <div class="col-md-5">
                                             <mat-input-container class="full-width">
-                                                <input formControlName="password"
-                                                       matInput placeholder="Password" autocomplete="off">
+                                                <input formControlName="password" matInput placeholder="Password">
                                             </mat-input-container>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input formControlName="clientId"
-                                                   matInput placeholder="ClientId" autocomplete="off">
+                                            <input formControlName="clientId" matInput placeholder="ClientId">
                                         </mat-input-container>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input formControlName="clientSecret"
-                                                   matInput placeholder="ClientSecret" autocomplete="off">
+                                            <input formControlName="clientSecret" matInput placeholder="ClientSecret">
                                         </mat-input-container>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input formControlName="id"
-                                                   matInput placeholder="Id" autocomplete="off">
+                                            <input formControlName="id" matInput placeholder="Id">
                                         </mat-input-container>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input formControlName="accessTokenUri"
-                                                   matInput placeholder="AccessToken Uri" autocomplete="off">
+                                            <input formControlName="accessTokenUri" matInput placeholder="AccessToken Uri">
                                         </mat-input-container>
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-6">
                                         <div class="callout1 text-muted callout-info1">
-                                            <p class="mt-4">e.g. http://<>/token
+                                            <p>e.g. http://
+                                                <>/token
                                             </p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input  formControlName="userAuthorizationUri"
-                                                    matInput placeholder="UserAuthorization Uri" autocomplete="off">
+                                            <input formControlName="userAuthorizationUri" matInput placeholder="UserAuthorization Uri">
                                         </mat-input-container>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
-                                            <mat-select placeholder="Client Authentication Scheme"
-                                                        formControlName="clientAuthenticationScheme"
-                                                        name="type">
+                                            <mat-select placeholder="Client Authentication Scheme" formControlName="clientAuthenticationScheme" name="type">
                                                 <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
                                                     {{scheme}}
                                                 </mat-option>
@@ -258,12 +248,10 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
-                                            <mat-select placeholder="Authorization Scheme"
-                                                        formControlName="authorizationScheme"
-                                                        name="type">
+                                            <mat-select placeholder="Authorization Scheme" formControlName="authorizationScheme" name="type">
                                                 <mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">
                                                     {{scheme}}
                                                 </mat-option>
@@ -273,12 +261,10 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
-                                            <mat-select placeholder="Scope"
-                                                        formControlName="scope"
-                                                        name="type">
+                                            <mat-select placeholder="Scope" formControlName="scope" name="type">
                                                 <mat-option *ngFor="let scope of scopeTypes" [value]="scope">
                                                     {{scope}}
                                                 </mat-option>
@@ -289,16 +275,17 @@
 
 
                             </div>
+
+                            <!-- Token -->
                             <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.authType.value  == 'Token'">
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input  formControlName="header_1"
-                                                    matInput placeholder="Header 1" autocomplete="off">
+                                            <input formControlName="header_1" matInput placeholder="Header 1">
                                         </mat-input-container>
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-6">
                                         <div class="callout1 text-muted callout-info1">
                                             <p>e.g. cookie: JWTTOKEN=Token or Authorization: key
                                             </p>
@@ -306,26 +293,33 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <label for="name" class="col-md-1 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
-                                            <input  formControlName="header_2"
-                                                    matInput
-                                                    placeholder="Header 2">
+                                            <input formControlName="header_2" matInput placeholder="Header 2">
                                         </mat-input-container>
                                     </div>
                                 </div>
                             </div>
-                            <!--End For Loop -->
+
+                            <!-- Auth0 TODO -->
+
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-1 control-label"></label>
+                        <div class="col-md-5">
+                            <small></small>
+                        </div>
+                        <div class="col-md-5">
+                            <a href="javascript:;" (click)="addItem(i)"><i class="fa fa-plus"></i> Add</a>
                         </div>
                     </div>
 
                     <div>
                         <mat-card-actions>
-                            <button mat-button color="primary" class="btn-w-md" (click)="addItem()">
-                                <i class="fa fa-plus"></i>
-                                Add Authentication
-                            </button><br>
+                            <br>
                             <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"
                                 (click)="saveEnv(thirdFormGroup);">Create Environment
                             </button>

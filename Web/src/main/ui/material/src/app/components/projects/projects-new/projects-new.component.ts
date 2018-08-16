@@ -44,8 +44,9 @@ export class ProjectsNewComponent implements OnInit {
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
 
-  authTypes = ['Basic', 'OAuth_2_0' , 'Token', 'No_Authentication'];
+  authTypes = ['Basic', 'Token', 'OAuth_2_0', 'Auth0', 'No_Authentication'];
   grantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
+  auth0GrantTypes = ['client_credentials', 'password'];
   schemeTypes = ['form', 'header', 'none', 'query'];
   scopeTypes= ['read', 'write'];
 
@@ -117,11 +118,14 @@ export class ProjectsNewComponent implements OnInit {
       this.thirdFormGroup.controls["usernameCtrl"].setValidators([]);
       this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
     } else {
-      this.thirdFormGroup.controls["pswCtrl"].setValidators([Validators.required]);
+      /*this.thirdFormGroup.controls["pswCtrl"].setValidators([Validators.required]);
       this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
       this.thirdFormGroup.controls["usernameCtrl"].setValidators([Validators.required]);
-      this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();
+      this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();*/
+    }
 
+    if ( obj == 'Auth0' ) {
+      this.env.auths[0].grantType = 'client_credentials';
     }
 
   }

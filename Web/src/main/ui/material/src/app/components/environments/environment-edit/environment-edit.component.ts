@@ -42,14 +42,15 @@ export class EnvironmentEditComponent implements OnInit {
   isLinear = false;
   thirdFormGroup: FormGroup;
 
-  authTypes = ['Basic', 'OAuth_2_0' , 'Token', 'No_Authentication'];
+  authTypes = ['Basic', 'Token', 'OAuth_2_0', 'Auth0', 'No_Authentication'];
   authTypesgrantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
+  auth0GrantTypes = ['client_credentials', 'password'];
   schemeTypes = ['form', 'header', 'none', 'query'];
   scopeTypes= ['read', 'write'];
 
-orderForm: FormGroup;
-//items: any[] = [];
-items: FormArray;
+  orderForm: FormGroup;
+  //items: any[] = [];
+  items: FormArray;
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
             private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
@@ -74,12 +75,12 @@ items: FormArray;
       }
     });
    
-  this.thirdFormGroup = this._formBuilder.group({
+    this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', [Validators.required]],
       urlCtrl:  ['', Validators.required],
      // authTypeCtrl:  ['', Validators.required],
       items: this._formBuilder.array([  ])
-//items: this.items
+     //items: this.items
     });
 
   }
@@ -115,24 +116,24 @@ console.log("sss");
 createItem(): FormGroup {
   return this._formBuilder.group({
   accessTokenUri:null,
-authType: [null, Validators.required],
-authorizationScheme:null,
-clientAuthenticationScheme:null,
-clientId:null,
-clientSecret:null,
-grantType:null,
-header_1:null,
-header_2:null,
-header_3:null,
-id:null,
-name:null,
-password:null,
-preEstablishedRedirectUri:null,
-scope:null,
-tokenName:null,
-useCurrentUri:null,
-userAuthorizationUri:null,
-username:null
+    authType: [null, Validators.required],
+    authorizationScheme:null,
+    clientAuthenticationScheme:null,
+    clientId:null,
+    clientSecret:null,
+    grantType:null,
+    header_1:null,
+    header_2:null,
+    header_3:null,
+    id:null,
+    name:null,
+    password:null,
+    preEstablishedRedirectUri:null,
+    scope:null,
+    tokenName:null,
+    useCurrentUri:null,
+    userAuthorizationUri:null,
+    username:null
   });
 }
   createItem1(obj:Auth): FormGroup {

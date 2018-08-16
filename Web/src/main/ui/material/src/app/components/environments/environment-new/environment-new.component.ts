@@ -42,8 +42,9 @@ export class EnvironmentNewComponent implements OnInit {
   isLinear = false;
   thirdFormGroup: FormGroup;
 
-  authTypes = ['Basic', 'OAuth_2_0' , 'Token', 'No_Authentication'];
+  authTypes = ['Basic', 'Token', 'OAuth_2_0', 'Auth0', 'No_Authentication'];
   authTypesgrantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
+  auth0GrantTypes = ['client_credentials', 'password'];
   schemeTypes = ['form', 'header', 'none', 'query'];
   scopeTypes= ['read', 'write'];
 

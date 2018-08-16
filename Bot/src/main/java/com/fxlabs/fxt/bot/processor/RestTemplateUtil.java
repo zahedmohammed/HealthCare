@@ -9,6 +9,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
@@ -35,6 +36,9 @@ public class RestTemplateUtil {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private Auth0Service auth0Service;
+
     public ResponseEntity<String> execRequest(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
 
         // TODO - handle other auth types
@@ -47,6 +51,8 @@ public class RestTemplateUtil {
             return execOAuth2Request(url, method, httpHeaders, req, auth);
         } else if (auth.getAuthType() == AuthType.Token) {
             return execTokenRequest(url, method, httpHeaders, req, auth);
+        } else if (auth.getAuthType() == AuthType.Auth0) {
+            return execAuth0Request(url, method, httpHeaders, req, auth);
         } else {
             logger.warn("Invalid auth-type [{}]", auth.getAuthType());
         }
@@ -57,7 +63,7 @@ public class RestTemplateUtil {
 
     private ResponseEntity<String> execBasicRequest(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
         // execute request
-        RestTemplate restTemplate = new RestTemplate(httpClientFactory());
+        RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
 
         if (auth != null && (auth.getAuthType() == AuthType.Basic || auth.getAuthType() == AuthType.BasicAuth || auth.getAuthType() == AuthType.BASIC)) {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(auth.getUsername(), auth.getPassword()));
@@ -87,7 +93,7 @@ public class RestTemplateUtil {
 
     private ResponseEntity<String> execTokenRequest(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
         // execute request
-        RestTemplate restTemplate = new RestTemplate(httpClientFactory());
+        RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
 
         extractHeader(httpHeaders, auth.getHeader_1());
         extractHeader(httpHeaders, auth.getHeader_2());
@@ -125,13 +131,47 @@ public class RestTemplateUtil {
         }
     }
 
+    private ResponseEntity<String> execAuth0Request(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
+        // execute request
+        RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
+
+        // Get Access Token
+        String accessToken = auth0Service.getAccessTokenForClientCredentials(auth.getAccessTokenUri(), auth.getClientId(), auth.getClientSecret(), auth.getId());
+        if (StringUtils.isEmpty(accessToken)) {
+            throw new RuntimeException("Error retrieving access token from Auth0");
+        }
+        // Set Bearer
+        httpHeaders.set("authorization", String.format("Bearer %s", accessToken));
+
+        //logger.info("Request: [{}]", req);
+        HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
+
+        ResponseEntity<String> response = null;
+        int statusCode = -1;
+        String responseBody = null;
+        HttpHeaders headers = null;
+        try {
+            response = restTemplate.exchange(url, method, request, String.class);
+            //statusCode = response.getStatusCodeValue();
+            //responseBody = response.getBody();
+            //headers = response.getHeaders();
+        } catch (HttpStatusCodeException statusCodeException) {
+            response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
+        } catch (Exception e) {
+            logger.warn(e.getLocalizedMessage());
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return response;
+    }
+
     private ResponseEntity<String> execOAuth2Request(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
         // execute request
         AccessTokenRequest atr = new DefaultAccessTokenRequest();
         DefaultOAuth2ClientContext clientContext = new DefaultOAuth2ClientContext(atr);
 
         OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails(auth), clientContext);
-        restTemplate.setRequestFactory(this.httpClientFactory());
+        restTemplate.setRequestFactory(HttpClientFactoryUtil.getInstance());
 
         //logger.info("Request: [{}]", req);
         HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);
@@ -265,20 +305,4 @@ public class RestTemplateUtil {
         return details;
     }
 
-    private HttpComponentsClientHttpRequestFactory httpClientFactory() {
-        CloseableHttpClient httpClient
-                = HttpClients.custom()
-                .setSSLHostnameVerifier(new NoopHostnameVerifier())
-                .build();
-        HttpComponentsClientHttpRequestFactory requestFactory
-                = new HttpComponentsClientHttpRequestFactory();
-        requestFactory.setHttpClient(httpClient);
-
-        int timeout = 15000;
-        requestFactory.setConnectTimeout(timeout);
-        requestFactory.setConnectionRequestTimeout(timeout);
-        requestFactory.setReadTimeout(timeout);
-
-        return requestFactory;
-    }
 }
