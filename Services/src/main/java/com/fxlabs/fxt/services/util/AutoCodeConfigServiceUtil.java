@@ -114,10 +114,10 @@ public class AutoCodeConfigServiceUtil {
 
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@StatusCode != 200");
+      //  assertions.add("@StatusCode != 200");
         assertions.add("@StatusCode != 401");
         assertions.add("@StatusCode != 404");
-        assertions.add("@StatusCode != 500");
+      //  assertions.add("@StatusCode != 500");
         negative_number.setAssertions(assertions);
         return negative_number;
     }
@@ -177,10 +177,10 @@ public class AutoCodeConfigServiceUtil {
 
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@StatusCode != 200");
+       // assertions.add("@StatusCode != 200");
         assertions.add("@StatusCode != 401");
         assertions.add("@StatusCode != 404");
-        assertions.add("@StatusCode != 500");
+      //  assertions.add("@StatusCode != 500");
         invalid_datatype.setAssertions(assertions);
 
         return invalid_datatype;
@@ -270,9 +270,9 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@ResponseTime < 7000");
-        assertions.add("@StatusCode != 401");
+       // assertions.add("@StatusCode != 401");
         assertions.add("@StatusCode != 404");
-        assertions.add("@StatusCode != 500");
+        //assertions.add("@StatusCode != 500");
         sql_injection_timebound.setAssertions(assertions);
 
 
@@ -349,10 +349,10 @@ public class AutoCodeConfigServiceUtil {
 
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@StatusCode != 200");
+       // assertions.add("@StatusCode != 200");
         assertions.add("@StatusCode != 401");
         assertions.add("@StatusCode != 404");
-        assertions.add("@StatusCode != 500");
+       // assertions.add("@StatusCode != 500");
         ddos.setAssertions(assertions);
 
         AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
