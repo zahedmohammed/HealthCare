@@ -115,6 +115,7 @@ export class TestSuiteListComponent implements OnInit {
   }
   open() {
     const dialogRef = this.dialog.open(AutoSyncComponent, {
+      width:'450px',
       data: this.project
   });
    dialogRef.afterClosed().subscribe(result => {
