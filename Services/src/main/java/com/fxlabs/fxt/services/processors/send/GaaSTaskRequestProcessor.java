@@ -140,7 +140,8 @@ public class GaaSTaskRequestProcessor {
             }
 
             //Sending event
-            task.setTaskId(RandomStringUtils.random(16));
+            String taskId = RandomStringUtils.randomAlphanumeric(16);
+            task.setTaskId(taskId);
             try {
                 projectSyncEvent(project, Status.In_progress, Entity.Project, task.getTaskId());
             } catch (Exception ex) {
@@ -207,7 +208,8 @@ public class GaaSTaskRequestProcessor {
             }
 
             //Sending event
-            task.setTaskId(RandomStringUtils.randomAlphanumeric(16));
+            String taskId = RandomStringUtils.randomAlphanumeric(16);
+            task.setTaskId(taskId);
             try {
                 projectSyncEvent(project, Status.In_progress, Entity.Project, task.getTaskId());
             } catch (Exception ex) {

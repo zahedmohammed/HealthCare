@@ -192,23 +192,28 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
 
         dto.getDeletedFileNames().stream().forEach(df -> {
-            Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(dto.getProjectId(), FilenameUtils.removeExtension(df));
+            try {
+                Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(dto.getProjectId(), FilenameUtils.removeExtension(df));
 
-            TestSuite entity = null;
-            if (testSuiteOptional.isPresent()) {
-                entity = testSuiteOptional.get();
-            }
-            logger.info("Deleting file [{}] from ProjectId [{}]", df, dto.getProjectId());
-            if (entity != null) {
-                repository.delete(entity);
-                testSuiteESRepository.delete(entity);
-                Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileResponse = this.projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(dto.getProjectId(), df);
-
-                if (projectFileResponse.isPresent()){
-                    this.projectFileService.delete(projectFileResponse.get().getId(), projectFileResponse.get().getCreatedBy());
-                    projectFileESRepository.delete(projectFileResponse.get());
+                TestSuite entity = null;
+                if (testSuiteOptional.isPresent()) {
+                    entity = testSuiteOptional.get();
                 }
+                logger.info("Deleting file [{}] from ProjectId [{}]", df, dto.getProjectId());
+                if (entity != null) {
+                    repository.delete(entity);
+                    testSuiteESRepository.delete(entity);
+                    Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileResponse = this.projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(dto.getProjectId(), df);
 
+                    if (projectFileResponse.isPresent()) {
+                        this.projectFileService.delete(projectFileResponse.get().getId(), projectFileResponse.get().getCreatedBy());
+                        projectFileESRepository.delete(projectFileResponse.get());
+                    }
+
+                }
+            }catch (Exception e){
+                logger.info("Failed to delete file [{}] from ProjectId [{}]", df, dto.getProjectId());
+                logger.warn(e.getLocalizedMessage());
             }
 
         });

@@ -4,6 +4,7 @@ import com.fxlabs.fxt.converters.alerts.EventConverter;
 import com.fxlabs.fxt.dao.entity.event.Entity;
 import com.fxlabs.fxt.dao.entity.event.Type;
 import com.fxlabs.fxt.dao.repository.jpa.EventRepository;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.events.Status;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,8 @@ import org.hibernate.type.EntityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -141,6 +144,15 @@ public class RemoteEventService {
         public void setUser(String user) {
             this.user = user;
         }
+    }
+
+
+    public Response<List<Event>> getRecentOrgEvents(String orgId, Pageable pageable){
+
+        Page<com.fxlabs.fxt.dao.entity.event.Event> page  = eventRepository.findByOrgId(orgId, pageable);
+
+
+        return new Response<List<Event>>(eventConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
 }
