@@ -165,8 +165,8 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
         //Setting default issuetracker
         com.fxlabs.fxt.dao.entity.project.JobIssueTracker jobIssueTracker = new com.fxlabs.fxt.dao.entity.project.JobIssueTracker();
-        jobIssueTracker.setUrl("<<changeme>>");
-        jobIssueTracker.setAccount("Default_GitHub");
+        jobIssueTracker.setUrl("");
+        jobIssueTracker.setAccount("");
         jobIssueTracker.setName("FXLabs/Dev-IssueTracker");
         job.setIssueTracker(jobIssueTracker);
 
@@ -176,7 +176,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         
         JobNotification jnEmail = new JobNotification();
         jnEmail.setName("FXLabs/Dev-Email-Notification");
-        jnEmail.setTo("<<changeme>>");
+        jnEmail.setTo("");
         jnEmail.setAccount("Default_Email");
         listNotification.add(jnEmail);
 
@@ -184,7 +184,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         JobNotification jn = new JobNotification();
         jn.setAccount("FXLabs/Dev-Slack-Notification");
         jn.setName("Default_Slack");
-        jn.setChannel("<<changeme>>");
+        jn.setChannel("");
         listNotification.add(jn);
         job.setNotifications(listNotification);
 
