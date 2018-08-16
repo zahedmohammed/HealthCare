@@ -4,14 +4,10 @@ import com.fxlabs.fxt.dto.project.Auth;
 import com.fxlabs.fxt.dto.project.AuthType;
 import com.fxlabs.fxt.dto.project.GrantType;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.BaseOAuth2ProtectedResourceDetails;
@@ -136,10 +132,21 @@ public class RestTemplateUtil {
         RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
 
         // Get Access Token
-        String accessToken = auth0Service.getAccessTokenForClientCredentials(auth.getAccessTokenUri(), auth.getClientId(), auth.getClientSecret(), auth.getId());
-        if (StringUtils.isEmpty(accessToken)) {
-            throw new RuntimeException("Error retrieving access token from Auth0");
+        String accessToken = null;
+        try {
+            if (auth.getGrantType() == GrantType.client_credentials) {
+                accessToken = auth0Service.getAccessTokenForClientCredentials(auth.getAccessTokenUri(), auth.getClientId(), auth.getClientSecret(), auth.getId());
+            } else {
+                accessToken = auth0Service.getAccessTokenForPassword(auth.getAccessTokenUri(), auth.getClientId(), auth.getId(), auth.getUsername(), auth.getPassword(), auth.getScope());
+            }
+        } catch (RuntimeException ex) {
+            return new ResponseEntity<String>(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        if (StringUtils.isEmpty(accessToken)) {
+            return new ResponseEntity<String>("Error retrieving access token from Auth0", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         // Set Bearer
         httpHeaders.set("authorization", String.format("Bearer %s", accessToken));
 
