@@ -1,19 +1,19 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.entity.project.JobNotification;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dto.base.NameDto;
-import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.events.Entity;
 import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.events.Status;
 import com.fxlabs.fxt.dto.events.Type;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
-import com.fxlabs.fxt.dto.notify.Notification;
 import com.fxlabs.fxt.dto.task.EmailTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.events.LocalEventPublisher;
@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -79,6 +78,8 @@ public class MarkCompleteTaskProcessor {
 
     private final static Collection<TaskStatus> statuses = Arrays.asList(TaskStatus.PROCESSING, TaskStatus.COMPLETED);
 
+    @Autowired
+    private AccountRepository accountRepository;
     /**
      * Find Tasks with state 'PROCESSING'
      * If completed-suites >= total-suites
@@ -156,11 +157,7 @@ public class MarkCompleteTaskProcessor {
 
             for (JobNotification jn : run.getJob().getNotifications()) {
 
-//                if (StringUtils.isEmpty(jn.getName()) || StringUtils.isEmpty(run.getJob().getCreatedBy())) {
-//                    logger.info("Ignoring notification invalid data");
-//                    return;
-//                }
-
+                // Sending Email
                 if (! org.apache.commons.lang3.StringUtils.isBlank(jn.getTo())){
 
                     // Project-name, Job-name, Run-Id, Status, Pass/Fail and Region etc.
@@ -184,41 +181,30 @@ public class MarkCompleteTaskProcessor {
                     sendEmailTask(jn.getTo(), subjet.toString(), formatBody(run));
                 }
 
-                //TODO: Slack notification
+                // Sending Message on Slack
+                if (! ( org.apache.commons.lang3.StringUtils.isBlank(jn.getAccount()) && org.apache.commons.lang3.StringUtils.isBlank(jn.getChannel()) ) ){
+                    if ( jn.getAccount() != null ){
+                        Optional<Account> accountOptional = accountRepository.findById(jn.getAccount());
+                        if (! accountOptional.isPresent()) continue;
 
-//                Response<Notification> notificationResponse = notificationAccountService.findByName(jn.getName(), run.getJob().getProject().getOrg().getName());
-//
-//                if (notificationResponse.isErrors() || notificationResponse.getData() == null) {
-//                    logger.info("Notification Account not found for name [{}]", jn.getName());
-//                    return;
-//                }
-//
-//                Notification notification = notificationResponse.getData();
-//                NotificationTask task = new NotificationTask();
-//                task.setId(run.getId());
-//                Map<String, String> opts = new HashMap<>();
-//                switch (notification.getAccount().getAccountType()) {
-//                    case Slack:
-//                        if (notification.getAccount() == null || StringUtils.isEmpty(notification.getAccount().getSecretKey())) {
-//                            logger.info("Notification Token not found for account [{}]", notification.getId());
-//                            break;
-//                        }
-//                        String token = notification.getAccount().getSecretKey();
-//                        token = encryptor.decrypt(token);
-//                        opts.put("TOKEN", token);
-//                        opts.put("MESSAGE", formatBody(run));
-//                        opts.put("CHANNELS", notification.getChannel());
-//                        task.setOpts(opts);
-//                        amqpClientService.sendTask(task, slackNotificationQueue);
-//                        break;
-//                    case Email:
-//                        //logger.info("Notification Account Type email not supported");
-//                        sendEmailTask(notification.getChannel(), "Job #" + run.getRunId(), formatBody(run));
-//                        break;
-//
-//                    default:
-//                        logger.info("Notification Account type [{}] not supported", notification.getType());
-//                }
+                        Account account = accountOptional.get();
+                        if ( account != null ){
+                            String token = account.getSecretKey();
+                            token = encryptor.decrypt(token);
+
+                            Map<String, String> opts = new HashMap<>();
+                            opts.put("TOKEN", token);
+                            opts.put("MESSAGE", formatBody(run));
+                            opts.put("CHANNELS", jn.getChannel());
+
+                            NotificationTask task = new NotificationTask();
+                            task.setId(run.getId());
+                            task.setOpts(opts);
+                            amqpClientService.sendTask(task, slackNotificationQueue);
+
+                        }
+                    }
+                }
             }
 
         } catch (Exception e) {
