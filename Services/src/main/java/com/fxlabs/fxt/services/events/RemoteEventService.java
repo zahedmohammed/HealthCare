@@ -40,8 +40,8 @@ public class RemoteEventService {
 
         this.emitters.add(new EmitterWrapper(emitter, org, user));
 
-        emitter.onCompletion(() -> this.emitters.remove(emitter));
-        emitter.onTimeout(() -> this.emitters.remove(emitter));
+       // emitter.onCompletion(() -> this.emitters.remove(emitter));
+        //emitter.onTimeout(() -> this.emitters.remove(emitter));
 
         return emitter;
 
@@ -90,7 +90,7 @@ public class RemoteEventService {
             try {
                 if (StringUtils.equals(wrapper.getOrg(), event.getOrg().getId())) {
                     wrapper.getSseEmitter().send(SseEmitter.event()
-                            .id(event.getId())
+                            .id(event.getTaskId())
                             .name(event.getName())
                             .data(event.getLink())
                             .reconnectTime(15_000L)

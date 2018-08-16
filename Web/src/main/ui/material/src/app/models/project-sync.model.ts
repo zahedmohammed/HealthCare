@@ -1,6 +1,6 @@
 export class ProjectSync {
 
-    isDeleteAll: boolean;
+    deleteAll: boolean;
     projectId: string;
     allowedRegions:string[]
 
