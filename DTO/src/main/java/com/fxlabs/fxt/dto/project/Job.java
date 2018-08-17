@@ -41,5 +41,7 @@ public class Job extends BaseDto<String> {
 
     private List<JobNotification> notifications = new ArrayList<>();
 
+    private String categories;
+
 }
 

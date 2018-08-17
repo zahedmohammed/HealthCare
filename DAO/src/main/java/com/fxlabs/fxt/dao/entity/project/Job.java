@@ -54,6 +54,8 @@ public class Job extends BaseEntity {
     @ElementCollection
     private List<JobNotification> notifications;
 
+    private String categories;
+
     //private String issueTracker;
 
 //    @ElementCollection

@@ -126,27 +126,12 @@
             <form [formGroup]="secondFormGroup">
               <ng-template matStepLabel>Auto Bug Management</ng-template>
 
-              <div class="form-group row">
-                <label for="name" class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <input [(ngModel)]="job.issueTracker.url"  [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Issue-Tracker URL (Optional)">
-                  </mat-input-container>
-                </div>
-                <div class="col-md-7">
-                  <div class="callout1 text-muted callout-info1">
-                    <p class="mt-4">e.g. https://github.com/username/MyApp. Upon running the job, FX will automatically create/update/close bugs in this Issue Tracker</p>
-                  </div>
-                </div>
-              </div>
-
               <div class="form-group row" >
                 <label class="col-md-0 control-label">
                 </label>
                 <div class="col-md-5">
                   <mat-form-field class="full-width">
-                    <mat-select placeholder="Account Type (Optional)" [(ngModel)]="job.issueTracker.accountType"
+                    <mat-select placeholder="Issue Tracker Type (Optional)" [(ngModel)]="job.issueTracker.accountType"
                                 name="type" [ngModelOptions]="{standalone: true}">
                       <mat-option *ngFor="let type of accountTypes" [value]="type" (click)="getITAccountsByAccountType(type);">
                         {{type}}
@@ -181,6 +166,21 @@
                   </div>
                 </div>
 
+              </div>
+
+              <div class="form-group row">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
+                  <mat-input-container class="full-width">
+                    <input [(ngModel)]="job.issueTracker.url"  [ngModelOptions]="{standalone: true}"
+                           matInput placeholder="Issue-Tracker URL (Optional)">
+                  </mat-input-container>
+                </div>
+                <div class="col-md-7">
+                  <div class="callout1 text-muted callout-info1">
+                    <p class="mt-4">e.g. https://github.com/username/MyApp. Upon running the job, FX will automatically create/update/close bugs in this Issue Tracker</p>
+                  </div>
+                </div>
               </div>
 
               <div>
@@ -227,7 +227,7 @@
                 </div>
                 <div class="col-md-7">
                   <div class="callout1 text-muted callout-info1">
-                    <p class="mt-4">A Channel in your slack workspace e.g. Stg, UAT etc., for FX to send the Job Run report.</p>
+                    <p class="mt-4">A Channel in your slack workspace e.g. Engineering, QA etc., for FX to send the Job Run report.</p>
                   </div>
                 </div>
               </div>

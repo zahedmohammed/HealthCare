@@ -43,5 +43,6 @@ public class Job implements Serializable {
     @JsonProperty("notifications")
     private List<JobNotification> notifications;
 
+    private String categories;
 
 }
