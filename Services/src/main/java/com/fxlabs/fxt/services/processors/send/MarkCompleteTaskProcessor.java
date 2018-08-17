@@ -287,7 +287,7 @@ public class MarkCompleteTaskProcessor {
 
         event.setTaskId(taskId);
 
-        event.setName(job.getName());
+        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runId);
         event.setUser(job.getCreatedBy());
         event.setEntityType(entityType);
         event.setEventType(Type.Run);
