@@ -243,7 +243,7 @@ public class GaaSTaskRequestProcessor {
         event.setEntityType(entityType);
         event.setEventType(Type.Sync);
         event.setEntityId(project.getId());
-        event.setLink("/app/project/" + project.getId() + "/test-suites");
+        event.setLink("/app/projects/" + project.getId() + "/test-suites");
 
         event.setStatus(status);
         NameDto org = new NameDto();
