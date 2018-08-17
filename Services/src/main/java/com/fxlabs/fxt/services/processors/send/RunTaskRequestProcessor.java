@@ -170,7 +170,7 @@ public class RunTaskRequestProcessor {
                 runRepository.saveAndFlush(run);
 
                 try {
-                    projectSyncEvent(run.getJob(), Status.In_progress, Entity.Job, run.getId());
+                    projectSyncEvent(run.getJob(), Status.In_progress, Entity.Job, run.getId(), run.getId());
                 } catch (Exception ex) {
                     logger.warn(ex.getLocalizedMessage());
                 }
@@ -493,7 +493,7 @@ public class RunTaskRequestProcessor {
     }
 
 
-    public void projectSyncEvent(Job job, Status status, Entity entityType, String taskId) {
+    private void projectSyncEvent(Job job, Status status, Entity entityType, String taskId, String runId) {
 
         if (job == null || status == null || entityType == null) {
 
@@ -513,6 +513,7 @@ public class RunTaskRequestProcessor {
         event.setEntityType(entityType);
         event.setEventType(Type.Run);
         event.setEntityId(job.getId());
+        event.setLink("/project/" + job.getProject().getId() + "/jobs/" + job.getId() + "/runs/" + runId);
 
         event.setStatus(status);
         NameDto org = new NameDto();

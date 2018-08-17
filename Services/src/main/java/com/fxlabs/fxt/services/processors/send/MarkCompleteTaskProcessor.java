@@ -129,7 +129,7 @@ public class MarkCompleteTaskProcessor {
                         sendNotification(run);
 
                         try {
-                            projectSyncEvent(run.getJob(), Status.Done, Entity.Job, run.getId());
+                            projectSyncEvent(run.getJob(), Status.Done, Entity.Job, run.getId(), run.getId());
                         } catch (Exception ex) {
                             logger.warn(ex.getLocalizedMessage());
                         }
@@ -273,7 +273,7 @@ public class MarkCompleteTaskProcessor {
     }
 
 
-    public void projectSyncEvent(Job job, Status status, Entity entityType, String taskId) {
+    private void projectSyncEvent(Job job, Status status, Entity entityType, String taskId, String runId) {
 
         if (job == null || status == null || entityType == null) {
 
@@ -288,11 +288,11 @@ public class MarkCompleteTaskProcessor {
         event.setTaskId(taskId);
 
         event.setName(job.getName());
-        event.setLink("/projects");
         event.setUser(job.getCreatedBy());
         event.setEntityType(entityType);
         event.setEventType(Type.Run);
         event.setEntityId(job.getId());
+        event.setLink("/project/" + job.getProject().getId() + "/jobs/" + job.getId() + "/runs/" + runId);
 
         event.setStatus(status);
         NameDto org = new NameDto();
