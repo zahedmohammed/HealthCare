@@ -1,0 +1,37 @@
+.chat-main{
+    position: fixed;
+    width: 258px;
+    bottom: 0;
+    right: 0;
+    background: #ffffff;
+    z-index: 1;
+  }
+  .chat-header{
+    // background: #4267B2;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    cursor: pointer;
+  }
+  .username i{
+    font-size: 13px;
+  }
+  .username h6{
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .options i{
+    font-size: 14px;
+      font-weight: normal;
+      opacity: 0.7;
+  }
+  .chats{
+    height: 260px;
+    overflow-x: scroll;
+    overflow-x: hidden;
+  }
+  .chats ul li{
+    list-style: none;
+    clear: both;
+    font-size: 13px;
+  }

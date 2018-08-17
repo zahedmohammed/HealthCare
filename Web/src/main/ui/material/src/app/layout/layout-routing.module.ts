@@ -95,7 +95,7 @@ import { TestSuiteListComponent } from '../components/testsuites/test-suite-list
 import { TestSuiteNewComponent } from '../components/testsuites/test-suite-new/test-suite-new.component';
 import { TestSuiteEditComponent } from '../components/testsuites/test-suite-edit/test-suite-edit.component';
 
-
+import { AppFooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
   {
@@ -117,6 +117,7 @@ const routes: Routes = [
       { path: 'projects/:id/test-suites', component: TestSuiteListComponent },
       { path: 'projects/:id/test-suites/new', component: TestSuiteNewComponent },
       { path: 'projects/:id/test-suites/:testSuiteId/edit', component: TestSuiteEditComponent },
+      { path: 'projects/:entityId/test-suites', component: AppFooterComponent },
 
       { path: 'projects/:id/jobs', component: JobslistComponent },
       { path: 'projects/:id/jobs/new', component: JobsNewComponent },

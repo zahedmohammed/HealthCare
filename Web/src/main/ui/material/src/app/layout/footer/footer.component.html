@@ -1,14 +1,76 @@
+<div class="chat-main">
+    <div class="col-md-12 chat-header rounded-top bg-primary text-white hide-chat-box">
+        <div class="row">
+            <div class="col-md-6 username pl-2">                
+                <h6 class="m-0">Tasks</h6>&nbsp;
+                <span class="badge" style="background: red"></span>
+            </div>
+            <div class="col-md-6 options text-right pr-2">
+                <i class="fa fa-window-minimize" aria-hidden="true"></i>
+              </div>
+        </div>
+    </div>
+    <div class="chat-content">
+        <div class="col-md-12 chats border">
+            <ul class="p-0" *ngFor="let task of tasksRes">
+
+                <li class="pl-2 pr-2 text-dark send-msg mb-1" *ngIf="task.entityType === 'Job' && task.status === 'Done'">
+                    <a href="javascript:;" [routerLink]="[task.link]">
+                    {{ task.name }}</a> ( <small class="text-muted">Complete</small> )
+                    <p><small class="text-muted">{{task.createdDate | timeAgo}}</small>
+                    </p>                    
+                </li>
+
+                <li class="pl-2 pr-2 text-dark send-msg mb-1" *ngIf="task.entityType === 'Project' && task.status === 'In_progress'">
+                    <a href="javascript:;" [routerLink]="[task.link]">
+                    {{ task.name }}</a> ( <small class="text-muted">Syncing..</small> ) &nbsp;&nbsp;&nbsp;&nbsp;
+                    <p><small class="text-muted">{{task.createdDate | timeAgo}}</small>
+                    </p>                    
+                </li>
+                
+                <!-- <li class="pl-2 pr-2 text-dark send-msg mb-1" *ngIf="task.entityType === 'Project' && task.status === 'In_progress'">
+                    {{ task.name }} ( <small class="text-muted">Syncing..</small> ) &nbsp;&nbsp;&nbsp;&nbsp;
+                    <p><small class="text-muted">{{task.createdDate | timeAgo}}</small>
+                    </p>                    
+                </li> -->
+
+                <!-- <td class="mdl-data-table__cell--non-numeric">
+                    <span *ngIf="item.task.status == 'COMPLETED'" class="text-success">{{item.task.status}}</span>
+                    <span *ngIf="item.task.status != 'COMPLETED' && item.task.status != 'PROCESSING'" class="text-danger">{{item.task.status}}</span>
+                    <span *ngIf="item.task.status == 'PROCESSING'" class="text-warning"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{item.task.status}}</span>
+                </td> -->
+
+                <!-- <li class="pl-2 pr-2 text-dark send-msg mb-1" *ngIf="task.entityType === 'Job'">
+                    <a href="javascript:;" [routerLink]="['/app/projects', task.entityId, 'jobs', task.entityId, 'edit']">
+                    # {{ task.name }}</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <i class="fa fa-spinner fa-spin" style="color:orange" *ngIf="task.status === 'In_progress'"></i> 
+                    <p><small class="text-warning" *ngIf="task.status === 'In_progress'">Syncing...</small>
+                    </p>
+                </li> -->
+                </ul>           
+           
+        </div>
+        
+    </div>
+</div>
+
+
 <section class="app-footer">
   <div class="container-fluid">
     <span class="float-left">
-      <span>Copyright © <a class="brand" target="_blank" [href]="AppConfig.copyright">{{AppConfig.brand}}</a> {{AppConfig.year}}</span>
-    </span>
-    <span class="float-right">
+      <span>Copyright © <a class="brand" target="_blank" [href]="AppConfig.copyright">{{AppConfig.brand}}</a> {{AppConfig.year}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a class="brand text-muted" target="_blank" href="https://fxlabs.io/pricing/">Pricing</a> &nbsp;&nbsp; | &nbsp;&nbsp;
       <a class="brand text-muted" target="_blank" [href]="AppConfig.docLink">Documentation</a> &nbsp;&nbsp; | &nbsp;&nbsp;
       <a class="brand text-muted" target="_blank" [href]="AppConfig.apiLink">REST API</a> &nbsp;&nbsp; | &nbsp;&nbsp;
       <a class="brand text-muted" target="_blank" [href]="AppConfig.cliLink">FX cli</a> &nbsp;&nbsp; | &nbsp;&nbsp;
       <a class="brand text-muted" target="_blank" [href]="AppConfig.productLink" ><span class="nav-text"><span>Help</span> & <span>Support</span></span></a>
     </span>
+    <!-- <span class="float-right">
+      <a class="brand text-muted" target="_blank" href="https://fxlabs.io/pricing/">Pricing</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+      <a class="brand text-muted" target="_blank" [href]="AppConfig.docLink">Documentation</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+      <a class="brand text-muted" target="_blank" [href]="AppConfig.apiLink">REST API</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+      <a class="brand text-muted" target="_blank" [href]="AppConfig.cliLink">FX cli</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+      <a class="brand text-muted" target="_blank" [href]="AppConfig.productLink" ><span class="nav-text"><span>Help</span> & <span>Support</span></span></a>
+    </span> -->
   </div>
 </section>

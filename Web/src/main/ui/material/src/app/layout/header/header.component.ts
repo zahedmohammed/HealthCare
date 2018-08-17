@@ -9,7 +9,60 @@ import * as EventSource from 'eventsource';
 
 @Component({
   selector: 'my-app-header',
-  styles: [],
+  styles: [
+    `
+    .badge1{
+      background-color: red;
+    }
+    .dropdown {
+      display:inline-block;
+      margin-left:20px;
+      padding:10px;
+    }  
+  .glyphicon-bell {
+     
+      font-size:1.5rem;
+    }
+    .notifications {
+     min-width:420px; 
+    }
+    .notifications-wrapper {
+       overflow:auto;
+        max-height:250px;
+      }
+    .menu-title {
+       color:#ff7788;
+       font-size:1.5rem;
+        display:inline-block;
+        }
+     .glyphicon-circle-arrow-right {
+        margin-left:10px;     
+     }    
+    .notification-heading, .notification-footer  {
+     padding:2px 10px;
+         }          
+  .dropdown-menu.divider {
+    margin:5px 0;          
+    }  
+  .item-title {
+    
+   font-size:1.3rem;
+   color:#000;
+      
+  }  
+  .notifications a.content {
+   text-decoration:none;
+   background:#ccc;
+  
+   }      
+  .notification-item {
+   padding:4px;
+   margin:5px;
+   background:#ccc;
+   border-radius:2px;
+   }
+    `
+  ],
   templateUrl: './header.component.html',
   providers: [OrgService]
 })
@@ -23,7 +76,7 @@ export class AppHeaderComponent implements OnInit {
   ngOnInit() {
     this.AppConfig = APPCONFIG;
     this.getLoggedInUser();
-    this.connect();
+    //this.connect();
   }
 
   getLoggedInUser() {
@@ -40,11 +93,11 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
-  connect(): void {
+  connect() {
     let source = new EventSource('/api/v1/events/register');
     source.addEventListener('message', message => {
-      let event = JSON.parse(message.data);
-      console.log(event);
+      //let event = JSON.parse(message.data);
+      console.log('event-------', event);
       // TODO - display & update events in the Tasks window.
     });
   }

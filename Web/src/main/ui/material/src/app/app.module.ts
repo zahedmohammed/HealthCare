@@ -5,6 +5,7 @@ import {HttpClientModule }from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule}from '@angular/forms';
 import {BrowserAnimationsModule}from '@angular/platform-browser/animations';
 import {NoopAnimationsModule}from '@angular/platform-browser/animations';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 import {
 MatAutocompleteModule,
@@ -329,6 +330,7 @@ import { AutoSyncComponent } from './components/dialogs/auto-sync/auto-sync.comp
     TestSuiteListComponent,
     TestSuiteEditComponent,
     TestSuiteNewComponent,
+    TimeAgoPipe,
     AutoSyncComponent
   ],
   bootstrap: [AppComponent],
