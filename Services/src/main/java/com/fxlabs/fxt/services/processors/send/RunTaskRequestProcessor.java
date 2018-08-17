@@ -513,7 +513,7 @@ public class RunTaskRequestProcessor {
         event.setEntityType(entityType);
         event.setEventType(Type.Run);
         event.setEntityId(job.getId());
-        event.setLink("/project/" + job.getProject().getId() + "/jobs/" + job.getId() + "/runs/" + runId);
+        event.setLink("/app/project/" + job.getProject().getId() + "/jobs/" + job.getId() + "/runs/" + runId);
 
         event.setStatus(status);
         NameDto org = new NameDto();
