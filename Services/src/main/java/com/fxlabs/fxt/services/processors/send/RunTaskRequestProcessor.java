@@ -170,7 +170,7 @@ public class RunTaskRequestProcessor {
                 runRepository.saveAndFlush(run);
 
                 try {
-                    projectSyncEvent(run.getJob(), Status.In_progress, Entity.Job, run.getId(), run.getId());
+                    projectSyncEvent(run.getJob(), Status.In_progress, Entity.Job, run.getId(), run.getId(), run.getRunId());
                 } catch (Exception ex) {
                     logger.warn(ex.getLocalizedMessage());
                 }
@@ -493,7 +493,7 @@ public class RunTaskRequestProcessor {
     }
 
 
-    private void projectSyncEvent(Job job, Status status, Entity entityType, String taskId, String runId) {
+    private void projectSyncEvent(Job job, Status status, Entity entityType, String taskId, String runId, long runNumber) {
 
         if (job == null || status == null || entityType == null) {
 
@@ -507,7 +507,7 @@ public class RunTaskRequestProcessor {
 
         event.setTaskId(taskId);
 
-        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runId);
+        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runNumber);
         event.setLink("/projects");
         event.setUser(job.getCreatedBy());
         event.setEntityType(entityType);

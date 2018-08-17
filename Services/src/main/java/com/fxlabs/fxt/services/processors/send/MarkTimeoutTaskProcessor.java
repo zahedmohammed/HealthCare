@@ -106,7 +106,7 @@ public class MarkTimeoutTaskProcessor {
                     sendNotification(run);
 
                     try {
-                        projectSyncEvent(run.getJob(), Status.Done, Entity.Job, run.getId(), run.getId());
+                        projectSyncEvent(run.getJob(), Status.Done, Entity.Job, run.getId(), run.getId(), run.getRunId());
                     } catch (Exception ex) {
                         logger.warn(ex.getLocalizedMessage());
                     }
@@ -209,7 +209,7 @@ public class MarkTimeoutTaskProcessor {
         return value;
     }
 
-    public void projectSyncEvent(Job job, Status status, Entity entityType, String taskId, String runId) {
+    public void projectSyncEvent(Job job, Status status, Entity entityType, String taskId, String runId, long runNumber) {
 
         if (job == null || status == null || entityType == null) {
 
@@ -223,7 +223,7 @@ public class MarkTimeoutTaskProcessor {
 
         event.setTaskId(taskId);
 
-        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runId);
+        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runNumber);
         event.setUser(job.getCreatedBy());
         event.setEntityType(entityType);
         event.setEventType(Type.Run);
