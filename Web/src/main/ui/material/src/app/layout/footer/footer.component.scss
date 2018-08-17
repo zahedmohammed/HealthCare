@@ -1,15 +1,15 @@
 .chat-main{
     position: fixed;
     width: 258px;
-    bottom: 0;
-    right: 0;
+    bottom: 3px;
+    right: 10px;
     background: #ffffff;
     z-index: 1;
   }
   .chat-header{
     // background: #4267B2;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     cursor: pointer;
   }
   .username i{
