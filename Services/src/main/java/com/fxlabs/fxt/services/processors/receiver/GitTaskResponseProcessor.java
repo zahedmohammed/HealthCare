@@ -123,6 +123,7 @@ public class GitTaskResponseProcessor {
         event.setEntityType(entityType);
         event.setEventType(Type.Sync);
         event.setEntityId(project.getId());
+        event.setLink("/project/" + project.getId() + "/test-suites");
 
         event.setStatus(status);
         NameDto org = new NameDto();
