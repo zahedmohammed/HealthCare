@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.events;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.converters.alerts.EventConverter;
 import com.fxlabs.fxt.dao.entity.event.Entity;
 import com.fxlabs.fxt.dao.entity.event.Type;
@@ -81,21 +82,35 @@ public class RemoteEventService {
         if (optionalEntity.isPresent()) {
             com.fxlabs.fxt.dao.entity.event.Event entity = optionalEntity.get();
             entity.setStatus(com.fxlabs.fxt.dao.entity.event.Status.valueOf(event.getStatus().toString()));
-            eventRepository.save(entity);
+            event = eventConverter.convertToDto(eventRepository.save(entity));
         } else {
             com.fxlabs.fxt.dao.entity.event.Event eventEntity = eventConverter.convertToEntity(event);
-            eventRepository.save(eventEntity);
+            event = eventConverter.convertToDto(eventRepository.save(eventEntity));
         }
+
+        final Event event1 = event;
 
         logger.info("Event msg [{}] org [{}]", event.getName(), event.getOrg().getName());
         List<SseEmitter> deadEmitters = new ArrayList<>();
+        ObjectMapper mapperObj = new ObjectMapper();
+        String jsonStr = null;
+        try {
+            jsonStr = mapperObj.writeValueAsString(event1);
+        } catch (Exception ex) {
+
+        }
+        if (StringUtils.isEmpty(jsonStr)) {
+            return;
+        }
+
+        final String jsonStr1 = jsonStr;
         this.emitters.forEach(wrapper -> {
             try {
-                if (StringUtils.equals(wrapper.getOrg(), event.getOrg().getId())) {
+                if (StringUtils.equals(wrapper.getOrg(), event1.getOrg().getId())) {
                     wrapper.getSseEmitter().send(SseEmitter.event()
-                            .id(event.getTaskId())
-                            .name(event.getName())
-                            .data(event.getLink())
+                            .id(event1.getId())
+                            .name(event1.getName())
+                            .data(jsonStr1)
                             .reconnectTime(15_000L)
                             .build());
                 }
