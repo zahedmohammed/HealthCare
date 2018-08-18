@@ -1,15 +1,27 @@
 <meta name="author" content="Syed Abdul Rasheed">
-<h2 mat-dialog-title>AutoCode
-    <small>Auto-Generate new test suites.</small>
-</h2>
+<h2 mat-dialog-title>AutoCode <small>(Developer Bot - Automatic test coverage)</small></h2>
 
 <mat-dialog-content class="mat-typography">
-    <mat-checkbox [(ngModel)]="projectSync.deleteAll">Delete All & Re-Generate </mat-checkbox>
+
+    <p>1. Auto-generates test-suites based on the project's <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'manage']">AutoCode configuration</a>.</p>
+    <p>2. AutoCode never overrides an existing test-suite file it only creates new files.</p>
+    <p>3. Sync's new or updated files from the Git repository.</p>
+
+    <mat-checkbox [(ngModel)]="projectSync.deleteAll" align="end" color="warn">4. Delete All & Re-Generate <span
+            class="text-muted">(Optional)</span>
+    </mat-checkbox>
+    <div class="callout callout-danger" *ngIf="projectSync.deleteAll">
+        <span class="text-muted"> &nbsp; &nbsp; Select this option if you made changes to the AutoCode's configuration and would like the generate new test suites.</span>
+        <br><span class="text-muted"> &nbsp; &nbsp; Note: All previously auto-generated test-suite files will be deleted.</span>
+        <br><span class="text-muted"> &nbsp; &nbsp; Note: AutoCode will re-generate new test-suite files based on the AutoCode's configuration settings.</span>
+        <br><span class="text-muted"> &nbsp; &nbsp; Note: Files which are not created by AutoCode features are not deleted.</span>
+
+    </div>
     <br>
-    <small> Delete the previously auto-generated test suites and re-generate all.</small>
+
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" (click)="synchronization()" cdkFocusInitial>Generate
+    <button mat-button [mat-dialog-close]="true" (click)="synchronization()" cdkFocusInitial>Sync
     </button>
 </mat-dialog-actions>
