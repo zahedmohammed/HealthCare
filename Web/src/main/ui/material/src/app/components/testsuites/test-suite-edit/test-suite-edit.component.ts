@@ -29,10 +29,12 @@ export class TestSuiteEditComponent implements OnInit {
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
-  isValid: boolean = true;
-testSuiteId:string;
-testCases: FormArray;
-advance:boolean=    false;
+  yml = false;
+  bsc = true;
+  adv = false;
+  testSuiteId: string;
+  testCases: FormArray;
+  advance: boolean = false;
 severities:any[]=[{id:"Critical",value:"Critical"},{id:"Major",value: "Major"},{id:"Minor",value: "Minor"},{id:"Trivial",value: "Trivial"}];
 methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HEAD", "PATCH"];
 categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative", "Weak_Password", "Security_UnSecured", "Security_DDOS","Security_XSS","Security_SQL_Injection","UnSecured","DDOS","XSS_Injection","SQL_Injection","Log_Forging","RBAC"];
@@ -153,7 +155,19 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
               this.handler.error(error);
           });
       }
-      switch(valid: boolean) { 
-        this.isValid = valid; 
-      } 
+      yaml() {
+        this.yml = true;
+        this.bsc = false;
+        this.adv = false;
+      }
+      basic() {
+        this.bsc = true;
+        this.yml = false;
+        this.adv = false;
+      }
+      advanced() {
+        this.adv = true;
+        this.yml = false;
+        this.bsc = false;
+      }
   }

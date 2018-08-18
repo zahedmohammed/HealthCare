@@ -3,11 +3,14 @@
     <article>
       <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
         <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
-        &nbsp;<span class="text-muted"> > </span> &nbsp;
+        &nbsp;
+        <span class="text-muted"> > </span> &nbsp;
         <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> {{project.name}} </a>
-        &nbsp;<span class="text-muted"> > </span> &nbsp;
+        &nbsp;
+        <span class="text-muted"> > </span> &nbsp;
         <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']"> Test Suites </a>
-        &nbsp;<span class="text-muted"> > </span>&nbsp;New
+        &nbsp;
+        <span class="text-muted"> > </span>&nbsp;New
       </section>
     </article>
   </div>
@@ -25,101 +28,100 @@
 </div> -->
 <section class="container-fluid with-maxwidth chapter">
   <article class="article">
-      <div class="row">
-          <div class="col-md-12">
-              <p  >&nbsp;</p>
-          </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>&nbsp;</p>
       </div>
+    </div>
     <div class="box box-default">
       <div class="box-body ml-4">
-            <div class="pull-right">
-              <mat-button-toggle-group>
-                <mat-button-toggle (click)="switch(true)">Basic
-                </mat-button-toggle>
-                <mat-button-toggle (click)="switch(false)" value="advance">Advance</mat-button-toggle>
-                <!-- <mat-button-toggle value="yaml">Yaml View</mat-button-toggle> -->
-              </mat-button-toggle-group>
-            </div>
+        <div class="pull-right">
+          <mat-button-toggle-group>
+            <mat-button-toggle (click)="yaml()" value="yaml">Yaml</mat-button-toggle>
+            <mat-button-toggle (click)="basic()">Basic
+            </mat-button-toggle>
+            <mat-button-toggle (click)="advanced()" value="advance">Advance</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
 
         <form [formGroup]="thirdFormGroup" class="px-4">
-            <h6 class="mat-step-label-selected pb-4">Test Suite Details</h6>
-            <div *ngIf="isValid">
-          <div class="form-group row">
-            <!--label for="name" class="col-md-0 control-label"></label-->
-            <div class="col-md-5">
-              <mat-form-field class="full-width">
-                <input required [(ngModel)]="testSuite.name" formControlName="nameCtrl"
-                       matInput placeholder="Test Suite name" autocomplete="off">
-                <mat-error>Required</mat-error>
-              </mat-form-field>
-            </div>
+          <h6 class="mat-step-label-selected pb-4">Test Suite Details</h6>
+
+          <div class="form-group row border" *ngIf="yml">
+            <ace-editor class="col-md-12" [(text)]="text" [theme]="'eclipse'" [options]="options" [readOnly]="false" [autoUpdateContent]="true"
+              [durationBeforeCallback]="1000" (textChanged)="onChange($event)" style="min-height: 200px; overflow: auto;">
+            </ace-editor>
           </div>
-          <div class="form-group row">
-            <label for="name" class="col-md-0 control-label"></label>
-            <div class="col-md-5">
-              <mat-input-container class="full-width">
-                <input [(ngModel)]="testSuite.endpoint" [ngModelOptions]="{standalone: true}"
-                       matInput placeholder="End Point" autocomplete="off">
-              </mat-input-container>
-            </div>
-          </div>
-          <!-- Test case Start -->
 
-          <div formArrayName="testCases"
-               *ngFor="let item of thirdFormGroup.get('testCases').controls; let i = index;">
-            <div [formGroupName]="i">
-              <!--input formControlName="authType" placeholder="Item name"-->
-
-
-              <div class="form-group row">
-                <label  class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <span >{{i+1}}# TestCase.... <button style="min-width: auto;" mat-button  class="btn-w-md m-l-27"  (click)="removeItem(i)"
-                  >
-                <i class="fa fa-trash" style="font-size: 20px;"></i>
-              </button></span>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label  class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <input  formControlName="id"
-                            matInput placeholder="Id" autocomplete="off">
-                  </mat-input-container>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label  class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <textarea  formControlName="body"
-                               matInput placeholder="Body" autocomplete="off"></textarea>
-                  </mat-input-container>
-                </div>
+          <div *ngIf="bsc">
+            <div class="form-group row">
+              <!--label for="name" class="col-md-0 control-label"></label-->
+              <div class="col-md-5">
+                <mat-form-field class="full-width">
+                  <input required [(ngModel)]="testSuite.name" formControlName="nameCtrl" matInput placeholder="Test Suite name" autocomplete="off">
+                  <mat-error>Required</mat-error>
+                </mat-form-field>
               </div>
             </div>
-          </div>
-          <button mat-button color="primary" class="btn-w-md"  (click)="addItem()"
-          >
-            <i class="fa fa-plus"></i>
-            Add Test Case
-          </button>
-          <!-- Test case End -->
+            <div class="form-group row">
+              <label for="name" class="col-md-0 control-label"></label>
+              <div class="col-md-5">
+                <mat-input-container class="full-width">
+                  <input [(ngModel)]="testSuite.endpoint" [ngModelOptions]="{standalone: true}" matInput placeholder="End Point" autocomplete="off">
+                </mat-input-container>
+              </div>
+            </div>
+            <!-- Test case Start -->
 
+            <div formArrayName="testCases" *ngFor="let item of thirdFormGroup.get('testCases').controls; let i = index;">
+              <div [formGroupName]="i">
+                <!--input formControlName="authType" placeholder="Item name"-->
 
-          <div class="form-group row">
-            <label class="col-md-0 control-label"></label>
-            <div class="col-md-5">
-              <mat-input-container class="full-width">
-                          <textarea matInput placeholder="Assertions"
-                                    [(ngModel)]='testSuite.assertionsText'
-                                    [ngModelOptions]="{standalone: true}" autocomplete="off"></textarea>
-              </mat-input-container>
+                <div class="form-group row">
+                  <label class="col-md-0 control-label"></label>
+                  <div class="col-md-5">
+                    <span>{{i+1}}# TestCase....
+                      <button style="min-width: auto;" mat-button class="btn-w-md m-l-27" (click)="removeItem(i)">
+                        <i class="fa fa-trash" style="font-size: 20px;"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-0 control-label"></label>
+                  <div class="col-md-5">
+                    <mat-input-container class="full-width">
+                      <input formControlName="id" matInput placeholder="Id" autocomplete="off">
+                    </mat-input-container>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-0 control-label"></label>
+                  <div class="col-md-5">
+                    <mat-input-container class="full-width">
+                      <textarea formControlName="body" matInput placeholder="Body" autocomplete="off"></textarea>
+                    </mat-input-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button mat-button color="primary" class="btn-w-md" (click)="addItem()">
+              <i class="fa fa-plus"></i>
+              Add Test Case
+            </button>
+            <!-- Test case End -->
+
+            <div class="form-group row">
+              <label class="col-md-0 control-label"></label>
+              <div class="col-md-5">
+                <mat-input-container class="full-width">
+                  <textarea matInput placeholder="Assertions" [(ngModel)]='testSuite.assertionsText' [ngModelOptions]="{standalone: true}"
+                    autocomplete="off"></textarea>
+                </mat-input-container>
+              </div>
             </div>
           </div>
-        </div>
-          <div class="row" *ngIf="!isValid">
+          <div class="row" *ngIf="adv">
 
             <!--div-- class="col-md-12">
 
@@ -151,8 +153,7 @@
                 <label for="name" class="col-md-0 control-label"></label>
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
-                    <input [(ngModel)]="testSuite.description" [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Description" autocomplete="off">
+                    <input [(ngModel)]="testSuite.description" [ngModelOptions]="{standalone: true}" matInput placeholder="Description" autocomplete="off">
                   </mat-input-container>
                 </div>
               </div>
@@ -161,7 +162,7 @@
                 </label>
                 <div class="col-md-5">Types&nbsp;&nbsp;
                   <mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="testSuite.type" [ngModelOptions]="{standalone: true}">
-                    <mat-radio-button  *ngFor="let type of types" [value]="type.id">{{type.value}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
+                    <mat-radio-button *ngFor="let type of types" [value]="type.id">{{type.value}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
                   </mat-radio-group>
                 </div>
               </div>
@@ -182,7 +183,7 @@
                     <mat-error>Please select Methods </mat-error>
                   </mat-form-field-->Method&nbsp;&nbsp;
                   <mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="testSuite.method" [ngModelOptions]="{standalone: true}">
-                    <mat-radio-button  *ngFor="let type of methods" [value]="type">{{type}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
+                    <mat-radio-button *ngFor="let type of methods" [value]="type">{{type}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
                   </mat-radio-group>
                 </div>
               </div>
@@ -190,8 +191,7 @@
                 <label for="name" class="col-md-0 control-label"></label>
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
-                    <input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Auth Name">
+                    <input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}" matInput placeholder="Auth Name">
                   </mat-input-container>
                 </div>
               </div>
@@ -201,8 +201,7 @@
                 <label for="name" class="col-md-0 control-label"></label>
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
-                    <input [(ngModel)]="testSuite.headers" [ngModelOptions]="{standalone: true}"
-                           matInput placeholder="Headers" autocomplete="off">
+                    <input [(ngModel)]="testSuite.headers" [ngModelOptions]="{standalone: true}" matInput placeholder="Headers" autocomplete="off">
                   </mat-input-container>
                 </div>
               </div>
@@ -212,9 +211,7 @@
                 <div class="col-md-5">
 
                   <mat-form-field class="full-width">
-                    <mat-select placeholder="Category"
-                                [(ngModel)]="testSuite.category"
-                                name="category" [ngModelOptions]="{standalone: true}">
+                    <mat-select placeholder="Category" [(ngModel)]="testSuite.category" name="category" [ngModelOptions]="{standalone: true}">
                       <mat-option *ngFor="let type of categories" [value]="type">
                         {{type}}
                       </mat-option>
@@ -228,9 +225,7 @@
                 </label>
                 <div class="col-md-5">
                   <mat-form-field class="full-width">
-                    <mat-select placeholder="Severity"
-                                [(ngModel)]="testSuite.severity"
-                                name="severity" [ngModelOptions]="{standalone: true}">
+                    <mat-select placeholder="Severity" [(ngModel)]="testSuite.severity" name="severity" [ngModelOptions]="{standalone: true}">
                       <mat-option *ngFor="let type of severities" [value]="type.id">
                         {{type.value}}
                       </mat-option>
@@ -244,9 +239,7 @@
                 <label class="col-md-0 control-label"></label>
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
-                          <textarea matInput placeholder="Tags"
-                                    [(ngModel)]='testSuite.tagsText'
-                                    [ngModelOptions]="{standalone: true}" autocomplete="off"></textarea>
+                    <textarea matInput placeholder="Tags" [(ngModel)]='testSuite.tagsText' [ngModelOptions]="{standalone: true}" autocomplete="off"></textarea>
                   </mat-input-container>
                 </div>
               </div>
@@ -255,17 +248,15 @@
                 <label for="name" class="col-md-0 control-label"></label>
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
-                          <textarea matInput placeholder="Authors"
-                                    [(ngModel)]='testSuite.authorsText'
-                                    [ngModelOptions]="{standalone: true}"></textarea>
+                    <textarea matInput placeholder="Authors" [(ngModel)]='testSuite.authorsText' [ngModelOptions]="{standalone: true}"></textarea>
                   </mat-input-container>
                 </div>
               </div>
               <div class="form-group row">
-                <label  class="col-md-0 control-label"></label>
+                <label class="col-md-0 control-label"></label>
                 <div class="col-md-5">
                   <!--mat-slide-toggle color="primary" checked="true"  [(ngModel)]='testSuite.inActive'> In Active </mat-slide-toggle-->
-                  <mat-slide-toggle  [checked]="testSuite.inactive" color="primary" (change)="testSuite.inactive=$event.checked" > in Active </mat-slide-toggle>
+                  <mat-slide-toggle [checked]="testSuite.inactive" color="primary" (change)="testSuite.inactive=$event.checked"> in Active </mat-slide-toggle>
                   <span class="space space-md"></span>
                 </div>
               </div>
@@ -281,7 +272,7 @@
               </mat-card-actions>
             </div>
           </div>
-          </form>
+        </form>
       </div>
     </div>
   </article>

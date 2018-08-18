@@ -35,15 +35,22 @@
       <div class="box-body ml-4">
           <div class="pull-right">
               <mat-button-toggle-group>
-                <mat-button-toggle color="primary" (click)="switch(true)">Basic
-                </mat-button-toggle>
-                <mat-button-toggle (click)="switch(false)" value="advance">Advance</mat-button-toggle>
-                <!-- <mat-button-toggle value="yaml">Yaml View</mat-button-toggle> -->
-              </mat-button-toggle-group>
+                  <mat-button-toggle (click)="yaml()" value="yaml">Yaml</mat-button-toggle>
+                  <mat-button-toggle (click)="basic()">Basic
+                  </mat-button-toggle>
+                  <mat-button-toggle (click)="advanced()" value="advance">Advance</mat-button-toggle>
+                </mat-button-toggle-group>
             </div>
         <form [formGroup]="thirdFormGroup" class="px-4">
             <h6 class="mat-step-label-selected pb-4">Test Suite Details</h6>
-            <div *ngIf="isValid">
+
+            <div class="form-group row border" *ngIf="yml">
+                <ace-editor class="col-md-12" [(text)]="text" [theme]="'eclipse'" [options]="options" [readOnly]="false" [autoUpdateContent]="true"
+                  [durationBeforeCallback]="1000" (textChanged)="onChange($event)" style="min-height: 200px; overflow: auto;">
+                </ace-editor>
+              </div>
+
+            <div *ngIf="bsc">
           <div class="form-group row">
             <!--label for="name" class="col-md-0 control-label"></label-->
             <div class="col-md-5">
@@ -119,7 +126,7 @@
             </div>
           </div>
           </div>
-          <div class="row" *ngIf="!isValid">
+          <div class="row" *ngIf="adv">
 
             <!--div-- class="col-md-12">
 

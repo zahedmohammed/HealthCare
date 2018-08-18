@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule}from '@angular/forms';
 import {BrowserAnimationsModule}from '@angular/platform-browser/animations';
 import {NoopAnimationsModule}from '@angular/platform-browser/animations';
 import {TimeAgoPipe} from 'time-ago-pipe';
+import { AceEditorModule } from 'ng2-ace-editor';
 
 import {
 MatAutocompleteModule,
@@ -218,6 +219,7 @@ import { AutoSyncComponent } from './components/dialogs/auto-sync/auto-sync.comp
     MatTooltipModule,
     AppRoutingModule,
     HttpClientModule,
+    AceEditorModule,
 
     // Sub modules
     LayoutModule,
