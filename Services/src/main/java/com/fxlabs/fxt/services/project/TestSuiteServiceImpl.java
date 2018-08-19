@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.TestSuiteConverter;
+import com.fxlabs.fxt.converters.project.TestSuiteMinConverter;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.repository.es.ProjectFileESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
@@ -42,11 +43,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     private ProjectRepository projectRepository;
     private TestSuiteRepository repository;
     private TestSuiteConverter testSuiteConverter;
+    private TestSuiteMinConverter testSuiteMinConverter;
 
     @Autowired
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository,
                                 ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository,
-                                ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter) {
+                                ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter, TestSuiteMinConverter testSuiteMinConverter) {
         super(repository, converter);
         this.repository = repository;
         this.testSuiteESRepository = testSuiteESRepository;
@@ -55,6 +57,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         this.projectRepository = projectRepository;
         this.projectFileESRepository = projectFileESRepository;
         this.testSuiteConverter = testSuiteConverter;
+        this.testSuiteMinConverter  = testSuiteMinConverter;
     }
 
     @Override
@@ -135,6 +138,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 //            throw new FxException(String.format("FileName [%s] should not contain hypen '-'.", fileName));
 //        }
 
+        try {
+            testSuiteConverter.copyYamlToTestSuite(testSuite);
+        } catch (Exception ex) {
+            throw new FxException(ex.getLocalizedMessage());
+        }
+
         Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
         TestSuite entity = null;
@@ -149,6 +158,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         if (testSuite.getType() == null) {
             testSuite.setType(TestSuiteType.SUITE);
         }
+
 
         TestSuite ts = converter.convertToEntity(testSuite);
 
@@ -179,6 +189,10 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
         com.fxlabs.fxt.dto.project.TestSuite dto = converter.convertToDto(testSuiteOptional.get());
         testSuiteConverter.copyArraysToText(dto);
+        //
+        String yaml = testSuiteMinConverter.copyTestSuiteToYaml(testSuiteMinConverter.convertToEntity(dto));
+
+        dto.setYaml(yaml);
 
         return new Response<>(dto);
     }

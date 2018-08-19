@@ -1,12 +1,17 @@
 package com.fxlabs.fxt.converters.project;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.converters.base.BaseConverter;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import org.mapstruct.Mapper;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -135,8 +140,29 @@ public abstract class TestSuiteConverter implements BaseConverter<TestSuite, com
         } else {
             dest.setCleanup(new ArrayList<>());
         }
+    }
 
 
 
+    public void copyYamlToTestSuite(com.fxlabs.fxt.dto.project.TestSuite sourceDest) throws IOException {
+
+        if (sourceDest == null || StringUtils.isEmpty(sourceDest.getYaml())) {
+            return;
+        }
+        ObjectMapper mapperObj = new ObjectMapper(new YAMLFactory());
+        com.fxlabs.fxt.dto.project.TestSuite testsuite = mapperObj.readValue(sourceDest.getYaml(), com.fxlabs.fxt.dto.project.TestSuite.class);
+    }
+
+    public void copyTestSuiteToYaml(com.fxlabs.fxt.dto.project.TestSuite sourceDest){
+        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+        String yamlFormat = null;
+        try {
+            yamlFormat = yamlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(sourceDest);
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+        }
+//        Yaml yaml = new Yaml();
+//        String yamlFormat = yaml.dump(sourceDest);
+        sourceDest.setYaml(yamlFormat);
     }
 }

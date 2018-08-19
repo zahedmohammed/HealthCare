@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Data
 @AllArgsConstructor
@@ -60,6 +61,8 @@ public class TestSuite extends BaseDto<String> {
 
     private TestSuiteCategory category;
     private TestSuiteSeverity severity;
+
+    private String yaml;
 
 }
 
