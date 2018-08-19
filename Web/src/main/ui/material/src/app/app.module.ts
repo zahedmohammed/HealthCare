@@ -5,8 +5,8 @@ import {HttpClientModule }from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule}from '@angular/forms';
 import {BrowserAnimationsModule}from '@angular/platform-browser/animations';
 import {NoopAnimationsModule}from '@angular/platform-browser/animations';
-import {TimeAgoPipe} from 'time-ago-pipe';
-import { AceEditorModule } from 'ng2-ace-editor';
+import {TimeAgoPipe}from 'time-ago-pipe';
+import {AceEditorModule }from 'ng2-ace-editor';
 
 import {
 MatAutocompleteModule,
@@ -54,17 +54,17 @@ import {AppHeaderComponent}from './layout/header/header.component';
 import {AppSidenavComponent}from './layout/sidenav/sidenav.component';
 import {ToggleOffcanvasNavDirective}from './layout/sidenav/toggle-offcanvas-nav.directive';
 import {AutoCloseMobileNavDirective}from './layout/sidenav/auto-close-mobile-nav.directive';
-import {AppSidenavMenuComponent }from './layout/sidenav/sidenav-menu/sidenav-menu.component';
-import {AccordionNavDirective }from './layout/sidenav/sidenav-menu/accordion-nav.directive';
-import {AppendSubmenuIconDirective }from './layout/sidenav/sidenav-menu/append-submenu-icon.directive';
-import {HighlightActiveItemsDirective }from './layout/sidenav/sidenav-menu/highlight-active-items.directive';
+import {AppSidenavMenuComponent}from './layout/sidenav/sidenav-menu/sidenav-menu.component';
+import {AccordionNavDirective}from './layout/sidenav/sidenav-menu/accordion-nav.directive';
+import {AppendSubmenuIconDirective}from './layout/sidenav/sidenav-menu/append-submenu-icon.directive';
+import {HighlightActiveItemsDirective}from './layout/sidenav/sidenav-menu/highlight-active-items.directive';
 // Customizer
 import {AppCustomizerComponent}from './layout/customizer/customizer.component';
-import {ToggleQuickviewDirective }from './layout/customizer/toggle-quickview.directive';
+import {ToggleQuickviewDirective}from './layout/customizer/toggle-quickview.directive';
 // Footer
-import {AppFooterComponent }from './layout/footer/footer.component';
+import {AppFooterComponent}from './layout/footer/footer.component';
 // Search Overaly
-import {AppSearchOverlayComponent }from './layout/search-overlay/search-overlay.component';
+import {AppSearchOverlayComponent}from './layout/search-overlay/search-overlay.component';
 import {SearchOverlayDirective}from './layout/search-overlay/search-overlay.directive';
 import {OpenSearchOverlaylDirective}from './layout/search-overlay/open-search-overlay.directive';
 
@@ -74,11 +74,11 @@ import {PageLayoutFullscreenComponent}from './page-layouts/fullscreen/fullscreen
 
 // Sub modules
 import {LayoutModule}from './layout/layout.module';
-import {SharedModule }from './shared/shared.module';
+import {SharedModule}from './shared/shared.module';
 // hmr
 //import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
-import {JobslistComponent} from "./components/jobs/jobs-list/jobs-list.component";
-import {JobDetailsComponent} from "./components/jobs/job-details/job-details.component";
+import {JobslistComponent}from "./components/jobs/jobs-list/jobs-list.component";
+import {JobDetailsComponent}from "./components/jobs/job-details/job-details.component";
 
 import {ProjectsListComponent}from './components/projects/projects-list/projects-list.component';
 import {ProjectsNewComponent}from './components/projects/projects-new/projects-new.component';
@@ -89,19 +89,19 @@ import {RunListComponent}from './components/run-list/run-list.component';
 
 import {MessageListComponent}from './components/message-list/message-list.component';
 import {MessageDetailComponent}from './components/message-detail/message-detail.component';
-import {RunDetailComponent }from './components/run-detail/run-detail.component';
+import {RunDetailComponent}from './components/run-detail/run-detail.component';
 
-import {IssuesListComponent} from './components/issues/issues-list/issues-list.component';
-import {IssuesNewComponent} from './components/issues/issues-new/issues-new.component';
-import {IssuesEditComponent} from './components/issues/issues-edit/issues-edit.component';
+import {IssuesListComponent}from './components/issues/issues-list/issues-list.component';
+import {IssuesNewComponent}from './components/issues/issues-new/issues-new.component';
+import {IssuesEditComponent}from './components/issues/issues-edit/issues-edit.component';
 
-import {MarketplaceListComponent }from './components/marketplace/marketplace-list/marketplace-list.component';
-import {MarketplaceNewComponent }from './components/marketplace/marketplace-new/marketplace-new.component';
-import {MarketplaceEditComponent }from './components/marketplace/marketplace-edit/marketplace-edit.component';
+import {MarketplaceListComponent}from './components/marketplace/marketplace-list/marketplace-list.component';
+import {MarketplaceNewComponent}from './components/marketplace/marketplace-new/marketplace-new.component';
+import {MarketplaceEditComponent}from './components/marketplace/marketplace-edit/marketplace-edit.component';
 
-import { MonitorAllComponent}from './components/monitor/monitor-all/monitor-all.component';
-import { MonitorNewComponent}from './components/monitor/monitor-new/monitor-new.component';
-import { MonitorEditComponent}from './components/monitor/monitor-edit/monitor-edit.component';
+import {MonitorAllComponent}from './components/monitor/monitor-all/monitor-all.component';
+import {MonitorNewComponent}from './components/monitor/monitor-new/monitor-new.component';
+import {MonitorEditComponent}from './components/monitor/monitor-edit/monitor-edit.component';
 
 import {DocListComponent}from './components/doc/doc-list/doc-list.component';
 import {DocNewComponent}from './components/doc/doc-new/doc-new.component';
@@ -136,7 +136,7 @@ import {SkillsIssueTrackerComponent}from './components/skills/skills-issue-track
 import {SkillsAnalyticsComponent}from './components/skills/skills-analytics/skills-analytics.component';
 import {DashboardService}from './services/dashboard.service';
 import {TestSuiteService}from './services/test-suite.service';
-import {UsersService }from './services/users.service';
+import {UsersService}from './services/users.service';
 
 import {UserListComponent}from './components/users/user-list/user-list.component';
 import {UserNewComponent}from './components/users/user-new/user-new.component';
@@ -156,27 +156,28 @@ import {MsgDialogComponent}from './components/dialogs/msg-dialog/msg-dialog.comp
 import {ErrorDialogComponent}from './components/dialogs/error-dialog/error-dialog.component';
 import {ResponseDialogComponent}from './components/dialogs/response-dialog/response-dialog.component';
 import {Handler}from './components/dialogs/handler/handler';
-import { PasswordResetComponent}from './components/users/password-reset/password-reset.component';
-import { AdvRunComponent}from './components/dialogs/adv-run/adv-run.component';
-import { MstoDurationPipe}from './pipes/msto-duration.pipe';
+import {PasswordResetComponent}from './components/users/password-reset/password-reset.component';
+import {AdvRunComponent}from './components/dialogs/adv-run/adv-run.component';
+import {MstoDurationPipe}from './pipes/msto-duration.pipe';
 import {ByteFormatPipe}from './pipes/byte-format.pipe';
 import {RunHistoryComponent}from './components/analytics/run-history/run-history.component';
 import {SuperbotnetworkListComponent}from './components/superbotnetwork/superbotnetwork-list/superbotnetwork-list.component';
 import {DeleteDialogComponent}from './components/dialogs/delete-dialog/delete-dialog.component';
 import {SuitDailogComponent}from './components/dialogs/suit-dailog/suit-dailog.component';
+import {IssueTrackerRegisterComponent}from './components/dialogs/issue-tracker-register/issue-tracker-register.component';
 
 import {ProjectsSyncComponent}from './components/dialogs/projects-sync/projects-sync.component';
-import { JobsNewComponent } from './components/jobs/jobs-new/jobs-new.component';
-import { JobsEditComponent } from './components/jobs/jobs-edit/jobs-edit.component';
-import { ProjectsManageComponent } from './components/projects/projects-manage/projects-manage.component';
-import { RegisterComponent } from './components/dialogs/register/register.component';
-import { EnvironmentNewComponent } from './components/environments/environment-new/environment-new.component';
-import { EnvironmentListComponent } from './components/environments/environment-list/environment-list.component';
-import { EnvironmentEditComponent } from './components/environments/environment-edit/environment-edit.component';
-import { TestSuiteListComponent } from './components/testsuites/test-suite-list/test-suite-list.component';
-import { TestSuiteEditComponent } from './components/testsuites/test-suite-edit/test-suite-edit.component';
-import { TestSuiteNewComponent } from './components/testsuites/test-suite-new/test-suite-new.component';
-import { AutoSyncComponent } from './components/dialogs/auto-sync/auto-sync.component';
+import {JobsNewComponent }from './components/jobs/jobs-new/jobs-new.component';
+import {JobsEditComponent }from './components/jobs/jobs-edit/jobs-edit.component';
+import {ProjectsManageComponent }from './components/projects/projects-manage/projects-manage.component';
+import {RegisterComponent }from './components/dialogs/register/register.component';
+import {EnvironmentNewComponent }from './components/environments/environment-new/environment-new.component';
+import {EnvironmentListComponent }from './components/environments/environment-list/environment-list.component';
+import {EnvironmentEditComponent }from './components/environments/environment-edit/environment-edit.component';
+import {TestSuiteListComponent }from './components/testsuites/test-suite-list/test-suite-list.component';
+import {TestSuiteEditComponent }from './components/testsuites/test-suite-edit/test-suite-edit.component';
+import {TestSuiteNewComponent }from './components/testsuites/test-suite-new/test-suite-new.component';
+import {AutoSyncComponent }from './components/dialogs/auto-sync/auto-sync.component';
 
 @NgModule({
   imports: [
@@ -315,6 +316,7 @@ import { AutoSyncComponent } from './components/dialogs/auto-sync/auto-sync.comp
     ResponseDialogComponent,
     PasswordResetComponent,
     AdvRunComponent,
+    IssueTrackerRegisterComponent,
     MstoDurationPipe,
     ByteFormatPipe,
     RunHistoryComponent,
@@ -337,7 +339,8 @@ import { AutoSyncComponent } from './components/dialogs/auto-sync/auto-sync.comp
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
-  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent, SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent]
+  entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent,
+    SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent]
 })
 
 export class AppModule {
