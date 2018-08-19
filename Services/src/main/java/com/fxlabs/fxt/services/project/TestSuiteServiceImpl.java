@@ -131,7 +131,63 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
 
     @Override
-    public Response<com.fxlabs.fxt.dto.project.TestSuite> createFromUI(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> createFromUI(String yaml, String projectId, String user) {
+
+        if (StringUtils.isEmpty(projectId)) {
+            throw new FxException("Invalid Project");
+        }
+
+        com.fxlabs.fxt.dto.project.TestSuite dto = null;
+
+        try {
+            dto = testSuiteConverter.copyYamlToTestSuite(yaml);
+        } catch (Exception ex) {
+            throw new FxException(ex.getLocalizedMessage());
+        }
+
+
+        if (dto == null || StringUtils.isEmpty(dto.getName())) {
+            throw new FxException("Invalid Test-Suite Name");
+        }
+
+
+        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(projectId, dto.getName());
+
+
+        if (testSuiteOptional.isPresent()) {
+            throw new FxException(String.format("TestSuite [%s] exists.", testSuiteOptional.get().getName()));
+        }
+
+        testSuiteConverter.copyTextToArray(dto);
+
+        // type
+        if (dto.getType() == null) {
+            dto.setType(TestSuiteType.SUITE);
+        }
+
+
+        TestSuite ts = converter.convertToEntity(dto);
+
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(projectId);
+
+        ts.setProject(project.get());
+
+         TestSuite entity = ((TestSuiteRepository) repository).save(ts);
+        if (entity!=null && entity.getId()!=null) {
+            testSuiteESRepository.save(entity);
+        }
+
+        // project_file
+        this.projectFileService.saveFromTestSuite(dto, ts.getProject().getId());
+
+        return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
+
+    }
+
+
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
 
 //        String fileName = testSuite.getProps().get(Project.FILE_NAME);
 //        if (StringUtils.contains(fileName, "-")){
@@ -139,7 +195,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 //        }
 
         try {
-            testSuiteConverter.copyYamlToTestSuite(testSuite);
+            testSuite = testSuiteConverter.copyYamlToTestSuite(testSuite.getYaml());
         } catch (Exception ex) {
             throw new FxException(ex.getLocalizedMessage());
         }
@@ -178,6 +234,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 
     }
+
 
 
     @Override

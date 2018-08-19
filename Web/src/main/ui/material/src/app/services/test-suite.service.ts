@@ -39,8 +39,13 @@ constructor(private http: HttpClient) {
     return this.http.get(this.serviceUrl + "/search/" + keyword);
   }
   create(obj: TestSuite) {
-    return this.http.post(this.serviceUrl + "/ui", obj);
+    return this.http.post(this.serviceUrl +  "/ui", obj);
   }
+
+   createFromYaml(yaml: string, projectId: string) {
+    return this.http.post(this.serviceUrl + projectId +"/ui", yaml);
+  }
+
  update(obj: TestSuite) {
     return this.http.put(this.serviceUrl, obj);
   }

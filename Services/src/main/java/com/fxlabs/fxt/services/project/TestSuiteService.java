@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
 import com.fxlabs.fxt.dto.project.TestSuite;
+import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
@@ -23,7 +24,9 @@ public interface TestSuiteService extends GenericService<TestSuite, String> {
 
     public Response<TestSuite> create(TestSuite dto, String id);
 
-    public Response<TestSuite> createFromUI(TestSuite dto, String id);
+    public Response<TestSuite> createFromUI(String dto, String projectId, String id);
+
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user);
     public void testSuitesDelete(TestSuitesDeletedDto dto, String user);
 
     Response<List<TestSuite>> search(String runId, String category, String keyword, String org, String user, Pageable pageable);

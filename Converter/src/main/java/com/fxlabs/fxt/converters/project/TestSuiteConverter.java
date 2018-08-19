@@ -144,13 +144,13 @@ public abstract class TestSuiteConverter implements BaseConverter<TestSuite, com
 
 
 
-    public void copyYamlToTestSuite(com.fxlabs.fxt.dto.project.TestSuite sourceDest) throws IOException {
+    public com.fxlabs.fxt.dto.project.TestSuite copyYamlToTestSuite(String yaml) throws IOException {
 
-        if (sourceDest == null || StringUtils.isEmpty(sourceDest.getYaml())) {
-            return;
+        if (StringUtils.isEmpty(yaml)) {
+            return null;
         }
         ObjectMapper mapperObj = new ObjectMapper(new YAMLFactory());
-        com.fxlabs.fxt.dto.project.TestSuite testsuite = mapperObj.readValue(sourceDest.getYaml(), com.fxlabs.fxt.dto.project.TestSuite.class);
+        return mapperObj.readValue(yaml, com.fxlabs.fxt.dto.project.TestSuite.class);
     }
 
     public void copyTestSuiteToYaml(com.fxlabs.fxt.dto.project.TestSuite sourceDest){
