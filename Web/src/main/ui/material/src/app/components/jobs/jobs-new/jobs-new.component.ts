@@ -10,13 +10,12 @@ import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../models/account.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
-import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig , MAT_DIALOG_DATA} from '@angular/material';
 import { DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
 import { SnackbarService}from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
-
-
+import {IssueTrackerRegisterComponent}from'./../../dialogs/issue-tracker-register/issue-tracker-register.component';
 
 @Component({
   selector: 'app-jobs-new',
@@ -48,7 +47,7 @@ export class JobsNewComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private jobsService: JobsService, private accountService: AccountService,
             private route: ActivatedRoute, private router: Router, private handler: Handler,
-            public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder) { }
+            public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.job.notifications[0] = new Noti();
@@ -108,8 +107,22 @@ export class JobsNewComponent implements OnInit {
     });
   }
 
+    getAccountsForIssueTracker(){
+        this.handler.activateLoader();
+        this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
+          this.handler.hideLoader();
+          if (this.handler.handle(results)) {
+            return;
+          }
+          //this.itAccounts = results['data'];
+          this.itAccounts = new Array();
+        }, error => {
+          this.handler.hideLoader();
+          this.handler.error(error);
+        });
+    }
 
-  getITAccountsByAccountType(accountType: string) {
+  getITAccountsByAccountType() {
     this.handler.activateLoader();
     this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
       this.handler.hideLoader();
@@ -119,7 +132,7 @@ export class JobsNewComponent implements OnInit {
       //this.itAccounts = results['data'];
       this.itAccounts = new Array();
         for (let entry of results['data']) {
-            if(entry.accountType == accountType){
+            if(entry.accountType == this.job.issueTracker.accountType){
                 this.itAccounts.push(entry);
             }
         }
@@ -130,7 +143,15 @@ export class JobsNewComponent implements OnInit {
     });
   }
 
-
+  openDialogITCredentials() {
+    const dialogRef = this.dialog.open(IssueTrackerRegisterComponent, {
+      width:'800px',
+      data: this.accountTypes
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getITAccountsByAccountType();
+    });
+  }
 
   getNotifyAccounts() {
     this.handler.activateLoader();

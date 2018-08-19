@@ -20,5 +20,6 @@ public class JobIssueTracker {
 
     private String name;
     private String url;
+    private String projectKey;
     private String account = "Default_GitHub";
 }

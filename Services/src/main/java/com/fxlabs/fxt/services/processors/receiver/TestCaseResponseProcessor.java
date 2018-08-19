@@ -178,7 +178,6 @@ public class TestCaseResponseProcessor {
         }
 
         tc.setIssueTrackerHost(issueTrackerResponse.getData().getUrl());
-        tc.setIssueTrackerProjectName(job.getProject().getName());
 
         Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(issueTrackerResponse.getData().getAccount());
         com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.isPresent() ? accountOptional.get() : null;
@@ -198,6 +197,7 @@ public class TestCaseResponseProcessor {
             case GitHub:
                 return itaasQueue;
             case Jira:
+                tc.setIssueTrackerProjectName(issueTrackerResponse.getData().getProjectKey());
                 return itaasJiraQueue;
         }
 

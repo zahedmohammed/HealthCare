@@ -23,6 +23,7 @@ public class JobIssueTracker implements Serializable {
     private String id;
     private String name;
     private String url;
+    private String projectKey;
     private String account = "Default_GitHub";
     private AccountType accountType;
 

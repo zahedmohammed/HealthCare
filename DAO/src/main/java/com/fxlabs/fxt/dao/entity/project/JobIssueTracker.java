@@ -27,5 +27,5 @@ public class JobIssueTracker extends BaseEntity {
     private String account = "Default_GitHub";
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
-
+    private String projectKey;
 }

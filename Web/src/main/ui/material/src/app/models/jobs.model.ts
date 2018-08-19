@@ -16,6 +16,7 @@ export class Dto {
     name: string;
     url: string;
     accountType: string;
+    projectKey: string;
 }
 
 export class EnvDto {

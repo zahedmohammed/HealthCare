@@ -118,7 +118,7 @@
                                   <mat-form-field class="full-width">
                                       <mat-select placeholder="Issue Tracker Type (Optional)" [(ngModel)]="job.issueTracker.accountType"
                                                   name="type" [ngModelOptions]="{standalone: true}">
-                                          <mat-option *ngFor="let type of accountTypes" [value]="type" (click)="getITAccountsByAccountType(type);">
+                                          <mat-option *ngFor="let type of accountTypes" [value]="type" (click)="getITAccountsByAccountType();">
                                               {{type}}
                                           </mat-option>
                                       </mat-select>
@@ -142,7 +142,7 @@
                               <div class="col-md-7">
                                   <div class="callout1 text-muted callout-info1">
                                       <p>
-                                          <a href="javascript:;" (click)="openDialog()">New credentials</a>
+                                          <a href="javascript:;" (click)="openDialogITCredentials()">New credentials</a>
                                           <br/>
                                           A user with read/write access to the Issue Tracker. <br/>
                                           Note: You can create a new 'FX' user with read/write access to the test
@@ -164,6 +164,17 @@
                                   <div class="callout1 text-muted callout-info1">
                                       <p class="mt-4">e.g. https://github.com/username/MyApp. Upon running the job, FX will automatically create/update/close bugs in this Issue Tracker</p>
                                   </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group row"  *ngIf="job.issueTracker.accountType === 'Jira'">
+                              <label for="jiraProjectKey" class="col-md-0 control-label">
+                              </label>
+                              <div  class="col-md-5">
+                                  <mat-input-container class="full-width">
+                                      <input required [(ngModel)]="job.issueTracker.projectKey" [ngModelOptions]="{standalone: true}" name="jiraProjectKey" id="jiraProjectKey"
+                                             matInput type="text" placeholder="Projec Key">
+                                  </mat-input-container>
                               </div>
                           </div>
 

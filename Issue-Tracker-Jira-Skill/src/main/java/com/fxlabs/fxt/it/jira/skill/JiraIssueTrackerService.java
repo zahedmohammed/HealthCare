@@ -120,7 +120,7 @@ public class JiraIssueTrackerService implements IssueTrackerService {
 
         IssueInput newIssue = new IssueInputBuilder(projectKey, ISSUE_TYPE_ID_BUG, summary.toString())
 //				.setAssigneeName("admin")
-                .setPriorityId(5L)
+//                .setPriorityId(5L)
 //				.setReporterName("admin")
                 .setDescription(desc.toString())
                 .build();
