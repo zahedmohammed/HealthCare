@@ -16,6 +16,7 @@ import { SnackbarService}from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
 import {IssueTrackerRegisterComponent}from'./../../dialogs/issue-tracker-register/issue-tracker-register.component';
+import {SlackRegisterComponent}from'./../../dialogs/slack-register/slack-register.component';
 
 @Component({
   selector: 'app-jobs-new',
@@ -150,6 +151,15 @@ export class JobsNewComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getITAccountsByAccountType();
+    });
+  }
+
+  openDialogSlackRegister() {
+    const dialogRef = this.dialog.open(SlackRegisterComponent, {
+      width:'800px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getNotifyAccounts();
     });
   }
 

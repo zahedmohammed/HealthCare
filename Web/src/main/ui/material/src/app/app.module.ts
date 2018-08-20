@@ -178,6 +178,7 @@ import {TestSuiteListComponent }from './components/testsuites/test-suite-list/te
 import {TestSuiteEditComponent }from './components/testsuites/test-suite-edit/test-suite-edit.component';
 import {TestSuiteNewComponent }from './components/testsuites/test-suite-new/test-suite-new.component';
 import {AutoSyncComponent }from './components/dialogs/auto-sync/auto-sync.component';
+import { SlackRegisterComponent } from './components/dialogs/slack-register/slack-register.component';
 
 @NgModule({
   imports: [
@@ -335,12 +336,13 @@ import {AutoSyncComponent }from './components/dialogs/auto-sync/auto-sync.compon
     TestSuiteEditComponent,
     TestSuiteNewComponent,
     TimeAgoPipe,
-    AutoSyncComponent
+    AutoSyncComponent,
+    SlackRegisterComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
   entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent,
-    SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent]
+    SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent, SlackRegisterComponent]
 })
 
 export class AppModule {

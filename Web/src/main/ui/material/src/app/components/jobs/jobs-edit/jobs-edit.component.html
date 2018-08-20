@@ -230,6 +230,30 @@
               </div>
               <hr>
               <div class="form-group row">
+                <label class="col-md-0 control-label">
+                </label>
+                <div class="col-md-5">
+                  <mat-form-field class="full-width">
+                    <mat-select placeholder="Slack Credentials (Optional)"
+                                [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
+                      <mat-option *ngFor="let account of notifyAccounts" [value]="account.id">
+                        {{account.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-7">
+                  <div class="callout1 text-muted callout-info1">
+                    <p>
+                      <a href="javascript:;" (click)="openDialogSlackRegister()">New Credentials</a>
+                      <br/>
+                      Slack token of your slack workspace.<br/>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
                 <label for="name" class="col-md-0 control-label"></label>
                 <div class="col-md-5">
                   <mat-input-container class="full-width">
@@ -243,20 +267,8 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row">
-                <label class="col-md-0 control-label">
-                </label>
-                <div class="col-md-5">
-                  <mat-form-field class="full-width">
-                    <mat-select placeholder="Slack Credentials (Optional)"
-                                [(ngModel)]="job.notifications[1].account"  [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let account of notifyAccounts" [value]="account.id">
-                        {{account.name}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </div>
+
+
 
               <div>
                 <div>
