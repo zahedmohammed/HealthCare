@@ -10,6 +10,7 @@
     inactive:boolean;
     category:string;
     severity:string;
+    yaml:string;
 
     assertionsText: string;
     assertions:string[];

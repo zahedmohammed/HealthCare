@@ -35,241 +35,250 @@
     </div>
     <div class="box box-default">
       <div class="box-body ml-4">
-        <!-- <div class="pull-right">
-          <mat-button-toggle-group>
-            <mat-button-toggle (click)="yaml()" value="yaml">Yaml</mat-button-toggle>
-            <mat-button-toggle (click)="basic()">Basic
-            </mat-button-toggle>
-            <mat-button-toggle (click)="advanced()" value="advance">Advance</mat-button-toggle>
-          </mat-button-toggle-group>
-        </div> -->
+        <!--<div class="pull-right">-->
+          <!--<mat-button-toggle-group>-->
+            <!--<mat-button-toggle (click)="yaml()" value="yaml">Yaml</mat-button-toggle>-->
+            <!--<mat-button-toggle (click)="basic()">Basic-->
+            <!--</mat-button-toggle>-->
+            <!--<mat-button-toggle (click)="advanced()" value="advance">Advance</mat-button-toggle>-->
+          <!--</mat-button-toggle-group>-->
+        <!--</div>-->
 
-        <form [formGroup]="thirdFormGroup" class="px-4">
+        <form class="px-4">
           <h6 class="mat-step-label-selected pb-4">Test Suite Details</h6>
 
           <div class="form-group row">
-            <ace-editor class="col-md-12 border editor" [(text)]="text" [theme]="'eclipse'" [options]="options" [readOnly]="false" [autoUpdateContent]="true"
-              [durationBeforeCallback]="1000" (textChanged)="onChange($event)">
+            <ace-editor class="col-md-12 border editor" [(text)]="text" [theme]="'eclipse'" [readOnly]="false" [autoUpdateContent]="true"
+              [durationBeforeCallback]="1000">
             </ace-editor>
           </div>
 
-          <!-- <div *ngIf="bsc">
-            <div class="form-group row">
-              <label for="name" class="col-md-0 control-label"></label>
-              <div class="col-md-5">
-                <mat-form-field class="full-width">
-                  <input required [(ngModel)]="testSuite.name" formControlName="nameCtrl" matInput placeholder="Test Suite name" autocomplete="off">
-                  <mat-error>Required</mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="name" class="col-md-0 control-label"></label>
-              <div class="col-md-5">
-                <mat-input-container class="full-width">
-                  <input [(ngModel)]="testSuite.endpoint" [ngModelOptions]="{standalone: true}" matInput placeholder="End Point" autocomplete="off">
-                </mat-input-container>
-              </div>
-            </div>
-             Test case Start 
+          <!--&lt;!&ndash; <div *ngIf="bsc">-->
+          <!--<div class="form-group row border" *ngIf="yml">-->
+            <!--<ace-editor class="col-md-12" [(text)]="text" [theme]="'eclipse'" [options]="options" [readOnly]="false" [autoUpdateContent]="true"-->
+              <!--[durationBeforeCallback]="1000" (textChanged)="onChange($event)" style="min-height: 200px; overflow: auto;">-->
+            <!--</ace-editor>-->
+          <!--</div>-->
 
-            <div formArrayName="testCases" *ngFor="let item of thirdFormGroup.get('testCases').controls; let i = index;">
-              <div [formGroupName]="i">
-                input formControlName="authType" placeholder="Item name"
+          <!--<div *ngIf="bsc">-->
+            <!--<div class="form-group row">-->
+              <!--&lt;!&ndash;label for="name" class="col-md-0 control-label"></label&ndash;&gt;-->
+              <!--<div class="col-md-5">-->
+                <!--<mat-form-field class="full-width">-->
+                  <!--<input required [(ngModel)]="testSuite.name" formControlName="nameCtrl" matInput placeholder="Test Suite name" autocomplete="off">-->
+                  <!--<mat-error>Required</mat-error>-->
+                <!--</mat-form-field>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group row">-->
+              <!--<label for="name" class="col-md-0 control-label"></label>-->
+              <!--<div class="col-md-5">-->
+                <!--<mat-input-container class="full-width">-->
+                  <!--<input [(ngModel)]="testSuite.endpoint" [ngModelOptions]="{standalone: true}" matInput placeholder="End Point" autocomplete="off">-->
+                <!--</mat-input-container>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; Test case Start &ndash;&gt;-->
 
-                <div class="form-group row">
-                  <label class="col-md-0 control-label"></label>
-                  <div class="col-md-5">
-                    <span>{{i+1}}# TestCase....
-                      <button style="min-width: auto;" mat-button class="btn-w-md m-l-27" (click)="removeItem(i)">
-                        <i class="fa fa-trash" style="font-size: 20px;"></i>
-                      </button>
-                    </span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-0 control-label"></label>
-                  <div class="col-md-5">
-                    <mat-input-container class="full-width">
-                      <input formControlName="id" matInput placeholder="Id" autocomplete="off">
-                    </mat-input-container>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-md-0 control-label"></label>
-                  <div class="col-md-5">
-                    <mat-input-container class="full-width">
-                      <textarea formControlName="body" matInput placeholder="Body" autocomplete="off"></textarea>
-                    </mat-input-container>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button mat-button color="primary" class="btn-w-md" (click)="addItem()">
-              <i class="fa fa-plus"></i>
-              Add Test Case
-            </button>
-            Test case End 
+            <!--<div formArrayName="testCases" *ngFor="let item of thirdFormGroup.get('testCases').controls; let i = index;">-->
+              <!--<div [formGroupName]="i">-->
+                <!--&lt;!&ndash;input formControlName="authType" placeholder="Item name"&ndash;&gt;-->
 
-            <div class="form-group row">
-              <label class="col-md-0 control-label"></label>
-              <div class="col-md-5">
-                <mat-input-container class="full-width">
-                  <textarea matInput placeholder="Assertions" [(ngModel)]='testSuite.assertionsText' [ngModelOptions]="{standalone: true}"
-                    autocomplete="off"></textarea>
-                </mat-input-container>
-              </div>
-            </div>
-          </div>
-          <div class="row" *ngIf="adv">
+                <!--<div class="form-group row">-->
+                  <!--<label class="col-md-0 control-label"></label>-->
+                  <!--<div class="col-md-5">-->
+                    <!--<span>{{i+1}}# TestCase....-->
+                      <!--<button style="min-width: auto;" mat-button class="btn-w-md m-l-27" (click)="removeItem(i)">-->
+                        <!--<i class="fa fa-trash" style="font-size: 20px;"></i>-->
+                      <!--</button>-->
+                    <!--</span>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group row">-->
+                  <!--<label class="col-md-0 control-label"></label>-->
+                  <!--<div class="col-md-5">-->
+                    <!--<mat-input-container class="full-width">-->
+                      <!--<input formControlName="id" matInput placeholder="Id" autocomplete="off">-->
+                    <!--</mat-input-container>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group row">-->
+                  <!--<label class="col-md-0 control-label"></label>-->
+                  <!--<div class="col-md-5">-->
+                    <!--<mat-input-container class="full-width">-->
+                      <!--<textarea formControlName="body" matInput placeholder="Body" autocomplete="off"></textarea>-->
+                    <!--</mat-input-container>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<button mat-button color="primary" class="btn-w-md" (click)="addItem()">-->
+              <!--<i class="fa fa-plus"></i>-->
+              <!--Add Test Case-->
+            <!--</button>-->
+            <!--&lt;!&ndash; Test case End &ndash;&gt;-->
 
-            div-- class="col-md-12">
+            <!--<div class="form-group row">-->
+              <!--<label class="col-md-0 control-label"></label>-->
+              <!--<div class="col-md-5">-->
+                <!--<mat-input-container class="full-width">-->
+                  <!--<textarea matInput placeholder="Assertions" [(ngModel)]='testSuite.assertionsText' [ngModelOptions]="{standalone: true}"-->
+                    <!--autocomplete="off"></textarea>-->
+                <!--</mat-input-container>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="row" *ngIf="adv">-->
 
-              <div class="divider divider-dashed divider-lg pull-in"></div>
+            <!--&lt;!&ndash;div&#45;&#45; class="col-md-12">-->
 
-              <div class="form-group row">
-                <label  class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-slide-toggle color="primary" (change)="onChange($event)" > Advance </mat-slide-toggle>
-                  <span class="space space-md"></span>
-                </div>
-              </div>
-            </div-->
-          <!-- <div class="col-md-12">
-              <div class="divider divider-dashed divider-lg pull-in"></div>
-              &nbsp;&nbsp;&nbsp;<button mat-button color="primary" class="btn-w-md" (click)="advance=!advance" >
-              <i *ngIf="!advance" class="fa fa-plus"></i>
-              <i *ngIf="advance" class="fa fa-minus"></i>
+              <!--<div class="divider divider-dashed divider-lg pull-in"></div>-->
 
-              Advance&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </button>
+              <!--<div class="form-group row">-->
+                <!--<label  class="col-md-0 control-label"></label>-->
+                <!--<div class="col-md-5">-->
+                  <!--<mat-slide-toggle color="primary" (change)="onChange($event)" > Advance </mat-slide-toggle>-->
+                  <!--<span class="space space-md"></span>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div&ndash;&gt;-->
+            <!--&lt;!&ndash; <div class="col-md-12">-->
+              <!--<div class="divider divider-dashed divider-lg pull-in"></div>-->
+              <!--&nbsp;&nbsp;&nbsp;<button mat-button color="primary" class="btn-w-md" (click)="advance=!advance" >-->
+              <!--<i *ngIf="!advance" class="fa fa-plus"></i>-->
+              <!--<i *ngIf="advance" class="fa fa-minus"></i>-->
 
-              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <!--Advance&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+            <!--</button>-->
 
-            </div>
-            <div class="col-md-12">
+              <!--<div class="divider divider-dashed divider-lg pull-in"></div>-->
 
-              <div class="form-group row">
-                <label for="name" class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <input [(ngModel)]="testSuite.description" [ngModelOptions]="{standalone: true}" matInput placeholder="Description" autocomplete="off">
-                  </mat-input-container>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-md-0 control-label">
-                </label>
-                <div class="col-md-5">Types&nbsp;&nbsp;
-                  <mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="testSuite.type" [ngModelOptions]="{standalone: true}">
-                    <mat-radio-button *ngFor="let type of types" [value]="type.id">{{type.value}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
-                  </mat-radio-group>
-                </div>
-              </div>
+            <!--</div> &ndash;&gt;-->
+            <!--<div class="col-md-12">-->
 
-              <div class="form-group row">
-                <label class="col-md-0 control-label">
-                </label>
-                <div class="col-md-8">
-                  <mat-form-field>
-                    <mat-select placeholder="Method" required
-                                [(ngModel)]="testSuite.method"
-                                name="type" [ngModelOptions]="{standalone: true}"
-                    >
-                      <mat-option *ngFor="let type of methods" [value]="type">
-                        {{type}}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error>Please select Methods </mat-error>
-                  </mat-form-field>Method&nbsp;&nbsp;
-                  <mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="testSuite.method" [ngModelOptions]="{standalone: true}">
-                    <mat-radio-button *ngFor="let type of methods" [value]="type">{{type}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
-                  </mat-radio-group>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="name" class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}" matInput placeholder="Auth Name">
-                  </mat-input-container>
-                </div>
-              </div>
+              <!--<div class="form-group row">-->
+                <!--<label for="name" class="col-md-0 control-label"></label>-->
+                <!--<div class="col-md-5">-->
+                  <!--<mat-input-container class="full-width">-->
+                    <!--<input [(ngModel)]="testSuite.description" [ngModelOptions]="{standalone: true}" matInput placeholder="Description" autocomplete="off">-->
+                  <!--</mat-input-container>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group row">-->
+                <!--<label class="col-md-0 control-label">-->
+                <!--</label>-->
+                <!--<div class="col-md-5">Types&nbsp;&nbsp;-->
+                  <!--<mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="testSuite.type" [ngModelOptions]="{standalone: true}">-->
+                    <!--<mat-radio-button *ngFor="let type of types" [value]="type.id">{{type.value}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>-->
+                  <!--</mat-radio-group>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <!--<div class="form-group row">-->
+                <!--<label class="col-md-0 control-label">-->
+                <!--</label>-->
+                <!--<div class="col-md-8">-->
+                  <!--&lt;!&ndash;mat-form-field>-->
+                    <!--<mat-select placeholder="Method" required-->
+                                <!--[(ngModel)]="testSuite.method"-->
+                                <!--name="type" [ngModelOptions]="{standalone: true}"-->
+                    <!--&gt;-->
+                      <!--<mat-option *ngFor="let type of methods" [value]="type">-->
+                        <!--{{type}}-->
+                      <!--</mat-option>-->
+                    <!--</mat-select>-->
+                    <!--<mat-error>Please select Methods </mat-error>-->
+                  <!--</mat-form-field&ndash;&gt;Method&nbsp;&nbsp;-->
+                  <!--<mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="testSuite.method" [ngModelOptions]="{standalone: true}">-->
+                    <!--<mat-radio-button *ngFor="let type of methods" [value]="type">{{type}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>-->
+                  <!--</mat-radio-group>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group row">-->
+                <!--<label for="name" class="col-md-0 control-label"></label>-->
+                <!--<div class="col-md-5">-->
+                  <!--<mat-input-container class="full-width">-->
+                    <!--<input [(ngModel)]="testSuite.auth" [ngModelOptions]="{standalone: true}" matInput placeholder="Auth Name">-->
+                  <!--</mat-input-container>-->
+                <!--</div>-->
+              <!--</div>-->
 
 
-              <div class="form-group row">
-                <label for="name" class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <input [(ngModel)]="testSuite.headers" [ngModelOptions]="{standalone: true}" matInput placeholder="Headers" autocomplete="off">
-                  </mat-input-container>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-md-0 control-label">
-                </label>
-                <div class="col-md-5">
+              <!--<div class="form-group row">-->
+                <!--<label for="name" class="col-md-0 control-label"></label>-->
+                <!--<div class="col-md-5">-->
+                  <!--<mat-input-container class="full-width">-->
+                    <!--<input [(ngModel)]="testSuite.headers" [ngModelOptions]="{standalone: true}" matInput placeholder="Headers" autocomplete="off">-->
+                  <!--</mat-input-container>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group row">-->
+                <!--<label class="col-md-0 control-label">-->
+                <!--</label>-->
+                <!--<div class="col-md-5">-->
 
-                  <mat-form-field class="full-width">
-                    <mat-select placeholder="Category" [(ngModel)]="testSuite.category" name="category" [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let type of categories" [value]="type">
-                        {{type}}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error>Please select Type </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-md-0 control-label">
-                </label>
-                <div class="col-md-5">
-                  <mat-form-field class="full-width">
-                    <mat-select placeholder="Severity" [(ngModel)]="testSuite.severity" name="severity" [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let type of severities" [value]="type.id">
-                        {{type.value}}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error>Please select Type </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
+                  <!--<mat-form-field class="full-width">-->
+                    <!--<mat-select placeholder="Category" [(ngModel)]="testSuite.category" name="category" [ngModelOptions]="{standalone: true}">-->
+                      <!--<mat-option *ngFor="let type of categories" [value]="type">-->
+                        <!--{{type}}-->
+                      <!--</mat-option>-->
+                    <!--</mat-select>-->
+                    <!--<mat-error>Please select Type </mat-error>-->
+                  <!--</mat-form-field>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group row">-->
+                <!--<label class="col-md-0 control-label">-->
+                <!--</label>-->
+                <!--<div class="col-md-5">-->
+                  <!--<mat-form-field class="full-width">-->
+                    <!--<mat-select placeholder="Severity" [(ngModel)]="testSuite.severity" name="severity" [ngModelOptions]="{standalone: true}">-->
+                      <!--<mat-option *ngFor="let type of severities" [value]="type.id">-->
+                        <!--{{type.value}}-->
+                      <!--</mat-option>-->
+                    <!--</mat-select>-->
+                    <!--<mat-error>Please select Type </mat-error>-->
+                  <!--</mat-form-field>-->
+                <!--</div>-->
+              <!--</div>-->
 
-              <div class="form-group row">
-                <label class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <textarea matInput placeholder="Tags" [(ngModel)]='testSuite.tagsText' [ngModelOptions]="{standalone: true}" autocomplete="off"></textarea>
-                  </mat-input-container>
-                </div>
-              </div>
+              <!--<div class="form-group row">-->
+                <!--<label class="col-md-0 control-label"></label>-->
+                <!--<div class="col-md-5">-->
+                  <!--<mat-input-container class="full-width">-->
+                    <!--<textarea matInput placeholder="Tags" [(ngModel)]='testSuite.tagsText' [ngModelOptions]="{standalone: true}" autocomplete="off"></textarea>-->
+                  <!--</mat-input-container>-->
+                <!--</div>-->
+              <!--</div>-->
 
-              <div class="form-group row">
-                <label for="name" class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <textarea matInput placeholder="Authors" [(ngModel)]='testSuite.authorsText' [ngModelOptions]="{standalone: true}"></textarea>
-                  </mat-input-container>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-slide-toggle color="primary" checked="true"  [(ngModel)]='testSuite.inActive'> In Active </mat-slide-toggle>
-                  <mat-slide-toggle [checked]="testSuite.inactive" color="primary" (change)="testSuite.inactive=$event.checked"> in Active </mat-slide-toggle>
-                  <span class="space space-md"></span>
-                </div>
-              </div>
-              <div class="divider divider-dashed divider-lg pull-in"></div>
+              <!--<div class="form-group row">-->
+                <!--<label for="name" class="col-md-0 control-label"></label>-->
+                <!--<div class="col-md-5">-->
+                  <!--<mat-input-container class="full-width">-->
+                    <!--<textarea matInput placeholder="Authors" [(ngModel)]='testSuite.authorsText' [ngModelOptions]="{standalone: true}"></textarea>-->
+                  <!--</mat-input-container>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group row">-->
+                <!--<label class="col-md-0 control-label"></label>-->
+                <!--<div class="col-md-5">-->
+                  <!--&lt;!&ndash;mat-slide-toggle color="primary" checked="true"  [(ngModel)]='testSuite.inActive'> In Active </mat-slide-toggle&ndash;&gt;-->
+                  <!--<mat-slide-toggle [checked]="testSuite.inactive" color="primary" (change)="testSuite.inactive=$event.checked"> in Active </mat-slide-toggle>-->
+                  <!--<span class="space space-md"></span>-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="divider divider-dashed divider-lg pull-in"></div>-->
 
-            </div>
-          </div>
+            <!--</div>-->
+          <!--</div>-->
           <div>
-            <div> -->
-          <mat-card-actions>
-            <button mat-raised-button color="primary" class="nav-btn" (click)="saveTestSuiteYaml();">Save & Complete
-            </button>
-          </mat-card-actions>
+            <div>
+              <mat-card-actions>
+                <button mat-raised-button color="primary" class="nav-btn" (click)="saveTestSuiteYaml();">Save & Complete
+                </button>
+              </mat-card-actions>
+            </div>
+          </div>
         </form>
       </div>
     </div>

@@ -30,8 +30,8 @@ export class TestSuiteEditComponent implements OnInit {
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
-  yml = false;
-  bsc = true;
+  yml = true;
+  bsc = false;
   adv = false;
   testSuiteId: string;
   testCases: FormArray;

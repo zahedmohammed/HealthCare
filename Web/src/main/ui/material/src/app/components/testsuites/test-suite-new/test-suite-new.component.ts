@@ -36,7 +36,7 @@ export class TestSuiteNewComponent implements OnInit {
   yml = true;
   bsc = false;
   adv = false;
-  yamlForm = new FormControl('', [Validators.required]);
+
   advance: boolean = false;
   severities: any[] = [{ id: "Critical", value: "Critical" }, { id: "Major", value: "Major" }, { id: "Minor", value: "Minor" }, { id: "Trivial", value: "Trivial" }];
   methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HEAD", "PATCH"];
