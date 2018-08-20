@@ -31,10 +31,9 @@ export class TestSuiteNewComponent implements OnInit {
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
   testCases: FormArray;
-  yml = true;
-  bsc = false;
+  yml = false;
+  bsc = true;
   adv = false;
-  text:string = 'fxlabs yaml editor';
   advance: boolean = false;
   severities: any[] = [{ id: "Critical", value: "Critical" }, { id: "Major", value: "Major" }, { id: "Minor", value: "Minor" }, { id: "Trivial", value: "Trivial" }];
   methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HEAD", "PATCH"];

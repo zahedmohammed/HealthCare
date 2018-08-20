@@ -43,7 +43,7 @@ constructor(private http: HttpClient) {
   }
 
    createFromYaml(yaml: string, projectId: string) {
-    return this.http.post(this.serviceUrl + "/" + projectId +"/ui", yaml);
+    return this.http.post(this.serviceUrl + projectId +"/ui", yaml);
   }
 
  update(obj: TestSuite) {
