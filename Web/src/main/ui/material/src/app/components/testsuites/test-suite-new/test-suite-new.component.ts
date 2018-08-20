@@ -27,8 +27,7 @@ import { TestSuite, TestCase } from '../../../models/test-suite.model';
 })
 
 export class TestSuiteNewComponent implements OnInit {
-  text: string = `{martin: name: Martin D'vloper, job: Developer, skill: Elite}
-  fruits: ['Apple', 'Orange', 'Strawberry', 'Mango']`;
+  text: string = "";
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
