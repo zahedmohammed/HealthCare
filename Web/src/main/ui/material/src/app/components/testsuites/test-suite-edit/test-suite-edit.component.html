@@ -28,31 +28,31 @@
 
   <br/>
   <article class="article">
-      <div class="row">
-          <div class="col-md-12">&nbsp;</div>
-      </div>
+    <div class="row">
+      <div class="col-md-12">&nbsp;</div>
+    </div>
     <div class="box box-default">
       <div class="box-body ml-4">
-          <div class="pull-right">
+        <!-- <div class="pull-right">
               <mat-button-toggle-group>
                   <mat-button-toggle (click)="yaml()" value="yaml">Yaml</mat-button-toggle>
                   <mat-button-toggle (click)="basic()">Basic
                   </mat-button-toggle>
                   <mat-button-toggle (click)="advanced()" value="advance">Advance</mat-button-toggle>
                 </mat-button-toggle-group>
-            </div>
-        <form [formGroup]="thirdFormGroup" class="px-4">
-            <h6 class="mat-step-label-selected pb-4">Test Suite Details</h6>
+            </div> -->
+        <form class="px-4">
+          <h6 class="mat-step-label-selected pb-4">Test Suite Details</h6>
 
-            <div class="form-group row border" *ngIf="yml">
-                <ace-editor class="col-md-12" [(text)]="text" [theme]="'eclipse'" [options]="options" [readOnly]="false" [autoUpdateContent]="true"
-                  [durationBeforeCallback]="1000" (textChanged)="onChange($event)" style="min-height: 200px; overflow: auto;">
-                </ace-editor>
-              </div>
-
-            <div *ngIf="bsc">
           <div class="form-group row">
-            <!--label for="name" class="col-md-0 control-label"></label-->
+            <ace-editor class="col-md-12 border editor" [(text)]="testSuite.yaml" [theme]="'eclipse'" [readOnly]="false" [autoUpdateContent]="true"
+              [durationBeforeCallback]="1000">
+            </ace-editor>
+          </div>
+
+          <!-- <div *ngIf="bsc">
+          <div class="form-group row">
+            <label for="name" class="col-md-0 control-label"></label>
             <div class="col-md-5">
               <mat-form-field class="full-width">
                 <input required [(ngModel)]="testSuite.name" formControlName="nameCtrl"
@@ -70,12 +70,12 @@
               </mat-input-container>
             </div>
           </div>
-          <!-- Test case Start -->
+          <Test case Start>
 
           <div formArrayName="testCases"
                *ngFor="let item of thirdFormGroup.get('testCases').controls; let i = index;">
             <div [formGroupName]="i">
-              <!--input formControlName="authType" placeholder="Item name"-->
+              <input formControlName="authType" placeholder="Item name">
 
 
               <div class="form-group row">
@@ -112,7 +112,7 @@
             <i class="fa fa-plus"></i>
             Add Test Case
           </button>
-          <!-- Test case End -->
+          < Test case End >
 
 
           <div class="form-group row">
@@ -128,7 +128,7 @@
           </div>
           <div class="row" *ngIf="adv">
 
-            <!--div-- class="col-md-12">
+            <div-- class="col-md-12">
 
               <div class="divider divider-dashed divider-lg pull-in"></div>
 
@@ -140,7 +140,7 @@
                 </div>
               </div>
             </div-->
-           <!-- <div class="col-md-12">
+          <!-- <div class="col-md-12">
              <div class="divider divider-dashed divider-lg pull-in"></div>
              &nbsp;&nbsp;&nbsp;<button mat-button color="primary" class="btn-w-md" (click)="advance=!advance" >
              <i *ngIf="!advance" class="fa fa-plus"></i>
@@ -151,7 +151,7 @@
 
              <div class="divider divider-dashed divider-lg pull-in"></div>
 
-           </div> -->
+           </div>
             <div class="col-md-12">
 
               <div class="form-group row">
@@ -177,7 +177,7 @@
                 <label class="col-md-0 control-label">
                 </label>
                 <div class="col-md-8">
-                  <!--mat-form-field>
+                  <mat-form-field>
                     <mat-select placeholder="Method" required
                                 [(ngModel)]="testSuite.method"
                                 name="type" [ngModelOptions]="{standalone: true}"
@@ -187,7 +187,7 @@
                       </mat-option>
                     </mat-select>
                     <mat-error>Please select Methods </mat-error>
-                  </mat-form-field-->Method&nbsp;&nbsp;
+                  </mat-form-field>Method&nbsp;&nbsp;
                   <mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="testSuite.method" [ngModelOptions]="{standalone: true}">
                     <mat-radio-button  *ngFor="let type of methods" [value]="type">{{type}}&nbsp;&nbsp;&nbsp;&nbsp;</mat-radio-button>
                   </mat-radio-group>
@@ -271,7 +271,7 @@
               <div class="form-group row">
                 <label  class="col-md-0 control-label"></label>
                 <div class="col-md-5">
-                  <!--mat-slide-toggle color="primary" checked="true"  [(ngModel)]='testSuite.inActive'> In Active </mat-slide-toggle-->
+                  <mat-slide-toggle color="primary" checked="true"  [(ngModel)]='testSuite.inActive'> In Active </mat-slide-toggle>
                   <mat-slide-toggle  [checked]="testSuite.inactive" color="primary" (change)="testSuite.inactive=$event.checked" > in Active </mat-slide-toggle>
                   <span class="space space-md"></span>
                 </div>
@@ -281,14 +281,12 @@
               </div>
               </div>
              <div>             
-                <div>
-                  <mat-card-actions>
-                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid" (click)="saveTestSuite();">Save & Complete
-                    </button>
-                  </mat-card-actions>
-                </div>
-              </div>
-              </form>
+                <div> -->
+          <mat-card-actions>
+            <button mat-raised-button color="primary" class="nav-btn" (click)="saveTestSuiteYaml();">Save & Complete
+            </button>
+          </mat-card-actions>
+        </form>
       </div>
     </div>
   </article>
