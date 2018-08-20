@@ -37,6 +37,9 @@ export class JobsNewComponent implements OnInit {
 
     crons: Cron[] = [
   ];
+  categories: string[]=[];
+  category: string[];
+ 
 
   regions: string[] = ["FXLabs/US_WEST_1", "FXLabs/US_WEST_2", "FXLabs/US_EAST_1", "FXLabs/US_EAST_2", "FXLabs/EU_WEST_1", "FXLabs/EU_CENTRAL_1", "FXLabs/SA_EAST_1"]
 
@@ -76,6 +79,7 @@ export class JobsNewComponent implements OnInit {
     this.crons[0] = new Cron("0 0 12 * * ?", "Fire at 12pm (noon) every day"),
     this.crons[1] = new Cron("0 15 10 * * ?", "Fire at 10:15am every day"),
     this.crons[2] = new Cron("0 15 10 ? * MON-FRI", "Fire at 10:15am every Monday, Tuesday, Wednesday, Thursday and Friday")
+    this.categories=['SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
 
   }
 
@@ -180,7 +184,7 @@ export class JobsNewComponent implements OnInit {
   saveJob() {
     this.handler.activateLoader();
     this.snackbarService.openSnackBar("'Job '" + this.job.name + "' adding.", "");
-    this.jobsService.create(this.job).subscribe(results => {
+    this.jobsService.create(this.job,this.category).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

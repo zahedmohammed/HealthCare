@@ -8,6 +8,7 @@ export class Jobs {
     notifications: Noti[]=[];
     nextFire: string;
     project: any;
+    categories:string;
 
 }
 

@@ -36,7 +36,7 @@ export class AdvRunComponent implements OnInit {
     this.tags_ = '';//this.data.tags.join(',');
     this.suites = '';
     //alert(this.tags_);
-    this.categories=['HelloWorld','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+    this.categories=['SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
    }
 
   get() {
