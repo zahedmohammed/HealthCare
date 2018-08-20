@@ -1,7 +1,7 @@
 import{Component, Inject, OnInit}from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
 import {RunService}from '../../../services/run.service';
-import {MatDialogRef,MAT_DIALOG_DATA }from '@angular/material';
+import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSelectModule , MAT_DIALOG_DATA} from '@angular/material';
 import {RegionsService}from '../../../services/regions.service';
 import {Handler}from '../handler/handler';
 import { Categories } from '../../../models/project-autocode-config.model';
@@ -23,8 +23,11 @@ export class AdvRunComponent implements OnInit {
   tags_;
   suites;
   newRegion;
-  categories: string[]=[];
+  //categories: string[]=[];
   category: string[];
+  selectedCategories:string[]=[];
+  categories=['SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+
   constructor(private regionService: RegionsService, private runService: RunService, private router: Router, private handler: Handler,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AdvRunComponent>
@@ -35,8 +38,15 @@ export class AdvRunComponent implements OnInit {
     this.get();
     this.tags_ = '';//this.data.tags.join(',');
     this.suites = '';
+
+    this.selectedCategories = this.data.categories.split(",")
+    .map(function(item) {
+      return item.trim();
+    }); 
+     //this.selectedCategories=['XSS_Injection'];
+    console.log("onAdvRun dialog","--->"+this.selectedCategories);
+ 
     //alert(this.tags_);
-    this.categories=['SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
    }
 
   get() {
@@ -59,7 +69,7 @@ export class AdvRunComponent implements OnInit {
       this.newRegion = this.regions['org']['name'] + "/" + this.regions['name'];
     }
       this.dialogRef.close()
-    this.runService.advRun(this.data.id, this.newRegion, this.tags_, this.suites,this.category).subscribe(results => {
+    this.runService.advRun(this.data.id, this.newRegion, this.tags_, this.suites,this.selectedCategories).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
