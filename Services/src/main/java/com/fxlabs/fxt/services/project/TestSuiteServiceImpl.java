@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.project;
 
+import com.fxlabs.fxt.converters.project.ProjectConverter;
 import com.fxlabs.fxt.converters.project.TestSuiteConverter;
 import com.fxlabs.fxt.converters.project.TestSuiteMinConverter;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
@@ -11,9 +12,11 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
+import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +44,15 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     private ProjectFileESRepository projectFileESRepository;
     private ProjectService projectService;
     private ProjectRepository projectRepository;
+    private ProjectConverter projectConverter;
     private TestSuiteRepository repository;
     private TestSuiteConverter testSuiteConverter;
     private TestSuiteMinConverter testSuiteMinConverter;
+    private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
 
     @Autowired
-    public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository,
-                                ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository,
+    public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository, ProjectConverter projectConverter,
+                                ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                                 ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter, TestSuiteMinConverter testSuiteMinConverter) {
         super(repository, converter);
         this.repository = repository;
@@ -58,6 +63,8 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         this.projectFileESRepository = projectFileESRepository;
         this.testSuiteConverter = testSuiteConverter;
         this.testSuiteMinConverter  = testSuiteMinConverter;
+        this.gaaSTaskRequestProcessor = gaaSTaskRequestProcessor;
+        this.projectConverter = projectConverter;
     }
 
     @Override
@@ -139,8 +146,11 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         com.fxlabs.fxt.dto.project.TestSuite dto = null;
 
+        TestSuiteMin testSuiteMin = null;
+
         try {
             dto = testSuiteConverter.copyYamlToTestSuite(yaml);
+            testSuiteMin = testSuiteMinConverter.copyYamlToTestSuiteMin(yaml);
         } catch (Exception ex) {
             throw new FxException(ex.getLocalizedMessage());
         }
@@ -179,6 +189,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         // project_file
         this.projectFileService.saveFromTestSuite(dto, ts.getProject().getId());
+
+        // Create GaaS Task
+        this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteMin);
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
 

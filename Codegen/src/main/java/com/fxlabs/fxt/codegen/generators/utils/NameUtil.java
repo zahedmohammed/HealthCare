@@ -45,4 +45,24 @@ public class NameUtil {
 
         return joiner.toString();
     }
+
+
+    public static String extractBaseForTestSuiteFromControlPlane(String path) {
+        String[] tokens = path.split("\\.");
+        StringJoiner joiner = new StringJoiner("/");
+        for (String token : tokens) {
+            if (StringUtils.isEmpty(token)) {
+                continue;
+            }
+            //System.out.println("token : " + token);
+
+            if (org.apache.commons.lang3.StringUtils.containsAny(token, "{", "}")) {
+                continue;
+            }
+            //System.out.println("Eval token : " + token);
+            joiner.add(token.toLowerCase());
+        }
+
+        return joiner.toString();
+    }
 }

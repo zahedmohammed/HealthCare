@@ -36,4 +36,23 @@ public abstract class TestSuiteMinConverter implements BaseConverter<TestSuiteMi
         return  yamlFormat;
     }
 
+
+    public com.fxlabs.fxt.dto.project.TestSuite copyYamlToTestSuite(String yaml) throws IOException {
+
+        if (StringUtils.isEmpty(yaml)) {
+            return null;
+        }
+        ObjectMapper mapperObj = new ObjectMapper(new YAMLFactory());
+        return mapperObj.readValue(yaml, com.fxlabs.fxt.dto.project.TestSuite.class);
+    }
+
+    public TestSuiteMin copyYamlToTestSuiteMin(String yaml) throws IOException {
+
+        if (StringUtils.isEmpty(yaml)) {
+            return null;
+        }
+        ObjectMapper mapperObj = new ObjectMapper(new YAMLFactory());
+        return mapperObj.readValue(yaml, TestSuiteMin.class);
+    }
+
 }

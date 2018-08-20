@@ -230,6 +230,31 @@ public class StubGenerator {
         return 0;
     }
 
+
+    public int addTestSuite(String projectDir, TestSuiteMin testSuiteMin) {
+
+        try {
+
+            List<TestSuiteMin> testSuites = new ArrayList<>();
+
+            if (testSuiteMin != null) {
+                testSuites.add(testSuiteMin);
+            }
+
+           // writeToResourceSampleFile(resourceSamples, projectDir);
+
+            printTS(testSuites, projectDir);
+
+            return testSuites.size();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getLocalizedMessage());
+        }
+        return 0;
+    }
+
+
     private void writeToResourceSampleFile(List<ResourceSample> sampleRequests, String dir){
 
         ObjectMapper yamlMapper = new ObjectMapper();

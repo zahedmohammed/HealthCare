@@ -15,10 +15,7 @@ import com.fxlabs.fxt.dto.events.Entity;
 import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.events.Status;
 import com.fxlabs.fxt.dto.events.Type;
-import com.fxlabs.fxt.dto.project.AutoCodeConfig;
-import com.fxlabs.fxt.dto.project.AutoCodeConfigMinimal;
-import com.fxlabs.fxt.dto.project.GenPolicy;
-import com.fxlabs.fxt.dto.project.ProjectSync;
+import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.users.Users;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -154,7 +151,7 @@ public class GaaSTaskRequestProcessor {
     }
 
 
-    public void processAutoCodeconfig(Project project, AutoCodeConfig codeConfig) {
+    public void processAutoCodeconfig(Project project, AutoCodeConfig codeConfig, TestSuiteMin testSuiteMin) {
         try {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
@@ -182,6 +179,11 @@ public class GaaSTaskRequestProcessor {
                     task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
                     task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
                 }
+            }
+
+
+            if (testSuiteMin != null){
+               task.setTestSuiteMin(testSuiteMin);
             }
             Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
 

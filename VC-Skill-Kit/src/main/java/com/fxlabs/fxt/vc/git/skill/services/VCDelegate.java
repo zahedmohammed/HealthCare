@@ -5,6 +5,7 @@ package com.fxlabs.fxt.vc.git.skill.services;
 import com.fxlabs.fxt.codegen.code.CodegenThreadUtils;
 import com.fxlabs.fxt.codegen.code.Generator;
 import com.fxlabs.fxt.codegen.code.StubGenerator;
+import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
@@ -80,6 +81,12 @@ public class VCDelegate {
                 // 2.2. AutoCode -> run()
                 getInactiveCategoriesForDeletion(task);
                 customizedFileDeletion(task, path);
+
+                //set directory path for the test suite from controlplane and commit to git
+                if (task.getTestSuiteMin() != null) {
+                    setParent(task.getTestSuiteMin());
+                    int count = stubGenerator.addTestSuite(path, task.getTestSuiteMin());
+                }
 
                 if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
                     // TODO Generate tests
@@ -198,7 +205,7 @@ public class VCDelegate {
         }
     }
 
-    public boolean delete(File path) {
+    private boolean delete(File path) {
         try {
             boolean deleted = org.apache.commons.io.FileUtils.deleteQuietly(path);
             return true;
@@ -209,7 +216,7 @@ public class VCDelegate {
     }
 
 
-    public void listfiles(File directoryName, List<File> files) {
+    private void listfiles(File directoryName, List<File> files) {
         // Get all the files from a directory.
         File[] fList = directoryName.listFiles();
         for (File file : fList) {
@@ -219,5 +226,21 @@ public class VCDelegate {
                 listfiles(new File(file.getAbsolutePath()), files);
             }
         }
+    }
+
+    private void setParent(TestSuiteMin min) {
+
+        if (min == null) {
+            return;
+        }
+
+        try {
+            String path = NameUtil.extractBaseForTestSuiteFromControlPlane(min.getParent());
+            logger.info("File path  [{}] for testsuite from control plane", path);
+            min.setParent(path);
+        } catch (Exception ex){
+
+        }
+
     }
 }

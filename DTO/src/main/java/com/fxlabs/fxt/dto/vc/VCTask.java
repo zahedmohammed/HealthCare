@@ -1,8 +1,6 @@
 package com.fxlabs.fxt.dto.vc;
 
-import com.fxlabs.fxt.dto.project.AutoCodeConfig;
-import com.fxlabs.fxt.dto.project.AutoCodeConfigMinimal;
-import com.fxlabs.fxt.dto.project.GenPolicy;
+import com.fxlabs.fxt.dto.project.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,6 +28,8 @@ public class VCTask implements Serializable {
     private String projectGrant;
 
     private AutoCodeConfigMinimal autoCodeConfigMinimal;
+
+    private TestSuiteMin testSuiteMin;
 
     private String vcUrl;
     private String vcUsername;
