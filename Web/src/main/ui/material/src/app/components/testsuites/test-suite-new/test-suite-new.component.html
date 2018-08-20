@@ -49,7 +49,7 @@
 
           <div class="form-group row">
             <ace-editor class="col-md-12 border editor" [(text)]="text" [theme]="'eclipse'" [options]="options" [readOnly]="false" [autoUpdateContent]="true"
-              [durationBeforeCallback]="1000" (textChanged)="onChange($event)" style="min-height: 200px; overflow: auto;">
+              [durationBeforeCallback]="1000" (textChanged)="onChange($event)">
             </ace-editor>
           </div>
 
