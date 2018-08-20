@@ -243,7 +243,7 @@ public class StubGenerator {
 
            // writeToResourceSampleFile(resourceSamples, projectDir);
 
-            printTS(testSuites, projectDir);
+            printTSFromControlPlane(testSuites, projectDir);
 
             return testSuites.size();
 
@@ -293,6 +293,59 @@ public class StubGenerator {
                 CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Skipped");
                 return;
             }
+
+            try {
+
+
+                System.out.println(
+                        AnsiOutput.toString(AnsiColor.WHITE,
+                                String.format("%s [Written]",
+                                        org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 100))
+                                , AnsiColor.DEFAULT)
+                );
+
+
+                FileUtils.touch(file);
+
+
+                yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, ts);
+                //System.out.println ("done");
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Written");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        System.out.println("--");
+        System.out.println("Total suites written : " + testSuites.size());
+        CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Total suites written", "" + testSuites.size());
+        System.out.println("");
+
+    }
+
+
+
+    private void printTSFromControlPlane(List<TestSuiteMin> testSuites, String dir) {
+        ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+        yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        testSuites.stream().forEach(ts -> {
+
+            //System.out.println ("start "  + ts);
+            //System.out.println ("Name "  + ts.getName());
+
+            File file = new File(dir + "/test-suites/AutoCode/" + ts.getParent(), ts.getName() + ".yaml");
+            //System.out.println (file);
+//            if (file.exists()) {
+//                System.out.println(
+//                        AnsiOutput.toString(AnsiColor.WHITE,
+//                                String.format("%s [Skipped]", org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 100))
+//                                , AnsiColor.DEFAULT)
+//                );
+//                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Skipped");
+//                return;
+//            }
 
             try {
 

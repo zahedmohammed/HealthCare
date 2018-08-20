@@ -127,7 +127,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
 
         entity = ((TestSuiteRepository) repository).save(ts);
-        testSuiteESRepository.save(entity);
+        if (entity != null && entity.getId() != null) {
+            testSuiteESRepository.save(entity);
+        }
 
         // project_file
         this.projectFileService.saveFromTestSuite(testSuite, ts.getProject().getId());
@@ -180,20 +182,20 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(projectId);
 
-        ts.setProject(project.get());
-
-         TestSuite entity = ((TestSuiteRepository) repository).save(ts);
-        if (entity!=null && entity.getId()!=null) {
-            testSuiteESRepository.save(entity);
-        }
-
-        // project_file
-        this.projectFileService.saveFromTestSuite(dto, ts.getProject().getId());
+//        ts.setProject(project.get());
+//
+//         TestSuite entity = ((TestSuiteRepository) repository).save(ts);
+//        if (entity != null && entity.getId() != null) {
+//            testSuiteESRepository.save(entity);
+//        }
+//
+//        // project_file
+//        this.projectFileService.saveFromTestSuite(dto, ts.getProject().getId());
 
         // Create GaaS Task
         this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteMin);
 
-        return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
+        return new Response<com.fxlabs.fxt.dto.project.TestSuite>(dto);
 
     }
 
@@ -202,49 +204,60 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
 
-//        String fileName = testSuite.getProps().get(Project.FILE_NAME);
-//        if (StringUtils.contains(fileName, "-")){
-//            throw new FxException(String.format("FileName [%s] should not contain hypen '-'.", fileName));
-//        }
 
+        if (testSuite == null || testSuite.getProject() == null  || testSuite.getProject().getId() == null) {
+            throw new FxException("Invalid Project");
+        }
+
+
+        TestSuiteMin testSuiteMin = null;
+        com.fxlabs.fxt.dto.project.TestSuite testSuite_ = null;
         try {
-            testSuite = testSuiteConverter.copyYamlToTestSuite(testSuite.getYaml());
+            testSuite_ = testSuiteConverter.copyYamlToTestSuite(testSuite.getYaml());
+            testSuiteMin = testSuiteMinConverter.copyYamlToTestSuiteMin(testSuite.getYaml());
         } catch (Exception ex) {
             throw new FxException(ex.getLocalizedMessage());
         }
 
         Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
-        TestSuite entity = null;
-        if (testSuiteOptional.isPresent()) {
-            entity = testSuiteOptional.get();
-            testSuite.setId(entity.getId());
+        if (testSuiteOptional.isPresent() && !StringUtils.equals(testSuiteOptional.get().getId(), testSuite.getId())) {
+            throw new FxException(String.format("TestSuite [%s] exists.", testSuiteOptional.get().getName()));
         }
 
-        testSuiteConverter.copyTextToArray(testSuite);
+        TestSuite entity = null;
+        testSuite_.setId(testSuite.getId());
+
+       // testSuiteConverter.copyTextToArray(testSuite);
 
         // type
-        if (testSuite.getType() == null) {
-            testSuite.setType(TestSuiteType.SUITE);
+        if (testSuite_.getType() == null) {
+            testSuite_.setType(TestSuiteType.SUITE);
         }
 
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(testSuite.getProject().getId());
 
-        TestSuite ts = converter.convertToEntity(testSuite);
+        if (!project.isPresent()) {
+              throw new FxException("Invalid Project");
+          }
+//        TestSuite ts = converter.convertToEntity(testSuite_);
+//
+//        if (testSuite.getProject() != null) {
+//            Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(testSuite.getProject().getId());
+//            ts.setProject(project.get());
+//        }
+//
+//       // entity = ((TestSuiteRepository) repository).save(ts);
+//        if (entity != null && entity.getId() != null) {
+//            testSuiteESRepository.save(ts);
+//        }
+//
+//        // project_file
+//        this.projectFileService.saveFromTestSuite(converter.convertToDto(ts), ts.getProject().getId());
 
-        if (!testSuiteOptional.isPresent()) {
-            Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(testSuite.getProject().getId());
-            ts.setProject(project.get());
-        }
+        this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteMin);
 
-        entity = ((TestSuiteRepository) repository).save(ts);
-        if (entity!=null && entity.getId()!=null) {
-            testSuiteESRepository.save(entity);
-        }
-
-        // project_file
-        this.projectFileService.saveFromTestSuite(testSuite, ts.getProject().getId());
-
-        return new Response<com.fxlabs.fxt.dto.project.TestSuite>(converter.convertToDto(entity));
+        return new Response<com.fxlabs.fxt.dto.project.TestSuite>(testSuite);
 
     }
 
@@ -252,7 +265,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> findById(String id, String org) {
-        Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findById(id);
+        Optional<TestSuite> testSuiteOptional = testSuiteESRepository.findById(id);
 
         if (!testSuiteOptional.isPresent()) {
             throw new FxException("Invalid request for test-suite");
