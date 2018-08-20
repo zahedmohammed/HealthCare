@@ -12,6 +12,8 @@ import { TestSuite } from '../models/test-suite.model';
 export class TestSuiteService {
 
 private serviceUrl = '/api/v1/test-suites'
+private testSuiteSample = './assets/test-suite-sample.yaml';
+
 constructor(private http: HttpClient) {
   }
   /**
@@ -62,4 +64,9 @@ constructor(private http: HttpClient) {
     params = params.append('pageSize', pageSize);
     return this.http.get(this.serviceUrl + "/" + projectId + "/test-suite/search", {params});
   }
+
+  getSample() {
+    return this.http.get(this.testSuiteSample, { responseType: 'text' });
+  }
+
 }

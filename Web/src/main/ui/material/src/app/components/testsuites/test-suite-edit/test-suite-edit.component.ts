@@ -17,6 +17,8 @@ import { SnackbarService}from '../../../services/snackbar.service';
 import {FormBuilder, FormGroup, Validators , FormArray}from '@angular/forms';
 //import { MatStepper } from '@angular/material';
 import { TestSuite,TestCase} from '../../../models/test-suite.model';
+import 'brace/theme/github';
+import 'brace/mode/yaml';
 
 
 @Component({

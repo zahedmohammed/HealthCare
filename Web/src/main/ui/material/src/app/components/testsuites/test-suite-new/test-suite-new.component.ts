@@ -17,6 +17,8 @@ import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 //import { MatStepper } from '@angular/material';
 import { TestSuite, TestCase } from '../../../models/test-suite.model';
+import 'brace/theme/github';
+import 'brace/mode/yaml';
 
 
 @Component({
@@ -66,6 +68,14 @@ export class TestSuiteNewComponent implements OnInit {
       nameCtrl: ['', Validators.required],
       // testCases: this._formBuilder.array([this.createItem()]),
       // type: ''
+    });
+
+    this.testSuiteService.getSample().subscribe(results => {
+      //console.log(results);
+      this.text = results;
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
   removeItem(i: number) {
@@ -156,6 +166,7 @@ export class TestSuiteNewComponent implements OnInit {
     this.yml = false;
     this.bsc = false;
   }
+
   saveTestSuiteYaml() {
     this.handler.activateLoader();
     this.snackbarService.openSnackBar(" creating...", "");

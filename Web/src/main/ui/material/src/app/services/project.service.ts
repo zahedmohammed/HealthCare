@@ -93,5 +93,4 @@ export class ProjectService {
     return this.http.get(this.envServiceUrl + "/" + envid);
   }
 
-
 }
