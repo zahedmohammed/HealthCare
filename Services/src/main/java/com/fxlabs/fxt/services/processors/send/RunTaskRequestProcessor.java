@@ -348,6 +348,8 @@ public class RunTaskRequestProcessor {
     }
 
     private HttpMethod convert(com.fxlabs.fxt.dao.entity.project.HttpMethod httpMethod) {
+        if (httpMethod == null) return  null;
+
         switch (httpMethod) {
             case GET:
                 return HttpMethod.GET;
