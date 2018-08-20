@@ -41,7 +41,17 @@ export class JobsService {
     return this.http.get(this.serviceUrl + "/count-tests" );
   }
 
-  create(obj: Jobs) {
+  create(obj: Jobs, categories: string[]) {
+    var cat="";
+     if(categories){
+     for (let category of categories) {
+       console.log("category list",category);
+        cat = cat + category+", " ; 
+    }
+    obj.categories=cat;
+    console.log("cat list","--->"+obj.categories);
+   }
+
     return this.http.post(this.serviceUrl, obj);
   }
 
