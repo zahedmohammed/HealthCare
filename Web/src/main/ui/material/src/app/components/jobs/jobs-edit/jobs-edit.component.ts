@@ -62,7 +62,7 @@ export class JobsEditComponent implements OnInit {
       this.id = params['id'];
       this.jobId = params['jobId'];
       if (this.id) {
-        //this.loadProject(this.id);
+        this.loadProject(this.id);
         this.getEnvs();
         this.getNotifyAccounts();
       }
