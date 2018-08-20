@@ -14,7 +14,7 @@ import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from
 import { DeleteDialogComponent } from '../../dialogs/delete-dialog/delete-dialog.component';
 import { SnackbarService } from '../../../services/snackbar.service';
 
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 //import { MatStepper } from '@angular/material';
 import { TestSuite, TestCase } from '../../../models/test-suite.model';
 
@@ -27,13 +27,16 @@ import { TestSuite, TestCase } from '../../../models/test-suite.model';
 })
 
 export class TestSuiteNewComponent implements OnInit {
+  text: string = `{martin: name: Martin D'vloper, job: Developer, skill: Elite}
+  fruits: ['Apple', 'Orange', 'Strawberry', 'Mango']`;
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
   testCases: FormArray;
-  yml = false;
-  bsc = true;
+  yml = true;
+  bsc = false;
   adv = false;
+  yamlForm = new FormControl('', [Validators.required]);
   advance: boolean = false;
   severities: any[] = [{ id: "Critical", value: "Critical" }, { id: "Major", value: "Major" }, { id: "Minor", value: "Minor" }, { id: "Trivial", value: "Trivial" }];
   methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HEAD", "PATCH"];
@@ -46,6 +49,7 @@ export class TestSuiteNewComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
+  yamlFormGroup: FormGroup;
 
   constructor(private projectService: ProjectService, private testSuiteService: TestSuiteService,
     private route: ActivatedRoute, private router: Router, private handler: Handler,
@@ -61,8 +65,8 @@ export class TestSuiteNewComponent implements OnInit {
     });
     this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', Validators.required],
-      testCases: this._formBuilder.array([this.createItem()]),
-      type: ''
+      // testCases: this._formBuilder.array([this.createItem()]),
+      // type: ''
     });
   }
   removeItem(i: number) {
@@ -110,7 +114,6 @@ export class TestSuiteNewComponent implements OnInit {
       this.testSuite.severity = 'Major';
       this.testSuite.inactive = false;
       this.testSuite.auth = 'Default';
-
       this.testSuite.project = this.project;
 
     }, error => {
@@ -154,5 +157,23 @@ export class TestSuiteNewComponent implements OnInit {
     this.yml = false;
     this.bsc = false;
   }
+  saveTestSuiteYaml() {
+    this.handler.activateLoader();
+    this.snackbarService.openSnackBar(" creating...", "");
+    this.testSuiteService.createFromYaml(this.text, this.project.id).subscribe(results => {
+    this.handler.hideLoader();
+    if (this.handler.handle(results)) {
+    return;
+    }
+    this.snackbarService.openSnackBar("'TestSuite '" + this.project.name + "' created successfully", "");
+    this.router.navigate(['/app/projects', this.id, 'test-suites']);
+    // this.project = results['data'];
+    
+    }, error => {
+    this.handler.hideLoader();
+    this.handler.error(error);
+    });
+    }
+    
 
 }

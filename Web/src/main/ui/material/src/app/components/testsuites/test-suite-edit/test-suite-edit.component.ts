@@ -26,6 +26,7 @@ import { TestSuite,TestCase} from '../../../models/test-suite.model';
   providers: [ProjectService, SnackbarService]
 })
 export class TestSuiteEditComponent implements OnInit {
+  text: string = "Fxlabs Yaml-editor";
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
@@ -170,4 +171,21 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
         this.yml = false;
         this.bsc = false;
       }
+      saveTestSuiteYaml() {
+        this.handler.activateLoader();
+        this.snackbarService.openSnackBar(" creating...", "");
+        this.testSuiteService.createFromYaml(this.text, this.project.id).subscribe(results => {
+        this.handler.hideLoader();
+        if (this.handler.handle(results)) {
+        return;
+        }
+        this.snackbarService.openSnackBar("'TestSuite '" + this.project.name + "' created successfully", "");
+        this.router.navigate(['/app/projects', this.id, 'test-suites']);
+        // this.project = results['data'];
+        
+        }, error => {
+        this.handler.hideLoader();
+        this.handler.error(error);
+        });
+        }
   }
