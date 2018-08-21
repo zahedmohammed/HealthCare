@@ -138,7 +138,7 @@ createItem(): FormGroup {
 }
   createItem1(obj:Auth): FormGroup {
       var k= this._formBuilder.group({
-      accessTokenUri:'',
+      accessTokenUri:obj.accessTokenUri,
     authType: [obj.authType, Validators.required],
     authorizationScheme:obj.authorizationScheme,
     clientAuthenticationScheme:obj.clientAuthenticationScheme,

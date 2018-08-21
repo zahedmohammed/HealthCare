@@ -2,8 +2,13 @@
     <div class="col-md-12 chat-header rounded-top bg-primary text-white hide-chat-box">
         <div class="row">
             <div class="col-md-6 username pl-2">
-                <h6 class="m-0">&nbsp;&nbsp; &nbsp;Tasks {{count}}</h6>&nbsp;
-                <span class="badge" style="background: red"></span>
+
+                <h6 class="m-0">&nbsp;&nbsp; &nbsp;Tasks </h6>&nbsp;
+                <span class="badge" style="background: red">{{count}}</span>
+<!-- 
+                <h6 class="m-0">&nbsp;&nbsp; &nbsp;Tasks</h6>&nbsp;
+                <span class="badge" style="background: red">{{ tasksRes?.status?.length }}</span> -->
+
             </div>
             <div class="col-md-6 options text-right pr-2">
                 <i class="fa fa-window-minimize" aria-hidden="true"></i>
@@ -18,8 +23,8 @@
                 <li class="pl-2 pr-2 text-dark send-msg mb-1">
                     <div>
                         <a href="javascript:;" [routerLink]="[task.link]" style="text-decoration: none !important;">
-                            <span class="text-warning" *ngIf="task.status == 'In_progress'"><i class="fa fa-spinner fa-spin"></i></span>
-                            <span class="text-success" *ngIf="task.status == 'Done'"><i class="fa fa-check"></i></span>
+                            <span class="text-warning" *ngIf="task?.status == 'In_progress'"><i class="fa fa-spinner fa-spin"></i></span>
+                            <span class="text-success" *ngIf="task?.status == 'Done'"><i class="fa fa-check"></i></span>
                             <span>&nbsp;&nbsp;{{ task.name }}</span>
                         </a>
                         <br/>
