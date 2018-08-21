@@ -41,7 +41,7 @@ export class AppFooterComponent implements OnInit {
   ngOnInit() {    
     this.tasks();
     this.connect();
-    console.log('Searching:', this.project.id);
+    //console.log('Searching:', this.project.id);
     this.AppConfig = APPCONFIG;
     $('.hide-chat-box').click(function(){
       $('.chat-content').slideToggle();
@@ -50,7 +50,7 @@ export class AppFooterComponent implements OnInit {
 
   this.route.params.subscribe(params => {
     this.id = params['entityId'];
-    console.log('this.id---------',this.id);
+    //console.log('this.id---------',this.id);
     //console.log('Searching:', this.project.id);
     this.jobId = params['entityId'];
     if (this.id) {
@@ -71,8 +71,8 @@ export class AppFooterComponent implements OnInit {
         return;
       }
         this.tasksRes = results['data'];
-        console.log('tasksRes---', this.tasksRes);
-        console.log(this.tasksRes.length);
+        //console.log('tasksRes---', this.tasksRes);
+        //console.log(this.tasksRes.length);
         this.length = results['totalElements'];
         this.count = 0;
         for (let entry of this.tasksRes) {
@@ -121,7 +121,7 @@ export class AppFooterComponent implements OnInit {
     let source = new EventSource('/api/v1/events/register');
     source.addEventListener('message', message => {
       // let event = JSON.parse(message.data);
-      console.log('event-------', event);
+      //console.log('event-------', event);
       this.tasks();
       // TODO - display & update events in the Tasks window.
     });
