@@ -1,14 +1,12 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.converters.project.AutoCodeConfigConverter;
 import com.fxlabs.fxt.converters.project.AutoCodeConfigMinimalConverter;
 import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.users.SystemSetting;
 import com.fxlabs.fxt.dao.entity.users.UsersPassword;
-import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
-import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
-import com.fxlabs.fxt.dao.repository.jpa.SystemSettingRepository;
-import com.fxlabs.fxt.dao.repository.jpa.UsersPasswordRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.events.Entity;
@@ -74,7 +72,13 @@ public class GaaSTaskRequestProcessor {
     private AutoCodeConfigMinimalConverter autoCodeConfigMinimalConverter;
 
     @Autowired
+    private AutoCodeConfigConverter autoCodeConfigConverter;
+
+    @Autowired
     private LocalEventPublisher localEventPublisher;
+
+    @Autowired
+    private AutoCodeConfigRepository autoCodeConfigRepository;
 
     /**
      * List projects of type GIT
@@ -108,6 +112,18 @@ public class GaaSTaskRequestProcessor {
                 }
             }
             task.setVcLastCommit(project.getLastCommit());
+
+            //Set AutoCode configurations
+            Optional<com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeConfig> codeConfigOptional = autoCodeConfigRepository.findByProjectId(project.getId());
+            if (codeConfigOptional.isPresent()){
+                AutoCodeConfig dto = autoCodeConfigConverter.convertToDto(codeConfigOptional.get());
+                AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(dto);
+                task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
+                if (autoCodeConfigMinimal.getGenPolicy() != null && autoCodeConfigMinimal.getGenPolicy() != GenPolicy.None) {
+                    task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
+                    task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
+                }
+            }
             if (projectSync != null){
                 task.setCategories(projectSync.getCategories());
                 task.setDeleteAll(projectSync.isDeleteAll());
