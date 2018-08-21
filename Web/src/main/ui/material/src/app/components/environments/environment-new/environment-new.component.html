@@ -311,7 +311,156 @@
                                 </div>
                             </div>
 
-                            <!-- Auth0 TODO -->
+                            <!-- Auth0 Start -->
+
+                            <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.authType.value == 'Auth0'">
+                                <br/>
+                                <div class="form-group row">
+                                    <label class="col-md-0 control-label">
+                                    </label>
+                                    <div class="col-md-5">
+                                        Grant Type &nbsp; &nbsp;
+                                        <mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="thirdFormGroup.controls.items.controls[i].controls.grantType.value" [ngModelOptions]="{standalone: true}">
+                                            <mat-radio-button  *ngFor="let grant of auth0GrantTypes" [value]="grant">{{grant}} &nbsp; &nbsp; </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="callout1 text-muted callout-info1">
+                                            <p class="mt-4">Auth0 documentation <a href="https://auth0.com/docs/">https://auth0.com/docs/</a></p>
+                                            <p *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value === 'client_credentials'">This is the OAuth 2.0 grant that server processes utilize in order to access an API. Use this endpoint to directly request an access_token by using the Client Credentials (a Client Id and a Client Secret).</p>
+                                            <p *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value === 'password'">This is the OAuth 2.0 grant that highly trusted apps utilize in order to access an API. In this flow the end-user is asked to fill in credentials (username/password) typically using an interactive form. This information is later on sent to the Client and the Authorization Server. It is therefore imperative that the Client is absolutely trusted with this information.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value === 'client_credentials'">
+
+                                    <div class="form-group row">
+                                        <!--<label for="name" class="col-md-0 control-label"></label>-->
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="accessTokenUri" matInput placeholder="Access Token URI">
+                                            </mat-input-container>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="callout1 text-muted callout-info1">
+                                                <p class="mt-4">e.g. https://mycompany.auth0.com/oauth/token
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="clientId" matInput placeholder="Client ID">
+                                            </mat-input-container>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="callout1 text-muted callout-info1">
+                                                <p class="mt-4">e.g. teTeLzG1fSOiAkMAwhO4gX9Tv2qpi6ge</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="clientSecret" matInput placeholder="Client Secret">
+                                            </mat-input-container>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="callout1 text-muted callout-info1">
+                                                <p class="mt-4">e.g. 9nPlaiR9UPhEtRCLRr71BKcWjClAjAy9joInYPflhgn3vTCxyW2fiT99xTdpBGos</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-md-0 control-label"></label>
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="id" matInput placeholder="Audience">
+                                            </mat-input-container>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="callout1 text-muted callout-info1">
+                                                <p class="mt-4">e.g. https://test/</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value === 'password'">
+                                    <div class="form-group row">
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="accessTokenUri" matInput placeholder="Access Token URI">
+                                            </mat-input-container>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="callout1 text-muted callout-info1">
+                                                <p class="mt-4">e.g. https://mycompany.auth0.com/oauth/token
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="clientId" matInput placeholder="Client ID">
+                                            </mat-input-container>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="callout1 text-muted callout-info1">
+                                                <p class="mt-4">e.g. teTeLzG1fSOiAkMAwhO4gX9Tv2qpi6ge</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="id" matInput placeholder="Audience">
+                                            </mat-input-container>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="callout1 text-muted callout-info1">
+                                                <p class="mt-4">e.g. https://test/</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="username" matInput placeholder="Username">
+                                            </mat-input-container>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="password" matInput placeholder="Password">
+                                            </mat-input-container>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-5">
+                                            <mat-input-container class="full-width">
+                                                <input formControlName="scope" matInput placeholder="Scope">
+                                            </mat-input-container>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Auth0 End -->
 
 
                         </div>
