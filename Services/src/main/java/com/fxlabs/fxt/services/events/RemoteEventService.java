@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
@@ -31,7 +32,7 @@ public class RemoteEventService {
     private EventConverter eventConverter;
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
-    private final CopyOnWriteArrayList<EmitterWrapper> emitters = new CopyOnWriteArrayList<>();
+    private final Collection<EmitterWrapper> emitters = new ConcurrentLinkedQueue<>();
 
     public SseEmitter register(String org, String user) {
 
@@ -40,8 +41,8 @@ public class RemoteEventService {
 
         this.emitters.add(new EmitterWrapper(emitter, org, user));
 
-        emitter.onCompletion(() -> this.emitters.remove(emitter));
-        emitter.onTimeout(() -> this.emitters.remove(emitter));
+        //emitter.onCompletion(() -> this.emitters.remove(emitter));
+        //emitter.onTimeout(() -> this.emitters.remove(emitter));
 
         return emitter;
 
@@ -86,7 +87,7 @@ public class RemoteEventService {
         final Event event1 = event;
 
         logger.info("Event msg [{}] org [{}]", event.getName(), event.getOrg().getName());
-        List<SseEmitter> deadEmitters = new ArrayList<>();
+
         ObjectMapper mapperObj = new ObjectMapper();
         String jsonStr = null;
         try {
@@ -99,17 +100,19 @@ public class RemoteEventService {
         }
 
         final String jsonStr1 = jsonStr;
+
+        List<EmitterWrapper> deadEmitters = new ArrayList<>();
         this.emitters.forEach(wrapper -> {
             try {
                 if (StringUtils.equals(wrapper.getOrg(), event1.getOrg().getId())) {
                     wrapper.getSseEmitter().send("");
                 }
             } catch (IOException e) {
-                deadEmitters.add(wrapper.getSseEmitter());
-                logger.warn(e.getLocalizedMessage());
+                deadEmitters.add(wrapper);
+                //logger.warn(e.getLocalizedMessage());
             } catch (Exception e) {
-                deadEmitters.add(wrapper.getSseEmitter());
-                logger.warn(e.getLocalizedMessage());
+                deadEmitters.add(wrapper);
+                //logger.warn(e.getLocalizedMessage());
             }
         });
 
