@@ -62,7 +62,7 @@ export class AppFooterComponent implements OnInit {
 
   }
 
-  tasks(){
+  tasks() {
     this.handler.activateLoader();
     this.tasksService.get(this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
@@ -112,8 +112,9 @@ export class AppFooterComponent implements OnInit {
   connect() {
     let source = new EventSource('/api/v1/events/register');
     source.addEventListener('message', message => {
-     // let event = JSON.parse(message.data);
+      // let event = JSON.parse(message.data);
       console.log('event-------', event);
+      this.tasks();
       // TODO - display & update events in the Tasks window.
     });
   }
