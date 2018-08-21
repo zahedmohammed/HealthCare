@@ -23,7 +23,6 @@ export class AdvRunComponent implements OnInit {
   tags_;
   suites;
   newRegion;
-  //categories: string[]=[];
   category: string[];
   selectedCategories:string[]=[];
   categories=['SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
@@ -39,14 +38,12 @@ export class AdvRunComponent implements OnInit {
     this.tags_ = '';//this.data.tags.join(',');
     this.suites = '';
 
-    this.selectedCategories = this.data.categories.split(",")
-    .map(function(item) {
-      return item.trim();
-    }); 
-     //this.selectedCategories=['XSS_Injection'];
-    console.log("onAdvRun dialog","--->"+this.selectedCategories);
- 
-    //alert(this.tags_);
+    if (this.data.categories){
+        this.selectedCategories = this.data.categories.split(",")
+        .map(function(item) {
+          return item.trim();
+        });
+    }
    }
 
   get() {

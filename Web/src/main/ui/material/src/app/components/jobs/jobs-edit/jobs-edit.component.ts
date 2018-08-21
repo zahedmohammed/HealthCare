@@ -62,7 +62,7 @@ export class JobsEditComponent implements OnInit {
       this.id = params['id'];
       this.jobId = params['jobId'];
       if (this.id) {
-        this.loadProject(this.id);
+        this.loadProject();
         this.getEnvs();
         this.getNotifyAccounts();
       }
@@ -112,10 +112,12 @@ export class JobsEditComponent implements OnInit {
         return;
       }
       this.job = results['data'];
-      this.selectedCategories = this.job.categories.split(",")
-      .map(function(item) {
-        return item.trim();
-      });
+      if ( this.job.categories ){
+          this.selectedCategories = this.job.categories.split(",")
+          .map(function(item) {
+            return item.trim();
+          });
+      }
       console.log("selectedCategories","---->"+this.selectedCategories);
         this.getITAccountsByAccountType();
 
