@@ -31,7 +31,7 @@
             <a href="javascript:;" [routerLink]="['/app/projects']"> Projects &nbsp; </a> <span class="text-muted"> > </span> &nbsp; {{context}}
           </div>
         </div> -->
-        
+
     <div class="box box-default">
       <div class="box-body">
 
@@ -73,22 +73,13 @@
                 <div class="col-md-7">
                   <div class="callout1 text-muted callout-info1">
                     <div class="mt-4">
-                      e.g. 'https://github.com/username/MyApp' or 'git@github.com:username/MyApp.git' if using SSH <br/><br/>
-                      <a href="javascript:;">Why Git Repository?</a><br/>
+                      <p class="callout callout-info">Note: Repository should be new and initialized (empty README file).</p>
+                      <p>e.g. 'https://github.com/username/MyApp' or 'git@github.com:username/MyApp.git' if using SSH</p>
+                      <strong>Why Git Repository?</strong><br/>
                       <ul>
-                        <li>FX treats tests as code</li>
-                        <li>FX automatically creates and checks-in the security & functional
-                          tests
-                          into
-                          your test repository
-                        </li>
-                        <li>Your developers can update and add new tests in the same test
-                          repository
-                        </li>
-                        <li>FX needs a brand new (initialized) repository. Note this is not your
-                          app's
-                          source code repository
-                        </li>
+                        <li>All test scripts are treated as code and stored in the Git repository</li>
+                        <li>FX automatically generates security & functional tests and stores in the Git repository</li>
+                        <li>This allows easy developers collaboration & version-control for the scripts</li>
                       </ul>
                     </div>
                   </div>
@@ -142,19 +133,6 @@
               <div class="box-body">
 
                 <!-- <form role="form" #heroForm="ngForm">         -->
-                <div class="form-group row">
-                  <label for="name" class="col-md-0 control-label"></label>
-                  <div class="col-md-11">
-                    <div class="callout1 text-muted callout-info1">
-                      <p>Auto-Code continuously generates security/functional coverage (Quality,
-                        Security,
-                        DOS, Injections, Data-Leak, Log-forging
-                        etc) for all API endpoints.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
 
                 <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
                   <label for="name" class="col-md-0 control-label"></label>
@@ -166,19 +144,25 @@
                       <mat-error>Required</mat-error>
                     </mat-input-container>
                   </div>
-                  <div class="col-md-7">
-                    <div class="callout1 text-muted callout-info1">
-                      <p> e.g. https://ip/v2/api-docs or open-api-spec.json or open-api-spec.yaml.
-                        Auto-Code requires OpenAPISpec of your
-                        application to create test/security
-                        coverage. How-to generate OpenAPISpec for your Java, .Net and other
-                        applications.
-                        <a target="_blank" href="https://swagger.io/open-source-integrations/">
-                          Learn more
-                          <i class="material-icons" style="font-size: 18px;">open_in_new</i>
-                        </a>
-                      </p>
-                    </div>
+                    <div class="col-md-7">
+                        <div class="callout1 text-muted callout-info1">
+                            <div><strong><p>FX Auto-Code requires OpenAPISpec of your
+                                application to create functional/security test
+                                coverage. </p></strong></div>
+                            <div class="callout callout-info">
+                                <p> Note: OpenAPISpec URL should be publicly accessible or upload the spec json/yaml
+                                    file into the Git repository and enter the filename instead.</p>
+                            </div>
+                            <div>
+                                e.g. https://ip/v2/api-docs or open-api-spec.json or open-api-spec.yaml or None. <br/>
+                                How-to generate OpenAPISpec for your Java, .Net and other
+                                applications.
+                                <a target="_blank" href="https://swagger.io/open-source-integrations/">
+                                    Learn more
+                                    <i class="material-icons" style="font-size: 18px;">open_in_new</i>
+                                </a>
+                            </div>
+                        </div>
                   </div>
 
                 </div>
