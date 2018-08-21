@@ -1,6 +1,9 @@
 ---
 # Note - The below property order is not important.
 
+# Test Suite should be unique per project.
+name:
+
 # Folder path
 # parent: com.company.project.feature.functional
 
