@@ -41,7 +41,7 @@ public class EventController {
 
     private RemoteEventService eventService;
 
-    public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC,  "createdDate");
+    public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC,  "modifiedDate");
 
     @Autowired
     public EventController(RemoteEventService eventService) {

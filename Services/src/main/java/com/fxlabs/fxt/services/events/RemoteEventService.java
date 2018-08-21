@@ -2,33 +2,26 @@ package com.fxlabs.fxt.services.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fxlabs.fxt.converters.alerts.EventConverter;
-import com.fxlabs.fxt.dao.entity.event.Entity;
-import com.fxlabs.fxt.dao.entity.event.Type;
 import com.fxlabs.fxt.dao.repository.jpa.EventRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.events.Event;
-import com.fxlabs.fxt.dto.events.Status;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.type.EntityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
-@Transactional
+@Transactional(noRollbackFor = {Exception.class, IOException.class})
 public class RemoteEventService {
 
     @Autowired
@@ -43,16 +36,15 @@ public class RemoteEventService {
     public SseEmitter register(String org, String user) {
 
         logger.info("Register org [{}] user [{}]", org, user);
-        SseEmitter emitter = new SseEmitter(600_000L); // 10 minutes
+        SseEmitter emitter = new SseEmitter(604800_000L); // 7 days
 
         this.emitters.add(new EmitterWrapper(emitter, org, user));
 
-       // emitter.onCompletion(() -> this.emitters.remove(emitter));
-        //emitter.onTimeout(() -> this.emitters.remove(emitter));
+        emitter.onCompletion(() -> this.emitters.remove(emitter));
+        emitter.onTimeout(() -> this.emitters.remove(emitter));
 
         return emitter;
 
-        // TODO - Send last 30 mins events pageSize 10 order by status (in_progress)
     }
 
     public void onEvent(Event event) {
@@ -110,15 +102,12 @@ public class RemoteEventService {
         this.emitters.forEach(wrapper -> {
             try {
                 if (StringUtils.equals(wrapper.getOrg(), event1.getOrg().getId())) {
-                    wrapper.getSseEmitter().send(SseEmitter.event()
-                            .id(event1.getId())
-                            .name(event1.getName())
-                            .data(jsonStr1)
-                            .reconnectTime(15_000L)
-                            .build());
+                    wrapper.getSseEmitter().send("");
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
+                deadEmitters.add(wrapper.getSseEmitter());
+                logger.warn(e.getLocalizedMessage());
+            } catch (Exception e) {
                 deadEmitters.add(wrapper.getSseEmitter());
                 logger.warn(e.getLocalizedMessage());
             }
@@ -132,7 +121,8 @@ public class RemoteEventService {
         private String org;
         private String user;
 
-        public EmitterWrapper(){}
+        public EmitterWrapper() {
+        }
 
         public EmitterWrapper(SseEmitter sseEmitter, String org, String user) {
             this.sseEmitter = sseEmitter;
@@ -166,8 +156,9 @@ public class RemoteEventService {
     }
 
 
-    public Response<List<Event>> getRecentOrgEvents(String orgId, Pageable pageable){
-        Page<com.fxlabs.fxt.dao.entity.event.Event> page  = eventRepository.findByOrgId(orgId, pageable);
+    public Response<List<Event>> getRecentOrgEvents(String orgId, Pageable pageable) {
+        Date dt = DateUtils.addHours(Calendar.getInstance().getTime(), -8);
+        Page<com.fxlabs.fxt.dao.entity.event.Event> page = eventRepository.findByOrgIdAndModifiedDateAfter(orgId, dt, pageable);
         return new Response<List<Event>>(eventConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 

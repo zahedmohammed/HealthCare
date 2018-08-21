@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.swing.event.DocumentEvent;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -21,5 +22,5 @@ public interface EventRepository extends JpaRepository<Event, String> {
 
     Optional<Event> findByEntityTypeAndEntityIdAndTaskId(Entity entityType, String entityId, String taskId);
 
-    Page<Event> findByOrgId(String orgId, Pageable pageable);
+    Page<Event> findByOrgIdAndModifiedDateAfter(String orgId, Date dt, Pageable pageable);
 }
