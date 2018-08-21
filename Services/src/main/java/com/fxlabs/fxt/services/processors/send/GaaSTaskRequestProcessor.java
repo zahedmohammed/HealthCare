@@ -137,7 +137,7 @@ public class GaaSTaskRequestProcessor {
             }
 
             //Sending event
-            String taskId = RandomStringUtils.randomAlphanumeric(16);
+            String taskId = RandomStringUtils.randomAlphanumeric(24);
             task.setTaskId(taskId);
             try {
                 projectSyncEvent(project, Status.In_progress, Entity.Project, task.getTaskId());
@@ -210,7 +210,7 @@ public class GaaSTaskRequestProcessor {
             }
 
             //Sending event
-            String taskId = RandomStringUtils.randomAlphanumeric(16);
+            String taskId = RandomStringUtils.randomAlphanumeric(24);
             task.setTaskId(taskId);
             try {
                 projectSyncEvent(project, Status.In_progress, Entity.Project, task.getTaskId());

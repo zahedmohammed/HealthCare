@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.swing.text.html.Option;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -82,10 +83,10 @@ public class RemoteEventService {
         if (optionalEntity.isPresent()) {
             com.fxlabs.fxt.dao.entity.event.Event entity = optionalEntity.get();
             entity.setStatus(com.fxlabs.fxt.dao.entity.event.Status.valueOf(event.getStatus().toString()));
-            event = eventConverter.convertToDto(eventRepository.save(entity));
+            event = eventConverter.convertToDto(eventRepository.saveAndFlush(entity));
         } else {
             com.fxlabs.fxt.dao.entity.event.Event eventEntity = eventConverter.convertToEntity(event);
-            event = eventConverter.convertToDto(eventRepository.save(eventEntity));
+            event = eventConverter.convertToDto(eventRepository.saveAndFlush(eventEntity));
         }
 
         final Event event1 = event;
@@ -115,8 +116,9 @@ public class RemoteEventService {
                             .build());
                 }
             }
-            catch (Exception e) {
+            catch (IOException e) {
                 deadEmitters.add(wrapper.getSseEmitter());
+                logger.warn(e.getLocalizedMessage());
             }
         });
 
@@ -163,10 +165,7 @@ public class RemoteEventService {
 
 
     public Response<List<Event>> getRecentOrgEvents(String orgId, Pageable pageable){
-
         Page<com.fxlabs.fxt.dao.entity.event.Event> page  = eventRepository.findByOrgId(orgId, pageable);
-
-
         return new Response<List<Event>>(eventConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
