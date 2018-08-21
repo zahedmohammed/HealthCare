@@ -170,7 +170,7 @@ export class TestSuiteNewComponent implements OnInit {
   saveTestSuiteYaml() {
     this.handler.activateLoader();
     this.snackbarService.openSnackBar(" creating...", "");
-    this.testSuiteService.createFromYaml(this.testSuite, this.project.id).subscribe(results => {
+    this.testSuiteService.createFromYaml(this.text, this.project.id).subscribe(results => {
     this.handler.hideLoader();
     if (this.handler.handle(results)) {
     return;
