@@ -2,7 +2,7 @@
 # Note - The below property order is not important.
 
 # Folder path
-# package: com.company.project.feature.functional
+# parent: com.company.project.feature.functional
 
 # Optional - one or more author names
 authors:
