@@ -22,6 +22,7 @@ export class AppFooterComponent implements OnInit {
   tasksRes;
   id: string;
   jobId: string;
+  count: number;
   project: Project = new Project();
   job: Jobs = new Jobs();
   //private serviceUrl = 'api/v1/events/orgevents';
@@ -73,6 +74,13 @@ export class AppFooterComponent implements OnInit {
         console.log('tasksRes---', this.tasksRes);
         console.log(this.tasksRes.length);
         this.length = results['totalElements'];
+        this.count = 0;
+        for (let entry of this.tasksRes) {
+            if ( entry.status == 'In_progress' ) {
+              this.count = this.count + 1;
+            }
+        }
+
       }, error => {
         this.handler.hideLoader();
         this.handler.error(error);
