@@ -157,6 +157,10 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             throw new FxException(ex.getLocalizedMessage());
         }
 
+        if (testSuiteMin != null && StringUtils.isNotEmpty(testSuiteMin.getParent())
+                && org.apache.commons.lang3.StringUtils.containsIgnoreCase(testSuiteMin.getParent(), "AutoCode")) {
+            throw new FxException("Folder name should not have AutoCode");
+        }
 
         if (dto == null || StringUtils.isEmpty(dto.getName())) {
             throw new FxException("Invalid Test-Suite Name");
@@ -218,6 +222,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         } catch (Exception ex) {
             throw new FxException(ex.getLocalizedMessage());
         }
+
+        if (testSuiteMin != null && StringUtils.isNotEmpty(testSuiteMin.getParent())
+                && org.apache.commons.lang3.StringUtils.containsIgnoreCase(testSuiteMin.getParent(), "AutoCode")) {
+            throw new FxException("Folder name should not have AutoCode");
+        }
+
 
         Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
