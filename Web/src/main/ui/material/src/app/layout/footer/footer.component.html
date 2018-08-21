@@ -21,8 +21,9 @@
                         {{ task.name }}</a> - <span class="text-muted">{{task.eventType}}</span>
                         <br/>
                         <small class="text-muted">{{task.createdDate | timeAgo}} &nbsp;&nbsp;|&nbsp;&nbsp;
-                            {{task.status}}
                         </small>
+                        <span *ngIf="task.status == 'In_progress'"><i class="fa fa-spinner fa-spin"></i></span>
+                        <span class=" text-success" *ngIf="task.status == 'Done'"><i class="fa fa-check"></i> Done</span>
                     </p>
                 </li>
             </ul>
