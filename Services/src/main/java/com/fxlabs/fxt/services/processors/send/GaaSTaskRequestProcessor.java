@@ -19,7 +19,7 @@ import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.users.UsersService;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.type.EntityType;
 import org.jasypt.util.text.TextEncryptor;

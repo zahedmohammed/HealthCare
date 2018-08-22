@@ -5,8 +5,8 @@ import com.fxlabs.fxt.converters.alerts.EventConverter;
 import com.fxlabs.fxt.dao.repository.jpa.EventRepository;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.events.Event;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,9 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
-@Transactional(noRollbackFor = {Exception.class, IOException.class})
+@Transactional(noRollbackFor = {Exception.class, IOException.class, IllegalStateException.class})
 public class RemoteEventService {
 
     @Autowired
@@ -102,11 +101,17 @@ public class RemoteEventService {
         final String jsonStr1 = jsonStr;
 
         List<EmitterWrapper> deadEmitters = new ArrayList<>();
-        this.emitters.forEach(wrapper -> {
+        if (this.emitters.isEmpty()) {
+            return;
+        }
+        for (EmitterWrapper wrapper : this.emitters) {
+            //this.emitters.forEach(wrapper -> {
             try {
                 if (StringUtils.equals(wrapper.getOrg(), event1.getOrg().getId())) {
                     wrapper.getSseEmitter().send("");
                 }
+            } catch (IllegalStateException e) {
+                deadEmitters.add(wrapper);
             } catch (IOException e) {
                 deadEmitters.add(wrapper);
                 //logger.warn(e.getLocalizedMessage());
@@ -114,9 +119,12 @@ public class RemoteEventService {
                 deadEmitters.add(wrapper);
                 //logger.warn(e.getLocalizedMessage());
             }
-        });
+            //});
+        }
 
-        this.emitters.removeAll(deadEmitters);
+        if (!deadEmitters.isEmpty()) {
+            this.emitters.removeAll(deadEmitters);
+        }
     }
 
     class EmitterWrapper {

@@ -13,7 +13,6 @@ import com.fxlabs.fxt.dto.vc.VCTaskResponse;
 import com.fxlabs.fxt.services.alerts.AlertService;
 import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.project.ProjectService;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

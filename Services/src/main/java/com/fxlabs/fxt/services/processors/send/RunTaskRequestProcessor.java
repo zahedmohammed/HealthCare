@@ -25,7 +25,6 @@ import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.clusters.ClusterService;
 import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.util.DataResolver;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;

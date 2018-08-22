@@ -3,7 +3,6 @@ package com.fxlabs.fxt.services.events;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

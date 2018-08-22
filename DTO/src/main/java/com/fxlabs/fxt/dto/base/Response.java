@@ -2,7 +2,6 @@ package com.fxlabs.fxt.dto.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 public class Response<D> implements Serializable {
     private String requestId = "None";
     private Date requestTime = new Date();
@@ -23,6 +22,9 @@ public class Response<D> implements Serializable {
     private D data;
     private Integer totalPages = 0;
     private Long totalElements = 0L;
+
+    public Response() {
+    }
 
     public Response(D data) {
         this.requestId = "None";
