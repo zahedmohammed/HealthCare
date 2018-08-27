@@ -67,7 +67,7 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <mat-select placeholder="Git Repository Credentials (Optional)" [ngModelOptions]="{standalone: true}"
+                                        <mat-select placeholder="Git Repository Credentials" [ngModelOptions]="{standalone: true}"
                                                     [(ngModel)]="project.account.id">
                                             <mat-option *ngFor="let account of accounts" [value]="account.id">
                                                 {{account.name}} ({{account.accountType}})
