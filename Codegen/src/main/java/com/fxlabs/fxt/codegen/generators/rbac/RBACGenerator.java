@@ -46,7 +46,7 @@ public class RBACGenerator extends AbstractGenerator {
             return null;
         }
 
-        if (CollectionUtils.isEmpty(generator.getAutoCodeGeneratorMatches())) {
+        if (CollectionUtils.isEmpty(generator.getMatches())) {
 //            System.err.println("No RBAC matches configuration found...");
             return null;
         }
@@ -54,7 +54,7 @@ public class RBACGenerator extends AbstractGenerator {
         final String path_ = path;
         Match match = null;
 
-        for (Match m : generator.getAutoCodeGeneratorMatches()) {
+        for (Match m : generator.getMatches()) {
             if (StringUtils.isEmpty(m.getPathPatterns())) {
                 continue;
             }

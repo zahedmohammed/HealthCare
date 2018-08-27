@@ -27,6 +27,6 @@ public class Generator implements Serializable {
     private List<String> logForgingPatterns;
     private String severity;
     private boolean inactive;
-    private List<Match> autoCodeGeneratorMatches;
+    private List<Match> matches;
     private Database database;
 }

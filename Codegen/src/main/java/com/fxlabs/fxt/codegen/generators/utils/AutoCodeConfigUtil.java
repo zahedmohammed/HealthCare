@@ -112,8 +112,8 @@ public class AutoCodeConfigUtil {
         boolean isDBGivenName = false;
         if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
             for (Generator gen : this.config.getGenerators()) {
-                if (! CollectionUtils.isEmpty( gen.getAutoCodeGeneratorMatches()) ) {
-                    Match match = gen.getAutoCodeGeneratorMatches().get(0);
+                if (! CollectionUtils.isEmpty( gen.getMatches()) ) {
+                    Match match = gen.getMatches().get(0);
                     if (match != null){
                         if ( StringUtils.containsIgnoreCase(match.getResourceSamples(),resourceName)){
                             ResourceSample resSample = getResourceSamples(resourceName);
@@ -132,8 +132,8 @@ public class AutoCodeConfigUtil {
         boolean isDBGivenName = false;
         if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
             for (Generator gen : this.config.getGenerators()) {
-                if (! CollectionUtils.isEmpty( gen.getAutoCodeGeneratorMatches()) ) {
-                    Match match = gen.getAutoCodeGeneratorMatches().get(0);
+                if (! CollectionUtils.isEmpty( gen.getMatches()) ) {
+                    Match match = gen.getMatches().get(0);
                     if (match != null){
                         return match.getQueryParams();
                     }
@@ -149,8 +149,8 @@ public class AutoCodeConfigUtil {
         boolean isDBGivenName = false;
         if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
             for (Generator gen : this.config.getGenerators()) {
-                if (! CollectionUtils.isEmpty( gen.getAutoCodeGeneratorMatches()) ) {
-                    Match match = gen.getAutoCodeGeneratorMatches().get(0);
+                if (! CollectionUtils.isEmpty( gen.getMatches()) ) {
+                    Match match = gen.getMatches().get(0);
                     if (match != null){
                         return match.getBodyProperties();
                     }
@@ -166,8 +166,8 @@ public class AutoCodeConfigUtil {
         boolean isDBGivenName = false;
         if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
             for (Generator gen : this.config.getGenerators()) {
-                if (! CollectionUtils.isEmpty( gen.getAutoCodeGeneratorMatches()) ) {
-                    Match match = gen.getAutoCodeGeneratorMatches().get(0);
+                if (! CollectionUtils.isEmpty( gen.getMatches()) ) {
+                    Match match = gen.getMatches().get(0);
                     if (match != null){
                         return match.getResourceSamples();
                     }
@@ -326,9 +326,9 @@ public class AutoCodeConfigUtil {
         Generator gen = get("DDOS");
 
         boolean isPresent = false;
-        if (gen != null && !CollectionUtils.isEmpty(gen.getAutoCodeGeneratorMatches())) {
-            isPresent = gen.getAutoCodeGeneratorMatches().stream().filter(match ->
-                    StringUtils.equalsIgnoreCase(match.getName(), name)).findFirst().isPresent();
+        if (gen != null && !CollectionUtils.isEmpty(gen.getMatches())) {
+            isPresent = gen.getMatches().stream().filter(match ->
+                    StringUtils.contains(match.getName(), name)).findFirst().isPresent();
         }
 
         return isPresent || DEFAULT_DDOS_PARAM_NAMES.stream().filter(s -> StringUtils.equalsIgnoreCase(s, name)).findFirst().isPresent();
@@ -343,11 +343,11 @@ public class AutoCodeConfigUtil {
         }
         Generator gen= get("DDOS");
 
-        if (gen == null || CollectionUtils.isEmpty(gen.getAutoCodeGeneratorMatches())) {
+        if (gen == null || CollectionUtils.isEmpty(gen.getMatches())) {
             return DEFAULT_DDOS_VALUE;
         }
 
-        Optional<Match> matchOptional = gen.getAutoCodeGeneratorMatches().stream().filter(match ->
+        Optional<Match> matchOptional = gen.getMatches().stream().filter(match ->
                 StringUtils.equals(match.getName(), name)).findFirst();
 
         if (matchOptional.isPresent()) {
