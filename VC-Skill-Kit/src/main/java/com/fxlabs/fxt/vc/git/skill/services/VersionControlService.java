@@ -40,7 +40,7 @@ public interface VersionControlService {
      */
     VCTaskResponse process(Task task, String path);
 
-    String push(String path, String username, String password);
+    String push(String path, String url, String username, String password);
 //    String pushRemove(String path, String username, String password);
 }
 

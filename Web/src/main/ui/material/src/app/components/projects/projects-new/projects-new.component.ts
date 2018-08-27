@@ -74,8 +74,8 @@ export class ProjectsNewComponent implements OnInit {
 
     this.firstFormGroup = this._formBuilder.group({
       nameCtrl: ['', Validators.required],
-      urlCtrl: ['', Validators.required],
-      typeCtrl: ['', Validators.required ]
+      //urlCtrl: ['', Validators.required],
+      //typeCtrl: ['', Validators.required ]
     });
     this.secondFormGroup = this._formBuilder.group({
       openAPISpec: ['', Validators.required]
@@ -149,9 +149,9 @@ export class ProjectsNewComponent implements OnInit {
   save(matStepper) {
     this.matStepper = matStepper;
     if (this.project.id) {
-        this.update();
+      this.update();
     } else {
-        this.create();
+      this.create();
     }
   }
   
@@ -165,6 +165,10 @@ export class ProjectsNewComponent implements OnInit {
         }
         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
         this.project = results['data'];
+        if (!this.project.account) {
+          let p: Project = new Project();
+          this.project.account = p.account;
+        }
         this.matStepper.next();
         this.getAutoCode();
     }, error => {
@@ -183,6 +187,10 @@ export class ProjectsNewComponent implements OnInit {
       }
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saved successfully", "");
       this.project = results['data'];
+      if (!this.project.account) {
+        let p: Project = new Project();
+        this.project.account = p.account;
+      }
       this.matStepper.next();
       this.getAutoCode();
     }, error => {

@@ -21,13 +21,10 @@ import com.fxlabs.fxt.services.util.AutoCodeConfigServiceUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -159,6 +156,10 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         Response<Project> projectResponse = super.save(dto, user);
+
+        if (projectResponse.getData().getAccount() == null) {
+            projectResponse.getData().setAccount(new Account());
+        }
         // set org
 
         // create project_file
@@ -176,7 +177,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public Response<Project> findById(String id, String org) {
         Optional<com.fxlabs.fxt.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(id, org);
-        return new Response(converter.convertToDto(optionalProject.get()));
+        com.fxlabs.fxt.dao.entity.project.Project project = optionalProject.get();
+        return new Response(converter.convertToDto(project));
     }
 
     public Response<Long> countProjects(String org) {
@@ -201,12 +203,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             if (StringUtils.isEmpty(request.getUrl())) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project URL"));
+                //return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project URL"));
             }
 
             // check account
             if (request.getAccount() == null || StringUtils.isEmpty(request.getAccount().getId())) {
-                return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
+                //return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
             }
 
             // check auto-code
@@ -226,9 +228,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // check account access
-            Response<Account> accountResponse = accountService.findById(request.getAccount().getId(), org);
-            if (accountResponse == null || accountResponse.isErrors()) {
-                return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+            if (request.getAccount() != null && !StringUtils.isEmpty(request.getAccount().getId())) {
+                Response<Account> accountResponse = accountService.findById(request.getAccount().getId(), org);
+                if (accountResponse == null || accountResponse.isErrors()) {
+                    return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+                }
+            } else {
+                request.setAccount(null);
             }
 
             Org org_ = orgRepository.findById(org).get();
@@ -257,9 +263,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
 
             // Create GaaS Task
-            if (request.getAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
-                this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()), null);
-            }
+            //if (request.getAccount().getAccountType() != com.fxlabs.fxt.dto.clusters.AccountType.Local) {
+            //this.gaaSTaskRequestProcessor.process(converter.convertToEntity(projectResponse.getData()), null);
+            //}
 
 //            com.fxlabs.fxt.dao.entity.project.Environment environment = new com.fxlabs.fxt.dao.entity.project.Environment();
 //            environment.setProjectId(projectResponse.getData().getId());
@@ -324,12 +330,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         if (StringUtils.isEmpty(request.getUrl())) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project URL"));
+            //return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid project URL"));
         }
 
         // check account
         if (request.getAccount() == null || StringUtils.isEmpty(request.getAccount().getId())) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
+            //return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account"));
         }
 
         // check auto-code
@@ -349,9 +355,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         // check account access
-        Response<Account> accountResponse = accountService.findById(request.getAccount().getId(), org);
-        if (accountResponse == null || accountResponse.isErrors()) {
-            return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+        if (request.getAccount() != null && !StringUtils.isEmpty(request.getAccount().getId())) {
+            Response<Account> accountResponse = accountService.findById(request.getAccount().getId(), org);
+            if (accountResponse == null || accountResponse.isErrors()) {
+                return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+            }
+        } else {
+            request.setAccount(null);
         }
 
         Project project = converter.convertToDto(optionalProject.get());
@@ -477,9 +487,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
 
         // check account access
-        Response<Account> accountResponse = accountService.findById(project.getAccount().getId(), org);
-        if (accountResponse == null || accountResponse.isErrors()) {
-            return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+        if (project.getAccount() != null && !StringUtils.isEmpty(project.getAccount().getId())) {
+            Response<Account> accountResponse = accountService.findById(project.getAccount().getId(), org);
+            if (accountResponse == null || accountResponse.isErrors()) {
+                return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+            }
+        } else {
+            project.setAccount(null);
         }
 
         // Create GaaS Task
@@ -517,10 +531,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
 
         // check account access
-        Response<Account> accountResponse = accountService.findById(project.getAccount().getId(), orgId);
-        if (accountResponse == null || accountResponse.isErrors()) {
-            return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+        if (project.getAccount() != null && !StringUtils.isEmpty(project.getAccount().getId())) {
+            Response<Account> accountResponse = accountService.findById(project.getAccount().getId(), orgId);
+            if (accountResponse == null || accountResponse.isErrors()) {
+                return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+            }
+        } else {
+            project.setAccount(null);
         }
+
         codeConfig.setProject(project);
 
 
@@ -579,15 +598,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     private void updateGenerators(List<AutoCodeGenerator> projGenerator, List<AutoCodeGenerator> defaultGenerators) {
 
-        for (AutoCodeGenerator gen : defaultGenerators){
+        for (AutoCodeGenerator gen : defaultGenerators) {
             boolean found = false;
-            for ( AutoCodeGenerator pGen : projGenerator){
-                if (gen.getType().equals(pGen.getType())){
+            for (AutoCodeGenerator pGen : projGenerator) {
+                if (gen.getType().equals(pGen.getType())) {
                     found = true;
                     break;
                 }
             }
-            if (!found){
+            if (!found) {
                 projGenerator.add(gen);
             }
         }

@@ -45,34 +45,30 @@
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input required [(ngModel)]="project.url" formControlName="urlCtrl" id="repo"
-                                               matInput placeholder="Git Repository URL" autocomplete="off">
+                                        <input [(ngModel)]="project.url" id="repo" [ngModelOptions]="{standalone: true}"
+                                               matInput placeholder="Git Repository URL (Optional)" autocomplete="off">
                                         <mat-error>Required</mat-error>
                                     </mat-input-container>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
                                         <div class="mt-4">
-                                            <p class="callout callout-info">Note: Repository should be new and initialized (empty README file).</p>
-                                            <p>e.g. 'https://github.com/username/MyApp' or 'git@github.com:username/MyApp.git' if using SSH</p>
-                                            <strong>Why Git Repository?</strong><br/>
-                                            <ul>
-                                                <li>All test scripts are treated as code and stored in the Git repository</li>
-                                                <li>FX automatically generates security & functional tests and stores in the Git repository</li>
-                                                <li>This allows easy developers collaboration & version-control for the scripts</li>
-                                            </ul>
+                                            <p class="callout callout-info">Recommended: FX Cloud uses Git repository as single source of truth for test scripts and configuration files.
+                                                Developers can add/edit test scripts from FX Cloud UI or make direct changes in the Git repository using their favorite IDE.
+                                                <br/>Note: Repository should be new and initialized (empty README file).
+                                                <br/>e.g. 'https://github.com/username/MyApp' or 'git@github.com:username/MyApp.git' if using SSH</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row" *ngIf="project.url">
                                 <label class="col-md-0 control-label">
                                 </label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <mat-select placeholder="Git Repository Credentials" required
-                                                    [(ngModel)]="project.account.id" formControlName="typeCtrl">
+                                        <mat-select placeholder="Git Repository Credentials (Optional)" [ngModelOptions]="{standalone: true}"
+                                                    [(ngModel)]="project.account.id">
                                             <mat-option *ngFor="let account of accounts" [value]="account.id">
                                                 {{account.name}} ({{account.accountType}})
                                             </mat-option>
@@ -84,10 +80,10 @@
                                     <div class="callout1 text-muted callout-info1">
                                         <p>
                                             <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials</button>
-                                            <br/>
+                                        </p>
+                                        <p>
                                             A user with read/write access to the test repository. <br/>
-                                            Note: You can create a new 'FX' user with read/write access to the test
-                                            repository.
+                                            Note: You can register and use a new SSH key in the test repository.
                                         </p>
                                     </div>
                                 </div>

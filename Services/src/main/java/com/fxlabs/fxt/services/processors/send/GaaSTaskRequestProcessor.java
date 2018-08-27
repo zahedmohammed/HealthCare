@@ -103,7 +103,7 @@ public class GaaSTaskRequestProcessor {
             task.setVcUrl(project.getUrl());
             task.setVcBranch(project.getBranch());
 
-            if (project.getAccount() != null) {
+            if (project.getAccount() != null && !StringUtils.isEmpty(project.getAccount().getId())) {
                 Optional<Account> accountOptional = accountRepository.findById(project.getAccount().getId());
                 Account account = accountOptional.isPresent() ? accountOptional.get() : null;
                 task.setVcUsername(account.getAccessKey());

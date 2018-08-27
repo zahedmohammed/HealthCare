@@ -74,6 +74,13 @@ public class GitService implements VersionControlService {
 
             response.setPath(path);
 
+            if (StringUtils.isEmpty(task.getVcUrl())) {
+                FileUtils.forceMkdir(new File(path));
+                response.setPath(path);
+                response.setSuccess(true);
+                return response;
+            }
+
             Repository repository = findAndCreateRepository(task, response, path);
 
             if (repository == null) {
@@ -245,10 +252,15 @@ public class GitService implements VersionControlService {
     }
 
     @Override
-    public String push(String path, String username, String password) {
+    public String push(String path, String url, String username, String password) {
 
         File privateKey = null;
         try {
+
+            if (StringUtils.isEmpty(url)) {
+                taskLogger.get().append("No repository configured.").append("\n");
+                return taskLogger.get().toString();
+            }
 
             taskLogger.get().append("Pushing changes").append("\n");
             logger.info("Pushing changes");

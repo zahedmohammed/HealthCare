@@ -104,7 +104,7 @@ public class VCDelegate {
 
                 // 3/4. Push to VC
                 try {
-                    gitPushLogs = versionControlService.push(path, task.getVcUsername(), task.getVcPassword());
+                    gitPushLogs = versionControlService.push(path, task.getVcUrl(), task.getVcUsername(), task.getVcPassword());
                 } catch (Exception e) {
                     logger.warn(e.getLocalizedMessage(), e);
                     gitPushLogs = e.getLocalizedMessage();

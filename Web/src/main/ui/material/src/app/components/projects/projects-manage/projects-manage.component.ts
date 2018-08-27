@@ -27,14 +27,14 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ProjectsManageComponent implements OnInit {
 
-showSpinner: boolean = false;
+  showSpinner: boolean = false;
   id: string;
   project: Project = new Project();
-auth: Auth = new Auth();
+  auth: Auth = new Auth();
   autoCodeConfig: AutoCodeConfig = new AutoCodeConfig();
   job: Job = new Job();
   envs: Env[] = [];
-@Input() data: Observable<any>;
+  @Input() data: Observable<any>;
   env: Env;
   orgs;
   accounts;
@@ -53,12 +53,12 @@ auth: Auth = new Auth();
   scopeTypes= ['read', 'write'];
 
   public AppConfig: any;
-numberOfTicks=0;
-availableAuthtype:String;
+  numberOfTicks=0;
+  availableAuthtype:String;
   constructor(private ref: ChangeDetectorRef,private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
             private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
             public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) {
- console.log('Hello PhotoComponent Component');
+     console.log('Hello PhotoComponent Component');
 
   }
 
@@ -75,10 +75,9 @@ availableAuthtype:String;
     });
 
     this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: ['', Validators.required],
-      urlCtrl: ['', Validators.required],
-      typeCtrl: ['', Validators.required]
+      nameCtrl: ['', Validators.required]
     });
+
     this.secondFormGroup = this._formBuilder.group({
       openAPISpec: ['', Validators.required]
     });
@@ -113,10 +112,13 @@ availableAuthtype:String;
     this.projectService.getById(id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
-
         return;
       }
       this.project = results['data'];
+      if (!this.project.account) {
+        let p: Project = new Project();
+        this.project.account = p.account;
+      }
       // this.context = this.project.name + " > Edit";
     }, error => {
       this.handler.hideLoader();
@@ -143,6 +145,10 @@ availableAuthtype:String;
         }
         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
         this.project = results['data'];
+        if (!this.project.account) {
+          let p: Project = new Project();
+          this.project.account = p.account;
+        }
         this.matStepper.next();
         this.getAutoCode();
     }, error => {
@@ -161,6 +167,10 @@ availableAuthtype:String;
       }
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saved successfully", "");
       this.project = results['data'];
+      if (!this.project.account) {
+        let p: Project = new Project();
+        this.project.account = p.account;
+      }
       this.matStepper.next();
       this.getAutoCode();
     }, error => {
@@ -215,7 +225,7 @@ availableAuthtype:String;
     this.envs.push(this.env);
   }
   addAuth(env) {
-env.auths.push({});
+    env.auths.push({});
   }
 
   getEnvs() {
