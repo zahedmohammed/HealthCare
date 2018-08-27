@@ -121,7 +121,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
         this.accountRepository.save(ca);
 
-        Account caGithub = new Account();
+        /*Account caGithub = new Account();
         caGithub.setOrg(org);
         caGithub.setAccountType(AccountType.GitHub);
         caGithub.setCreatedBy(users.getId());
@@ -161,7 +161,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         notificationEmail.setOrg(org);
         notificationEmail.setName("Dev-Email-Notification");
         notificationEmail.setAccount(caEmailEntity);
-        notificationRepository.save(notificationEmail);
+        notificationRepository.save(notificationEmail);*/
 
 
         return response;
