@@ -1,7 +1,10 @@
 <h2 mat-dialog-title>Wire Logs</h2>
 
 <mat-dialog-content class="mat-typography">
-    <p class="fluid-container" style="white-space: pre;">{{data}}</p>
+    <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
+    <ace-editor class="col-md-12 border editor" [(text)]="data" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
+        [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
+    </ace-editor>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
