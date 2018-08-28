@@ -34,7 +34,12 @@
 
                     </div>
                     <div class="divider divider-solid divider-lg"></div>
-                    <p class="card__desc" style="white-space: pre;">{{item.message}}</p>
+                    <ace-editor class="col-md-12 border editor" [(text)]="item.message" [theme]="'github'" [mode]="'yaml'"
+                                        [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}" [readOnly]="false"
+                                        [autoUpdateContent]="true"
+                                        [durationBeforeCallback]="1000">
+                            </ace-editor>
+                    <!-- <ace-editor class="card__desc" style="white-space: pre;">{{item.message}}</ace-editor>> -->
                 </div>
             </div>
         </div>
