@@ -36,6 +36,9 @@ public class TestSuiteMin implements Serializable {
     private List<String> assertions = new ArrayList<>();
     private List<String> tags = new ArrayList<>();
     private List<String> authors = new ArrayList<>();
+    private List<String> init = new ArrayList<>();
+
+    private List<String> cleanup = new ArrayList<>();
 
     private TestSuiteCategory category;
     private TestSuiteSeverity severity;
