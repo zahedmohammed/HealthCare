@@ -1,29 +1,29 @@
 {
   "/api/*": {
-    "target": "http://13.56.210.25",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug"
   },
   "/api1/*": {
-    "target": "http://13.56.210.25",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/access.html": {
-    "target": "http://13.56.210.25",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/login": {
-    "target": "http://13.56.210.25",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/logout": {
-    "target": "http://13.56.210.25",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
