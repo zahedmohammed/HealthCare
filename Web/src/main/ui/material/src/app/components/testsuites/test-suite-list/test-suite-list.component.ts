@@ -87,6 +87,25 @@ export class TestSuiteListComponent implements OnInit {
 
   search() {
     this.handler.activateLoader();
+    this.category = '';
+    this.testSuiteService.searchTestSuite(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.testsuites = results['data'];
+      this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+
+
+   searchByCategory() {
+    this.handler.activateLoader();
+    this.keyword = '';
     this.testSuiteService.searchTestSuite(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {

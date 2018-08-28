@@ -22,19 +22,20 @@
 <section class="container-fluid with-maxwidth chapter">
     <div class="row">
       <div class="col-md-4">
-        <mat-input-container class="full-width">
-          <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search Test Suite..." (keyup.enter)="search()">
-        </mat-input-container>
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Search by category" [(ngModel)]="category"  (selectionChange)="searchByCategory()" name="category" [ngModelOptions]="{standalone: true}">
+            <mat-option *ngFor="let category of categories" [value]="category">
+              {{category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
       <div class="col-md-4">
-               <mat-form-field class="full-width">
-          <mat-select placeholder="Search by category" [(ngModel)]="category"  (selectionChange)="search()" name="category" [ngModelOptions]="{standalone: true}">
-            <mat-option *ngFor="let category of categories" [value]="category">
-                {{category}}
-            </mat-option>
-        </mat-select>
-        </mat-form-field>
-       </div>
+        <mat-input-container class="full-width">
+          <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..." (keyup.enter)="search()">
+        </mat-input-container>
+      </div>
+
 
   <mat-toolbar class="rounded col-md-4">
     <span style="flex: 1 1 auto;"></span>
