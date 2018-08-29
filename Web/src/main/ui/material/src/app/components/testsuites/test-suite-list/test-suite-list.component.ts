@@ -43,7 +43,8 @@ export class TestSuiteListComponent implements OnInit {
       this.id = params['id'];
       console.log(params);
       this.loadProject(this.id);
-      this.list(this.id);
+      //this.list(this.id);
+      this.searchByCategory();
     });
   }
 
@@ -82,11 +83,14 @@ export class TestSuiteListComponent implements OnInit {
   pageSize = 20;
   change(evt) {
     this.page = evt['pageIndex'];
-    this.list(this.id);
+    this.searchByCategory();
   }
 
   search() {
     this.handler.activateLoader();
+     if (this.keyword == '' && this.category == '') {
+       return this.list(this.id);
+    }
     var category_ = '';
     if (this.category == 'All') {
       category_ = '';
@@ -110,6 +114,9 @@ export class TestSuiteListComponent implements OnInit {
 
    searchByCategory() {
     this.handler.activateLoader();
+     if (this.keyword == '' && this.category == '') {
+       return this.list(this.id);
+    }
     var category_ = '';
     if (this.category == 'All') {
       category_ = '';
