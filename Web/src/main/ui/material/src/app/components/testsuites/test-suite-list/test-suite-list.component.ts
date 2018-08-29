@@ -28,7 +28,7 @@ export class TestSuiteListComponent implements OnInit {
   project: Base = new Base();
   showSpinner: boolean = false;
   keyword: string = '';
-  category: string = '';
+  category: string = 'All';
   suites;
   projectSync: ProjectSync = new ProjectSync();
   //private _clockSubscription: Subscription;
