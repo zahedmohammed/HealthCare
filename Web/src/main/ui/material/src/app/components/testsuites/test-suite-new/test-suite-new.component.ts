@@ -70,13 +70,21 @@ export class TestSuiteNewComponent implements OnInit {
       // type: ''
     });
 
-    this.testSuiteService.getSample().subscribe(results => {
-      //console.log(results);
-      this.text = results;
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
+    if(localStorage.getItem('yamlClone') === null){
+      this.testSuiteService.getSample().subscribe(results => {
+        //console.log(results);
+        this.text = results;
+      }, error => {
+        this.handler.hideLoader();
+        this.handler.error(error);
+      });
+
+    }
+    else{
+      this.text = localStorage.getItem('yamlClone');
+      localStorage.clear();
+    }
+  
   }
   removeItem(i: number) {
     // remove address from the list

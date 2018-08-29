@@ -190,4 +190,10 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
             this.handler.error(error);
         });
         }
+
+        cloneTestSuiteYaml(){
+          localStorage.setItem('yamlClone', this.testSuite.yaml);
+          this.router.navigate(['/app/projects', this.id, 'test-suites','new']);
+
+        }
   }
