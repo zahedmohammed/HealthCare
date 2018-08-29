@@ -33,7 +33,7 @@ export class TestSuiteListComponent implements OnInit {
   projectSync: ProjectSync = new ProjectSync();
   //private _clockSubscription: Subscription;
   selectedCategories:string;
-  categories=['SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+  categories=['All','SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
   constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
 
@@ -87,8 +87,13 @@ export class TestSuiteListComponent implements OnInit {
 
   search() {
     this.handler.activateLoader();
-    this.category = '';
-    this.testSuiteService.searchTestSuite(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
+    var category_ = '';
+    if (this.category == 'All') {
+      category_ = '';
+    } else {
+      category_ = this.category;
+    }
+    this.testSuiteService.searchTestSuite(this.id, category_, this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
@@ -105,8 +110,13 @@ export class TestSuiteListComponent implements OnInit {
 
    searchByCategory() {
     this.handler.activateLoader();
-    this.keyword = '';
-    this.testSuiteService.searchTestSuite(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
+    var category_ = '';
+    if (this.category == 'All') {
+      category_ = '';
+    } else {
+      category_ = this.category;
+    }
+    this.testSuiteService.searchTestSuite(this.id, category_, this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

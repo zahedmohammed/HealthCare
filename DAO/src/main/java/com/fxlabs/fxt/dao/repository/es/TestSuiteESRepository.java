@@ -41,5 +41,7 @@ public interface TestSuiteESRepository extends ElasticsearchRepository<TestSuite
 
     Page<TestSuite> findByProjectIdAndCategory(String projectId, String name,  Pageable pageable);
 
+    Page<TestSuite> findByProjectIdAndCategoryAndNameContainingIgnoreCase(String projectId, String category, String name,  Pageable pageable);
+
     //Page<Suite> findByRunIdAndSuiteNameContainingIgnoreCase(String runId, String keyword, Pageable pageable);
 }
