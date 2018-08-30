@@ -26,6 +26,7 @@ public class RunController {
 
     private RunService runService;
     private TestSuiteResponseService testSuiteResponseService;
+    public static final Sort RUN_LIST_SORT = new Sort(Sort.Direction.DESC, "runId", "modifiedDate");
 
     @Autowired
     public RunController(
@@ -40,7 +41,7 @@ public class RunController {
     public Response<List<Run>> findByJobId(@PathVariable("id") String id,
                                            @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                            @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return runService.findByJobId(id, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return runService.findByJobId(id, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, RUN_LIST_SORT));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
@@ -49,7 +50,7 @@ public class RunController {
                                                                   @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                                   @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return runService.findByRunId(id, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return runService.findByRunId(id, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, RUN_LIST_SORT));
     }
 
     //testSuite
