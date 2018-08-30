@@ -243,7 +243,7 @@ public class VCDelegate {
             logger.info("File path  [{}] for testsuite from control plane", path);
             min.setParent(path);
         } catch (Exception ex){
-
+            logger.warn(ex.getLocalizedMessage());
         }
 
     }

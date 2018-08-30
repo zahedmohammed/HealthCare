@@ -48,6 +48,11 @@ public class NameUtil {
 
 
     public static String extractBaseForTestSuiteFromControlPlane(String path) {
+
+        if (StringUtils.isEmpty(path)) {
+           return "";
+        }
+
         String[] tokens = path.split("\\.");
         StringJoiner joiner = new StringJoiner("/");
         for (String token : tokens) {
