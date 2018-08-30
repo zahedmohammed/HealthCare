@@ -26,7 +26,9 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class VCDelegate {
@@ -95,8 +97,16 @@ public class VCDelegate {
                     try {
                         // 2/4. Auto-Code
                         String openAPISpec = task.getOpenAPISpec();
-                        int count = stubGenerator.generate(path, openAPISpec, null, null);
-                        response.setAutoGenSuitesCount(count);
+                        Map<String, Integer> pathCountMap = stubGenerator.generate(path, openAPISpec, null, null);
+                        if (pathCountMap != null && pathCountMap.size() > 0) {
+                            response.setApiEndpoints(new ArrayList<String>(pathCountMap.keySet()));// TODO: get API Endpoints
+                            int count = 0;
+                            Iterator<String> itr = pathCountMap.keySet().iterator();
+                            while (itr.hasNext()) {
+                                count += pathCountMap.get(itr.next());
+                            }
+                            response.setAutoGenSuitesCount(count);
+                        }
                     } catch (Exception e) {
                         logger.warn(e.getLocalizedMessage(), e);
                         gitPushLogs = e.getLocalizedMessage();

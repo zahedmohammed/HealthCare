@@ -76,6 +76,7 @@ public class GitTaskResponseProcessor {
             if (optionalProject.isPresent()) {
                 Project project = optionalProject.get();
                 project.setAutoGenSuites(task.getAutoGenSuitesCount());
+                project.setApiEndpoints(task.getApiEndpoints());
 
                 projectRepository.save(project);
 
