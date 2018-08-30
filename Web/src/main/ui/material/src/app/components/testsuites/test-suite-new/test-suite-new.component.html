@@ -27,7 +27,20 @@
   </div>
 </div> -->
 <section class="container-fluid with-maxwidth chapter">
-    <br>
+        <mat-toolbar class="rounded">
+                <span style="flex: 1 1 auto;"></span>
+                    <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
+                    <small class="space">Jobs</small>
+                  </a>&nbsp;&nbsp; 
+                  <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
+                    <small>Environments</small>
+                  </a> &nbsp;&nbsp;
+                      <small>Test Suites</small>
+                     &nbsp;&nbsp;
+                    <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
+                      <small>Edit</small>
+                    </a> &nbsp;&nbsp;
+        </mat-toolbar>
     <article class="article">
         <div class="box box-default">
             <div class="box-body">
