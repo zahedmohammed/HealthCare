@@ -186,15 +186,15 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(projectId);
 
-//        ts.setProject(project.get());
-//
-//         TestSuite entity = ((TestSuiteRepository) repository).save(ts);
-//        if (entity != null && entity.getId() != null) {
-//            testSuiteESRepository.save(entity);
-//        }
-//
-//        // project_file
-//        this.projectFileService.saveFromTestSuite(dto, ts.getProject().getId());
+        ts.setProject(project.get());
+
+         TestSuite entity = ((TestSuiteRepository) repository).save(ts);
+        if (entity != null && entity.getId() != null) {
+            testSuiteESRepository.save(entity);
+        }
+
+        // project_file
+        this.projectFileService.saveFromTestSuite(dto, ts.getProject().getId());
 
         // Create GaaS Task
         this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteMin);
@@ -250,20 +250,17 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         if (!project.isPresent()) {
               throw new FxException("Invalid Project");
           }
-//        TestSuite ts = converter.convertToEntity(testSuite_);
-//
-//        if (testSuite.getProject() != null) {
-//            Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(testSuite.getProject().getId());
-//            ts.setProject(project.get());
-//        }
-//
-//       // entity = ((TestSuiteRepository) repository).save(ts);
-//        if (entity != null && entity.getId() != null) {
-//            testSuiteESRepository.save(ts);
-//        }
-//
-//        // project_file
-//        this.projectFileService.saveFromTestSuite(converter.convertToDto(ts), ts.getProject().getId());
+        TestSuite ts = converter.convertToEntity(testSuite_);
+
+        ts.setProject(project.get());
+
+        entity = ((TestSuiteRepository) repository).save(ts);
+        if (entity != null && entity.getId() != null) {
+            testSuiteESRepository.save(ts);
+        }
+
+        // project_file
+        this.projectFileService.saveFromTestSuite(converter.convertToDto(ts), ts.getProject().getId());
 
         this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteMin);
 

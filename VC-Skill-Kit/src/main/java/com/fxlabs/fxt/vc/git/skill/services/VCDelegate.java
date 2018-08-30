@@ -83,9 +83,11 @@ public class VCDelegate {
                 customizedFileDeletion(task, path);
 
                 //set directory path for the test suite from controlplane and commit to git
+                boolean isCreateTestSuiteFromControlPlane = false;
                 if (task.getTestSuiteMin() != null) {
                     setParent(task.getTestSuiteMin());
                     int count = stubGenerator.addTestSuite(path, task.getTestSuiteMin());
+                    isCreateTestSuiteFromControlPlane = true;
                 }
 
                 if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
@@ -117,7 +119,9 @@ public class VCDelegate {
                 CredUtils.errors.set(Boolean.FALSE);
 
                 // 4/4. Push to Control-Plane
-                Project project = service.load(response.getPath(), task.getProjectId());
+                if (!isCreateTestSuiteFromControlPlane) {
+                    Project project = service.load(response.getPath(), task.getProjectId());
+                }
 
                 response.setSuccess(!BooleanUtils.isTrue(CredUtils.errors.get()));
             }
