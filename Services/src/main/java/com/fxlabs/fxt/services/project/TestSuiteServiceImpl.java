@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -235,13 +236,13 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             throw new FxException(String.format("TestSuite [%s] exists.", testSuiteOptional.get().getName()));
         }
 
-        TestSuite entity = null;
-        testSuite_.setId(testSuite.getId());
+        testSuiteConverter.copyTestSuiteSourceDtoToDestDto(testSuite_, testSuite);
+
 
        // testSuiteConverter.copyTextToArray(testSuite);
 
         // type
-        if (testSuite_.getType() == null) {
+        if (testSuite.getType() == null) {
             testSuite_.setType(TestSuiteType.SUITE);
         }
 
@@ -250,13 +251,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         if (!project.isPresent()) {
               throw new FxException("Invalid Project");
           }
-        TestSuite ts = converter.convertToEntity(testSuite_);
+        TestSuite ts = converter.convertToEntity(testSuite);
 
         ts.setProject(project.get());
-
-        entity = ((TestSuiteRepository) repository).save(ts);
+        TestSuite entity = ((TestSuiteRepository) repository).save(ts);
         if (entity != null && entity.getId() != null) {
-            testSuiteESRepository.save(ts);
+            testSuiteESRepository.save(entity);
         }
 
         // project_file
