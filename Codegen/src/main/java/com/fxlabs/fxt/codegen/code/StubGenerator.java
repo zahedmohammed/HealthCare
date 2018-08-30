@@ -335,7 +335,7 @@ public class StubGenerator {
             //System.out.println ("start "  + ts);
             //System.out.println ("Name "  + ts.getName());
 
-            File file = new File(dir + "/test-suites/AutoCode/" + ts.getParent(), ts.getName() + ".yaml");
+            File file = new File(dir + "/test-suites/" + ts.getParent(), ts.getName() + ".yaml");
             //System.out.println (file);
 //            if (file.exists()) {
 //                System.out.println(

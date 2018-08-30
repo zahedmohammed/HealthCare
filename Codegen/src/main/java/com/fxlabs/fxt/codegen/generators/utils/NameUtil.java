@@ -63,6 +63,12 @@ public class NameUtil {
             joiner.add(token.toLowerCase());
         }
 
-        return joiner.toString();
+
+        String package_ = joiner.toString();
+
+        if (StringUtils.isEmpty(package_)) {
+            package_ = "";
+        }
+        return package_;
     }
 }
