@@ -39,14 +39,16 @@ export class AppFooterComponent implements OnInit {
     // });
   }
   ngOnInit() {    
+    $('.chat-content').slideToggle();
+    $("i", this).toggleClass("fa-window-minimize fa-window-maximize");
     this.tasks();
     this.connect();
     //console.log('Searching:', this.project.id);
     this.AppConfig = APPCONFIG;
-    $('.hide-chat-box').click(function(){
+      $('.show-chat-box').click(function(){
       $('.chat-content').slideToggle();
       $("i", this).toggleClass("fa-window-minimize fa-window-maximize");
-  });
+});
 
   this.route.params.subscribe(params => {
     this.id = params['entityId'];
