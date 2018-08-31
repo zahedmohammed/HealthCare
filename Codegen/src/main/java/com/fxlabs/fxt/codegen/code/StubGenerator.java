@@ -7,6 +7,7 @@ import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
 import com.fxlabs.fxt.dto.project.RequestMapping;
 import com.fxlabs.fxt.dto.project.ResourceSample;
+import com.fxlabs.fxt.dto.project.TestSuiteAddToVCRequest;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import io.swagger.models.*;
 import io.swagger.models.auth.AuthorizationValue;
@@ -46,6 +47,7 @@ public class StubGenerator {
     private static final String FX_FILE = "Fxfile.yaml";
     private static final String FX_FILE_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Sample/master/Fxfile.yaml";
     private static final String RESOURCE_SAMPLES_FILE = "ResourceSamples.json";
+    public static final String FILE_CONTENT = "FILE_CONTENT";
 
     /**
      * Checks FXfile.yaml and AutoCodeConfig exists if not creates one.
@@ -239,21 +241,21 @@ public class StubGenerator {
     }
 
 
-    public int addTestSuite(String projectDir, TestSuiteMin testSuiteMin) {
+    public int addTestSuite(String projectDir, List<TestSuiteAddToVCRequest> testSuiteAddToVCRequests) {
 
         try {
 
-            List<TestSuiteMin> testSuites = new ArrayList<>();
-
-            if (testSuiteMin != null) {
-                testSuites.add(testSuiteMin);
-            }
+//            List<TestSuiteMin> testSuites = new ArrayList<>();
+//
+//            if (testSuiteMin != null) {
+//                testSuites.add(testSuiteMin);
+//            }
 
            // writeToResourceSampleFile(resourceSamples, projectDir);
 
-            printTSFromControlPlane(testSuites, projectDir);
+            printTSFromControlPlane(testSuiteAddToVCRequests, projectDir);
 
-            return testSuites.size();
+            return testSuiteAddToVCRequests.size();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -334,16 +336,16 @@ public class StubGenerator {
 
 
 
-    private void printTSFromControlPlane(List<TestSuiteMin> testSuites, String dir) {
+    private void printTSFromControlPlane(List<TestSuiteAddToVCRequest> testSuiteAddToVCRequests, String dir) {
         ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
         yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        testSuites.stream().forEach(ts -> {
+        testSuiteAddToVCRequests.stream().forEach(ts -> {
 
             //System.out.println ("start "  + ts);
             //System.out.println ("Name "  + ts.getName());
 
-            File file = new File(dir + "/test-suites/" + ts.getParent(), ts.getName() + ".yaml");
+            File file = new File(dir + "/test-suites/" + ts.getTestSuiteMin().getParent(), ts.getTestSuiteMin().getName() + ".yaml");
             //System.out.println (file);
 //            if (file.exists()) {
 //                System.out.println(
@@ -361,15 +363,21 @@ public class StubGenerator {
                 System.out.println(
                         AnsiOutput.toString(AnsiColor.WHITE,
                                 String.format("%s [Written]",
-                                        org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 100))
+                                        org.apache.commons.lang3.StringUtils.rightPad(ts.getTestSuiteMin().getName(), 100))
                                 , AnsiColor.DEFAULT)
                 );
 
 
                 FileUtils.touch(file);
 
+                String content = null;
 
-                yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, ts);
+                if (!CollectionUtils.isEmpty(ts.getProps()) && ts.getProps().containsKey(FILE_CONTENT)) {
+                    content = ts.getProps().get(FILE_CONTENT);
+                }
+
+                FileUtils.writeStringToFile(file, content, "UTF-8");
+                //yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, content);
                 //System.out.println ("done");
                 CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Written");
 
@@ -379,8 +387,8 @@ public class StubGenerator {
         });
 
         System.out.println("--");
-        System.out.println("Total suites written : " + testSuites.size());
-        CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Total suites written", "" + testSuites.size());
+        System.out.println("Total suites written : " + testSuiteAddToVCRequests.size());
+        CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, "Total suites written", "" + testSuiteAddToVCRequests.size());
         System.out.println("");
 
     }

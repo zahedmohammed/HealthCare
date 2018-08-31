@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,7 +168,7 @@ public class GaaSTaskRequestProcessor {
     }
 
 
-    public void processAutoCodeconfig(Project project, AutoCodeConfig codeConfig, TestSuiteMin testSuiteMin) {
+    public void processAutoCodeconfig(Project project, AutoCodeConfig codeConfig, List<TestSuiteAddToVCRequest> testSuiteAddToVCRequests) {
         try {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
@@ -198,9 +199,11 @@ public class GaaSTaskRequestProcessor {
             }
 
 
-            if (testSuiteMin != null){
-               task.setTestSuiteMin(testSuiteMin);
+            if (!CollectionUtils.isEmpty(testSuiteAddToVCRequests)) {
+                task.setTestSuiteAddToVCRequests(testSuiteAddToVCRequests);
             }
+
+
             Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
 
             String ownerEmail = usersResponse.getData().getEmail();//projectUsersList.get(0).getUsers().getEmail();

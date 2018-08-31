@@ -49,6 +49,8 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     private TestSuiteMinConverter testSuiteMinConverter;
     private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
 
+    public static final String FILE_CONTENT = "FILE_CONTENT";
+
     @Autowired
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository, ProjectConverter projectConverter,
                                 ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
@@ -201,7 +203,15 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         this.projectFileService.saveFromTestSuite(dto, ts.getProject().getId());
 
         // Create GaaS Task
-        this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteMin);
+        List<TestSuiteAddToVCRequest>  testSuiteAddToVCRequests = new ArrayList<>();
+
+        TestSuiteAddToVCRequest testSuiteAddToVCRequest = new TestSuiteAddToVCRequest();
+        testSuiteAddToVCRequest.setTestSuiteMin(testSuiteMin);
+        testSuiteAddToVCRequest.getProps().put(FILE_CONTENT, yaml);
+
+        testSuiteAddToVCRequests.add(testSuiteAddToVCRequest);
+
+        this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteAddToVCRequests);
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(dto);
 
@@ -237,6 +247,10 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         if (testSuiteOptional.isPresent() && !StringUtils.equals(testSuiteOptional.get().getId(), testSuite.getId())) {
             throw new FxException(String.format("TestSuite [%s] exists.", testSuiteOptional.get().getName()));
+        }
+
+        if (!StringUtils.equals(testSuiteOptional.get().getName(), testSuite_.getName())) {
+            throw new FxException(String.format("TestSuite name cannot be edited."));
         }
 
         testSuiteConverter.copyTestSuiteSourceDtoToDestDto(testSuite_, testSuite);
@@ -275,7 +289,16 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         // project_file
         this.projectFileService.saveFromTestSuite(testSuite, ts.getProject().getId());
 
-        this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteMin);
+
+        List<TestSuiteAddToVCRequest>  testSuiteAddToVCRequests = new ArrayList<>();
+
+        TestSuiteAddToVCRequest testSuiteAddToVCRequest = new TestSuiteAddToVCRequest();
+        testSuiteAddToVCRequest.setTestSuiteMin(testSuiteMin);
+
+        testSuiteAddToVCRequest.getProps().put(FILE_CONTENT, testSuite.getYaml());
+        testSuiteAddToVCRequests.add(testSuiteAddToVCRequest);
+
+        this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteAddToVCRequests);
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(testSuite);
 

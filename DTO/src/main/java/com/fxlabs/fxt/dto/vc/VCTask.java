@@ -29,7 +29,7 @@ public class VCTask implements Serializable {
 
     private AutoCodeConfigMinimal autoCodeConfigMinimal;
 
-    private TestSuiteMin testSuiteMin;
+    private List<TestSuiteAddToVCRequest> testSuiteAddToVCRequests;
 
     private String vcUrl;
     private String vcUsername;

@@ -86,9 +86,9 @@ public class VCDelegate {
 
                 //set directory path for the test suite from controlplane and commit to git
                 boolean isCreateTestSuiteFromControlPlane = false;
-                if (task.getTestSuiteMin() != null) {
-                    setParent(task.getTestSuiteMin());
-                    int count = stubGenerator.addTestSuite(path, task.getTestSuiteMin());
+                if (!CollectionUtils.isEmpty(task.getTestSuiteAddToVCRequests())) {
+                    setParent(task.getTestSuiteAddToVCRequests());
+                    int count = stubGenerator.addTestSuite(path, task.getTestSuiteAddToVCRequests());
                     isCreateTestSuiteFromControlPlane = true;
                 }
 
@@ -242,19 +242,25 @@ public class VCDelegate {
         }
     }
 
-    private void setParent(TestSuiteMin min) {
+    private void setParent(List<TestSuiteAddToVCRequest> suiteAddToVCRequests) {
 
-        if (min == null) {
+        if (CollectionUtils.isEmpty(suiteAddToVCRequests)) {
             return;
         }
+        suiteAddToVCRequests.forEach(testSuiteAddToVCRequest -> {
 
-        try {
-            String path = NameUtil.extractBaseForTestSuiteFromControlPlane(min.getParent());
-            logger.info("File path  [{}] for testsuite from control plane", path);
-            min.setParent(path);
-        } catch (Exception ex){
-            logger.warn(ex.getLocalizedMessage());
-        }
+            if (testSuiteAddToVCRequest == null || testSuiteAddToVCRequest.getTestSuiteMin() == null) {
+                return;
+            }
 
+
+            try {
+                String path = NameUtil.extractBaseForTestSuiteFromControlPlane(testSuiteAddToVCRequest.getTestSuiteMin().getParent());
+                logger.info("File path  [{}] for testsuite from control plane", path);
+                testSuiteAddToVCRequest.getTestSuiteMin().setParent(path);
+            } catch (Exception ex) {
+                logger.warn(ex.getLocalizedMessage());
+            }
+        });
     }
 }
