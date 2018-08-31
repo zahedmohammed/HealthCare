@@ -17,6 +17,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
 import {IssueTrackerRegisterComponent}from'./../../dialogs/issue-tracker-register/issue-tracker-register.component';
 import {SlackRegisterComponent}from'./../../dialogs/slack-register/slack-register.component';
+import { Job } from '../../../models/project-job.model';
 
 @Component({
   selector: 'app-jobs-new',
@@ -29,6 +30,8 @@ export class JobsNewComponent implements OnInit {
   id: string;
   project: Project = new Project();
   job: Jobs = new Jobs();
+
+  clone: Object;
   envs: Env;
   //itAccounts: Account[];
   itAccounts: Array<Account> = [];
@@ -39,7 +42,7 @@ export class JobsNewComponent implements OnInit {
   ];
   categories: string[]=[];
   category: string[];
- 
+  selectedCategories: string[]=[];
 
   regions: string[] = ["FXLabs/US_WEST_1", "FXLabs/US_WEST_2", "FXLabs/US_EAST_1", "FXLabs/US_EAST_2", "FXLabs/EU_WEST_1", "FXLabs/EU_CENTRAL_1", "FXLabs/SA_EAST_1"]
 
@@ -76,6 +79,21 @@ export class JobsNewComponent implements OnInit {
     this.thirdFormGroup = this._formBuilder.group({
     });
 
+    if (localStorage.getItem('jobClone') != null) {
+      var jobClone = localStorage.getItem("jobClone");
+      this.job.name = JSON.parse(jobClone)["name"];
+      this.job.environment = JSON.parse(jobClone)["environment"];
+      this.job.regions = JSON.parse(jobClone)["regions"];
+      this.job.categories = JSON.parse(jobClone)["categories"];
+      if (this.job.categories) {
+        this.category = this.job.categories.split(",")
+          .map(function (item) {
+            return item.trim();
+          });
+      }
+      this.job.cron = JSON.parse(jobClone)["cron"];
+      localStorage.clear();
+    }
     this.crons[0] = new Cron("0 0 12 * * ?", "Fire at 12pm (noon) every day"),
     this.crons[1] = new Cron("0 15 10 * * ?", "Fire at 10:15am every day"),
     this.crons[2] = new Cron("0 15 10 ? * MON-FRI", "Fire at 10:15am every Monday, Tuesday, Wednesday, Thursday and Friday")
@@ -196,4 +214,5 @@ export class JobsNewComponent implements OnInit {
       this.handler.error(error);
     });
   }
+
 }

@@ -118,7 +118,6 @@ export class JobsEditComponent implements OnInit {
             return item.trim();
           });
       }
-      console.log("selectedCategories","---->"+this.selectedCategories);
         this.getITAccountsByAccountType();
 
       this.loadProject();
@@ -242,5 +241,8 @@ export class JobsEditComponent implements OnInit {
 
     }
   }
-
+  cloneJob() {
+    localStorage.setItem('jobClone', JSON.stringify(this.job));
+    this.router.navigate(['/app/projects', this.id, 'jobs', 'new']);
+  }
 }
