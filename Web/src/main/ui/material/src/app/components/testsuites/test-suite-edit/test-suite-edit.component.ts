@@ -196,4 +196,21 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
           this.router.navigate(['/app/projects', this.id, 'test-suites','new']);
 
         }
+
+        deleteSuite() {
+          var r = confirm("Are you sure you want to delete '" + this.testSuite.name + "'?");
+          if (r == true) {
+            this.testSuiteService.delete(this.testSuite.id).subscribe(results => {
+                if (this.handler.handle(results)) {
+                  return;
+                }
+                this.snackbarService.openSnackBar("'TestSuite '" + this.testSuite.name + "' deleted", "");
+                this.router.navigate(['/app/projects', this.id, 'test-suites']);
+              }, error => {
+                this.handler.hideLoader();
+                this.handler.error(error);
+            });
+      
+          }
+        }
   }

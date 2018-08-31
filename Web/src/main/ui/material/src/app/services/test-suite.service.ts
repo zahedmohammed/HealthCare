@@ -52,8 +52,8 @@ constructor(private http: HttpClient) {
     return this.http.put(this.serviceUrl, obj);
   }
 
-  delete(obj: TestSuite) {
-    return this.http.delete(this.serviceUrl + "/" + obj['id']);
+  delete(id) {
+    return this.http.delete(this.serviceUrl + "/" + id);
   }
 
  searchTestSuite(projectId:string, category:string, keyword:string, page, pageSize) {
