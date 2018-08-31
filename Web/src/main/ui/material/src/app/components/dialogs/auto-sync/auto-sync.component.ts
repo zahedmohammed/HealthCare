@@ -18,6 +18,7 @@ import { SnackbarService } from '../../../services/snackbar.service';
 export class AutoSyncComponent implements OnInit {
 
   id; // project id
+  checked = false;
   projectId: string = "";
   showSpinner: boolean = false;
   projectSync: ProjectSync = new ProjectSync();
@@ -38,13 +39,13 @@ export class AutoSyncComponent implements OnInit {
   }
 
   selectAll(select: NgModel, values, array) {
-    select.update.emit(values); 
+    if (this.checked){
+      select.update.emit(values); 
+    }
+    if (!this.checked){
+      select.update.emit([]); 
+    }
   }
-
-  deselectAll(select: NgModel) {
-    select.update.emit([]); 
-  }
-
   synchronization() {
     this.showSpinner = true;
     this.projectSync.projectId = this.project.id;

@@ -17,14 +17,19 @@
             <mat-select class="filter-select" 
             placeholder="Select categories" [(ngModel)]="projectSync.categories"  name="category" [ngModelOptions]="{standalone: true}" multiple
                     #categoriesSelect="ngModel">
-          <br><span> &nbsp; &nbsp;
-              <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(categoriesSelect, categories)">
+          <!-- <br><span> &nbsp; &nbsp;
+               <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(categoriesSelect, categories)">
               Select All
                </button>
               <button mat-raised-button class="mat-accent fill text-sm"  (click)="deselectAll(categoriesSelect)">
               Deselect All
               </button>
-            </span>
+            </span> -->
+            
+          <mat-checkbox [(ngModel)]="checked" [value]="category" (change)="selectAll(categoriesSelect, categories)" class="mat-option border" color="primary"> 
+               Select All
+          </mat-checkbox>
+        
           <mat-option *ngFor="let category of categories" [value]="category"> 
               {{category}} 
           </mat-option>
