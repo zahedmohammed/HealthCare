@@ -1,0 +1,17 @@
+<div fxLayout="row wrap" fxLayoutAlign="center start">
+  <div fxFlex.gt-md="75" fxFlex.gt-sm="90" fxFlex="100">
+    <mat-card class="mat-card-top">
+      <mat-tab-group (selectChange)="onSelectChange($event)">
+         <mat-tab>
+           <ng-template matTabLabel>Info Window</ng-template>
+          <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false" #map>
+            
+            <agm-marker [latitude]="lat" [longitude]="lng">
+              <agm-info-window>InfoWindow content</agm-info-window>
+            </agm-marker>
+          </agm-map>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>
