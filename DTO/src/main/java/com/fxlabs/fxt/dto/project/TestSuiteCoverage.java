@@ -24,7 +24,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TestSuiteCoverage implements Serializable {
 
-    private ProjectMinimalDto project;
+//    private ProjectMinimalDto project;
 
     private Long totalEndpoints;
     private Long totalSuites;

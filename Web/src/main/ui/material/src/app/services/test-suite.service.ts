@@ -69,4 +69,9 @@ constructor(private http: HttpClient) {
     return this.http.get(this.testSuiteSample, { responseType: 'text' });
   }
 
+  getApiCoverage(projectId: string) {
+    return this.http.get(this.serviceUrl+"/project-id/"+projectId+"/coverage");
+  }
+
+
 }
