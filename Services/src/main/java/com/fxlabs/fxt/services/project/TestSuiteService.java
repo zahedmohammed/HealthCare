@@ -32,4 +32,6 @@ public interface TestSuiteService extends GenericService<TestSuite, String> {
     Response<List<TestSuite>> search(String runId, String category, String keyword, String org, String user, Pageable pageable);
 
     Response<TestSuiteCoverage> getCoverageByProjectId(String id, String user);
+
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> delete(String id, String user);
 }

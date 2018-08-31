@@ -342,6 +342,41 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         });
     }
 
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> delete(String id, String user) {
+
+        if (StringUtils.isEmpty(user) || StringUtils.isEmpty(id)) {
+            throw new FxException("Invalid request for file's synchronization");
+        }
+
+
+            try {
+                Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findById(id);
+
+                TestSuite entity = null;
+                if (testSuiteOptional.isPresent()) {
+                    entity = testSuiteOptional.get();
+                }
+                logger.info("Deleting file [{}] from ProjectId [{}]", testSuiteOptional.get().getName(), testSuiteOptional.get().getProject().getId());
+                if (entity != null) {
+                    repository.delete(entity);
+                    testSuiteESRepository.delete(entity);
+                    Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileResponse = this.projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(testSuiteOptional.get().getProject().getId(), testSuiteOptional.get().getName() + ".yaml");
+
+                    if (projectFileResponse.isPresent()) {
+                        this.projectFileService.delete(projectFileResponse.get().getId(), projectFileResponse.get().getCreatedBy());
+                        projectFileESRepository.delete(projectFileResponse.get());
+                    }
+
+                }
+            }catch (Exception e){
+                logger.warn(e.getLocalizedMessage());
+            }
+
+        return new Response<>();
+    }
+
     @Override
     public Response<List<com.fxlabs.fxt.dto.project.TestSuite>> search(String projectId, String category, String keyword, String org, String user, Pageable pageable) {
         // TODO check org is entitled to runId
