@@ -15,6 +15,8 @@ import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -177,7 +180,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             dto.setType(TestSuiteType.SUITE);
         }
 
-
+        String   checksum = DigestUtils.md5Hex(yaml);
+        dto.setProps(new HashMap<>());
+        dto.getProps().put(Project.FILE_CONTENT, yaml);
+        dto.getProps().put(Project.FILE_NAME, dto.getName() + ".yaml");
+        dto.getProps().put(Project.MD5_HEX, checksum);
+        dto.getProps().put(Project.MODIFIED_DATE, String.valueOf(new Date().getTime()));
         TestSuite ts = converter.convertToEntity(dto);
 
         Optional<com.fxlabs.fxt.dao.entity.project.Project> project = projectRepository.findById(projectId);
@@ -246,16 +254,26 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         if (!project.isPresent()) {
               throw new FxException("Invalid Project");
           }
+
+        String   checksum = DigestUtils.md5Hex(testSuite.getYaml());
+        testSuite.setProps(new HashMap<>());
+        testSuite.getProps().put(Project.FILE_CONTENT, testSuite.getYaml());
+        testSuite.getProps().put(Project.FILE_NAME, testSuite.getName() + ".yaml");
+        testSuite.getProps().put(Project.MD5_HEX, checksum);
+        testSuite.getProps().put(Project.MODIFIED_DATE, String.valueOf(new Date().getTime()));
+
         TestSuite ts = converter.convertToEntity(testSuite);
 
         ts.setProject(project.get());
+
+
         TestSuite entity = ((TestSuiteRepository) repository).save(ts);
         if (entity != null && entity.getId() != null) {
             testSuiteESRepository.save(entity);
         }
 
         // project_file
-        this.projectFileService.saveFromTestSuite(converter.convertToDto(ts), ts.getProject().getId());
+        this.projectFileService.saveFromTestSuite(testSuite, ts.getProject().getId());
 
         this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteMin);
 
@@ -274,10 +292,16 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
         com.fxlabs.fxt.dto.project.TestSuite dto = converter.convertToDto(testSuiteOptional.get());
         testSuiteConverter.copyArraysToText(dto);
-        //
-        String yaml = testSuiteMinConverter.copyTestSuiteToYaml(testSuiteMinConverter.convertToEntity(dto));
 
-        dto.setYaml(yaml);
+        Response<ProjectFile> projectFileResponse = this.projectFileService.findByProjectIdAndFilename(testSuiteOptional.get().getProject().getId(), testSuiteOptional.get().getName() + ".yaml");
+        //
+
+        if (!projectFileResponse.isErrors() && projectFileResponse.getData() == null) {
+            throw new FxException("Invalid request for test-suite");
+        }
+       // String yaml = testSuiteMinConverter.copyTestSuiteToYaml(testSuiteMinConverter.convertToEntity(dto));
+
+        dto.setYaml(projectFileResponse.getData().getContent());
 
         return new Response<>(dto);
     }

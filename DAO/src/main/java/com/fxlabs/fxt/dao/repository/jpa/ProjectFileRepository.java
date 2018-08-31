@@ -14,6 +14,6 @@ public interface ProjectFileRepository extends JpaRepository<ProjectFile, String
 
     List<ProjectFile> findByProjectId(String projectId);
 
-    Optional<ProjectFile> findByProjectIdAndFilename(String projectId, String fileName);
+    Optional<ProjectFile> findByProjectIdAndFilenameIgnoreCase(String projectId, String fileName);
 
 }
