@@ -7,12 +7,34 @@
     <p>2. AutoCode never overrides an existing test-suite file it only creates new files.</p>
     <p>3. Sync's new or updated files from the Git repository.</p>
 
-    <mat-checkbox [(ngModel)]="projectSync.deleteAll" align="end" color="warn">4. Delete All & Re-Generate <span
+    <mat-checkbox [(ngModel)]="projectSync.deleteAll" align="end" color="warn">4. Delete & Re-Generate <span
             class="text-muted">(Optional)</span>
     </mat-checkbox>
-    <div class="callout callout-danger" *ngIf="projectSync.deleteAll">
+
+    <p *ngIf="projectSync.deleteAll">  
+            &nbsp; &nbsp;&nbsp;&nbsp;
+      <mat-form-field class="mat-typography">
+            <mat-select class="filter-select" 
+            placeholder="Select categories" [(ngModel)]="projectSync.categories"  name="category" [ngModelOptions]="{standalone: true}" multiple
+                    #categoriesSelect="ngModel">
+          <br><span> &nbsp; &nbsp;
+              <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(categoriesSelect, categories)">
+              Select All
+               </button>
+              <button mat-raised-button class="mat-accent fill text-sm"  (click)="deselectAll(categoriesSelect)">
+              Deselect All
+              </button>
+            </span>
+          <mat-option *ngFor="let category of categories" [value]="category"> 
+              {{category}} 
+          </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+    </p>
+     <div class="callout callout-danger" *ngIf="projectSync.deleteAll">
         <span class="text-muted"> &nbsp; &nbsp; Select this option if you made changes to the AutoCode's configuration and would like the generate new test suites.</span>
-        <br><span class="text-muted"> &nbsp; &nbsp; Note: All previously auto-generated test-suite files will be deleted.</span>
+        <br><span class="text-muted"> &nbsp; &nbsp; Note: Previously auto-generated test-suites of selected categories files will be deleted.</span>
         <br><span class="text-muted"> &nbsp; &nbsp; Note: AutoCode will re-generate new test-suite files based on the AutoCode's configuration settings.</span>
         <br><span class="text-muted"> &nbsp; &nbsp; Note: Files which are not created by AutoCode features are not deleted.</span>
 

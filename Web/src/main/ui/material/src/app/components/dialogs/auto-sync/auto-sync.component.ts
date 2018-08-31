@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
+import { NgModel } from '@angular/forms';
 import { TestSuiteService } from '../../../services/test-suite.service';
 import { RunService } from '../../../services/run.service';
 import { ProjectService } from '../../../services/project.service';
@@ -21,6 +22,8 @@ export class AutoSyncComponent implements OnInit {
   showSpinner: boolean = false;
   projectSync: ProjectSync = new ProjectSync();
   project;
+  categories=['SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+
 
   constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -33,6 +36,15 @@ export class AutoSyncComponent implements OnInit {
       this.id = params['id'];
     });
   }
+
+  selectAll(select: NgModel, values, array) {
+    select.update.emit(values); 
+  }
+
+  deselectAll(select: NgModel) {
+    select.update.emit([]); 
+  }
+
   synchronization() {
     this.showSpinner = true;
     this.projectSync.projectId = this.project.id;
