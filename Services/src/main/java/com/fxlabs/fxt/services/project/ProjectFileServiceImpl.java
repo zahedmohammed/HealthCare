@@ -130,7 +130,7 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
 
     public Response<ProjectFile> findByProjectIdAndFilename(String projectId, String fileName){
 
-        Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileOptional = projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(projectId, fileName);
+        Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileOptional = projectFileRepository.findByProjectIdAndFilenameIgnoreCase(projectId, fileName);
         com.fxlabs.fxt.dao.entity.project.ProjectFile projectFile = null;
         if (projectFileOptional.isPresent()) {
             projectFile = projectFileOptional.get();

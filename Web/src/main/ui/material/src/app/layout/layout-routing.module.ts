@@ -94,6 +94,7 @@ import { EnvironmentEditComponent } from '../components/environments/environment
 import { TestSuiteListComponent } from '../components/testsuites/test-suite-list/test-suite-list.component';
 import { TestSuiteNewComponent } from '../components/testsuites/test-suite-new/test-suite-new.component';
 import { TestSuiteEditComponent } from '../components/testsuites/test-suite-edit/test-suite-edit.component';
+import { ApiCoverageComponent } from '../components/coverage/api-coverage/api-coverage.component';
 
 import { AppFooterComponent } from './footer/footer.component';
 
@@ -118,6 +119,7 @@ const routes: Routes = [
       { path: 'projects/:id/test-suites/new', component: TestSuiteNewComponent },
       { path: 'projects/:id/test-suites/:testSuiteId/edit', component: TestSuiteEditComponent },
       { path: 'projects/:entityId/test-suites', component: AppFooterComponent },
+        { path: 'projects/:id/api-coverage', component: ApiCoverageComponent },
 
       { path: 'projects/:id/jobs', component: JobslistComponent },
       { path: 'projects/:id/jobs/new', component: JobsNewComponent },

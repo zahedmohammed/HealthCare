@@ -165,4 +165,22 @@ public abstract class TestSuiteConverter implements BaseConverter<TestSuite, com
 //        String yamlFormat = yaml.dump(sourceDest);
         sourceDest.setYaml(yamlFormat);
     }
+
+    public void copyTestSuiteSourceDtoToDestDto(com.fxlabs.fxt.dto.project.TestSuite source, com.fxlabs.fxt.dto.project.TestSuite dest){
+        dest.setAssertions(source.getAssertions());
+        dest.setInit(source.getInit());
+        dest.setAuthors(source.getAuthors());
+        dest.setTestCases(source.getTestCases());
+        dest.setCleanup(source.getCleanup());
+        dest.setCategory(source.getCategory());
+        dest.setType(source.getType());
+        dest.setEndpoint(source.getEndpoint());
+        dest.setAuth(source.getAuth());
+        dest.setDescription(source.getDescription());
+        dest.setHeaders(source.getHeaders());
+        dest.setSeverity(source.getSeverity());
+        dest.setMethod(source.getMethod());
+        dest.setTags(source.getTags());
+        dest.setPolicies(source.getPolicies());
+    }
 }

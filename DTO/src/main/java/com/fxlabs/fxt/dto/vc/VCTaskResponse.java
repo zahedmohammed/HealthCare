@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +27,8 @@ public class VCTaskResponse implements Serializable {
     private String vcLastCommit;
 
     private int autoGenSuitesCount;
+
+    private List<String> apiEndpoints;
 
     private String taskId;
 

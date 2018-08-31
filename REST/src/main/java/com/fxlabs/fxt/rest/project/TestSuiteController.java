@@ -3,6 +3,7 @@ package com.fxlabs.fxt.rest.project;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
 import com.fxlabs.fxt.dto.project.TestSuite;
+import com.fxlabs.fxt.dto.project.TestSuiteCoverage;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.TestSuiteService;
@@ -104,8 +105,13 @@ public class TestSuiteController {
                                         @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                         @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return service.search(id, category, keyword, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize));
+        return service.search(id, category, keyword, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/project-id/{id}/coverage", method = RequestMethod.GET)
+    public Response<TestSuiteCoverage> findCoverageByProjectId(@PathVariable("id") String id) {
+        return service.getCoverageByProjectId(id,SecurityUtil.getCurrentAuditor());
+    }
 
 }

@@ -26,9 +26,7 @@ import org.springframework.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class StubGenerator {
@@ -95,8 +93,9 @@ public class StubGenerator {
     }
 
 
-    public int generate(String projectDir, String openAPISpec, String headerKey, String headerVal) {
+    public Map<String, Integer> generate(String projectDir, String openAPISpec, String headerKey, String headerVal) {
 
+        Map<String, Integer> pathTSCount = new HashMap<>();
         try {
 
             Swagger swagger = build(projectDir, openAPISpec, headerKey, headerVal);
@@ -196,7 +195,16 @@ public class StubGenerator {
                     Operation op = path.getOperationMap().get(m);
 
                     //System.out.println (p   " "   op.getOperationId());
-                    testSuites.addAll(this.stubHandler.handle(p, m, op));
+
+
+                    List<TestSuiteMin> tsList = this.stubHandler.handle(p, m, op);
+                    int count = 0;
+                    if (tsList != null){
+                        count = tsList.size();
+                    }
+                    pathTSCount.put(p,tsList.size());
+
+                    testSuites.addAll(tsList);
                     /*System.out.println (op.getOperationId());
                     System.out.println (op.getConsumes());
                     System.out.println (op.getProduces());
@@ -221,13 +229,13 @@ public class StubGenerator {
 
             printTS(testSuites, projectDir);
 
-            return testSuites.size();
+            return pathTSCount;
 
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getLocalizedMessage());
         }
-        return 0;
+        return pathTSCount;
     }
 
 
@@ -335,7 +343,7 @@ public class StubGenerator {
             //System.out.println ("start "  + ts);
             //System.out.println ("Name "  + ts.getName());
 
-            File file = new File(dir + "/test-suites/AutoCode/" + ts.getParent(), ts.getName() + ".yaml");
+            File file = new File(dir + "/test-suites/" + ts.getParent(), ts.getName() + ".yaml");
             //System.out.println (file);
 //            if (file.exists()) {
 //                System.out.println(

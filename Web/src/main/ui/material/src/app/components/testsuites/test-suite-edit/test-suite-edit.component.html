@@ -25,8 +25,25 @@
   </div>
 </div> -->
 <section class="container-fluid with-maxwidth chapter">
+        <mat-toolbar class="rounded">
+                <span style="flex: 1 1 auto;"></span>
+                    <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
+                    <small class="space">Jobs</small>
+                  </a>&nbsp;&nbsp; 
+                  <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
+                    <small>Environments</small>
+                  </a> &nbsp;&nbsp;
+                      <small>Test Suites</small>
+                     &nbsp;&nbsp;
+                <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
+                    <small>Coverage</small>
+                </a> &nbsp;&nbsp;
 
-    <br/>
+            <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
+                      <small>Edit</small>
+                    </a> &nbsp;&nbsp;
+        </mat-toolbar>
+        
     <article class="article">
         <div class="row">
             <div class="col-md-12">&nbsp;</div>
@@ -295,7 +312,9 @@
                                 <button mat-raised-button color="primary" class="nav-btn" (click)="saveTestSuite();">
                                     Save
                                 </button>
-                                <button mat-button type="button" color="primary" class="btn-w-md"
+                                <!-- <button mat-button color="warn" class="nav-btn" (click)="deleteSuite();">Delete                               
+                                 </button> -->
+                                <button mat-button type="button" color="primary" class="nav-btn"
                                         [routerLink]="['/app/projects', id, 'test-suites']">Cancel
                                 </button>
                             </mat-card-actions>
