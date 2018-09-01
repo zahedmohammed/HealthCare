@@ -1,6 +1,6 @@
 <section class="app-header">
-  <div class="app-header-inner"
-     [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
+    <div class="app-header-inner"
+         [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-dark': AppConfig.colorOption === '31',
                  'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,
@@ -8,96 +8,91 @@
                  'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}">
 
-    <div class="d-lg-none d-xl-none float-left">
-      <button mat-button myToggleOffcanvasNav class="md-button header-icon toggle-sidebar-btn">
-        <i class="material-icons">menu</i>
-      </button>
-    </div>
-
-
-    <div class="brand d-none d-lg-inline-block d-xl-inline-block">
-      <!--<h2><a [routerLink]="['/']">{{AppConfig.productName}}</a></h2>-->
-      <img src="/fx-white-100x100.png" class="logo" height="65" [routerLink]="['/']"/>
-    </div>
-
-    <div class="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
-        <ul class="list-unstyled list-inline list-inline-item">
-        <li>
-            <a mat-button class="md-button header-btn" [routerLink]="['/app/projects']"><i class="nav-icon material-icons">home</i><span class="nav-text"></span></a>
-           </li>
-           </ul>
-      <!-- <ul class="list-unstyled list-inline"> -->
-        <!--<li class="list-inline-item"><button mat-button class="md-button header-btn" myOpenSearchOverlay><i class="material-icons">search</i></button></li>-->
-        <!-- <li class="list-inline-item" [routerLink]="['/app/messages']">
-          <button mat-button class="md-button header-btn" >
-            <i class="material-icons" >notifications_none</i> -->
-            <!--<span class="badge">3</span>-->
-          <!-- </button> -->
-          <!--<mat-menu #appNotification="matMenu" x-position="after" y-position="below" overlapTrigger="false">
-            <mat-list dense>
-              <mat-list-item>
-                <mat-icon mat-list-avatar>mail_outline</mat-icon>
-                <h4 mat-line>New mail from David</h4>
-                <p mat-line class="text-muted">5 minutes ago</p>
-              </mat-list-item>
-              <mat-list-item>
-                <mat-icon mat-list-avatar>chat_bubble_outline</mat-icon>
-                <h4 mat-line>Message from Jane</h4>
-                <p mat-line class="text-muted">15 minutes ago</p>
-              </mat-list-item>
-              <mat-list-item>
-                <mat-icon mat-list-avatar>person_outline</mat-icon>
-                <h4 mat-line>New member John joined</h4>
-                <p mat-line class="text-muted">1 hour ago</p>
-              </mat-list-item>
-            </mat-list>
-          </mat-menu>-->
-        <!-- </li>
-      </ul> -->
-    </div>
-
-   <div class="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
-      <ul class="list-unstyled list-inline list-inline-item">
-      <li>
-          <button mat-button class="md-button header-btn" [routerLink]="['/app/dashboard']"><span >Dashboard</span><span class="nav-text"></span></button>
-         </li>
-         </ul>
-    </div>     
-
-       
-
-
-    <!-- <div class="top-nav-right">
-      <ul class="list-unstyled float-right">
-        <li>
-          <button mat-button class="md-button header-btn" >
-            <i class="material-icons">
-              person_outline
-            </i>
-            <span>{{entry.users.name}} ({{entry.org.name}})</span>
+        <!--<div class="d-lg-none d-xl-none float-left">
+          <button mat-button myToggleOffcanvasNav class="md-button header-icon toggle-sidebar-btn">
+            <i class="material-icons">menu</i>
           </button>
-        </li> -->
+        </div>-->
+
+
+        <div class="brand d-none d-lg-inline-block d-xl-inline-block">
+            <!--<h2><a [routerLink]="['/']">{{AppConfig.productName}}</a></h2>-->
+            <img src="/fx-white-100x100.png" class="logo" height="65" [routerLink]="['/']"/>
+        </div>
+
+        <div class="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
+            <ul class="list-unstyled list-inline list-inline-item">
+                <li>
+                    <button mat-button class="md-button header-btn" [routerLink]="['/app/projects']">
+                        <span>Projects</span><span class="nav-text"></span></button>
+                </li>
+            </ul>
+            <!-- <ul class="list-unstyled list-inline"> -->
+            <!--<li class="list-inline-item"><button mat-button class="md-button header-btn" myOpenSearchOverlay><i class="material-icons">search</i></button></li>-->
+            <!-- <li class="list-inline-item" [routerLink]="['/app/messages']">
+              <button mat-button class="md-button header-btn" >
+                <i class="material-icons" >notifications_none</i> -->
+            <!--<span class="badge">3</span>-->
+            <!-- </button> -->
+            <!--<mat-menu #appNotification="matMenu" x-position="after" y-position="below" overlapTrigger="false">
+              <mat-list dense>
+                <mat-list-item>
+                  <mat-icon mat-list-avatar>mail_outline</mat-icon>
+                  <h4 mat-line>New mail from David</h4>
+                  <p mat-line class="text-muted">5 minutes ago</p>
+                </mat-list-item>
+                <mat-list-item>
+                  <mat-icon mat-list-avatar>chat_bubble_outline</mat-icon>
+                  <h4 mat-line>Message from Jane</h4>
+                  <p mat-line class="text-muted">15 minutes ago</p>
+                </mat-list-item>
+                <mat-list-item>
+                  <mat-icon mat-list-avatar>person_outline</mat-icon>
+                  <h4 mat-line>New member John joined</h4>
+                  <p mat-line class="text-muted">1 hour ago</p>
+                </mat-list-item>
+              </mat-list>
+            </mat-menu>-->
+            <!-- </li>
+          </ul> -->
+        </div>
+
+        <div class="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
+            <ul class="list-unstyled list-inline list-inline-item">
+                <li>
+                    <button mat-button class="md-button header-btn" [routerLink]="['/app/dashboard']">
+                        <span>Dashboard</span><span class="nav-text"></span></button>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- <div class="top-nav-right">
+          <ul class="list-unstyled float-right">
+            <li>
+              <button mat-button class="md-button header-btn" >
+                <i class="material-icons">
+                  person_outline
+                </i>
+                <span>{{entry.users.name}} ({{entry.org.name}})</span>
+              </button>
+            </li> -->
         <!--<li><button mat-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay><i class="material-icons">search</i></button></li>
         <li><button mat-button class="md-button header-btn"><i class="material-icons">more_vert</i></button></li>-->
-      <!-- </ul>
-    </div> -->
-    
-    <div class="top-nav-right">
-        <ul class="list-unstyled float-right">
-            
-              <!-- <li class="list-inline-item">
-              <button mat-button class="md-button header-btn" [matMenuTriggerFor]="appNotification">
-                <i class="material-icons">notifications_none</i>
-                <span class="badge" style="background: red">13</span>
-              </button>
-              <mat-menu #appNotification="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
-                  <mat-list dense>
-                    <mat-list-item>
-                      <mat-icon mat-list-avatar>mail_outline</mat-icon>
-                      <h4 mat-line>FX Labs Demo Job Created</h4>
-                      <p mat-line class="text-muted">5 minutes ago</p>
-                    </mat-list-item>                    
-                    <mat-list-item>
+        <!-- </ul>
+      </div> -->
+
+        <div class="top-nav-right">
+            <ul class="list-unstyled float-right">
+
+                <!-- <li class="list-inline-item">
+                <button mat-button class="md-button header-btn" [matMenuTriggerFor]="appNotification">
+                  <i class="material-icons">notifications_none</i>
+                  <span class="badge" style="background: red">13</span>
+                </button>
+                <mat-menu #appNotification="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
+                    <mat-list dense>
+                      <mat-list-item>
                         <mat-icon mat-list-avatar>mail_outline</mat-icon>
                         <h4 mat-line>FX Labs Demo Job Created</h4>
                         <p mat-line class="text-muted">5 minutes ago</p>
@@ -106,50 +101,71 @@
                           <mat-icon mat-list-avatar>mail_outline</mat-icon>
                           <h4 mat-line>FX Labs Demo Job Created</h4>
                           <p mat-line class="text-muted">5 minutes ago</p>
-                        </mat-list-item>                    
+                        </mat-list-item>
                         <mat-list-item>
                             <mat-icon mat-list-avatar>mail_outline</mat-icon>
                             <h4 mat-line>FX Labs Demo Job Created</h4>
                             <p mat-line class="text-muted">5 minutes ago</p>
                           </mat-list-item>
-                  </mat-list>
-                </mat-menu>
-              </li> -->
-              
-          <li>
-            <button mat-button [matMenuTriggerFor]="menu" class="md-button header-btn">
-              <mat-icon>
-                person_outline
-              </mat-icon>
-              <span>{{entry.users.name}} ({{entry.org.name}})</span>
-            </button>
-          </li> 
-          <li><button mat-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay><mat-icon>search</mat-icon></button></li>
-          
-      </ul>
-      </div>
+                          <mat-list-item>
+                              <mat-icon mat-list-avatar>mail_outline</mat-icon>
+                              <h4 mat-line>FX Labs Demo Job Created</h4>
+                              <p mat-line class="text-muted">5 minutes ago</p>
+                            </mat-list-item>
+                    </mat-list>
+                  </mat-menu>
+                </li> -->
 
+                <li>
+                    <button mat-button [matMenuTriggerFor]="menu" class="md-button header-btn">
+                        <mat-icon>
+                            person_outline
+                        </mat-icon>
+                        <span>{{entry.users.name}} ({{entry.org.name}})</span>
+                    </button>
+                </li>
+                <!--<li>
+                    <button mat-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay>
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </li>-->
 
-    
-<mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-    <ul class="list-unstyled float-right">
-        <li>
-      <button mat-menu-item [routerLink]="['/app/accounts']" ><mat-icon>vpn_key</mat-icon><span>Credentials</span></button>
-      <button mat-menu-item [routerLink]="['/app/vault']"><mat-icon>security</mat-icon><span>Vault</span></button>
-      <button mat-menu-item [routerLink]="['/app/messages']"><mat-icon>notifications_none</mat-icon><span>Activities</span></button>
-       <button mat-menu-item [routerLink]="['/app/regions']"><mat-icon>cloud_queue</mat-icon><span>Test Bots</span></button>
-      <button mat-menu-item [routerLink]="['/app/marketplace']"><mat-icon>shopping_cart</mat-icon><span>Marketplace</span></button>
-      <button mat-menu-item [routerLink]="['/app/orgs']"><mat-icon>domain</mat-icon><span>Orgs</span></button>
+            </ul>
+        </div>
 
-      <!-- <button mat-menu-item href="/logout"><i class="material-icons">power_settings_new</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Sign out</span></button> -->
-      <a href="/logout" mat-menu-item><mat-icon>power_settings_new</mat-icon><span>Sign out</span></a>
-  </li>
-  <!-- <li><a mat-button [routerLink]="['/app/vault']"><i class="nav-icon material-icons">security</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Vault</span></a></li>
-  <li><a mat-button [routerLink]="['/app/regions']"><i class="nav-icon material-icons">cloud_queue</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Test Bots</span></a></li>
-  <li><a mat-button [routerLink]="['/app/marketplace']"><i class="nav-icon material-icons">shopping_cart</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Marketplace</span></a></li> -->
-  </ul>
+        <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+            <ul class="list-unstyled float-right">
+                <li>
+                    <button mat-menu-item [routerLink]="['/app/accounts']">
+                        <mat-icon>vpn_key</mat-icon>
+                        <span>Credentials</span></button>
+                    <button mat-menu-item [routerLink]="['/app/vault']">
+                        <mat-icon>security</mat-icon>
+                        <span>Vault</span></button>
+                    <button mat-menu-item [routerLink]="['/app/messages']">
+                        <mat-icon>notifications_none</mat-icon>
+                        <span>Activities</span></button>
+                    <button mat-menu-item [routerLink]="['/app/regions']">
+                        <mat-icon>cloud_queue</mat-icon>
+                        <span>Test Bots</span></button>
+                    <button mat-menu-item [routerLink]="['/app/marketplace']">
+                        <mat-icon>shopping_cart</mat-icon>
+                        <span>Marketplace</span></button>
+                    <button mat-menu-item [routerLink]="['/app/orgs']">
+                        <mat-icon>domain</mat-icon>
+                        <span>Orgs</span></button>
 
-</mat-menu>
+                    <!-- <button mat-menu-item href="/logout"><i class="material-icons">power_settings_new</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Sign out</span></button> -->
+                    <a href="/logout" mat-menu-item>
+                        <mat-icon>power_settings_new</mat-icon>
+                        <span>Sign out</span></a>
+                </li>
+                <!-- <li><a mat-button [routerLink]="['/app/vault']"><i class="nav-icon material-icons">security</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Vault</span></a></li>
+                <li><a mat-button [routerLink]="['/app/regions']"><i class="nav-icon material-icons">cloud_queue</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Test Bots</span></a></li>
+                <li><a mat-button [routerLink]="['/app/marketplace']"><i class="nav-icon material-icons">shopping_cart</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Marketplace</span></a></li> -->
+            </ul>
 
-  </div>
+        </mat-menu>
+
+    </div>
 </section>
