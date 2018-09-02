@@ -552,30 +552,36 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         List<TestSuiteCount> countByMethod = repository.countByMethodTypeAndAutoGen(id,true);
         for(TestSuiteCount c : countByMethod){
-            if ( coverage.getCountByMethod().get(c.getParent()) == null ){
-                Map<String, Long> methodsCount = new HashMap<>();
-                coverage.getCountByMethod().put(c.getParent(),methodsCount);
-            }
-            coverage.getCountByMethod().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+//            if ( coverage.getCountByMethod().get(c.getParent()) == null ){
+//                Map<String, Long> methodsCount = new HashMap<>();
+//                coverage.getCountByMethod().put(c.getParent(),methodsCount);
+//            }
+//            coverage.getCountByMethod().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+
+//            com.fxlabs.fxt.dto.project.TestSuiteCount methodCount  = new com.fxlabs.fxt.dto.project.TestSuiteCount()
+            coverage.getCountByMethod().add(new com.fxlabs.fxt.dto.project.TestSuiteCount(c.getGroupBy().toString(),c.getCount()));
         }
 
         List<TestSuiteCount> countByCategory = repository.countByCategoryAndAutoGen(id,true);
         for(TestSuiteCount c : countByCategory){
-            if ( coverage.getCountByCategory().get(c.getParent()) == null ){
-                Map<String, Long> categoryCount = new HashMap<>();
-                coverage.getCountByCategory().put(c.getParent(),categoryCount);
-            }
-            coverage.getCountByCategory().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+//            if ( coverage.getCountByCategory().get(c.getParent()) == null ){
+//                Map<String, Long> categoryCount = new HashMap<>();
+//                coverage.getCountByCategory().put(c.getParent(),categoryCount);
+//            }
+//            coverage.getCountByCategory().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+
+            coverage.getCountByCategory().add(new com.fxlabs.fxt.dto.project.TestSuiteCount(c.getGroupBy().toString(),c.getCount()));
         }
 
 
         List<TestSuiteCount> countBySeverity = repository.countBySeverityAndAutoGen(id,true);
         for(TestSuiteCount c : countBySeverity){
-            if ( coverage.getCountBySeverity().get(c.getParent()) == null ){
-                Map<String, Long> severityCount = new HashMap<>();
-                coverage.getCountBySeverity().put(c.getParent(), severityCount);
-            }
-            coverage.getCountBySeverity().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+//            if ( coverage.getCountBySeverity().get(c.getParent()) == null ){
+//                Map<String, Long> severityCount = new HashMap<>();
+//                coverage.getCountBySeverity().put(c.getParent(), severityCount);
+//            }
+//            coverage.getCountBySeverity().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+            coverage.getCountBySeverity().add(new com.fxlabs.fxt.dto.project.TestSuiteCount(c.getGroupBy().toString(),c.getCount()));
         }
 
         return new Response<TestSuiteCoverage>(coverage);

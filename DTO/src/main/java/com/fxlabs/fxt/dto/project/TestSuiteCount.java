@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.dao.entity.project;
+package com.fxlabs.fxt.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,8 +20,8 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TestSuiteCount implements Serializable {
 
-//    private String parent;
-    private Object groupBy;
+    private String groupBy;
     private Long count;
+
 }
 

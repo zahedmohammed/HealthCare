@@ -30,9 +30,14 @@ public class TestSuiteCoverage implements Serializable {
     private Long totalSuites;
     private Long totalTestCases;
 
-    private Map<String, Map<String, Long>> countByMethod = new HashMap<>();
-    private Map<String, Map<String, Long>> countByCategory = new HashMap<>();
-    private Map<String, Map<String, Long>> countBySeverity = new HashMap<>();
+    private List<TestSuiteCount> countByMethod = new ArrayList<>();
+    private List<TestSuiteCount> countByCategory = new ArrayList<>();
+    private List<TestSuiteCount> countBySeverity = new ArrayList<>();
+
+
+//    private Map<String, Map<String, Long>> countByMethod = new HashMap<>();
+//    private Map<String, Map<String, Long>> countByCategory = new HashMap<>();
+//    private Map<String, Map<String, Long>> countBySeverity = new HashMap<>();
 
 //    private List<TestSuiteCoverageDetails> coverageDetails = new ArrayList<>();
 
