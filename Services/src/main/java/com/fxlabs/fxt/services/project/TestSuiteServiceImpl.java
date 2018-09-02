@@ -9,10 +9,14 @@ import com.fxlabs.fxt.dao.repository.es.ProjectFileESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
+import com.fxlabs.fxt.dto.base.Message;
+import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
+import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -48,13 +52,15 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     private TestSuiteConverter testSuiteConverter;
     private TestSuiteMinConverter testSuiteMinConverter;
     private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
+    private AccountService accountService;
 
     public static final String FILE_CONTENT = "FILE_CONTENT";
 
     @Autowired
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository, ProjectConverter projectConverter,
                                 ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
-                                ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter, TestSuiteMinConverter testSuiteMinConverter) {
+                                ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter, TestSuiteMinConverter testSuiteMinConverter,
+                                AccountService accountService) {
         super(repository, converter);
         this.repository = repository;
         this.testSuiteESRepository = testSuiteESRepository;
@@ -65,6 +71,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         this.testSuiteConverter = testSuiteConverter;
         this.testSuiteMinConverter  = testSuiteMinConverter;
         this.gaaSTaskRequestProcessor = gaaSTaskRequestProcessor;
+        this.accountService = accountService;
         this.projectConverter = projectConverter;
     }
 
@@ -357,6 +364,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
                     }
 
                 }
+
             }catch (Exception e){
                 logger.info("Failed to delete file [{}] from ProjectId [{}]", df, dto.getProjectId());
                 logger.warn(e.getLocalizedMessage());
@@ -381,11 +389,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
                 if (testSuiteOptional.isPresent()) {
                     entity = testSuiteOptional.get();
                 }
-                logger.info("Deleting file [{}] from ProjectId [{}]", testSuiteOptional.get().getName(), testSuiteOptional.get().getProject().getId());
+                com.fxlabs.fxt.dao.entity.project.Project project = testSuiteOptional.get().getProject();
+                logger.info("Deleting file [{}] from ProjectId [{}]", testSuiteOptional.get().getName(), project.getId());
                 if (entity != null) {
                     repository.delete(entity);
                     testSuiteESRepository.delete(entity);
-                    Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileResponse = this.projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(testSuiteOptional.get().getProject().getId(), testSuiteOptional.get().getName() + ".yaml");
+                    Optional<com.fxlabs.fxt.dao.entity.project.ProjectFile> projectFileResponse = this.projectFileESRepository.findByProjectIdAndFilenameIgnoreCase(project.getId(), testSuiteOptional.get().getName() + ".yaml");
 
                     if (projectFileResponse.isPresent()) {
                         this.projectFileService.delete(projectFileResponse.get().getId(), projectFileResponse.get().getCreatedBy());
@@ -393,6 +402,25 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
                     }
 
                 }
+
+                ProjectSync projectSync = new ProjectSync();
+                projectSync.setProjectId(project.getId());
+                List<String> categories = new ArrayList<>();
+                categories.add(testSuiteOptional.get().getName());
+                projectSync.setCategories(categories);
+
+                // check account access
+                if (project.getAccount() != null && !StringUtils.isEmpty(project.getAccount().getId())) {
+                    Response<Account> accountResponse = accountService.findById(project.getAccount().getId(), project.getOrg().getId());
+                    if (accountResponse == null || accountResponse.isErrors()) {
+                        return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+                    }
+                } else {
+                    project.setAccount(null);
+                }
+
+                // Create GaaS Task
+                this.gaaSTaskRequestProcessor.deleteFile(project, projectSync);
             }catch (Exception e){
                 logger.warn(e.getLocalizedMessage());
             }
@@ -524,30 +552,36 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         List<TestSuiteCount> countByMethod = repository.countByMethodTypeAndAutoGen(id,true);
         for(TestSuiteCount c : countByMethod){
-            if ( coverage.getCountByMethod().get(c.getParent()) == null ){
-                Map<String, Long> methodsCount = new HashMap<>();
-                coverage.getCountByMethod().put(c.getParent(),methodsCount);
-            }
-            coverage.getCountByMethod().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+//            if ( coverage.getCountByMethod().get(c.getParent()) == null ){
+//                Map<String, Long> methodsCount = new HashMap<>();
+//                coverage.getCountByMethod().put(c.getParent(),methodsCount);
+//            }
+//            coverage.getCountByMethod().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+
+//            com.fxlabs.fxt.dto.project.TestSuiteCount methodCount  = new com.fxlabs.fxt.dto.project.TestSuiteCount()
+            coverage.getCountByMethod().add(new com.fxlabs.fxt.dto.project.TestSuiteCount(c.getGroupBy().toString(),c.getCount()));
         }
 
         List<TestSuiteCount> countByCategory = repository.countByCategoryAndAutoGen(id,true);
         for(TestSuiteCount c : countByCategory){
-            if ( coverage.getCountByCategory().get(c.getParent()) == null ){
-                Map<String, Long> categoryCount = new HashMap<>();
-                coverage.getCountByCategory().put(c.getParent(),categoryCount);
-            }
-            coverage.getCountByCategory().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+//            if ( coverage.getCountByCategory().get(c.getParent()) == null ){
+//                Map<String, Long> categoryCount = new HashMap<>();
+//                coverage.getCountByCategory().put(c.getParent(),categoryCount);
+//            }
+//            coverage.getCountByCategory().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+
+            coverage.getCountByCategory().add(new com.fxlabs.fxt.dto.project.TestSuiteCount(c.getGroupBy().toString(),c.getCount()));
         }
 
 
         List<TestSuiteCount> countBySeverity = repository.countBySeverityAndAutoGen(id,true);
         for(TestSuiteCount c : countBySeverity){
-            if ( coverage.getCountBySeverity().get(c.getParent()) == null ){
-                Map<String, Long> severityCount = new HashMap<>();
-                coverage.getCountBySeverity().put(c.getParent(), severityCount);
-            }
-            coverage.getCountBySeverity().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+//            if ( coverage.getCountBySeverity().get(c.getParent()) == null ){
+//                Map<String, Long> severityCount = new HashMap<>();
+//                coverage.getCountBySeverity().put(c.getParent(), severityCount);
+//            }
+//            coverage.getCountBySeverity().get(c.getParent()).put(c.getGroupBy().toString(),c.getCount());
+            coverage.getCountBySeverity().add(new com.fxlabs.fxt.dto.project.TestSuiteCount(c.getGroupBy().toString(),c.getCount()));
         }
 
         return new Response<TestSuiteCoverage>(coverage);

@@ -266,27 +266,36 @@ public class GitService implements VersionControlService {
             logger.info("Pushing changes");
             Git git = Git.open(new File(path));
 
-            if (!isUnStagedFiles(git)) {
-                taskLogger.get().append("No un-staged files found.").append("\n");
-                logger.info("No un-staged files found.");
-                return "No un-staged files found.";
+            boolean pushedChangesToVC = false;
+
+            if (isUnStagedFiles(git)) {
+                // add
+                // commit
+                // push
+                addAndCommit(git, "Fx Bot commit", ".");
+
+                PushCommand pushCommand = git.push();
+
+                privateKey = setAuth(username, password, pushCommand);
+
+                pushCommand.call();
+                pushedChangesToVC = true;
             }
-            // add
-            // commit
-            // push
-            addAndCommit(git, "Fx Bot commit", ".");
 
-            PushCommand pushCommand = git.push();
-
-            privateKey = setAuth(username, password, pushCommand);
-
-            pushCommand.call();
 
             if (isMissingFiles(git)) {
                 removeAndCommit(git, "Fx Bot commit", ".");
                 PushCommand pushCommandRemove = git.push();
                 privateKey = setAuth(username, password, pushCommandRemove);
                 pushCommandRemove.call();
+                pushedChangesToVC = true;
+            }
+
+
+            if (!pushedChangesToVC) {
+                taskLogger.get().append("No un-staged files found.").append("\n");
+                logger.info("No un-staged files found.");
+                return "No un-staged files found.";
             }
             taskLogger.get().append("Push successful!").append("\n");
             logger.info("Push successful!");
@@ -324,11 +333,6 @@ public class GitService implements VersionControlService {
         }
 
         if (!CollectionUtils.isEmpty(status.getModified())) {
-            return true;
-        }
-
-
-        if (!CollectionUtils.isEmpty(status.getMissing())) {
             return true;
         }
 

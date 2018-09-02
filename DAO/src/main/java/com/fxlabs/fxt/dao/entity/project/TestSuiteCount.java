@@ -19,7 +19,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TestSuiteCount implements Serializable {
 
-    private String parent;
+//    private String parent;
     private Object groupBy;
     private Long count;
 }
