@@ -19,6 +19,8 @@
                                     <div class="tl-time text-muted">{{item.modifiedDate | timeAgo}}</div>
                                     <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-warning" *ngIf="item?.eventType == 'Run'"><i class="material-icons color-white">directions_run</i></div>
                                     <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-success" *ngIf="item?.eventType == 'Sync'"><i class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
+                                      <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-success" *ngIf="item?.eventType == 'Deploy'"><i class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
+                                      <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-success" *ngIf="item?.eventType == 'Delete'"><i class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
                                     <div class="tl-content">
                                         <p>
                                             <span class="text-warning" *ngIf="item?.status == 'In_progress'"><i class="fa fa-spinner fa-spin"></i></span>&nbsp;

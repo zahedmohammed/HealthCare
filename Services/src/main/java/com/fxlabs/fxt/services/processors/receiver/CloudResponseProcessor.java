@@ -87,12 +87,13 @@ public class CloudResponseProcessor {
             task.setLogs(response.getLogs());
             task.setResult(TaskResult.FAILURE);
            // clusterData.get().setStatus(ClusterStatus.FAILED);
-
+            Type type = null;
             if (clusterData.isPresent() && response.getSuccess() && task.getType() == TaskType.CREATE) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.ACTIVE);
                 clusterData.get().setNodeId(response.getResponseId());
                 clusterRepository.save(clusterData.get());
+                type = Type.Deploy;
             }
 
             if (clusterData.isPresent() && response.getSuccess() && task.getType() == TaskType.DESTROY) {
@@ -100,10 +101,16 @@ public class CloudResponseProcessor {
                 clusterData.get().setStatus(ClusterStatus.DELETED);
                 clusterData.get().setInactive(true);
                 clusterRepository.save(clusterData.get());
+                type = Type.Delete;
             }
             repository.save(task);
 
-            botExecEvent(clusterData.get(), Status.Done, Entity.Bot, task.getId(), null);
+
+            try {
+                botExecEvent(clusterData.get(), Status.Done, Entity.Bot, task.getId(), null, type);
+            } catch (Exception e){
+                logger.info(e.getLocalizedMessage());
+            }
 
 
 
@@ -119,7 +126,7 @@ public class CloudResponseProcessor {
 
 
 
-    public void botExecEvent(Cluster dto, Status status, Entity entityType, String taskId, String logId) {
+    public void botExecEvent(Cluster dto, Status status, Entity entityType, String taskId, String logId,  Type type) {
 
         if (dto == null || status == null || entityType == null) {
 
@@ -136,7 +143,7 @@ public class CloudResponseProcessor {
         event.setName(dto.getName());
         event.setUser(dto.getCreatedBy());
         event.setEntityType(entityType);
-        event.setEventType(Type.Deploy);
+        event.setEventType(type);
         event.setEntityId(dto.getId());
         event.setLink("/app/regions/" + dto.getId());
 

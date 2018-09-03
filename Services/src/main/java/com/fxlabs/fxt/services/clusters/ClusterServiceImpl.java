@@ -254,14 +254,17 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         //send task to queue
         amqpClientService.sendTask(cloudTask, key);
-
-        addBotExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null);
+        try {
+            addBotExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null, Type.Deploy);
+        } catch (Exception e){
+            logger.info(e.getLocalizedMessage());
+        }
 
         return new Response<Cluster>();
     }
 
 
-    public void addBotExecEvent(Cluster dto, Status status, Entity entityType, String taskId, String logId) {
+    public void addBotExecEvent(Cluster dto, Status status, Entity entityType, String taskId, String logId, Type type) {
 
         if (dto == null || status == null || entityType == null) {
 
@@ -278,7 +281,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         event.setName(dto.getName());
         event.setUser(dto.getCreatedBy());
         event.setEntityType(entityType);
-        event.setEventType(Type.Deploy);
+        event.setEventType(type);
         event.setEntityId(dto.getId());
         event.setLink("/app/regions/" + dto.getId());
 
@@ -392,6 +395,11 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         //send task to queue
         amqpClientService.sendTask(cloudTask, key);
+        try {
+            addBotExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null, Type.Delete);
+        } catch (Exception e){
+            logger.info(e.getLocalizedMessage());
+        }
 
         return new Response<Cluster>();
     }
