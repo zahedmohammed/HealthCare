@@ -255,7 +255,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         //send task to queue
         amqpClientService.sendTask(cloudTask, key);
         try {
-            addBotExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null, Type.Deploy);
+            botExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null, Type.Deploy);
         } catch (Exception e){
             logger.info(e.getLocalizedMessage());
         }
@@ -264,7 +264,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
 
-    public void addBotExecEvent(Cluster dto, Status status, Entity entityType, String taskId, String logId, Type type) {
+    public void botExecEvent(Cluster dto, Status status, Entity entityType, String taskId, String logId, Type type) {
 
         if (dto == null || status == null || entityType == null) {
 
@@ -396,7 +396,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         //send task to queue
         amqpClientService.sendTask(cloudTask, key);
         try {
-            addBotExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null, Type.Delete);
+            botExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null, Type.Delete);
         } catch (Exception e){
             logger.info(e.getLocalizedMessage());
         }

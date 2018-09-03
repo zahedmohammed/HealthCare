@@ -87,13 +87,12 @@ public class CloudResponseProcessor {
             task.setLogs(response.getLogs());
             task.setResult(TaskResult.FAILURE);
            // clusterData.get().setStatus(ClusterStatus.FAILED);
-            Type type = null;
+
             if (clusterData.isPresent() && response.getSuccess() && task.getType() == TaskType.CREATE) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.ACTIVE);
                 clusterData.get().setNodeId(response.getResponseId());
                 clusterRepository.save(clusterData.get());
-                type = Type.Deploy;
             }
 
             if (clusterData.isPresent() && response.getSuccess() && task.getType() == TaskType.DESTROY) {
@@ -101,9 +100,17 @@ public class CloudResponseProcessor {
                 clusterData.get().setStatus(ClusterStatus.DELETED);
                 clusterData.get().setInactive(true);
                 clusterRepository.save(clusterData.get());
-                type = Type.Delete;
+
             }
             repository.save(task);
+            Type type = null;
+            if (task.getType() == TaskType.CREATE) {
+                type = Type.Deploy;
+            }
+
+            if (task.getType() == TaskType.DESTROY) {
+                type = Type.Delete;
+            }
 
 
             try {
