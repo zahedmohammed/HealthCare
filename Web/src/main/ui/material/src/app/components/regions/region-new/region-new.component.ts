@@ -6,8 +6,9 @@ import { Account } from '../../../models/account.model';
 import { OrgService } from '../../../services/org.service';
 import { Region } from '../../../models/regions.model';
 import { Handler } from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
+import {MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA}from '@angular/material';
 import {SnackbarService}from '../../../services/snackbar.service';
+import { BotCredentialsComponent } from '../../dialogs/bot-credentials/bot-credentials.component';
 
 @Component({
   selector: 'app-region-new',
@@ -28,7 +29,7 @@ export class RegionNewComponent implements OnInit {
   accounts;
   orgs;
   entry: Region = new Region();
-  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
+  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getAccountForExecutionBotPage();
@@ -97,6 +98,15 @@ export class RegionNewComponent implements OnInit {
 
   setAccount(account_){
      this.entry.account.accountType =  account_.accountType;
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(BotCredentialsComponent, {
+      width:'800px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+     this.getAccountForExecutionBotPage();
+    });
   }
 
   getOrgs() {

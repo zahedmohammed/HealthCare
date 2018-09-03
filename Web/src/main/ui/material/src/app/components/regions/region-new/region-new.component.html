@@ -59,15 +59,16 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
+                        <div class="col-md-7">
+
                         <div class="callout1 text-muted callout-info1">
                             <p>
                                 Public or private cloud endpoint.
                             </p>
-                            <p>
-                                <a target="_blank"
-                                   href="#/app/accounts">Click here to register account<i class="material-icons"
-                                                                                          style="font-size: 18px;">open_in_new</i></a>
+                             <p>
+                            <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials</button>
                             </p>
+                        </div>
                         </div>
                     </div>
 
@@ -84,10 +85,13 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
+                        <div class="col-md-7">
+
                         <div class="callout1 text-muted callout-info1">
                             <p>
                                 Cloud region where the bot will be deployed.
                             </p>
+                        </div>
                         </div>
                     </div>
 
@@ -100,10 +104,13 @@
                                        matInput placeholder="Count">
                             </mat-input-container>
                         </div>
+                        <div class="col-md-7">
+
                         <div class="callout1 text-muted callout-info1">
                             <p>
                                 Total bot instances. Defaults to 1.
                             </p>
+                        </div>
                         </div>
                     </div>
 
