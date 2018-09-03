@@ -5,6 +5,7 @@ import com.fxlabs.fxt.dao.entity.users.ProjectRole;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dto.alerts.*;
 import com.fxlabs.fxt.dto.base.NameDto;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.events.Entity;
 import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.events.Status;
@@ -72,9 +73,9 @@ public class GitTaskResponseProcessor {
             alert.setUsers(users);
 
             Optional<Project> optionalProject = projectRepository.findById(task.getProjectId());
-
+            Project project =  null;
             if (optionalProject.isPresent()) {
-                Project project = optionalProject.get();
+                project = optionalProject.get();
                 project.setAutoGenSuites(task.getAutoGenSuitesCount());
                 project.setApiEndpoints(task.getApiEndpoints());
 
@@ -84,15 +85,15 @@ public class GitTaskResponseProcessor {
                 o.setId(project.getOrg().getId());
                 alert.setOrg(o);
                 alert.setRefName(project.getName());
-
-                try {
-                    projectSyncEvent(project, Status.Done, Entity.Project, task.getTaskId());
-                } catch (Exception ex) {
-                    logger.warn("Exception sending project sync event");
-                }
             }
 
-            alertService.save(alert);
+            Response<Alert> alert1 = alertService.save(alert);
+
+            try {
+                projectSyncEvent(project, Status.Done, Entity.Project, task.getTaskId(), alert1.getData().getId());
+            } catch (Exception ex) {
+                logger.warn("Exception sending project sync event");
+            }
 
 
 
@@ -103,7 +104,7 @@ public class GitTaskResponseProcessor {
     }
 
 
-    public void projectSyncEvent(Project project, Status status, Entity entityType, String taskId) {
+    public void projectSyncEvent(Project project, Status status, Entity entityType, String taskId, String logId) {
 
         if (project == null || status == null || entityType == null) {
 
@@ -129,6 +130,7 @@ public class GitTaskResponseProcessor {
         org.setName(project.getOrg().getName());
         org.setId(project.getOrg().getId());
         event.setOrg(org);
+        event.setLogId(logId);
 
 
         logger.info("Received response for publish on project [{}] and status [{}] for task type [{}]" , project.getId(), status.toString(), event.getName());

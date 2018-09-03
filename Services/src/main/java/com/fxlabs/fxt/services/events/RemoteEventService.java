@@ -77,6 +77,7 @@ public class RemoteEventService {
         if (optionalEntity.isPresent()) {
             com.fxlabs.fxt.dao.entity.event.Event entity = optionalEntity.get();
             entity.setStatus(com.fxlabs.fxt.dao.entity.event.Status.valueOf(event.getStatus().toString()));
+            entity.setLogId(event.getLogId());
             event = eventConverter.convertToDto(eventRepository.saveAndFlush(entity));
         } else {
             com.fxlabs.fxt.dao.entity.event.Event eventEntity = eventConverter.convertToEntity(event);

@@ -36,6 +36,8 @@ public class Event extends BaseDto<String> {
 
     private String user;
 
+    private String logId;
+
     private NameDto org;
 
 

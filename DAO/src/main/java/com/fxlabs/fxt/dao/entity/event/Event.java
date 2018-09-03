@@ -37,6 +37,8 @@ public class Event extends BaseEntity {
 
     private String taskId;
 
+    private String logId;
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "org_id")
     private Org org;
