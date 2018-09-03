@@ -61,6 +61,10 @@ import * as EventSource from 'eventsource';
    background:#ccc;
    border-radius:2px;
    }
+   .active{
+    color: #555;
+    background-color: #e7e7e7;
+   }
     `
   ],
   templateUrl: './header.component.html',
