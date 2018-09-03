@@ -27,6 +27,8 @@
 <section class="container-fluid with-maxwidth chapter">
         <mat-toolbar class="rounded">
                 <span style="flex: 1 1 auto;"></span>
+                <button mat-raised-button color="primary" class="float-right" (click)="cloneTestSuite()">
+                        Clone </button>&nbsp;&nbsp;
                     <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
                     <small class="space">Jobs</small>
                   </a>&nbsp;&nbsp; 
@@ -38,7 +40,6 @@
                 <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
                     <small>Coverage</small>
                 </a> &nbsp;&nbsp;
-
             <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
                       <small>Edit</small>
                     </a> &nbsp;&nbsp;
@@ -63,11 +64,11 @@
                         <div class="col-md-10">
                             <h6 class="mat-step-label-selected pb-4">Test Suite Details</h6>
                         </div>
-                        <div class="col-md-2">
+                        <!-- <div class="col-md-2">
                                 <button mat-raised-button color="primary" class="float-right mt-3"  (click)="cloneTestSuiteYaml();">
                                 Clone
                             </button>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="form-group row">
                         <ace-editor class="col-md-12 border editor" [(text)]="testSuite.yaml" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"

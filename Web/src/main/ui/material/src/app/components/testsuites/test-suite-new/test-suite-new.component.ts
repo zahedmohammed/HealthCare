@@ -70,9 +70,8 @@ export class TestSuiteNewComponent implements OnInit {
       // type: ''
     });
 
-    if(localStorage.getItem('yamlClone') === null){
+    if(localStorage.getItem('suiteClone') === null){
       this.testSuiteService.getSample().subscribe(results => {
-        //console.log(results);
         this.text = results;
       }, error => {
         this.handler.hideLoader();
@@ -81,8 +80,8 @@ export class TestSuiteNewComponent implements OnInit {
 
     }
     else{
-      this.text = localStorage.getItem('yamlClone');
-      localStorage.clear();
+      this.text = localStorage.getItem('suiteClone');
+      localStorage.removeItem('suiteClone');
     }
   
   }
