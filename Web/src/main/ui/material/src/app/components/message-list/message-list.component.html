@@ -28,7 +28,7 @@
                                         </p>
                                         <!-- <mat-chip-list> -->
                                         <mat-chip color="primary" selected="true" *ngIf="item?.eventType == 'Run'" class="mat-chip-padding">{{item.eventType}}</mat-chip>
-                                        <mat-chip color="warn" selected="true" *ngIf="item?.eventType == 'Sync'" class="mat-chip-padding" style="color:white;">{{item.eventType}}</mat-chip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-chip color="primary" selected="true" *ngIf="item?.eventType == 'Sync'" class="mat-chip-padding" style="color:white;">{{item.eventType}}</mat-chip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <span><a href="javascript:;" [routerLink]="['/app/message', item.logId]" style="text-decoration: none !important;" *ngIf="item?.eventType == 'Sync' && item?.logId !== null">See logs</a></span>
                                         <!-- </mat-chip-list> -->
                                       <!-- <h4 class="tl-tile text-primary">{{item.name}}</h4>
