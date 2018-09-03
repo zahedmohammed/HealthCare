@@ -7,6 +7,7 @@ export class Tasks{
     name: string;
     status: string;
     taskId: string;
+    logId: string;
     org: Org = new Org();
 }
 

@@ -1,4 +1,51 @@
-<div class="box box-default">
+<!-- Code for show tasks from left side timeline -->
+<div class="container-fluid">
+        <div class="ui-timline-container ui-timline-left">
+                <section class="ui-timeline">
+                        <article class="tl-item">
+                                <div class="tl-body">
+                                  <div class="tl-entry">
+                                    <div class="tl-caption">
+                                      <a href="javascript:;" class="btn btn-primary btn-block">Tasks</a>
+                                    </div>
+                                  </div>
+                                </div>
+                        </article>
+                </section>
+                <section class="ui-timeline" *ngFor="let item of tasksRes; let i=index;">                    
+                        <article class="tl-item">
+                                <div class="tl-body">
+                                  <div class="tl-entry">
+                                    <div class="tl-time text-muted">{{item.modifiedDate | timeAgo}}</div>
+                                    <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-warning" *ngIf="item?.eventType == 'Run'"><i class="material-icons color-white">directions_run</i></div>
+                                    <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-success" *ngIf="item?.eventType == 'Sync'"><i class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
+                                    <div class="tl-content">
+                                        <p>
+                                            <span class="text-warning" *ngIf="item?.status == 'In_progress'"><i class="fa fa-spinner fa-spin"></i></span>&nbsp;
+                                            <span class="text-success" *ngIf="item?.status == 'Done'"><i class="fa fa-thumbs-up"></i></span>&nbsp;
+                                            <a href="javascript:;" [routerLink]="[item.link]" style="text-decoration: none !important;">{{item.name}}</a>
+                                            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:;" [routerLink]="['/app/message', item.entityId]" style="text-decoration: none !important;" *ngIf="item?.eventType == 'Sync'">See logs</a> -->
+                                        </p>
+                                        <!-- <mat-chip-list> -->
+                                        <mat-chip color="primary" selected="true" *ngIf="item?.eventType == 'Run'" class="mat-chip-padding">{{item.eventType}}</mat-chip>
+                                        <mat-chip color="warn" selected="true" *ngIf="item?.eventType == 'Sync'" class="mat-chip-padding" style="color:white;">{{item.eventType}}</mat-chip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><a href="javascript:;" [routerLink]="['/app/message', item.logId]" style="text-decoration: none !important;" *ngIf="item?.eventType == 'Sync' && item?.logId !== null">See logs</a></span>
+                                        <!-- </mat-chip-list> -->
+                                      <!-- <h4 class="tl-tile text-primary">{{item.name}}</h4>
+                                        <a href="javascript:;" [routerLink]="['/app/message', item.id]" style="text-decoration: none !important;">See logs</a> -->
+                                        <!-- <p *ngIf="item?.status == 'In_progress'" class="text-warning">{{errorMsg}}</p>
+                                        
+                                        <p *ngIf="item?.status == 'Done'" class="text-muted">{{infoMsg}}</p> -->
+                                    </div>
+                                  </div>
+                                </div>
+                              </article>
+                </section>
+                <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+                </mat-paginator>
+        </div>
+    </div>
+<!-- <div class="box box-default">
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
@@ -9,12 +56,6 @@
 </div>
 <section class="chapter page-terms">
 
-    <!-- <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Activities</h1>
-        </div>
-        <p class="text-muted">Track user and bot activities on your projects.</p>
-    </section> -->
 
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
@@ -58,4 +99,119 @@
 
         </div>
     </article>
-</section>
+</section> -->
+
+
+<!-- <div class="container-fluid">
+        <div class="ui-timline-container ui-timline-left">                          
+          <section class="ui-timeline" *ngFor="let item of items">
+                <article class="tl-item">
+                        <div class="tl-body">
+                          <div class="tl-entry">
+                            <div class="tl-caption">
+                              <a href="javascript:;" class="btn btn-primary btn-block">{{item.subject}}</a>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+                <article class="tl-item alt">
+                        <div class="tl-body">
+                          <div class="tl-entry">
+                            
+                            <div class="tl-time"><span class="text-muted">{{item.createdDate | timeAgo}}</span></div>
+                            <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-danger" *ngIf="item?.type == 'ERROR'"><i class="fa fa-exclamation-triangle"></i></div>
+                            <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-info" *ngIf="item?.type == 'INFO'"><i class="fa fa-check"></i></div>
+                            <div class="tl-content">
+                              
+                              <p>Task - {{item.taskType}} <span class="text-muted">( {{item.type}} )</span></p>
+                              
+                              <p><a href="javascript:;"
+                                [routerLink]="['/app/message', item.id]" style="text-decoration: none !important;">See logs</a></p>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+            </section>
+            <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+                </mat-paginator>
+        </div>
+</div> -->
+
+<!-- Working Code for Activities -->
+
+<!-- <div class="container-fluid">
+        <div class="ui-timline-container">
+                <section class="ui-timeline">
+                        <article class="tl-item">
+                          <div class="tl-body">
+                            <div class="tl-entry">
+                              <div class="tl-caption">
+                                <a href="javascript:;" class="btn btn-primary btn-block">Activities</a>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                        </section>               
+          <section class="ui-timeline" *ngFor="let item of items; let i=index;">
+<article class="tl-item alt">
+        <div class="tl-body">
+          <div class="tl-entry">
+                <div class="tl-time"><span class="text-muted">{{item.createdDate | timeAgo}}</span></div>
+                <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-danger" *ngIf="item?.type == 'ERROR'"><i class="fa fa-exclamation-triangle"></i></div>
+                <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.type == 'INFO'"><i class="fa fa-check"></i></div>
+            <div class="tl-content">
+                    <p>{{item.subject}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span>{{item.taskType}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <a href="javascript:;" [routerLink]="['/app/message', item.id]" style="text-decoration: none !important;">See logs</a>
+                    </p> 
+                    
+                    <p *ngIf="item?.type == 'ERROR'" class="text-warning">{{errorMsg}}</p>
+                    
+                    <p *ngIf="item?.type == 'INFO'" class="text-muted">{{infoMsg}}</p>
+            </div>
+          </div>
+        </div>
+      </article>
+      </section>
+      <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+        </mat-paginator>
+      </div>
+      </div> -->
+
+      <!-- <div class="container-fluid">
+            <div class="ui-timline-container ui-timline-left">                          
+              <section class="ui-timeline" *ngFor="let item of tasksRes; let i=index;">
+                    <article class="tl-item">
+                            <div class="tl-body">
+                              <div class="tl-entry">
+                                <div class="tl-caption">
+                                  <a href="javascript:;" class="btn btn-primary btn-block">{{item.subject}}</a>
+                                </div>
+                              </div>
+                            </div>
+                          </article>
+                    <article class="tl-item alt">
+                            <div class="tl-body">
+                              <div class="tl-entry">
+                                
+                                <div class="tl-time"><span class="text-muted">{{item.createdDate | timeAgo}}</span></div>
+                                <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-danger" *ngIf="item?.type == 'ERROR'"><i class="fa fa-exclamation-triangle"></i></div>
+                                <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-info" *ngIf="item?.type == 'INFO'"><i class="fa fa-check"></i></div>
+                                <div class="tl-content">
+                                  
+                                  <p>Task - {{item.taskType}} <span class="text-muted">( {{item.type}} )</span></p>
+                                  
+                                  <p><a href="javascript:;"
+                                    [routerLink]="['/app/message', item.id]" style="text-decoration: none !important;">See logs</a></p>
+                                </div>
+                              </div>
+                            </div>
+                          </article>
+                </section>
+                <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+                    </mat-paginator>
+            </div>
+    </div> -->
+
+
+              
