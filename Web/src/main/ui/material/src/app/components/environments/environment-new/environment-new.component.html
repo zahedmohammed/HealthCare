@@ -495,7 +495,7 @@
                     <div>
                         <mat-card-actions>
                             <br>
-                            <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"
+                            <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid"
                                 (click)="saveEnv(thirdFormGroup);">Create Environment
                             </button>
                             <button mat-button class="nav-btn" [routerLink]="['/app/projects', id, 'environments']">Cancel

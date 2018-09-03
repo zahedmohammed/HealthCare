@@ -32,6 +32,8 @@
 <section class="container-fluid with-maxwidth chapter">
     <mat-toolbar class="rounded">
             <span style="flex: 1 1 auto;"></span>
+            <button mat-raised-button color="primary" class="float-right" (click)="cloneEnv()">
+                Clone </button>&nbsp;&nbsp;
                 <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
                 <small class="space">Jobs</small>
               </a>&nbsp;&nbsp; 
@@ -48,13 +50,11 @@
     </mat-toolbar>
     <article class="article">
         <div class="box box-default">
+               
             <div class="box-body ml-4">
-
                 <form [formGroup]="thirdFormGroup" class="px-4">
                         <h6 class="mat-step-label-selected pb-4">Environment Details</h6>
-
                     <div class="form-group row"></div>
-
                     <div class="form-group row">
                         <!--label for="name" class="col-md-0 control-label"></label-->
                         <div class="col-md-5">

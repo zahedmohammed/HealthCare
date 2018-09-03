@@ -297,6 +297,10 @@ removeItem(i: number) {
      this.project.account.accountType =  account.accountType;
   }
 
+  cloneEnv() {
+    localStorage.setItem('envClone', JSON.stringify(this.env));
+    this.router.navigate(['/app/projects', this.id, 'environments', 'new']);
+  }
   openDialog() {
     const dialogRef = this.dialog.open(RegisterComponent, {
       width:'50%',

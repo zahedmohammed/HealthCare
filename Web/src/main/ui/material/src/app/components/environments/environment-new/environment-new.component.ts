@@ -72,20 +72,35 @@ items: FormArray;
       if (this.id) {
         this.loadProject(this.id);
       }
+
+      if(localStorage.getItem('envClone') === null){
         this.addItem();
+      }
+       
     });
 
+    if(localStorage.getItem('envClone') != null){
+      var envClone = localStorage.getItem("envClone");
+      this.env.name = JSON.parse(envClone)['name'] + "_copy" ;
+      this.env.baseUrl = JSON.parse(envClone)['baseUrl'];
+      this.env.auths = (JSON.parse(envClone)["auths"]);
+     // this.addItem1(JSON.parse(envClone)["auths"]);
+      let k:Auth = new Auth();
+     if(this.env.auths.length==0) this.env.auths=[k];
+          for(var i=0;i<this.env.auths.length;i++) this.addItem1(this.env.auths[i]);
+    }
+    localStorage.removeItem('envClone');
 
 
 
   }
 addItem(): void {
   this.items = this.thirdFormGroup.get('items') as FormArray;
- this.items.push(this.createItem());
+  this.items.push(this.createItem());
 }
 addItem1(obj): void {
- // this.items = this.thirdFormGroup.get('items') as FormArray;
- // this.items.push(this.createItem1(obj));
+  this.items = this.thirdFormGroup.get('items') as FormArray;
+  this.items.push(this.createItem1(obj));
 }
 geInfo(obj){
 console.log("sss");
@@ -113,7 +128,7 @@ console.log("sss");
             username:null
         });
     }
-createItem1(obj:Auth): FormGroup {
+createItem1(obj): FormGroup {
   var k= this._formBuilder.group({
   accessTokenUri:'',
 authType: [obj.authType, Validators.required],
