@@ -86,9 +86,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         Page<TestSuite> page = testSuiteESRepository.findByPublishToMarketplaceAndNameStartsWithIgnoreCase(Boolean.TRUE, keyword, pageable);
         List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
 
-        testSuites.forEach(testSuite -> {
-            testSuiteConverter.copyArraysToText(testSuite);
-        });
+//        testSuites.forEach(testSuite -> {
+//            testSuiteConverter.copyArraysToText(testSuite);
+//        });
 
         return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
     }
@@ -98,9 +98,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
 
-        testSuites.forEach(testSuite -> {
-            testSuiteConverter.copyArraysToText(testSuite);
-        });
+//        testSuites.forEach(testSuite -> {
+//            testSuiteConverter.copyArraysToText(testSuite);
+//        });
 
         return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
     }
@@ -182,7 +182,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             throw new FxException(String.format("TestSuite [%s] exists.", testSuiteOptional.get().getName()));
         }
 
-        testSuiteConverter.copyTextToArray(dto);
+        //testSuiteConverter.copyTextToArray(dto);
 
         // type
         if (dto.getType() == null) {
@@ -321,7 +321,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             throw new FxException("Invalid request for test-suite");
         }
         com.fxlabs.fxt.dto.project.TestSuite dto = converter.convertToDto(testSuiteOptional.get());
-        testSuiteConverter.copyArraysToText(dto);
+        //testSuiteConverter.copyArraysToText(dto);
 
         Response<ProjectFile> projectFileResponse = this.projectFileService.findByProjectIdAndFilename(testSuiteOptional.get().getProject().getId(), testSuiteOptional.get().getName() + ".yaml");
         //
@@ -447,9 +447,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
             List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
 
-            testSuites.forEach(testSuite -> {
-                testSuiteConverter.copyArraysToText(testSuite);
-            });
+//            testSuites.forEach(testSuite -> {
+//                testSuiteConverter.copyArraysToText(testSuite);
+//            });
 
             return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
 
@@ -464,9 +464,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
             List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
 
-            testSuites.forEach(testSuite -> {
-                testSuiteConverter.copyArraysToText(testSuite);
-            });
+//            testSuites.forEach(testSuite -> {
+//                testSuiteConverter.copyArraysToText(testSuite);
+//            });
 
             return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
 
@@ -480,9 +480,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
             List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
 
-            testSuites.forEach(testSuite -> {
-                testSuiteConverter.copyArraysToText(testSuite);
-            });
+//            testSuites.forEach(testSuite -> {
+//                testSuiteConverter.copyArraysToText(testSuite);
+//            });
 
             return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
 

@@ -375,26 +375,30 @@ public class AwsCloudService implements CloudService {
     }
 
     private String getImageId(Map<String, String> opts, AmazonEC2 awsService) {
+        try {
+            String accessKeyId = opts.get("ACCESS_KEY_ID");
+            String secretKey = opts.get("SECRET_KEY");
 
-        String accessKeyId = opts.get("ACCESS_KEY_ID");
-        String secretKey = opts.get("SECRET_KEY");
+            // AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey, "us-west-1");
 
-        // AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey, "us-west-1");
+            String imageName = opts.get("IMAGE");
 
-        String imageName = opts.get("IMAGE");
+            if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(imageName, "null")
+                    || org.apache.commons.lang3.StringUtils.isEmpty(imageName)) {
+                imageName = FXLABS_AWS_DEFAULT_IMAGE;
+            }
 
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(imageName, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(imageName)) {
-            imageName = FXLABS_AWS_DEFAULT_IMAGE;
-        }
+            DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest()
+                    .withFilters(new Filter().withName("name").withValues(imageName));
 
-        DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest()
-                .withFilters(new Filter().withName("name").withValues(imageName));
+            DescribeImagesResult result = awsService.describeImages(describeImagesRequest);
+            List<Image> images = result.getImages();
+            for (Image image : images) {
+                return image.getImageId();
+            }
 
-        DescribeImagesResult result = awsService.describeImages(describeImagesRequest);
-        List<Image> images = result.getImages();
-        for (Image image : images) {
-            return image.getImageId();
+        }catch (Exception e){
+            logger.info(e.getLocalizedMessage());
         }
         return null;
 
