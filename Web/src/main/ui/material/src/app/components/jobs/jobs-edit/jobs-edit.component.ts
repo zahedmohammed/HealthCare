@@ -118,7 +118,6 @@ export class JobsEditComponent implements OnInit {
         return;
       }
       this.job = results['data'];
-      console.log('this.job->',this.job)
       if ( this.job.categories ){
           this.selectedCategories = this.job.categories.split(",")
           .map(function(item) {
