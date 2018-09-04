@@ -18,19 +18,22 @@ import { MatStepper } from '@angular/material';
 import {IssueTrackerRegisterComponent}from'./../../dialogs/issue-tracker-register/issue-tracker-register.component';
 import {SlackRegisterComponent}from'./../../dialogs/slack-register/slack-register.component';
 import { Job } from '../../../models/project-job.model';
+import {RegionsService}from '../../../services/regions.service';
 
 @Component({
   selector: 'app-jobs-new',
   templateUrl: './jobs-new.component.html',
   styleUrls: ['./jobs-new.component.scss'],
-  providers: [ProjectService, SnackbarService, JobsService, AccountService]
+  providers: [ProjectService, SnackbarService, JobsService, AccountService, RegionsService]
 })
 export class JobsNewComponent implements OnInit {
 
   id: string;
   project: Project = new Project();
   job: Jobs = new Jobs();
-
+  list;
+  page = 0;
+  pageSize = 100;
   clone: Object;
   envs: Env;
   //itAccounts: Account[];
@@ -53,10 +56,11 @@ export class JobsNewComponent implements OnInit {
   thirdFormGroup: FormGroup;
 
   constructor(private projectService: ProjectService, private jobsService: JobsService, private accountService: AccountService,
-            private route: ActivatedRoute, private router: Router, private handler: Handler,
+            private route: ActivatedRoute, private regionService: RegionsService, private router: Router, private handler: Handler,
             public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.getRegions();
     this.job.notifications[0] = new Noti();
     this.job.notifications[1] = new Noti();
 
@@ -209,6 +213,21 @@ export class JobsNewComponent implements OnInit {
       }
       this.snackbarService.openSnackBar("'Job '" + this.job.name + "' added.", "");
       this.router.navigate(['/app/projects', this.id, 'jobs']);
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+  getRegions() {
+    this.handler.activateLoader();
+    this.regionService.getEntitled(this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.list = results['data'];
+      //this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
