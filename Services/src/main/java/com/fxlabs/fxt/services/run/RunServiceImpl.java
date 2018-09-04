@@ -189,7 +189,9 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     @Override
     public Response<com.fxlabs.fxt.dto.run.Run> findRunById(String runId, String user) {
         Run run = this.repository.findByRunId(runId);
-        return new Response<com.fxlabs.fxt.dto.run.Run>(this.converter.convertToDto(run));
+        com.fxlabs.fxt.dto.run.Run run1 = this.converter.convertToDto(run);
+        run1.setRegions(run.getAttributes().get("REGION"));
+        return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
     }
 
 

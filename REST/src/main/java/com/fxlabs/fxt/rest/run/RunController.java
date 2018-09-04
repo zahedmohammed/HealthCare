@@ -96,7 +96,7 @@ public class RunController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Run> findByRunId(@PathVariable("id") String id) {
-        return runService.findById(id, SecurityUtil.getCurrentAuditor());
+        return runService.findRunById(id, SecurityUtil.getCurrentAuditor());
     }
 
 
