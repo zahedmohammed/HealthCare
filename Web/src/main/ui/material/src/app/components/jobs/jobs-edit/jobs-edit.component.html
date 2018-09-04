@@ -98,7 +98,7 @@
               <div class="form-group row">
                 <label for="name" class="col-md-0 control-label"></label>
                 <div class="col-md-5">
-                  <mat-input-container class="full-width">
+                  <!-- <mat-input-container class="full-width">
                     <input required [(ngModel)]="job.regions" [ngModelOptions]="{standalone: true}" [matAutocomplete]="autoRegions" matInput
                       placeholder="Bot Region">
                     <mat-error>Required</mat-error>
@@ -107,7 +107,18 @@
                     <mat-option *ngFor="let option of regions" [value]="option">
                       {{option}}
                     </mat-option>
-                  </mat-autocomplete>
+                  </mat-autocomplete> -->
+                  
+                  <mat-form-field class="full-width">
+                    <mat-select placeholder="Bot Region" [(ngModel)]="job.regions" name="job.regions"
+                      [ngModelOptions]="{standalone: true}">
+                      <mat-option *ngFor="let option of list" [value]="option">
+                        {{option.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+              
                 </div>
               </div>
 

@@ -15,6 +15,7 @@ import { DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.c
 import { SnackbarService}from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
+import {RegionsService}from '../../../services/regions.service';
 import {IssueTrackerRegisterComponent}from'./../../dialogs/issue-tracker-register/issue-tracker-register.component';
 import {SlackRegisterComponent}from'./../../dialogs/slack-register/slack-register.component';
 
@@ -22,7 +23,7 @@ import {SlackRegisterComponent}from'./../../dialogs/slack-register/slack-registe
   selector: 'app-jobs-edit',
   templateUrl: './jobs-edit.component.html',
   styleUrls: ['./jobs-edit.component.scss'],
-  providers: [ProjectService, SnackbarService, JobsService, AccountService]
+  providers: [ProjectService, SnackbarService, JobsService, AccountService, RegionsService]
 })
 export class JobsEditComponent implements OnInit {
 
@@ -30,9 +31,13 @@ export class JobsEditComponent implements OnInit {
   jobId: string;
   project: Project = new Project();
   job: Jobs = new Jobs();
+  // job:any = [];
   envs: Env;
   //itAccounts: Account[];
   itAccounts: Array<Account> = [];
+  list;
+  page = 0;
+  pageSize = 100;
   notifyAccounts: Account[];
   crons: Cron[] = [
   ];
@@ -51,10 +56,11 @@ export class JobsEditComponent implements OnInit {
   selectedCategories: string[]=[];
 
   constructor(private projectService: ProjectService, private jobsService: JobsService, private accountService: AccountService,
-            private route: ActivatedRoute, private router: Router, private handler: Handler,
+            private route: ActivatedRoute, private regionService: RegionsService, private router: Router, private handler: Handler,
             public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.getRegions();
     this.job.notifications[0] = new Noti();
     this.job.notifications[1] = new Noti();
 
@@ -112,6 +118,7 @@ export class JobsEditComponent implements OnInit {
         return;
       }
       this.job = results['data'];
+      console.log('this.job->',this.job)
       if ( this.job.categories ){
           this.selectedCategories = this.job.categories.split(",")
           .map(function(item) {
@@ -244,5 +251,20 @@ export class JobsEditComponent implements OnInit {
   cloneJob() {
     localStorage.setItem('jobClone', JSON.stringify(this.job));
     this.router.navigate(['/app/projects', this.id, 'jobs', 'new']);
+  }
+
+  getRegions() {
+    this.handler.activateLoader();
+    this.regionService.getEntitled(this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.list = results['data'];
+      //this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
   }
 }
