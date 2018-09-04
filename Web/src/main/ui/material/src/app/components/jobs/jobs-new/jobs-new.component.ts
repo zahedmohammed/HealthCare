@@ -92,7 +92,7 @@ export class JobsNewComponent implements OnInit {
           });
       }
       this.job.cron = JSON.parse(jobClone)["cron"];
-      localStorage.clear();
+      localStorage.removeItem('jobClone');
     }
     this.crons[0] = new Cron("0 0 12 * * ?", "Fire at 12pm (noon) every day"),
     this.crons[1] = new Cron("0 15 10 * * ?", "Fire at 10:15am every day"),
