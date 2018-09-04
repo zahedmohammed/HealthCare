@@ -95,11 +95,11 @@ public class CloudResponseProcessor {
                 clusterRepository.save(clusterData.get());
             }
 
-            if (clusterData.isPresent() && response.getSuccess() && task.getType() == TaskType.DESTROY) {
+            if (clusterData.isPresent() && task.getType() == TaskType.DESTROY) {
                 task.setResult(TaskResult.SUCCESS);
                 clusterData.get().setStatus(ClusterStatus.DELETED);
                 clusterData.get().setInactive(true);
-                clusterRepository.save(clusterData.get());
+                clusterRepository.delete(clusterData.get());
 
             }
             repository.save(task);

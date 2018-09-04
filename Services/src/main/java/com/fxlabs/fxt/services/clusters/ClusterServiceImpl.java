@@ -327,10 +327,18 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         amqpAdmin.removeBinding(binding);
 
         if (clusterOptional.get().getAccount() != null && !clusterOptional.get().getAccount().getAccountType().equals(com.fxlabs.fxt.dao.entity.clusters.AccountType.Self_Hosted)) {
-            deleteExecBot(converter.convertToDto(clusterOptional.get()), clusterOptional.get().getCreatedBy());
+            Response<Cluster> clusterResponse = deleteExecBot(converter.convertToDto(clusterOptional.get()), clusterOptional.get().getCreatedBy());
+
+            if(clusterResponse.isErrors()) {
+                return super.delete(clusterId, user);
+            }
+
+            clusterOptional.get().setInactive(true);
+            return save(converter.convertToDto(clusterOptional.get()));
         }
 
         return super.delete(clusterId, user);
+
     }
 
 
