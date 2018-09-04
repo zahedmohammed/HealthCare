@@ -41,8 +41,39 @@ export class RunHistoryComponent implements OnInit {
         this.suiteName = params['suiteId'];
         this.getTestSuiteResponseHistoryByName();
       }
+      if (params['projectId']) {
+        this.projectId = params['projectId'];
+        this.loadProject(this.projectId);
+       }
+       if (params['id']) {
+        this.id=params['id'];
+          this.getRunById();
+
+      }
     });
   }
+  loadProject(id: string) {
+    this.projectService.getById(id).subscribe(results => {
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.project = results['data'];
+  });
+}
+
+getRunById() {
+  this.handler.activateLoader();
+  this.runService.getDetails(this.id).subscribe(results => {
+    this.handler.hideLoader();
+    if (this.handler.handle(results)) {
+      return;
+    }
+    this.run = results['data'];
+  }, error => {
+    this.handler.hideLoader();
+    this.handler.error(error);
+  });
+}
 
   loadJob(id: string) {
     this.jobsService.getById(id).subscribe(results => {

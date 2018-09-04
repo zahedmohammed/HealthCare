@@ -80,7 +80,6 @@ export class RunDetailComponent implements OnInit {
         return;
       }
       this.project = results['data'];
-      console.log("project data-->",this.project);
 
     });
   }
@@ -91,8 +90,6 @@ export class RunDetailComponent implements OnInit {
         return;
       }
       this.job = results['data'];
-      console.log("job data-->",this.job);
-
     });
   }
 
@@ -122,7 +119,6 @@ export class RunDetailComponent implements OnInit {
         return;
       }
       this.run = results['data'];
-      console.log("run data-->",this.run);
       this.calSum();
     }, error => {
       this.handler.hideLoader();

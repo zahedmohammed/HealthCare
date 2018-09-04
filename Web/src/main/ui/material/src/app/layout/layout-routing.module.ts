@@ -128,6 +128,8 @@ const routes: Routes = [
       { path: 'jobs/:id', component: JobDetailsComponent},
       { path: 'projects/:projectId/jobs/:jobId/runs', component: RunListComponent },
       { path: 'projects/:projectId/jobs/:jobId/runs/:runId', component: RunDetailComponent },
+      { path: 'projects/:projectId/jobs/:jobId/runs/:id/history/:suiteId', component: RunHistoryComponent },
+
       //{ path: 'autocode', component: StepOneComponent},
       
       { path: 'messages', component: MessageListComponent },
@@ -200,8 +202,6 @@ const routes: Routes = [
       { path: 'skills/issue-tracker', component: SkillsIssueTrackerComponent },
 
       { path: 'skills/analytics', component: SkillsAnalyticsComponent },
-
-      { path: 'jobs/:jobId/history/:suiteId', component: RunHistoryComponent },
 
       // { path: 'chart', loadChildren: '../charts/charts.module#ChartsModule' },
       // { path: 'ecommerce', loadChildren: '../ecommerce/ecommerce.module#ECommerceModule' },

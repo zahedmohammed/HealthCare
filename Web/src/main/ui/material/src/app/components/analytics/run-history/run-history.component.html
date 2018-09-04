@@ -1,15 +1,33 @@
+<div class="box box-default">
+  <article>
+      <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+  <!-- <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
+  &nbsp;<span class="text-muted"> > </span> &nbsp; -->
+  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"> {{project.name}} </a>
+  &nbsp;<span class="text-muted"> > </span> &nbsp;
+  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a>
+  &nbsp;<span class="text-muted"> > </span> &nbsp;
+  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">{{job.name}}</a>
+  &nbsp;<span class="text-muted"> > </span> &nbsp;
+  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">History</a>
+  &nbsp;<span class="text-muted"> > </span> &nbsp;
+  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs', id]">{{run.runId}}</a>
+  &nbsp;<span class="text-muted"> > </span> &nbsp;Analytics
+      </section>
+  </article>
+</div>
 <section class="container-fluid with-maxwidth-lg1 no-breadcrumbs chapter1">
-  <article class="article">
+  <!-- <article class="article">
     <h2 class="article-title">
       <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
       /
-      <!--<a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]"> -->{{job.name}}
-      <!--</a>-->
+      <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]">{{job.name}}
+      </a>
       /
       <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs']"> Runs </a>
-      / {{suiteName}} <!-- TODO: Test suite name-->
+      / {{suiteName}} 
     </h2>
-  </article>
+  </article> -->
 
 
   <article class="article">
