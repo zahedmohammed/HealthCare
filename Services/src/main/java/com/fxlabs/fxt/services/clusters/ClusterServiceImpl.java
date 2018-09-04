@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.clusters;
 
 import com.fxlabs.fxt.converters.clusters.ClusterConverter;
+import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
 import com.fxlabs.fxt.dao.repository.es.ClusterESRepository;
@@ -16,9 +17,14 @@ import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.clusters.ClusterStatus;
+import com.fxlabs.fxt.dto.events.Entity;
+import com.fxlabs.fxt.dto.events.Event;
+import com.fxlabs.fxt.dto.events.Status;
+import com.fxlabs.fxt.dto.events.Type;
 import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.codec.binary.Base64;
@@ -63,13 +69,14 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private TextEncryptor encryptor;
     private String fxCaasAwsEc2Queue;
     private SystemSettingService systemSettingService;
+    private LocalEventPublisher localEventPublisher;
 
     @Autowired
     public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository, AccountRepository accountRepository,
                               ClusterConverter clusterConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
                               OrgUsersRepository orgUsersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
                               UsersRepository usersRepository, @Value("${fx.caas.aws_ec2.queue}") String fxCaasAwsEc2Queue,
-                              AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository,
+                              AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository, LocalEventPublisher localEventPublisher,
                               SystemSettingRepository systemSettingRepository, TextEncryptor encryptor, SystemSettingService systemSettingService) {
 
         super(clusterRepository, clusterConverter);
@@ -88,7 +95,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.encryptor = encryptor;
         this.systemSettingService = systemSettingService;
         this.fxCaasAwsEc2Queue = fxCaasAwsEc2Queue;
-
+        this.localEventPublisher = localEventPublisher;
     }
 
     @Override
@@ -247,8 +254,47 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         //send task to queue
         amqpClientService.sendTask(cloudTask, key);
+        try {
+            botExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null, Type.Deploy);
+        } catch (Exception e){
+            logger.info(e.getLocalizedMessage());
+        }
 
         return new Response<Cluster>();
+    }
+
+
+    public void botExecEvent(Cluster dto, Status status, Entity entityType, String taskId, String logId, Type type) {
+
+        if (dto == null || status == null || entityType == null) {
+
+            logger.info("Invalid event for project sync" );
+            return;
+        }
+
+
+        Event event = new Event();
+        //event.setId(project.getId());
+
+        event.setTaskId(taskId);
+
+        event.setName(dto.getName());
+        event.setUser(dto.getCreatedBy());
+        event.setEntityType(entityType);
+        event.setEventType(type);
+        event.setEntityId(dto.getId());
+        event.setLink("/app/regions/" + dto.getId());
+
+        event.setStatus(status);
+        NameDto org = new NameDto();
+        org.setName(dto.getOrg().getName());
+        org.setId(dto.getOrg().getId());
+        event.setOrg(org);
+        event.setLogId(logId);
+
+
+        logger.info("Creating bot [{}] and status [{}] for task type [{}]" , dto.getId(), status.toString(), event.getName());
+        localEventPublisher.publish(event);
     }
 
     @Override
@@ -349,6 +395,11 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         //send task to queue
         amqpClientService.sendTask(cloudTask, key);
+        try {
+            botExecEvent(dto, Status.In_progress, Entity.Bot, task.getId(), null, Type.Delete);
+        } catch (Exception e){
+            logger.info(e.getLocalizedMessage());
+        }
 
         return new Response<Cluster>();
     }

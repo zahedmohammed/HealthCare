@@ -16,8 +16,8 @@
   <mat-toolbar class="rounded">
     <span style="flex: 1 1 auto;"></span>
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']">
-      <small class="space">Jobs</small> &nbsp;&nbsp;
-    </a>
+      <small class="space">Jobs</small>
+    </a> &nbsp;&nbsp;
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
       <small>Environments</small>
     </a> &nbsp;&nbsp;
@@ -34,50 +34,77 @@
 
   <article class="article">
 
-<div class="box box-default table-box mdl-shadow--2dp">
-  <table class="mdl-data-table">
-<!--    <thead>
-    <tr>
-      <th class="mdl-data-table__cell&#45;&#45;non-numeric">#</th>
-      <th class="mdl-data-table__cell&#45;&#45;non-numeric">Type</th>
-      <th class="mdl-data-table__cell&#45;&#45;non-numeric">Formula</th>
-      <th>Savings</th>
-    </tr>
-    </thead>-->
-    <tbody>
-    <tr>
-      <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">1</td>-->
-      <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">Endpoints</td>-->
-      <td class="mdl-data-table__cell--non-numeric text-muted">Total No. of API Endpoints in the project
-      </td>
-      <td> {{ coverage.totalEndpoints | number}}</td>
-    </tr>
-    <tr>
-      <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">2</td>-->
-      <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">Test Suites</td>-->
-      <td class="mdl-data-table__cell--non-numeric text-muted">
-        No. of Test Suites auto generated
-      </td>
-      <td> {{ coverage.totalSuites| number }}</td>
-    </tr>
-    <tr>
-      <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">3</td>-->
-      <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">Test Cases</td>-->
-      <td class="mdl-data-table__cell--non-numeric text-muted">No. of test cases in all Test Suites generated
-      </td>
-      <td> {{ coverage.totalTestCases | number}}</td>
-    </tr>
-    <!--<tr class="bg-color-info font-weight-bold">
-      <td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>
-      <td class="mdl-data-table__cell&#45;&#45;non-numeric">Total Value</td>
-      <td class="mdl-data-table__cell&#45;&#45;non-numeric">Time saving + Cost
-        saving
-      </td>
-      <td>${{ TestSuite?.totalCostSaving | number}}</td>
-    </tr>-->
-    </tbody>
-  </table>
-</div>
+    <!--<div class="box box-default table-box mdl-shadow&#45;&#45;2dp">
+      <table class="mdl-data-table">
+        <tbody>
+        <tr>
+          <td class="mdl-data-table__cell&#45;&#45;non-numeric text-muted">Total No. of API Endpoints in the project
+          </td>
+          <td> {{ coverage.totalEndpoints | number}}</td>
+        </tr>
+        <tr>
+          <td class="mdl-data-table__cell&#45;&#45;non-numeric text-muted">
+            No. of Test Suites auto generated
+          </td>
+          <td> {{ coverage.totalSuites| number }}</td>
+        </tr>
+        <tr>
+          <td class="mdl-data-table__cell&#45;&#45;non-numeric text-muted">No. of test cases in all Test Suites generated
+          </td>
+          <td> {{ coverage.totalTestCases | number}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>-->
+
+      <!-- Accordian start -->
+
+      <mat-accordion>
+          <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      <p class="non-numeric text-muted">Total No. of API Endpoints in the project : {{ coverage.totalEndpoints | number}}</p>
+                  </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="mb-3">
+              </div>
+              <div class="col-md-12" *ngFor="let endpoint of coverage.endpoints">
+                  <div class="mb-3">
+                      {{endpoint}}
+                  </div>
+              </div>
+          </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-accordion>
+          <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      <p class="non-numeric text-muted">No. of Test Suites auto generated : {{ coverage.totalSuites | number }}</p>
+                  </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="col-md-12" *ngFor="let cat of coverage.countByCategory">
+                  <div class="mb-3">
+                      {{cat.groupBy}} : {{cat.count}}
+                  </div>
+              </div>
+          </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-accordion>
+          <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                  <mat-panel-title>
+                      <p class="non-numeric text-muted">No. of test cases in all Test Suites generated : {{ coverage.totalTestCases  | number}}</p>
+                  </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="mb-3">
+                  Average {{ coverage.totalTestCases / coverage.totalSuites  | number }} test case(s) per test-suite
+              </div>
+          </mat-expansion-panel>
+      </mat-accordion>
+
+      <!-- Accordian end -->
 
   </article>
 
