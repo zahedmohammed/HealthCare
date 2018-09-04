@@ -112,7 +112,7 @@
                   <mat-form-field class="full-width">
                     <mat-select placeholder="Bot Region" [(ngModel)]="job.regions" name="job.regions"
                       [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let option of list" [value]="option">
+                      <mat-option *ngFor="let option of list" [value]="option.name">
                         {{option.name}}
                       </mat-option>
                     </mat-select>
