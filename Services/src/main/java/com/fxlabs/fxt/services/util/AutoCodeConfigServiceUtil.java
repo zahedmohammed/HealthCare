@@ -20,6 +20,7 @@ public class AutoCodeConfigServiceUtil {
         List<AutoCodeGenerator> autoCodeGenerators = new ArrayList<>();
 
         autoCodeGenerators.add(getNoParamsGet());
+        autoCodeGenerators.add(getSLA());
         autoCodeGenerators.add(getAnonymous_invalid());
         autoCodeGenerators.add(getAuth_invalid());
         autoCodeGenerators.add(getDdos());
@@ -420,6 +421,37 @@ public class AutoCodeConfigServiceUtil {
         return no_params_get;
     }
 
+    private static AutoCodeGenerator getSLA() {
+        AutoCodeGenerator sla = new AutoCodeGenerator();
+        sla.setInactive(false);
+
+        sla.setSeverity(TestSuiteSeverity.Major);
+        sla.setType("sla");
+
+        sla.setDisplayHeaderLabel("SLA");
+        sla.setDisplayHeaderDescription("To test if the response time (in milliseconds) of an API is within the agreed upon SLA.");
+        sla.setAssertionDescription("Successful test suite response code is 200 along with reponse time lesser than or equal to the given value.");
+
+
+        List<String> assertions = new ArrayList<>();
+//        assertions.add("@StatusCode == 200");
+
+        sla.setAssertions(assertions);
+
+        List<AutoCodeGeneratorMatches > matchesList = new ArrayList<>();
+
+        AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
+//        admin.setName("Admin access");
+        match.setPathPatterns("/api/v1/**");
+        match.setMethods("Get");
+        match.setValue("3000");
+        matchesList.add(match);
+
+        sla.setMatches(matchesList);
+
+        return sla;
+    }
+
     private static final List<String> DEFAULT_ASSERTIONS = new ArrayList<>();
     private static final TestSuiteCategory DEFAULT_CATEGORY = TestSuiteCategory.Functional;
     private static final TestSuiteSeverity DEFAULT_SEVERITY = TestSuiteSeverity.Major;
@@ -444,6 +476,7 @@ public class AutoCodeConfigServiceUtil {
         TYPE_CATEGORY_MAP.put("empty_value", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("create", TestSuiteCategory.Functional);
         TYPE_CATEGORY_MAP.put("no_params", TestSuiteCategory.SimpleGET);
+        TYPE_CATEGORY_MAP.put("sla", TestSuiteCategory.SLA);
 
     }
 

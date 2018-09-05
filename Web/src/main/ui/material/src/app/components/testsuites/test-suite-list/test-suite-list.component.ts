@@ -33,7 +33,7 @@ export class TestSuiteListComponent implements OnInit {
   projectSync: ProjectSync = new ProjectSync();
   //private _clockSubscription: Subscription;
   selectedCategories:string;
-  categories=['All','SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+  categories=['All','SimpleGET','Functional','SLA','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
   constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
 

@@ -23,7 +23,7 @@ export class AutoSyncComponent implements OnInit {
   showSpinner: boolean = false;
   projectSync: ProjectSync = new ProjectSync();
   project;
-  categories=['SimpleGET','Functional','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+  categories=['SimpleGET','Functional','SLA', 'Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
 
 
   constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,

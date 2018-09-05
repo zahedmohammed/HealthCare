@@ -23,7 +23,8 @@ public enum TestSuiteCategory {
     Log_Forging("Log_Forging"),
     RBAC("RBAC"),
     HelloWorld("HelloWorld"),
-    SimpleGET("SimpleGET");
+    SimpleGET("SimpleGET"),
+    SLA("SLA");
 
     private final String category;
 

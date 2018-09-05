@@ -246,6 +246,41 @@
                               <div class="divider divider-dashed divider-lg pull-in"></div>
                             </div>
                         </div>
+                          <div *ngIf="res.type === 'sla'">
+                              <div *ngFor="let m of res.matches">
+                                  <div class="form-group row">
+                                      <label for="name" class="col-md-0 control-label"></label>
+                                      <div class="col-md-5">
+                                          <mat-input-container class="full-width">
+                                              <input [(ngModel)]="m.pathPatterns"
+                                                     [ngModelOptions]="{standalone: true}"
+                                                     matInput placeholder="Path patterns">
+                                          </mat-input-container>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row">
+                                      <label for="name" class="col-md-0 control-label"></label>
+                                      <div class="col-md-5">
+                                          <mat-input-container class="full-width">
+                                              <input [(ngModel)]="m.methods"
+                                                     [ngModelOptions]="{standalone: true}"
+                                                     matInput placeholder="Http methods">
+                                          </mat-input-container>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row">
+                                      <label for="name" class="col-md-0 control-label"></label>
+                                      <div class="col-md-5">
+                                          <mat-input-container class="full-width">
+                                              <input [(ngModel)]="m.value"
+                                                     [ngModelOptions]="{standalone: true}"
+                                                     matInput placeholder="SLA (in milliseconds)">
+                                          </mat-input-container>
+                                      </div>
+                                  </div>
+                                  <div class="divider divider-dashed divider-lg pull-in"></div>
+                              </div>
+                          </div>
                         <div class="row">
                           <div class="col-md-6">
                             <mat-input-container class="full-width">
