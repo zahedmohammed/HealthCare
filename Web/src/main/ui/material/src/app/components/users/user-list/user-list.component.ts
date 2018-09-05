@@ -61,6 +61,7 @@ export class UserListComponent implements OnInit {
         return;
       }
       this.orgUsers = results['data'];
+      this.length=results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

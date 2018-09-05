@@ -13,6 +13,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 import static com.fxlabs.fxt.rest.base.BaseController.*;
@@ -83,8 +85,8 @@ public class OrgController {
     @Secured({ROLE_ADMIN})
     @RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
     public Response<List<OrgUsers>> findOrgUsersById(@PathVariable("id") String id,
-                                                     @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+                                                     @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
+                                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Max(20)Integer pageSize) {
         return orgService.findOrgUsers(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
