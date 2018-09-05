@@ -497,9 +497,9 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         sb.append("docker").append(SPACE).append("run")
                 .append(SPACE).append("-d")
-                .append(SPACE).append("-e").append(SPACE).append("FX_HOST").append("=").append(host)
-                .append(SPACE).append("-e").append(SPACE).append("FX_PORT").append("=").append(port)
-                .append(SPACE).append("-e").append(SPACE).append("FX_SSL").append("=").append(ssl)
+//                .append(SPACE).append("-e").append(SPACE).append("FX_HOST").append("=").append(host)
+//                .append(SPACE).append("-e").append(SPACE).append("FX_PORT").append("=").append(port)
+//                .append(SPACE).append("-e").append(SPACE).append("FX_SSL").append("=").append(ssl)
                 .append(SPACE).append("-e").append(SPACE).append("FX_IAM").append("=").append(iam)
                 .append(SPACE).append("-e").append(SPACE).append("FX_KEY").append("=").append(key)
                 .append(SPACE).append("fxlabs/bot:").append(tag);
