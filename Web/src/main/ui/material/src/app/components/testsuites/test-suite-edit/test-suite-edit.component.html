@@ -25,29 +25,31 @@
   </div>
 </div> -->
 <section class="container-fluid with-maxwidth chapter">
-        <mat-toolbar class="rounded">
+        <mat-toolbar class="rounded ml-3">
                 <span style="flex: 1 1 auto;"></span>
-                <button mat-raised-button color="primary" class="float-right" (click)="cloneTestSuite()">
-                        Clone </button>&nbsp;&nbsp;
+                
                     <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
                     <small class="space">Jobs</small>
-                  </a>&nbsp;&nbsp; 
-                  <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
+                     </a>&nbsp;&nbsp; 
+                    <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
                     <small>Environments</small>
-                  </a> &nbsp;&nbsp;
+                     </a> &nbsp;&nbsp;
                       <small>Test Suites</small>
                      &nbsp;&nbsp;
-                <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
+                     <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
                     <small>Coverage</small>
-                </a> &nbsp;&nbsp;
-            <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
+                    </a> &nbsp;&nbsp;
+                    <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
                       <small>Edit</small>
                     </a> &nbsp;&nbsp;
+                    <button  mat-raised-button class="btn-w-sm text-primary"  (click)="cloneTestSuite()">
+                        Clone </button>&nbsp;&nbsp;
+                    <button mat-raised-button class="btn-w-sm text-danger"  (click)="deleteSuite();">Delete                               
+                    </button>
         </mat-toolbar>
         
     <article class="article">
         <div class="row">
-            <div class="col-md-12">&nbsp;</div>
         </div>
         <div class="box box-default">
             <div class="box-body ml-4">
@@ -313,8 +315,8 @@
                                 <button mat-raised-button color="primary" class="nav-btn" (click)="saveTestSuite();">
                                     Save
                                 </button>
-                                <button mat-button color="warn" class="nav-btn" (click)="deleteSuite();">Delete                               
-                                 </button>
+                                <!-- <button mat-button color="warn" class="nav-btn" (click)="deleteSuite();">Delete                               
+                                 </button> -->
                                 <button mat-button type="button" color="primary" class="nav-btn"
                                         [routerLink]="['/app/projects', id, 'test-suites']">Cancel
                                 </button>

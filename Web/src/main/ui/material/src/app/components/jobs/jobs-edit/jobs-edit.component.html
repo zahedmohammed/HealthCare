@@ -28,10 +28,9 @@
 
 <section class="container-fluid with-maxwidth chapter">
 
-  <mat-toolbar class="rounded">
+  <mat-toolbar class="rounded ml-3">
     <span style="flex: 1 1 auto;"></span>
-    <button mat-raised-button color="primary" class="float-right" (click)="cloneJob()">
-        Clone </button>&nbsp;&nbsp;
+    
     <small class="space">Jobs</small> &nbsp;&nbsp;
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
         <small>Environments</small>
@@ -46,6 +45,10 @@
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
         <small>Edit</small>
     </a> &nbsp;&nbsp;
+    <button  mat-raised-button class="btn-w-sm text-primary"  (click)="cloneJob()">
+      Clone </button>&nbsp;&nbsp;
+      <button mat-raised-button class="btn-w-sm text-danger" (click)="delete();">Delete
+      </button>
 </mat-toolbar>
 
   <article class="article">
@@ -302,8 +305,8 @@
               <div>
                 <div>
                   <mat-card-actions class="pull-right">
-                    <button mat-button color="warn" class="nav-btn" (click)="delete();">Delete
-                    </button>
+                    <!-- <button mat-button color="warn" class="nav-btn" (click)="delete();">Delete
+                    </button> -->
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid" (click)="saveJob();">Save
                       & Complete
