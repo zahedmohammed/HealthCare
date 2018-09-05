@@ -53,6 +53,8 @@
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Env</th>
                             <th class="mdl-data-table__cell--non-numeric">Bot-Region</th>
+                            <!-- <th class="mdl-data-table__cell--non-numeric">Automatic Bug Management</th>
+                            <th class="mdl-data-table__cell--non-numeric">Notifications</th> -->
                             <!-- <th class="mdl-data-table__cell&#45;&#45;non-numeric"></th>-->
                             <th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
                             <th class="mdl-data-table__cell--non-numeric"></th>
@@ -65,6 +67,29 @@
                                    [routerLink]="['/app/projects', id, 'jobs', job.id, 'edit']">{{job.name}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.environment?.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
+                            <!-- Auto bug -->
+                            <!-- <td class="mdl-data-table__cell--non-numeric">
+                                    <div *ngIf="!job.issueTracker.name?.length > 0"> {{"TODO"}}</div>
+                                    <div *ngIf="job.issueTracker.name?.length > 0">
+                                            <mat-checkbox [checked]="true" [disabled]="true">
+                                        </mat-checkbox>
+                                    </div>
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                    <div *ngFor="let obj of job.notifications">
+
+                                <div *ngIf="!obj.name?.length > 0" >
+                                       {{notification(false)}}
+                                 </div>
+                                 <div *ngIf="obj.name?.length > 0" >
+                                        {{notification(true)}}
+                                  </div>
+                                </div>
+                                 <mat-checkbox [checked]="true"*ngIf="notificationFlag" [disabled]="true"></mat-checkbox>
+                             <div *ngIf="!notificationFlag">{{"TODO"}}</div>
+
+                            </td> -->
+
                             <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
                             <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
                             <td class="mdl-data-table__cell--non-numeric">

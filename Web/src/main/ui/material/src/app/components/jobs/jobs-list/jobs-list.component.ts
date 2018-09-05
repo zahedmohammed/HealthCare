@@ -26,6 +26,8 @@ export class JobslistComponent implements OnInit {
   project: Base = new Base();
   showSpinner: boolean = false;
   //private _clockSubscription: Subscription;
+  notificationFlag :boolean;
+  autoBugMngmnt :boolean=false ;
 
   constructor(private jobsService: JobsService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
@@ -37,6 +39,7 @@ export class JobslistComponent implements OnInit {
       console.log(params);
       this.loadProject(this.id);
       this.list(this.id);
+      this.notificationFlag=false;
     });
     /*let timer = Observable.timer(1, 10000);
     this._clockSubscription = timer.subscribe(t => {
@@ -110,4 +113,9 @@ export class JobslistComponent implements OnInit {
       //this.router.navigate(['/app/projects/' , job.project.id,  'jobs', job.id, 'runs']);
     });
   }
+  // notification(obj){
+  //   console.log("chekc obj","-->"+obj);
+  //   if(obj)
+  //     this.notificationFlag=obj;
+  // }
 }
