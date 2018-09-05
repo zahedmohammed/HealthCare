@@ -12,6 +12,7 @@ export class Region {
     public live: number;
     manual: boolean = false;
     public manualScript: string;
+    public id;
 
 
 }
