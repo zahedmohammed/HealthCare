@@ -487,14 +487,21 @@ public class StubGenerator {
             AuthorizationValue apiKey = new AuthorizationValue(headerKey, headerVal, "header");
             list.add(apiKey);
 
-            swagger = new SwaggerParser().read(openAPISpec, list, true);
+            try {
+                swagger = new SwaggerParser().read(openAPISpec, list, true);
+            }catch(Exception ex){
+                // Couldnt find/parse the openAPISpec
+            }
 
             if (swagger == null) {
                 swagger = new SwaggerCompatConverter().read(openAPISpec, list);
             }
         } else {
-            swagger = new SwaggerParser().read(openAPISpec);
-
+            try {
+                swagger = new SwaggerParser().read(openAPISpec);
+            }catch(Exception ex){
+                // Couldnt find/parse the openAPISpec
+            }
             if (swagger == null) {
                 swagger = new SwaggerCompatConverter().read(openAPISpec);
             }
