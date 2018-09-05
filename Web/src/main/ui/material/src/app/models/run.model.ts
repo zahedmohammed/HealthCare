@@ -2,7 +2,7 @@ export class Run {
   task: Task = new Task();
   runId: string;
   job: Jobs = new Jobs();
-
+  regions: string;
   modifiedDate: string;
   stats : Map<string, number> = new Map<string, number>();
 }
