@@ -27,4 +27,6 @@ public interface ClusterRepository extends JpaRepository<Cluster, String> {
 
     List<Cluster> findByAccountIdAndInactive(String id, boolean inactive);
 
+    Optional<Cluster> findByKey(String key);
+
 }

@@ -5,5 +5,5 @@ package com.fxlabs.fxt.dto.events;
  * @author Mohammed Shoukath Ali
  */
 public enum Type {
-    Sync, Run, Deploy, Delete
+    Sync, Run, Deploy, Delete, Connected
 }

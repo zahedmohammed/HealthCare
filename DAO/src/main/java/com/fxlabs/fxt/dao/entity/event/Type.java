@@ -5,5 +5,5 @@ package com.fxlabs.fxt.dao.entity.event;
  * @Mohammed Shoukath Ali
  */
 public enum Type {
-    Sync, Run, Deploy, Delete
+    Sync, Run, Deploy, Delete, Connected
 }
