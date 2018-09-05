@@ -85,7 +85,7 @@ export class JobsNewComponent implements OnInit {
 
     if (localStorage.getItem('jobClone') != null) {
       var jobClone = localStorage.getItem("jobClone");
-      this.job.name = JSON.parse(jobClone)["name"];
+      this.job.name = JSON.parse(jobClone)["name"] + "_copy";
       this.job.environment = JSON.parse(jobClone)["environment"];
       this.job.regions = JSON.parse(jobClone)["regions"];
       this.job.categories = JSON.parse(jobClone)["categories"];
