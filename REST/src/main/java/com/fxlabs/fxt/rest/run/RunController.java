@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.rest.run;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestSuiteResponse;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.fxlabs.fxt.rest.base.BaseController.*;
@@ -117,6 +119,16 @@ public class RunController {
 
 
         return runService.run(id, region, tags, env, suites, categories, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/testsuite", method = RequestMethod.POST)
+    public Response<List<TestSuiteResponse>> runTesSuite(@RequestParam(value = "region", required = true) String region,
+                             @RequestParam(value = "env", required = true) String env,
+                             @Valid @RequestBody TestSuite dto) {
+
+
+        return runService.runTestSuite(region, env, SecurityUtil.getCurrentAuditor(), dto);
     }
 
 

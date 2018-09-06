@@ -1,8 +1,7 @@
 package com.fxlabs.fxt.services.run;
 
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.TestSuiteCategory;
-import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
+import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.dto.run.Run;
 import com.fxlabs.fxt.dto.run.RunSavings;
 import com.fxlabs.fxt.dto.run.Suite;
@@ -22,6 +21,8 @@ public interface RunService extends GenericService<Run, String> {
     Response<List<com.fxlabs.fxt.dto.run.Run>> findByJobIdForSaving(String jobId, String user, Pageable pageable);
 
     Response<Run> run(String jobId, String region, String tags, String env, String suites, String categories, String user);
+
+    Response<List<TestSuiteResponse>> runTestSuite(String region, String env, String user, TestSuite dto);
 
     Response<List<TestSuiteResponse>> findByRunId(String runId, String user, Pageable pageable);
 
