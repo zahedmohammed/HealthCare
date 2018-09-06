@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,7 +112,26 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         // check user has access to project
         projectService.isUserEntitled(projectId, user);
         Page<Job> page = this.jobRepository.findByProjectIdAndInactive(projectId, false, pageable);
-        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+        List<com.fxlabs.fxt.dto.project.Job> jobList = converter.convertToDtos(page.getContent());
+        jobList.forEach(job -> {
+            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null &&  job.getNotifications().get(1) == null) {
+                job.setNotificationToDo(true);
+                return;
+            }
+
+            if (StringUtils.isEmpty(job.getNotifications().get(0).getTo()) && StringUtils.isEmpty(job.getNotifications().get(1).getChannel()) {
+                job.setNotificationToDo(true);
+                return;
+            }
+        });
+
+        jobList.forEach(job -> {
+            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())){
+                job.setIssueTrackerToDo(true);
+            }
+        });
+
+        return new Response<>(jobList, page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
@@ -146,7 +166,25 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
             }
         });
 
-        return new Response<>(converter.convertToDtos(jobs), new Long(jobs.size()), jobs.size());
+        List<com.fxlabs.fxt.dto.project.Job> jobList = converter.convertToDtos(jobs);
+        jobList.forEach(job -> {
+            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null &&  job.getNotifications().get(1) == null) {
+                job.setNotificationToDo(true);
+                return;
+            }
+
+            if (StringUtils.isEmpty(job.getNotifications().get(0).getTo()) && StringUtils.isEmpty(job.getNotifications().get(1).getChannel()) {
+                job.setNotificationToDo(true);
+                return;
+            }
+        });
+
+        jobList.forEach(job -> {
+            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())){
+                job.setIssueTrackerToDo(true);
+            }
+        });
+        return new Response<>(jobList, new Long(jobs.size()), jobs.size());
 
     }
 

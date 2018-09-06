@@ -53,9 +53,9 @@
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Env</th>
                             <th class="mdl-data-table__cell--non-numeric">Bot-Region</th>
-                            <!-- <th class="mdl-data-table__cell--non-numeric">Automatic Bug Management</th>
-                            <th class="mdl-data-table__cell--non-numeric">Notifications</th> -->
-                            <!-- <th class="mdl-data-table__cell&#45;&#45;non-numeric"></th>-->
+                             <th class="mdl-data-table__cell--non-numeric">Bug Management</th>
+                            <th class="mdl-data-table__cell--non-numeric">Notifications</th>
+
                             <th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
                             <th class="mdl-data-table__cell--non-numeric"></th>
                         </tr>
@@ -68,27 +68,18 @@
                             <td class="mdl-data-table__cell--non-numeric">{{job.environment?.name}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
                             <!-- Auto bug -->
-                            <!-- <td class="mdl-data-table__cell--non-numeric">
-                                    <div *ngIf="!job.issueTracker.name?.length > 0"> {{"TODO"}}</div>
-                                    <div *ngIf="job.issueTracker.name?.length > 0">
+                            <td class="mdl-data-table__cell--non-numeric">
+                                    <div *ngIf="job.issueTrackerToDo"> {{"TODO"}}</div>
+                                    <div *ngIf="!job.issueTrackerToDo">
                                             <mat-checkbox [checked]="true" [disabled]="true">
                                         </mat-checkbox>
                                     </div>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric">
-                                    <div *ngFor="let obj of job.notifications">
+                                 <mat-checkbox [checked]="true"*ngIf="!job.notificationToDo" [disabled]="true"></mat-checkbox>
+                             <div *ngIf="job.notificationToDo">{{"TODO"}}</div>
 
-                                <div *ngIf="!obj.name?.length > 0" >
-                                       {{notification(false)}}
-                                 </div>
-                                 <div *ngIf="obj.name?.length > 0" >
-                                        {{notification(true)}}
-                                  </div>
-                                </div>
-                                 <mat-checkbox [checked]="true"*ngIf="notificationFlag" [disabled]="true"></mat-checkbox>
-                             <div *ngIf="!notificationFlag">{{"TODO"}}</div>
-
-                            </td> -->
+                            </td>
 
                             <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
                             <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
