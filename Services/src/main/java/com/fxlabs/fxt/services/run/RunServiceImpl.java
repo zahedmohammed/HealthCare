@@ -255,6 +255,18 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         return new Response<List<Suite>>(dataSets, page.getTotalElements(), page.getTotalPages());
     }
 
+
+    private Date getCurrentMonthStartDate(){
+        Date date = new Date();
+
+        date = DateUtils.setMilliseconds(date, 0);
+        date = DateUtils.setSeconds(date, 0);
+        date = DateUtils.setMinutes(date, 0);
+        date = DateUtils.setHours(date, 0);
+        date = DateUtils.setDays(date, 1);
+        return date;
+
+    }
     @Override
     public Response<Long> count(String user, Pageable pageable) {
         // check user has access to project
@@ -270,15 +282,9 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
         projectsResponse.getData().stream().forEach(p -> {
 
-            Date date = new Date();
 
-            date = DateUtils.setMilliseconds(date, 0);
-            date = DateUtils.setSeconds(date, 0);
-            date = DateUtils.setMinutes(date, 0);
-            date = DateUtils.setHours(date, 0);
-            date = DateUtils.setDays(date, 1);
 
-            Long count = repository.countByJobProjectIdAndCreatedDateGreaterThan(p.getId(), date);
+            Long count = repository.countByJobProjectIdAndCreatedDateGreaterThan(p.getId(), getCurrentMonthStartDate());
 
 //            Long count = repository.countByJobProjectId(p.getId());
             if (count != null) {
@@ -296,6 +302,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         // find owned projects org --> projects --> jobs
         // users --> org or users --> projects
         // least - a project should be visible to owner
+
         Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
         if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
             return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
@@ -304,7 +311,10 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         AtomicLong al = new AtomicLong(0);
 
         projectsResponse.getData().stream().forEach(p -> {
-            Long count = repository.countTestsByProject(p.getId());
+
+          //  Long count = repository.countTestsByProject(p.getId());
+            Long count = repository.countTestsByProjectAndCreatedDateGreaterThan(p.getId(),getCurrentMonthStartDate());
+
             if (count != null) {
                 al.getAndAdd(count);
             }
@@ -329,7 +339,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         AtomicLong al = new AtomicLong(0);
 
         projectsResponse.getData().stream().forEach(p -> {
-            Long count = repository.countBytesByProject(p.getId());
+            Long count = repository.countBytesByProjectAndCreatedDateGreaterThan(p.getId(),getCurrentMonthStartDate());
+        //    Long count = repository.countBytesByProject(p.getId());
             if (count != null) {
                 al.getAndAdd(count);
             }
@@ -354,7 +365,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         AtomicLong al = new AtomicLong(0);
 
         projectsResponse.getData().stream().forEach(p -> {
-            Long count = repository.countTimeByProject(p.getId());
+            Long count = repository.countTimeByProjectAndCreatedDateGreaterThan(p.getId(),getCurrentMonthStartDate());
+          //  Long count = repository.countTimeByProject(p.getId());
             if (count != null) {
                 al.getAndAdd(count);
             }
