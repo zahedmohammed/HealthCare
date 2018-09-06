@@ -4,10 +4,13 @@ import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.PingTask;
 import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
+import com.fxlabs.fxt.dto.run.LightWeightBotTask;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.run.BotTask;
 import com.fxlabs.fxt.dto.task.EmailTask;
+
+import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -26,6 +29,8 @@ public interface AmqpClientService {
     public void sendTask(CloudTask task, String region);
 
     public String sendTask(PingTask task, String region);
+
+    public List<BotTask> sendTask(LightWeightBotTask task, String region);
 
     public void sendTask(NotificationTask task, String region);
 

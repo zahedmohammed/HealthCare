@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.PingTask;
 import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.notification.NotificationTask;
+import com.fxlabs.fxt.dto.run.LightWeightBotTask;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.run.BotTask;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -66,6 +69,12 @@ public class AmqpClientServiceImpl implements AmqpClientService {
     public String sendTask(PingTask task, String region) {
         Object obj = this.template.convertSendAndReceive(exchange, region, task);
         return (String) obj;
+    }
+
+    @Override
+    public List<BotTask> sendTask(LightWeightBotTask task, String region) {
+        Object obj = this.template.convertSendAndReceive(exchange, region, task);
+        return (List<BotTask>) obj;
     }
 
     @Override
