@@ -47,5 +47,7 @@ public interface RunRepository extends JpaRepository<Run, String> {
 
     Long countByJobProjectId(String project);
 
+    Long countByJobProjectIdAndCreatedDateGreaterThan(String project, Date createDate);
+
 
 }

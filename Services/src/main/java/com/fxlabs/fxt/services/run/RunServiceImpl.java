@@ -19,6 +19,7 @@ import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.project.JobService;
 import com.fxlabs.fxt.services.project.ProjectService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -267,7 +269,18 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         AtomicLong al = new AtomicLong(0);
 
         projectsResponse.getData().stream().forEach(p -> {
-            Long count = repository.countByJobProjectId(p.getId());
+
+            Date date = new Date();
+
+            date = DateUtils.setMilliseconds(date, 0);
+            date = DateUtils.setSeconds(date, 0);
+            date = DateUtils.setMinutes(date, 0);
+            date = DateUtils.setHours(date, 0);
+            date = DateUtils.setDays(date, 1);
+
+            Long count = repository.countByJobProjectIdAndCreatedDateGreaterThan(p.getId(), date);
+
+//            Long count = repository.countByJobProjectId(p.getId());
             if (count != null) {
                 al.getAndAdd(count);
             }
