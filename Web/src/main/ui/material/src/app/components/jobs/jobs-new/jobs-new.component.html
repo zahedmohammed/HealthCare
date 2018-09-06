@@ -14,7 +14,19 @@
 </div>
 </div>
 <section class="container-fluid with-maxwidth chapter">
-    <mat-toolbar class="rounded">
+        <nav mat-tab-nav-bar>
+                <button mat-raised-button class="btn-w-xs bottom" mat-tab-link [routerLink]="['/app/projects', id, 'jobs']">Jobs
+                </button>
+                <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+                </button>
+                <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+                </button>
+                <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+                </button>
+                <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+                </button>
+            </nav>
+    <!-- <mat-toolbar class="rounded">
         <span style="flex: 1 1 auto;"></span>
         <small class="space">Jobs</small> &nbsp;&nbsp;
         <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
@@ -30,7 +42,7 @@
         <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
             <small>Edit</small>
         </a> &nbsp;&nbsp;
-    </mat-toolbar>
+    </mat-toolbar> -->
     <article class="article">
             
         <div class="box box-default">

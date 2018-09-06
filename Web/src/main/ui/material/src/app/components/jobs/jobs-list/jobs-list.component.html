@@ -12,8 +12,25 @@
 </div>
 
 <section class="container-fluid with-maxwidth chapter">
+        <nav mat-tab-nav-bar>
+            <button mat-raised-button class="btn-w-xs bottom" mat-tab-link>Jobs
+            </button>
+            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+            </button>
+            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+            </button>
+            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+            </button>
+            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+            </button>
+        </nav>
+        <!-- <mat-tab-group>
+                <mat-tab label="Jobs"> </mat-tab>
+                <mat-tab label="Environments" [routerLink]="['/app/projects', id, 'environments']"> </mat-tab>
+                <mat-tab label="Test Suites"> </mat-tab>
+              </mat-tab-group> -->
 
-    <mat-toolbar class="rounded">
+    <!-- <mat-toolbar class="rounded">
         <span style="flex: 1 1 auto;"></span>
         <small class="space">Jobs</small> &nbsp;&nbsp;
         <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
@@ -28,7 +45,7 @@
         <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
             <small>Edit</small>
         </a> &nbsp;&nbsp;
-    </mat-toolbar>
+    </mat-toolbar> -->
 
     <article class="article">
 

@@ -12,8 +12,20 @@
 </div>
 
 <section class="container-fluid with-maxwidth chapter">
+    <nav mat-tab-nav-bar>
+      <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+      </button>
+      <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+      </button>
+      <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+      </button>
+      <button mat-raised-button class="btn-w-xs bottom" mat-tab-link>Coverage
+      </button>
+      <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+      </button>
+    </nav>
 
-  <mat-toolbar class="rounded">
+  <!-- <mat-toolbar class="rounded">
     <span style="flex: 1 1 auto;"></span>
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']">
       <small class="space">Jobs</small>
@@ -24,16 +36,12 @@
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']">
       <small>Test Suites</small>
     </a> &nbsp;&nbsp;
-    <!--<a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">-->
       <small>Coverage</small>
-    <!--</a>--> &nbsp;&nbsp;
+     &nbsp;&nbsp;
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
       <small>Edit</small>
     </a> &nbsp;&nbsp;
-  </mat-toolbar>
-
-  <article class="article">
-
+  </mat-toolbar> -->
     <!--<div class="box box-default table-box mdl-shadow&#45;&#45;2dp">
       <table class="mdl-data-table">
         <tbody>
@@ -58,7 +66,9 @@
     </div>-->
 
       <!-- Accordian start -->
-
+      <article class="article">
+      <div class="box box-default">
+      <div class="box-body">
       <mat-accordion>
           <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -105,7 +115,7 @@
       </mat-accordion>
 
       <!-- Accordian end -->
-
-  </article>
-
+    </div>
+  </div>
+</article>
 </section>

@@ -25,7 +25,23 @@
   </div>
 </div> -->
 <section class="container-fluid with-maxwidth chapter">
-        <mat-toolbar class="rounded ml-3">
+        <nav mat-tab-nav-bar>
+            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+            </button>
+            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+            </button>
+            <button mat-raised-button class="btn-w-xs bottom" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+            </button>
+            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+            </button>
+            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+            </button>
+            <button mat-raised-button class="btn-w-sm text-danger pull-right" (click)="deleteSuite();">Delete
+            </button>
+            <button mat-raised-button class="btn-w-sm text-primary pull-right" (click)="cloneTestSuite()">Clone
+            </button>
+        </nav>
+        <!-- <mat-toolbar class="rounded ml-3">
                 <span style="flex: 1 1 auto;"></span>
                 
                     <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
@@ -46,7 +62,7 @@
                         Clone </button>&nbsp;&nbsp;
                     <button mat-raised-button class="btn-w-sm text-danger"  (click)="deleteSuite();">Delete                               
                     </button>
-        </mat-toolbar>
+        </mat-toolbar> -->
         
     <article class="article">
         <div class="row">

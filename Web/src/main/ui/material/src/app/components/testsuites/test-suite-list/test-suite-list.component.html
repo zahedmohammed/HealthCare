@@ -20,24 +20,30 @@
 </div> -->
 
 <section class="container-fluid with-maxwidth chapter">
-    <div class="row">
-      <div class="col-md-4">
-        <mat-form-field class="full-width">
-          <mat-select placeholder="Search by category" [(ngModel)]="category"  (selectionChange)="searchByCategory()" name="category" [ngModelOptions]="{standalone: true}">
+        <nav mat-tab-nav-bar>
+          <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+          </button>
+          <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+          </button>
+          <button mat-raised-button class="btn-w-xs bottom" mat-tab-link>Test Suites
+          </button>
+          <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+          </button>
+          <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+          </button>
+        </nav><br>
+        <mat-form-field class="col-md-3">
+          <mat-select placeholder="Search by category" [(ngModel)]="category" (selectionChange)="searchByCategory()" name="category"
+            [ngModelOptions]="{standalone: true}">
             <mat-option *ngFor="let category of categories" [value]="category">
               {{category}}
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
-      <div class="col-md-4">
-        <mat-input-container class="full-width">
+        <mat-input-container class="col-md-3">
           <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..." (keyup.enter)="search()">
         </mat-input-container>
-      </div>
-
-
-  <mat-toolbar class="rounded col-md-4">
+  <!-- <mat-toolbar class="rounded col-md-4">
     <span style="flex: 1 1 auto;"></span>
     <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
       <small class="space">Jobs</small>
@@ -47,9 +53,9 @@
       <small>Environments</small>
     </a> &nbsp;&nbsp;
 
-    <!--a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']"-->
+    <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']"
       <small>Test Suites</small>
-    <!--/a--> &nbsp;&nbsp;
+    </a> &nbsp;&nbsp;
 
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
       <small>Coverage</small>
@@ -58,7 +64,7 @@
     <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
       <small>Edit</small>
     </a> &nbsp;&nbsp;
-  </mat-toolbar></div>
+  </mat-toolbar> -->
 
   <article class="article">
     <div class="box box-default">
