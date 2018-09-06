@@ -20,5 +20,7 @@ public interface EnvironmentRepository extends JpaRepository<Environment, String
 
     Optional<Environment> findByIdAndInactive(String id, boolean inactive);
 
+    Optional<Environment> findByProjectIdAndNameAndInactive(String projectId, String id, boolean inactive);
+
     Long countByProjectIdAndInactive(String project, boolean inactive);
 }
