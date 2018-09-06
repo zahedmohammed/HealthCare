@@ -5,5 +5,5 @@ package com.fxlabs.fxt.dao.entity.run;
  */
 public enum TaskStatus {
 
-    WAITING, PROCESSING, COMPLETED, FAIL, TIMEOUT, CANCEL
+    WAITING, PROCESSING, COMPLETED, FAIL, TIMEOUT, STOPPED
 }

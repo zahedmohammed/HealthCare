@@ -208,7 +208,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             throw new FxException("Invalid run");
         }
 
-        run.getTask().setStatus(com.fxlabs.fxt.dao.entity.run.TaskStatus.CANCEL);
+        run.getTask().setStatus(com.fxlabs.fxt.dao.entity.run.TaskStatus.STOPPED);
 
         run = this.repository.save(run);
         com.fxlabs.fxt.dto.run.Run run1 = this.converter.convertToDto(run);
