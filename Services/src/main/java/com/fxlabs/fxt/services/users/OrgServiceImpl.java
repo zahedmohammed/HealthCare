@@ -98,7 +98,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         Users users = usersOptional.get();
 
         dto.setOrgType(OrgType.ENTERPRISE);
-        dto.setOrgPlan(com.fxlabs.fxt.dto.users.OrgPlan.FREE);
+        dto.setOrgPlan(com.fxlabs.fxt.dto.users.OrgPlan.ENTERPRISE);
 
         Response<com.fxlabs.fxt.dto.users.Org> response = super.save(dto, user);
 
