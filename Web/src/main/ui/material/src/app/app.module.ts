@@ -182,6 +182,7 @@ import { SlackRegisterComponent } from './components/dialogs/slack-register/slac
 import { ApiCoverageComponent } from './components/coverage/api-coverage/api-coverage.component';
 import { BotCredentialsComponent } from './components/dialogs/bot-credentials/bot-credentials.component';
 import { BotDialogComponent } from './components/dialogs/bot-dialog/bot-dialog.component';
+import { TestsuiteRunComponent } from './components/dialogs/testsuite-run/testsuite-run.component';
 
 @NgModule({
   imports: [
@@ -343,12 +344,13 @@ import { BotDialogComponent } from './components/dialogs/bot-dialog/bot-dialog.c
     SlackRegisterComponent,
     ApiCoverageComponent,
     BotCredentialsComponent,
-    BotDialogComponent
+    BotDialogComponent,
+    TestsuiteRunComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
   entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent,
-    SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent, SlackRegisterComponent,BotCredentialsComponent, BotDialogComponent]
+    SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent, SlackRegisterComponent,BotCredentialsComponent,TestsuiteRunComponent, BotDialogComponent]
 })
 
 export class AppModule {

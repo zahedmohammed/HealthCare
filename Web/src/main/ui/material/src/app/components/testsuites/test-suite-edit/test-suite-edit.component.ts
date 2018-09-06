@@ -7,6 +7,8 @@ import { Project } from '../../../models/project.model';
 import { Jobs, Noti, Cron } from '../../../models/jobs.model';
 import { AccountService } from '../../../services/account.service';
 import { TestSuiteService } from '../../../services/test-suite.service';
+
+import {RunService}from '../../../services/run.service';
 import { Account } from '../../../models/account.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
@@ -19,6 +21,7 @@ import {FormBuilder, FormGroup, Validators , FormArray}from '@angular/forms';
 import { TestSuite,TestCase} from '../../../models/test-suite.model';
 import 'brace/theme/github';
 import 'brace/mode/yaml';
+import { TestsuiteRunComponent } from '../../dialogs/testsuite-run/testsuite-run.component';
 import 'brace';
 import 'brace/ext/language_tools';
 // import 'ace-builds/src-min-noconflict/snippets/html';
@@ -28,7 +31,7 @@ import 'brace/ext/language_tools';
  selector: 'app-test-suite-edit',
   templateUrl: './test-suite-edit.component.html',
   styleUrls: ['./test-suite-edit.component.scss'],
-  providers: [ProjectService, SnackbarService]
+  providers: [ProjectService, SnackbarService,RunService,JobsService]
 })
 export class TestSuiteEditComponent implements OnInit {
     @ViewChild('editor') editor;
@@ -37,11 +40,14 @@ export class TestSuiteEditComponent implements OnInit {
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
   yml = true;
+  jobs;
+  runResult;
   bsc = false;
   adv = false;
   testSuiteId: string;
   testCases: FormArray;
   advance: boolean = false;
+  runCategories:string[]=[];
 severities:any[]=[{id:"Critical",value:"Critical"},{id:"Major",value: "Major"},{id:"Minor",value: "Minor"},{id:"Trivial",value: "Trivial"}];
 methods: string[] = ["GET", "POST", "PUT", "DELETE"];//, "OPTIONS", "TRACE", "HEAD", "PATCH"];
 categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative", "Weak_Password", "Security_UnSecured", "Security_DDOS","Security_XSS","Security_SQL_Injection","UnSecured","DDOS","XSS_Injection","SQL_Injection","Log_Forging","RBAC"];
@@ -54,8 +60,8 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
   thirdFormGroup: FormGroup;
 
   constructor(private projectService: ProjectService,private testSuiteService: TestSuiteService,
-            private route: ActivatedRoute, private router: Router, private handler: Handler,
-            public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder) { }
+            private route: ActivatedRoute, private router: Router, private handler: Handler,private dialog: MatDialog,
+            public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder,private jobsService: JobsService,private runService: RunService) { }
 
   ngOnInit() {
 
@@ -107,6 +113,7 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
       this.id = params['id'];
       if (this.id) {
         this.loadProject(this.id);
+        this.list(this.id);
       }
       this.testSuiteId = params['testSuiteId'];
         if (params['testSuiteId']) {
@@ -127,6 +134,7 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
         return;
       }
       this.testSuite = results['data'];
+      console.log("testSuite",this.testSuite);
      let k:TestCase = new TestCase();
      if(this.testSuite.testCases.length==0 ) this.testSuite.testCases=[k];
           for(var i=0;i<this.testSuite.testCases.length;i++) this.addItem1(this.testSuite.testCases[i]);
@@ -183,6 +191,8 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
           return;
         }
         this.project = results['data'];
+        console.log("project",this.project);
+
         this.testSuite.project=this.project;
         //this.job['project'] = this.project;
        // this.context = this.project.name + " > Edit";
@@ -267,5 +277,36 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
             });
       
           }
+        }
+        length = 0;
+        page = 0;
+        pageSize = 20;
+
+        list(id: string) {
+          this.handler.activateLoader();
+          this.jobsService.getJobs(id, this.page, this.pageSize).subscribe(results => {
+            this.handler.hideLoader();
+            if (this.handler.handle(results)) {
+              return;
+            }
+            this.jobs = results['data'];
+            console.log("job",this.jobs);
+          }, error => {
+            this.handler.hideLoader();
+            this.handler.error(error);
+          });
+        }
+
+
+ run() {        
+ const dialogRef = this.dialog.open(TestsuiteRunComponent, {
+  width:'800px',
+  //height:'85%',
+  data: this.testSuite
+  });
+  dialogRef.afterClosed().subscribe(result => {
+  });
+
+        
         }
   }
