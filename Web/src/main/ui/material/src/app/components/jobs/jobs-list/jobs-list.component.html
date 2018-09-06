@@ -2,50 +2,26 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                <!-- <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
-                &nbsp;<span class="text-muted"> > </span> &nbsp; -->
-                {{project.name}}
-                &nbsp;<span class="text-muted"> > </span> &nbsp;Jobs
+                <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> {{project.name}} </a>
             </section>
         </article>
     </div>
 </div>
 
 <section class="container-fluid with-maxwidth chapter">
-        <nav mat-tab-nav-bar>
-            <button mat-raised-button class="btn-w-xs bottom" mat-tab-link>Jobs
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
-            </button>
-        </nav>
-        <!-- <mat-tab-group>
-                <mat-tab label="Jobs"> </mat-tab>
-                <mat-tab label="Environments" [routerLink]="['/app/projects', id, 'environments']"> </mat-tab>
-                <mat-tab label="Test Suites"> </mat-tab>
-              </mat-tab-group> -->
-
-    <!-- <mat-toolbar class="rounded">
-        <span style="flex: 1 1 auto;"></span>
-        <small class="space">Jobs</small> &nbsp;&nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
-            <small>Environments</small>
-        </a> &nbsp;&nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']">
-            <small>Test Suites</small>
-        </a> &nbsp;&nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
-            <small>Coverage</small>
-        </a> &nbsp;&nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
-            <small>Edit</small>
-        </a> &nbsp;&nbsp;
-    </mat-toolbar> -->
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [active]="true">Jobs
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+        </label>
+    </nav>
+    <br/>
 
     <article class="article">
 
@@ -70,7 +46,7 @@
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Env</th>
                             <th class="mdl-data-table__cell--non-numeric">Bot-Region</th>
-                             <th class="mdl-data-table__cell--non-numeric">Bug Management</th>
+                            <th class="mdl-data-table__cell--non-numeric">Bug Management</th>
                             <th class="mdl-data-table__cell--non-numeric">Notifications</th>
 
                             <th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
@@ -86,28 +62,32 @@
                             <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
                             <!-- Auto bug -->
                             <td class="mdl-data-table__cell--non-numeric">
-                                    <div *ngIf="job.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
-                                    <div *ngIf="!job.issueTrackerToDo" class="ml-4">
-                                            <mat-checkbox [checked]="true" [disabled]="true">
-                                        </mat-checkbox>
-                                    </div>
+                                <div *ngIf="job.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
+                                <div *ngIf="!job.issueTrackerToDo" class="ml-4">
+                                    <mat-checkbox [checked]="true" [disabled]="true">
+                                    </mat-checkbox>
+                                </div>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric">
                                 <div class="ml-4">
-                                    <mat-checkbox [checked]="true"*ngIf="!job.notificationToDo" [disabled]="true"></mat-checkbox>
+                                    <mat-checkbox [checked]="true" *ngIf="!job.notificationToDo"
+                                                  [disabled]="true"></mat-checkbox>
                                 </div>
                                 <div *ngIf="job.notificationToDo" class="ml-3">
-                                     {{"TODO"}}
+                                    {{"TODO"}}
                                 </div>
                             </td>
 
                             <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
                             <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
                             <td class="mdl-data-table__cell--non-numeric">
-                                <button mat-button color="primary" (click)="advRun(job)" class="btn-w-md"><i class="material-icons">play_circle_outline</i> &nbsp; Run &nbsp; </button>
+                                <button mat-button color="primary" (click)="advRun(job)" class="btn-w-md"><i
+                                        class="material-icons">play_circle_outline</i> &nbsp; Run &nbsp;
+                                </button>
 
                                 &nbsp;&nbsp;
-                                <a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']" matTooltip="history" matTooltipPosition="above"> History </a>
+                                <a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']"
+                                   matTooltip="history" matTooltipPosition="above"> History </a>
 
                             </td>
                         </tr>
