@@ -73,11 +73,15 @@
                         </div> -->
                     </div>
                     <div class="form-group row">
-                        <ace-editor class="col-md-12 border editor" [(text)]="testSuite.yaml" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
-                            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
+                        <ace-editor class="col-md-12 border editor" [(text)]="testSuite.yaml" [theme]="'github'" [mode]="'yaml'"
+                        [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false,
+                        enableBasicAutocompletion: true}"
+                        [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" #editor >
                         </ace-editor>
                     </div>
 
+                    <!--[options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false,-->
+                    <!--enableBasicAutocompletion: true}"-->
 
                     <!--<div *ngIf="bsc">-->
                     <!--<div class="form-group row">-->

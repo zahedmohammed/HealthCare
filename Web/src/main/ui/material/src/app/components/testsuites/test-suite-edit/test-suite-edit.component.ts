@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import {Component, OnInit, Inject, ViewChild} from '@angular/core';
 import { MatTabChangeEvent}from '@angular/material';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { JobsService } from '../../../services/jobs.service';
@@ -19,6 +19,9 @@ import {FormBuilder, FormGroup, Validators , FormArray}from '@angular/forms';
 import { TestSuite,TestCase} from '../../../models/test-suite.model';
 import 'brace/theme/github';
 import 'brace/mode/yaml';
+import 'brace';
+import 'brace/ext/language_tools';
+// import 'ace-builds/src-min-noconflict/snippets/html';
 
 
 @Component({
@@ -28,7 +31,8 @@ import 'brace/mode/yaml';
   providers: [ProjectService, SnackbarService]
 })
 export class TestSuiteEditComponent implements OnInit {
-  text: string = "Fxlabs Yaml-editor";
+    @ViewChild('editor') editor;
+    text: string = "Fxlabs Yaml-editor";
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
@@ -54,7 +58,52 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
             public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+
+      var myKeywords = (function() {
+          var words = "FakerName,FakerPassword,FakerCity".split(",")
+          var transformationWords = "trim,trimToNull,trimToEmpty,truncate,strip,indexOf,indexOfIgnoreCase,lastIndexOf,left,right,substringBefore,substringAfter,substringBeforeLast,substringAfterLast,substringBetween,removeStart,removeStartIgnoreCase,removeEnd,removeEndIgnoreCase,remove,removeIgnoreCase,removeAll,removeFirst,removePattern,chomp,chop,repeat,rightPad,leftPad,upperCase,lowerCase,capitalize,uncapitalize,reverse".split(",")
+          var dataInjection = "@Random,@RandomAlphabetic,@RandomAlphanumeric,@RandomNumeric,@Date,@RandomUUID".split(",")
+          var entityKeyWords = "@Request,@StatusCode,@ResponseHeaders,@Response,@NULL,@EMPTY,@ResponseTime,@ResponseSize".split(",")
+          var array1 = [];
+          for (var i = 0; i < words.length; i++)
+              array1.push({
+                  name: words[i],
+                  value: words[i],
+                  meta: "Faker-Words"
+              });
+          for(var i = 0 ; i< transformationWords.length;i++)
+              array1.push({
+                  name:transformationWords[i],
+                  value:transformationWords[i],
+                  meta:"Transformation"
+              });
+          for(var i = 0; i< dataInjection.length;i++)
+              array1.push({
+                  name:dataInjection[i],
+                  value:dataInjection[i],
+                  meta:"Data-Injection"
+              })
+          for(var i=0;i<entityKeyWords.length;i++)
+              array1.push({
+                  name:entityKeyWords[i],
+                  value:entityKeyWords[i],
+                  meta:"Entity-Keyword"
+              })
+          return array1;
+      })();
+      var myCompleter = {
+          getCompletions: function(editor, session, pos, prefix, callback) {
+              callback(null, myKeywords);
+          }
+      }
+
+      this.editor.setOptions({
+          enableLiveAutocompletion: [myCompleter]
+      });
+
+
+
+      this.route.params.subscribe(params => {
       this.id = params['id'];
       if (this.id) {
         this.loadProject(this.id);
@@ -124,6 +173,9 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
   }
 
     loadProject(id: string) {
+
+
+
       this.handler.activateLoader();
       this.projectService.getById(id).subscribe(results => {
         this.handler.hideLoader();
@@ -138,7 +190,10 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
         this.handler.hideLoader();
         this.handler.error(error);
       });
+
+
     }
+
   saveTestSuite(){
       var groupVal=this.thirdFormGroup.value;
       this.testSuite.testCases=groupVal.testCases;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import {Component, OnInit, Inject, ViewChild} from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
 import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { JobsService } from '../../../services/jobs.service';
@@ -29,7 +29,8 @@ import 'brace/mode/yaml';
 })
 
 export class TestSuiteNewComponent implements OnInit {
-  text: string = "";
+    @ViewChild('editor') editor;
+    text: string = "";
   id: string;
   project: Project = new Project();
   testSuite: TestSuite = new TestSuite();
@@ -58,7 +59,55 @@ export class TestSuiteNewComponent implements OnInit {
 
   ngOnInit() {
 
-    this.route.params.subscribe(params => {
+    // Auto completion code starts here
+      var myKeywords = (function() {
+          var words = "FakerName,FakerPassword,FakerCity".split(",")
+          var transformationWords = "trim,trimToNull,trimToEmpty,truncate,strip,indexOf,indexOfIgnoreCase,lastIndexOf,left,right,substringBefore,substringAfter,substringBeforeLast,substringAfterLast,substringBetween,removeStart,removeStartIgnoreCase,removeEnd,removeEndIgnoreCase,remove,removeIgnoreCase,removeAll,removeFirst,removePattern,chomp,chop,repeat,rightPad,leftPad,upperCase,lowerCase,capitalize,uncapitalize,reverse".split(",")
+          var dataInjection = " @Random,@RandomAlphabetic,@RandomAlphanumeric,@RandomNumeric,@Date,@RandomUUID".split(",")
+          var entityKeyWords = "@Request,@StatusCode,@ResponseHeaders,@Response,@NULL,@EMPTY,@ResponseTime,@ResponseSize".split(",")
+          var array1 = [];
+          for (var i = 0; i < words.length; i++)
+              array1.push({
+                  name: words[i],
+                  value: words[i],
+                  meta: "Standard"
+              });
+          for(var i = 0 ; i< transformationWords.length;i++)
+              array1.push({
+                  name:transformationWords[i],
+                  value:transformationWords[i],
+                  meta:"Transformation"
+              });
+          for(var i = 0; i< dataInjection.length;i++)
+              array1.push({
+                  name:dataInjection[i],
+                  value:dataInjection[i],
+                  meta:"Data-Injection"
+              })
+          for(var i=0;i<entityKeyWords.length;i++)
+              array1.push({
+                  name:entityKeyWords[i],
+                  value:entityKeyWords[i],
+                  meta:"Entity-Keyword"
+              })
+          return array1;
+      })();
+      var myCompleter = {
+          getCompletions: function(editor, session, pos, prefix, callback) {
+              callback(null, myKeywords);
+          }
+      }
+
+      this.editor.setOptions({
+          enableLiveAutocompletion: [myCompleter]
+      });
+
+      // Auto completion code Ends here
+
+
+
+
+      this.route.params.subscribe(params => {
       this.id = params['id'];
       if (this.id) {
         this.loadProject(this.id);
