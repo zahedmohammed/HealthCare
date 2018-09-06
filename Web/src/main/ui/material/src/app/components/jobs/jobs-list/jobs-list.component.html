@@ -86,16 +86,19 @@
                             <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
                             <!-- Auto bug -->
                             <td class="mdl-data-table__cell--non-numeric">
-                                    <div *ngIf="job.issueTrackerToDo"> {{"TODO"}}</div>
-                                    <div *ngIf="!job.issueTrackerToDo">
+                                    <div *ngIf="job.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
+                                    <div *ngIf="!job.issueTrackerToDo" class="ml-4">
                                             <mat-checkbox [checked]="true" [disabled]="true">
                                         </mat-checkbox>
                                     </div>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric">
-                                 <mat-checkbox [checked]="true"*ngIf="!job.notificationToDo" [disabled]="true"></mat-checkbox>
-                             <div *ngIf="job.notificationToDo">{{"TODO"}}</div>
-
+                                <div class="ml-4">
+                                    <mat-checkbox [checked]="true"*ngIf="!job.notificationToDo" [disabled]="true"></mat-checkbox>
+                                </div>
+                                <div *ngIf="job.notificationToDo" class="ml-3">
+                                     {{"TODO"}}
+                                </div>
                             </td>
 
                             <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
