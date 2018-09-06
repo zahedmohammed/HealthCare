@@ -233,4 +233,19 @@ export class RunDetailComponent implements OnInit {
     });
   }
 
+  cancel(){
+
+    this.runService.stopRun(this.id).subscribe(results => {
+
+      this.handler.hideLoader();
+     if (this.handler.handle(results)) {
+       return;
+     }
+     //this.router.navigate(['/app/projects/' , this.project.id,  'jobs', this.job.id, 'runs']);
+   }, error => {
+     this.handler.error(error);
+   });
+    
+  }
+
 }

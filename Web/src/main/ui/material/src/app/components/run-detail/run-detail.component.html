@@ -22,7 +22,7 @@
         <div class="item-card card__horizontal1">
             <div class="card__body card-white">
                 <div class="card__title row">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                     <h4>Status:
                         <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span>
                         <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'"
@@ -32,10 +32,17 @@
                     </h4>
                     <h6>{{run.task.description}}</h6>
                     <h6>Region: {{run.regions}}</h6></div>
+                   
                     <div class="col-md-2">
-                    <button mat-raised-button class="btn-w-sm text-primary pull-right" (click)="rerun();">
+                       <button mat-raised-button class="btn-w-sm text-primary pull-right" (click)="rerun();">
                         Re-Run
-                       </button></div>
+                       </button>
+                    </div>
+                       <div class="col-md-2" *ngIf="run.task.status == 'PROCESSING'">
+                            <button mat-raised-button class="btn-w-sm text-warning " (click)="cancel();">
+                                Cancel
+                               </button>
+                        </div>
                 </div>
             </div>
         </div>

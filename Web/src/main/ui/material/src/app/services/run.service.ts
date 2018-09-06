@@ -41,7 +41,7 @@ constructor(private http: HttpClient) {
        cat = cat + categorie+", " ; 
 
   }
-}
+ }
 
     let params = new HttpParams();
     params = params.append('region', region);
@@ -51,7 +51,9 @@ constructor(private http: HttpClient) {
     console.log("JobId: " + jobId + " Region: " + region );
     return this.http.post(this.serviceUrl + "/job/" + jobId, null, {params});
   }
-
+  stopRun(runId:string) {
+    return this.http.get(this.serviceUrl + "/stoprun/" + runId);
+  }
 
   advTestSuiteRun(region: string, env: string, testSuite: TestSuite) {
     let params = new HttpParams();
