@@ -44,4 +44,6 @@ public interface RunService extends GenericService<Run, String> {
     Response<com.fxlabs.fxt.dto.run.Run> findRunById(String runId, String user);
 
     Response<RunSavings> getRunSavings(String runId, String user);
+
+    public Response<com.fxlabs.fxt.dto.run.Run> stopRun(String runId, String user);
 }

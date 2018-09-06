@@ -196,6 +196,26 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
     }
 
+    @Override
+    public Response<com.fxlabs.fxt.dto.run.Run> stopRun(String runId, String user) {
+
+        if (StringUtils.isEmpty(runId)){
+            throw new FxException("Invalid run");
+        }
+        Run run = this.repository.findByRunId(runId);
+
+        if (run == null) {
+            throw new FxException("Invalid run");
+        }
+
+        run.getTask().setStatus(com.fxlabs.fxt.dao.entity.run.TaskStatus.STOPPED);
+
+        run = this.repository.save(run);
+        com.fxlabs.fxt.dto.run.Run run1 = this.converter.convertToDto(run);
+
+        return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
+    }
+
 
     @Override
     public Response<List<TestSuiteResponse>> findByPk(String id, String name, String user, Pageable pageable) {
