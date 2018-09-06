@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/toPromise';
 import { Categories } from '../models/project-autocode-config.model';
+import { TestSuite, TestCase } from '../models/test-suite.model';
 
 @Injectable()
 export class RunService {
@@ -49,6 +50,14 @@ constructor(private http: HttpClient) {
     params = params.append('categories',cat);
     console.log("JobId: " + jobId + " Region: " + region );
     return this.http.post(this.serviceUrl + "/job/" + jobId, null, {params});
+  }
+
+
+  advTestSuiteRun(region: string, env: string, testSuite: TestSuite) {
+    let params = new HttpParams();
+    params = params.append('region', region);
+    params = params.append('env', env);
+    return this.http.post(this.serviceUrl + "/testsuite", testSuite, {params});
   }
 
   getDetails(runId:string) {
