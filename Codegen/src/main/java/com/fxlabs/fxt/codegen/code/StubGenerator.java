@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
-import com.fxlabs.fxt.dto.project.RequestMapping;
 import com.fxlabs.fxt.dto.project.ResourceSample;
 import com.fxlabs.fxt.dto.project.TestSuiteAddToVCRequest;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
@@ -26,8 +25,10 @@ import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class StubGenerator {
@@ -70,7 +71,7 @@ public class StubGenerator {
 
             File autoCodeConfig = FileUtils.getFile(new File(projectDir), AUTO_CODE_CONFIG_FILE);
 
-            if(autoCodeConfigContent != null){
+            if (autoCodeConfigContent != null) {
                 ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
                 yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
                 yamlMapper.writerWithDefaultPrettyPrinter().writeValue(autoCodeConfig, autoCodeConfigContent);
@@ -160,13 +161,13 @@ public class StubGenerator {
                                 continue;
                             }
                             String resourceName = ref.substring(ref.lastIndexOf("/") + 1);
-                            if (m == HttpMethod.POST){
+                            if (m == HttpMethod.POST) {
                                 resourceName += "-Create";
                             }
-                            if (m == HttpMethod.PUT){
+                            if (m == HttpMethod.PUT) {
                                 resourceName += "-Update";
                             }
-                            ResourceSample resourceSample  = new ResourceSample();
+                            ResourceSample resourceSample = new ResourceSample();
                             ResourceSample resourceSample_ = autoCodeConfigUtil.getResourceSamples(resourceName);
 
                             if (resourceSample_ != null) {
@@ -201,10 +202,10 @@ public class StubGenerator {
 
                     List<TestSuiteMin> tsList = this.stubHandler.handle(p, m, op);
                     int count = 0;
-                    if (tsList != null){
+                    if (tsList != null) {
                         count = tsList.size();
                     }
-                    pathTSCount.put(p,tsList.size());
+                    pathTSCount.put(p, tsList.size());
 
                     testSuites.addAll(tsList);
                     /*System.out.println (op.getOperationId());
@@ -251,7 +252,7 @@ public class StubGenerator {
 //                testSuites.add(testSuiteMin);
 //            }
 
-           // writeToResourceSampleFile(resourceSamples, projectDir);
+            // writeToResourceSampleFile(resourceSamples, projectDir);
 
             printTSFromControlPlane(testSuiteAddToVCRequests, projectDir);
 
@@ -265,19 +266,19 @@ public class StubGenerator {
     }
 
 
-    private void writeToResourceSampleFile(List<ResourceSample> sampleRequests, String dir){
+    private void writeToResourceSampleFile(List<ResourceSample> sampleRequests, String dir) {
 
         ObjectMapper yamlMapper = new ObjectMapper();
 //        yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        if (CollectionUtils.isEmpty(sampleRequests)){
+        if (CollectionUtils.isEmpty(sampleRequests)) {
             return;
         }
 
         try {
-            File file = new File(dir + "/"+RESOURCE_SAMPLES_FILE);
+            File file = new File(dir + "/" + RESOURCE_SAMPLES_FILE);
             yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, sampleRequests);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -333,7 +334,6 @@ public class StubGenerator {
         System.out.println("");
 
     }
-
 
 
     private void printTSFromControlPlane(List<TestSuiteAddToVCRequest> testSuiteAddToVCRequests, String dir) {
@@ -493,6 +493,7 @@ public class StubGenerator {
                 // Couldnt find/parse the openAPISpec
             }
 
+            // swagger 1.0 support
             if (swagger == null) {
                 swagger = new SwaggerCompatConverter().read(openAPISpec, list);
             }
@@ -502,6 +503,8 @@ public class StubGenerator {
             }catch(Exception ex){
                 // Couldnt find/parse the openAPISpec
             }
+
+            // swagger 1.0 support
             if (swagger == null) {
                 swagger = new SwaggerCompatConverter().read(openAPISpec);
             }
