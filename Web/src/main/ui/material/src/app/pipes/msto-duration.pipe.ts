@@ -10,11 +10,11 @@ export class MstoDurationPipe implements PipeTransform {
     if(isNaN(value)) value = 0;
     let precision: number = 0;
     let milli: number = value%1000;
-    value = value - milli;
-    let seconds: number = (value/1000);
-    let minutes: number = seconds/60;
+    //value = value - milli;
+    let seconds: number = Math.floor(value/1000);
+    let minutes: number = Math.floor(seconds/60);
     seconds = seconds%60;
-    let hours: number = minutes/60;
+    let hours: number = Math.floor(minutes/60);
     minutes = minutes%60;
     
 
