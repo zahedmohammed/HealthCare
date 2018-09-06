@@ -43,5 +43,9 @@ public class Job extends BaseDto<String> {
 
     private String categories;
 
+    private boolean notificationToDo;
+
+    private boolean issueTrackerToDo;
+
 }
 
