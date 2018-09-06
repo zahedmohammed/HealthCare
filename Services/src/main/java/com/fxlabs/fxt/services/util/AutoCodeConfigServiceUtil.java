@@ -434,7 +434,8 @@ public class AutoCodeConfigServiceUtil {
 
 
         List<String> assertions = new ArrayList<>();
-//        assertions.add("@StatusCode == 200");
+        assertions.add("@StatusCode == 200");
+        assertions.add("@StatusCode != 404");
 
         sla.setAssertions(assertions);
 
@@ -442,9 +443,9 @@ public class AutoCodeConfigServiceUtil {
 
         AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
 //        admin.setName("Admin access");
-        match.setPathPatterns("/api/v1/**");
+        match.setPathPatterns("/**");
         match.setMethods("Get");
-        match.setValue("3000");
+        match.setValue("1000");
         matchesList.add(match);
 
         sla.setMatches(matchesList);

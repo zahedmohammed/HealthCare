@@ -71,7 +71,12 @@ public class SLAGetGenerator extends AbstractGenerator {
 
         for (Match m : generator.getMatches()) {
             if (StringUtils.isEmpty(m.getPathPatterns())) {
-                continue;
+                m.setPathPatterns("/**");
+//                continue;
+            }
+            if (StringUtils.isEmpty(m.getMethods())) {
+                m.setMethods("Get");
+//                continue;
             }
             for (String pattern : m.getPathPatterns().split(", ")) {
                 if (ANT_PATH_MATCHER.match(pattern, path_) &&
