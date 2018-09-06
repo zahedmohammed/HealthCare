@@ -245,7 +245,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
 
         if (testSuiteMin != null && StringUtils.isNotEmpty(testSuiteMin.getParent())
-                && org.apache.commons.lang3.StringUtils.containsIgnoreCase(testSuiteMin.getParent(), "AutoCode")) {
+                && org.apache.commons.lang3.StringUtils.contains(testSuiteMin.getParent(), "AutoCode")) {
             throw new FxException("Folder name should not have AutoCode");
         }
 

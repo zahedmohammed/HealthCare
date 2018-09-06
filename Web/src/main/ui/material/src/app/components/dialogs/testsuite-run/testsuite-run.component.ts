@@ -67,7 +67,7 @@ export class TestsuiteRunComponent implements OnInit {
         if (this.handler.handle(results)) {
           return;
         }
-        this.runResult = results['data'];
+        this.runResult = results['data'][0].logs;
        // this.router.navigate(['/app/projects/' , this.data.id,  'jobs', this.data.id, 'runs']);
       }, error => {
         this.handler.error(error);

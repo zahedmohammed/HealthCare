@@ -300,8 +300,8 @@ categories: string[] = ["Bug", "Use_Case", "Functional", "Positive", "Negative",
 
  run() {        
  const dialogRef = this.dialog.open(TestsuiteRunComponent, {
-  width:'800px',
-  //height:'85%',
+  width: '80%',
+//height:'85%',
   data: this.testSuite
   });
   dialogRef.afterClosed().subscribe(result => {

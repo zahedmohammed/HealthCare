@@ -8,7 +8,7 @@
                 <label class="col-md-3 control-label">
                     Environment
                 </label>
-                <div class="col-md-8">
+                <div class="col-md-4">
                     <mat-form-field class="full-width">
                         <mat-select placeholder="Select environment" [(ngModel)]="environment" name="environment">
                             <mat-option *ngFor="let env of envs" [value]="env.id">
@@ -16,6 +16,13 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                </div>
+                 <div  class="col-md-2">
+                    <mat-dialog-actions>
+                        <button mat-button (click)="testSuiterun();" class="btn-w-xs no-margin-left" cdkFocusInitial>Run
+                        </button>
+                        <button mat-button mat-dialog-close>Cancel</button>
+                    </mat-dialog-actions>
                 </div>
             </div>
     
@@ -25,7 +32,7 @@
             <label class="col-md-3 control-label">
                 Bot Region
             </label>
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <mat-form-field class="full-width">
                     <mat-select placeholder="Bot Region" [(ngModel)]="regions" name="regions"
                                 [ngModelOptions]="{standalone: true}">
@@ -36,12 +43,15 @@
                 </mat-form-field>
             </div>
         </div>
+        <div *ngIf = "runResult">
+            <mat-dialog-content  class="mat-typography">
+                <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
+                <ace-editor class="col-md-12 border editor" [(text)]="runResult" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
+                            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
+                </ace-editor>
+            </mat-dialog-content>
+        </div>
 
     </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" (click)="testSuiterun();" class="btn-w-md no-margin-left" cdkFocusInitial>Run
-    </button>
-</mat-dialog-actions>
