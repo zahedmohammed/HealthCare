@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dto.project.TestCase;
 import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dto.run.BotTask;
+import com.fxlabs.fxt.dto.run.LightWeightBotTask;
 import com.fxlabs.fxt.dto.run.Suite;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -101,6 +102,56 @@ public class RestProcessor {
             sender.sendTask(completeTask);
         }
 
+    }
+
+    public List<BotTask> process(LightWeightBotTask lightWeightBotTask) {
+
+        List<BotTask> botTasks = new ArrayList<>();
+
+        BotTask task = lightWeightBotTask.getBotTask();
+        if (task.getPolicies() != null && task.getPolicies().getRepeat() != null && task.getPolicies().getRepeat() > 0) {
+            for (int i = 0; i < task.getPolicies().getRepeat(); i++) {
+                BotTask completeTask = run(task);
+
+                if (completeTask == null) break;
+                if (completeTask != null) {
+                    botTasks.add(completeTask);
+                }
+                //sender.sendTask(completeTask);
+                if (task.getPolicies().getRepeatDelay() != null && task.getPolicies().getRepeatDelay() > 0) {
+                    try {
+                        Thread.sleep(task.getPolicies().getRepeatDelay());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else if (task.getPolicies() != null && task.getPolicies().getRepeatOnFailure() != null && task.getPolicies().getRepeatOnFailure() > 0) {
+            for (int i = 0; i < task.getPolicies().getRepeatOnFailure(); i++) {
+                BotTask completeTask = run(task);
+                if (completeTask == null) {
+                    break;
+                }
+                if (completeTask.getTotalFailed() <= 0) {
+                    botTasks.add(completeTask);
+                    break;
+                }
+                if (task.getPolicies().getRepeatDelay() != null && task.getPolicies().getRepeatDelay() > 0) {
+                    try {
+                        Thread.sleep(task.getPolicies().getRepeatDelay());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            BotTask completeTask = run(task);
+            if (completeTask != null) {
+                botTasks.add(completeTask);
+            }
+          //  sender.sendTask(completeTask);
+        }
+        return botTasks;
     }
 
     private BotTask run(BotTask task) {

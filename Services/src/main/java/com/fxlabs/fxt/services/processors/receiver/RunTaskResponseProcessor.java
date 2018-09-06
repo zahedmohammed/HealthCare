@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -70,7 +72,47 @@ public class RunTaskResponseProcessor {
         }
     }
 
-    private void saveDS(BotTask task, com.fxlabs.fxt.dao.entity.run.Run run) {
+    //AtomicInteger i = new AtomicInteger(1);
+    public List<TestSuiteResponse> process(List<BotTask> tasks) {
+
+        List<TestSuiteResponse> suiteResponseList = new ArrayList<>();
+
+        for (BotTask task :tasks) {
+            try {
+                //logger.info("Response {}", i.incrementAndGet());
+                logger.info("Task response [{}]...", task.getId());
+                // TODO - Replace this with job updating RunTask status
+                com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findByRunId(task.getId());
+                com.fxlabs.fxt.dao.entity.run.RunTask runTask = run.getTask();
+
+                // only if SUITE
+                if ("SUITE".equals(task.getResult())) {
+                    //runTask.setTotalSuiteCompleted(runTask.getTotalSuiteCompleted() + 1);
+                    //runTask.setTotalTestCompleted(runTask.getTotalTestCompleted() + task.getTotalTests());
+                    //runTask.setSkippedTests(runTask.getSkippedTests() + task.getTotalSkipped());
+
+                    //runTask.setTotalTime(runTask.getTotalTime() + task.getRequestTime());
+
+                    saveDS(task, run);
+
+                }
+                // is complete?
+                if (runTask.getTotalSuiteCompleted() >= runTask.getTotalTests()) {
+                    //runTask.setStatus(TaskStatus.COMPLETED);
+                    //runTask.setEndTime(new Date());
+                }
+
+                //runRepository.save(run);
+            } catch (RuntimeException ex) {
+                logger.warn(ex.getLocalizedMessage(), ex);
+                //process(task);
+            }
+        }
+
+        return suiteResponseList;
+    }
+
+    private TestSuiteResponse saveDS(BotTask task, com.fxlabs.fxt.dao.entity.run.Run run) {
         TestSuiteResponse ds = new TestSuiteResponse();
         ds.setRunId(run.getId());
         ds.setRunNo(run.getRunId());
@@ -107,6 +149,8 @@ public class RunTaskResponseProcessor {
 
         ds = this.testSuiteResponseRepository.save(ds);
         this.testSuiteResponseESRepository.save(ds);
+
+        return ds;
 
     }
 }
