@@ -230,7 +230,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
            // Job job = jobResponse.getData();
 
-            Response<TestSuite> testSuiteResponse = testSuiteService.update(dto, user);
+            Response<TestSuite> testSuiteResponse = testSuiteService.update(dto, user, false);
 
 
             List<com.fxlabs.fxt.dto.run.TestSuiteResponse> responses = instantRunTaskRequestProcessor.process(region, optionalEnvironment.get(), testSuiteConverter.convertToEntity(testSuiteResponse.getData()));

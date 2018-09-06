@@ -88,7 +88,7 @@ public class TestSuiteController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<TestSuite> update(@Valid @RequestBody TestSuite dto) {
-        return service.update(dto, SecurityUtil.getCurrentAuditor());
+        return service.update(dto, SecurityUtil.getCurrentAuditor(), true);
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

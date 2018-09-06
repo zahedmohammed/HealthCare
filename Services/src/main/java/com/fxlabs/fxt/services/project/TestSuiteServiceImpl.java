@@ -227,7 +227,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
 
     @Override
-    public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user, boolean updateVC) {
 
 
         if (testSuite == null || testSuite.getProject() == null  || testSuite.getProject().getId() == null) {
@@ -304,8 +304,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         testSuiteAddToVCRequest.getProps().put(FILE_CONTENT, testSuite.getYaml());
         testSuiteAddToVCRequests.add(testSuiteAddToVCRequest);
-
-        this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteAddToVCRequests);
+        if (updateVC) {
+            this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteAddToVCRequests);
+        }
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(testSuite);
 
