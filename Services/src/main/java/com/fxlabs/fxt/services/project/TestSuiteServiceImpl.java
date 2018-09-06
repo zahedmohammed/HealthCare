@@ -256,7 +256,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             throw new FxException(String.format("TestSuite [%s] exists.", testSuiteOptional.get().getName()));
         }
 
-        if (!StringUtils.equals(testSuiteOptional.get().getName(), testSuite_.getName())) {
+        if (!StringUtils.equals(testSuiteOptional.get().getName(), testSuite.getName())) {
             throw new FxException(String.format("TestSuite name cannot be edited."));
         }
 
