@@ -27,9 +27,10 @@
             </label>
             <div class="col-md-8">
                 <mat-form-field class="full-width">
-                    <mat-select placeholder="Select bot region" [(ngModel)]="region" name="region">
-                        <mat-option *ngFor="let job of jobs" [value]="job.regions">
-                            {{job.regions}}
+                    <mat-select placeholder="Bot Region" [(ngModel)]="regions" name="regions"
+                                [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let option of list" [value]="option">
+                            {{option.org.name}}/{{option.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

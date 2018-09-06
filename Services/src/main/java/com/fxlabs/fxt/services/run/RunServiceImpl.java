@@ -1,11 +1,14 @@
 package com.fxlabs.fxt.services.run;
 
+import com.fxlabs.fxt.converters.project.TestSuiteConverter;
 import com.fxlabs.fxt.converters.run.RunConverter;
 import com.fxlabs.fxt.converters.run.SuiteConverter;
 import com.fxlabs.fxt.converters.run.TestSuiteResponseConverter;
+import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteResponseRepository;
@@ -14,10 +17,14 @@ import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Job;
 import com.fxlabs.fxt.dto.project.Project;
+import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.dto.run.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import com.fxlabs.fxt.services.exceptions.FxException;
+import com.fxlabs.fxt.services.processors.send.InstantRunTaskRequestProcessor;
 import com.fxlabs.fxt.services.project.JobService;
 import com.fxlabs.fxt.services.project.ProjectService;
+import com.fxlabs.fxt.services.project.TestSuiteService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +55,17 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     private ProjectService projectService;
     private SuiteESRepository suiteESRepository;
     private SuiteConverter suiteConverter;
+    private TestSuiteService testSuiteService;
+    private TestSuiteConverter testSuiteConverter;
+    private InstantRunTaskRequestProcessor instantRunTaskRequestProcessor;
+    private EnvironmentRepository environmentRepository;
 
     @Autowired
-    public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService,
-            /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository,
+    public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService, EnvironmentRepository environmentRepository,
+            /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository, TestSuiteConverter testSuiteConverter,
                           TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter,
-                          TestSuiteESRepository testSuiteESRepository, ProjectService projectService,
-                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter) {
+                          TestSuiteESRepository testSuiteESRepository, ProjectService projectService, TestSuiteService testSuiteService,
+                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter, InstantRunTaskRequestProcessor instantRunTaskRequestProcessor) {
         super(repository, converter);
         this.repository = repository;
         this.jobService = projectJobService;
@@ -66,6 +77,10 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         this.projectService = projectService;
         this.suiteESRepository = suiteESRepository;
         this.suiteConverter = suiteConverter;
+        this.testSuiteConverter = testSuiteConverter;
+        this.instantRunTaskRequestProcessor = instantRunTaskRequestProcessor;
+        this.environmentRepository = environmentRepository;
+        this.testSuiteService = testSuiteService;
     }
 
     @Override
@@ -178,6 +193,58 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         // Copy ProjectDataSets to DataSets.
         return response;
     }
+
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.run.TestSuiteResponse>> runTestSuite(String region, String env, String user, TestSuite dto) {
+        Response<List<com.fxlabs.fxt.dto.run.TestSuiteResponse>> response = new Response<>();
+        try {
+
+
+
+            Map<String, String> attributes = new HashMap<>();
+
+            if (StringUtils.isNotEmpty(region)) {
+                attributes.put(RunConstants.REGION, region);
+            }
+            if (StringUtils.isNotEmpty(env)) {
+                attributes.put(RunConstants.ENV, env);
+            }
+
+
+            // Create Task
+            RunTask task = new RunTask();
+            task.setName(new Date().toString());
+            task.setStatus(TaskStatus.WAITING);
+            task.setStartTime(new Date());
+            task.setTotalTests(0L);
+
+            // TODO - find total tests by Tags
+            Long totalTests = 0l;
+
+            Optional<Environment> optionalEnvironment = environmentRepository.findByIdAndInactive(env, false);
+
+            if (!optionalEnvironment.isPresent()) {
+                throw new FxException("Invalid Evnvironment");
+            }
+
+           // Job job = jobResponse.getData();
+
+            Response<TestSuite> testSuiteResponse = testSuiteService.update(dto, user);
+
+
+            List<com.fxlabs.fxt.dto.run.TestSuiteResponse> responses = instantRunTaskRequestProcessor.process(region, optionalEnvironment.get(), testSuiteConverter.convertToEntity(testSuiteResponse.getData()));
+            response.setData(responses);
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            response = new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, ex.getLocalizedMessage()));
+        }
+
+        //taskProcessor.process(response.getData());
+        // Copy ProjectDataSets to DataSets.
+        return response;
+    }
+
 
     @Override
     public Response<List<TestSuiteResponse>> findByRunId(String runId, String user, Pageable pageable) {

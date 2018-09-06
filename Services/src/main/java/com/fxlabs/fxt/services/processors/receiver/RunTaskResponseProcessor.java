@@ -112,7 +112,31 @@ public class RunTaskResponseProcessor {
         return suiteResponseList;
     }
 
-    private TestSuiteResponse saveDS(BotTask task, com.fxlabs.fxt.dao.entity.run.Run run) {
+    public List<com.fxlabs.fxt.dto.run.TestSuiteResponse> processTaskResponse(List<BotTask> tasks) {
+
+        List<com.fxlabs.fxt.dto.run.TestSuiteResponse> suiteResponseList = new ArrayList<>();
+
+        for (BotTask task :tasks) {
+            try {
+                logger.info("Task response [{}]...", task.getId());
+
+                if ("SUITE".equals(task.getResult())) {
+                    com.fxlabs.fxt.dto.run.TestSuiteResponse responseDS = getResponseDS(task);
+
+                    if (responseDS != null){
+                        suiteResponseList.add(responseDS);
+                    }
+                }
+            } catch (RuntimeException ex) {
+                logger.warn(ex.getLocalizedMessage(), ex);
+                //process(task);
+            }
+        }
+
+        return suiteResponseList;
+    }
+
+    private void saveDS(BotTask task, com.fxlabs.fxt.dao.entity.run.Run run) {
         TestSuiteResponse ds = new TestSuiteResponse();
         ds.setRunId(run.getId());
         ds.setRunNo(run.getRunId());
@@ -149,6 +173,41 @@ public class RunTaskResponseProcessor {
 
         ds = this.testSuiteResponseRepository.save(ds);
         this.testSuiteResponseESRepository.save(ds);
+
+    }
+
+
+    private com.fxlabs.fxt.dto.run.TestSuiteResponse getResponseDS(BotTask task) {
+        com.fxlabs.fxt.dto.run.TestSuiteResponse ds = new com.fxlabs.fxt.dto.run.TestSuiteResponse();
+        //TestSuite pds = new TestSuite();
+        //pds.setId(task.getProjectDataSetId());
+        //ds.setProjectDataSet(pds);
+        Optional<TestSuite> testSuiteOptional = testSuiteRepository.findById(task.getProjectDataSetId());
+        if (!testSuiteOptional.isPresent()) {
+            logger.warn("Invalid Test-Suite Id");
+        }
+        TestSuite pds = testSuiteOptional.get();
+        ds.setTestSuite(pds.getName());
+        if (pds.getCategory() != null)
+            ds.setCategory(pds.getCategory().toString());
+        if (pds.getSeverity() != null)
+            ds.setSeverity(pds.getSeverity().toString());
+
+
+        //logger.info("Logs: {}", task.getLogs());
+        ds.setLogs(task.getLogs());
+        ds.setResponse(task.getResponse());
+
+        ds.setRequestStartTime(task.getRequestStartTime());
+        ds.setRequestEndTime(task.getRequestEndTime());
+        ds.setRequestTime(task.getRequestTime());
+        ds.setTotalBytes(task.getTotalBytes());
+
+        ds.setTotalPassed(task.getTotalPassed());
+        ds.setTotalFailed(task.getTotalFailed());
+        //ds.setTotalSkipped(task.getTotalSkipped());
+
+        ds.setStatus(task.getResult());
 
         return ds;
 

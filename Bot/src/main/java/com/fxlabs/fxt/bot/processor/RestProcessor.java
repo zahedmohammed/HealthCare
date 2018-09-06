@@ -111,7 +111,7 @@ public class RestProcessor {
         BotTask task = lightWeightBotTask.getBotTask();
         if (task.getPolicies() != null && task.getPolicies().getRepeat() != null && task.getPolicies().getRepeat() > 0) {
             for (int i = 0; i < task.getPolicies().getRepeat(); i++) {
-                BotTask completeTask = run(task);
+                BotTask completeTask = runLighWeight(task);
 
                 if (completeTask == null) break;
                 if (completeTask != null) {
@@ -128,7 +128,7 @@ public class RestProcessor {
             }
         } else if (task.getPolicies() != null && task.getPolicies().getRepeatOnFailure() != null && task.getPolicies().getRepeatOnFailure() > 0) {
             for (int i = 0; i < task.getPolicies().getRepeatOnFailure(); i++) {
-                BotTask completeTask = run(task);
+                BotTask completeTask = runLighWeight(task);
                 if (completeTask == null) {
                     break;
                 }
@@ -145,7 +145,7 @@ public class RestProcessor {
                 }
             }
         } else {
-            BotTask completeTask = run(task);
+            BotTask completeTask = runLighWeight(task);
             if (completeTask != null) {
                 botTasks.add(completeTask);
             }
@@ -452,6 +452,133 @@ public class RestProcessor {
             // TODO - Assertions
             testCaseResponses.add(tc);
         }
+    }
+
+
+    private BotTask runLighWeight(BotTask task) {
+        //logger.debug("{}", i.incrementAndGet());
+//        if (task == null || task.getId() == null || task.getEndpoint() == null) {
+//            logger.warn("Skipping empty task");
+//            return null;
+//        }
+
+        BotTask completeTask = new BotTask();
+      //  final Suite suite = new Suite();
+        List<TestCaseResponse> testCaseResponses = new ArrayList<>();
+        boolean generateTestCases = task.isGenerateTestCaseResponse();
+
+        AtomicLong totalFailed = new AtomicLong(0L);
+        AtomicLong totalPassed = new AtomicLong(0L);
+        AtomicLong totalTime = new AtomicLong(0L);
+        AtomicLong totalSize = new AtomicLong(0L);
+
+        try {
+            // handle GET requests
+            if (CollectionUtils.isEmpty(task.getTestCases())) {
+                task.setTestCases(Collections.singletonList(new TestCase()));
+            }
+
+            completeTask.setId(task.getId());
+            completeTask.setProjectDataSetId(task.getProjectDataSetId());
+            completeTask.setRequestStartTime(new Date());
+
+
+            AssertionLogger logs = new AssertionLogger();
+
+            String logType = null;
+            if (task.getPolicies() != null) {
+                logType = task.getPolicies().getLogger();
+            }
+            Context parentContext = new Context(task.getProjectId(), task.getSuiteName(), logs, logType);
+
+
+            // execute init
+            if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Suite")) {
+                if (task.getInit() != null) {
+                    //task.getInit().stream().forEach(t -> {
+                    for (BotTask t : task.getInit()) {
+                        logger.debug("Executing Init-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                        initProcessor.process(t, parentContext);
+                    }
+                    //);
+                }
+            }
+
+            //logger.debug("{} {} {} {}", task.getEndpoint(), task.getRequest(), task.getUsername(), task.getPassword());
+
+            // execute request
+            //RestTemplate restTemplate = new RestTemplate();
+            //String url = task.getEndpoint();
+            HttpMethod method = HttpMethodConverter.convert(task.getMethod());
+            HttpHeaders httpHeaders = new HttpHeaders();
+
+            httpHeaders.set("Content-Type", "application/json");
+            httpHeaders.set("Accept", "application/json");
+
+            headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
+
+            logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
+
+            Long count = 0L;
+
+            if (task.getPolicies() != null && StringUtils.isNotEmpty(task.getPolicies().getRepeatModule())) {
+                count = dataCache.init(task.getProjectId(), task.getPolicies().getRepeatModule(), "repeatModule");
+            }
+
+            if (count > 0L) {
+                LongStream.range(0, count).forEach(lc -> {
+                    task.getTestCases().parallelStream().forEach(testCase -> {
+                        processTask(task, testCaseResponses, generateTestCases, totalFailed, totalPassed, totalTime, totalSize, logs, parentContext, method, httpHeaders, testCase);
+                    });
+                });
+
+            } else {
+                task.getTestCases().parallelStream().forEach(testCase -> {
+                    processTask(task, testCaseResponses, generateTestCases, totalFailed, totalPassed, totalTime, totalSize, logs, parentContext, method, httpHeaders, testCase);
+                });
+            }
+
+            if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getCleanupExec(), "Suite")) {
+                if (task.getCleanup() != null) {
+                    //task.getCleanup().stream().forEach(t -> {
+                    for (BotTask t : task.getCleanup()) {
+                        logger.debug("Executing Cleanup-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                        cleanUpProcessor.process(t, parentContext, StringUtils.EMPTY);
+                    }
+                    //);
+                }
+            }
+
+            if (task.getPolicies() != null && StringUtils.equalsIgnoreCase(task.getPolicies().getInitExec(), "Suite")) {
+                parentContext.getInitTasks().stream().forEach(initTask -> {
+                    initTask.getInit().stream().forEach(t -> {
+                        logger.debug("Executing Cleanup-Init-Suite for task [{}] and init [{}]", task.getSuiteName(), t.getSuiteName());
+                        cleanUpProcessor.process(t, parentContext, t.getSuiteName());
+                    });
+                });
+            }
+
+            // send test suite complete
+
+            completeTask.setTotalFailed(totalFailed.get());
+            //completeTask.setTotalSkipped(totalSkipped.get());
+            completeTask.setTotalPassed(totalPassed.get());
+            completeTask.setTotalTests((long) task.getTestCases().size());
+
+            completeTask.setLogs(JsonFormatUtil.clean(logs.getLogs()));
+
+            completeTask.setRequestEndTime(new Date());
+            completeTask.setTotalBytes(totalSize.get());
+            completeTask.setRequestTime(completeTask.getRequestEndTime().getTime() - completeTask.getRequestStartTime().getTime());
+            completeTask.setResult("SUITE");
+
+        } catch (RuntimeException ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+            completeTask.setRequestEndTime(new Date());
+            completeTask.setLogs(completeTask.getLogs() + "\n " + ex.getLocalizedMessage());
+        }
+
+        return completeTask;
     }
 
 }

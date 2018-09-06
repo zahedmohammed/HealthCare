@@ -89,11 +89,12 @@ public class InstantRunTaskRequestProcessor {
         this.encryptor = encryptor;
         this.projectRepository = projectRepository;
         this.localEventPublisher = localEventPublisher;
+        this.runTaskResponseProcessor = runTaskResponseProcessor;
     }
 
-    public List<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> process(String region, Environment env, TestSuite testSuite) {
+    public List<com.fxlabs.fxt.dto.run.TestSuiteResponse> process(String region, Environment env, TestSuite testSuite) {
 
-         List<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> testSuiteResponses = null;
+         List<com.fxlabs.fxt.dto.run.TestSuiteResponse> testSuiteResponses = null;
             try {
 
 
@@ -102,6 +103,11 @@ public class InstantRunTaskRequestProcessor {
                 }
 
 
+                if (region == null) {
+                    throw new FxException("Invalid region");
+                }
+
+                final String region_ = validateRegion(region, testSuite.getCreatedBy());
                 if (region == null) {
                     throw new FxException("Invalid region");
                 }
@@ -116,7 +122,7 @@ public class InstantRunTaskRequestProcessor {
                 String _region = region;
 
                 String orgName_ = null;
-                Optional<Project> projectOptional = projectRepository.findById(_project);
+                Optional<Project> projectOptional = projectRepository.findById(_projectId);
                 if (projectOptional.isPresent()) {
                     orgName_ = projectOptional.get().getOrg().getName();
                 }
@@ -185,8 +191,8 @@ public class InstantRunTaskRequestProcessor {
                         }
                         LightWeightBotTask lightWeightBotTask = new LightWeightBotTask();
                         lightWeightBotTask.setBotTask(task);
-                        List<BotTask> response = botClientService.sendTask(lightWeightBotTask, region);
-                        testSuiteResponses = runTaskResponseProcessor.process(response);
+                        List<BotTask> response = botClientService.sendTask(lightWeightBotTask, region_);
+                        testSuiteResponses = runTaskResponseProcessor.processTaskResponse(response);
                     } catch (Exception ex) {
                         logger.warn(ex.getLocalizedMessage(), ex);
                     }
@@ -400,29 +406,16 @@ public class InstantRunTaskRequestProcessor {
         return env;
     }
 
-    private String validateRegion(Run run) {
-        final String region;
-        // check for overriding
-        if (run.getAttributes().containsKey(RunConstants.REGION)) {
-            region = run.getAttributes().get(RunConstants.REGION);
-        } else {
-            region = run.getJob().getRegions();
-        }
+    private String validateRegion(String region, String user) {
 
         // TODO - Fail if not a valid region
         if (org.apache.commons.lang3.StringUtils.isEmpty(region)) {
-            run.getTask().setStatus(TaskStatus.FAIL);
-            run.getTask().setDescription(String.format("Invalid Region: %s", region));
-            runRepository.saveAndFlush(run);
             return null;
         }
 
         // get cluster by name
-        Response<Cluster> clusterResponse = clusterService.findByName(region, run.getJob().getCreatedBy());
+        Response<Cluster> clusterResponse = clusterService.findByName(region, user);
         if (clusterResponse.isErrors()) {
-            run.getTask().setStatus(TaskStatus.FAIL);
-            run.getTask().setDescription(String.format("Invalid Region: %s", region));
-            runRepository.saveAndFlush(run);
             return null;
         }
 
