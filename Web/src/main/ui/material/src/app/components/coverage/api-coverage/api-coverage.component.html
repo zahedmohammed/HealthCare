@@ -98,10 +98,51 @@
               Average {{ coverage.totalTestCases / coverage.totalSuites | number }} test case(s) per test-suite
             </div>
           </mat-expansion-panel>
+
         </mat-accordion>
 
         <!-- Accordian end -->
       </div>
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="box box-transparent">                          
+                        <div class="divider divider-md"></div>
+                        <div class="box-body">
+                            <div *ngIf="byCatagory">
+                                <canvas id="canvas1">{{ byCatagory }}</canvas>
+                              </div>
+                        </div>
+                      </div> 
+                </div>
+                <div class="col-md-4">
+                    <div class="box box-transparent">
+                        <!-- <div class="box-heading">By Category</div> -->
+                        <div class="divider divider-md"></div>
+                        <div class="box-body">
+                            <div *ngIf="byMethod">
+                                <canvas id="canvas2">{{ byMethod }}</canvas>
+                              </div>
+                        </div>
+                      </div> 
+                  </div>
+                  <div class="col-md-4">
+                      <div class="box box-transparent">
+                          
+                          <div class="divider divider-md"></div>
+                          <div class="box-body">
+                              <div *ngIf="bySeverity">
+                                  <canvas id="canvas3">{{ bySeverity }}</canvas>
+                                </div>
+                          </div>
+                        </div> 
+                  </div>
+
+                
+                  </div> 
+            
+
     </div>
   </article>
 </section>
