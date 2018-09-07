@@ -2,7 +2,8 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> {{project.name}} </a>
+             {{project.name}}
+             <span class="text-muted">&nbsp; > &nbsp;</span>Jobs
             </section>
         </article>
     </div>
@@ -84,7 +85,7 @@
 
                                     &nbsp;&nbsp;
                                     <a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']" matTooltip="history" matTooltipPosition="above">
-                                    History </a>
+                                        History </a>
 
                                 </td>
                             </tr>
