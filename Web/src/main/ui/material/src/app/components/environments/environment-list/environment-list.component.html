@@ -22,17 +22,18 @@
 
 <section class="container-fluid with-maxwidth chapter">
         <nav mat-tab-nav-bar>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
-            </button>
-            <button mat-raised-button class="btn-w-xs bottom" mat-tab-link>Environments
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
-            </button>
-        </nav>
+                <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+                </label>
+                <label mat-tab-link [active]="true">Environments
+                </label>
+                <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+                </label>
+                <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+                </label>
+                <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+                </label>
+            </nav>
+            <br/>
 
   <!-- <mat-toolbar class="rounded">
     <span style="flex: 1 1 auto;"></span>

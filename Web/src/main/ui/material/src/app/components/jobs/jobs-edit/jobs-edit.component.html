@@ -39,18 +39,15 @@
             <div class="box-body">
 
                 <mat-horizontal-stepper [linear]="true" #stepper>
-
                     <mat-step [stepControl]="firstFormGroup">
                         <form [formGroup]="firstFormGroup">
                             <ng-template matStepLabel>Job Details</ng-template>
-
                             <div class="form-group row"></div>
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input required [(ngModel)]="job.name" formControlName="nameCtrl" id="name"
-                                               matInput placeholder="Job name" autocomplete="off">
+                                        <input required [(ngModel)]="job.name" formControlName="nameCtrl" id="name" matInput placeholder="Job name" autocomplete="off">
                                         <mat-error>Required</mat-error>
                                     </mat-input-container>
                                 </div>
@@ -67,9 +64,8 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input required [(ngModel)]="job.environment.name"
-                                               [ngModelOptions]="{standalone: true}" matInput placeholder="Environment"
-                                               autocomplete="off">
+                                        <input required [(ngModel)]="job.environment.name" [ngModelOptions]="{standalone: true}" matInput placeholder="Environment"
+                                            autocomplete="off">
                                         <mat-error>Required</mat-error>
                                     </mat-input-container>
                                     <!--<mat-form-field class="full-width">-->
@@ -87,7 +83,6 @@
                                         </p>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="form-group row">
@@ -105,9 +100,7 @@
                                     </mat-autocomplete> -->
 
                                     <mat-form-field class="full-width">
-                                        <mat-select placeholder="Bot Region" [(ngModel)]="job.regions"
-                                                    name="job.regions"
-                                                    [ngModelOptions]="{standalone: true}">
+                                        <mat-select placeholder="Bot Region" [(ngModel)]="job.regions" name="job.regions" [ngModelOptions]="{standalone: true}">
                                             <mat-option *ngFor="let option of list" [value]="option.name">
                                                 {{option.name}}
                                             </mat-option>
@@ -126,9 +119,8 @@
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-form-field class="full-width">
-                                        <mat-select placeholder="Test Categories (Optional)" [(ngModel)]="category"
-                                                    [value]="selectedCategories" name="category"
-                                                    [ngModelOptions]="{standalone: true}" multiple>
+                                        <mat-select placeholder="Test Categories (Optional)" [(ngModel)]="category" [value]="selectedCategories" name="category"
+                                            [ngModelOptions]="{standalone: true}" multiple>
                                             <mat-option *ngFor="let category of categories" [value]="category">
                                                 {{category}}
                                             </mat-option>
@@ -147,9 +139,7 @@
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input [(ngModel)]="job.cron" [ngModelOptions]="{standalone: true}"
-                                               [matAutocomplete]="auto" matInput
-                                               placeholder="Cron Expression (Optional)">
+                                        <input [(ngModel)]="job.cron" [ngModelOptions]="{standalone: true}" [matAutocomplete]="auto" matInput placeholder="Cron Expression (Optional)">
                                     </mat-input-container>
                                     <mat-autocomplete #auto="matAutocomplete">
                                         <mat-option *ngFor="let option of crons" [value]="option.exp">
@@ -168,8 +158,7 @@
 
                             <div>
                                 <mat-card-actions class="pull-right">
-                                    <button mat-raised-button color="primary" class="nav-btn"
-                                            [disabled]="firstFormGroup.invalid" matStepperNext>Next
+                                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid" matStepperNext>Next
                                     </button>
                                 </mat-card-actions>
                             </div>
@@ -179,17 +168,13 @@
                     <mat-step [stepControl]="secondFormGroup">
                         <form [formGroup]="secondFormGroup">
                             <ng-template matStepLabel>Auto Bug Management</ng-template>
-
                             <div class="form-group row">
                                 <label class="col-md-0 control-label">
                                 </label>
                                 <div class="col-md-5">
                                     <mat-form-field class="full-width">
-                                        <mat-select placeholder="Issue Tracker Type (Optional)"
-                                                    [(ngModel)]="job.issueTracker.accountType" name="type"
-                                                    [ngModelOptions]="{standalone: true}">
-                                            <mat-option *ngFor="let type of accountTypes" [value]="type"
-                                                        (click)="getITAccountsByAccountType();">
+                                        <mat-select placeholder="Issue Tracker Type (Optional)" [(ngModel)]="job.issueTracker.accountType" name="type" [ngModelOptions]="{standalone: true}">
+                                            <mat-option *ngFor="let type of accountTypes" [value]="type" (click)="getITAccountsByAccountType();">
                                                 {{type}}
                                             </mat-option>
                                         </mat-select>
@@ -203,15 +188,12 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row"
-                                 *ngIf="job.issueTracker.accountType === 'GitHub' || job.issueTracker.accountType === 'Jira'">
+                            <div class="form-group row" *ngIf="job.issueTracker.accountType === 'GitHub' || job.issueTracker.accountType === 'Jira'">
                                 <label class="col-md-0 control-label">
                                 </label>
                                 <div class="col-md-5">
                                     <mat-form-field class="full-width">
-                                        <mat-select placeholder="Credentials (Optional)"
-                                                    [(ngModel)]="job.issueTracker.account"
-                                                    [ngModelOptions]="{standalone: true}">
+                                        <mat-select placeholder="Credentials (Optional)" [(ngModel)]="job.issueTracker.account" [ngModelOptions]="{standalone: true}">
                                             <mat-option *ngFor="let account of itAccounts" [value]="account.id">
                                                 {{account.name}}
                                             </mat-option>
@@ -221,31 +203,26 @@
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
                                         <p>
-                                            <button mat-raised-button class="btn-w-md text-primary"
-                                                    (click)="openDialogITCredentials()"><i class="fa fa-plus"></i>&nbsp;&nbsp;
-                                                New Credentials
+                                            <button mat-raised-button class="btn-w-md text-primary" (click)="openDialogITCredentials()"><i
+                                                    class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials
                                             </button>
-                                            <br/> A user with read/write access to the Issue Tracker. <br/> Note: You
-                                            can create a new 'FX' user
-                                            with read/write access to the test repository.
+                                            <br/> A user with read/write access to the Issue Tracker. <br/> Note: You can
+                                            create a new 'FX' user with read/write access to the test repository.
                                         </p>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="form-group row">
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input [(ngModel)]="job.issueTracker.url" [ngModelOptions]="{standalone: true}"
-                                               matInput placeholder="Issue-Tracker URL (Optional)">
+                                        <input [(ngModel)]="job.issueTracker.url" [ngModelOptions]="{standalone: true}" matInput placeholder="Issue-Tracker URL (Optional)">
                                     </mat-input-container>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
-                                        <p class="mt-4">e.g. https://github.com/username/MyApp OR
-                                            https://mycompany.atlassian.net/
+                                        <p class="mt-4">e.g. https://github.com/username/MyApp OR https://mycompany.atlassian.net/
                                             <br/>Upon running the job, FX will automatically create/update/close bugs in
                                             this Issue Tracker
                                         </p>
@@ -258,18 +235,15 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input required [(ngModel)]="job.issueTracker.projectKey"
-                                               [ngModelOptions]="{standalone: true}" name="jiraProjectKey"
-                                               id="jiraProjectKey"
-                                               matInput type="text" placeholder="Projec Key">
+                                        <input required [(ngModel)]="job.issueTracker.projectKey" [ngModelOptions]="{standalone: true}" name="jiraProjectKey" id="jiraProjectKey"
+                                            matInput type="text" placeholder="Projec Key">
                                     </mat-input-container>
                                 </div>
                             </div>
 
                             <div>
                                 <mat-card-actions class="pull-right">
-                                    <button mat-raised-button color="primary" class="nav-btn"
-                                            [disabled]="secondFormGroup.invalid" matStepperNext>Next
+                                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="secondFormGroup.invalid" matStepperNext>Next
                                     </button>
                                 </mat-card-actions>
                                 <button class="pull-right" mat-button matStepperPrevious>Back</button>
@@ -285,16 +259,13 @@
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input [(ngModel)]="job.notifications[0].to"
-                                               [ngModelOptions]="{standalone: true}" matInput
-                                               placeholder="Emails (Optional)">
+                                        <input [(ngModel)]="job.notifications[0].to" [ngModelOptions]="{standalone: true}" matInput placeholder="Emails (Optional)">
                                     </mat-input-container>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
-                                        <p class="mt-4">Comma separated email addresses, for FX to send the Job Run
-                                            report. e.g. me@company.com,
-                                            team@company.com etc</p>
+                                        <p class="mt-4">Comma separated email addresses, for FX to send the Job Run report.
+                                            e.g. me@company.com, team@company.com etc</p>
                                     </div>
                                 </div>
 
@@ -305,9 +276,7 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-form-field class="full-width">
-                                        <mat-select placeholder="Slack Credentials (Optional)"
-                                                    [(ngModel)]="job.notifications[1].account"
-                                                    [ngModelOptions]="{standalone: true}">
+                                        <mat-select placeholder="Slack Credentials (Optional)" [(ngModel)]="job.notifications[1].account" [ngModelOptions]="{standalone: true}">
                                             <mat-option *ngFor="let account of notifyAccounts" [value]="account.id">
                                                 {{account.name}}
                                             </mat-option>
@@ -317,9 +286,8 @@
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
                                         <p>
-                                            <button mat-raised-button class="btn-w-md text-primary"
-                                                    (click)="openDialogSlackRegister()"><i class="fa fa-plus"></i>&nbsp;&nbsp;
-                                                New Credentials
+                                            <button mat-raised-button class="btn-w-md text-primary" (click)="openDialogSlackRegister()"><i
+                                                    class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials
                                             </button>
                                             <br/> Slack token of your slack workspace.<br/>
                                         </p>
@@ -331,20 +299,17 @@
                                 <label for="name" class="col-md-0 control-label"></label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <input [(ngModel)]="job.notifications[1].channel"
-                                               [ngModelOptions]="{standalone: true}" matInput
-                                               placeholder="Slack Channel (Optional)">
+                                        <input [(ngModel)]="job.notifications[1].channel" [ngModelOptions]="{standalone: true}" matInput placeholder="Slack Channel (Optional)">
                                     </mat-input-container>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
                                         <p class="mt-4">A Channel in your slack workspace e.g. Engineering, QA etc., for
-                                            FX to send the Job Run
-                                            report.</p>
+                                            FX to send the Job Run report.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-
 
                             <div>
                                 <div>
@@ -352,8 +317,7 @@
                                         <!-- <button mat-button color="warn" class="nav-btn" (click)="delete();">Delete
                                         </button> -->
                                         <button mat-button matStepperPrevious>Back</button>
-                                        <button mat-raised-button color="primary" class="nav-btn"
-                                                [disabled]="thirdFormGroup.invalid" (click)="saveJob();">Save
+                                        <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid" (click)="saveJob();">Save
                                             & Complete
                                         </button>
                                     </mat-card-actions>
@@ -361,7 +325,6 @@
                             </div>
                         </form>
                     </mat-step>
-
                 </mat-horizontal-stepper>
 
             </div>

@@ -27,36 +27,19 @@
   </div>
 </div> -->
 <section class="container-fluid with-maxwidth chapter">
-        <nav mat-tab-nav-bar>
-                <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
-                </button>
-                <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
-                </button>
-                <button mat-raised-button class="btn-w-xs bottom" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
-                </button>
-                <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
-                </button>
-                <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
-                </button>
-              </nav>
-        <!-- <mat-toolbar class="rounded">
-                <span style="flex: 1 1 auto;"></span>
-                    <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
-                    <small class="space">Jobs</small>
-                  </a>&nbsp;&nbsp; 
-                  <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
-                    <small>Environments</small>
-                  </a> &nbsp;&nbsp;
-                      <small>Test Suites</small>
-                     &nbsp;&nbsp;
-                <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
-                    <small>Coverage</small>
-                </a> &nbsp;&nbsp;
-
-            <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
-                      <small>Edit</small>
-                    </a> &nbsp;&nbsp;
-        </mat-toolbar> -->
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']" [active]="true">Test Suites
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+        </label>
+    </nav>
+    <br/>
     <article class="article">
         <div class="box box-default">
             <div class="box-body">
@@ -79,21 +62,19 @@
                         </div>
 
                         <!--<div class="form-group row">-->
-                            <!--<label class="col-md-0 control-label"></label>-->
-                            <!--<div class="col-md-5">-->
-                                <!--<mat-form-field class="full-width">-->
-                                    <!--<input required [(ngModel)]="testSuite.name" matInput [ngModelOptions]="{standalone: true}"-->
-                                           <!--placeholder="Test Suite name" autocomplete="off">-->
-                                    <!--<mat-error>Required</mat-error>-->
-                                <!--</mat-form-field>-->
-                            <!--</div>-->
+                        <!--<label class="col-md-0 control-label"></label>-->
+                        <!--<div class="col-md-5">-->
+                        <!--<mat-form-field class="full-width">-->
+                        <!--<input required [(ngModel)]="testSuite.name" matInput [ngModelOptions]="{standalone: true}"-->
+                        <!--placeholder="Test Suite name" autocomplete="off">-->
+                        <!--<mat-error>Required</mat-error>-->
+                        <!--</mat-form-field>-->
+                        <!--</div>-->
                         <!--</div>-->
 
                         <div class="form-group row">
-                            <ace-editor class="col-md-12 border editor" [(text)]="text" [theme]="'github'" [mode]="'yaml'"
-                                        [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}" [readOnly]="false"
-                                        [autoUpdateContent]="true"
-                                        [durationBeforeCallback]="1000" #editor>
+                            <ace-editor class="col-md-12 border editor" [(text)]="text" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
+                                [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" #editor>
                             </ace-editor>
                         </div>
 
@@ -320,11 +301,10 @@
                         <div>
                             <div>
                                 <mat-card-actions>
-                                    <button mat-raised-button color="primary" class="nav-btn"
-                                            (click)="saveTestSuiteYaml();">Create Test-Suite
+                                    <button mat-raised-button color="primary" class="nav-btn" (click)="saveTestSuiteYaml();">Create
+                                        Test-Suite
                                     </button>
-                                    <button mat-button type="button" color="primary" class="btn-w-md"
-                                            [routerLink]="['/app/projects', id, 'test-suites']">Cancel
+                                    <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/projects', id, 'test-suites']">Cancel
                                     </button>
                                 </mat-card-actions>
                             </div>

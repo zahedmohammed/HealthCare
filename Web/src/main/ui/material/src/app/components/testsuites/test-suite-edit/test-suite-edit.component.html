@@ -25,45 +25,24 @@
   </div>
 </div> -->
 <section class="container-fluid with-maxwidth chapter">
-        <nav mat-tab-nav-bar>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
-            </button>
-            <button mat-raised-button class="btn-w-xs bottom" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
-            </button>
-            <button mat-raised-button class="btn-w-sm text-danger pull-right" (click)="deleteSuite();">Delete
-            </button>
-            <button mat-raised-button class="btn-w-sm text-primary pull-right" (click)="cloneTestSuite()">Clone
-            </button>
-        </nav>
-        <!-- <mat-toolbar class="rounded ml-3">
-                <span style="flex: 1 1 auto;"></span>
-                
-                    <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
-                    <small class="space">Jobs</small>
-                     </a>&nbsp;&nbsp; 
-                    <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
-                    <small>Environments</small>
-                     </a> &nbsp;&nbsp;
-                      <small>Test Suites</small>
-                     &nbsp;&nbsp;
-                     <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
-                    <small>Coverage</small>
-                    </a> &nbsp;&nbsp;
-                    <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
-                      <small>Edit</small>
-                    </a> &nbsp;&nbsp;
-                    <button  mat-raised-button class="btn-w-sm text-primary"  (click)="cloneTestSuite()">
-                        Clone </button>&nbsp;&nbsp;
-                    <button mat-raised-button class="btn-w-sm text-danger"  (click)="deleteSuite();">Delete                               
-                    </button>
-        </mat-toolbar> -->
-        
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']" [active]="true">Test Suites
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+        </label>
+        <button mat-button color="warn" class="btn-w-sm text-danger pull-right" (click)="deleteSuite();">Delete
+        </button>
+        <button mat-button color="primary" class="btn-w-sm text-primary pull-right" (click)="cloneTestSuite()">Clone
+        </button>
+    </nav>
+    <br/>
+
     <article class="article">
         <div class="row">
         </div>
@@ -83,10 +62,10 @@
                             <h6 class="mat-step-label-selected pb-4">Test Suite Details</h6>
                         </div>
                         <div class="col-md-2">
-                                <button mat-raised-button color="primary" class="float-right mt-3" (click)="run();">
+                            <button mat-raised-button color="primary" class="float-right mt-3" (click)="run();">
                                 Run
                             </button>
-                            </div>
+                        </div>
                         <!-- <div class="col-md-2">
                                 <button mat-raised-button color="primary" class="float-right mt-3"  (click)="cloneTestSuiteYaml();">
                                 Clone
@@ -94,10 +73,9 @@
                         </div> -->
                     </div>
                     <div class="form-group row">
-                        <ace-editor class="col-md-12 border editor" [(text)]="testSuite.yaml" [theme]="'github'" [mode]="'yaml'"
-                        [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false,
-                        enableBasicAutocompletion: true}"
-                        [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" #editor >
+                        <ace-editor class="col-md-12 border editor" [(text)]="testSuite.yaml" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false,
+                        enableBasicAutocompletion: true}" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+                            #editor>
                         </ace-editor>
                     </div>
 
@@ -342,8 +320,7 @@
                                 </button>
                                 <!-- <button mat-button color="warn" class="nav-btn" (click)="deleteSuite();">Delete                               
                                  </button> -->
-                                <button mat-button type="button" color="primary" class="nav-btn"
-                                        [routerLink]="['/app/projects', id, 'test-suites']">Cancel
+                                <button mat-button type="button" color="primary" class="nav-btn" [routerLink]="['/app/projects', id, 'test-suites']">Cancel
                                 </button>
                             </mat-card-actions>
                         </div>
