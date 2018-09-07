@@ -48,7 +48,6 @@
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">Status</th>
                             <th class="mdl-data-table__cell--non-numeric">Success</th>
-                            <th class="mdl-data-table__cell--non-numeric">Date/Time</th>
                             <th class="mdl-data-table__cell--non-numeric">Time Taken</th>
                             <th class="mdl-data-table__cell--non-numeric">Data</th>
                         </tr>
@@ -60,7 +59,6 @@
                         <td class="mdl-data-table__cell--non-numeric">
                             {{ ( (testCaseResponse.totalPassed ) / (testCaseResponse.totalPassed + testCaseResponse.totalFailed) ) | percent }}
                         </td>
-                        <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.requestStartTime | date:'short'}}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.requestTime | mstoDuration}}</td>
                         <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.totalBytes | byteFormat}}</td>
                     </tr>
