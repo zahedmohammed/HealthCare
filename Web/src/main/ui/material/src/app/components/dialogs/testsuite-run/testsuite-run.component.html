@@ -33,28 +33,47 @@
             </div>
             <div class="col-md-5">
                 <mat-dialog-actions>
-                    <button mat-button (click)="testSuiterun();" class="text-primary" cdkFocusInitial>Run
-                    </button>
-                    <button mat-button mat-dialog-close class="text-danger pull-right">Cancel</button>
+                    <button mat-button (click)="testSuiterun();" class="text-primary" cdkFocusInitial>Run</button>
+                    <button mat-button mat-dialog-close class="text-danger pull-right">Ok</button>
                 </mat-dialog-actions>
             </div>
         </div>
-        <div *ngFor="let r of runResult">
-            <div>
-                <label>Total time: <span>&nbsp;&nbsp;{{r.requestTime | mstoDuration}}</span></label><br>
-                <label>Total bytes: <span>&nbsp;&nbsp;{{r.totalBytes | byteFormat}}</span></label><br>
-                <span class="text-success"> Passed: {{r.totalPassed}}></span>
-                    <span class="text-danger"
-                      *ngIf="r.failed != 0">&nbsp;&nbsp; Failed: {{r.totalFailed}}
-                   </span>
-                <mat-dialog-content class="mat-typography">
-                    <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
-                    <ace-editor class="col-md-12 border editor" [(text)]="r.logs" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
-                        [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
-                    </ace-editor>
-                </mat-dialog-content>
-
+        <div class="col-md-12 text-warning text-center h2" *ngIf="processing">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+        <div *ngFor="let testCaseResponse of runResult">
+            <div class="box box-default table-box mdl-shadow--2dp">
+                <table class="mdl-data-table">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Status</th>
+                            <th class="mdl-data-table__cell--non-numeric">Success</th>
+                            <th class="mdl-data-table__cell--non-numeric">Date/Time</th>
+                            <th class="mdl-data-table__cell--non-numeric">Time Taken</th>
+                            <th class="mdl-data-table__cell--non-numeric">Data</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td class="mdl-data-table__cell--non-numeric"><span class="text-success"> Passed: {{testCaseResponse.totalPassed}}
+                                <span class="text-danger" *ngIf="testCaseResponse.failed != 0">&nbsp;&nbsp; Failed: {{testCaseResponse.totalFailed}}</span></span>
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric">
+                            {{ ( (testCaseResponse.totalPassed ) / (testCaseResponse.totalPassed + testCaseResponse.totalFailed) ) | percent }}
+                        </td>
+                        <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.requestStartTime | date:'short'}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.requestTime | mstoDuration}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.totalBytes | byteFormat}}</td>
+                    </tr>
+                    <tfoot>
+                    </tfoot>
+                </table>
             </div>
+            <mat-dialog-content class="mat-typography">
+                <h2 mat-dialog-title>Wire Logs</h2>
+                <ace-editor class="col-md-12 border editor" [(text)]="testCaseResponse.logs" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
+                    [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
+                </ace-editor>
+            </mat-dialog-content>
         </div>
 
     </form>
