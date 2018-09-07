@@ -2,31 +2,21 @@
 
 <mat-dialog-content class="mat-typography">
     <form role="form" #heroForm="ngForm">
-
-      
         <div class="form-group row">
-                <label class="col-md-3 control-label">
-                    Environment
-                </label>
-                <div class="col-md-4">
-                    <mat-form-field class="full-width">
-                        <mat-select placeholder="Select environment" [(ngModel)]="environment" name="environment">
-                            <mat-option *ngFor="let env of envs" [value]="env.id">
-                                {{env.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                 <div  class="col-md-2">
-                    <mat-dialog-actions>
-                        <button mat-button (click)="testSuiterun();" class="btn-w-xs no-margin-left" cdkFocusInitial>Run
-                        </button>
-                        <button mat-button mat-dialog-close>Cancel</button>
-                    </mat-dialog-actions>
-                </div>
+            <label class="col-md-3 control-label">
+                Environment
+            </label>
+            <div class="col-md-4">
+                <mat-form-field class="full-width">
+                    <mat-select placeholder="Select environment" [(ngModel)]="environment" name="environment">
+                        <mat-option *ngFor="let env of envs" [value]="env.id">
+                            {{env.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-    
-
+            <div class="col-md-5"></div>
+        </div>
 
         <div class="form-group row">
             <label class="col-md-3 control-label">
@@ -34,24 +24,29 @@
             </label>
             <div class="col-md-4">
                 <mat-form-field class="full-width">
-                    <mat-select placeholder="Bot Region" [(ngModel)]="regions" name="regions"
-                                [ngModelOptions]="{standalone: true}">
+                    <mat-select placeholder="Bot Region" [(ngModel)]="regions" name="regions" [ngModelOptions]="{standalone: true}">
                         <mat-option *ngFor="let option of list" [value]="option">
                             {{option.org.name}}/{{option.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
+            <div class="col-md-5">
+                <mat-dialog-actions>
+                    <button mat-button (click)="testSuiterun();" class="text-primary">Run
+                    </button>
+                    <button mat-button mat-dialog-close class="text-danger pull-right">Cancel</button>
+                </mat-dialog-actions>
+            </div>
         </div>
-        <div *ngIf = "runResult">
-            <mat-dialog-content  class="mat-typography">
+        <div *ngIf="runResult">
+            <mat-dialog-content class="mat-typography">
                 <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
                 <ace-editor class="col-md-12 border editor" [(text)]="runResult" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
-                            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
+                    [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
                 </ace-editor>
             </mat-dialog-content>
         </div>
 
     </form>
 </mat-dialog-content>
-
