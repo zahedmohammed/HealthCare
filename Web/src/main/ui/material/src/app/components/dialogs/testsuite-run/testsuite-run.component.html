@@ -33,19 +33,24 @@
             </div>
             <div class="col-md-5">
                 <mat-dialog-actions>
-                    <button mat-button (click)="testSuiterun();" class="text-primary">Run
+                    <button mat-button (click)="testSuiterun();" class="text-primary" cdkFocusInitial>Run
                     </button>
                     <button mat-button mat-dialog-close class="text-danger pull-right">Cancel</button>
                 </mat-dialog-actions>
             </div>
         </div>
-        <div *ngIf="runResult">
-            <mat-dialog-content class="mat-typography">
-                <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
-                <ace-editor class="col-md-12 border editor" [(text)]="runResult" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
-                    [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
-                </ace-editor>
-            </mat-dialog-content>
+        <div *ngFor="let r of runResults">
+            <div>
+                <label>Total time: <span>{{r.requestTime | mstoDuration}}</span></label><br>
+                <label>Total bytes: <span>{{r.totalBytes | byteFormat}}</span></label>
+                <mat-dialog-content class="mat-typography">
+                    <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
+                    <ace-editor class="col-md-12 border editor" [(text)]="r.logs" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
+                        [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
+                    </ace-editor>
+                </mat-dialog-content>
+
+            </div>
         </div>
 
     </form>
