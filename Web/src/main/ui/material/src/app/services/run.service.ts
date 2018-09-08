@@ -94,4 +94,8 @@ constructor(private http: HttpClient) {
     return this.http.get(this.serviceUrl + "/" + jobId + "/testSuite/test-suite-responses/" + name);
   }
 
+  deleteByJobIdAndRunId(jobId:string, runId:string) {
+    return this.http.delete(this.serviceUrl + "/job/" + jobId + "/run/" + runId);
+  }
+
  }

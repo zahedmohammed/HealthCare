@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
+import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
@@ -65,7 +66,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository, TestSuiteConverter testSuiteConverter,
                           TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter,
                           TestSuiteESRepository testSuiteESRepository, ProjectService projectService, TestSuiteService testSuiteService,
-                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter, InstantRunTaskRequestProcessor instantRunTaskRequestProcessor) {
+                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter, InstantRunTaskRequestProcessor instantRunTaskRequestProcessor
+                          ) {
         super(repository, converter);
         this.repository = repository;
         this.jobService = projectJobService;
@@ -81,6 +83,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         this.instantRunTaskRequestProcessor = instantRunTaskRequestProcessor;
         this.environmentRepository = environmentRepository;
         this.testSuiteService = testSuiteService;
+
     }
 
     @Override
@@ -384,6 +387,11 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     @Override
+    public Response<List<com.fxlabs.fxt.dto.run.Run>> findAll(String user, Pageable pageable) {
+        return super.findAll(user, pageable);
+    }
+
+    @Override
     public Response<Long> countTests(String user, Pageable pageable) {
         // check user has access to project
         // find owned projects org --> projects --> jobs
@@ -439,6 +447,11 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     @Override
+    public Response<com.fxlabs.fxt.dto.run.Run> findById(String s, String user) {
+        return super.findById(s, user);
+    }
+
+    @Override
     public Response<Long> countTime(String user, Pageable pageable) {
         // check user has access to project
         // find owned projects org --> projects --> jobs
@@ -487,5 +500,14 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         return new Response<RunSavings>(savings);
     }
 
+    @Override
+    public Response<com.fxlabs.fxt.dto.run.Run> deleteRun(String jobId, String runId, String user) {
 
+        Optional<Run> optionalRun = this.repository.findByJobIdAndRunId(jobId, runId);
+
+        if (!optionalRun.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Run Id..."));
+        }
+        return delete(jobId, user);
+    }
 }

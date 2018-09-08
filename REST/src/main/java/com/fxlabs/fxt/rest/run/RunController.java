@@ -101,12 +101,12 @@ public class RunController {
         return runService.stopRun(id, SecurityUtil.getCurrentAuditor());
     }
 
+
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Run> findByRunId(@PathVariable("id") String id) {
         return runService.findRunById(id, SecurityUtil.getCurrentAuditor());
     }
-
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/job/{id}", method = RequestMethod.POST)
@@ -132,4 +132,16 @@ public class RunController {
     }
 
 
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/job/{jobId}/run/{runId}", method = RequestMethod.DELETE)
+    public Response<Run> deleteRun(@PathVariable("jobId") String jobId,
+                                         @PathVariable("runId") String runId) {
+        return runService.deleteRun(jobId, runId, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Response<Run> delete(@PathVariable("id") String id) {
+        return runService.delete(id, SecurityUtil.getCurrentAuditor());
+    }
 }

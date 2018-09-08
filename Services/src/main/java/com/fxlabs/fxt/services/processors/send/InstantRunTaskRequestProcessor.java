@@ -8,7 +8,7 @@ import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
-import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
+import com.fxlabs.fxt.dao.repository.jpa.ository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
