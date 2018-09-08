@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 public class RegexValidator extends Validator {
 
     @Override
-    public void validate(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
+    public boolean validate(String operand1, String operator, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
         if (operand1.matches(operand2)) {
-            validationPass(operand1, operand2, context, assertion, assertionLogs);
+            return validationPass(operand1, operator, operand2, context, assertion, assertionLogs);
         } else {
-            validationFailed(operand1, operand2, context, assertion, assertionLogs);
+            return validationFailed(operand1, operator, operand2, context, assertion, assertionLogs);
         }
     }
 }

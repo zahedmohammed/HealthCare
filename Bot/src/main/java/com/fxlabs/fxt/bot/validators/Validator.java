@@ -12,21 +12,13 @@ public abstract class Validator {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    abstract void validate(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs);
+    abstract boolean validate(String operand1, String operator, String operand2, Context context, String assertion, StringBuilder assertionLogs);
 
-    protected void validationPass(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
-        context.setResult("pass");
-        String msg = String.format("Assertion [%s] passed, expected [%s] and found [%s]", assertion, operand2, operand1);
-        //logger.debug(msg);
-        context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
-        assertionLogs.append(msg);
+    protected boolean validationPass(String operand1, String operator, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
+        return true;
     }
 
-    protected void validationFailed(String operand1, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
-        context.setResult("fail");
-        String msg = String.format("Assertion [%s] failed, expected value [%s] but found [%s]", assertion, operand2, operand1);
-        //logger.debug(msg);
-        context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), msg);
-        assertionLogs.append(msg);
+    protected boolean validationFailed(String operand1, String operator, String operand2, Context context, String assertion, StringBuilder assertionLogs) {
+        return false;
     }
 }

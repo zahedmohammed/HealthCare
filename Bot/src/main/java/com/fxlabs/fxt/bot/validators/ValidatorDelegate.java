@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.StringJoiner;
+import java.util.regex.Pattern;
+
 /**
  * @author Intesar Shannan Mohammed
  */
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Component;
 public class ValidatorDelegate {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private static final String OR = "||";
 
     @Autowired
     @Qualifier("equalsValidator")
@@ -76,76 +81,123 @@ public class ValidatorDelegate {
 
     public void validate(String assertion, Context context, StringBuilder assertionLogs) {
         //logger.info("Validating assertion [{}]", assertion);
-        String[] tokens = StringUtils.split(assertion, " ");
+        boolean result = false;
 
-        //context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), "Validating " + assertion);
-        //logger.info("tokens [{}]", tokens);
-        if (tokens == null || tokens.length != 3) {
-            skipAssertion(context, assertion, "");
-            return;
-        }
+        if (StringUtils.containsIgnoreCase(assertion, OR)) {
+            String[] assertions = assertion.split(Pattern.quote(OR));
+            StringJoiner OR_OPERATOR = new StringJoiner(" || ");
+            for (String assertion_ : assertions) {
 
-        try {
+                String[] tokens = StringUtils.split(assertion_, " ");
+                if (tokens == null || tokens.length != 3) {
+                    skipAssertion(context, assertion_, "");
+                    continue;
+                }
+                final String operand1 = evaluator.evaluate(tokens[0], context, StringUtils.EMPTY);
+                final String OPERATOR = tokens[1];
+                final String operand2 = evaluator.evaluate(tokens[2], context, StringUtils.EMPTY);
+
+                result = result || processAssertion(operand1, OPERATOR, operand2, assertion_, context, assertionLogs);
+
+                StringJoiner resolved = new StringJoiner(" ");
+                resolved.add(operand1).add(OPERATOR).add(operand2);
+                OR_OPERATOR.add(resolved.toString());
+
+            }
+
+            String msg = String.format("Assertion [%s] resolved-to [%s] result [%s]", assertion, OR_OPERATOR.toString(), (result ? "Passed" : "Failed"));
+            context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
+            assertionLogs.append(msg);
+
+        } else {
+
+            String[] tokens = StringUtils.split(assertion, " ");
+            if (tokens == null || tokens.length != 3) {
+                skipAssertion(context, assertion, "");
+                return;
+            }
             final String operand1 = evaluator.evaluate(tokens[0], context, StringUtils.EMPTY);
             final String OPERATOR = tokens[1];
             final String operand2 = evaluator.evaluate(tokens[2], context, StringUtils.EMPTY);
 
+
+            result = processAssertion(operand1, OPERATOR, operand2, assertion, context, assertionLogs);
+
+            String msg = String.format("Assertion [%s] resolved-to [%s %s %s] result [%s]", assertion, operand1, OPERATOR, operand2, (result ? "Passed" : "Failed"));
+            context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
+            assertionLogs.append(msg);
+        }
+
+        context.setResult(result ? "pass" : "fail");
+
+
+    }
+
+    protected Boolean processAssertion(String operand1, String OPERATOR, String operand2, String assertion, Context context, StringBuilder assertionLogs) {
+
+        Boolean result = false;
+
+        try {
+
             switch (OPERATOR) {
                 case "==":
-                    equalsValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = equalsValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "==IgnoreCase":
-                    equalsIgnoreCaseValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = equalsIgnoreCaseValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "!=":
-                    notEqualsValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = notEqualsValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case ">":
-                    greaterValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = greaterValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case ">=":
-                    greaterAndEqualsValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = greaterAndEqualsValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "<":
-                    lesserValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = lesserValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "<=":
-                    lesserAndEqualsValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = lesserAndEqualsValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "=~":
-                    regexValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = regexValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "!=~":
-                    notRegexValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = notRegexValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "startsWith":
-                    startsWithValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = startsWithValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "startsWithIgnoreCase":
-                    startsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = startsWithIgnoreCaseValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "endsWith":
-                    endsWithValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = endsWithValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 case "endsWithIgnoreCase":
-                    endsWithIgnoreCaseValidator.validate(operand1, operand2, context, assertion, assertionLogs);
+                    result = endsWithIgnoreCaseValidator.validate(operand1, OPERATOR, operand2, context, assertion, assertionLogs);
                     break;
                 default:
-                    skipAssertion(context, assertion, "");
+                    result = skipAssertion(context, assertion, "");
             }
+
         } catch (RuntimeException re) {
             logger.warn(re.getLocalizedMessage());
             skipAssertion(context, assertion, re.getLocalizedMessage());
         }
+        return result;
     }
 
-    protected void skipAssertion(Context context, String assertion, String errors) {
-        context.setResult("fail");
+    protected boolean skipAssertion(Context context, String assertion, String errors) {
+        //context.setResult("fail");
         logger.debug("Invalid assertion [{}] errors [{}]", assertion, errors);
         AssertionLogger logger = null;
         if (context.getLogs() != null) {
             context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(),
                     String.format("Invalid assertion [%s] errors [{}]. e.g. valid [<Operand1> <Operation> <Operand2>] i.e. @Request.name == @Response.name", assertion, errors));
         }
+        return false;
     }
 }
