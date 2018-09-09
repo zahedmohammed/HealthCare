@@ -19,6 +19,7 @@ export class AutoSyncComponent implements OnInit {
 
   id; // project id
   checked = false;
+  showCategories = false;
   projectId: string = "";
   showSpinner: boolean = false;
   projectSync: ProjectSync = new ProjectSync();
@@ -40,10 +41,12 @@ export class AutoSyncComponent implements OnInit {
 
   selectAll(select: NgModel, values, array) {
     if (this.checked){
-      select.update.emit(values); 
+       select.update.emit(values);
+       this.projectSync.deteleAll = true;
     }
     if (!this.checked){
-      select.update.emit([]); 
+        select.update.emit([]);
+        this.projectSync.deteleAll = false;
     }
   }
   synchronization() {
