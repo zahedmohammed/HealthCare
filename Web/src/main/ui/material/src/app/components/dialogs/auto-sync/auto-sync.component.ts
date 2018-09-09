@@ -42,11 +42,11 @@ export class AutoSyncComponent implements OnInit {
   selectAll(select: NgModel, values, array) {
     if (this.checked){
        select.update.emit(values);
-       this.projectSync.deteleAll = true;
+       this.projectSync.deleteAll = true;
     }
     if (!this.checked){
         select.update.emit([]);
-        this.projectSync.deteleAll = false;
+        this.projectSync.deleteAll = false;
     }
   }
   synchronization() {
