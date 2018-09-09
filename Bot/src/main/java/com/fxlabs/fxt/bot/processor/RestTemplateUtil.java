@@ -78,7 +78,7 @@ public class RestTemplateUtil {
             //responseBody = response.getBody();
             //headers = response.getHeaders();
         } catch (HttpStatusCodeException statusCodeException) {
-            response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
+            response = new ResponseEntity<String>(statusCodeException.getResponseBodyAsString(), statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage());
             return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -109,7 +109,7 @@ public class RestTemplateUtil {
             //responseBody = response.getBody();
             //headers = response.getHeaders();
         } catch (HttpStatusCodeException statusCodeException) {
-            response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
+            response = new ResponseEntity<String>(statusCodeException.getResponseBodyAsString(), statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage());
             return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -163,7 +163,7 @@ public class RestTemplateUtil {
             //responseBody = response.getBody();
             //headers = response.getHeaders();
         } catch (HttpStatusCodeException statusCodeException) {
-            response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
+            response = new ResponseEntity<String>(statusCodeException.getResponseBodyAsString(), statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
         } catch (Exception e) {
             logger.warn(e.getLocalizedMessage());
             return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -193,7 +193,7 @@ public class RestTemplateUtil {
             //responseBody = response.getBody();
             //headers = response.getHeaders();
         } catch (HttpStatusCodeException statusCodeException) {
-            response = new ResponseEntity<String>(statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
+            response = new ResponseEntity<String>(statusCodeException.getResponseBodyAsString(), statusCodeException.getResponseHeaders(), statusCodeException.getStatusCode());
         } catch (OAuth2AccessDeniedException e) {
             logger.warn(e.getLocalizedMessage(), e);
             return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);

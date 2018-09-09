@@ -187,15 +187,19 @@ public class VCDelegate {
     }
 
     private void customizedFileDeletion(VCTask task, String path) {
+
+        String path_ = path + "/test-suites/AutoCode";
+
         if (task.isDeleteAll()) {
-            delete(new File(path + "/test-suites/AutoCode"));
+            delete(new File(path_));
         }
+
 
         if (!CollectionUtils.isEmpty(task.getCategories()) && !task.isDeleteAll()) {
             List<File> filesToDelete = new ArrayList<>();
 
             task.getCategories().stream().forEach(category -> {
-                finder(category, filesToDelete, path);
+                finder(category, filesToDelete, path_);
             });
             filesToDelete.stream().forEach(f -> {
                 delete(f);
@@ -212,7 +216,7 @@ public class VCDelegate {
         if (dir.exists() && dir.isDirectory()) {
             listfiles(dir, list);
             for (File fileName : list) {
-                if (fileName.getName().toString().contains(category)) {
+                if (org.apache.commons.lang3.StringUtils.containsIgnoreCase(fileName.getName().toString(), category)) {
                     files.add(fileName);
                 }
             }

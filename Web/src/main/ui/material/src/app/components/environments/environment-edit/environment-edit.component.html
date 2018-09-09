@@ -30,48 +30,29 @@
   </div> -->
 
 <section class="container-fluid with-maxwidth chapter">
-        <nav mat-tab-nav-bar>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
-            </button>
-            <button mat-raised-button class="btn-w-xs bottom" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
-            </button>
-            <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
-            </button>
-            <button mat-raised-button class="btn-w-sm text-danger pull-right" (click)="delete();">Delete
-            </button>
-            <button mat-raised-button class="btn-w-sm text-primary pull-right" (click)="cloneEnv()">Clone
-            </button>
-        </nav>
-    <!-- <mat-toolbar class="rounded ml-3" >
-            <span style="flex: 1 1 auto;"></span>
-                <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
-                <small class="space">Jobs</small>
-              </a>&nbsp;&nbsp; 
-              <small>Environments</small>&nbsp;&nbsp;
-                <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']">
-                  <small>Test Suites</small>
-                </a> &nbsp;&nbsp;
-                <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
-                    <small>Coverage</small>
-                </a> &nbsp;&nbsp;
-                <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
-                  <small>Edit</small>
-                </a> &nbsp;&nbsp;
-                <button  mat-raised-button class="btn-w-sm text-primary" (click)="cloneEnv()">
-                    Clone </button>&nbsp;&nbsp;
-                <button mat-raised-button class="btn-w-sm text-danger" (click)="delete();">Delete
-                </button>
-    </mat-toolbar> -->
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'environments']" [active]="true">Environments
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+        </label>
+        <button mat-button color="warn" class="btn-w-sm text-danger pull-right" (click)="delete();">Delete
+        </button>
+        <button mat-button color="primary" class="btn-w-sm text-primary pull-right" (click)="cloneEnv()">Clone
+        </button>
+    </nav>
+    <br/>
     <article class="article">
         <div class="box box-default">
-               
+
             <div class="box-body ml-4">
                 <form [formGroup]="thirdFormGroup" class="px-4">
-                        <h6 class="mat-step-label-selected pb-4">Environment Details</h6>
+                    <h6 class="mat-step-label-selected pb-4">Environment Details</h6>
                     <div class="form-group row"></div>
                     <div class="form-group row">
                         <!--label for="name" class="col-md-0 control-label"></label-->
@@ -113,20 +94,20 @@
 
 
                             <div class="form-group row">
-                                
+
                                 <div class="col-md-5">
                                     <small>Authentication #{{i+1}}</small>
                                 </div>
                                 <div class="col-md-7">
                                     <span>
-                                        <a href="javascript:;"  (click)="removeItem(i)">
+                                        <a href="javascript:;" (click)="removeItem(i)">
                                             <i class="fa fa-minus"></i> Remove
                                         </a>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                
+
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
                                         <input required formControlName="name" matInput placeholder="Name" autocomplete="off">
@@ -135,7 +116,8 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
-                                        <p class="mt-4">Note: Every environment should have "Default" and "Invalid_Auth" authentications
+                                        <p class="mt-4">Note: Every environment should have "Default" and "Invalid_Auth"
+                                            authentications
                                         </p>
                                     </div>
                                 </div>
@@ -158,7 +140,7 @@
                             <!-- Basic -->
                             <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.authType.value == 'Basic'">
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input required formControlName="username" matInput placeholder="Username" autocomplete="off">
@@ -169,7 +151,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input required type="password" formControlName="password" matInput placeholder="Password" autocomplete="off">
@@ -226,7 +208,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input formControlName="clientSecret" matInput placeholder="ClientSecret">
@@ -236,7 +218,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input formControlName="id" matInput placeholder="Id">
@@ -246,7 +228,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input formControlName="accessTokenUri" matInput placeholder="AccessToken Uri">
@@ -262,7 +244,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input formControlName="userAuthorizationUri" matInput placeholder="UserAuthorization Uri">
@@ -272,7 +254,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
                                             <mat-select placeholder="Client Authentication Scheme" formControlName="clientAuthenticationScheme" name="type">
@@ -286,7 +268,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
                                             <mat-select placeholder="Authorization Scheme" formControlName="authorizationScheme" name="type">
@@ -300,7 +282,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
                                             <mat-select placeholder="Scope" formControlName="scope" name="type">
@@ -319,7 +301,7 @@
                             <!-- Token -->
                             <div *ngIf="thirdFormGroup.controls.items.controls[i].controls.authType.value  == 'Token'">
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input formControlName="header_1" matInput placeholder="Header 1">
@@ -333,7 +315,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    
+
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input formControlName="header_2" matInput placeholder="Header 2">
@@ -352,15 +334,25 @@
                                     </label>
                                     <div class="col-md-5">
                                         Grant Type &nbsp; &nbsp;
-                                        <mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="thirdFormGroup.controls.items.controls[i].controls.grantType.value" [ngModelOptions]="{standalone: true}">
-                                            <mat-radio-button  *ngFor="let grant of auth0GrantTypes" [value]="grant" color="primary">{{grant}} &nbsp; &nbsp; </mat-radio-button>
+                                        <mat-radio-group class="ui-md-radio-group-inline" [(ngModel)]="thirdFormGroup.controls.items.controls[i].controls.grantType.value"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <mat-radio-button *ngFor="let grant of auth0GrantTypes" [value]="grant" color="primary">{{grant}}
+                                                &nbsp; &nbsp; </mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                     <div class="col-md-7">
                                         <div class="callout1 text-muted callout-info1">
                                             <p class="mt-4">Auth0 documentation <a href="https://auth0.com/docs/">https://auth0.com/docs/</a></p>
-                                            <p *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value === 'client_credentials'">This is the OAuth 2.0 grant that server processes utilize in order to access an API. Use this endpoint to directly request an access_token by using the Client Credentials (a Client Id and a Client Secret).</p>
-                                            <p *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value === 'password'">This is the OAuth 2.0 grant that highly trusted apps utilize in order to access an API. In this flow the end-user is asked to fill in credentials (username/password) typically using an interactive form. This information is later on sent to the Client and the Authorization Server. It is therefore imperative that the Client is absolutely trusted with this information.</p>
+                                            <p *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value === 'client_credentials'">This
+                                                is the OAuth 2.0 grant that server processes utilize in order to access an
+                                                API. Use this endpoint to directly request an access_token by using the Client
+                                                Credentials (a Client Id and a Client Secret).</p>
+                                            <p *ngIf="thirdFormGroup.controls.items.controls[i].controls.grantType.value === 'password'">This
+                                                is the OAuth 2.0 grant that highly trusted apps utilize in order to access
+                                                an API. In this flow the end-user is asked to fill in credentials (username/password)
+                                                typically using an interactive form. This information is later on sent to
+                                                the Client and the Authorization Server. It is therefore imperative that
+                                                the Client is absolutely trusted with this information.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -497,7 +489,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        
+
                         <div class="col-md-5">
                             <small></small>
                         </div>
@@ -507,7 +499,7 @@
                     </div>
 
 
-                    <div>    
+                    <div>
                         <mat-card-actions>
                             <br>
                             <button mat-raised-button color="primary" class="nav-btn" [disabled]="thirdFormGroup.invalid || thirdFormGroup.pristine"

@@ -1,18 +1,18 @@
 <div class="box box-default">
-        <div>
-            <article>
-                <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                        <!-- <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
-                        &nbsp;<span class="text-muted"> > </span> &nbsp; -->
-                        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"> {{project.name}} </a>
-                        &nbsp;<span class="text-muted"> > </span> &nbsp;
-                        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a>
-                        &nbsp;<span class="text-muted"> > </span> &nbsp;{{job.name}}
-                        &nbsp;<span class="text-muted"> > </span> &nbsp;History
-                </section>
-            </article>
-        </div>
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                <!-- <a href="javascript:;" [routerLink]="['/app/projects']"> Projects </a>
+                &nbsp;<span class="text-muted"> > </span> &nbsp; -->
+                <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"> {{project.name}} </a>
+                &nbsp;<span class="text-muted"> > </span> &nbsp;
+                <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a>
+                &nbsp;<span class="text-muted"> > </span> &nbsp;{{job.name}}
+                &nbsp;<span class="text-muted"> > </span> &nbsp;History
+            </section>
+        </article>
     </div>
+</div>
 
 <!-- <div class="box box-default">
     <div class="box-body">
@@ -34,98 +34,107 @@
             /
             <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]">{{job.name}}</a> /
             Runs</h2> -->
-        <mat-tab-group>
-            <mat-tab label="Details">
+        <!--<mat-tab-group>
+            <mat-tab label="Details">-->
                 <section class="box box-transparent">
                     <div class="box-body">
 
-        <div class="box box-default table-box mdl-shadow--2dp">
-            <table class="mdl-data-table">
-                <thead>
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric">Region</th>
-                    <th class="mdl-data-table__cell--non-numeric">Date</th>
-                    <th class="mdl-data-table__cell--non-numeric">Pass/Fail</th>
-                    <th class="mdl-data-table__cell--non-numeric">Success</th>
-                    <th class="mdl-data-table__cell--non-numeric">Data</th>
-                    <th class="mdl-data-table__cell--non-numeric">Total Time</th>
-                    <!--<th class="mdl-data-table__cell--non-numeric">Actual Time</th>-->
-                    <th class="mdl-data-table__cell--non-numeric">Status</th>
-                    <th class="mdl-data-table__cell--non-numeric">No</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of list">
-                    <td class="mdl-data-table__cell--non-numeric">{{item.regions}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">
+                        <div class="box box-default table-box mdl-shadow--2dp">
+                            <table class="mdl-data-table">
+                                <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric">Region</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Date</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Pass/Fail</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Success</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Data</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Total Time</th>
+                                    <!--<th class="mdl-data-table__cell--non-numeric">Actual Time</th>-->
+                                    <th class="mdl-data-table__cell--non-numeric">Status</th>
+                                    <th class="mdl-data-table__cell--non-numeric">No</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let item of list">
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.regions}}</td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}
+                                    </td>
+                                    <td class="mdl-data-table__cell--non-numeric">
                         <span class="text-success"> Passed: {{item.task.totalTestCompleted}}
                             <span class="text-danger" *ngIf="item.task.failedTests != 0">&nbsp;&nbsp; Failed: {{item.task.failedTests}}</span>
                         </span>
-                        <!--{{item.task.totalTestCompleted}}/{{item.task.failedTests}}-->
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ ( (item.task.totalTestCompleted ) / (item.task.totalTestCompleted + item.task.failedTests) ) | percent}}
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalBytes | byteFormat}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime | mstoDuration}}</td>
-                    <!--<td class="mdl-data-table__cell--non-numeric">{{item.task.timeTaken | mstoDuration}}</td>-->
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <span *ngIf="item.task.status == 'COMPLETED'" class="text-success">{{item.task.status}}</span>
-                        <span *ngIf="item.task.status != 'COMPLETED' && item.task.status != 'PROCESSING'" class="text-danger">{{item.task.status}}</span>
-                        <span *ngIf="item.task.status == 'PROCESSING'" class="text-warning"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{item.task.status}}</span>
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <!-- <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a> -->
-                        <a href="javascript:;" [routerLink]="['/app/projects' , projectId, 'jobs' , job.id, 'runs', item.id]">#{{item.runId}}</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                                        <!--{{item.task.totalTestCompleted}}/{{item.task.failedTests}}-->
+                                    </td>
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        {{ ( (item.task.totalTestCompleted ) / (item.task.totalTestCompleted +
+                                        item.task.failedTests) ) | percent}}
+                                    </td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalBytes |
+                                        byteFormat}}
+                                    </td>
+                                    <td class="mdl-data-table__cell--non-numeric">{{item.task.totalTime |
+                                        mstoDuration}}
+                                    </td>
+                                    <!--<td class="mdl-data-table__cell--non-numeric">{{item.task.timeTaken | mstoDuration}}</td>-->
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <span *ngIf="item.task.status == 'COMPLETED'" class="text-success">{{item.task.status}}</span>
+                                        <span *ngIf="item.task.status != 'COMPLETED' && item.task.status != 'PROCESSING'"
+                                              class="text-danger">{{item.task.status}}</span>
+                                        <span *ngIf="item.task.status == 'PROCESSING'" class="text-warning"><i
+                                                class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{item.task.status}}</span>
+                                    </td>
+                                    <td class="mdl-data-table__cell--non-numeric">
+                                        <!-- <a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a> -->
+                                        <a href="javascript:;"
+                                           [routerLink]="['/app/projects' , projectId, 'jobs' , job.id, 'runs', item.id]">#{{item.runId}}</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                 </section>
-            </mat-tab>
+            <!--</mat-tab>-->
 
             <!--<mat-tab label="Savings">-->
-                <!--<section class="box box-transparent">-->
-                    <!--<div class="box-body">-->
-                        <!--<div class="box box-default table-box mdl-shadow&#45;&#45;2dp">-->
-                            <!--<table class="mdl-data-table">-->
-                                <!--<thead>-->
-                                <!--<tr>-->
-                                    <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">No</th>-->
-                                    <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Region</th>-->
-                                    <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Date</th>-->
-                                    <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Pass/Fail</th>-->
-                                    <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Time Saved</th>-->
-                                <!--</tr>-->
-                                <!--</thead>-->
-                                <!--<tbody>-->
-                                <!--<tr *ngFor="let item of list">-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
-                                        <!--<a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>-->
-                                    <!--</td>-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{item.regions}}</td>-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{item.createdDate | date:'short'}}</td>-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{item.task.timeSaved | mstoDuration}}</td>-->
-                                <!--</tr>-->
-                                <!--<tr class="bg-color-info font-weight-bold">-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">Total Time Saved</td>-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
-                                    <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{totalTimeSaved | mstoDuration}}</td>-->
-                                <!--</tr>-->
-                                <!--</tbody>-->
-                            <!--</table>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
+            <!--<section class="box box-transparent">-->
+            <!--<div class="box-body">-->
+            <!--<div class="box box-default table-box mdl-shadow&#45;&#45;2dp">-->
+            <!--<table class="mdl-data-table">-->
+            <!--<thead>-->
+            <!--<tr>-->
+            <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">No</th>-->
+            <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Region</th>-->
+            <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Date</th>-->
+            <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Pass/Fail</th>-->
+            <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Time Saved</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr *ngFor="let item of list">-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
+            <!--<a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', item.id]">#{{item.runId}}</a>-->
+            <!--</td>-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{item.regions}}</td>-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{item.createdDate | date:'short'}}</td>-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{item.task.totalTestCompleted}}/{{item.task.failedTests}}</td>-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{item.task.timeSaved | mstoDuration}}</td>-->
+            <!--</tr>-->
+            <!--<tr class="bg-color-info font-weight-bold">-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">Total Time Saved</td>-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
+            <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{totalTimeSaved | mstoDuration}}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+            <!--</table>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</section>-->
             <!--</mat-tab>-->
-        </mat-tab-group>
+        <!--</mat-tab-group>-->
 
         <mat-paginator [hidden]="length <= pageSize"
                        [pageSize]="pageSize"

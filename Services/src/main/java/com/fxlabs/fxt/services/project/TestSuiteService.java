@@ -26,7 +26,7 @@ public interface TestSuiteService extends GenericService<TestSuite, String> {
 
     public Response<TestSuite> createFromUI(String dto, String projectId, String id);
 
-    public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user);
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user, boolean updateVC);
     public void testSuitesDelete(TestSuitesDeletedDto dto, String user);
 
     Response<List<TestSuite>> search(String runId, String category, String keyword, String org, String user, Pageable pageable);

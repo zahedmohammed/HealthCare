@@ -20,51 +20,30 @@
 </div> -->
 
 <section class="container-fluid with-maxwidth chapter">
-        <nav mat-tab-nav-bar>
-          <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
-          </button>
-          <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
-          </button>
-          <button mat-raised-button class="btn-w-xs bottom" mat-tab-link>Test Suites
-          </button>
-          <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
-          </button>
-          <button mat-button class="btn-w-xs" mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
-          </button>
-        </nav><br>
-        <mat-form-field class="col-md-3">
-          <mat-select placeholder="Search by category" [(ngModel)]="category" (selectionChange)="searchByCategory()" name="category"
-            [ngModelOptions]="{standalone: true}">
-            <mat-option *ngFor="let category of categories" [value]="category">
-              {{category}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-input-container class="col-md-3">
-          <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..." (keyup.enter)="search()">
-        </mat-input-container>
-  <!-- <mat-toolbar class="rounded col-md-4">
-    <span style="flex: 1 1 auto;"></span>
-    <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">
-      <small class="space">Jobs</small>
-    </a>&nbsp;&nbsp;
-
-    <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']">
-      <small>Environments</small>
-    </a> &nbsp;&nbsp;
-
-    <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']"
-      <small>Test Suites</small>
-    </a> &nbsp;&nbsp;
-
-    <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
-      <small>Coverage</small>
-    </a> &nbsp;&nbsp;
-
-    <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']">
-      <small>Edit</small>
-    </a> &nbsp;&nbsp;
-  </mat-toolbar> -->
+  <nav mat-tab-nav-bar>
+    <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+    </label>
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+    </label>
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']" [active]="true">Test Suites
+    </label>
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+    </label>
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
+    </label>
+  </nav>
+  <br/>
+  <mat-form-field class="col-md-3">
+    <mat-select placeholder="Search by category" [(ngModel)]="category" (selectionChange)="searchByCategory()" name="category"
+      [ngModelOptions]="{standalone: true}">
+      <mat-option *ngFor="let category of categories" [value]="category">
+        {{category}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-input-container class="col-md-3">
+    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..." (keyup.enter)="search()">
+  </mat-input-container>
 
   <article class="article">
     <div class="box box-default">
@@ -76,47 +55,46 @@
               New Test Suite
             </button>
           </div>
-         
+
 
           <div class="col-md-3 mb-2">
-              <p class="text-muted float-right mt-2">Total ({{length}})</p>
-              <button mat-raised-button color="primary" (click)="open();" class="btn-w-md">
-                 AutoCode & Sync
-                </button>
+            <p class="text-muted float-right mt-2">Total ({{length}})</p>
+            <button mat-raised-button color="primary" (click)="open();" class="btn-w-md">
+              AutoCode & Sync
+            </button>
           </div>
         </div>
         <div class="box box-default table-box mdl-shadow--2dp">
           <table class="mdl-data-table">
             <thead>
-            <tr>
-              <th class="mdl-data-table__cell--non-numeric">name</th>
-              <th class="mdl-data-table__cell--non-numeric">Category</th>
-              <th class="mdl-data-table__cell--non-numeric">Type</th>
-              <th class="mdl-data-table__cell--non-numeric">Create Type</th>
-              <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Author</th>-->
-              <th class="mdl-data-table__cell--non-numeric">Last Modified</th>
-              <!--th class="mdl-data-table__cell--non-numeric">Env</th>
+              <tr>
+                <th class="mdl-data-table__cell--non-numeric">name</th>
+                <th class="mdl-data-table__cell--non-numeric">Category</th>
+                <th class="mdl-data-table__cell--non-numeric">Type</th>
+                <th class="mdl-data-table__cell--non-numeric">Create Type</th>
+                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Author</th>-->
+                <th class="mdl-data-table__cell--non-numeric">Last Modified</th>
+                <!--th class="mdl-data-table__cell--non-numeric">Env</th>
               <th class="mdl-data-table__cell--non-numeric">Bot-Region</th>
               <th class="mdl-data-table__cell--non-numeric">Issue-Tracker</th>
               <th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
               <th class="mdl-data-table__cell--non-numeric"></th-->
-            </tr>
+              </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let testsuite of testsuites">
-              <td class="mdl-data-table__cell--non-numeric">
-                <a href="javascript:;"
-                   [routerLink]="['/app/projects', id, 'test-suites', testsuite.id, 'edit']">{{testsuite.name}}</a></td>
-              <td class="mdl-data-table__cell--non-numeric">{{testsuite.category}}</td>
-              <td class="mdl-data-table__cell--non-numeric">{{testsuite.type}}</td>
-              <td class="mdl-data-table__cell--non-numeric" *ngIf="testsuite.autoGenerated === true"> Auto Generated</td>
-              <td class="mdl-data-table__cell--non-numeric" *ngIf="testsuite.autoGenerated !== true"> Manual</td>
+              <tr *ngFor="let testsuite of testsuites">
+                <td class="mdl-data-table__cell--non-numeric">
+                  <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites', testsuite.id, 'edit']">{{testsuite.name}}</a></td>
+                <td class="mdl-data-table__cell--non-numeric">{{testsuite.category}}</td>
+                <td class="mdl-data-table__cell--non-numeric">{{testsuite.type}}</td>
+                <td class="mdl-data-table__cell--non-numeric" *ngIf="testsuite.autoGenerated === true"> Auto Generated</td>
+                <td class="mdl-data-table__cell--non-numeric" *ngIf="testsuite.autoGenerated !== true"> Manual</td>
 
                 <!--{{testsuite.autoGenerated}}</td>-->
-              <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{testsuite.createdBy}}</td>-->
-              <td class="mdl-data-table__cell--non-numeric">{{testsuite.modifiedDate | timeAgo}}</td>
+                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{testsuite.createdBy}}</td>-->
+                <td class="mdl-data-table__cell--non-numeric">{{testsuite.modifiedDate | timeAgo}}</td>
 
-              <!--td class="mdl-data-table__cell--non-numeric">{{job.environment?.name}}</td>
+                <!--td class="mdl-data-table__cell--non-numeric">{{job.environment?.name}}</td>
               <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
               <td class="mdl-data-table__cell--non-numeric">{{job.issueTracker?.name}}</td>
               <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
@@ -125,19 +103,14 @@
                 <a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']">History</a>
                 &nbsp;
               </td-->
-            </tr>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <mat-paginator [hidden]="length <= pageSize"
-                   [pageSize]="pageSize"
-                   hidePageSize="true"
-                   (page)="change($event)"
-                   [length]="length"
-    >
+    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
     </mat-paginator>
 
   </article>

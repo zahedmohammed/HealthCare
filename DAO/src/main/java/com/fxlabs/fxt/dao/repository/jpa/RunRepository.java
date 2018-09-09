@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -36,10 +37,12 @@ public interface RunRepository extends JpaRepository<Run, String> {
 
     Page<Run> findByJobId(String id, Pageable pageable);
 
+    Optional<Run> findByJobIdAndRunId(String jobId, String runId);
+
     @Query("SELECT SUM(r.task.totalTestCompleted) FROM Run r WHERE r.job.project.id LIKE ?1")
     Long countTestsByProject(String projectId);
 
-    @Query("SELECT SUM(r.task.totalTestCompleted) FROM Run r WHERE r.createdDate>?2 and  r.job.project.id LIKE ?1")
+    @Query("SELECT SUM(r.task.totalTestCompleted + r.task.failedTests) FROM Run r WHERE r.createdDate>?2 and  r.job.project.id LIKE ?1")
     Long countTestsByProjectAndCreatedDateGreaterThan(String projectId, Date date);
 
     @Query("SELECT SUM(r.task.totalBytes) FROM Run r WHERE r.job.project.id LIKE ?1")

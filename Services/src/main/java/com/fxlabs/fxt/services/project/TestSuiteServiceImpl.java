@@ -227,7 +227,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
 
     @Override
-    public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> update(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user, boolean updateVC) {
 
 
         if (testSuite == null || testSuite.getProject() == null  || testSuite.getProject().getId() == null) {
@@ -245,7 +245,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         }
 
         if (testSuiteMin != null && StringUtils.isNotEmpty(testSuiteMin.getParent())
-                && org.apache.commons.lang3.StringUtils.containsIgnoreCase(testSuiteMin.getParent(), "AutoCode")) {
+                && org.apache.commons.lang3.StringUtils.contains(testSuiteMin.getParent(), "AutoCode")) {
             throw new FxException("Folder name should not have AutoCode");
         }
 
@@ -256,7 +256,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             throw new FxException(String.format("TestSuite [%s] exists.", testSuiteOptional.get().getName()));
         }
 
-        if (!StringUtils.equals(testSuiteOptional.get().getName(), testSuite_.getName())) {
+        if (!StringUtils.equals(testSuiteOptional.get().getName(), testSuite.getName())) {
             throw new FxException(String.format("TestSuite name cannot be edited."));
         }
 
@@ -304,8 +304,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         testSuiteAddToVCRequest.getProps().put(FILE_CONTENT, testSuite.getYaml());
         testSuiteAddToVCRequests.add(testSuiteAddToVCRequest);
-
-        this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteAddToVCRequests);
+        if (updateVC) {
+            this.gaaSTaskRequestProcessor.processAutoCodeconfig(project.get(), null, testSuiteAddToVCRequests);
+        }
 
         return new Response<com.fxlabs.fxt.dto.project.TestSuite>(testSuite);
 

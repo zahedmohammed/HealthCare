@@ -39,7 +39,7 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
     // https://mvnrepository.com/artifact/io.swagger/swagger-compat-spec-parser
-    compile group: 'io.swagger', name: 'swagger-compat-spec-parser', version: '1.0.36'
+    compile group: 'io.swagger', name: 'swagger-compat-spec-parser', version: '1.0.38'
 
 //    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 //    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'

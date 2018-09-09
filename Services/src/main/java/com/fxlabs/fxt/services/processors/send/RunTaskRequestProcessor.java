@@ -10,6 +10,8 @@ import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
+import com.fxlabs.fxt.dto.base.Message;
+import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Cluster;
@@ -470,9 +472,17 @@ public class RunTaskRequestProcessor {
             return null;
         }
 
-        // get cluster by name
-        Response<Cluster> clusterResponse = clusterService.findByName(region, run.getJob().getCreatedBy());
-        if (clusterResponse.isErrors()) {
+        Response<Cluster> clusterResponse = null;
+
+        if (!org.apache.commons.lang3.StringUtils.contains(region, "/")) {
+            clusterResponse = clusterService.findByNameAndOrgId(region, run.getJob().getProject().getOrg().getId());
+        } else {
+            // get cluster by name
+            clusterResponse = clusterService.findByName(region, run.getJob().getCreatedBy());
+        }
+
+
+        if (clusterResponse == null || clusterResponse.isErrors()) {
             run.getTask().setStatus(TaskStatus.FAIL);
             run.getTask().setDescription(String.format("Invalid Region: %s", region));
             runRepository.saveAndFlush(run);
