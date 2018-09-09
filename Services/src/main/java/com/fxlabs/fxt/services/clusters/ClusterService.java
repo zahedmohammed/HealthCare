@@ -38,4 +38,6 @@ public interface ClusterService extends GenericService<Cluster, String> {
     Response<String> pingExecBot(String id, String o);
 
     Response<Saving> savings(String id, String o);
+
+    public Response<Cluster> findByNameAndOrgId(String name, String orgId);
 }
