@@ -23,6 +23,7 @@ export class AutoSyncComponent implements OnInit {
   projectId: string = "";
   showSpinner: boolean = false;
   projectSync: ProjectSync = new ProjectSync();
+  deleteAllChecked=false;
   project;
   categories=['SimpleGET','Functional','SLA', 'Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
 
@@ -43,12 +44,24 @@ export class AutoSyncComponent implements OnInit {
     if (this.checked){
        select.update.emit(values);
        this.projectSync.deleteAll = true;
+       this.deleteAllChecked=true;
     }
     if (!this.checked){
         select.update.emit([]);
         this.projectSync.deleteAll = false;
+        this.deleteAllChecked=true;
+    }
+
+  }
+  selectionChange(){
+    console.log("check length",this.projectSync.categories.length)
+    if(this.projectSync.categories.length<10){
+      this.projectSync.deleteAll = false;
+        this.deleteAllChecked=true;
     }
   }
+
+
   synchronization() {
     this.showSpinner = true;
     this.projectSync.projectId = this.project.id;
