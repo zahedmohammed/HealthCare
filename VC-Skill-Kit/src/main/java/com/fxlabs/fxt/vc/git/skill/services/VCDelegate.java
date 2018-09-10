@@ -7,6 +7,9 @@ import com.fxlabs.fxt.codegen.code.Generator;
 import com.fxlabs.fxt.codegen.code.StubGenerator;
 import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
 import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
+import com.fxlabs.fxt.dto.base.Message;
+import com.fxlabs.fxt.dto.base.MessageType;
+import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.dto.vc.VCTaskResponse;
@@ -223,9 +226,19 @@ public class VCDelegate {
         if (dir.exists() && dir.isDirectory()) {
             listfiles(dir, list);
             for (File fileName : list) {
-                if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(fileName.getName().toString(), category)) {
+
+                if (!org.apache.commons.lang3.StringUtils.endsWith(fileName.toString(), ".yaml")) {
+                    continue;
+                }
+
+                String[] tokens = org.springframework.util.StringUtils.split(fileName.toString(), ".");
+                String file = tokens[0];
+
+                if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(file, category)) {
                     files.add(fileName);
                 }
+
+
             }
         }
     }
