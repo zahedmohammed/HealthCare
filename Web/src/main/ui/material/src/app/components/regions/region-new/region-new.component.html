@@ -1,13 +1,13 @@
 <div class="box box-default">
-        <div>
-            <article>
-                <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                    <a href="javascript:;" [routerLink]="['/app/regions']">Test Bots </a> 
-                    &nbsp;<span class="text-muted"> > </span>&nbsp;New
-                </section>
-            </article>
-        </div>
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                <a href="javascript:;" [routerLink]="['/app/regions']">Test Bots </a>
+                &nbsp;<span class="text-muted"> > </span>&nbsp;New
+            </section>
+        </article>
     </div>
+</div>
 
 <!-- <div class="box box-default">
         <div class="box-body">
@@ -16,115 +16,114 @@
         </div>
     </div> -->
 <section class="container-fluid with-maxwidth chapter" xmlns="http://www.w3.org/1999/html">
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [active]="true" [routerLink]="['/app/regions']">My Bots
+        </label>
+        <label mat-tab-link [routerLink]="['/app/superbotnetwork']">Super-Bot-Network
+        </label>
+    </nav>
     <br>
     <article class="article">
         <div class="box box-default">
             <div class="box-body">
                 <div class="box-body">
 
-                <form role="form" #heroForm="ngForm">
+                    <form role="form" #heroForm="ngForm">
                         <h6 class="mat-step-label-selected pb-4">Bot Details</h6>
-                    <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="entry.name" name="name" id="name"
-                                       matInput placeholder="Bot name" autocomplete="off">
-                            </mat-input-container>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p>A bot is a light-weight and stateless container and can be deployed on developer
-                                    laptops, bare-metal servers & private/public cloud regions.
-                                    Bot is headless and it has no open ports or APIs to talk.
-                                    Bot receives tasks from FX Control-Plane over SSL.</p>
-                                <p>Name represents bot region name. You'll use this name to schedule job runs. example
-                                    usage: 'region: Org/Name'.
-                                </p>
+                        <div class="form-group row">
+                            <label for="name" class="col-md-0 control-label"></label>
+                            <div class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="entry.name" name="name" id="name" matInput placeholder="Bot name" autocomplete="off">
+                                </mat-input-container>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>A bot is a light-weight and stateless container and can be deployed on developer laptops,
+                                        bare-metal servers & private/public cloud regions. Bot is headless and it has no
+                                        open ports or APIs to talk. Bot receives tasks from FX Control-Plane over SSL.</p>
+                                    <p>Name represents bot region name. You'll use this name to schedule job runs. example
+                                        usage: 'region: Org/Name'.
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label class="col-md-0 control-label">
-                        </label>
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <mat-select placeholder="Account" required [(ngModel)]="entry.account" name="type"
-                                            (change)="getRegions()">
-                                    <mat-option *ngFor="let account of accounts" [value]="account"
-                                                (change)="setAccount(account);">
-                                        {{account.name}} ({{account.accountType}})
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
+                        <div class="form-group row">
+                            <label class="col-md-0 control-label">
+                            </label>
+                            <div class="col-md-5">
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="Account" required [(ngModel)]="entry.account" name="type" (change)="getRegions()">
+                                        <mat-option *ngFor="let account of accounts" [value]="account" (change)="setAccount(account);">
+                                            {{account.name}} ({{account.accountType}})
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-7">
 
-                        <div class="callout1 text-muted callout-info1">
-                            <p>
-                                Public or private cloud endpoint.
-                            </p>
-                             <p>
-                            <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials</button>
-                            </p>
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>
+                                        Public or private cloud endpoint.
+                                    </p>
+                                    <p>
+                                        <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i
+                                                class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials</button>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
 
-                    <div class="form-group row"
-                         [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
-                        <label class="col-md-0 control-label">
-                        </label>
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <mat-select placeholder="Region" required [(ngModel)]="entry.region" name="type">
-                                    <mat-option *ngFor="let r of regions" [value]="r">
-                                        {{r}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
+                        <div class="form-group row" [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
+                            <label class="col-md-0 control-label">
+                            </label>
+                            <div class="col-md-5">
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="Region" required [(ngModel)]="entry.region" name="type">
+                                        <mat-option *ngFor="let r of regions" [value]="r">
+                                            {{r}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-7">
 
-                        <div class="callout1 text-muted callout-info1">
-                            <p>
-                                Cloud region where the bot will be deployed.
-                            </p>
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>
+                                        Cloud region where the bot will be deployed.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
 
-                    <div class="form-group row"
-                         [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
-                        <label for="min" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input [(ngModel)]="entry.min" name="min" id="min"
-                                       matInput placeholder="Count" autocomplete="off">
-                            </mat-input-container>
-                        </div>
-                        <div class="col-md-7">
+                        <div class="form-group row" [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
+                            <label for="min" class="col-md-0 control-label"></label>
+                            <div class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input [(ngModel)]="entry.min" name="min" id="min" matInput placeholder="Count" autocomplete="off">
+                                </mat-input-container>
+                            </div>
+                            <div class="col-md-7">
 
-                        <div class="callout1 text-muted callout-info1">
-                            <p>
-                                Total bot instances. Defaults to 1.
-                            </p>
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>
+                                        Total bot instances. Defaults to 1.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                    </div>
 
-                    <div class="divider divider-md"></div>
-                    <div class="form-group">
-                            <button mat-raised-button color="primary" (click)="create();"
-                                    class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Create Bots
+                        <div class="divider divider-md"></div>
+                        <div class="form-group">
+                            <button mat-raised-button color="primary" (click)="create();" class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Create
+                                Bots
                             </button>
-                            <button mat-button type="button" color="primary" class="btn-w-md"
-                                    [routerLink]="['/app/regions']">Cancel
+                            <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/regions']">Cancel
                             </button>
-                    </div>
+                        </div>
 
-                </form>
+                    </form>
                 </div>
             </div>
         </div>

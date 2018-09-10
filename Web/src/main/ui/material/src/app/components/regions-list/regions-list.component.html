@@ -20,6 +20,12 @@
     <article class="article padding-lg-v1">
 
     <div class="container-fluid with-maxwidth chapter">
+            <nav mat-tab-nav-bar>
+                    <label mat-tab-link [active]="true" [routerLink]="['/app/regions']">My Bots
+                    </label>
+                    <label mat-tab-link [routerLink]="['/app/superbotnetwork']">Super-Bot-Network
+                    </label>
+                </nav>
     
         <article class="article">
             <h2 class="article-title1">
@@ -27,9 +33,9 @@
                     <i class="fa fa-plus"></i>
                     New Test Bot
                 </button>
-                <button mat-raised-button color="warn" class="btn-w-md pull-left" [routerLink]="['/app/superbotnetwork']">
+                <!-- <button mat-raised-button color="warn" class="btn-w-md pull-left" [routerLink]="['/app/superbotnetwork']">
                     Super-Bot-Network
-                </button>
+                </button> -->
                 <p class="text-muted float-right">Total ({{length}})</p>
                 <div class="divider divider-sm"></div>
             </h2>
