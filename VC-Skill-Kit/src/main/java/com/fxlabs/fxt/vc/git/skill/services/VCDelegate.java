@@ -217,7 +217,7 @@ public class VCDelegate {
 
 
     private void finder(String category, List<File> files, String path) {
-        File dir = new File(path + "/test-suites");
+        File dir = new File(path);
 
         List<File> list = new ArrayList<>();
         if (dir.exists() && dir.isDirectory()) {
