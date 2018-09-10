@@ -102,6 +102,7 @@ getCoverage(){
           ]
         },
         options:{
+          responsive: true,
           legend:{
             display:true,
             position:'left'
@@ -124,7 +125,8 @@ getCoverage(){
               fontStyle: 'normal',
               textShadow: true,
               overlap: true,
-              arc: true
+              arc: true,
+              position: 'outside'
             }
           ]
         }
@@ -144,6 +146,7 @@ getCoverage(){
           ]
         },
         options:{
+          responsive: true,
           legend:{
             display:true,
             position:'left'
@@ -165,7 +168,8 @@ getCoverage(){
               fontStyle: 'normal',
               textShadow: true,
               overlap: true,
-              arc: true
+              arc: true,
+              position: 'outside'
             }
           ]
         }
@@ -185,6 +189,7 @@ getCoverage(){
           ]
         },
         options:{
+          responsive: true,
           legend:{
             display:true,
             position:'left'
