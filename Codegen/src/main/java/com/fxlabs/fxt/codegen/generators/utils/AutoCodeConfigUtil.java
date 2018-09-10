@@ -73,6 +73,24 @@ public class AutoCodeConfigUtil {
 
     }
 
+
+    public static List<String> getTypes(List<String> categories){
+        List<String> list = new ArrayList<>();
+
+        if (CollectionUtils.isEmpty(categories))  return list;
+
+        List<TestSuiteCategory> categories_ = new ArrayList<>();
+        for (String cat :categories) {
+            try {
+                categories_.add(TestSuiteCategory.valueOf(cat));
+            }catch (Exception e){
+               e.getLocalizedMessage();
+            }
+        }
+       return getTypesForCategories(categories_);
+    }
+
+
     public static final List<String> getTypesForCategories(List<TestSuiteCategory> categories){
         List<String> list = new ArrayList<>();
 

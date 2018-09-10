@@ -5,6 +5,7 @@ package com.fxlabs.fxt.vc.git.skill.services;
 import com.fxlabs.fxt.codegen.code.CodegenThreadUtils;
 import com.fxlabs.fxt.codegen.code.Generator;
 import com.fxlabs.fxt.codegen.code.StubGenerator;
+import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
 import com.fxlabs.fxt.codegen.generators.utils.NameUtil;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.dto.vc.VCTask;
@@ -196,9 +197,15 @@ public class VCDelegate {
 
 
         if (!CollectionUtils.isEmpty(task.getCategories()) && !task.isDeleteAll()) {
-            List<File> filesToDelete = new ArrayList<>();
 
-            task.getCategories().stream().forEach(category -> {
+            List<File> filesToDelete = new ArrayList<>();
+            List<String> list = AutoCodeConfigUtil.getTypes(task.getCategories());
+
+            if (CollectionUtils.isEmpty(list)){
+                return;
+            }
+
+            list.stream().forEach(category -> {
                 finder(category, filesToDelete, path_);
             });
             filesToDelete.stream().forEach(f -> {
@@ -216,7 +223,7 @@ public class VCDelegate {
         if (dir.exists() && dir.isDirectory()) {
             listfiles(dir, list);
             for (File fileName : list) {
-                if (org.apache.commons.lang3.StringUtils.containsIgnoreCase(fileName.getName().toString(), category)) {
+                if (org.apache.commons.lang3.StringUtils.endsWithIgnoreCase(fileName.getName().toString(), category)) {
                     files.add(fileName);
                 }
             }
