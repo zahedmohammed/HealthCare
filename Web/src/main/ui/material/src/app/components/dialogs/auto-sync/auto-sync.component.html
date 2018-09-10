@@ -15,7 +15,7 @@
             &nbsp; &nbsp;&nbsp;&nbsp;
       <mat-form-field class="mat-typography">
             <mat-select class="filter-select" 
-            placeholder="Select categories" [(ngModel)]="projectSync.categories"  name="category" [ngModelOptions]="{standalone: true}" multiple
+            placeholder="Select categories" [(ngModel)]="projectSync.categories"  name="category" (selectionChange)="selectionChange()" [ngModelOptions]="{standalone: true}" multiple
                     #categoriesSelect="ngModel">
           <!-- <br><span> &nbsp; &nbsp;
                <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(categoriesSelect, categories)">
@@ -26,11 +26,11 @@
               </button>
             </span> -->
             
-          <mat-checkbox [(ngModel)]="checked" [value]="category" (change)="selectAll(categoriesSelect, categories)" class="mat-option border" color="primary"> 
+          <mat-checkbox [(ngModel)]="checked" [value]="category" [(indeterminate)]="deleteAllChecked"(change)="selectAll(categoriesSelect, categories)" class="mat-option border" color="primary"> 
                Select All
           </mat-checkbox>
         
-          <mat-option *ngFor="let category of categories" [value]="category"> 
+          <mat-option *ngFor="let category of categories" [value]="category"  > 
               {{category}} 
           </mat-option>
           </mat-select>
