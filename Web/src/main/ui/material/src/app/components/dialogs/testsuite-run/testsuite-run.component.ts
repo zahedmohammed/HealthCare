@@ -56,6 +56,7 @@ export class TestsuiteRunComponent implements OnInit {
 
   testSuiterun() {
     this.processing = true;
+    this.runResult = new Array();
     if (this.regions) {
       this.region = this.regions['org']['name'] + "/" + this.regions['name'];
     }
@@ -66,9 +67,11 @@ export class TestsuiteRunComponent implements OnInit {
         return;
       }
       this.runResult = results['data'];
+      this.processing = false;
     }, error => {
       this.processing = false;
       this.handler.error(error);
+
     });
 
   }
