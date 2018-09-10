@@ -11,13 +11,14 @@ import { Handler } from '../dialogs/handler/handler';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
+import {SnackbarService} from '../../services/snackbar.service';
 
 
 @Component({
   selector: 'app-run-detail',
   templateUrl: './run-detail.component.html',
   styleUrls: ['./run-detail.component.scss'],
-  providers: [JobsService, RunService, ProjectService]
+  providers: [JobsService, RunService, ProjectService, SnackbarService]
 })
 export class RunDetailComponent implements OnInit {
   run:Run = new Run();
@@ -43,7 +44,7 @@ export class RunDetailComponent implements OnInit {
   category: string = '';
 
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
-    private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private handler: Handler) { }
+    private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private handler: Handler,  private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -247,5 +248,22 @@ export class RunDetailComponent implements OnInit {
    });
     
   }
+
+  deleteRun(){
+    var r = confirm("Are you sure you want to delete '" + this.run.runId + "'?");
+    if (r == true) {
+    this.runService.deleteByJobIdAndRunId(this.jobId, this.run.runId).subscribe(results =>{
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.snackbarService.openSnackBar("'JobRun '" + this.run.runId + "' deleted", "");
+      this.router.navigate(['/app/projects', this.project.id, 'jobs', this.jobId, 'runs']);
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+
+  }
+}
 
 }
