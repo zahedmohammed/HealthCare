@@ -33,16 +33,19 @@
                     <h6>{{run.task.description}}</h6>
                     <h6>Region: {{run.regions}}</h6></div>
                    
-                    <div class="col-md-2">
-                       <button mat-raised-button class="btn-w-sm text-primary pull-right" (click)="rerun();">
-                        Re-Run
-                       </button>
-                    </div>
-                       <div class="col-md-2" *ngIf="run.task.status == 'PROCESSING'">
-                            <button mat-raised-button class="btn-w-sm text-warning " (click)="cancel();">
+                    <div class="col-md-4">
+                            <button mat-raised-button class="btn-w-sm text-danger float-right" (click)="deleteRun();">
+                                Delete &nbsp;
+                            </button>
+                            <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="rerun();">
+                                Re-Run &nbsp;
+                            </button>
+                            <div *ngIf="run.task.status == 'PROCESSING'">
+                            <button mat-raised-button class="btn-w-sm text-warning float-right" (click)="cancel();">
                                 Cancel
-                               </button>
-                        </div>
+                            </button>
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
