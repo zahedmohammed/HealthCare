@@ -428,8 +428,8 @@ public class AutoCodeConfigServiceUtil {
         sla.setSeverity(TestSuiteSeverity.Major);
         sla.setType("sla");
 
-        sla.setDisplayHeaderLabel("SLA");
-        sla.setDisplayHeaderDescription("To test if the response time (in milliseconds) of an API is within the agreed upon SLA.");
+        sla.setDisplayHeaderLabel("Performance SLA");
+        sla.setDisplayHeaderDescription("To test if the response time of an API is within the agreed upon SLA (in milliseconds).");
         sla.setAssertionDescription("Successful test suite response code is 200 along with reponse time lesser than or equal to the given value.");
 
 
