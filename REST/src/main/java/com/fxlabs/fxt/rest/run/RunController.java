@@ -135,7 +135,7 @@ public class RunController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/job/{jobId}/run/{runId}", method = RequestMethod.DELETE)
     public Response<Run> deleteRun(@PathVariable("jobId") String jobId,
-                                         @PathVariable("runId") String runId) {
+                                         @PathVariable("runId") Long runId) {
         return runService.deleteRun(jobId, runId, SecurityUtil.getCurrentAuditor());
     }
 

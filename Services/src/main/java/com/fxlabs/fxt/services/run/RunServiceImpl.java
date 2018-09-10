@@ -501,13 +501,13 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     @Override
-    public Response<com.fxlabs.fxt.dto.run.Run> deleteRun(String jobId, String runId, String user) {
+    public Response<com.fxlabs.fxt.dto.run.Run> deleteRun(String jobId, Long runId, String user) {
 
         Optional<Run> optionalRun = this.repository.findByJobIdAndRunId(jobId, runId);
 
         if (!optionalRun.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Run Id..."));
         }
-        return delete(jobId, user);
+        return delete(optionalRun.get().getId(), user);
     }
 }
