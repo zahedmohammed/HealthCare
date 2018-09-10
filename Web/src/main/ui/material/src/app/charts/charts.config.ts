@@ -9,4 +9,12 @@ export const CHARTCONFIG = {
   textColor:  '#989898',
   splitLineColor: 'rgba(0,0,0,.05)',
   splitAreaColor: ['rgba(250,250,250,0.035)', 'rgba(200,200,200,0.1)'],
+  backgroundColor: [
+                "#a2d6c4",
+                "#36A2EB",
+                "#3e8787",
+                "#579aac",
+                "#7dcfe8",
+                "#b3dfe7",
+  ]
 };

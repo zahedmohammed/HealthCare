@@ -11,6 +11,7 @@ import { ProjectService } from '../../../services/project.service';
 import { Base } from '../../../models/base.model';
 import { Subscription } from 'rxjs/Subscription';
 import { Chart } from 'chart.js';
+import 'chartjs-plugin-labels';
 import { count } from 'rxjs/operator/count';
 @Component({
   selector: 'app-api-coverage',
@@ -96,124 +97,119 @@ getCoverage(){
           datasets:[
             {
               data:count1,
-              backgroundColor:[
-                'rgba(255, 99, 132,2)',
-                'rgba(54, 206, 86, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 192, 192, 1)',
-                'rgba(201, 196, 98, 1)',
-                'rgba(153, 201, 98, 1)',
-                'rgba(98, 201, 102, 1)',
-                'rgba(98, 201, 133, 1)',
-                'rgba(98, 185, 201, 1)',
-                'rgba(98, 136, 201, 1)',
-                'rgba(105, 98, 201, 1)',
-                'rgba(153, 98, 201, 1)',
-                'rgba(201, 98, 198, 1)',
-                'rgba(201, 98, 135, 1)'
-              ],
+              backgroundColor: this.config.backgroundColor
             }
           ]
         },
         options:{
           legend:{
-            display:true
+            display:true,
+            position:'left'
           },
           title:{
-            text:'Count By Method',
-            display:false
+            text:'Test Suite Categories',
+            display:true
           },
           animation: {
             duration: 1000,
+            animateScale:true,
             easing: 'linear'
-          }
-
+          },
+          plugins: {
+            labels:[
+              {
+              fontSize: 11,
+              render: 'value',
+              fontColor: '#000',
+              fontStyle: 'bold',
+              textShadow: true,
+              overlap: true,
+              arc: true
+            }
+          ]
+        }
         }
       });
 
       //Graph 2 Start
       this.byMethod = new Chart('canvas2',{
-        type:'pie',
+        type:'doughnut',
         data:{
           labels:groupByM,
           datasets:[
             {
               data:countByM,
-              backgroundColor:[
-                'rgba(255, 99, 132,2)',
-                'rgba(54, 206, 86, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 192, 192, 1)',
-                'rgba(201, 196, 98, 1)',
-                'rgba(153, 201, 98, 1)',
-                'rgba(98, 201, 102, 1)',
-                'rgba(98, 201, 133, 1)',
-                'rgba(98, 185, 201, 1)',
-                'rgba(98, 136, 201, 1)',
-                'rgba(105, 98, 201, 1)',
-                'rgba(153, 98, 201, 1)',
-                'rgba(201, 98, 198, 1)',
-                'rgba(201, 98, 135, 1)'
-              ],
+              backgroundColor: this.config.backgroundColor
             }
           ]
         },
         options:{
           legend:{
-            display:true
+            display:true,
+            position:'left'
           },
           title:{
-            text:'Count By Category',
-            display:false
+            text:'HTTP Methods',
+            display:true
           },
           animation: {
             duration: 1000,
             easing: 'linear'
-          }
-
+          },
+          plugins: {
+            labels:[
+              {
+              fontSize: 11,
+              render: 'value',
+              fontColor: '#000',
+              fontStyle: 'bold',
+              textShadow: true,
+              overlap: true,
+              arc: true
+            }
+          ]
+        }
         }
       });
 
       //Graph 3 Start
       this.bySeverity = new Chart('canvas3',{
-        type:'pie',
+        type:'doughnut',
         data:{
           labels:groupByS,
           datasets:[
             {
               data:countByS,
-              backgroundColor:[
-                'rgba(255, 99, 132,2)',
-                'rgba(54, 206, 86, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 192, 192, 1)',
-                'rgba(201, 196, 98, 1)',
-                'rgba(153, 201, 98, 1)',
-                'rgba(98, 201, 102, 1)',
-                'rgba(98, 201, 133, 1)',
-                'rgba(98, 185, 201, 1)',
-                'rgba(98, 136, 201, 1)',
-                'rgba(105, 98, 201, 1)',
-                'rgba(153, 98, 201, 1)',
-                'rgba(201, 98, 198, 1)',
-                'rgba(201, 98, 135, 1)'
-              ],
+              backgroundColor: this.config.backgroundColor
             }
           ]
         },
         options:{
           legend:{
-            display:true
+            display:true,
+            position:'left'
           },
           title:{
-            text:'Count By Severity',
-            display:false
+            text:'Test Suite Severities',
+            display:true
           },
           animation: {
             duration: 1000,
             easing: 'linear'
-          }
-
+          },
+          plugins: {
+            labels:[
+              {
+              fontSize: 11,
+              render: 'value',
+              fontColor: '#000',
+              fontStyle: 'bold',
+              textShadow: true,
+              overlap: true,
+              arc: true
+            }
+          ]
+        }
         }
       });
     }, error => {
