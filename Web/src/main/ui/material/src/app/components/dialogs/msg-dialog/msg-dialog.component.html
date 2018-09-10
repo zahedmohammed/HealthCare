@@ -2,8 +2,8 @@
 
 <mat-dialog-content class="mat-typography">
     <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
-    <ace-editor class="col-md-12 border editor" [(text)]="data" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
-        [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
+    <ace-editor class="col-md-12 border editor" id="editor" [(text)]="data" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
+                [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" #editor>
     </ace-editor>
 </mat-dialog-content>
 

@@ -121,7 +121,7 @@ getCoverage(){
               fontSize: 11,
               render: 'value',
               fontColor: '#000',
-              fontStyle: 'bold',
+              fontStyle: 'normal',
               textShadow: true,
               overlap: true,
               arc: true
@@ -162,7 +162,7 @@ getCoverage(){
               fontSize: 11,
               render: 'value',
               fontColor: '#000',
-              fontStyle: 'bold',
+              fontStyle: 'normal',
               textShadow: true,
               overlap: true,
               arc: true
@@ -203,7 +203,7 @@ getCoverage(){
               fontSize: 11,
               render: 'value',
               fontColor: '#000',
-              fontStyle: 'bold',
+              fontStyle: 'normal',
               textShadow: true,
               overlap: true,
               arc: true
