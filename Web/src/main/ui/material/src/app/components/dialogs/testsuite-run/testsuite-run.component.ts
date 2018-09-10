@@ -66,8 +66,8 @@ export class TestsuiteRunComponent implements OnInit {
         return;
       }
       this.runResult = results['data'];
-      this.processing = false;
     }, error => {
+      this.processing = false;
       this.handler.error(error);
     });
 

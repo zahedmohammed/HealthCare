@@ -3,9 +3,6 @@
 <mat-dialog-content class="mat-typography">
     <form role="form" #heroForm="ngForm">
         <div class="form-group row">
-            <label class="col-md-3 control-label">
-                Environment
-            </label>
             <div class="col-md-4">
                 <mat-form-field class="full-width">
                     <mat-select placeholder="Select environment" [(ngModel)]="environment" name="environment">
@@ -15,13 +12,6 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-md-5"></div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-md-3 control-label">
-                Bot Region
-            </label>
             <div class="col-md-4">
                 <mat-form-field class="full-width">
                     <mat-select placeholder="Bot Region" [(ngModel)]="regions" name="regions" [ngModelOptions]="{standalone: true}">
@@ -31,48 +21,51 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-md-5">
-                <mat-dialog-actions>
-                    <button mat-button (click)="testSuiterun();" class="text-primary" cdkFocusInitial>Run</button>
-                    <button mat-button mat-dialog-close class="text-danger pull-right">Ok</button>
-                </mat-dialog-actions>
+            <div class="col-md-4">
+                <button mat-raised-button (click)="testSuiterun();" color="primary" cdkFocusInitail>Run</button>
             </div>
         </div>
+
+
         <div class="col-md-12 text-warning text-center h2" *ngIf="processing">
             <i class="fa fa-spinner fa-spin"></i>
         </div>
-        <div *ngFor="let testCaseResponse of runResult">
-            <div class="box box-default table-box mdl-shadow--2dp">
-                <table class="mdl-data-table">
-                    <thead>
+        <div *ngIf="!processing">
+            <div *ngFor="let testCaseResponse of runResult">
+                <div class="box box-default table-box mdl-shadow--2dp">
+                    <table class="mdl-data-table">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Status</th>
+                                <th class="mdl-data-table__cell--non-numeric">Success</th>
+                                <th class="mdl-data-table__cell--non-numeric">Time Taken</th>
+                                <th class="mdl-data-table__cell--non-numeric">Data</th>
+                            </tr>
+                        </thead>
                         <tr>
-                            <th class="mdl-data-table__cell--non-numeric">Status</th>
-                            <th class="mdl-data-table__cell--non-numeric">Success</th>
-                            <th class="mdl-data-table__cell--non-numeric">Time Taken</th>
-                            <th class="mdl-data-table__cell--non-numeric">Data</th>
+                            <td class="mdl-data-table__cell--non-numeric"><span class="text-success"> Passed: {{testCaseResponse.totalPassed}}
+                                    <span class="text-danger" *ngIf="testCaseResponse.failed != 0">&nbsp;&nbsp; Failed: {{testCaseResponse.totalFailed}}</span></span>
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                {{ ( (testCaseResponse.totalPassed ) / (testCaseResponse.totalPassed + testCaseResponse.totalFailed) ) | percent }}
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.requestTime | mstoDuration}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.totalBytes | byteFormat}}</td>
                         </tr>
-                    </thead>
-                    <tr>
-                        <td class="mdl-data-table__cell--non-numeric"><span class="text-success"> Passed: {{testCaseResponse.totalPassed}}
-                                <span class="text-danger" *ngIf="testCaseResponse.failed != 0">&nbsp;&nbsp; Failed: {{testCaseResponse.totalFailed}}</span></span>
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric">
-                            {{ ( (testCaseResponse.totalPassed ) / (testCaseResponse.totalPassed + testCaseResponse.totalFailed) ) | percent }}
-                        </td>
-                        <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.requestTime | mstoDuration}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{testCaseResponse.totalBytes | byteFormat}}</td>
-                    </tr>
-                    <tfoot>
-                    </tfoot>
-                </table>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+                <mat-dialog-content class="mat-typography">
+                    <h2 mat-dialog-title>Wire Logs</h2>
+                    <ace-editor class="col-md-12 border editor" [(text)]="testCaseResponse.logs" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '15', showPrintMargin: false}"
+                        [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
+                    </ace-editor>
+                </mat-dialog-content>
             </div>
-            <mat-dialog-content class="mat-typography">
-                <h2 mat-dialog-title>Wire Logs</h2>
-                <ace-editor class="col-md-12 border editor" [(text)]="testCaseResponse.logs" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
-                    [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
-                </ace-editor>
-            </mat-dialog-content>
         </div>
-
     </form>
 </mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close class="text-danger pull-right">Close</button>
+</mat-dialog-actions>
