@@ -16,5 +16,7 @@ export const CHARTCONFIG = {
     "#579aac",
     "#7dcfe8",
     "#b3dfe7",
+    "#A4A4BF",
+    "#B5C1B4"
   ]
 };
