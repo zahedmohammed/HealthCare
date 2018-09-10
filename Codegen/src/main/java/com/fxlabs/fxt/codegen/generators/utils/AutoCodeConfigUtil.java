@@ -73,6 +73,23 @@ public class AutoCodeConfigUtil {
 
     }
 
+    public static final List<String> getTypesForCategories(List<TestSuiteCategory> categories){
+        List<String> list = new ArrayList<>();
+
+        if (CollectionUtils.isEmpty(categories))  return list;
+
+        Iterator<String> itr = TYPE_CATEGORY_MAP.keySet().iterator();
+
+        while(itr.hasNext()){
+            String type = itr.next();
+            TestSuiteCategory category = TYPE_CATEGORY_MAP.get(type);
+            if (category != null  && categories.contains(category)){
+                list.add(type);
+            }
+        }
+        return list;
+    }
+
 //    public boolean isDB(String dbName) {
 //
 //        // For now, returning true for every DB (if config file is not present) so that TestSuites for all DBs are generated.
