@@ -21,7 +21,8 @@ public class ValidatorDelegate {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String OR = "||";
+    private static final String OR_OPERATOR = " OR ";
+    private static final String AND_OPERATOR = " AND ";
 
     @Autowired
     @Qualifier("equalsValidator")
@@ -83,9 +84,9 @@ public class ValidatorDelegate {
         //logger.info("Validating assertion [{}]", assertion);
         boolean result = false;
 
-        if (StringUtils.containsIgnoreCase(assertion, OR)) {
-            String[] assertions = assertion.split(Pattern.quote(OR));
-            StringJoiner OR_OPERATOR = new StringJoiner(" || ");
+        if (StringUtils.contains(assertion, OR_OPERATOR)) {
+            String[] assertions = assertion.split(Pattern.quote(OR_OPERATOR));
+            StringJoiner orJoiner = new StringJoiner(ValidatorDelegate.OR_OPERATOR);
             for (String assertion_ : assertions) {
 
                 String[] tokens = StringUtils.split(assertion_, " ");
@@ -101,11 +102,37 @@ public class ValidatorDelegate {
 
                 StringJoiner resolved = new StringJoiner(" ");
                 resolved.add(operand1).add(OPERATOR).add(operand2);
-                OR_OPERATOR.add(resolved.toString());
+                orJoiner.add(resolved.toString());
 
             }
 
-            String msg = String.format("Assertion [%s] resolved-to [%s] result [%s]", assertion, OR_OPERATOR.toString(), (result ? "Passed" : "Failed"));
+            String msg = String.format("Assertion [%s] resolved-to [%s] result [%s]", assertion, orJoiner.toString(), (result ? "Passed" : "Failed"));
+            context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
+            assertionLogs.append(msg);
+
+        } else if (StringUtils.contains(assertion, AND_OPERATOR)) {
+            String[] assertions = assertion.split(Pattern.quote(AND_OPERATOR));
+            StringJoiner andJoiner = new StringJoiner(ValidatorDelegate.AND_OPERATOR);
+            for (String assertion_ : assertions) {
+
+                String[] tokens = StringUtils.split(assertion_, " ");
+                if (tokens == null || tokens.length != 3) {
+                    skipAssertion(context, assertion_, "");
+                    continue;
+                }
+                final String operand1 = evaluator.evaluate(tokens[0], context, StringUtils.EMPTY);
+                final String OPERATOR = tokens[1];
+                final String operand2 = evaluator.evaluate(tokens[2], context, StringUtils.EMPTY);
+
+                result = result && processAssertion(operand1, OPERATOR, operand2, assertion_, context, assertionLogs);
+
+                StringJoiner resolved = new StringJoiner(" ");
+                resolved.add(operand1).add(OPERATOR).add(operand2);
+                andJoiner.add(resolved.toString());
+
+            }
+
+            String msg = String.format("Assertion [%s] resolved-to [%s] result [%s]", assertion, andJoiner.toString(), (result ? "Passed" : "Failed"));
             context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
             assertionLogs.append(msg);
 
