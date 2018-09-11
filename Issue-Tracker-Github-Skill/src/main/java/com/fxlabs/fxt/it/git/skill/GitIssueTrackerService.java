@@ -117,6 +117,7 @@ public class GitIssueTrackerService implements IssueTrackerService {
 
             response.setTestCaseResponseId(task.getId());
             response.setIssueId(String.valueOf(issue.getNumber()));
+            response.setRunId(task.getRunId());
 
             return response;
 

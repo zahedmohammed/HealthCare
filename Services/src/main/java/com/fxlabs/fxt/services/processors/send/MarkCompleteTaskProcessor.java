@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.processors.send;
 
 import com.fxlabs.fxt.dao.entity.clusters.Account;
+import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.entity.project.JobNotification;
 import com.fxlabs.fxt.dao.entity.run.Run;
@@ -8,6 +9,7 @@ import com.fxlabs.fxt.dao.entity.run.TaskStatus;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseITRepository;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.events.Entity;
 import com.fxlabs.fxt.dto.events.Event;
@@ -76,6 +78,9 @@ public class MarkCompleteTaskProcessor {
     @Autowired
     private LocalEventPublisher localEventPublisher;
 
+    @Autowired
+    private TestCaseResponseITRepository testCaseResponseITRepository;
+
     private final static Collection<TaskStatus> statuses = Arrays.asList(TaskStatus.PROCESSING, TaskStatus.COMPLETED);
 
     @Autowired
@@ -94,6 +99,7 @@ public class MarkCompleteTaskProcessor {
 
             runs.forEach(run -> {
                 try {
+
                     //Optional<Long> count = testSuiteResponseESRepository.countByRunId(run.getId());
                     Long failed = testSuiteResponseService.failedSum(run.getId());
                     Long passed = testSuiteResponseService.passedSum(run.getId());
@@ -122,6 +128,28 @@ public class MarkCompleteTaskProcessor {
                     run.getTask().setTotalBytes(bytes);
 
                     run.setStats(statsMap);
+
+
+                    String itId = run.getJob().getProject().getName() + "//" + run.getJob().getId() + "%"  ;
+                    List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndTestCaseResponseIssueTrackerIdLike(run.getId(), itId);
+
+                    long newIssues = 0L;
+                    long closedIssues = 0L;
+
+                    for (TestCaseResponseIssueTracker it: itList ){
+                        if ("open".equalsIgnoreCase(it.getStatus()) ){
+                            newIssues++;
+                        }
+                        if ("closed".equalsIgnoreCase(it.getStatus()) ){
+                            newIssues++;
+                        }
+                    }
+
+                    run.getTask().setIssuesLogged( newIssues);
+                    run.getTask().setIssuesClosed(closedIssues);
+
+                    long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
+                    run.getStats().put("total_issues", totalOpenIssues);
 
                     runRepository.saveAndFlush(run);
 

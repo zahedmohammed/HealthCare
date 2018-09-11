@@ -23,5 +23,6 @@ public class ITTaskResponse implements Serializable {
     private boolean success;
 
     private String testCaseResponseId;
+    private String runId;
 
 }

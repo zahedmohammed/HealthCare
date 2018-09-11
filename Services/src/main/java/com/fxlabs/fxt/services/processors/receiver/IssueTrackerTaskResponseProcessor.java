@@ -82,6 +82,7 @@ public class IssueTrackerTaskResponseProcessor {
 
                     testCaseResponseIssueTracker.setValidations(testCaseResponseIssueTracker.getValidations() + 1);
                     testCaseResponseIssueTracker.setStatus(task.getIssueStatus());
+                    testCaseResponseIssueTracker.setRunId(task.getRunId());
 
                     testCaseResponseITRepository.save(testCaseResponseIssueTracker);
                     testCaseResponseITESRepository.save(testCaseResponseIssueTracker);
@@ -93,6 +94,8 @@ public class IssueTrackerTaskResponseProcessor {
                 newItResponse.setIssueId(task.getIssueId());
                 newItResponse.setStatus(task.getIssueStatus());
                 newItResponse.setTestCaseResponseIssueTrackerId(id);
+                newItResponse.setRunId(task.getRunId());
+
                 newItResponse.setValidations(1);
                 testCaseResponseITRepository.save(newItResponse);
                 testCaseResponseITESRepository.save(newItResponse);

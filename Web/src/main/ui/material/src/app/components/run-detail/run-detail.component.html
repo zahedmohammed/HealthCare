@@ -31,7 +31,16 @@
                                 class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
                     </h4>
                     <h6>{{run.task.description}}</h6>
-                    <h6>Region: {{run.regions}}</h6></div>
+                    <h6>Region: {{run.regions}}</h6>
+                    <h6>
+                        <span>
+                            {{run.task.issuesLogged || 0}} New issues filed. |
+                            {{run.task.issuesClosed || 0}} issues closed. |
+                            {{run.stats['total_issues'] || 0}} issues currently open.
+                        </span>
+                    </h6>
+
+                    </div>
                    
                     <div class="col-md-4">
                             <button mat-raised-button class="btn-w-sm text-danger float-right" (click)="deleteRun();">
@@ -237,6 +246,7 @@
                     </mat-chip-list>
                 </div>
             </div>
+
         </div>
     </div>
     <br/>

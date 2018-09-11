@@ -27,6 +27,7 @@ public class TestCaseResponseIssueTracker extends BaseEntity {
     private String issueId;
     private Integer validations;
     private String status;
+    private String runId;
 
 
 }
