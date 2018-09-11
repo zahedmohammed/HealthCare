@@ -510,4 +510,23 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         }
         return delete(optionalRun.get().getId(), user);
     }
+
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.run.Run> reRun(String jobId, Long runId, String user) {
+
+        Optional<Run> optionalRun = this.repository.findByJobIdAndRunId(jobId, runId);
+
+        if (!optionalRun.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Run Id..."));
+        }
+        Run run = optionalRun.get();
+        Map<String, String> attributes = run.getAttributes();
+        String region = attributes.get(RunConstants.REGION);
+        String env = attributes.get(RunConstants.ENV);
+        String tags = attributes.get(RunConstants.TAGS);
+        String suites = attributes.get(RunConstants.SUITES);
+        String categories = attributes.get(RunConstants.CATEGORIES);
+        return run(run.getJob().getId(), region, tags, env, suites, categories, user);
+    }
 }
