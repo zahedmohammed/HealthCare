@@ -22,7 +22,7 @@
         <div class="item-card card__horizontal1">
             <div class="card__body card-white">
                 <div class="card__title row">
-                    <div class="col-md-8">
+                    <div class="col-md-4">
                     <h4>Status:
                         <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span>
                         <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'"
@@ -32,16 +32,18 @@
                     </h4>
                     <h6>{{run.task.description}}</h6>
                     <h6>Region: {{run.regions}}</h6>
-                    <h6>
-                        <span>
-                            {{run.task.issuesLogged || 0}} New issues filed. |
-                            {{run.task.issuesClosed || 0}} issues closed. |
-                            {{run.stats['total_issues'] || 0}} issues currently open.
-                        </span>
-                    </h6>
+                    <!-- <h6>
+                        <span class="text-primary"><strong>{{run.task.issuesLogged || 0}} New issues filed.</strong></span> |                            
+                        <span class="text-warning"><strong>{{run.task.issuesClosed || 0}} issues closed.</strong></span> |
+                        <span class="text-danger"><strong>{{run.stats['total_issues'] || 0}} issues currently open.</strong></span>
+                    </h6> -->
 
                     </div>
-                   
+                   <div class="col-md-4">
+                        <h6 class="text-danger fontsize-rd">{{run.task.issuesLogged || 0}} New issues filed.</h6>                            
+                        <h6 class="text-success fontsize-rd">{{run.task.issuesClosed || 0}} issues closed.</h6>
+                        <h6 class="text-warning fontsize-rd">{{run.stats['total_issues'] || 0}} issues currently open.</h6>
+                   </div>
                     <div class="col-md-4">
                             <button mat-raised-button class="btn-w-sm text-danger float-right" (click)="deleteRun();">
                                 Delete &nbsp;
