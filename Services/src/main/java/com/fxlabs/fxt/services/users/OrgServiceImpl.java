@@ -75,7 +75,8 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     @Override
     public Response<List<com.fxlabs.fxt.dto.users.Org>> findAll(String user, Pageable pageable) {
 
-        Set<OrgUsers> orgUsers = orgUsersRepository.findByUsersIdAndStatusAndOrgRoleIn(user, OrgUserStatus.ACTIVE, roles);
+        Page<OrgUsers> orgUsers = orgUsersRepository.findByUsersIdAndStatusAndOrgRoleIn(user, OrgUserStatus.ACTIVE, roles, pageable);
+
         List<Org> orgs = new ArrayList<>();
         orgUsers.forEach(ou -> {
             orgs.add(ou.getOrg());

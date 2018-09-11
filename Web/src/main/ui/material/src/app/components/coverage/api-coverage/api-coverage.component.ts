@@ -102,6 +102,7 @@ getCoverage(){
           ]
         },
         options:{
+          responsive: true,
           legend:{
             display:true,
             position:'left'
@@ -121,10 +122,11 @@ getCoverage(){
               fontSize: 11,
               render: 'value',
               fontColor: '#000',
-              fontStyle: 'bold',
+              fontStyle: 'normal',
               textShadow: true,
               overlap: true,
-              arc: true
+              arc: true,
+              position: 'outside'
             }
           ]
         }
@@ -144,6 +146,7 @@ getCoverage(){
           ]
         },
         options:{
+          responsive: true,
           legend:{
             display:true,
             position:'left'
@@ -162,10 +165,11 @@ getCoverage(){
               fontSize: 11,
               render: 'value',
               fontColor: '#000',
-              fontStyle: 'bold',
+              fontStyle: 'normal',
               textShadow: true,
               overlap: true,
-              arc: true
+              arc: true,
+              position: 'outside'
             }
           ]
         }
@@ -185,6 +189,7 @@ getCoverage(){
           ]
         },
         options:{
+          responsive: true,
           legend:{
             display:true,
             position:'left'
@@ -203,7 +208,7 @@ getCoverage(){
               fontSize: 11,
               render: 'value',
               fontColor: '#000',
-              fontStyle: 'bold',
+              fontStyle: 'normal',
               textShadow: true,
               overlap: true,
               arc: true

@@ -98,4 +98,9 @@ constructor(private http: HttpClient) {
     return this.http.delete(this.serviceUrl + "/job/" + jobId + "/run/" + runId);
   }
 
+  reRunByJobIdAndRunId(jobId:string, runId:string) {
+    let params = new HttpParams();
+    return this.http.post(this.serviceUrl + "/job/" + jobId + "/rerun/" + runId, {params});
+  }
+
  }

@@ -60,13 +60,15 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     private TestSuiteConverter testSuiteConverter;
     private InstantRunTaskRequestProcessor instantRunTaskRequestProcessor;
     private EnvironmentRepository environmentRepository;
+    private TestSuiteResponseESRepository testSuiteResponseESRepository;
 
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService, EnvironmentRepository environmentRepository,
             /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository, TestSuiteConverter testSuiteConverter,
                           TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter,
                           TestSuiteESRepository testSuiteESRepository, ProjectService projectService, TestSuiteService testSuiteService,
-                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter, InstantRunTaskRequestProcessor instantRunTaskRequestProcessor
+                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter, InstantRunTaskRequestProcessor instantRunTaskRequestProcessor,
+                          TestSuiteResponseESRepository testSuiteResponseESRepository
                           ) {
         super(repository, converter);
         this.repository = repository;
@@ -83,6 +85,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         this.instantRunTaskRequestProcessor = instantRunTaskRequestProcessor;
         this.environmentRepository = environmentRepository;
         this.testSuiteService = testSuiteService;
+        this.testSuiteResponseESRepository = testSuiteResponseESRepository;
 
     }
 
@@ -290,7 +293,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     @Override
     public Response<List<TestSuiteResponse>> findByPk(String id, String name, String user, Pageable pageable) {
 
-        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.testSuiteResponseRepository.findByRunIdAndTestSuite(id, name, pageable);
+        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.testSuiteResponseESRepository.findByRunIdAndTestSuite(id, name, pageable);
 
         List<TestSuiteResponse> dataSets = testSuiteResponseConverter.convertToDtos(page.getContent());
         return new Response<List<TestSuiteResponse>>(dataSets, page.getTotalElements(), page.getTotalPages());
@@ -509,5 +512,24 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Run Id..."));
         }
         return delete(optionalRun.get().getId(), user);
+    }
+
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.run.Run> reRun(String jobId, Long runId, String user) {
+
+        Optional<Run> optionalRun = this.repository.findByJobIdAndRunId(jobId, runId);
+
+        if (!optionalRun.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Run Id..."));
+        }
+        Run run = optionalRun.get();
+        Map<String, String> attributes = run.getAttributes();
+        String region = attributes.get(RunConstants.REGION);
+        String env = attributes.get(RunConstants.ENV);
+        String tags = attributes.get(RunConstants.TAGS);
+        String suites = attributes.get(RunConstants.SUITES);
+        String categories = attributes.get(RunConstants.CATEGORIES);
+        return run(run.getJob().getId(), region, tags, env, suites, categories, user);
     }
 }
