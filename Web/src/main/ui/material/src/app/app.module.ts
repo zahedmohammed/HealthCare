@@ -183,6 +183,7 @@ import { ApiCoverageComponent } from './components/coverage/api-coverage/api-cov
 import { BotCredentialsComponent } from './components/dialogs/bot-credentials/bot-credentials.component';
 import { BotDialogComponent } from './components/dialogs/bot-dialog/bot-dialog.component';
 import { TestsuiteRunComponent } from './components/dialogs/testsuite-run/testsuite-run.component';
+import { ProjectsConfigComponent } from './components/projects/projects-config/projects-config.component';
 
 @NgModule({
   imports: [
@@ -345,7 +346,8 @@ import { TestsuiteRunComponent } from './components/dialogs/testsuite-run/testsu
     ApiCoverageComponent,
     BotCredentialsComponent,
     BotDialogComponent,
-    TestsuiteRunComponent
+    TestsuiteRunComponent,
+    ProjectsConfigComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],

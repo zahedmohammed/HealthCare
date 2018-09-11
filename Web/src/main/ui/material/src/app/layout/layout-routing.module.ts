@@ -97,6 +97,7 @@ import { TestSuiteEditComponent } from '../components/testsuites/test-suite-edit
 import { ApiCoverageComponent } from '../components/coverage/api-coverage/api-coverage.component';
 
 import { AppFooterComponent } from './footer/footer.component';
+import {ProjectsConfigComponent} from "../components/projects/projects-config/projects-config.component";
 
 const routes: Routes = [
   {
@@ -112,6 +113,7 @@ const routes: Routes = [
       { path: 'projects/new', component: ProjectsNewComponent },
       { path: 'projects/:id/edit', component: ProjectsNewComponent },
       { path: 'projects/:id/manage', component: ProjectsManageComponent },
+      { path: 'projects/:id/configuration', component: ProjectsConfigComponent },
       { path: 'projects/:id/environments', component: EnvironmentListComponent },
       { path: 'projects/:id/environments/new', component: EnvironmentNewComponent },
       { path: 'projects/:id/environments/:envId/edit', component: EnvironmentEditComponent },

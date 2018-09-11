@@ -25,8 +25,9 @@
         </label>
         <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
         </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Edit
-        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">Configuration</label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>
+
         <button mat-button color="warn" class="btn-w-xs text-danger pull-right" (click)="delete();">Delete
         </button>
         <button mat-button color="primary" class="btn-w-xs text-primary pull-right" (click)="cloneJob()">Clone

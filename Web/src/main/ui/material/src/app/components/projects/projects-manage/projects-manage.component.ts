@@ -69,13 +69,13 @@ export class ProjectsManageComponent implements OnInit {
       this.id = params['id'];
       if (this.id) {
         this.loadProject(this.id);
-        this.getAutoCode();
+        // this.getAutoCode();
 //       this.getEnvs();
       }
     });
 
     this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: ['', Validators.required]
+      nameCtrl: [{value:"name",disabled:true}, Validators.required]
     });
 
     this.secondFormGroup = this._formBuilder.group({
@@ -149,8 +149,9 @@ export class ProjectsManageComponent implements OnInit {
           let p: Project = new Project();
           this.project.account = p.account;
         }
-        this.matStepper.next();
-        this.getAutoCode();
+        // this.matStepper.next();
+          this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
+          // this.getAutoCode();
     }, error => {
         this.handler.hideLoader();
         this.handler.error(error);
@@ -171,8 +172,9 @@ export class ProjectsManageComponent implements OnInit {
         let p: Project = new Project();
         this.project.account = p.account;
       }
-      this.matStepper.next();
-      this.getAutoCode();
+      // this.matStepper.next();
+        this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
+      // this.getAutoCode();
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -195,24 +197,24 @@ export class ProjectsManageComponent implements OnInit {
     });
   }
 
-  saveAutoCode() {
-    console.log(this.autoCodeConfig);
-    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saving...", "");
-
-    this.projectService.saveAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
-      this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-        return;
-      }
-      this.autoCodeConfig = results['data'];
-      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
-     this.matStepper.next();
-      this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
+  // saveAutoCode() {
+  //   console.log(this.autoCodeConfig);
+  //   this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saving...", "");
+  //
+  //   this.projectService.saveAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
+  //     this.handler.hideLoader();
+  //       if (this.handler.handle(results)) {
+  //       return;
+  //     }
+  //     this.autoCodeConfig = results['data'];
+  //     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
+  //    this.matStepper.next();
+  //     this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
+  //   }, error => {
+  //     this.handler.hideLoader();
+  //     this.handler.error(error);
+  //   });
+  // }
 
   gotoEnv(matStepper) {
     this.matStepper = matStepper;
@@ -273,22 +275,22 @@ export class ProjectsManageComponent implements OnInit {
     });
   }
 
-  delete() {
-    var r = confirm("Are you sure you want to delete '" + this.project.name + "'?");
-    if (r == true) {
-      this.projectService.delete(this.project).subscribe(results => {
-          if (this.handler.handle(results)) {
-            return;
-          }
-          this.snackbarService.openSnackBar("'Project '" + this.project.name + "' deleted", "");
-          this.router.navigate(['/app/projects']);
-        }, error => {
-          this.handler.hideLoader();
-          this.handler.error(error);
-      });
-
-    }
-  }
+  // delete() {
+  //   var r = confirm("Are you sure you want to delete '" + this.project.name + "'?");
+  //   if (r == true) {
+  //     this.projectService.delete(this.project).subscribe(results => {
+  //         if (this.handler.handle(results)) {
+  //           return;
+  //         }
+  //         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' deleted", "");
+  //         this.router.navigate(['/app/projects']);
+  //       }, error => {
+  //         this.handler.hideLoader();
+  //         this.handler.error(error);
+  //     });
+  //
+  //   }
+  // }
 
   setAccount(account){
      this.project.account.accountType =  account.accountType;
