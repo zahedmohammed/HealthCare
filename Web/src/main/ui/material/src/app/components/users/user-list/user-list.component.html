@@ -23,6 +23,14 @@
         </div> 
     </div>  -->
 <section class="container-fluid with-maxwidth chapter">
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [active]="true">Users
+        </label>
+        <label mat-tab-link [routerLink]="['/app/orgs', org.id]">Edit
+        </label>
+    </nav>
+    <br />
+
     <article class="article">
         <h2 class="article-title1">
             <button mat-button color="primary" class="btn-w-md pull-left text-justify" [routerLink]="['/app/orgs', org.id, 'users', 'new']">
@@ -32,7 +40,7 @@
             <p class="text-muted float-right">Total ({{length}})</p>
             <div class="divider divider-sm"></div>
         </h2>
-        <br/>
+        <br />
 
         <div class="box box-default table-box mdl-shadow--2dp">
             <table class="mdl-data-table">
@@ -65,7 +73,8 @@
             </table>
         </div>
 
-        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+            [length]="length">
         </mat-paginator>
 
     </article>

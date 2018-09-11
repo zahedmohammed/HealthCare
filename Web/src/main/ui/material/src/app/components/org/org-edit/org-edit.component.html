@@ -1,14 +1,14 @@
 <div class="box box-default">
-        <div>
-            <article>
-                <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                        <a href="javascript:;" [routerLink]="['/app/orgs']"> Orgs </a>
-                        <span class="text-muted"> &nbsp;>&nbsp; </span>{{entry.name}}
-                        <span class="text-muted"> &nbsp;>&nbsp; </span>Edit
-                </section>
-            </article>
-        </div>
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                <a href="javascript:;" [routerLink]="['/app/orgs']"> Orgs </a>
+                <span class="text-muted"> &nbsp;>&nbsp; </span>{{entry.name}}
+                <span class="text-muted"> &nbsp;>&nbsp; </span>Edit
+            </section>
+        </article>
     </div>
+</div>
 
 <!-- <div class="box box-default"> 
         <div class="box-body"> 
@@ -17,24 +17,31 @@
         </div> 
     </div>  -->
 <section class="container-fluid with-maxwidth chapter">
-        <br>
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [routerLink]="['/app/orgs', entry.id, 'users']">Users
+        </label>
+        <label mat-tab-link [active]="true">Edit
+        </label>
+    </nav>
+    <br />
+
     <article class="article">
         <div class="box box-default">
             <div class="box-body">
                 <div class="box-body">
-                <form role="form" #heroForm="ngForm">
-                    <h6 class="mat-step-label-selected pb-4">Org Details</h6>
-                    <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required disabled [(ngModel)]="entry.name" name="name" id="name"
-                                       matInput placeholder="Organization name">
-                            </mat-input-container>
+                    <form role="form" #heroForm="ngForm">
+                        <h6 class="mat-step-label-selected pb-4">Org Details</h6>
+                        <div class="form-group row">
+                            <label for="name" class="col-md-0 control-label"></label>
+                            <div class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input required disabled [(ngModel)]="entry.name" name="name" id="name" matInput
+                                        placeholder="Organization name">
+                                </mat-input-container>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- <div class="form-group row">
+                        <!-- <div class="form-group row">
                         <label for="orgType" class="col-md-0 control-label">
                         </label>
                         <div class="col-md-5">
@@ -46,63 +53,61 @@
                     </div> -->
 
 
-                    <div class="form-group row">
-                        <label for="plan" class="col-md-0 control-label">
-                        </label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input disabled [(ngModel)]="entry.orgPlan" name="plan" id="plan"
-                                       matInput placeholder="Billing Plan">
-                            </mat-input-container>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p>
-                                    FX Labs Team & Enterprise Cloud Plans.
-                                    <a target="_blank" href="https://fxlabs.io/pricing/"> Learn more <i
-                                            class="material-icons"
-                                            style="font-size: 18px;">open_in_new</i></a>
-                                </p>
+                        <div class="form-group row">
+                            <label for="plan" class="col-md-0 control-label">
+                            </label>
+                            <div class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input disabled [(ngModel)]="entry.orgPlan" name="plan" id="plan" matInput
+                                        placeholder="Billing Plan">
+                                </mat-input-container>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="callout1 text-muted callout-info1">
+                                    <p>
+                                        FX Labs Team & Enterprise Cloud Plans.
+                                        <a target="_blank" href="https://fxlabs.io/pricing/"> Learn more <i class="material-icons"
+                                                style="font-size: 18px;">open_in_new</i></a>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group row">
-                        <label for="company" class="col-md-0 control-label">
-                        </label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="entry.company" name="company" id="company"
-                                       matInput placeholder="Company">
-                            </mat-input-container>
+                        <div class="form-group row">
+                            <label for="company" class="col-md-0 control-label">
+                            </label>
+                            <div class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="entry.company" name="company" id="company" matInput
+                                        placeholder="Company">
+                                </mat-input-container>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group row">
-                        <label for="billingEmail" class="col-md-0 control-label">
-                        </label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="entry.billingEmail" name="billingEmail" id="billingEmail"
-                                       matInput placeholder="Billing email">
-                            </mat-input-container>
+                        <div class="form-group row">
+                            <label for="billingEmail" class="col-md-0 control-label">
+                            </label>
+                            <div class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="entry.billingEmail" name="billingEmail" id="billingEmail"
+                                        matInput placeholder="Billing email">
+                                </mat-input-container>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group">
-                            <button mat-raised-button color="primary" (click)="update();"
-                                    class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
+                        <div class="form-group">
+                            <button mat-raised-button color="primary" (click)="update();" class="btn-w-md no-margin-left"
+                                [disabled]="!heroForm.valid">Save
                             </button>
-                            <button mat-button type="button" color="primary" class="btn-w-md"
-                                    [routerLink]="['/app/orgs']">Cancel
+                            <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/orgs']">Cancel
                             </button>
-                    </div>
+                        </div>
 
 
-                </form>
+                    </form>
                 </div>
             </div>
         </div>
