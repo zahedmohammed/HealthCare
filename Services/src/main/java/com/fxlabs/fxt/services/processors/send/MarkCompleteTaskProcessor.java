@@ -141,7 +141,7 @@ public class MarkCompleteTaskProcessor {
                             newIssues++;
                         }
                         if ("closed".equalsIgnoreCase(it.getStatus()) ){
-                            newIssues++;
+                            closedIssues++;
                         }
                     }
 
