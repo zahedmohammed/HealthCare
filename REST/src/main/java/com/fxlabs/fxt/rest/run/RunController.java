@@ -140,6 +140,13 @@ public class RunController {
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/job/{jobId}/rerun/{runId}", method = RequestMethod.POST)
+    public Response<Run> reRun(@PathVariable("jobId") String jobId,
+                                   @PathVariable("runId") Long runId) {
+        return runService.reRun(jobId, runId, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Run> delete(@PathVariable("id") String id) {
         return runService.delete(id, SecurityUtil.getCurrentAuditor());

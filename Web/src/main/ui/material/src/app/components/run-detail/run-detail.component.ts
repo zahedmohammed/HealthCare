@@ -210,29 +210,7 @@ export class RunDetailComponent implements OnInit {
     this.getSummary();
   }
 
-  rerun(){
-    var  testSuite='';
-    for (let suite of this.suites) {
-      testSuite = testSuite+ suite['suiteName']+", " ; 
 
-    }
-    var tags='';
-    for (let tag of this.job['tags'] ){
-      tags=tags+tag+", "
-    }
-    var categories='';
-    categories=this.job['categories'];
-   this.runService.advRun(this.job.id, this.job['regions'], tags, testSuite,this.job['categories']).subscribe(results => {
-
-       this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.router.navigate(['/app/projects/' , this.project.id,  'jobs', this.job.id, 'runs']);
-    }, error => {
-      this.handler.error(error);
-    });
-  }
 
   cancel(){
 
@@ -256,14 +234,27 @@ export class RunDetailComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.snackbarService.openSnackBar("'JobRun '" + this.run.runId + "' deleted", "");
+          this.snackbarService.openSnackBar("'JobRun '" + this.run.runId + "' deleted", "");
+          this.router.navigate(['/app/projects', this.project.id, 'jobs', this.jobId, 'runs']);
+        }, error => {
+          this.handler.hideLoader();
+          this.handler.error(error);
+        });
+
+      }
+    }
+
+  rerun(){
+    this.runService.reRunByJobIdAndRunId(this.jobId, this.run.runId).subscribe(results =>{
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.snackbarService.openSnackBar("'Rerun  no '" + this.run.runId + "' processing", "");
       this.router.navigate(['/app/projects', this.project.id, 'jobs', this.jobId, 'runs']);
-    }, error => {
+     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
-    });
-
+     });
   }
-}
 
 }

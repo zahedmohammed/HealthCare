@@ -38,21 +38,21 @@
                             <th class="mdl-data-table__cell--non-numeric">Billing</th>
                             <th class="mdl-data-table__cell--non-numeric">Plan</th>
                             <th class="mdl-data-table__cell--non-numeric">Create-date</th>
-                            <th class="mdl-data-table__cell--non-numeric"></th>
+                            <!-- <th class="mdl-data-table__cell--non-numeric"></th> -->
                         </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let org of orgs">
                             <td class="mdl-data-table__cell--non-numeric bold">
-                                <a href="javascript:;" [routerLink]="['/app/orgs', org.id]">{{org.name}}</a></td>
+                                <a href="javascript:;" [routerLink]="['/app/orgs', org.id, 'users']">{{org.name}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric">{{org.company}}</td>
                             <!-- <td class="mdl-data-table__cell--non-numeric">{{org.orgType}}</td> -->
                             <td class="mdl-data-table__cell--non-numeric">{{org.billingEmail}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{org.orgPlan}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{org.createdDate | date:'shortDate'}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">
+                            <!-- <td class="mdl-data-table__cell--non-numeric">
                                 <a href="javascript:;" [routerLink]="['/app/orgs', org.id, 'users']">Users</a>
-                            </td>
+                            </td> -->
                         </tr>
                         </tbody>
                     </table>
