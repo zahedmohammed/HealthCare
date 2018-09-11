@@ -60,13 +60,15 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     private TestSuiteConverter testSuiteConverter;
     private InstantRunTaskRequestProcessor instantRunTaskRequestProcessor;
     private EnvironmentRepository environmentRepository;
+    private TestSuiteResponseESRepository testSuiteResponseESRepository;
 
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService, EnvironmentRepository environmentRepository,
             /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository, TestSuiteConverter testSuiteConverter,
                           TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter,
                           TestSuiteESRepository testSuiteESRepository, ProjectService projectService, TestSuiteService testSuiteService,
-                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter, InstantRunTaskRequestProcessor instantRunTaskRequestProcessor
+                          SuiteESRepository suiteESRepository, SuiteConverter suiteConverter, InstantRunTaskRequestProcessor instantRunTaskRequestProcessor,
+                          TestSuiteResponseESRepository testSuiteResponseESRepository
                           ) {
         super(repository, converter);
         this.repository = repository;
@@ -83,6 +85,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         this.instantRunTaskRequestProcessor = instantRunTaskRequestProcessor;
         this.environmentRepository = environmentRepository;
         this.testSuiteService = testSuiteService;
+        this.testSuiteResponseESRepository = testSuiteResponseESRepository;
 
     }
 
@@ -290,7 +293,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     @Override
     public Response<List<TestSuiteResponse>> findByPk(String id, String name, String user, Pageable pageable) {
 
-        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.testSuiteResponseRepository.findByRunIdAndTestSuite(id, name, pageable);
+        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.testSuiteResponseESRepository.findByRunIdAndTestSuite(id, name, pageable);
 
         List<TestSuiteResponse> dataSets = testSuiteResponseConverter.convertToDtos(page.getContent());
         return new Response<List<TestSuiteResponse>>(dataSets, page.getTotalElements(), page.getTotalPages());

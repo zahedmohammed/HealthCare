@@ -1,6 +1,8 @@
 package com.fxlabs.fxt.dao.repository.es;
 
 import com.fxlabs.fxt.dao.entity.run.TestSuiteResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
@@ -33,6 +35,9 @@ public interface TestSuiteResponseESRepository extends ElasticsearchRepository<T
             "    }" +
             "}")
     Map<String, String> aggrResults(String runId);
+
+
+    Page<TestSuiteResponse> findByRunIdAndTestSuite(String id, String name, Pageable pageable);
 
 
 }
