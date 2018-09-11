@@ -99,7 +99,8 @@ constructor(private http: HttpClient) {
   }
 
   reRunByJobIdAndRunId(jobId:string, runId:string) {
-    return this.http.post(this.serviceUrl + "/job/" + jobId + "/rerun/" + runId);
+    let params = new HttpParams();
+    return this.http.post(this.serviceUrl + "/job/" + jobId + "/rerun/" + runId, {params});
   }
 
  }
