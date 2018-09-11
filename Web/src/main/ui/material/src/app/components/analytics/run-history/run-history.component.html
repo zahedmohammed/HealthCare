@@ -87,7 +87,30 @@
         </tfoot>
       </table>
     </div>
-
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="box box-transparent">                          
+                <div class="divider divider-md"></div>
+                <div class="box-body">
+                    <div *ngIf="chart">
+                        <canvas id="canvas1">{{ chart }}</canvas>
+                      </div>
+                </div>
+              </div> 
+        </div>
+        <div class="col-md-3"></div>
+        <!-- <div class="col-md-6">
+            <div class="box box-transparent">                          
+                <div class="divider divider-md"></div>
+                <div class="box-body">
+                    <div *ngIf="chart2">
+                        <canvas id="canvas2">{{ chart2 }}</canvas>
+                      </div>
+                </div>
+              </div> 
+        </div> -->
+        </div>
     <mat-paginator [hidden]="length <= pageSize"
                    [pageSize]="pageSize"
                    hidePageSize="true"

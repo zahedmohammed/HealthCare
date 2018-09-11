@@ -1,3 +1,4 @@
+import { CHARTCONFIG } from './../../../charts/charts.config';
 import { Component, OnInit } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { JobsService } from '../../../services/jobs.service';
@@ -8,6 +9,8 @@ import { Run } from '../../../models/run.model';
 import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
 import { MsgDialogComponent } from '../../dialogs/msg-dialog/msg-dialog.component';
 import { Handler } from '../../dialogs/handler/handler';
+import { Chart } from 'chart.js';
+import 'chartjs-plugin-labels';
 
 @Component({
   selector: 'app-run-history',
@@ -27,6 +30,9 @@ export class RunHistoryComponent implements OnInit {
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
+  config = CHARTCONFIG;
+  chart = []; // This will hold our chart info
+  chart2 = []; // This will hold our chart info
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
     private route: ActivatedRoute, private dialog: MatDialog, private handler: Handler) { }
 
@@ -84,8 +90,6 @@ getRunById() {
     });
   }
 
-
-
   getTestSuiteResponseHistoryByName() {
     this.handler.activateLoader();
     this.runService.getTestSuiteResponseHistoryByName(this.jobId, this.suiteName).subscribe(results => {
@@ -94,6 +98,142 @@ getRunById() {
         return;
       }
       this.suites = results['data'];
+      console.log('results -> ', results);
+      
+     //Get data - Start
+     let totalData = results['data'];
+     console.log(totalData)
+     let tp:any = [];
+     let tf:any = [];
+     let tb:any = [];
+     let rt:any = [];
+     let runno:any = [];
+     for (let i = totalData.length-1; i >= 0; i--){
+        tp.push(totalData[i]['totalPassed']);
+        tf.push(totalData[i]['totalFailed']);
+        tb.push(totalData[i]['totalBytes']);
+        rt.push(totalData[i]['requestTime']);
+        // runno.push(i['runNo']);
+     }
+     //End
+
+    for(let i = totalData.length-1; i >= 0; i--) {
+      runno.push(totalData[i].runNo);
+    }
+    // return runno;
+
+     // Options Start for Graphs
+     let graph1Options = {
+      responsive: true,
+      legend: {
+        display: true
+      },
+      title: {
+        display: true,
+        text: 'Passed / Failed Statistics'
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Runs'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: false,
+            labelString: 'Some text'
+          }
+        }]
+      }
+    };
+
+    let graph2Options = {
+      legend: {
+        display: true
+      },
+      title: {
+        display: true,
+        text: 'Total Bytes per time'
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Runs'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: false,
+            labelString: 'Some text'
+          }
+        }]
+      }
+    };
+// Options End
+
+      //Graph 1 Start
+      this.chart = new Chart('canvas1', {
+        type: 'line',
+        data: {
+          labels: runno,
+          datasets: [
+            {
+              data: tf,
+              label: 'Failed',
+              borderColor: this.config.danger,
+              backgroundColor: this.config.danger,
+              fill: false,
+              pointRadius: 6,
+					    pointHoverRadius: 12
+            },
+            {
+              data: tp,
+              label: 'Passed',          
+              borderColor: this.config.success,
+              backgroundColor: this.config.success,
+              fill: false,
+              pointRadius: 6,
+					    pointHoverRadius: 12
+            }
+          ]
+        },
+        options: graph1Options
+      });
+
+      //Graph 2 Start
+      this.chart2 = new Chart('canvas2', {
+        type: 'line',
+        data: {
+          labels: tb,
+          datasets: [
+            {
+              data: tb,
+              label: 'Total Bytes',
+              borderColor: this.config.primary,
+              backgroundColor: this.config.primary,
+              fill: false,
+              pointRadius: 6,
+					    pointHoverRadius: 12
+            },
+            {
+              data: rt,
+              label: 'Request Time',
+              borderColor: this.config.warning,
+              backgroundColor: this.config.warning,
+              fill: false,
+					    pointRadius: 6,
+					    pointHoverRadius: 12
+            }
+          ]
+        },
+        options: graph2Options
+      });
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
