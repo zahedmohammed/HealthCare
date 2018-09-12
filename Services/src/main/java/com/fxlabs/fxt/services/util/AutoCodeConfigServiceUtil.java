@@ -88,7 +88,7 @@ public class AutoCodeConfigServiceUtil {
         empty_value.setType("empty_value");
 
         empty_value.setDisplayHeaderLabel("Empty Value");
-        empty_value.setDisplayHeaderDescription("Empty value is a negative test case to check how APIs behave when empty values are sent in a data type that API is not expecing.");
+        empty_value.setDisplayHeaderDescription("Empty value is a negative test case to check how APIs behave when empty values are sent in a data type that API is not expecting.");
         empty_value.setAssertionDescription("Successful test suite response code is 400, 403, 406 and 500. UnSuccessful test suite response code is 200.");
 
 
@@ -131,7 +131,7 @@ public class AutoCodeConfigServiceUtil {
         null_value.setType("null_value");
 
         null_value.setDisplayHeaderLabel("Null Value");
-        null_value.setDisplayHeaderDescription("Null value is a negative test case to check how APIs behave when Null values are sent in a data type that API is not expecing.");
+        null_value.setDisplayHeaderDescription("Null value is a negative test case to check how APIs behave when Null values are sent in a data type that API is not expecting.");
         null_value.setAssertionDescription("Successful test suite response code is 400, 403, 406 and 500. UnSuccessful test suite response code is 200.");
 
 
@@ -152,7 +152,7 @@ public class AutoCodeConfigServiceUtil {
 
         special_chars.setType("special_chars ");
         special_chars.setDisplayHeaderLabel("Special Characters");
-        special_chars.setDisplayHeaderDescription("Special Characters is a negative test case to check how APIs behave when special characters are sent in the data type that API is not expecing.");
+        special_chars.setDisplayHeaderDescription("Special Characters is a negative test case to check how APIs behave when special characters are sent in the data type that API is not expecting.");
         special_chars.setAssertionDescription("Successful test suite response code is 400, 403, 406 and 500. UnSuccessful test suite response code is 200.");
 
 
@@ -390,7 +390,7 @@ public class AutoCodeConfigServiceUtil {
         anonymous_invalid.setSeverity(TestSuiteSeverity.Critical);
         anonymous_invalid.setType("anonymous_invalid");
 
-        anonymous_invalid.setDisplayHeaderLabel("Anonymous Invalid");
+        anonymous_invalid.setDisplayHeaderLabel("Secured Endpoints");
         anonymous_invalid.setDisplayHeaderDescription("Anonymous Invalid is a test suite to check if Secure APIs can be invoked by anonymous users.");
         anonymous_invalid.setAssertionDescription("Successful test suite response code is 401, 403. UnSuccessful test suite response code is 200.");
 

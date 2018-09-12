@@ -602,6 +602,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             boolean found = false;
             for (AutoCodeGenerator pGen : projGenerator) {
                 if (gen.getType().equals(pGen.getType())) {
+
+                    pGen.setDisplayHeaderLabel(gen.getDisplayHeaderLabel());
+                    pGen.setDisplayHeaderDescription(gen.getDisplayHeaderDescription());
+                    pGen.setAssertionDescription(gen.getAssertionDescription());
+                    pGen.setSeverity(gen.getSeverity());
+
                     found = true;
                     break;
                 }
@@ -610,6 +616,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 projGenerator.add(gen);
             }
         }
+
+
 
 
     }
