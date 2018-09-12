@@ -42,22 +42,22 @@
             <form [formGroup]="firstFormGroup">
               <!--<ng-template matStepLabel>Project Registration</ng-template>-->
               <div class="form-group row"></div>
-              <!--<div class="form-group row">-->
-                <!--<label for="name" class="col-md-0 control-label"></label>-->
-                <!--<div class="col-md-5">-->
-                  <!--<mat-input-container class="full-width">-->
-                    <!--<input required [(ngModel)]="project.name" formControlName="nameCtrl"-->
-                           <!--id="name" matInput placeholder="Project name"  autocomplete="off">-->
-                    <!--<mat-error>Required</mat-error>-->
-                  <!--</mat-input-container>-->
-                <!--</div>-->
+              <div class="form-group row">
+                <label for="name" class="col-md-0 control-label"></label>
+                <div class="col-md-5">
+                  <mat-input-container class="full-width">
+                    <input required [(ngModel)]="project.name" formControlName="nameCtrl"
+                           id="name" matInput placeholder="Project name"  autocomplete="off">
+                    <mat-error>Required</mat-error>
+                  </mat-input-container>
+                </div>
                 <!--<div class="col-md-7">-->
                   <!--<div class="callout1 text-muted callout-info1">-->
                     <!--<p class="mt-4">e.g. MyApp-->
                     <!--</p>-->
                   <!--</div>-->
                 <!--</div>-->
-              <!--</div>-->
+              </div>
               <!-- Repository details -->
 
               <div class="form-group row">

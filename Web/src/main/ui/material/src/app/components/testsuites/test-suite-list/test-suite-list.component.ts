@@ -150,13 +150,13 @@ export class TestSuiteListComponent implements OnInit {
       this.handler.error(error);
     });
   }
-  open() {
-    const dialogRef = this.dialog.open(AutoSyncComponent, {
-      //width:'450px',
-      data: this.project
-  });
-   dialogRef.afterClosed().subscribe(result => {
-  });
-  }
+  // open() {
+  //   const dialogRef = this.dialog.open(AutoSyncComponent, {
+  //     //width:'450px',
+  //     data: this.project
+  // });
+  //  dialogRef.afterClosed().subscribe(result => {
+  // });
+  // }
 
 }

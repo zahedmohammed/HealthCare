@@ -122,11 +122,8 @@
                             <!--<ng-template matStepLabel>AutoCode Configuration</ng-template>-->
 
                             <div class="box-body">
-
-                                <!-- <form role="form" #heroForm="ngForm">         -->
-
                                 <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
-                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <!--<label for="name" class="col-md-0 control-label"></label>-->
                                     <div class="col-md-5">
                                         <mat-input-container class="full-width">
                                             <input required [(ngModel)]="autoCodeConfig.openAPISpec" name="spec" id="name" matInput placeholder="OpenAPISpec URL/file"
@@ -136,25 +133,34 @@
                                     </div>
                                     <div class="col-md-7">
                                         <div class="callout1 text-muted callout-info1">
-                                            <div><strong><p>FX Auto-Code requires OpenAPISpec of your application to create functional/security
-                                                test coverage. </p></strong></div>
-                                            <div class="callout callout-info">
-                                                <p> Note: OpenAPISpec URL should be publicly accessible or upload the spec json/yaml file into the
-                                                    Git repository and enter the filename instead.</p>
-                                            </div>
-                                            <div>
-                                                e.g. https://ip/v2/api-docs or open-api-spec.json or open-api-spec.yaml or None. <br/> How-to generate
-                                                OpenAPISpec for your Java, .Net and other applications.
-                                                <a target="_blank" href="https://swagger.io/open-source-integrations/">
-                                                    Learn more
-                                                    <i class="material-icons" style="font-size: 18px;">open_in_new</i>
-                                                </a>
-                                            </div>
+                                            FX Auto-Code requires OpenAPISpec of your application to create functional/security
+                                            test coverage. <br>
+                                            e.g. https://ip/v2/api-docs or open-api-spec.json or open-api-spec.yaml or None. <br/> How-to generate
+                                            OpenAPISpec for your Java, .Net and other applications.
+                                            <a target="_blank" href="https://swagger.io/open-source-integrations/">
+                                                Learn more
+                                                <i class="material-icons" style="font-size: 18px;">open_in_new</i>
+                                            </a>
                                         </div>
                                     </div>
 
                                 </div>
 
+                                <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
+                                    <div class="col-md-5">
+                                    <div class="callout2 callout-info">
+                                         Note: OpenAPISpec URL should be publicly accessible or upload the spec json/yaml file into the
+                                            Git repository and enter the filename instead.
+                                    </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <button mat-raised-button color="primary" (click)="open();" class="btn-w-md">
+                                            AutoCode & Sync
+                                        </button>
+                                    </div>
+
+
+                                </div>
                                 <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
                                     <!-- <div class="col-md-12" *ngFor="let res of autoCodeConfig"> -->
                                     <div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">

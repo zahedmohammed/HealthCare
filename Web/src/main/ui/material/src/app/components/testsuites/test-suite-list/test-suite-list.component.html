@@ -45,9 +45,7 @@
           </div>
           <div class="col-md-7 mb-2">
             <p class="text-muted float-right mt-2">Total ({{length}})</p>
-            <button mat-raised-button color="primary" (click)="open();" class="btn-w-md">
-              AutoCode & Sync
-            </button>
+
             <mat-form-field class="ml-4">
               <mat-select placeholder="Search by category" [(ngModel)]="category" (selectionChange)="searchByCategory()" name="category"
                 [ngModelOptions]="{standalone: true}">
