@@ -167,9 +167,25 @@
                                         <mat-accordion>
                                             <mat-expansion-panel>
                                                 <mat-expansion-panel-header>
-                                                    <mat-panel-title>
-                                                        <b>{{ res.displayHeaderLabel }}</b>
-                                                    </mat-panel-title>
+
+                                                                    <div class="col-md-4">
+                                                                        <mat-panel-title>
+                                                                        <b>{{ res.displayHeaderLabel }}</b>
+                                                                        </mat-panel-title>
+                                                                    </div>
+
+                                                            <div class="col-md-8">
+                                                            <mat-panel-description>
+                                                                    <div class="inactivegreen" *ngIf="res.inactive === false">
+                                                                        <p>Active</p>
+                                                                    </div>
+                                                                    <div class="inactivered" *ngIf="res.inactive === true">
+                                                                        <p>Inactive</p>
+                                                                    </div>
+
+                                                            </mat-panel-description>
+                                                            </div>
+
                                                 </mat-expansion-panel-header>
                                                 <div class="mb-3">
                                                     {{res.displayHeaderDescription}}

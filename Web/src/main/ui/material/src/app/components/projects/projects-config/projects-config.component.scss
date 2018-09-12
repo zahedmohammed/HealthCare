@@ -3,3 +3,14 @@
   padding: 10px;
   border-left: 3px solid #00BCD4
 }
+.inactivered{
+  color:red;
+}
+
+.inactivegreen{
+  color: green;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  background-color: orangered !important;
+}
