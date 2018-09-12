@@ -47,5 +47,8 @@ public class Job extends BaseDto<String> {
 
     private boolean issueTrackerToDo;
 
+    private long openIssues;
+    private long closedIssues;
+
 }
 

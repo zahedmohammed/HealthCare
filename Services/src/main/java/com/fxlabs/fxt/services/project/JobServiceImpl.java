@@ -3,11 +3,13 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.converters.project.JobConverter;
 import com.fxlabs.fxt.converters.project.JobIssueTrackerConverter;
 import com.fxlabs.fxt.converters.project.JobNotificationConverter;
+import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.entity.project.JobIssueTracker;
 import com.fxlabs.fxt.dao.repository.jpa.JobIssueTrackerRepository;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
 import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
+import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseITRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.Project;
@@ -44,10 +46,12 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     //private JobNotificationRepository jobNotificationRepository;
     private JobIssueTrackerRepository jobIssueTrackerRepository;
 
+    private TestCaseResponseITRepository testCaseResponseITRepository;
+
     @Autowired
     public JobServiceImpl(JobRepository repository, JobConverter converter, ProjectService projectService, RunRepository runRepository,
                           JobNotificationConverter projectNotificationConverter, JobIssueTrackerConverter jobIssueTrackerConverter,
-                           JobIssueTrackerRepository jobIssueTrackerRepository) {
+                           JobIssueTrackerRepository jobIssueTrackerRepository, TestCaseResponseITRepository testCaseResponseITRepository) {
         super(repository, converter);
         this.jobRepository = repository;
         this.projectService = projectService;
@@ -55,6 +59,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         this.jobNotificationConverter = jobNotificationConverter;
         this.jobIssueTrackerConverter = jobIssueTrackerConverter;
         this.jobIssueTrackerRepository = jobIssueTrackerRepository;
+        this.testCaseResponseITRepository = testCaseResponseITRepository;
     }
 
     @Override
@@ -117,6 +122,12 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
             if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null &&  job.getNotifications().get(1) == null) {
                 job.setNotificationToDo(true);
                 return;
+            }else{
+                String itId = job.getProject().getName() + "//" + job.getId() + "%"  ;
+                long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
+                long totalClosedIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("closed",itId);
+                job.setOpenIssues(totalOpenIssues);
+                job.setClosedIssues(totalClosedIssues);
             }
 
             if (StringUtils.isEmpty(job.getNotifications().get(0).getTo()) && StringUtils.isEmpty(job.getNotifications().get(1).getChannel())) {
