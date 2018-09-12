@@ -28,13 +28,13 @@ public class AutoCodeGenerator extends BasicBaseEntity {
     @ElementCollection
     private List<String> assertions;
 
-    /*private String displayHeaderDescription;
+    private String displayHeaderDescription;
     private String displayHeaderLabel;
     private String assertionDescription;
 
     @Enumerated(EnumType.STRING)
     private TestSuiteSeverity severity;
-*/
+
     @Embedded
     private Database database;
 
