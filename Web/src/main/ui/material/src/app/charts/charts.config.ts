@@ -7,6 +7,7 @@ export const CHARTCONFIG = {
   danger: 'rgba(233,75,59,.85)', // #E94B3B
   gray: 'rgba(221,221,221,.3)',
   textColor: '#989898',
+  whiteColor: '#ffffff',
   splitLineColor: 'rgba(0,0,0,.05)',
   splitAreaColor: ['rgba(250,250,250,0.035)', 'rgba(200,200,200,0.1)'],
   backgroundColor: [

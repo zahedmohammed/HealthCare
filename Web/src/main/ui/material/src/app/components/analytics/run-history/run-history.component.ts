@@ -33,6 +33,7 @@ export class RunHistoryComponent implements OnInit {
   config = CHARTCONFIG;
   chart = []; // This will hold our chart info
   chart2 = []; // This will hold our chart info
+  chart3 = [];
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
     private route: ActivatedRoute, private dialog: MatDialog, private handler: Handler) { }
 
@@ -112,7 +113,7 @@ getRunById() {
         tp.push(totalData[i]['totalPassed']);
         tf.push(totalData[i]['totalFailed']);
         tb.push(totalData[i]['totalBytes']);
-        rt.push(totalData[i]['requestTime']);
+        rt.push(totalData[i]['requestTime']/1000);
         // runno.push(i['runNo']);
      }
      //End
@@ -156,7 +157,33 @@ getRunById() {
       },
       title: {
         display: true,
-        text: 'Total Bytes per time'
+        text: 'Data (in bytes)'
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Runs'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: false,
+            labelString: 'Some text'
+          }
+        }]
+      }
+    };
+
+    let graph3Options = {
+      legend: {
+        display: true
+      },
+      title: {
+        display: true,
+        text: 'Time Taken (in milli seconds)'
       },
       scales: {
         xAxes: [{
@@ -189,8 +216,8 @@ getRunById() {
               borderColor: this.config.danger,
               backgroundColor: this.config.danger,
               fill: false,
-              pointRadius: 6,
-					    pointHoverRadius: 12
+              pointRadius: 4,
+              pointHoverRadius: 5
             },
             {
               data: tp,
@@ -198,8 +225,8 @@ getRunById() {
               borderColor: this.config.success,
               backgroundColor: this.config.success,
               fill: false,
-              pointRadius: 6,
-					    pointHoverRadius: 12
+              pointRadius: 4,
+					    pointHoverRadius: 5
             }
           ]
         },
@@ -210,29 +237,58 @@ getRunById() {
       this.chart2 = new Chart('canvas2', {
         type: 'line',
         data: {
-          labels: tb,
+          labels: runno,
           datasets: [
             {
               data: tb,
-              label: 'Total Bytes',
+              label: 'Data',
               borderColor: this.config.primary,
               backgroundColor: this.config.primary,
               fill: false,
-              pointRadius: 6,
-					    pointHoverRadius: 12
+              pointRadius: 4,
+					    pointHoverRadius: 5
             },
-            {
-              data: rt,
-              label: 'Request Time',
-              borderColor: this.config.warning,
-              backgroundColor: this.config.warning,
-              fill: false,
-					    pointRadius: 6,
-					    pointHoverRadius: 12
-            }
+            // {
+            //   data: rt,
+            //   label: 'Request Time',
+            //   borderColor: this.config.warning,
+            //   backgroundColor: this.config.warning,
+            //   fill: false,
+					  //   pointRadius: 4,
+					  //   pointHoverRadius: 5
+            // }
           ]
         },
         options: graph2Options
+      });
+
+      //Graph 3 Start
+      this.chart3 = new Chart('canvas3', {
+        type: 'line',
+        data: {
+          labels: runno,
+          datasets: [
+            // {
+            //   data: tb,
+            //   label: 'Total Bytes',
+            //   borderColor: this.config.primary,
+            //   backgroundColor: this.config.primary,
+            //   fill: false,
+            //   pointRadius: 4,
+					  //   pointHoverRadius: 5
+            // },
+            {
+              data: rt,
+              label: 'Time Taken',
+              borderColor: this.config.warning,
+              backgroundColor: this.config.warning,
+              fill: false,
+					    pointRadius: 4,
+					    pointHoverRadius: 5
+            }
+          ]
+        },
+        options: graph3Options
       });
     }, error => {
       this.handler.hideLoader();
