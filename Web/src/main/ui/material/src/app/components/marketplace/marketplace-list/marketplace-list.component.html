@@ -22,13 +22,14 @@
             <article class="article">
             <div class="row">
                 <div class="col-md-10">
-                <mat-form-field class="full-width">
+                <mat-form-field class="">
                     <mat-select placeholder="Category" name="Category">
                         <mat-option *ngFor="let category of types" [value]="category">
                             {{category}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+                    &nbsp;&nbsp;&nbsp;
                 <mat-input-container>
                     <input #box (keyup.enter)="search(box.value)" name="search" matInput placeholder="search...">
                 </mat-input-container>
