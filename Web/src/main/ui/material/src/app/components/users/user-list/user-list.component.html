@@ -4,24 +4,13 @@
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
                 <a href="javascript:;" [routerLink]="['/app/orgs']">
                     Orgs</a>&nbsp;
-                <!-- <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users']">
-                             <span class="text-muted"> > </span>{{org.name}}</a> -->
-                <span class="text-muted"> &nbsp;>&nbsp; </span>{{org.name}}
-                <span class="text-muted"> &nbsp;>&nbsp; </span>Users
+                <span class="text-muted"> &nbsp;<i class="fa fa-chevron-right"></i>&nbsp; </span>{{org.name}}
+                <span class="text-muted"> &nbsp;<i class="fa fa-chevron-right"></i>&nbsp; </span>Users
             </section>
         </article>
     </div>
 </div>
 
-<!-- <div class="box box-default"> 
-        <div class="box-body"> 
-                <a href="javascript:;" [routerLink]="['/app/orgs']">
-                     Organizations </a>
-                     
-                      <span class="text-muted"> > </span>{{org.name}}
-                      <span class="text-muted"> > </span>Users
-        </div> 
-    </div>  -->
 <section class="container-fluid with-maxwidth chapter">
     <nav mat-tab-nav-bar>
         <label mat-tab-link [active]="true">Users
