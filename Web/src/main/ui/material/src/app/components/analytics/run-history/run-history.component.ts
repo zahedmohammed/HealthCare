@@ -39,7 +39,7 @@ export class RunHistoryComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      console.log(params);
+      //console.log(params);
       if (params['jobId']) {
         this.jobId = params['jobId'];
         this.loadJob(this.jobId);
@@ -99,11 +99,11 @@ getRunById() {
         return;
       }
       this.suites = results['data'];
-      console.log('results -> ', results);
+      //console.log('results -> ', results);
       
      //Get data - Start
      let totalData = results['data'];
-     console.log(totalData)
+     //console.log(totalData)
      let tp:any = [];
      let tf:any = [];
      let tb:any = [];
