@@ -6,13 +6,14 @@ import { ProjectService } from '../../../services/project.service';
 import { Base } from '../../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 import { Handler } from '../../dialogs/handler/handler';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { AutoSyncComponent } from '../../dialogs/auto-sync/auto-sync.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
 import { ProjectSync } from '../../../models/project-sync.model';
-import {SnackbarService}from '../../../services/snackbar.service';
+import { SnackbarService}from '../../../services/snackbar.service';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
 selector: 'app-test-suite-list',
@@ -34,6 +35,13 @@ export class TestSuiteListComponent implements OnInit {
   //private _clockSubscription: Subscription;
   selectedCategories:string;
   categories=['All','SimpleGET','Functional','SLA','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+
+  displayedColumns: string[] = ['name', 'category', 'type', 'auto-created', 'modified-date'];
+  dataSource = null;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
 
@@ -72,6 +80,8 @@ export class TestSuiteListComponent implements OnInit {
       }
       this.testsuites = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.testsuites);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -80,7 +90,7 @@ export class TestSuiteListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.searchByCategory();
@@ -104,6 +114,8 @@ export class TestSuiteListComponent implements OnInit {
       }
       this.testsuites = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.testsuites);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -112,7 +124,7 @@ export class TestSuiteListComponent implements OnInit {
 
 
 
-   searchByCategory() {
+  searchByCategory() {
     this.handler.activateLoader();
      if (this.keyword == '' && this.category == '') {
        return this.list(this.id);
@@ -130,6 +142,8 @@ export class TestSuiteListComponent implements OnInit {
       }
       this.testsuites = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.testsuites);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -150,6 +164,7 @@ export class TestSuiteListComponent implements OnInit {
       this.handler.error(error);
     });
   }
+
   // open() {
   //   const dialogRef = this.dialog.open(AutoSyncComponent, {
   //     //width:'450px',
