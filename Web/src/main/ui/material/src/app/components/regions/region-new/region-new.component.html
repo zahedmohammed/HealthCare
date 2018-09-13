@@ -22,102 +22,210 @@
             <div class="box-body">
                 <div class="box-body">
 
-                    <form role="form" #heroForm="ngForm">
-                        <h6 class="mat-step-label-selected pb-4">Bot Details</h6>
-                        <div class="form-group row">
-                            <label for="name" class="col-md-0 control-label"></label>
-                            <div class="col-md-5">
-                                <mat-input-container class="full-width">
-                                    <input required [(ngModel)]="entry.name" name="name" id="name" matInput placeholder="Bot name" autocomplete="off">
-                                </mat-input-container>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="callout1 text-muted callout-info1">
-                                    <p>A bot is a light-weight and stateless container and can be deployed on developer laptops,
-                                        bare-metal servers & private/public cloud regions. Bot is headless and it has no
-                                        open ports or APIs to talk. Bot receives tasks from FX Control-Plane over SSL.</p>
-                                    <p>Name represents bot region name. You'll use this name to schedule job runs. example
-                                        usage: 'region: Org/Name'.
-                                    </p>
+                    <!-- <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                        <mat-step [stepControl]="firstFormGroup">
+                            <form [formGroup]="firstFormGroup" class="row">
+                                <ng-template matStepLabel>Bot Details</ng-template>
+                                <mat-form-field class="col-md-5">
+                                    <input matInput formControlName="firstCtrl" required [(ngModel)]="entry.name" name="name"
+                                        id="name" matInput placeholder="Bot name" autocomplete="off">
+                                </mat-form-field>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>A bot is a light-weight and stateless container and can be deployed on
+                                            developer laptops,
+                                            bare-metal servers & private/public cloud regions. Bot is headless and it
+                                            has no
+                                            open ports or APIs to talk. Bot receives tasks from FX Control-Plane over
+                                            SSL.</p>
+                                        <p>Name represents bot region name. You'll use this name to schedule job runs.
+                                            example usage: 'region: Org/Name'.
+                                        </p>
+                                    </div>
                                 </div>
+                            </form>
+                            <div class="pull-right">
+                                <button mat-raised-button color="primary" (click)="create();" [disabled]="firstFormGroup.invalid">Manual
+                                    Deploy & Complete</button>
+                                <button mat-raised-button matStepperNext color="primary" [disabled]="firstFormGroup.invalid">Deploy
+                                    to Cloud</button>
+                                <button mat-button type="button" color="warn" [routerLink]="['/app/regions']">Cancel
+                                </button>
                             </div>
-                        </div>
+                        </mat-step>
 
-                        <div class="form-group row">
-                            <label class="col-md-0 control-label">
-                            </label>
-                            <div class="col-md-5">
-                                <mat-form-field class="full-width">
-                                    <mat-select placeholder="Account" required [(ngModel)]="entry.account" name="type" (change)="getRegions()">
+                        <mat-step [stepControl]="secondFormGroup">
+                            <form [formGroup]="secondFormGroup" class="row">
+                                <ng-template matStepLabel>Deploy Cloud</ng-template>
+                                <mat-form-field class="col-md-5">
+                                    <mat-select placeholder="Account" required formControlName="secondCtrl" [(ngModel)]="entry.account"
+                                        name="type" (change)="getRegions()">
                                         <mat-option *ngFor="let account of accounts" [value]="account" (change)="setAccount(account);">
                                             {{account.name}} ({{account.accountType}})
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                            </div>
-                            <div class="col-md-7">
-
-                                <div class="callout1 text-muted callout-info1">
-                                    <p>
-                                        Public or private cloud endpoint.
-                                    </p>
-                                    <p>
-                                        <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i
-                                                class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials</button>
-                                    </p>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>Public or private cloud endpoint.</p>
+                                        <p><button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i
+                                                    class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials</button>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row" [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
-                            <label class="col-md-0 control-label">
-                            </label>
-                            <div class="col-md-5">
-                                <mat-form-field class="full-width">
-                                    <mat-select placeholder="Region" required [(ngModel)]="entry.region" name="type">
-                                        <mat-option *ngFor="let r of regions" [value]="r">
-                                            {{r}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-md-7">
-
-                                <div class="callout1 text-muted callout-info1">
-                                    <p>
-                                        Cloud region where the bot will be deployed.
-                                    </p>
+                                <div class="col-md-5">
+                                    <mat-form-field class="full-width">
+                                        <mat-select placeholder="Region" required formControlName="secondCtrl"
+                                            [(ngModel)]="entry.region" name="type">
+                                            <mat-option *ngFor="let r of regions" [value]="r">
+                                                {{r}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="col-md-7">
 
-                        <div class="form-group row" [hidden]="!entry.account || entry.account.accountType === 'Self_Hosted'">
-                            <label for="min" class="col-md-0 control-label"></label>
-                            <div class="col-md-5">
-                                <mat-input-container class="full-width">
-                                    <input [(ngModel)]="entry.min" name="min" id="min" matInput placeholder="Count" autocomplete="off">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>Cloud region where the bot will be deployed.</p>
+                                    </div>
+                                </div>
+                                <mat-input-container class="col-md-5">
+                                    <input [(ngModel)]="entry.min" name="min" id="min" matInput placeholder="Count"
+                                        autocomplete="off">
                                 </mat-input-container>
-                            </div>
-                            <div class="col-md-7">
+                                <div class="col-md-7">
 
-                                <div class="callout1 text-muted callout-info1">
-                                    <p>
-                                        Total bot instances. Defaults to 1.
-                                    </p>
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>Total bot instances. Defaults to 1.</p>
+                                    </div>
                                 </div>
+                            </form>
+                            <div class="pull-right">
+                                <button color="primary" mat-button matStepperPrevious>Back</button>
+                                <button mat-raised-button color="primary" (click)="create();" class="btn-w-md no-margin-left"
+                                    [disabled]="secondFormGroup.invalid">Deploy Bots
+                                </button>
+                                <button mat-button type="button" color="warn" [routerLink]="['/app/regions']">Cancel
+                                </button>
                             </div>
-                        </div>
+                        </mat-step>
+                    </mat-horizontal-stepper> -->
 
-                        <div class="divider divider-md"></div>
-                        <div class="form-group">
-                            <button mat-raised-button color="primary" (click)="create();" class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Create
-                                Bots
-                            </button>
-                            <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/regions']">Cancel
-                            </button>
-                        </div>
+                    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                        <mat-step [stepControl]="firstFormGroup">
+                            <form [formGroup]="firstFormGroup">
+                                <ng-template matStepLabel>Bot Details</ng-template>
+                                <form role="form" #heroForm="ngForm" class="row">
+                                    <!-- <h6 class="mat-step-label-selected pb-4">Bot Details</h6> -->
+                                    <mat-input-container class="col-md-5">
+                                        <input required [(ngModel)]="entry.name" name="name" id="name" matInput
+                                            placeholder="Bot name" autocomplete="off">
+                                    </mat-input-container>
+                                    <div class="col-md-7">
+                                        <div class="callout1 text-muted callout-info1">
+                                            <p>A bot is a light-weight and stateless container and can be deployed on
+                                                developer
+                                                laptops,
+                                                bare-metal servers & private/public cloud regions. Bot is headless and
+                                                it has
+                                                no
+                                                open ports or APIs to talk. Bot receives tasks from FX Control-Plane
+                                                over SSL.</p>
+                                            <p>Name represents bot region name. You'll use this name to schedule job
+                                                runs.
+                                                example
+                                                usage: 'region: Org/Name'.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="pull-right">
+                                    <button mat-raised-button color="primary" (click)="manualDeploy();">
+                                        Manual Deploy & Complete
+                                    </button>
+                                    <button mat-button matStepperNext>Deploy to Cloud</button>
+                                    <button mat-button type="button" color="warn" [routerLink]="['/app/regions']">Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </mat-step>
 
-                    </form>
+                        <mat-step [stepControl]="secondFormGroup">
+                            <form [formGroup]="secondFormGroup">
+                                <ng-template matStepLabel>Deploy Cloud</ng-template>
+                                <form role="form" #heroForm="ngForm" class="row">
+                                    <mat-form-field class="col-md-5">
+                                        <mat-select placeholder="Account" required [(ngModel)]="entry.account" name="type"
+                                            (change)="getRegions()">
+                                            <mat-option *ngFor="let account of accounts" [value]="account" (change)="setAccount(account);">
+                                                {{account.name}} ({{account.accountType}})
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="col-md-7">
+
+                                        <div class="callout1 text-muted callout-info1">
+                                            <p>
+                                                Public or private cloud endpoint.
+                                            </p>
+                                            <p>
+                                                <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i
+                                                        class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials</button>
+                                            </p>
+                                        </div>
+                                    </div>
+
+
+                                    <mat-form-field class="col-md-5">
+                                        <mat-select placeholder="Region" required [(ngModel)]="entry.region" name="type">
+                                            <mat-option *ngFor="let r of regions" [value]="r">
+                                                {{r}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="col-md-7">
+
+                                        <div class="callout1 text-muted callout-info1">
+                                            <p>
+                                                Cloud region where the bot will be deployed.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <mat-form-field class="col-md-5">
+                                        <input [(ngModel)]="entry.min" name="min" id="min" matInput placeholder="Count"
+                                            autocomplete="off">
+                                    </mat-form-field>>
+                                    <div class="col-md-7">
+
+                                        <div class="callout1 text-muted callout-info1">
+                                            <p>
+                                                Total bot instances. Defaults to 1.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="pull-right">
+                                    <button mat-raised-button color="primary" (click)="create();">
+                                        Deploy Bot
+                                    </button>
+                                    <button mat-button matStepperPrevious>Back</button>
+                                    <button mat-button type="button" color="warn" [routerLink]="['/app/regions']">Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </mat-step>
+                    </mat-horizontal-stepper>
+
+                    <!-- <div class="divider divider-md"></div>
+                    <div class="form-group">
+                        <button mat-raised-button color="primary" (click)="create();" class="btn-w-md no-margin-left"
+                            [disabled]="secondFormGroup.invalid">Create
+                            Bots
+                        </button>
+                        <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/regions']">Cancel
+                        </button>
+                    </div> -->
+
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ import {MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA
 import {SnackbarService}from '../../../services/snackbar.service';
 import { BotCredentialsComponent } from '../../dialogs/bot-credentials/bot-credentials.component';
 import { BotDialogComponent } from '../../dialogs/bot-dialog/bot-dialog.component';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-region-new',
@@ -30,11 +31,20 @@ export class RegionNewComponent implements OnInit {
   accounts;
   orgs;
   entry: Region = new Region();
-  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService, public dialog: MatDialog) { }
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  constructor(private regionsService: RegionsService, private accountService: AccountService,  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService, public dialog: MatDialog, private _formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.getAccountForExecutionBotPage();
     //this.getOrgs();
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
   }
 
   create() {
@@ -68,6 +78,41 @@ export class RegionNewComponent implements OnInit {
           this.handler.hideLoader();
           this.handler.error(error);
       });
+  }
+
+  manualDeploy(){
+
+    this.handler.activateLoader();
+    this.snackbarService.openSnackBar(this.entry.name + " creating...", "");
+    this.regionsService.create(this.entry).subscribe(results => {
+        this.handler.hideLoader();
+        this.entry = results['data'];
+        console.log('id', this.entry.id);
+        var scriptlog = this.entry.manualScript;
+        // if (this.handler.handle(results)) {
+        //     return;
+        // }
+        if (scriptlog !=null)
+        {
+          const dialogRef = this.dialog.open(BotDialogComponent, {
+              width:'800px',
+              data:scriptlog
+          });
+           dialogRef.afterClosed().subscribe(result => {
+          });
+          this.snackbarService.openSnackBar(this.entry.name + " created successfully", "");
+          this.router.navigate(['/app/regions', this.entry.id]);
+        }
+        else{
+          this.snackbarService.openSnackBar(this.entry.name + " created successfully", "");
+        this.router.navigate(['/app/regions']);
+        }
+        
+    }, error => {
+        this.handler.hideLoader();
+        this.handler.error(error);
+    });
+
   }
 
   getRegions(){
