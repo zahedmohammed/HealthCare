@@ -10,10 +10,12 @@ import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.Auth;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import org.apache.commons.lang3.StringUtils;
+import org.jasypt.util.text.TextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,15 +41,19 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
     private ProjectService projectService;
     private JobRepository jobRepository;
     private ProjectConverter projectConverter;
+    private TextEncryptor encryptor;
+    private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
+
 
     @Autowired
     public EnvironmentServiceImpl(EnvironmentRepository repository, JobRepository jobRepository, ProjectConverter projectConverter,
-                                  EnvironmentConverter converter, ProjectService projectService) {
+                                  EnvironmentConverter converter, ProjectService projectService, TextEncryptor encryptor) {
         super(repository, converter);
         this.environmentRepository = repository;
         this.projectService = projectService;
         this.jobRepository = jobRepository;
         this.projectConverter = projectConverter;
+        this.encryptor = encryptor;
     }
 
 
@@ -60,13 +66,17 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
         Page<Environment> page = environmentRepository.findByProjectIdAndInactive(projectId, false, pageable);
 
-//        if (environments == null || CollectionUtils.isEmpty(environments.getContent())) {
-//            environments = new ArrayList<>();
-////            Environment env = new Environment();
-////            env.setAuths(Arrays.asList(new Auth()));
-////            environments.add(env);
-//        }
-        return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+
+        List<com.fxlabs.fxt.dto.project.Environment> environmentList = converter.convertToDtos(page.getContent());
+
+        if (!CollectionUtils.isEmpty(environmentList)) {
+            for (com.fxlabs.fxt.dto.project.Environment en : environmentList) {
+                en.getAuths().forEach(auth -> {
+                    auth.setPassword(PASSWORD_MASKED);
+                });
+            }
+        }
+        return new Response<>(environmentList, page.getTotalElements(), page.getTotalPages());
     }
 
     @Override
@@ -122,6 +132,9 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         }
         com.fxlabs.fxt.dto.project.Environment dto = converter.convertToDto(optionalEnvironment.get());
        // testSuiteConverter.copyArraysToText(dto);
+        for (Auth auth :dto.getAuths()) {
+            auth.setPassword(PASSWORD_MASKED);
+        }
 
         return new Response<>(dto);
     }
@@ -150,6 +163,9 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
         environment.setProjectId(optionalProject.getData().getId());
+        for (Auth auth :environment.getAuths()) {
+            auth.setPassword(encryptor.encrypt(auth.getPassword()));
+        }
         //        - Name: Dev                [Default value]
         //        - Environment:             [Autocomplete options]
         //        - Region: FXLabs/US_WEST_1 [Autocomplete options]
@@ -215,6 +231,32 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
         environment.setProjectId(optionalProject.getData().getId());
+
+        for (Auth auth :environment.getAuths()) {
+
+            if (!org.apache.commons.lang3.StringUtils.equals(PASSWORD_MASKED, auth.getPassword())) {
+                auth.setPassword(encryptor.encrypt(auth.getPassword()));
+                continue;
+            }
+
+
+                Optional<Environment> response = this.environmentRepository.findById(environment.getId());
+
+                if (!response.isPresent()) {
+                    continue;
+                }
+
+                for (com.fxlabs.fxt.dao.entity.project.Auth auth_ : response.get().getAuths()) {
+
+                    if (org.apache.commons.lang3.StringUtils.equals(auth_.getName(), auth.getName()) &&
+                            org.apache.commons.lang3.StringUtils.equals(auth_.getAuthType().toString(), auth.getAuthType().toString())
+                            && org.apache.commons.lang3.StringUtils.equals(auth_.getAuthType().toString(), auth.getAuthType().toString())) {
+                        auth.setPassword(auth_.getPassword());
+                    }
+                }
+
+            }
+
 
         Response<com.fxlabs.fxt.dto.project.Environment> environmentResponse = save(environment);
 

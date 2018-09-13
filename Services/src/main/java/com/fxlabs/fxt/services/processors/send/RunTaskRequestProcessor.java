@@ -67,6 +67,7 @@ public class RunTaskRequestProcessor {
     private TextEncryptor encryptor;
     private ProjectRepository projectRepository;
     private LocalEventPublisher localEventPublisher;
+    private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
     public RunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
                                    RunRepository runRepository, PoliciesConverter policiesConverter, LocalEventPublisher localEventPublisher,
@@ -308,6 +309,7 @@ public class RunTaskRequestProcessor {
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
+                    cred.setPassword(encryptor.decrypt(cred.getPassword()));
                     copyCred(task, cred, orgName);
                 }
             }
@@ -316,6 +318,7 @@ public class RunTaskRequestProcessor {
         } else {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
+                    cred.setPassword(encryptor.decrypt(cred.getPassword()));
                     copyCred(task, cred, orgName);
                 }
             }
@@ -332,7 +335,7 @@ public class RunTaskRequestProcessor {
 
         //task.setAuthType(cred.getAuthType());
         task.getAuth().setUsername(dataResolver.resolve(cred.getUsername(), orgName));
-        task.getAuth().setPassword(dataResolver.resolve(cred.getPassword(), orgName));
+        task.getAuth().setPassword(encryptor.decrypt(dataResolver.resolve(cred.getPassword(), orgName)));
 
         task.getAuth().setClientId(dataResolver.resolve(cred.getClientId(), orgName));
         task.getAuth().setClientSecret(dataResolver.resolve(cred.getClientSecret(), orgName));

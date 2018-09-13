@@ -71,6 +71,7 @@ public class InstantRunTaskRequestProcessor {
     private ProjectRepository projectRepository;
     private LocalEventPublisher localEventPublisher;
     private RunTaskResponseProcessor runTaskResponseProcessor;
+    private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
     public InstantRunTaskRequestProcessor(AmqpClientService botClientService, TestSuiteRepository testSuiteRepository,
                                           RunRepository runRepository, PoliciesConverter policiesConverter, LocalEventPublisher localEventPublisher,
@@ -90,6 +91,7 @@ public class InstantRunTaskRequestProcessor {
         this.projectRepository = projectRepository;
         this.localEventPublisher = localEventPublisher;
         this.runTaskResponseProcessor = runTaskResponseProcessor;
+
     }
 
     public List<com.fxlabs.fxt.dto.run.TestSuiteResponse> process(String region, Environment env, TestSuite testSuite) {
@@ -254,6 +256,7 @@ public class InstantRunTaskRequestProcessor {
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
+                    cred.setPassword(encryptor.decrypt(cred.getPassword()));
                     copyCred(task, cred, orgName);
                 }
             }
@@ -262,6 +265,7 @@ public class InstantRunTaskRequestProcessor {
         } else {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
+                    cred.setPassword(encryptor.decrypt(cred.getPassword()));
                     copyCred(task, cred, orgName);
                 }
             }
