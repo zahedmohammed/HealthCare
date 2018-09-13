@@ -15,7 +15,7 @@
         </div>
         <p class="text-muted">Manage git, cloud & collaboration endpoint credentials.</p>
     </section> -->
-
+    <br/>
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
 
@@ -31,7 +31,37 @@
                 </h2>
                 <br/>
 
-                <div class="box box-default table-box mdl-shadow--2dp">
+                <div class="mat-elevation-z8 box-default">
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="create-date" matSortDisableClear matSortDirection="desc">
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element" [routerLink]="['/app/accounts', element.id]"> <a href="javascript:;"> {{element.name}} </a></mat-cell>
+                        </ng-container>
+
+                        <!-- Type Column -->
+                        <ng-container matColumnDef="type">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.accountType}} </mat-cell>
+                        </ng-container>
+
+                        <!-- Create Date Column -->
+                        <ng-container matColumnDef="create-date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Create Date </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.createdDate | date:'shortDate'}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+
+                    <mat-paginator [pageSize]="pageSize" hidePageSize="true"
+                                   (page)="change($event)" [length]="length">
+                    </mat-paginator>
+
+                </div>
+
+                <!--<div class="box box-default table-box mdl-shadow--2dp">
                     <table class="mdl-data-table">
                         <thead>
                         <tr>
@@ -46,14 +76,14 @@
                                 <a href="javascript:;"
                                    [routerLink]="['/app/accounts', account.id]">{{account.name}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric bold">{{account.accountType}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{account.createdDate | date:'shortDate'}}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{account.createdDate | date:'shortDate'}}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
-                </div>
+                </div>-->
 
-        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
-        </mat-paginator>
+
 
             </article>
         </div>

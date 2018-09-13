@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { Handler } from '../../dialogs/handler/handler';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-account-list',
@@ -12,6 +13,12 @@ export class AccountListComponent implements OnInit {
 
   accounts;
   showSpinner: boolean = false;
+  displayedColumns: string[] = ['name', 'type', 'create-date'];
+  dataSource = null;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private accountService: AccountService, private handler: Handler) { }
 
   ngOnInit() {
@@ -26,6 +33,8 @@ export class AccountListComponent implements OnInit {
         return;
       }
       this.accounts = results['data'];
+      this.dataSource = new MatTableDataSource(this.accounts);
+      this.dataSource.sort = this.sort;
       this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
@@ -35,7 +44,7 @@ export class AccountListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.list();
