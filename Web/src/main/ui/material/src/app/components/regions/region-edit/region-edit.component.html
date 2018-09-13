@@ -9,13 +9,14 @@
         </article>
     </div>
 </div>
-
 <section class="container-fluid with-maxwidth chapter">
     <nav mat-tab-nav-bar>
         <label mat-tab-link [active]="true" [routerLink]="['/app/regions']">My Bots
         </label>
         <label mat-tab-link [routerLink]="['/app/superbotnetwork']">Super-Bot-Network
         </label>
+        <button mat-button type="button" color="warn" class="btn-w-xs float-right" (click)="delete();">Delete
+            </button>
     </nav>
     <br>
     <article class="article">
@@ -144,8 +145,6 @@
                                                 </button>
                                                 <button mat-button type="button" color="primary" class="btn-w-md" (click)="ping();">Check
                                                     Status
-                                                </button>
-                                                <button mat-button type="button" color="warn" class="btn-w-md" (click)="delete();">Delete
                                                 </button>
                                                 <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/regions']">Cancel
                                                 </button>

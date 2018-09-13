@@ -9,7 +9,10 @@
             </article>
         </div>
     </div>
-
+<section class="container-fluid with-maxwidth chapter">
+    <button mat-button type="button" color="warn" class="btn-w-xs float-right" (click)="delete();">Delete
+        </button> <br>
+</section>
 <section class="container-fluid with-maxwidth chapter">
         <br>
     <article class="article">
@@ -55,8 +58,6 @@
                         <div class="col-md-8">
                             <button mat-raised-button color="primary" (click)="update();"
                                     class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Save
-                            </button>
-                            <button mat-button type="button" color="warn" class="btn-w-md" (click)="delete();">Delete
                             </button>
                             <button mat-button type="button" color="primary" class="btn-w-md"
                                     [routerLink]="['/app/vault']">Cancel
