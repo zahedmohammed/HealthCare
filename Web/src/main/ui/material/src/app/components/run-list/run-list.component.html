@@ -30,6 +30,7 @@
                             <th class="mdl-data-table__cell--non-numeric">Data</th>
                             <th class="mdl-data-table__cell--non-numeric">Total Time</th>
                             <!--<th class="mdl-data-table__cell--non-numeric">Actual Time</th>-->
+                            <th class="mdl-data-table__cell--non-numeric">Bugs</th>
                             <th class="mdl-data-table__cell--non-numeric">Status</th>
                             <th class="mdl-data-table__cell--non-numeric">No</th>
                         </tr>
@@ -56,6 +57,13 @@
                                 mstoDuration}}
                             </td>
                             <!--<td class="mdl-data-table__cell--non-numeric">{{item.task.timeTaken | mstoDuration}}</td>-->
+                            <td class="mdl-data-table__cell--non-numeric">
+                                <span class="text-danger"  *ngIf="item.job.issueTrackerToDo === false"> Logged: {{item.task.issuesLogged || 0}} </span>
+                                <span class="text-success" *ngIf="item.job.issueTrackerToDo === false">&nbsp;&nbsp; Closed: {{item.task.issuesClosed || 0}}</span>
+                                <span class="text-danger"  *ngIf="item.job.issueTrackerToDo === true"> N/A </span>
+                                <!--{{item.task.totalTestCompleted}}/{{item.task.failedTests}}-->
+                            </td>
+
                             <td class="mdl-data-table__cell--non-numeric">
                                 <span *ngIf="item.task.status == 'COMPLETED'"
                                       class="text-success">{{item.task.status}}</span>
