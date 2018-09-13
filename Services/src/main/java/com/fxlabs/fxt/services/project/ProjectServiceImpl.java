@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -592,7 +593,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         updateGenerators(response.getData().getGenerators(), AutoCodeConfigServiceUtil.getAutoCodeConfig(null).getGenerators());
         autoCodeConfigConverter.copyAssertionsToText(response.getData());
-
+        Collections.sort(response.getData().getGenerators(),
+                (l1, l2) -> l1.getSequenceOrder()> l2.getSequenceOrder()?1:-1);
         return response;
     }
 
@@ -607,6 +609,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                     pGen.setDisplayHeaderDescription(gen.getDisplayHeaderDescription());
                     pGen.setAssertionDescription(gen.getAssertionDescription());
                     pGen.setSeverity(gen.getSeverity());
+                    pGen.setSequenceOrder(gen.getSequenceOrder());
 
                     found = true;
                     break;
@@ -614,12 +617,9 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             }
             if (!found) {
                 projGenerator.add(gen);
+
             }
         }
-
-
-
-
     }
 
 

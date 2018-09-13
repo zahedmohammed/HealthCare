@@ -29,6 +29,7 @@ public class AutoCodeGenerator extends BasicBaseDto {
     private Database database;
     protected boolean inactive = false;
     private List<AutoCodeGeneratorMatches> matches;
+    private int sequenceOrder;
 
 }
 
