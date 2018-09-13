@@ -81,8 +81,9 @@ export class RegionNewComponent implements OnInit {
   }
 
   manualDeploy(){
-
     this.handler.activateLoader();
+    let account = this.getSelHostedAccountForExecutionBotPage();
+    this.entry.account = account;
     this.snackbarService.openSnackBar(this.entry.name + " creating...", "");
     this.regionsService.create(this.entry).subscribe(results => {
         this.handler.hideLoader();
@@ -157,6 +158,14 @@ export class RegionNewComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  getSelHostedAccountForExecutionBotPage() {
+      for (let entry of this.accounts) {
+          if (entry.accountType == 'Self_Hosted'){
+             return entry;
+           }
+       }
   }
 
   setAccount(account_){
