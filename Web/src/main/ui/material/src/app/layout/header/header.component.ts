@@ -4,8 +4,9 @@ import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { OrgService } from '../../services/org.service';
 import { Org, OrgUser } from '../../models/org.model';
 import { Handler } from '../../components/dialogs/handler/handler';
-import {Observable} from "rxjs";
+import { Observable} from "rxjs";
 import * as EventSource from 'eventsource';
+import { APPCONFIG } from '../../../config';
 
 @Component({
   selector: 'my-app-header',

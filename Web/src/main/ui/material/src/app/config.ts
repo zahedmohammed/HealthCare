@@ -21,7 +21,8 @@ function makeAppConfig() {
     copyright: 'https://fxlabs.io',
     cliLink: 'https://github.com/fxlabsinc/Fx-CLI',
     apiLink: 'https://cloud.fxlabs.io/swagger-ui.html',
-    fxSample: 'https://github.com/fxlabsinc/FX-Sample'
+    fxSample: 'https://github.com/fxlabsinc/FX-Sample',
+    isLoadingResults: false
   };
 
   return AppConfig;
