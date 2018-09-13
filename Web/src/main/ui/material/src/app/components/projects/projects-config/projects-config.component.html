@@ -29,6 +29,12 @@
 
         <div class="box box-default">
             <div class="box-body">
+                <div class="pull-right">
+                    <button mat-raised-button color="default" (click)="open();" class="btn-w-md text-primary">
+                        AutoCode (Adv Generation/Sync)
+                    </button>
+                </div>
+                <br/><br/>
                 <!--<mat-horizontal-stepper [linear]="true" #stepper>-->
                     <!--<mat-step [stepControl]="firstFormGroup">-->
                         <!--<form [formGroup]="firstFormGroup">-->
@@ -125,8 +131,8 @@
                                         </mat-input-container>
                                     </div>
                                     <div class="col-md-7">
-                                        <div class="callout1 text-muted callout-info1">
-                                            FX Auto-Code requires OpenAPISpec of your application to create functional/security
+                                        <div class="callout2 callout-info">
+                                            <p>FX Auto-Code requires OpenAPISpec of your application to create functional/security
                                             test coverage. <br>
                                             e.g. https://ip/v2/api-docs or open-api-spec.json or open-api-spec.yaml or None. <br/> How-to generate
                                             OpenAPISpec for your Java, .Net and other applications.
@@ -134,26 +140,16 @@
                                                 Learn more
                                                 <i class="material-icons" style="font-size: 18px;">open_in_new</i>
                                             </a>
+                                            </p>
+                                            <p>
+                                                Note: OpenAPISpec URL should be publicly accessible or upload the spec json/yaml file into the
+                                                Git repository and enter the filename instead.
+                                            </p>
                                         </div>
                                     </div>
-
                                 </div>
+                                <br/>
 
-                                <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
-                                    <div class="col-md-5">
-                                    <div class="callout2 callout-info">
-                                         Note: OpenAPISpec URL should be publicly accessible or upload the spec json/yaml file into the
-                                            Git repository and enter the filename instead.
-                                    </div>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <button mat-raised-button color="primary" (click)="open();" class="btn-w-md">
-                                            AutoCode & Sync
-                                        </button>
-                                    </div>
-
-
-                                </div>
                                 <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
                                     <!-- <div class="col-md-12" *ngFor="let res of autoCodeConfig"> -->
                                     <div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">
@@ -309,7 +305,7 @@
                                     <button mat-button color="warn" class="nav-btn" (click)="delete();">Delete
                                     </button>
                                     <button mat-raised-button color="primary" class="nav-btn" [disabled]="secondFormGroup.invalid" (click)="saveAutoCode();">Save
-                                        & Generate
+                                        Configuration & Generate
                                     </button>
                                 </mat-card-actions>
                             </div>
