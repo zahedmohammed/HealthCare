@@ -35,5 +35,28 @@ public class Run extends BaseDto<String> {
 
     private Integer validations;
 
+
+    private String ciCdStatus;
+
+
+    public String getCiCdStatus() {
+        StringBuilder sb = new StringBuilder();
+        double success = 0;
+        try {
+            long l = this.task.getTotalTests() - this.task.getFailedTests();
+            success = ((l * 100)/ this.task.getTotalTests());
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
+            sb.append(this.task.getStatus().toString()).append(":")
+                    .append(success).append(":")
+                    .append(this.task.getTotalTests()).append(":")
+                    .append(this.task.getFailedTests()).append(":")
+                    .append(this.task.getTimeTaken());
+
+
+        return sb.toString();
+    }
+
 }
 
