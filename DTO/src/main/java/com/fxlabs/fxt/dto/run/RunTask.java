@@ -38,6 +38,7 @@ public class RunTask {
     private Long issuesLogged = 0L;
     private Long issuesClosed = 0L;
     private Long issuesReopen = 0L;
+    private Long totalOpenIssues = 0L;
 
 
 }
