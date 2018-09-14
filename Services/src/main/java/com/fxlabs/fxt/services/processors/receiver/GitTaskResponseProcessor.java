@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.processors.receiver;
 import com.fxlabs.fxt.converters.project.EndpointConverter;
 import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.users.ProjectRole;
+import com.fxlabs.fxt.dao.repository.jpa.EndpointRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dto.alerts.*;
 import com.fxlabs.fxt.dto.base.NameDto;
@@ -43,6 +44,9 @@ public class GitTaskResponseProcessor {
     private ProjectRepository projectRepository;
 
     @Autowired
+    private EndpointRepository endpointRepository;
+
+    @Autowired
     private EndpointConverter endpointConverter;
 
     @Autowired
@@ -80,9 +84,11 @@ public class GitTaskResponseProcessor {
             if (optionalProject.isPresent()) {
                 project = optionalProject.get();
                 project.setAutoGenSuites(task.getAutoGenSuitesCount());
-                project.setApiEndpoints(endpointConverter.convertToEntities(task.getApiEndpoints()));
+//                project.setApiEndpoints();
 
                 projectRepository.save(project);
+
+                endpointRepository.saveAll(endpointConverter.convertToEntities(task.getApiEndpoints()));
 
                 NameDto o = new NameDto();
                 o.setId(project.getOrg().getId());

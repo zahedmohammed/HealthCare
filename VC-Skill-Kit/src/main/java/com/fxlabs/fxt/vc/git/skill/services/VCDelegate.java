@@ -112,6 +112,7 @@ public class VCDelegate {
                                 while (itrM.hasNext()) {
                                     String method = itrM.next();
                                     Endpoint endpoint = new Endpoint(key, method);
+                                    endpoint.setProjectId(task.getProjectId());
                                     endpoints.add(endpoint);
                                 }
                             }

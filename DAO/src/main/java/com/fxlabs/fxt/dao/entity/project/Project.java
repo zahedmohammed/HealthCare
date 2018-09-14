@@ -49,9 +49,9 @@ public class Project extends BaseEntity {
     private String lastCommit;
 
     private Integer autoGenSuites = 0;
-
-    @ElementCollection
-    private List<Endpoint> apiEndpoints;
+//
+////    @ElementCollection
+//    private List<Endpoint> apiEndpoints;
 
 
 }

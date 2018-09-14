@@ -50,7 +50,8 @@ public class Project extends BaseDto<String> {
     private Map<String, String> props = new HashMap<>();
 
     private Integer autoGenSuites = 0;
-
-    private List<Endpoint> apiEndpoints;
+//
+//    private List<Endpoint> apiEndpoints;
+//
 }
 

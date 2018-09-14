@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.project;
 
+import com.fxlabs.fxt.converters.project.EndpointConverter;
 import com.fxlabs.fxt.converters.project.ProjectConverter;
 import com.fxlabs.fxt.converters.project.TestSuiteConverter;
 import com.fxlabs.fxt.converters.project.TestSuiteMinConverter;
@@ -7,6 +8,7 @@ import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.project.TestSuiteCount;
 import com.fxlabs.fxt.dao.repository.es.ProjectFileESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.EndpointRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Message;
@@ -53,6 +55,8 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     private TestSuiteMinConverter testSuiteMinConverter;
     private GaaSTaskRequestProcessor gaaSTaskRequestProcessor;
     private AccountService accountService;
+    private EndpointRepository endpointRepository;
+    private EndpointConverter endpointConverter;
 
     public static final String FILE_CONTENT = "FILE_CONTENT";
 
@@ -60,7 +64,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository, ProjectConverter projectConverter,
                                 ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                                 ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter, TestSuiteMinConverter testSuiteMinConverter,
-                                AccountService accountService) {
+                                AccountService accountService, EndpointRepository endpointRepository, EndpointConverter endpointConverter) {
         super(repository, converter);
         this.repository = repository;
         this.testSuiteESRepository = testSuiteESRepository;
@@ -73,6 +77,8 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         this.gaaSTaskRequestProcessor = gaaSTaskRequestProcessor;
         this.accountService = accountService;
         this.projectConverter = projectConverter;
+        this.endpointRepository = endpointRepository;
+        this.endpointConverter = endpointConverter;
     }
 
     @Override
@@ -203,7 +209,11 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
          TestSuite entity = ((TestSuiteRepository) repository).save(ts);
         if (entity != null && entity.getId() != null) {
-            testSuiteESRepository.save(entity);
+            try {
+                testSuiteESRepository.save(entity);
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         }
 
         // project_file
@@ -537,13 +547,11 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = projectRepository.findById(id);
 
+        List<com.fxlabs.fxt.dao.entity.project.Endpoint> endpoints = endpointRepository.findByProjectId(id);
 
-        if ( projectOptional.isPresent()){
-            if (org.apache.commons.collections.CollectionUtils.isNotEmpty(projectOptional.get().getApiEndpoints())){
-                Project project = projectConverter.convertToDto(projectOptional.get());
-                coverage.setTotalEndpoints((long)project.getApiEndpoints().size());
-                coverage.setEndpoints(project.getApiEndpoints());
-            }
+        if ( ! CollectionUtils.isEmpty(endpoints )){
+                coverage.setTotalEndpoints((long)endpoints.size());
+                coverage.setEndpoints(endpointConverter.convertToDtos(endpoints));
         }
 
 //        repository.

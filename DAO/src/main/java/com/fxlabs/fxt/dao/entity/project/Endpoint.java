@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.dao.entity.project;
 
+import com.fxlabs.fxt.dao.entity.base.BasicBaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,12 +13,13 @@ import java.io.Serializable;
 /**
  * @author Mohammed Luqman Shareef
  */
-@Embeddable
+
+@Entity
 @Data
 //@AllArgsConstructor
 //@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Endpoint implements Serializable {
+public class Endpoint extends BasicBaseEntity {
 
 
     public Endpoint(){}
@@ -31,7 +33,7 @@ public class Endpoint implements Serializable {
         this.method = method;
     }
 
-
+    private String projectId;
 
     private String endpoint;
     private String method;

@@ -36,6 +36,7 @@ public class Endpoint implements Serializable{
         this.method = method;
     }
 
+    private String projectId;
     private String endpoint;
     private String method;
 }
