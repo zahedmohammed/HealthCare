@@ -32,7 +32,7 @@ export class RegionNewComponent implements OnInit {
   cloudAccounts = [];
   orgs;
   entry: Region = new Region();
-  isLinear = false;
+  isLinear = true;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService, public dialog: MatDialog, private _formBuilder: FormBuilder) { }
@@ -199,5 +199,9 @@ export class RegionNewComponent implements OnInit {
     });
   }
   visibilities = ['PRIVATE', 'PUBLIC'];
+  
+  enable() {
+    this.isLinear = false;
+  }
 }
 

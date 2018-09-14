@@ -29,7 +29,7 @@
                                 <form role="form" #heroForm1="ngForm" class="row">
                                     <mat-input-container class="col-md-5">
                                         <input required [(ngModel)]="entry.name" name="name" id="name" matInput
-                                            placeholder="Bot name" autocomplete="off">
+                                            placeholder="Bot name" autocomplete="off" (change)="enable();">
                                     </mat-input-container>
                                     <div class="col-md-7">
                                         <div class="callout1 text-muted callout-info1">
