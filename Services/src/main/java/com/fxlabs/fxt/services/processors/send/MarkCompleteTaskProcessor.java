@@ -149,6 +149,7 @@ public class MarkCompleteTaskProcessor {
                     run.getTask().setIssuesClosed(closedIssues);
 
                     long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
+                    run.getTask().setTotalOpenIssues(totalOpenIssues);
                     run.getStats().put("total_issues", totalOpenIssues);
 
                     runRepository.saveAndFlush(run);

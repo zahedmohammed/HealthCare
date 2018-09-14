@@ -122,12 +122,6 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
             if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null &&  job.getNotifications().get(1) == null) {
                 job.setNotificationToDo(true);
                 return;
-            }else{
-                String itId = job.getProject().getName() + "//" + job.getId() + "%"  ;
-                long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
-                long totalClosedIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("closed",itId);
-                job.setOpenIssues(totalOpenIssues);
-                job.setClosedIssues(totalClosedIssues);
             }
 
             if (StringUtils.isEmpty(job.getNotifications().get(0).getTo()) && StringUtils.isEmpty(job.getNotifications().get(1).getChannel())) {
@@ -139,6 +133,12 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         jobList.forEach(job -> {
             if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())){
                 job.setIssueTrackerToDo(true);
+            }else{
+                String itId = job.getProject().getName() + "//" + job.getId() + "%"  ;
+                long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
+                long totalClosedIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("closed",itId);
+                job.setOpenIssues(totalOpenIssues);
+                job.setClosedIssues(totalClosedIssues);
             }
         });
 

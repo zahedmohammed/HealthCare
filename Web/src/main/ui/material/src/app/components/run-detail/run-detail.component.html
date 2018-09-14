@@ -40,7 +40,7 @@
                    <div class="col-md-4">
                         <h6 class="text-danger fontsize-rd">{{run.task.issuesLogged || 0}} New issues filed.</h6>                            
                         <h6 class="text-success fontsize-rd">{{run.task.issuesClosed || 0}} issues closed.</h6>
-                        <h6 class="text-warning fontsize-rd">{{run.stats['total_issues'] || 0}} issues currently open.</h6>
+                        <h6 class="text-warning fontsize-rd">{{run.task.totalOpenIssues || 0}} issues currently open.</h6>
                    </div>
                     <div class="col-md-4">
                             <button mat-raised-button class="btn-w-sm text-danger float-right" (click)="deleteRun();">

@@ -57,11 +57,14 @@
                                 mstoDuration}}
                             </td>
                             <!--<td class="mdl-data-table__cell--non-numeric">{{item.task.timeTaken | mstoDuration}}</td>-->
-                            <td class="mdl-data-table__cell--non-numeric">
-                                <span class="text-danger"  *ngIf="item.job.issueTrackerToDo === false"> Logged: {{item.task.issuesLogged || 0}} </span>
-                                <span class="text-success" *ngIf="item.job.issueTrackerToDo === false">&nbsp;&nbsp; Closed: {{item.task.issuesClosed || 0}}</span>
-                                <span class="text-danger"  *ngIf="item.job.issueTrackerToDo === true"> N/A </span>
-                                <!--{{item.task.totalTestCompleted}}/{{item.task.failedTests}}-->
+                            <td class="mdl-data-table__cell--non-numeric" *ngIf="item.job.issueTrackerToDo === false">
+                                <span class="text-danger"><b>{{item.task.issuesLogged || 0}}</b></span>&nbsp;<span class="text-danger small">New</span>&nbsp;
+                                <span class="text-success"><b>{{item.task.issuesClosed || 0}}</b></span>&nbsp;<span class="text-sucess small">Closed</span>
+                                <span class="text-danger"><b>{{item.task.totalOpenIssues || 0}}</b></span>&nbsp;<span class="text-danger small">Open</span>
+
+                            </td>
+                            <td class="mdl-data-table__cell--non-numeric" *ngIf="item.job.issueTrackerToDo === true">
+                                <span class="text-danger" > N/A </span>
                             </td>
 
                             <td class="mdl-data-table__cell--non-numeric">
