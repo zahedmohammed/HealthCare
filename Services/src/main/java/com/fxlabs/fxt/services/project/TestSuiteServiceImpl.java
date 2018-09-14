@@ -537,10 +537,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = projectRepository.findById(id);
 
+
         if ( projectOptional.isPresent()){
             if (org.apache.commons.collections.CollectionUtils.isNotEmpty(projectOptional.get().getApiEndpoints())){
-                coverage.setTotalEndpoints((long)projectOptional.get().getApiEndpoints().size());
-                coverage.setEndpoints(projectOptional.get().getApiEndpoints());
+                Project project = projectConverter.convertToDto(projectOptional.get());
+                coverage.setTotalEndpoints((long)project.getApiEndpoints().size());
+                coverage.setEndpoints(project.getApiEndpoints());
             }
         }
 

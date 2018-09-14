@@ -101,13 +101,30 @@ public class VCDelegate {
                     try {
                         // 2/4. Auto-Code
                         String openAPISpec = task.getOpenAPISpec();
-                        Map<String, Integer> pathCountMap = stubGenerator.generate(path, openAPISpec, null, null);
+                        Map<String, Map<String, Integer>> pathCountMap = stubGenerator.generate(path, openAPISpec, null, null);
                         if (pathCountMap != null && pathCountMap.size() > 0) {
-                            response.setApiEndpoints(new ArrayList<String>(pathCountMap.keySet()));// TODO: get API Endpoints
-                            int count = 0;
+                            List<Endpoint> endpoints = new ArrayList<>();
                             Iterator<String> itr = pathCountMap.keySet().iterator();
-                            while (itr.hasNext()) {
-                                count += pathCountMap.get(itr.next());
+                            while (itr.hasNext()){
+                                String key = itr.next();
+                                Map<String, Integer> methodsMap = pathCountMap.get(key);
+                                Iterator<String> itrM = methodsMap.keySet().iterator();
+                                while (itrM.hasNext()) {
+                                    String method = itrM.next();
+                                    Endpoint endpoint = new Endpoint(key, method);
+                                    endpoints.add(endpoint);
+                                }
+                            }
+
+                            response.setApiEndpoints(endpoints);
+                            int count = 0;
+                            Iterator<String> itr_ = pathCountMap.keySet().iterator();
+                            while (itr_.hasNext()) {
+                                Map<String, Integer> methodsTSMap = pathCountMap.get(itr_.next());
+                                Iterator<String> itrM = methodsTSMap.keySet().iterator();
+                                while (itrM.hasNext()) {
+                                    count += methodsTSMap.get(itrM.next());
+                                }
                             }
                             response.setAutoGenSuitesCount(count);
                         }

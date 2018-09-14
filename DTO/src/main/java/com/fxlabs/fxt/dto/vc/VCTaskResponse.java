@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.dto.vc;
 
+import com.fxlabs.fxt.dto.project.Endpoint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +29,7 @@ public class VCTaskResponse implements Serializable {
 
     private int autoGenSuitesCount;
 
-    private List<String> apiEndpoints;
+    private List<Endpoint> apiEndpoints;
 
     private String taskId;
 

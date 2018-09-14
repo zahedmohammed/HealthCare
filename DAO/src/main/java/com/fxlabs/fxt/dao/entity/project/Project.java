@@ -51,7 +51,7 @@ public class Project extends BaseEntity {
     private Integer autoGenSuites = 0;
 
     @ElementCollection
-    private List<String> apiEndpoints;
+    private List<Endpoint> apiEndpoints;
 
 
 }

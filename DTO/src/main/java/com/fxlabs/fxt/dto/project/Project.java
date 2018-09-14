@@ -51,6 +51,6 @@ public class Project extends BaseDto<String> {
 
     private Integer autoGenSuites = 0;
 
-    private List<String> apiEndpoints;
+    private List<Endpoint> apiEndpoints;
 }
 

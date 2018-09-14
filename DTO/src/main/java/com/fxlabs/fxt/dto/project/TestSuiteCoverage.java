@@ -31,7 +31,7 @@ public class TestSuiteCoverage implements Serializable {
     private Long totalTestCases;
 
 
-    private List<String> endpoints = new ArrayList<>();
+    private List<Endpoint> endpoints = new ArrayList<>();
     private List<TestSuiteCount> countByMethod = new ArrayList<>();
     private List<TestSuiteCount> countByCategory = new ArrayList<>();
     private List<TestSuiteCount> countBySeverity = new ArrayList<>();

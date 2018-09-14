@@ -96,9 +96,9 @@ public class StubGenerator {
     }
 
 
-    public Map<String, Integer> generate(String projectDir, String openAPISpec, String headerKey, String headerVal) {
+    public Map<String, Map<String, Integer>> generate(String projectDir, String openAPISpec, String headerKey, String headerVal) {
 
-        Map<String, Integer> pathTSCount = new HashMap<>();
+        Map<String, Map<String, Integer>> pathTSCount = new HashMap<>();
         try {
 
             Swagger swagger = build(projectDir, openAPISpec, headerKey, headerVal);
@@ -205,7 +205,10 @@ public class StubGenerator {
                     if (tsList != null) {
                         count = tsList.size();
                     }
-                    pathTSCount.put(p, tsList.size());
+
+                    Map<String, Integer> methodsTSCount =  new HashMap<>();
+                    methodsTSCount.put(m.toString(),count);
+                    pathTSCount.put(p, methodsTSCount);
 
                     testSuites.addAll(tsList);
                     /*System.out.println (op.getOperationId());
