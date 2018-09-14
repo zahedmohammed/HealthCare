@@ -256,7 +256,12 @@ public class InstantRunTaskRequestProcessor {
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
-                    cred.setPassword(encryptor.decrypt(cred.getPassword()));
+                    try {
+                        cred.setPassword(encryptor.decrypt(cred.getPassword()));
+                    } catch (Exception ex){
+                        //Do nothing password not encrypted
+                        logger.info("Password  not encrypted");
+                    }
                     copyCred(task, cred, orgName);
                 }
             }
@@ -265,7 +270,12 @@ public class InstantRunTaskRequestProcessor {
         } else {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
-                    cred.setPassword(encryptor.decrypt(cred.getPassword()));
+                    try {
+                        cred.setPassword(encryptor.decrypt(cred.getPassword()));
+                    } catch (Exception ex){
+                        //Do nothing password not encrypted
+                        logger.info("Password  not encrypted");
+                    }
                     copyCred(task, cred, orgName);
                 }
             }
