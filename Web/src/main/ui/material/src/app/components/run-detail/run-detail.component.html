@@ -13,6 +13,9 @@
             </section>
         </article>
     </div>
+
+
+
 </div>
 <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
 
@@ -49,6 +52,10 @@
                             <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="rerun();">
                                 Re-Run &nbsp;
                             </button>
+                        <button mat-raised-button class="btn-w-sm text-primary float-right"
+                                (click)="nextRun();" [disabled]="disableButtonNext" >Next</button>
+                        <button mat-raised-button class="btn-w-sm text-primary float-right"
+                                (click)="prevRun();" [disabled]="disableButtonPrev" >Previous</button>
                             <div *ngIf="run.task.status == 'PROCESSING'">
                             <button mat-raised-button class="btn-w-sm text-warning float-right" (click)="cancel();">
                                 Cancel

@@ -43,6 +43,13 @@ export class RunDetailComponent implements OnInit {
   keyword: string = '';
   category: string = '';
 
+  nextRunId : number = 0;
+  prevRunId: number = 0;
+    times;
+    totalTimeSaved = 0;
+    disableButtonNext : boolean = false
+    disableButtonPrev : boolean = false
+
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
     private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private handler: Handler,  private snackbarService: SnackbarService) { }
 
@@ -69,6 +76,9 @@ export class RunDetailComponent implements OnInit {
         });
       }
     });
+
+      this.getRunByJob(this.jobId)
+
   }
 
   ngOnDestroy(): void {
@@ -256,5 +266,60 @@ export class RunDetailComponent implements OnInit {
       this.handler.error(error);
      });
   }
+
+    nextRun(){
+
+      var arrayIndex = 0;
+    this.nextRunId = parseInt(this.run.runId) + 1;
+    arrayIndex = this.list.findIndex(i=>i.runId === this.run.runId);
+    this.nextRunId = arrayIndex - 1
+        if(this.nextRunId === 0) {
+            this.disableButtonNext = true
+        }
+
+        if(this.nextRunId !== this.list.length) {
+            this.disableButtonPrev = false
+        }
+        
+        this.router.navigate(['/app/projects' , this.projectId, 'jobs' , this.job.id, 'runs', this.list[this.nextRunId]['id']])
+    }
+
+    prevRun(){
+        var arrayIndex = 0;
+        this.nextRunId = parseInt(this.run.runId) - 1;
+        arrayIndex = this.list.findIndex(i=>i.runId === this.run.runId);
+        this.nextRunId = arrayIndex + 1
+
+        if(this.nextRunId === this.list.length -1) {
+            this.disableButtonPrev = true
+        }
+
+        if(this.nextRunId !== 0) {
+            this.disableButtonNext = false
+        }
+        this.router.navigate(['/app/projects' , this.projectId, 'jobs' , this.job.id, 'runs', this.list[this.nextRunId]['id']])
+    }
+    getRunByJob(id: string) {
+        this.handler.activateLoader();
+        this.runService.get(id, this.page, this.pageSize).subscribe(results => {
+            this.handler.hideLoader();
+            if (this.handler.handle(results)) {
+                return;
+            }
+            this.list = results['data'];
+            this.length = results['totalElements'];
+            this.times = 0;
+            for (var  i = 0; i < this.list.length; i++){
+                this.times += this.list[i].task.timeSaved;
+            }
+            this.totalTimeSaved = this.times;
+        }, error => {
+            this.handler.hideLoader();
+            this.handler.error(error);
+        });
+
+
+    }
+
 
 }
