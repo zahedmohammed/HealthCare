@@ -1,6 +1,6 @@
 import { RegisterComponent } from './../../dialogs/register/register.component';
 import { Component, OnInit, Inject } from '@angular/core';
-import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
 import { JobsService } from '../../../services/jobs.service';
@@ -17,7 +17,7 @@ import { MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DAT
 import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
-import { ChangeDetectorRef,Input} from '@angular/core';
+import { ChangeDetectorRef, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-projects-manage',
@@ -47,19 +47,17 @@ export class ProjectsManageComponent implements OnInit {
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
 
-  authTypes = ['Basic', 'OAuth_2_0' , 'Token'];
+  authTypes = ['Basic', 'OAuth_2_0', 'Token'];
   grantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
   schemeTypes = ['form', 'header', 'none', 'query'];
-  scopeTypes= ['read', 'write'];
+  scopeTypes = ['read', 'write'];
 
   public AppConfig: any;
-  numberOfTicks=0;
-  availableAuthtype:String;
-  constructor(private ref: ChangeDetectorRef,private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
-            private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
-            public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) {
-     console.log('Hello PhotoComponent Component');
-
+  numberOfTicks = 0;
+  availableAuthtype: String;
+  constructor(private ref: ChangeDetectorRef, private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
+    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
+    public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -70,12 +68,12 @@ export class ProjectsManageComponent implements OnInit {
       if (this.id) {
         this.loadProject(this.id);
         // this.getAutoCode();
-//       this.getEnvs();
+        //       this.getEnvs();
       }
     });
 
     this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: [{value:"name",disabled:true}, Validators.required]
+      nameCtrl: [{ value: "name", disabled: true }, Validators.required]
     });
 
     this.secondFormGroup = this._formBuilder.group({
@@ -84,8 +82,8 @@ export class ProjectsManageComponent implements OnInit {
 
     this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', Validators.required],
-      urlCtrl:  ['', Validators.required],
-      authTypeCtrl:  ['', Validators.required],
+      urlCtrl: ['', Validators.required],
+      authTypeCtrl: ['', Validators.required],
     });
 
     /*this.fourthFormGroup = this._formBuilder.group({
@@ -129,32 +127,32 @@ export class ProjectsManageComponent implements OnInit {
   save(matStepper) {
     this.matStepper = matStepper;
     if (this.project.id) {
-        this.update();
+      this.update();
     } else {
-        this.create();
+      this.create();
     }
   }
 
   create() {
     this.handler.activateLoader();
-      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' creating...", "");
-      this.projectService.create(this.project).subscribe(results => {
-        this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-            return;
-        }
-        this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
-        this.project = results['data'];
-        if (!this.project.account) {
-          let p: Project = new Project();
-          this.project.account = p.account;
-        }
-        // this.matStepper.next();
-          this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
-          // this.getAutoCode();
+    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' creating...", "");
+    this.projectService.create(this.project).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
+      this.project = results['data'];
+      if (!this.project.account) {
+        let p: Project = new Project();
+        this.project.account = p.account;
+      }
+      // this.matStepper.next();
+      this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
+      // this.getAutoCode();
     }, error => {
-        this.handler.hideLoader();
-        this.handler.error(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
@@ -163,7 +161,7 @@ export class ProjectsManageComponent implements OnInit {
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saving...", "");
     this.projectService.update(this.project).subscribe(results => {
       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      if (this.handler.handle(results)) {
         return;
       }
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saved successfully", "");
@@ -173,7 +171,7 @@ export class ProjectsManageComponent implements OnInit {
         this.project.account = p.account;
       }
       // this.matStepper.next();
-        this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
+      this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
       // this.getAutoCode();
     }, error => {
       this.handler.hideLoader();
@@ -188,8 +186,8 @@ export class ProjectsManageComponent implements OnInit {
 
   getAutoCode() {
     this.projectService.getAutoCodeConfig(this.id).subscribe(results => {
-       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.autoCodeConfig = results['data'];
@@ -232,8 +230,8 @@ export class ProjectsManageComponent implements OnInit {
 
   getEnvs() {
     this.projectService.getEnvsByProjectId(this.id).subscribe(results => {
-       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.envs = results['data'];
@@ -249,7 +247,7 @@ export class ProjectsManageComponent implements OnInit {
 
     this.projectService.saveEnvs(this.envs, this.project.id).subscribe(results => {
       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      if (this.handler.handle(results)) {
         return;
       }
       this.envs = results['data'];
@@ -275,30 +273,30 @@ export class ProjectsManageComponent implements OnInit {
     });
   }
 
-  // delete() {
-  //   var r = confirm("Are you sure you want to delete '" + this.project.name + "'?");
-  //   if (r == true) {
-  //     this.projectService.delete(this.project).subscribe(results => {
-  //         if (this.handler.handle(results)) {
-  //           return;
-  //         }
-  //         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' deleted", "");
-  //         this.router.navigate(['/app/projects']);
-  //       }, error => {
-  //         this.handler.hideLoader();
-  //         this.handler.error(error);
-  //     });
-  //
-  //   }
-  // }
+  delete() {
+    var r = confirm("Are you sure you want to delete '" + this.project.name + "'?");
+    if (r == true) {
+      this.projectService.delete(this.project).subscribe(results => {
+        if (this.handler.handle(results)) {
+          return;
+        }
+        this.snackbarService.openSnackBar("'Project '" + this.project.name + "' deleted", "");
+        this.router.navigate(['/app/projects']);
+      }, error => {
+        this.handler.hideLoader();
+        this.handler.error(error);
+      });
 
-  setAccount(account){
-     this.project.account.accountType =  account.accountType;
+    }
+  }
+
+  setAccount(account) {
+    this.project.account.accountType = account.accountType;
   }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(RegisterComponent, {
-      width:'800px'
+      width: '800px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

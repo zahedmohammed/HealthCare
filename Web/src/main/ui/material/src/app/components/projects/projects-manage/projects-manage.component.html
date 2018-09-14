@@ -23,581 +23,583 @@
 
     <label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">Configuration</label>
     <label mat-tab-link [active]="true">Git</label>
+    <button mat-button color="warn" class="nav-btn pull-right" (click)="delete();">Delete Project
+    </button>
   </nav>
-  <br/>
+  <br />
 
   <article class="article">
 
     <div class="box box-default">
       <div class="box-body">
         <!--<mat-horizontal-stepper [linear]="true" #stepper>-->
-          <!--<mat-step [stepControl]="firstFormGroup">-->
-            <form [formGroup]="firstFormGroup">
-              <!--<ng-template matStepLabel>Project Registration</ng-template>-->
-              <div class="form-group row"></div>
-              <div class="form-group row">
-                <label for="name" class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <input required [(ngModel)]="project.name" formControlName="nameCtrl"
-                           id="name" matInput placeholder="Project name"  autocomplete="off">
-                    <mat-error>Required</mat-error>
-                  </mat-input-container>
-                </div>
-                <!--<div class="col-md-7">-->
-                  <!--<div class="callout1 text-muted callout-info1">-->
-                    <!--<p class="mt-4">e.g. MyApp-->
-                    <!--</p>-->
-                  <!--</div>-->
-                <!--</div>-->
-              </div>
-              <!-- Repository details -->
+        <!--<mat-step [stepControl]="firstFormGroup">-->
+        <form [formGroup]="firstFormGroup">
+          <!--<ng-template matStepLabel>Project Registration</ng-template>-->
+          <div class="form-group row"></div>
+          <div class="form-group row">
+            <label for="name" class="col-md-0 control-label"></label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name" matInput placeholder="Project name"
+                  autocomplete="off">
+                <mat-error>Required</mat-error>
+              </mat-input-container>
+            </div>
+            <!--<div class="col-md-7">-->
+            <!--<div class="callout1 text-muted callout-info1">-->
+            <!--<p class="mt-4">e.g. MyApp-->
+            <!--</p>-->
+            <!--</div>-->
+            <!--</div>-->
+          </div>
+          <!-- Repository details -->
 
-              <div class="form-group row">
-                <label  class="col-md-0 control-label"></label>
-                <div class="col-md-5">
-                  <mat-input-container class="full-width">
-                    <input [(ngModel)]="project.url" [ngModelOptions]="{standalone: true}" id="repo" matInput placeholder="Git Repository URL (Optional)"
-                      autocomplete="off">
-                    <mat-error>Required</mat-error>
-                  </mat-input-container>
-                </div>
-                <div class="col-md-7">
-                  <div class="callout1 text-muted callout-info1">
-                    <div class="mt-4">
-                      <p class="callout callout-info">Recommended: FX Cloud uses Git repository as single source of truth
-                        for test scripts and configuration files. Developers can add/edit test scripts from FX Cloud UI or
-                        make direct changes in the Git repository using their favorite IDE.
-                        <br/>Note: Repository should be new and initialized (empty README file).
-                        <br/>e.g. 'https://github.com/username/MyApp' or 'git@github.com:username/MyApp.git' if using SSH
-                      </p>
-                    </div>
-                  </div>
+          <div class="form-group row">
+            <label class="col-md-0 control-label"></label>
+            <div class="col-md-5">
+              <mat-input-container class="full-width">
+                <input [(ngModel)]="project.url" [ngModelOptions]="{standalone: true}" id="repo" matInput placeholder="Git Repository URL (Optional)"
+                  autocomplete="off">
+                <mat-error>Required</mat-error>
+              </mat-input-container>
+            </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <div class="mt-4">
+                  <p class="callout callout-info">Recommended: FX Cloud uses Git repository as single source of truth
+                    for test scripts and configuration files. Developers can add/edit test scripts from FX Cloud UI or
+                    make direct changes in the Git repository using their favorite IDE.
+                    <br />Note: Repository should be new and initialized (empty README file).
+                    <br />e.g. 'https://github.com/username/MyApp' or 'git@github.com:username/MyApp.git' if using SSH
+                  </p>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <div class="form-group row" *ngIf="project.url">
-                <label class="col-md-0 control-label">
-                </label>
-                <div class="col-md-5">
-                  <mat-form-field class="full-width">
-                    <mat-select placeholder="Git Repository Credentials" [(ngModel)]="project.account.id" [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let account of accounts" [value]="account.id">
-                        {{account.name}} ({{account.accountType}})
-                      </mat-option>
-                    </mat-select>
-                    <mat-error>Required</mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-7">
-                  <div class="callout1 text-muted callout-info1">
-                    <p>
-                      <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i class="fa fa-plus"></i>&nbsp;&nbsp;
-                        New Credentials</button>
-                      <br/> A user with read/write access to the test repository. <br/> Note: You can create a new 'FX' user
-                      with read/write access to the test repository.
-                    </p>
-                  </div>
-                </div>
+          <div class="form-group row" *ngIf="project.url">
+            <label class="col-md-0 control-label">
+            </label>
+            <div class="col-md-5">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Git Repository Credentials" [(ngModel)]="project.account.id" [ngModelOptions]="{standalone: true}">
+                  <mat-option *ngFor="let account of accounts" [value]="account.id">
+                    {{account.name}} ({{account.accountType}})
+                  </mat-option>
+                </mat-select>
+                <mat-error>Required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-7">
+              <div class="callout1 text-muted callout-info1">
+                <p>
+                  <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i class="fa fa-plus"></i>&nbsp;&nbsp;
+                    New Credentials</button>
+                  <br /> A user with read/write access to the test repository. <br /> Note: You can create a new 'FX'
+                  user
+                  with read/write access to the test repository.
+                </p>
               </div>
+            </div>
+          </div>
 
-              <div>
-                <mat-card-actions class="pull-right">
-                  <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid"
-                          (click)="save(stepper);">Save
-                  </button>
-                  <!--<button mat-button (click)="gotoAutoCode(stepper);">Next</button>-->
-                </mat-card-actions>
-              </div>
-            </form>
-          <!--</mat-step>-->
+          <div>
+            <mat-card-actions class="pull-right">
+              <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid" (click)="save(stepper);">Save
+              </button>
+              <!--<button mat-button (click)="gotoAutoCode(stepper);">Next</button>-->
+            </mat-card-actions>
+          </div>
+        </form>
+        <!--</mat-step>-->
 
-          <!--<mat-step [stepControl]="secondFormGroup">-->
-            <!--<form [formGroup]="secondFormGroup">-->
-              <!--<ng-template matStepLabel>AutoCode Configuration</ng-template>-->
+        <!--<mat-step [stepControl]="secondFormGroup">-->
+        <!--<form [formGroup]="secondFormGroup">-->
+        <!--<ng-template matStepLabel>AutoCode Configuration</ng-template>-->
 
-              <!--<div class="box-body">-->
+        <!--<div class="box-body">-->
 
-                <!--&lt;!&ndash; <form role="form" #heroForm="ngForm">         &ndash;&gt;-->
+        <!--&lt;!&ndash; <form role="form" #heroForm="ngForm">         &ndash;&gt;-->
 
-                <!--<div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">-->
-                  <!--<label for="name" class="col-md-0 control-label"></label>-->
-                  <!--<div class="col-md-5">-->
-                    <!--<mat-input-container class="full-width">-->
-                      <!--<input required [(ngModel)]="autoCodeConfig.openAPISpec" name="spec" id="spec" matInput placeholder="OpenAPISpec URL/file"-->
-                        <!--formControlName="openAPISpec" autocomplete="off">-->
-                      <!--<mat-error>Required</mat-error>-->
-                    <!--</mat-input-container>-->
-                  <!--</div>-->
-                  <!--<div class="col-md-7">-->
-                    <!--<div class="callout1 text-muted callout-info1">-->
-                      <!--<div><strong><p>FX Auto-Code requires OpenAPISpec of your application to create functional/security-->
-                            <!--test coverage. </p></strong></div>-->
-                      <!--<div class="callout callout-info">-->
-                        <!--<p> Note: OpenAPISpec URL should be publicly accessible or upload the spec json/yaml file into the-->
-                          <!--Git repository and enter the filename instead.</p>-->
-                      <!--</div>-->
-                      <!--<div>-->
-                        <!--e.g. https://ip/v2/api-docs or open-api-spec.json or open-api-spec.yaml or None. <br/> How-to generate-->
-                        <!--OpenAPISpec for your Java, .Net and other applications.-->
-                        <!--<a target="_blank" href="https://swagger.io/open-source-integrations/">-->
-                          <!--Learn more-->
-                          <!--<i class="material-icons" style="font-size: 18px;">open_in_new</i>-->
-                        <!--</a>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
+        <!--<div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input required [(ngModel)]="autoCodeConfig.openAPISpec" name="spec" id="spec" matInput placeholder="OpenAPISpec URL/file"-->
+        <!--formControlName="openAPISpec" autocomplete="off">-->
+        <!--<mat-error>Required</mat-error>-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--<div class="col-md-7">-->
+        <!--<div class="callout1 text-muted callout-info1">-->
+        <!--<div><strong><p>FX Auto-Code requires OpenAPISpec of your application to create functional/security-->
+        <!--test coverage. </p></strong></div>-->
+        <!--<div class="callout callout-info">-->
+        <!--<p> Note: OpenAPISpec URL should be publicly accessible or upload the spec json/yaml file into the-->
+        <!--Git repository and enter the filename instead.</p>-->
+        <!--</div>-->
+        <!--<div>-->
+        <!--e.g. https://ip/v2/api-docs or open-api-spec.json or open-api-spec.yaml or None. <br/> How-to generate-->
+        <!--OpenAPISpec for your Java, .Net and other applications.-->
+        <!--<a target="_blank" href="https://swagger.io/open-source-integrations/">-->
+        <!--Learn more-->
+        <!--<i class="material-icons" style="font-size: 18px;">open_in_new</i>-->
+        <!--</a>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
 
-                <!--</div>-->
+        <!--</div>-->
 
-                <!--<div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">-->
-                  <!--&lt;!&ndash; <div class="col-md-12" *ngFor="let res of autoCodeConfig"> &ndash;&gt;-->
-                  <!--<div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">-->
-                    <!--<mat-accordion>-->
-                      <!--<mat-expansion-panel>-->
-                        <!--<mat-expansion-panel-header>-->
-                          <!--<mat-panel-title>-->
-                            <!--<b>{{ res.displayHeaderLabel }}</b>-->
-                          <!--</mat-panel-title>-->
-                        <!--</mat-expansion-panel-header>-->
-                        <!--<div class="mb-3">-->
-                          <!--{{res.displayHeaderDescription}}-->
-                        <!--</div>-->
-                        <!--<div *ngIf="res.type === 'DDOS'">-->
-                          <!--<div class="row">-->
-                            <!--<div class="col-md-6">-->
-                              <!--<mat-input-container class="full-width">-->
-                                <!--<textarea matInput placeholder="Page size query param names e.g. Default params: pageSize, page_size, maxResults, max_results"-->
-                                  <!--[(ngModel)]='res.matches[0].name' [ngModelOptions]="{standalone: true}"></textarea>-->
-                              <!--</mat-input-container>-->
-                            <!--</div>-->
-                          <!--</div>-->
-                        <!--</div>-->
-                        <!--<div *ngIf="res.type === 'sql_injection_timebound'">-->
+        <!--<div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">-->
+        <!--&lt;!&ndash; <div class="col-md-12" *ngFor="let res of autoCodeConfig"> &ndash;&gt;-->
+        <!--<div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">-->
+        <!--<mat-accordion>-->
+        <!--<mat-expansion-panel>-->
+        <!--<mat-expansion-panel-header>-->
+        <!--<mat-panel-title>-->
+        <!--<b>{{ res.displayHeaderLabel }}</b>-->
+        <!--</mat-panel-title>-->
+        <!--</mat-expansion-panel-header>-->
+        <!--<div class="mb-3">-->
+        <!--{{res.displayHeaderDescription}}-->
+        <!--</div>-->
+        <!--<div *ngIf="res.type === 'DDOS'">-->
+        <!--<div class="row">-->
+        <!--<div class="col-md-6">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<textarea matInput placeholder="Page size query param names e.g. Default params: pageSize, page_size, maxResults, max_results"-->
+        <!--[(ngModel)]='res.matches[0].name' [ngModelOptions]="{standalone: true}"></textarea>-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div *ngIf="res.type === 'sql_injection_timebound'">-->
 
-                          <!--<div class="row">-->
-                            <!--<div class="col-md-6">-->
-                              <!--<mat-form-field class="full-width">-->
-                                <!--<mat-select placeholder="Database Type" required [(ngModel)]="res.database.name" [ngModelOptions]="{standalone: true}" name="type">-->
-                                  <!--<mat-option *ngFor="let db of dbs" [value]="db">-->
-                                    <!--{{db}}-->
-                                  <!--</mat-option>-->
-                                <!--</mat-select>-->
-                              <!--</mat-form-field>-->
-                            <!--</div>-->
-                          <!--</div>-->
-                        <!--</div>-->
-                        <!--<div *ngIf="res.type === 'rbac'">-->
-                          <!--<div *ngFor="let m of res.matches">-->
-                            <!--<div class="form-group row">-->
-                              <!--<label for="name" class="col-md-0 control-label"></label>-->
-                              <!--<div class="col-md-5">-->
-                                <!--<mat-input-container class="full-width">-->
-                                  <!--<input [(ngModel)]="m.name" [ngModelOptions]="{standalone: true}" matInput placeholder="Description">-->
-                                <!--</mat-input-container>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group row">-->
-                              <!--<label for="name" class="col-md-0 control-label"></label>-->
-                              <!--<div class="col-md-5">-->
-                                <!--<mat-input-container class="full-width">-->
-                                  <!--<input [(ngModel)]="m.pathPatterns" [ngModelOptions]="{standalone: true}" matInput placeholder="Path patterns">-->
-                                <!--</mat-input-container>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group row">-->
-                              <!--<label for="name" class="col-md-0 control-label"></label>-->
-                              <!--<div class="col-md-5">-->
-                                <!--<mat-input-container class="full-width">-->
-                                  <!--<input [(ngModel)]="m.methods" [ngModelOptions]="{standalone: true}" matInput placeholder="Http methods">-->
-                                <!--</mat-input-container>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group row">-->
-                              <!--<label for="name" class="col-md-0 control-label"></label>-->
-                              <!--<div class="col-md-5">-->
-                                <!--<mat-input-container class="full-width">-->
-                                  <!--<input [(ngModel)]="m.denyRoles" [ngModelOptions]="{standalone: true}" matInput placeholder="Access denied to">-->
-                                <!--</mat-input-container>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="divider divider-dashed divider-lg pull-in"></div>-->
-                          <!--</div>-->
-                        <!--</div>-->
-                        <!--<div *ngIf="res.type === 'sla'">-->
-                          <!--<div *ngFor="let m of res.matches">-->
-                            <!--<div class="form-group row" [hidden]="true">-->
-                              <!--<label for="name" class="col-md-0 control-label"></label>-->
-                              <!--<div class="col-md-5">-->
-                                <!--<mat-input-container class="full-width">-->
-                                  <!--<input [(ngModel)]="m.pathPatterns" [ngModelOptions]="{standalone: true}" matInput placeholder="Path patterns">-->
-                                <!--</mat-input-container>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group row" [hidden]="true">-->
-                              <!--<label for="name" class="col-md-0 control-label"></label>-->
-                              <!--<div class="col-md-5">-->
-                                <!--<mat-input-container class="full-width">-->
-                                  <!--<input [(ngModel)]="m.methods" [ngModelOptions]="{standalone: true}" matInput placeholder="Http methods">-->
-                                <!--</mat-input-container>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group row">-->
-                              <!--<label for="name" class="col-md-0 control-label"></label>-->
-                              <!--<div class="col-md-5">-->
-                                <!--<mat-input-container class="full-width">-->
-                                  <!--<input [(ngModel)]="m.value" [ngModelOptions]="{standalone: true}" matInput placeholder="SLA (in milliseconds)">-->
-                                <!--</mat-input-container>-->
-                              <!--</div>-->
-                            <!--</div>-->
-                          <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="row" [hidden]="res.type === 'sla'">-->
-                          <!--<div class="col-md-6">-->
-                            <!--<mat-input-container class="full-width">-->
-                              <!--<textarea matInput placeholder="Assertions" [(ngModel)]='res.assertionsText' [ngModelOptions]="{standalone: true}"></textarea>-->
-                            <!--</mat-input-container>-->
-                          <!--</div>-->
-                          <!--<div class="col-md-7">-->
-                            <!--<div class="callout1 text-muted callout-info1">-->
-                              <!--<p> {{res.assertionDescription}}-->
-                              <!--</p>-->
-                            <!--</div>-->
-                          <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="row">-->
-                          <!--<div class="col-md-6">-->
-                            <!--<mat-checkbox [(ngModel)]="res.inactive" [ngModelOptions]="{standalone: true}">Skip-->
-                            <!--</mat-checkbox>-->
-                          <!--</div>-->
-                        <!--</div>-->
-
-
-                      <!--</mat-expansion-panel>-->
-                    <!--</mat-accordion>-->
-
-                  <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div class="col-md-6">-->
+        <!--<mat-form-field class="full-width">-->
+        <!--<mat-select placeholder="Database Type" required [(ngModel)]="res.database.name" [ngModelOptions]="{standalone: true}" name="type">-->
+        <!--<mat-option *ngFor="let db of dbs" [value]="db">-->
+        <!--{{db}}-->
+        <!--</mat-option>-->
+        <!--</mat-select>-->
+        <!--</mat-form-field>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div *ngIf="res.type === 'rbac'">-->
+        <!--<div *ngFor="let m of res.matches">-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="m.name" [ngModelOptions]="{standalone: true}" matInput placeholder="Description">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="m.pathPatterns" [ngModelOptions]="{standalone: true}" matInput placeholder="Path patterns">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="m.methods" [ngModelOptions]="{standalone: true}" matInput placeholder="Http methods">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="m.denyRoles" [ngModelOptions]="{standalone: true}" matInput placeholder="Access denied to">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="divider divider-dashed divider-lg pull-in"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div *ngIf="res.type === 'sla'">-->
+        <!--<div *ngFor="let m of res.matches">-->
+        <!--<div class="form-group row" [hidden]="true">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="m.pathPatterns" [ngModelOptions]="{standalone: true}" matInput placeholder="Path patterns">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group row" [hidden]="true">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="m.methods" [ngModelOptions]="{standalone: true}" matInput placeholder="Http methods">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="m.value" [ngModelOptions]="{standalone: true}" matInput placeholder="SLA (in milliseconds)">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row" [hidden]="res.type === 'sla'">-->
+        <!--<div class="col-md-6">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<textarea matInput placeholder="Assertions" [(ngModel)]='res.assertionsText' [ngModelOptions]="{standalone: true}"></textarea>-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--<div class="col-md-7">-->
+        <!--<div class="callout1 text-muted callout-info1">-->
+        <!--<p> {{res.assertionDescription}}-->
+        <!--</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+        <!--<div class="col-md-6">-->
+        <!--<mat-checkbox [(ngModel)]="res.inactive" [ngModelOptions]="{standalone: true}">Skip-->
+        <!--</mat-checkbox>-->
+        <!--</div>-->
+        <!--</div>-->
 
 
-                <!--</div>-->
+        <!--</mat-expansion-panel>-->
+        <!--</mat-accordion>-->
 
-              <!--</div>-->
-
-              <!--<div>-->
-                <!--<mat-card-actions class="pull-right">-->
-                  <!--<button mat-button matStepperPrevious>Back</button>-->
-                  <!--<button mat-button color="warn" class="nav-btn" (click)="delete();">Delete-->
-                  <!--</button>-->
-                  <!--<button mat-raised-button color="primary" class="nav-btn" [disabled]="secondFormGroup.invalid" (click)="saveAutoCode();">Save-->
-                    <!--& Generate-->
-                  <!--</button>-->
-                <!--</mat-card-actions>-->
-              <!--</div>-->
-            <!--</form>-->
-          <!--</mat-step>-->
+        <!--</div>-->
 
 
+        <!--</div>-->
 
-          <!--<mat-step [stepControl]="thirdFormGroup">-->
-          <!--<form [formGroup]="thirdFormGroup">-->
-          <!--<ng-template matStepLabel>API Environments</ng-template>-->
+        <!--</div>-->
 
-          <!--<div  *ngFor="let env of envs; let i=index;">-->
-          <!--<h6 color="primary">Env #{{ i + 1 }}</h6>-->
-          <!--<div class="form-group row"></div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input  [(ngModel)]="env.name" formControlName="nameCtrl"-->
-          <!--matInput placeholder="Env name">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input  [(ngModel)]="env.baseUrl" formControlName="urlCtrl"-->
-          <!--matInput placeholder="Base URL">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--<div class="col-md-7">-->
-          <!--<div class="callout1 text-muted callout-info1">-->
-          <!--<p>e.g. https://myapp/api/v1.-->
-          <!--</p>-->
-          <!--</div>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div  *ngFor="let auth of env.auths; let i = index">-->
-          <!--<span>#{{(i+1)}}..</span>-->
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container required class="full-width">-->
-          <!--<input [(ngModel)]="auth.name" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="Auth Name">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label class="col-md-0 control-label">-->
-          <!--</label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-form-field class="full-width">-->
-          <!--<mat-select placeholder="Authentication Type"    [(value)]="auth.authType">-->
-          <!--<mat-option value="Token" (click)="auth.authType='Token';">Token</mat-option>-->
-          <!--<mat-option value="OAuth_2_0" (click)="auth.authType='OAuth_2_0';">OAuth 2.0</mat-option>-->
-          <!--<mat-option value="Basic" (click)="auth.authType='Basic';">Basic</mat-option>-->
-          <!--</mat-select>-->
-          <!--</mat-form-field>-->
-          <!--<input type="hidden"   formControlName="authTypeCtrl"  [(ngModel)]="auth.authType">-->
-
-          <!--&lt;!&ndash;input   formControlName="typeCtrl"  [(ngModel)]="auth.authType"/&ndash;&gt;-->
-
-          <!--</div>-->
-          <!--</div>-->
-          <!--<div *ngIf="auth.authType === 'Basic' || auth.authType === 'BASIC'">-->
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.username" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="Username">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.password" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="Password">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div *ngIf="auth.authType === 'OAuth_2_0'">-->
-
-          <!--<div class="form-group row">-->
-          <!--<label class="col-md-0 control-label">-->
-          <!--</label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-form-field class="full-width">-->
-          <!--<mat-select placeholder="Authentication Type"-->
-          <!--[(ngModel)]="auth.grantType" [ngModelOptions]="{standalone: true}"-->
-          <!--name="type">-->
-          <!--<mat-option *ngFor="let grant of grantTypes" [value]="grant">-->
-          <!--{{grant}}-->
-          <!--</mat-option>-->
-          <!--</mat-select>-->
-          <!--</mat-form-field>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div *ngIf="env.grantType === 'password'">-->
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.username"-->
-          <!--[ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="Username">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.password"-->
-          <!--[ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="Password">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.clientId" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="ClientId">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.clientSecret" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="ClientSecret">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.id" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="Id">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.accessTokenUri" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="AccessToken Uri">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--<div class="col-md-7">-->
-          <!--<div class="callout1 text-muted callout-info1">-->
-          <!--<p>e.g. http://<>/token-->
-          <!--</p>-->
-          <!--</div>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.userAuthorizationUri" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="UserAuthorization Uri">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-form-field class="full-width">-->
-          <!--<mat-select placeholder="Client Authentication Scheme"-->
-          <!--[(ngModel)]="auth.clientAuthenticationScheme" [ngModelOptions]="{standalone: true}"-->
-          <!--name="type">-->
-          <!--<mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">-->
-          <!--{{scheme}}-->
-          <!--</mat-option>-->
-          <!--</mat-select>-->
-          <!--</mat-form-field>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-form-field class="full-width">-->
-          <!--<mat-select placeholder="Authorization Scheme"-->
-          <!--[(ngModel)]="auth.authorizationScheme" [ngModelOptions]="{standalone: true}"-->
-          <!--name="type">-->
-          <!--<mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">-->
-          <!--{{scheme}}-->
-          <!--</mat-option>-->
-          <!--</mat-select>-->
-          <!--</mat-form-field>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-form-field class="full-width">-->
-          <!--<mat-select placeholder="Scope"-->
-          <!--[(ngModel)]="auth.scope" [ngModelOptions]="{standalone: true}"-->
-          <!--name="type">-->
-          <!--<mat-option *ngFor="let scope of scopeTypes" [value]="scope">-->
-          <!--{{scope}}-->
-          <!--</mat-option>-->
-          <!--</mat-select>-->
-          <!--</mat-form-field>-->
-          <!--</div>-->
-          <!--</div>-->
-
-
-          <!--</div>-->
-
-          <!--<div *ngIf="auth.authType === 'Token'">-->
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.header_1" [ngModelOptions]="{standalone: true}"-->
-          <!--matInput placeholder="Header 1">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--<div class="col-md-7">-->
-          <!--<div class="callout1 text-muted callout-info1">-->
-          <!--<p>e.g. cookie: JWTTOKEN=Token or Authorization: key-->
-          <!--</p>-->
-          <!--</div>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<mat-input-container class="full-width">-->
-          <!--<input [(ngModel)]="auth.header_2"-->
-          <!--[ngModelOptions]="{standalone: true}" matInput-->
-          <!--placeholder="Header 2">-->
-          <!--</mat-input-container>-->
-          <!--</div>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--</div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5 pull-right">-->
-          <!--<a href="javascript:;" class="pull-right" (click)="addAuth(env)">Add Auth</a>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="divider divider-dashed divider-lg pull-in"></div>-->
-
-          <!--<div class="form-group row">-->
-          <!--<label for="name" class="col-md-0 control-label"></label>-->
-          <!--<div class="col-md-5">-->
-          <!--<a href="javascript:;" (click)="addEnv()">Add Environment</a>-->
-          <!--</div>-->
-          <!--</div>-->
-
-          <!--</div>-->
+        <!--<div>-->
+        <!--<mat-card-actions class="pull-right">-->
+        <!--<button mat-button matStepperPrevious>Back</button>-->
+        <!--<button mat-button color="warn" class="nav-btn" (click)="delete();">Delete-->
+        <!--</button>-->
+        <!--<button mat-raised-button color="primary" class="nav-btn" [disabled]="secondFormGroup.invalid" (click)="saveAutoCode();">Save-->
+        <!--& Generate-->
+        <!--</button>-->
+        <!--</mat-card-actions>-->
+        <!--</div>-->
+        <!--</form>-->
+        <!--</mat-step>-->
 
 
 
-          <!--<div class="form-group row"></div>-->
-          <!--<div>-->
-          <!--<mat-card-actions>-->
-          <!--<button mat-raised-button color="primary"-->
-          <!--class="nav-btn"-->
-          <!--[disabled]="thirdFormGroup.invalid"-->
-          <!--(click)="saveEnv();">Save & Close-->
-          <!--</button>-->
-          <!--<button mat-button matStepperPrevious>Back</button>-->
-          <!--<button mat-button color="warn"-->
-          <!--class="nav-btn"-->
-          <!--(click)="delete();">Delete-->
-          <!--</button>-->
-          <!--</mat-card-actions>-->
-          <!--</div>-->
+        <!--<mat-step [stepControl]="thirdFormGroup">-->
+        <!--<form [formGroup]="thirdFormGroup">-->
+        <!--<ng-template matStepLabel>API Environments</ng-template>-->
 
-          <!--</form>-->
-          <!--</mat-step>-->
+        <!--<div  *ngFor="let env of envs; let i=index;">-->
+        <!--<h6 color="primary">Env #{{ i + 1 }}</h6>-->
+        <!--<div class="form-group row"></div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input  [(ngModel)]="env.name" formControlName="nameCtrl"-->
+        <!--matInput placeholder="Env name">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input  [(ngModel)]="env.baseUrl" formControlName="urlCtrl"-->
+        <!--matInput placeholder="Base URL">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--<div class="col-md-7">-->
+        <!--<div class="callout1 text-muted callout-info1">-->
+        <!--<p>e.g. https://myapp/api/v1.-->
+        <!--</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div  *ngFor="let auth of env.auths; let i = index">-->
+        <!--<span>#{{(i+1)}}..</span>-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container required class="full-width">-->
+        <!--<input [(ngModel)]="auth.name" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="Auth Name">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label class="col-md-0 control-label">-->
+        <!--</label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-form-field class="full-width">-->
+        <!--<mat-select placeholder="Authentication Type"    [(value)]="auth.authType">-->
+        <!--<mat-option value="Token" (click)="auth.authType='Token';">Token</mat-option>-->
+        <!--<mat-option value="OAuth_2_0" (click)="auth.authType='OAuth_2_0';">OAuth 2.0</mat-option>-->
+        <!--<mat-option value="Basic" (click)="auth.authType='Basic';">Basic</mat-option>-->
+        <!--</mat-select>-->
+        <!--</mat-form-field>-->
+        <!--<input type="hidden"   formControlName="authTypeCtrl"  [(ngModel)]="auth.authType">-->
+
+        <!--&lt;!&ndash;input   formControlName="typeCtrl"  [(ngModel)]="auth.authType"/&ndash;&gt;-->
+
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div *ngIf="auth.authType === 'Basic' || auth.authType === 'BASIC'">-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.username" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="Username">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.password" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="Password">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div *ngIf="auth.authType === 'OAuth_2_0'">-->
+
+        <!--<div class="form-group row">-->
+        <!--<label class="col-md-0 control-label">-->
+        <!--</label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-form-field class="full-width">-->
+        <!--<mat-select placeholder="Authentication Type"-->
+        <!--[(ngModel)]="auth.grantType" [ngModelOptions]="{standalone: true}"-->
+        <!--name="type">-->
+        <!--<mat-option *ngFor="let grant of grantTypes" [value]="grant">-->
+        <!--{{grant}}-->
+        <!--</mat-option>-->
+        <!--</mat-select>-->
+        <!--</mat-form-field>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div *ngIf="env.grantType === 'password'">-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.username"-->
+        <!--[ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="Username">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.password"-->
+        <!--[ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="Password">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.clientId" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="ClientId">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.clientSecret" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="ClientSecret">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.id" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="Id">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.accessTokenUri" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="AccessToken Uri">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--<div class="col-md-7">-->
+        <!--<div class="callout1 text-muted callout-info1">-->
+        <!--<p>e.g. http://<>/token-->
+        <!--</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.userAuthorizationUri" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="UserAuthorization Uri">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-form-field class="full-width">-->
+        <!--<mat-select placeholder="Client Authentication Scheme"-->
+        <!--[(ngModel)]="auth.clientAuthenticationScheme" [ngModelOptions]="{standalone: true}"-->
+        <!--name="type">-->
+        <!--<mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">-->
+        <!--{{scheme}}-->
+        <!--</mat-option>-->
+        <!--</mat-select>-->
+        <!--</mat-form-field>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-form-field class="full-width">-->
+        <!--<mat-select placeholder="Authorization Scheme"-->
+        <!--[(ngModel)]="auth.authorizationScheme" [ngModelOptions]="{standalone: true}"-->
+        <!--name="type">-->
+        <!--<mat-option *ngFor="let scheme of schemeTypes" [value]="scheme">-->
+        <!--{{scheme}}-->
+        <!--</mat-option>-->
+        <!--</mat-select>-->
+        <!--</mat-form-field>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-form-field class="full-width">-->
+        <!--<mat-select placeholder="Scope"-->
+        <!--[(ngModel)]="auth.scope" [ngModelOptions]="{standalone: true}"-->
+        <!--name="type">-->
+        <!--<mat-option *ngFor="let scope of scopeTypes" [value]="scope">-->
+        <!--{{scope}}-->
+        <!--</mat-option>-->
+        <!--</mat-select>-->
+        <!--</mat-form-field>-->
+        <!--</div>-->
+        <!--</div>-->
+
+
+        <!--</div>-->
+
+        <!--<div *ngIf="auth.authType === 'Token'">-->
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.header_1" [ngModelOptions]="{standalone: true}"-->
+        <!--matInput placeholder="Header 1">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--<div class="col-md-7">-->
+        <!--<div class="callout1 text-muted callout-info1">-->
+        <!--<p>e.g. cookie: JWTTOKEN=Token or Authorization: key-->
+        <!--</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<mat-input-container class="full-width">-->
+        <!--<input [(ngModel)]="auth.header_2"-->
+        <!--[ngModelOptions]="{standalone: true}" matInput-->
+        <!--placeholder="Header 2">-->
+        <!--</mat-input-container>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--</div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5 pull-right">-->
+        <!--<a href="javascript:;" class="pull-right" (click)="addAuth(env)">Add Auth</a>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="divider divider-dashed divider-lg pull-in"></div>-->
+
+        <!--<div class="form-group row">-->
+        <!--<label for="name" class="col-md-0 control-label"></label>-->
+        <!--<div class="col-md-5">-->
+        <!--<a href="javascript:;" (click)="addEnv()">Add Environment</a>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--</div>-->
+
+
+
+        <!--<div class="form-group row"></div>-->
+        <!--<div>-->
+        <!--<mat-card-actions>-->
+        <!--<button mat-raised-button color="primary"-->
+        <!--class="nav-btn"-->
+        <!--[disabled]="thirdFormGroup.invalid"-->
+        <!--(click)="saveEnv();">Save & Close-->
+        <!--</button>-->
+        <!--<button mat-button matStepperPrevious>Back</button>-->
+        <!--<button mat-button color="warn"-->
+        <!--class="nav-btn"-->
+        <!--(click)="delete();">Delete-->
+        <!--</button>-->
+        <!--</mat-card-actions>-->
+        <!--</div>-->
+
+        <!--</form>-->
+        <!--</mat-step>-->
 
         <!--</mat-horizontal-stepper>-->
 
