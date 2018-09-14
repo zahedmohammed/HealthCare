@@ -29,6 +29,7 @@ export class RegionNewComponent implements OnInit {
   regions = [];
   showSpinner: boolean = false;
   accounts;
+  cloudAccounts = [];
   orgs;
   entry: Region = new Region();
   isLinear = false;
@@ -43,7 +44,8 @@ export class RegionNewComponent implements OnInit {
       firstCtrl: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+      accountCtrl: ['', Validators.required]
+      regionCtrl: ['', Validators.required]
     });
   }
 
@@ -164,6 +166,14 @@ export class RegionNewComponent implements OnInit {
       for (let entry of this.accounts) {
           if (entry.accountType == 'Self_Hosted'){
              return entry;
+           }
+       }
+  }
+
+  getCloudAccountForExecutionBotPage() {
+      for (let entry of this.accounts) {
+          if (entry.accountType != 'Self_Hosted'){
+              this.cloudAccounts.push(entry);
            }
        }
   }
