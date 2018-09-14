@@ -140,12 +140,12 @@
                                     </div>
                                 </form>
                                 <div class="pull-right">
-                                    <button mat-raised-button color="primary" (click)="manualDeploy();">
-                                        Manual Deploy & Complete
+                                    <button mat-button type="button" [routerLink]="['/app/regions']">Cancel
                                     </button>
-                                    <button mat-button matStepperNext>Deploy to Cloud</button>
-                                    <button mat-button type="button" color="warn" [routerLink]="['/app/regions']">Cancel
-                                    </button>
+                                    <button mat-raised-button  color="primary" class="btn-w-md" (click)="manualDeploy();">
+                                        Create Self Hosted Bot & Complete
+                                    </button> &nbsp; &nbsp;
+                                    <button mat-raised-button color="primary" class="btn-w-md" matStepperNext>Auto Deploy to Cloud & Next</button>
                                 </div>
                             </form>
                         </mat-step>
@@ -166,11 +166,8 @@
 
                                         <div class="callout1 text-muted callout-info1">
                                             <p>
-                                                Public or private cloud endpoint.
-                                            </p>
-                                            <p>
                                                 <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i
-                                                        class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials</button>
+                                                        class="fa fa-plus"></i>&nbsp;&nbsp; New Cloud Credentials</button>
                                             </p>
                                         </div>
                                     </div>
@@ -205,11 +202,9 @@
                                     </div>
                                 </form>
                                 <div class="pull-right">
-                                    <button mat-raised-button color="primary" (click)="create();">
-                                        Deploy Bot
-                                    </button>
                                     <button mat-button matStepperPrevious>Back</button>
-                                    <button mat-button type="button" color="warn" [routerLink]="['/app/regions']">Cancel
+                                    <button mat-raised-button color="primary" (click)="create();">
+                                        Deploy Bot & Complete
                                     </button>
                                 </div>
                             </form>
