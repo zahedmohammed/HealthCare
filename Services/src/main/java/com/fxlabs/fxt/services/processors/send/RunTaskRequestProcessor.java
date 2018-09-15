@@ -309,13 +309,15 @@ public class RunTaskRequestProcessor {
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
+                    String passwordDecrypted = null;
                     try {
-                        cred.setPassword(encryptor.decrypt(cred.getPassword()));
-                    } catch (Exception ex){
+                        passwordDecrypted = encryptor.decrypt(cred.getPassword());
+                    } catch (Exception ex) {
                         //Do nothing password not encrypted
+                        passwordDecrypted = cred.getPassword();
                         logger.info("Password  not encrypted");
                     }
-                    copyCred(task, cred, orgName);
+                    copyCred(task, cred, orgName, passwordDecrypted);
                 }
             }
         } else if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "none") || org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "anonymous")) {
@@ -323,19 +325,21 @@ public class RunTaskRequestProcessor {
         } else {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
+                    String passwordDecrypted = null;
                     try {
-                        cred.setPassword(encryptor.decrypt(cred.getPassword()));
-                    } catch (Exception ex){
+                        passwordDecrypted = encryptor.decrypt(cred.getPassword());
+                    } catch (Exception ex) {
                         //Do nothing password not encrypted
+                        passwordDecrypted = cred.getPassword();
                         logger.info("Password  not encrypted");
                     }
-                    copyCred(task, cred, orgName);
+                    copyCred(task, cred, orgName, passwordDecrypted);
                 }
             }
         }
     }
 
-    private void copyCred(BotTask task, Auth cred, String orgName) {
+    private void copyCred(BotTask task, Auth cred, String orgName, String decryptedPassword) {
 
         if (cred != null && cred.getAuthType() != null && cred.getAuthType() == AuthType.No_Authentication) {
             return;
@@ -345,7 +349,7 @@ public class RunTaskRequestProcessor {
 
         //task.setAuthType(cred.getAuthType());
         task.getAuth().setUsername(dataResolver.resolve(cred.getUsername(), orgName));
-        task.getAuth().setPassword(dataResolver.resolve(cred.getPassword(), orgName));
+        task.getAuth().setPassword(dataResolver.resolve(decryptedPassword, orgName));
 
         task.getAuth().setClientId(dataResolver.resolve(cred.getClientId(), orgName));
         task.getAuth().setClientSecret(dataResolver.resolve(cred.getClientSecret(), orgName));
@@ -362,7 +366,7 @@ public class RunTaskRequestProcessor {
     }
 
     private HttpMethod convert(com.fxlabs.fxt.dao.entity.project.HttpMethod httpMethod) {
-        if (httpMethod == null) return  null;
+        if (httpMethod == null) return null;
 
         switch (httpMethod) {
             case GET:
@@ -521,7 +525,7 @@ public class RunTaskRequestProcessor {
 
         if (job == null || status == null || entityType == null) {
 
-            logger.info("Invalid event for project sync" );
+            logger.info("Invalid event for project sync");
             return;
         }
 
@@ -531,7 +535,7 @@ public class RunTaskRequestProcessor {
 
         event.setTaskId(taskId);
 
-        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runNumber);
+        event.setName(job.getProject().getName() + "/" + job.getName() + "/" + runNumber);
         event.setLink("/projects");
         event.setUser(job.getCreatedBy());
         event.setEntityType(entityType);
@@ -546,7 +550,7 @@ public class RunTaskRequestProcessor {
         event.setOrg(org);
 
 
-        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]" , job.getId(), status.toString(), event.getEventType());
+        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]", job.getId(), status.toString(), event.getEventType());
         localEventPublisher.publish(event);
     }
 

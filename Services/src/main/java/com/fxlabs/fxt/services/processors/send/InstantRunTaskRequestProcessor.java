@@ -96,115 +96,115 @@ public class InstantRunTaskRequestProcessor {
 
     public List<com.fxlabs.fxt.dto.run.TestSuiteResponse> process(String region, Environment env, TestSuite testSuite) {
 
-         List<com.fxlabs.fxt.dto.run.TestSuiteResponse> testSuiteResponses = null;
+        List<com.fxlabs.fxt.dto.run.TestSuiteResponse> testSuiteResponses = null;
+        try {
+
+
+            if (env == null) {
+                throw new FxException("Invalid environment");
+            }
+
+
+            if (region == null) {
+                throw new FxException("Invalid region");
+            }
+
+            final String region_ = validateRegion(region, testSuite.getCreatedBy());
+            if (region == null) {
+                throw new FxException("Invalid region");
+            }
+
+            logger.info("Sending Tessuite [{}] to region [{}]...", testSuite.getName(), region);
+
+
+            // boolean generateTestCaseResponse = isGenerateTestCaseResponse(run);
+            String _projectId = testSuite.getProject().getId();
+            String _project = testSuite.getProject().getName();
+            String _env = env.getName();
+            String _region = region;
+
+            String orgName_ = null;
+            Optional<Project> projectOptional = projectRepository.findById(_projectId);
+            if (projectOptional.isPresent()) {
+                orgName_ = projectOptional.get().getOrg().getName();
+            }
+            final String orgName = orgName_;
+
+            AtomicLong total = new AtomicLong(0);
+
+
+            //logger.info("Request {}", i.incrementAndGet());
+
             try {
 
-
-                if (env == null) {
-                    throw new FxException("Invalid environment");
+                if (BooleanUtils.isTrue(testSuite.isInactive())) {
+                    return null;
                 }
 
+                // TODO - Replace with the query
+                //if (suites != null && !CollectionUtils.contains(suites.iterator(), testSuite.getName())) {
+                //    return;
+                //}
 
-                if (region == null) {
-                    throw new FxException("Invalid region");
+                BotTask task = new BotTask();
+                task.setProject(_project);
+                task.setProjectId(_projectId);
+                task.setEnv(_env);
+                task.setRegion(_region);
+                task.setSuiteName(testSuite.getName());
+                task.setProjectDataSetId(testSuite.getId());
+                task.setGenerateTestCaseResponse(true);
+
+                task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
+
+                task.setMethod(convert(testSuite.getMethod()));
+
+                if (testSuite.getCategory() != null) {
+                    task.setCategory(testSuite.getCategory().toString());
+                }
+                if (testSuite.getSeverity() != null) {
+                    task.setSeverity(testSuite.getSeverity().toString());
+                }
+                copyHeaders(task, testSuite);
+
+                copyRequests(task, testSuite);
+
+                copyAuth(env, task, testSuite, orgName);
+
+                copyAssertions(task, testSuite);
+
+                task.setEndpoint(getBaseUrl(env.getBaseUrl(), testSuite.getProject().getOrg().getName()) + testSuite.getEndpoint());
+
+                // init & init.cleanup copy
+                copy(testSuite.getInit(), task.getInit(), env, true, orgName, testSuite);
+                // cleanup copy
+                copy(testSuite.getCleanup(), task.getCleanup(), env, false, orgName, testSuite);
+
+                // count tests
+                if (testSuite.getTestCases() != null && !testSuite.getTestCases().isEmpty()) {
+                    total.getAndAdd(testSuite.getTestCases().size());
+                } else {
+                    total.getAndIncrement();
                 }
 
-                final String region_ = validateRegion(region, testSuite.getCreatedBy());
-                if (region == null) {
-                    throw new FxException("Invalid region");
+                // repeat value
+                if (task.getPolicies() != null && task.getPolicies().getRepeat() != null) {
+                    total.getAndAdd(task.getPolicies().getRepeat() - 1);
                 }
-
-                logger.info("Sending Tessuite [{}] to region [{}]...", testSuite.getName(), region);
-
-
-               // boolean generateTestCaseResponse = isGenerateTestCaseResponse(run);
-                String _projectId = testSuite.getProject().getId();
-                String _project = testSuite.getProject().getName();
-                String _env = env.getName();
-                String _region = region;
-
-                String orgName_ = null;
-                Optional<Project> projectOptional = projectRepository.findById(_projectId);
-                if (projectOptional.isPresent()) {
-                    orgName_ = projectOptional.get().getOrg().getName();
-                }
-                final String orgName = orgName_;
-
-                AtomicLong total = new AtomicLong(0);
-
-
-                    //logger.info("Request {}", i.incrementAndGet());
-
-                    try {
-
-                        if (BooleanUtils.isTrue(testSuite.isInactive())) {
-                            return null;
-                        }
-
-                        // TODO - Replace with the query
-                        //if (suites != null && !CollectionUtils.contains(suites.iterator(), testSuite.getName())) {
-                        //    return;
-                        //}
-
-                        BotTask task = new BotTask();
-                        task.setProject(_project);
-                        task.setProjectId(_projectId);
-                        task.setEnv(_env);
-                        task.setRegion(_region);
-                        task.setSuiteName(testSuite.getName());
-                        task.setProjectDataSetId(testSuite.getId());
-                        task.setGenerateTestCaseResponse(true);
-
-                        task.setPolicies(policiesConverter.convertToDto(testSuite.getPolicies()));
-
-                        task.setMethod(convert(testSuite.getMethod()));
-
-                        if (testSuite.getCategory() != null) {
-                            task.setCategory(testSuite.getCategory().toString());
-                        }
-                        if (testSuite.getSeverity() != null) {
-                            task.setSeverity(testSuite.getSeverity().toString());
-                        }
-                        copyHeaders(task, testSuite);
-
-                        copyRequests(task, testSuite);
-
-                        copyAuth(env, task, testSuite, orgName);
-
-                        copyAssertions(task, testSuite);
-
-                        task.setEndpoint(getBaseUrl(env.getBaseUrl(), testSuite.getProject().getOrg().getName()) + testSuite.getEndpoint());
-
-                        // init & init.cleanup copy
-                        copy(testSuite.getInit(), task.getInit(), env, true, orgName, testSuite);
-                        // cleanup copy
-                        copy(testSuite.getCleanup(), task.getCleanup(), env, false, orgName, testSuite);
-
-                        // count tests
-                        if (testSuite.getTestCases() != null && !testSuite.getTestCases().isEmpty()) {
-                            total.getAndAdd(testSuite.getTestCases().size());
-                        } else {
-                            total.getAndIncrement();
-                        }
-
-                        // repeat value
-                        if (task.getPolicies() != null && task.getPolicies().getRepeat() != null) {
-                            total.getAndAdd(task.getPolicies().getRepeat() - 1);
-                        }
-                        LightWeightBotTask lightWeightBotTask = new LightWeightBotTask();
-                        lightWeightBotTask.setBotTask(task);
-                        List<BotTask> response = botClientService.sendTask(lightWeightBotTask, region_);
-                        testSuiteResponses = runTaskResponseProcessor.processTaskResponse(response);
-                    } catch (Exception ex) {
-                        logger.warn(ex.getLocalizedMessage(), ex);
-                    }
-
-                return testSuiteResponses;
+                LightWeightBotTask lightWeightBotTask = new LightWeightBotTask();
+                lightWeightBotTask.setBotTask(task);
+                List<BotTask> response = botClientService.sendTask(lightWeightBotTask, region_);
+                testSuiteResponses = runTaskResponseProcessor.processTaskResponse(response);
             } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
 
             return testSuiteResponses;
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+        }
+
+        return testSuiteResponses;
     }
 
     private boolean isGenerateTestCaseResponse(Run run) {
@@ -256,13 +256,15 @@ public class InstantRunTaskRequestProcessor {
         if (StringUtils.isEmpty(ds.getAuth())) {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), "default")) {
+                    String passwordDecrypted = null;
                     try {
-                        cred.setPassword(encryptor.decrypt(cred.getPassword()));
-                    } catch (Exception ex){
+                        passwordDecrypted = encryptor.decrypt(cred.getPassword());
+                    } catch (Exception ex) {
                         //Do nothing password not encrypted
+                        passwordDecrypted = cred.getPassword();
                         logger.info("Password  not encrypted");
                     }
-                    copyCred(task, cred, orgName);
+                    copyCred(task, cred, orgName, passwordDecrypted);
                 }
             }
         } else if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "none") || org.apache.commons.lang3.StringUtils.equalsIgnoreCase(ds.getAuth(), "anonymous")) {
@@ -270,19 +272,21 @@ public class InstantRunTaskRequestProcessor {
         } else {
             for (Auth cred : creds) {
                 if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(cred.getName(), ds.getAuth())) {
+                    String passwordDecrypted = null;
                     try {
-                        cred.setPassword(encryptor.decrypt(cred.getPassword()));
-                    } catch (Exception ex){
+                        passwordDecrypted = encryptor.decrypt(cred.getPassword());
+                    } catch (Exception ex) {
                         //Do nothing password not encrypted
+                        passwordDecrypted = cred.getPassword();
                         logger.info("Password  not encrypted");
                     }
-                    copyCred(task, cred, orgName);
+                    copyCred(task, cred, orgName, passwordDecrypted);
                 }
             }
         }
     }
 
-    private void copyCred(BotTask task, Auth cred, String orgName) {
+    private void copyCred(BotTask task, Auth cred, String orgName, String decryptedPassword) {
 
         if (cred != null && cred.getAuthType() != null && cred.getAuthType() == AuthType.No_Authentication) {
             return;
@@ -292,7 +296,7 @@ public class InstantRunTaskRequestProcessor {
 
         //task.setAuthType(cred.getAuthType());
         task.getAuth().setUsername(dataResolver.resolve(cred.getUsername(), orgName));
-        task.getAuth().setPassword(dataResolver.resolve(cred.getPassword(), orgName));
+        task.getAuth().setPassword(dataResolver.resolve(decryptedPassword, orgName));
 
         task.getAuth().setClientId(dataResolver.resolve(cred.getClientId(), orgName));
         task.getAuth().setClientSecret(dataResolver.resolve(cred.getClientSecret(), orgName));
@@ -309,7 +313,7 @@ public class InstantRunTaskRequestProcessor {
     }
 
     private HttpMethod convert(com.fxlabs.fxt.dao.entity.project.HttpMethod httpMethod) {
-        if (httpMethod == null) return  null;
+        if (httpMethod == null) return null;
 
         switch (httpMethod) {
             case GET:
@@ -399,17 +403,17 @@ public class InstantRunTaskRequestProcessor {
         if (run.getAttributes().containsKey(RunConstants.ENV)) {
             envName = run.getAttributes().get(RunConstants.ENV);
         } else {
-           throw new FxException("Env missing");
+            throw new FxException("Env missing");
         }
 
         Environment env = null;
         Optional<Environment> environmentOptional = environmentRepository.findByProjectIdAndNameAndInactive(dto.getProject().getId(), envName, false);
 
-        if (environmentOptional.isPresent()){
+        if (environmentOptional.isPresent()) {
             env = environmentOptional.get();
         }
 
-       // Environment env = run.getJob().getEnvironment();
+        // Environment env = run.getJob().getEnvironment();
         // TODO - Fail if not a valid env.
         if (env == null) {
             //run.getTask().setStatus(TaskStatus.FAIL);
@@ -452,7 +456,7 @@ public class InstantRunTaskRequestProcessor {
 
         if (job == null || status == null || entityType == null) {
 
-            logger.info("Invalid event for project sync" );
+            logger.info("Invalid event for project sync");
             return;
         }
 
@@ -462,7 +466,7 @@ public class InstantRunTaskRequestProcessor {
 
         event.setTaskId(taskId);
 
-        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runNumber);
+        event.setName(job.getProject().getName() + "/" + job.getName() + "/" + runNumber);
         event.setLink("/projects");
         event.setUser(job.getCreatedBy());
         event.setEntityType(entityType);
@@ -477,7 +481,7 @@ public class InstantRunTaskRequestProcessor {
         event.setOrg(org);
 
 
-        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]" , job.getId(), status.toString(), event.getEventType());
+        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]", job.getId(), status.toString(), event.getEventType());
         localEventPublisher.publish(event);
     }
 
