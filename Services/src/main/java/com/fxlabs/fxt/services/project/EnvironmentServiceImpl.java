@@ -232,28 +232,30 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         }
         environment.setProjectId(optionalProject.getData().getId());
 
-        for (Auth auth :environment.getAuths()) {
+        Optional<Environment> response = null;
+        for (Auth auth : environment.getAuths()) {
 
             if (!org.apache.commons.lang3.StringUtils.equals(PASSWORD_MASKED, auth.getPassword())) {
                 auth.setPassword(encryptor.encrypt(auth.getPassword()));
                 continue;
             }
 
-
-                Optional<Environment> response = this.environmentRepository.findById(environment.getId());
-
-                if (!response.isPresent()) {
-                    continue;
-                }
-
-                for (com.fxlabs.fxt.dao.entity.project.Auth auth_ : response.get().getAuths()) {
-
-                    if (org.apache.commons.lang3.StringUtils.equals(auth_.getName(), auth.getName())) {
-                        auth.setPassword(auth_.getPassword());
-                    }
-                }
-
+            if (response == null) {
+                response = this.environmentRepository.findById(environment.getId());
             }
+
+            if (!response.isPresent()) {
+                continue;
+            }
+
+            for (com.fxlabs.fxt.dao.entity.project.Auth auth_ : response.get().getAuths()) {
+
+                if (org.apache.commons.lang3.StringUtils.equals(auth_.getName(), auth.getName())) {
+                    auth.setPassword(auth_.getPassword());
+                }
+            }
+
+        }
 
 
         Response<com.fxlabs.fxt.dto.project.Environment> environmentResponse = save(environment);

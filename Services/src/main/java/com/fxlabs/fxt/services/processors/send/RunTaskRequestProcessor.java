@@ -345,7 +345,7 @@ public class RunTaskRequestProcessor {
 
         //task.setAuthType(cred.getAuthType());
         task.getAuth().setUsername(dataResolver.resolve(cred.getUsername(), orgName));
-        task.getAuth().setPassword(encryptor.decrypt(dataResolver.resolve(cred.getPassword(), orgName)));
+        task.getAuth().setPassword(dataResolver.resolve(cred.getPassword(), orgName));
 
         task.getAuth().setClientId(dataResolver.resolve(cred.getClientId(), orgName));
         task.getAuth().setClientSecret(dataResolver.resolve(cred.getClientSecret(), orgName));
