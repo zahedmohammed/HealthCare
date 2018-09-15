@@ -49,29 +49,26 @@
                                 </mat-input-container>
                             </div>
                             <div class="col-md-7">
-                                <div class="callout2 callout-info">
-                                    <p>FX Auto-Code requires OpenAPISpec of your application to create
-                                        functional/security
-                                        test coverage. <br>
-                                        e.g. https://ip/v2/api-docs or open-api-spec.json or open-api-spec.yaml or
-                                        None. <br /> How-to generate
-                                        OpenAPISpec for your Java, .Net and other applications.
-                                        <a target="_blank" href="https://swagger.io/open-source-integrations/">
-                                            Learn more
-                                            <i class="material-icons" style="font-size: 18px;">open_in_new</i>
-                                        </a>
-                                    </p>
-                                    <p>
-                                        Note: OpenAPISpec URL should be publicly accessible or upload the spec
-                                        json/yaml file into the
-                                        Git repository and enter the filename instead.
-                                    </p>
+                                <div class="text-muted callout callout-info">
+                                    <p>AutoCode feature automatically generates security/functional tests based on the project's OpenAPISpec.
+                                        <br/>Enter OpenAPISpec public URL or upload the OpenAPISpec .json/.yaml
+                                        file into the Git repository and enter the file name instead.
+                                        <br/>
+                                        e.g. https://example.com/v2/api-docs or open-api-spec.json or open-api-spec.yaml or None. </p>
+
+                                    How-to generate OpenAPISpec for your Java, .Net and other
+                                    applications.
+                                    <a target="_blank" href="https://swagger.io/open-source-integrations/">
+                                        Learn more
+                                        <i class="material-icons" style="font-size: 18px;">open_in_new</i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <br />
 
                         <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
+                            <div class="col-md-12"><div class="callout callout-info">AutoCode configuration allows fully customizable test generation for every test category.</div></div>
                             <div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">
                                 <mat-accordion>
                                     <mat-expansion-panel>
