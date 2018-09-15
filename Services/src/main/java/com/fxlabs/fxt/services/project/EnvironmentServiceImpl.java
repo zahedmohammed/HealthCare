@@ -248,9 +248,7 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
                 for (com.fxlabs.fxt.dao.entity.project.Auth auth_ : response.get().getAuths()) {
 
-                    if (org.apache.commons.lang3.StringUtils.equals(auth_.getName(), auth.getName()) &&
-                            org.apache.commons.lang3.StringUtils.equals(auth_.getAuthType().toString(), auth.getAuthType().toString())
-                            && org.apache.commons.lang3.StringUtils.equals(auth_.getAuthType().toString(), auth.getAuthType().toString())) {
+                    if (org.apache.commons.lang3.StringUtils.equals(auth_.getName(), auth.getName())) {
                         auth.setPassword(auth_.getPassword());
                     }
                 }
