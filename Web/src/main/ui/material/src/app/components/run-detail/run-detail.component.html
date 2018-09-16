@@ -24,43 +24,34 @@
             <div class="card__body card-white">
                 <div class="card__title row">
                     <div class="col-md-4">
-                    <h4>Status:
-                        <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span>
-                        <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'"
-                              class="text-danger">{{run.task.status}}</span>
-                        <span *ngIf="run.task.status == 'PROCESSING'" class="text-warning"><i
-                                class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
-                    </h4>
-                    <h6>{{run.task.description}}</h6>
-                    <h6>Region: {{run.regions}}</h6>
-                    <!-- <h6>
-                        <span class="text-primary"><strong>{{run.task.issuesLogged || 0}} New issues filed.</strong></span> |                            
-                        <span class="text-warning"><strong>{{run.task.issuesClosed || 0}} issues closed.</strong></span> |
-                        <span class="text-danger"><strong>{{run.stats['total_issues'] || 0}} issues currently open.</strong></span>
-                    </h6> -->
-
+                        <h4>Status:
+                            <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span>
+                            <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'"
+                                  class="text-danger">{{run.task.status}}</span>
+                            <span *ngIf="run.task.status == 'PROCESSING'" class="text-warning"><i
+                                    class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
+                        </h4>
+                        <h6>{{run.task.description}}</h6>
+                        <h6>Region: {{run.regions}}</h6>
                     </div>
-                   <div class="col-md-4">
-                        <h6 class="text-danger fontsize-rd">{{run.task.issuesLogged || 0}} New issues filed.</h6>                            
-                        <h6 class="text-success fontsize-rd">{{run.task.issuesClosed || 0}} issues closed.</h6>
-                        <h6 class="text-warning fontsize-rd">{{run.task.totalOpenIssues || 0}} issues currently open.</h6>
-                   </div>
-                    <div class="col-md-4">
-                            <button mat-raised-button class="btn-w-sm text-danger float-right" (click)="deleteRun();">
-                                Delete &nbsp;
-                            </button>
-                            <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="rerun();">
-                                Re-Run &nbsp;
-                            </button>
+                    <div class="col-md-8">
+                        <button mat-raised-button class="btn-w-sm text-danger float-right" (click)="deleteRun();">
+                            Delete &nbsp;
+                        </button>
+                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="rerun();">
+                            Re-Run &nbsp;
+                        </button>
+
                         <button mat-raised-button class="btn-w-sm text-primary float-right"
                                 (click)="nextRun();" [disabled]="disableButtonNext" >Next</button>
                         <button mat-raised-button class="btn-w-sm text-primary float-right"
                                 (click)="prevRun();" [disabled]="disableButtonPrev" >Previous</button>
-                            <div *ngIf="run.task.status == 'PROCESSING'">
+                        &nbsp;
+                        <div *ngIf="run.task.status == 'PROCESSING'">
                             <button mat-raised-button class="btn-w-sm text-warning float-right" (click)="cancel();">
                                 Cancel
                             </button>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -253,6 +244,13 @@
                     </mat-chip-list>
                 </div>
             </div>
+            <div class="col-md-4">
+                <span class="pull-right">Bugs:
+                        <span class="text-danger"><b>{{run.task.issuesLogged || 0}}</b></span>&nbsp;<span class="text-danger small">New</span>&nbsp;
+                        <span class="text-success"><b>{{run.task.issuesClosed || 0}}</b></span>&nbsp;<span class="text-success small">Closed</span>
+                        <span class="text-danger"><b>{{run.task.totalOpenIssues || 0}}</b></span>&nbsp;<span class="text-danger small">Open</span>
+                </span>
+            </div>
 
         </div>
     </div>
@@ -287,9 +285,8 @@
                     <td class="mdl-data-table__cell--non-numeric"><span>{{s.severity}} </span></td>
 
                     <td class="mdl-data-table__cell--non-numeric">
-                        <span class="text-success"> Passed: {{s.tests - s.failed}}
-                            <span class="text-danger" *ngIf="s.failed != 0">&nbsp;&nbsp; Failed: {{s.failed}}</span>
-                        </span>
+                        <span class="text-success h6"><b>{{s.tests - s.failed || 0}}</b></span>&nbsp;<span class="text-success small">Passed</span>&nbsp;
+                        <span *ngIf="s.failed != 0"><span class="text-danger h6"><b>{{s.failed || 0}}</b></span>&nbsp;<span class="text-danger small">Failed</span>&nbsp;</span>
                     </td>
 
                     <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span

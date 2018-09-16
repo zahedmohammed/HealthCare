@@ -41,10 +41,8 @@
                             <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'short'}}
                             </td>
                             <td class="mdl-data-table__cell--non-numeric">
-                        <span class="text-success"> Passed: {{item.task.totalTestCompleted}}
-                            <span class="text-danger" *ngIf="item.task.failedTests != 0">&nbsp;&nbsp; Failed: {{item.task.failedTests}}</span>
-                        </span>
-                                <!--{{item.task.totalTestCompleted}}/{{item.task.failedTests}}-->
+                                <span class="text-success h6"><b>{{item.task.totalTestCompleted || 0}}</b></span>&nbsp;<span class="text-success small">Passed</span>&nbsp;
+                                <span *ngIf="item.task.failedTests != 0"><span class="text-danger h6"><b>{{item.task.failedTests || 0}}</b></span>&nbsp;<span class="text-danger small">Failed</span>&nbsp;</span>
                             </td>
                             <td class="mdl-data-table__cell--non-numeric">
                                 {{ ( (item.task.totalTestCompleted ) / (item.task.totalTestCompleted +
@@ -59,7 +57,7 @@
                             <!--<td class="mdl-data-table__cell--non-numeric">{{item.task.timeTaken | mstoDuration}}</td>-->
                             <td class="mdl-data-table__cell--non-numeric" *ngIf="item.job.issueTrackerToDo === false">
                                 <span class="text-danger"><b>{{item.task.issuesLogged || 0}}</b></span>&nbsp;<span class="text-danger small">New</span>&nbsp;
-                                <span class="text-success"><b>{{item.task.issuesClosed || 0}}</b></span>&nbsp;<span class="text-sucess small">Closed</span>
+                                <span class="text-success"><b>{{item.task.issuesClosed || 0}}</b></span>&nbsp;<span class="text-success small">Closed</span>
                                 <span class="text-danger"><b>{{item.task.totalOpenIssues || 0}}</b></span>&nbsp;<span class="text-danger small">Open</span>
 
                             </td>
