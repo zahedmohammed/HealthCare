@@ -210,6 +210,10 @@ public class RunTaskRequestProcessor {
 
                         task.setMethod(convert(testSuite.getMethod()));
 
+                        // Skip AutoCodeConfig
+                        if (org.apache.commons.lang3.StringUtils.equals(testSuite.getName(), "AutoCodeConfig")) {
+                            return;
+                        }
                         if (testSuite.getCategory() != null) {
                             task.setCategory(testSuite.getCategory().toString());
                         }
