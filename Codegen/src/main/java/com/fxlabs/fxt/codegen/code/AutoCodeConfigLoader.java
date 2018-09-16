@@ -35,7 +35,7 @@ public class AutoCodeConfigLoader {
             ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
             System.out.println("loading AutoCodeConfig.yaml...");
-            CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, "AutoCodeConfig.yaml", "Loading");
+            CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, org.apache.commons.lang3.StringUtils.rightPad("AutoCodeConfig.yaml", 100), "Loading");
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }
@@ -86,7 +86,7 @@ public class AutoCodeConfigLoader {
             ObjectMapper yamlMapper = new ObjectMapper();
 
             System.out.println("loading "+RESOURCE_SAMPLES_FILE+"...");
-            CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, RESOURCE_SAMPLES_FILE, "Loading");
+            CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, org.apache.commons.lang3.StringUtils.rightPad(RESOURCE_SAMPLES_FILE, 100), "Loading");
             if (!StringUtils.endsWithIgnoreCase(projectDir, "/")) {
                 projectDir += "/";
             }

@@ -15,6 +15,7 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.properties.*;
 import io.swagger.parser.SwaggerCompatConverter;
 import io.swagger.parser.SwaggerParser;
+import io.swagger.util.Json;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ansi.AnsiColor;
@@ -75,7 +76,7 @@ public class StubGenerator {
                 ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
                 yamlMapper.enable(SerializationFeature.INDENT_OUTPUT);
                 yamlMapper.writerWithDefaultPrettyPrinter().writeValue(autoCodeConfig, autoCodeConfigContent);
-                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, autoCodeConfig.getName(), "Written");
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, org.apache.commons.lang3.StringUtils.rightPad(autoCodeConfig.getName(), 100), "Written");
             }
 
 
@@ -102,6 +103,14 @@ public class StubGenerator {
         try {
 
             Swagger swagger = build(projectDir, openAPISpec, headerKey, headerVal);
+
+            if (swagger == null) {
+                //String swaggerString = Json.pretty(swagger);
+                //System.out.println(String.format("Reading OpenAPISpec %s...", swaggerString));
+                //CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, org.apache.commons.lang3.StringUtils.rightPad(swaggerString, 100), "Spec Details");
+                System.out.println(String.format("Error parsing OpenAPISpec %s...", openAPISpec));
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.ERROR, org.apache.commons.lang3.StringUtils.rightPad(openAPISpec, 100), "Error parsing");
+            }
 
             AutoCodeConfig config = AutoCodeConfigLoader.loadConfig(projectDir);
             autoCodeConfigUtil.resetConfig();
@@ -206,8 +215,8 @@ public class StubGenerator {
                         count = tsList.size();
                     }
 
-                    Map<String, Integer> methodsTSCount =  new HashMap<>();
-                    methodsTSCount.put(m.toString(),count);
+                    Map<String, Integer> methodsTSCount = new HashMap<>();
+                    methodsTSCount.put(m.toString(), count);
                     pathTSCount.put(p, methodsTSCount);
 
                     testSuites.addAll(tsList);
@@ -304,7 +313,7 @@ public class StubGenerator {
                                 String.format("%s [Skipped]", org.apache.commons.lang3.StringUtils.rightPad(ts.getName(), 100))
                                 , AnsiColor.DEFAULT)
                 );
-                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Skipped");
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100), "Skipped");
                 return;
             }
 
@@ -324,7 +333,7 @@ public class StubGenerator {
 
                 yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, ts);
                 //System.out.println ("done");
-                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, file.getName(), "Written");
+                CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, org.apache.commons.lang3.StringUtils.rightPad(file.getName(), 100), "Written");
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -475,6 +484,10 @@ public class StubGenerator {
     }
 
     private Swagger build(String projectDir, String openAPISpec, String headerKey, String headerVal) throws IOException {
+
+        System.out.println(String.format("loading OpenAPISpec %s...", openAPISpec));
+        CodegenThreadUtils.taskLogger.get().append(BotLogger.LogType.INFO, org.apache.commons.lang3.StringUtils.rightPad(openAPISpec, 100), "Loading");
+
         Swagger swagger = null;
 
         if (StringUtils.isEmpty(openAPISpec)) {
@@ -492,7 +505,7 @@ public class StubGenerator {
 
             try {
                 swagger = new SwaggerParser().read(openAPISpec, list, true);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 // Couldnt find/parse the openAPISpec
             }
 
@@ -503,7 +516,7 @@ public class StubGenerator {
         } else {
             try {
                 swagger = new SwaggerParser().read(openAPISpec);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 // Couldnt find/parse the openAPISpec
             }
 
