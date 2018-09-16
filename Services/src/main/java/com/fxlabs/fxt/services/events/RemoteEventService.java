@@ -167,7 +167,6 @@ public class RemoteEventService {
         }
     }
 
-
     public Response<List<Event>> getRecentOrgEvents(String orgId, Pageable pageable) {
         Date dt = DateUtils.addHours(Calendar.getInstance().getTime(), -8);
         Page<com.fxlabs.fxt.dao.entity.event.Event> page = eventRepository.findByOrgIdAndModifiedDateAfter(orgId, dt, pageable);
