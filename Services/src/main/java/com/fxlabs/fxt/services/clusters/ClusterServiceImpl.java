@@ -99,6 +99,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.systemSettingService = systemSettingService;
         this.fxCaasAwsEc2Queue = fxCaasAwsEc2Queue;
         this.localEventPublisher = localEventPublisher;
+        this.orgService = orgService;
     }
 
     @Override
