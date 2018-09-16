@@ -155,8 +155,10 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = clusterRepository.findByNameAndOrgId(name, orgId);
         if (!clusterOptional.isPresent()) {
-            Response<Org>orgResponse = orgService.findByName("FXLabs");
-            clusterOptional = clusterRepository.findByNameAndOrgId(name, orgResponse.getData().getId());
+            Response<Org> orgResponse = orgService.findByName("FXLabs");
+            if (!orgResponse.isErrors()) {
+                clusterOptional = clusterRepository.findByNameAndOrgId(name, orgResponse.getData().getId());
+            }
         }
         
         if (!clusterOptional.isPresent()) {
