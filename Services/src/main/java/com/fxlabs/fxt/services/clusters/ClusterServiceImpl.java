@@ -21,11 +21,13 @@ import com.fxlabs.fxt.dto.events.Entity;
 import com.fxlabs.fxt.dto.events.Event;
 import com.fxlabs.fxt.dto.events.Status;
 import com.fxlabs.fxt.dto.events.Type;
+import com.fxlabs.fxt.dto.users.Org;
 import com.fxlabs.fxt.dto.users.Saving;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.exceptions.FxException;
+import com.fxlabs.fxt.services.users.OrgService;
 import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -70,12 +72,13 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private String fxCaasAwsEc2Queue;
     private SystemSettingService systemSettingService;
     private LocalEventPublisher localEventPublisher;
+    private OrgService orgService;
 
     @Autowired
     public ClusterServiceImpl(ClusterRepository clusterRepository, ClusterESRepository clusterESRepository, AccountRepository accountRepository,
                               ClusterConverter clusterConverter, AmqpAdmin amqpAdmin, TopicExchange topicExchange,
                               OrgUsersRepository orgUsersRepository, @Value("${fx.execution.bot.install.script.url}") String fxExecutionBotScriptUrl,
-                              UsersRepository usersRepository, @Value("${fx.caas.aws_ec2.queue}") String fxCaasAwsEc2Queue,
+                              UsersRepository usersRepository, @Value("${fx.caas.aws_ec2.queue}") String fxCaasAwsEc2Queue, OrgService orgService,
                               AmqpClientService amqpClientService, SubscriptionTaskRepository subscriptionTaskRepository, LocalEventPublisher localEventPublisher,
                               SystemSettingRepository systemSettingRepository, TextEncryptor encryptor, SystemSettingService systemSettingService) {
 
@@ -152,8 +155,15 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = clusterRepository.findByNameAndOrgId(name, orgId);
         if (!clusterOptional.isPresent()) {
+            Response<Org>orgResponse = orgService.findByName("FXLabs");
+            clusterOptional = clusterRepository.findByNameAndOrgId(name, orgResponse.getData().getId());
+        }
+        
+        if (!clusterOptional.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Duplicate cluster name"));
         }
+
+
         // TODO validate user is entitled to use the cluster.
         return new Response<Cluster>(converter.convertToDto(clusterOptional.get()));
     }
