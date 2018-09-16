@@ -136,6 +136,7 @@ public class RunTaskRequestProcessor {
                 } else if (!StringUtils.isEmpty(run.getJob().getCategories())) {
                     String[] tokens = org.apache.commons.lang3.StringUtils.split(run.getJob().getCategories(), ",");
                     categories = Arrays.asList(tokens);
+                    run.getAttributes().put(RunConstants.CATEGORIES, run.getJob().getCategories());
                 } else {
                     categories = null;
                 }
@@ -485,6 +486,9 @@ public class RunTaskRequestProcessor {
         if (run.getAttributes().containsKey(RunConstants.REGION)) {
             region = run.getAttributes().get(RunConstants.REGION);
         } else {
+            if (run.getAttributes() != null) {
+                run.getAttributes().put(RunConstants.REGION, run.getJob().getRegions());
+            }
             region = run.getJob().getRegions();
         }
 

@@ -52,7 +52,8 @@ public class Run extends BaseDto<String> {
                     .append(success).append(":")
                     .append(this.task.getTotalTests()).append(":")
                     .append(this.task.getFailedTests()).append(":")
-                    .append(this.task.getTimeTaken());
+                    .append(this.task.getTimeTaken()).append(":")
+                    .append(this.getRunId());
 
 
         return sb.toString();
