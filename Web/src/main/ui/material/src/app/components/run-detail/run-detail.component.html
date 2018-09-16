@@ -329,8 +329,7 @@
             </table>
         </div>
 
-        <mat-paginator [hidden]="length <= pageSize"
-                       [pageSize]="pageSize"
+        <mat-paginator [pageSize]="pageSize"
                        hidePageSize="true"
                        (page)="change($event)"
                        [length]="length"
@@ -339,25 +338,4 @@
 
     </article>
 
-    <!--
-    <a href="javascript:;" (click)="getTestSuiteResponsesByRunId()"> View Logs </a>
-
-    <div class="box box-default table-box mdl-shadow--2dp">
-        <div class="item-card card__horizontal1" *ngFor="let item of list">
-            <div class="card__body card-white">
-                <div class="card__title">
-                    <h4>{{item.testSuite}}</h4>
-                    <h6>Test-Suite</h6>
-                </div>
-                <div class="card__price">
-                    <span>Pass: {{item.totalPassed}}</span>
-                    <span class="type--strikethrough">Fail: {{item.totalFailed}}</span>
-                    <span>Time: {{item.requestTime}}</span>
-                </div>
-                <div class="divider divider-solid divider-lg"></div>
-                <p class="card__desc" style="white-space: pre;">{{item.logs}}</p>
-            </div>
-        </div>
-    </div>
-    -->
 </section>
