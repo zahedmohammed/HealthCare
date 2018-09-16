@@ -133,6 +133,9 @@ public class RunTaskRequestProcessor {
                 if (!StringUtils.isEmpty(_categories)) {
                     String[] tokens = org.apache.commons.lang3.StringUtils.split(_categories, ",");
                     categories = Arrays.asList(tokens);
+                } else if (!StringUtils.isEmpty(run.getJob().getCategories())) {
+                    String[] tokens = org.apache.commons.lang3.StringUtils.split(run.getJob().getCategories(), ",");
+                    categories = Arrays.asList(tokens);
                 } else {
                     categories = null;
                 }
