@@ -107,6 +107,11 @@ public class RunController {
     public Response<Run> findByRunId(@PathVariable("id") String id) {
         return runService.findRunById(id, SecurityUtil.getCurrentAuditor());
     }
+  @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/job/{id}/runNo/{runNo}", method = RequestMethod.GET)
+    public Response<Run> findByRunNumber(@PathVariable("id") String id,@PathVariable("runNo") Long runNo) {
+        return runService.findRunByJobIdAndRunNo(id,runNo, SecurityUtil.getCurrentAuditor());
+    }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/job/{id}", method = RequestMethod.POST)
@@ -120,6 +125,8 @@ public class RunController {
 
         return runService.run(id, region, tags, env, suites, categories, SecurityUtil.getCurrentAuditor());
     }
+
+
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/testsuite", method = RequestMethod.POST)

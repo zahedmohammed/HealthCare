@@ -268,6 +268,20 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         run1.setRegions(run.getAttributes().get("REGION"));
         return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
     }
+    @Override
+    public Response<com.fxlabs.fxt.dto.run.Run> findRunByJobIdAndRunNo(String jobId,Long runNo, String user) {
+        Optional<Run> run = this.repository.findRunByJobIdAndRunId(jobId,runNo);
+        if(run.isPresent()) {
+            com.fxlabs.fxt.dto.run.Run run1 = this.converter.convertToDto(run.get());
+            run1.setRegions(run.get().getAttributes().get("REGION"));
+            return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
+        }
+        else{
+
+            return new Response<com.fxlabs.fxt.dto.run.Run>()
+                    .withErrors(true).withMessage(new Message(MessageType.ERROR, null,"No details found for RunNo "+runNo ));
+        }
+    }
 
     @Override
     public Response<com.fxlabs.fxt.dto.run.Run> stopRun(String runId, String user) {

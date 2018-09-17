@@ -23,6 +23,9 @@ public interface RunRepository extends JpaRepository<Run, String> {
     @Query("SELECT r FROM Run r WHERE r.id LIKE ?1")
     Run findByRunId(String id);
 
+   // @Query("SELECT r FROM Run r WHERE r.id LIKE ?1")
+   Optional<Run> findRunByJobIdAndRunId(String jobId,Long runNo);
+
     @Query("SELECT MAX(runId) FROM Run WHERE job.id LIKE ?1")
     Long findMaxRunId(String id);
 
