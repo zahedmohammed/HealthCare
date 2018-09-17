@@ -1,150 +1,86 @@
 <div class="box box-default">
   <article>
-      <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"> {{project.name}} </a>
-  &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
-  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a>
-  &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
-  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">{{job.name}}</a>
-  &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
-  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">Runs</a>
-  &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
-  <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs', id]">{{run.runId}}</a>
-  &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;Analytics
-      </section>
+    <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+      <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"> {{project.name}} </a>
+      &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
+      <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a>
+      &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
+      <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">{{job.name}}</a>
+      &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
+      <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">Runs</a>
+      &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
+      <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs', id]">{{run.runId}}</a>
+      &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;Analytics
+    </section>
   </article>
 </div>
-<!-- <div class="container-fluid with-maxwidth no-breadcrumbs chapter1 box box-default">
 
-  </div> -->
 <section class="container-fluid with-maxwidth no-breadcrumbs chapter1">
-    <div class="row box box-default no-margin">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            
-                    <div *ngIf="chart">
-                        <canvas id="canvas1">{{ chart }}</canvas>
-                      </div>
-                
-        </div>
-        <div class="col-md-2"></div>
-        <br/>
-        <div class="col-md-6">
-            
-                    <div *ngIf="chart2">
-                        <canvas id="canvas2">{{ chart2 }}</canvas>
-                      </div>
-              
-        </div>
-        <div class="col-md-6">
-          
-                  <div *ngIf="chart3">
-                      <canvas id="canvas3">{{ chart3 }}</canvas>
-                    </div>
-             
+  <div class="row box box-default no-margin">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div *ngIf="chart">
+        <canvas id="canvas1">{{ chart }}</canvas>
       </div>
-        </div>
-        <br/>
-  <!-- <article class="article">
-    <h2 class="article-title">
-      <a href="javascript:;" [routerLink]="['/app/jobs']"> Jobs </a>
-      /
-      <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId]">{{job.name}}
-      </a>
-      /
-      <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs']"> Runs </a>
-      / {{suiteName}} 
-    </h2>
-  </article> -->
-
-
-  <article class="article">
-    <div class="box box-default table-box mdl-shadow--2dp">
-      <table class="mdl-data-table">
-        <thead>
-        <tr>
-          <!--<th class="mdl-data-table__cell--non-numeric"></th>-->
-          <th class="mdl-data-table__cell--non-numeric">No.</th>
-<!--
-          <th class="mdl-data-table__cell&#45;&#45;non-numeric">Category</th>
-          <th class="mdl-data-table__cell&#45;&#45;non-numeric">Severity</th>
--->
-          <th class="mdl-data-table__cell--non-numeric">Status</th>
-          <th class="mdl-data-table__cell--non-numeric">Region</th>
-          <!--<th class="mdl-data-table__cell--non-numeric">Total/Pass</th>-->
-          <th class="mdl-data-table__cell--non-numeric">Success</th>
-          <th class="mdl-data-table__cell--non-numeric">Date/Time</th>
-          <th class="mdl-data-table__cell--non-numeric">Time Taken</th>
-          <th class="mdl-data-table__cell--non-numeric">Data</th>
-        </tr>
-
-        </thead>
-        <tr *ngFor="let s of suites">
-          <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span class="text-success"><i
-                  class="material-icons">done</i> </span></td>-->
-          <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span class="text-danger"><i
-                  class="material-icons">clear</i> </span></td>-->
-          <td class="mdl-data-table__cell--non-numeric">
-            #{{s.runNo}}
-            <!--<a href="javascript:;" [routerLink]="['/app/jobs', jobId, 'runs', s.runNo]">#{{s.runNo}}</a>-->
-          </td>
-<!--
-          <td class="mdl-data-table__cell&#45;&#45;non-numeric">{{s.category}}</td>
-          <td class="mdl-data-table__cell&#45;&#45;non-numeric"><span>{{s.severity}} </span></td>
--->
-
-          <td class="mdl-data-table__cell--non-numeric"><span
-                  class="text-success"> Passed: {{s.totalPassed}}  <span class="text-danger"
-                                                                              *ngIf="s.failed != 0">&nbsp;&nbsp; Failed: {{s.totalFailed}}</span></span>
-          </td>
-          <td class="mdl-data-table__cell--non-numeric">{{s.region}}</td>
-          <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
-                  class="text-danger"> Fail: {{s.failed}}</span></td>-->
-
-          <!--<td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>-->
-          <td class="mdl-data-table__cell--non-numeric">
-            {{ ( (s.totalPassed ) / (s.totalPassed + s.totalFailed) ) | percent }}
-          </td>
-          <td class="mdl-data-table__cell--non-numeric">{{s.requestStartTime | date:'short'}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{s.requestTime | mstoDuration}}</td>
-          <td class="mdl-data-table__cell--non-numeric">{{s.totalBytes | byteFormat}}</td>
-
-        </tr>
-        <tfoot>
-
-        </tfoot>
-      </table>
     </div>
-    
-    <mat-paginator [hidden]="length <= pageSize"
-                   [pageSize]="pageSize"
-                   hidePageSize="true"
-                   (page)="change($event)"
-                   [length]="length"
-    >
-    </mat-paginator>
-
-  </article>
-
-  <!--
-  <a href="javascript:;" (click)="getTestSuiteResponsesByRunId()"> View Logs </a>
-
-  <div class="box box-default table-box mdl-shadow--2dp">
-      <div class="item-card card__horizontal1" *ngFor="let item of list">
-          <div class="card__body card-white">
-              <div class="card__title">
-                  <h4>{{item.testSuite}}</h4>
-                  <h6>Test-Suite</h6>
-              </div>
-              <div class="card__price">
-                  <span>Pass: {{item.totalPassed}}</span>
-                  <span class="type--strikethrough">Fail: {{item.totalFailed}}</span>
-                  <span>Time: {{item.requestTime}}</span>
-              </div>
-              <div class="divider divider-solid divider-lg"></div>
-              <p class="card__desc" style="white-space: pre;">{{item.logs}}</p>
-          </div>
+    <div class="col-md-2"></div>
+    <br />
+    <div class="col-md-6">
+      <div *ngIf="chart2">
+        <canvas id="canvas2">{{ chart2 }}</canvas>
       </div>
+    </div>
+    <div class="col-md-6">
+
+      <div *ngIf="chart3">
+        <canvas id="canvas3">{{ chart3 }}</canvas>
+      </div>
+    </div>
   </div>
-  -->
+  <br />
+
+  <div class="mat-elevation-z8 box-default">
+    <mat-table [dataSource]="dataSource" matSort matSortActive="no" matSortDisableClear matSortDirection="desc">
+      <ng-container matColumnDef="no">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> No. </mat-header-cell>
+        <mat-cell *matCellDef="let suites"> #{{suites.runNo}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+        <mat-cell *matCellDef="let suites">
+          <span class="text-success"> Passed: {{suites.totalPassed}} <span class="text-danger" *ngIf="suites.failed != 0">&nbsp;&nbsp;
+              Failed: {{suites.totalFailed}}</span></span>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="region">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Region </mat-header-cell>
+        <mat-cell *matCellDef="let suites"> {{suites.region}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="success">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Success </mat-header-cell>
+        <mat-cell *matCellDef="let suites"> {{ ( (suites.totalPassed ) / (suites.totalPassed + suites.totalFailed) ) |
+          percent }} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="date/time">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Date/Time </mat-header-cell>
+        <mat-cell *matCellDef="let suites"> {{suites.requestStartTime | date:'short'}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="timeTaken">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Time Taken </mat-header-cell>
+        <mat-cell *matCellDef="let suites"> {{suites.requestTime | mstoDuration}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="data">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Data </mat-header-cell>
+        <mat-cell *matCellDef="let suites"> {{suites.totalBytes | byteFormat}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+      [length]="length">
+    </mat-paginator>
+  </div>
+
 </section>
