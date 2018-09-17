@@ -122,9 +122,9 @@ getRunById() {
         // console.log(totalData[i]['totalFailed'],i)
         // console.log(tp,tf)
 
-        success.push(tp[i] / (tp[i] + tf[i]));
+        success.push(100 * (tp[i] / (tp[i] + tf[i])));
         // runno.push(i['runNo']);
-        console.log(success);
+        //console.log(success);
      }
      //End
 
@@ -222,7 +222,7 @@ getRunById() {
           datasets: [
             {
               data: success,
-              label: 'Success',
+              label: 'Success (%)',
               borderColor: this.config.success,
               backgroundColor: this.config.success,
               fill: false,
