@@ -6,7 +6,7 @@ import { ProjectService } from '../../../services/project.service';
 import { Base } from '../../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 import { Handler } from '../../dialogs/handler/handler';
-import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
+import {VERSION, MatDialog, MatDialogRef, MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
 import { AdvRunComponent } from '../../dialogs/adv-run/adv-run.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
@@ -29,6 +29,12 @@ export class JobslistComponent implements OnInit {
   //private _clockSubscription: Subscription;
   notificationFlag :boolean;
   autoBugMngmnt :boolean=false ;
+
+  displayedColumns : string[] = ['name', 'env', 'bot-region', 'bug-management', 'notifications','next-fire','jobsNoHeader'];
+  dataSource = null;
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
 
   constructor(private jobsService: JobsService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
@@ -74,6 +80,8 @@ export class JobslistComponent implements OnInit {
         return;
       }
       this.jobs = results['data'];
+      this.dataSource = new MatTableDataSource(this.jobs);
+      this.dataSource.sort = this.sort
       this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
@@ -83,7 +91,7 @@ export class JobslistComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.list(this.id);

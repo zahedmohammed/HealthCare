@@ -24,9 +24,9 @@
     </nav>
     <br />
 
-    <article class="article">
+    <article class="article1">
 
-        <div class="box box-default">
+        <div class="box1 box-default">
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-10">
@@ -39,70 +39,147 @@
                         <p class="text-muted float-right">Total ({{length}})</p>
                     </div>
                 </div>
-                <div class="box box-default table-box mdl-shadow--2dp">
-                    <table class="mdl-data-table">
-                        <thead>
-                            <tr>
-                                <th class="mdl-data-table__cell--non-numeric">Name</th>
-                                <th class="mdl-data-table__cell--non-numeric">Env</th>
-                                <th class="mdl-data-table__cell--non-numeric">Bot-Region</th>
-                                <th class="mdl-data-table__cell--non-numeric">Bug Management</th>
-                                <th class="mdl-data-table__cell--non-numeric">Notifications</th>
+                <!--<div class="box box-default table-box mdl-shadow&#45;&#45;2dp">-->
+                    <!--<table class="mdl-data-table">-->
+                        <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Name</th>-->
+                                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Env</th>-->
+                                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Bot-Region</th>-->
+                                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Bug Management</th>-->
+                                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Notifications</th>-->
 
-                                <th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
-                                <th class="mdl-data-table__cell--non-numeric"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let job of jobs">
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs', job.id, 'edit']">{{job.name}}</a></td>
-                                <td class="mdl-data-table__cell--non-numeric">{{job.environment?.name}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{job.regions}}</td>
-                                <!-- Auto bug -->
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    <div *ngIf="job.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
-                                    <div *ngIf="!job.issueTrackerToDo" class="ml-4">
-                                        <!--
-                                        <mat-checkbox [checked]="true" [disabled]="true">
-                                        </mat-checkbox>
+                                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Next-Fire</th>-->
+                                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric"></th>-->
+                            <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                            <!--<tr *ngFor="let job of jobs">-->
+                                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
+                                    <!--<a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs', job.id, 'edit']">{{job.name}}</a></td>-->
+                                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{job.environment?.name}}</td>-->
+                                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{job.regions}}</td>-->
+                                <!--&lt;!&ndash; Auto bug &ndash;&gt;-->
+                                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
+                                    <!--<div *ngIf="job.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>-->
+                                    <!--<div *ngIf="!job.issueTrackerToDo" class="ml-4">-->
+                                        <!--&lt;!&ndash;-->
+                                        <!--<mat-checkbox [checked]="true" [disabled]="true">-->
+                                        <!--</mat-checkbox>-->
+<!--&ndash;&gt;-->
+                                        <!--<span class="text-danger">{{job.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>&nbsp;<span-->
+                                            <!--class="text-success">{{job.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>-->
+                                    <!--</div>-->
+                                <!--</td>-->
+                                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
+                                    <!--<div class="ml-4">-->
+                                        <!--<mat-checkbox [checked]="true" *ngIf="!job.notificationToDo" [disabled]="true"></mat-checkbox>-->
+                                    <!--</div>-->
+                                    <!--<div *ngIf="job.notificationToDo" class="ml-3">-->
+                                        <!--{{"TODO"}}-->
+                                    <!--</div>-->
+                                <!--</td>-->
+
+                                <!--&lt;!&ndash;<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>&ndash;&gt;-->
+                                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{job.nextFire | date:'short'}}</td>-->
+                                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
+                                    <!--<button mat-button color="primary" (click)="advRun(job)" class="btn-w-md"><i class="material-icons">play_circle_outline</i>-->
+                                        <!--&nbsp; Run &nbsp;-->
+                                    <!--</button>-->
+                                    <!--&nbsp;&nbsp;<a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']"-->
+                                        <!--matTooltip="history" matTooltipPosition="above">-->
+                                        <!--History</a>&nbsp;&nbsp;-->
+                                    <!--<button mat-button color="primary" (click)="openDialog()" class="btn-w-md"><i class="material-icons">all_inclusive</i>-->
+                                        <!--&nbsp; CICD &nbsp;-->
+                                    <!--</button>-->
+
+                                <!--</td>-->
+                            <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+                <div class="mat-elevation-z8 box-default">
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="desc">
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" [routerLink]="['/app/projects', id, 'jobs', element.id, 'edit']">
+                                <a href="javascript:;">{{element.name}}</a></mat-cell>
+                        </ng-container>
+                        <!--Env Name-->
+                        <ng-container matColumnDef="env">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Env</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.environment?.name}}</mat-cell>
+                        </ng-container>
+
+                        <!--Bot Region-->
+                        <ng-container matColumnDef="bot-region">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Bot-Region</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.regions}}</mat-cell>
+                        </ng-container>
+
+                        <!--Bug Management-->
+                        <ng-container matColumnDef="bug-management">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Bug Management</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <div *ngIf="element.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
+                                <div *ngIf="!element.issueTrackerToDo" class="ml-4">
+                                    <!--
+                                    <mat-checkbox [checked]="true" [disabled]="true">
+                                    </mat-checkbox>
 -->
-                                        <span class="text-danger">{{job.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>&nbsp;<span
-                                            class="text-success">{{job.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>
-                                    </div>
-                                </td>
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    <div class="ml-4">
-                                        <mat-checkbox [checked]="true" *ngIf="!job.notificationToDo" [disabled]="true"></mat-checkbox>
-                                    </div>
-                                    <div *ngIf="job.notificationToDo" class="ml-3">
-                                        {{"TODO"}}
-                                    </div>
-                                </td>
+                                    <span class="text-danger">{{element.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>&nbsp;<span
+                                        class="text-success">{{element.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>
+                                </div>
 
-                                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>-->
-                                <td class="mdl-data-table__cell--non-numeric">{{job.nextFire | date:'short'}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    <button mat-button color="primary" (click)="advRun(job)" class="btn-w-md"><i class="material-icons">play_circle_outline</i>
-                                        &nbsp; Run &nbsp;
-                                    </button>
-                                    &nbsp;&nbsp;<a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']"
-                                        matTooltip="history" matTooltipPosition="above">
-                                        History</a>&nbsp;&nbsp;
-                                    <button mat-button color="primary" (click)="openDialog()" class="btn-w-md"><i class="material-icons">all_inclusive</i>
-                                        &nbsp; CICD &nbsp;
-                                    </button>
+                            </mat-cell>
+                        </ng-container>
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <!--Notification-->
+                        <ng-container matColumnDef="notifications">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Notifications</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <div class="ml-4">
+                                    <mat-checkbox [checked]="true" *ngIf="!element.notificationToDo" [disabled]="true"></mat-checkbox>
+                                </div>
+                                <div *ngIf="element.notificationToDo" class="ml-3">
+                                    {{"TODO"}}
+                                </div>
+
+                            </mat-cell>
+                        </ng-container>
+
+                        <!--Next Fire-->
+                        <ng-container matColumnDef="next-fire">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Next-Fire</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.nextFire | date:'short'}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="jobsNoHeader">
+                         <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                         <mat-cell *matCellDef="let element" >
+                        <button mat-button color="primary" (click)="advRun(element)" ><i class="material-icons">play_circle_outline</i>
+                            &nbsp; Run &nbsp;
+                        </button>
+                        &nbsp;&nbsp;<a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , element.id, 'runs']"
+                                       matTooltip="history" matTooltipPosition="above">
+                        History</a>&nbsp;&nbsp;
+                        <button mat-button color="primary" (click)="openDialog()"><i class="material-icons">all_inclusive</i>
+                            &nbsp; CICD &nbsp;
+                        </button>
+                            </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+                                   [length]="length">
+                    </mat-paginator>
                 </div>
             </div>
         </div>
 
-        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-            [length]="length">
-        </mat-paginator>
+
     </article>
 </section>

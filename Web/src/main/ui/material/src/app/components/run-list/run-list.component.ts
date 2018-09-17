@@ -8,6 +8,7 @@ import { Handler } from '../dialogs/handler/handler';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
+import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
 
 
 @Component({
@@ -28,6 +29,13 @@ export class RunListComponent implements OnInit {
   job: Base = new Base();
   showSpinner: boolean = false;
   private _clockSubscription: Subscription;
+  displayedColumns: string[] = ['region', 'date', 'passfail', 'success', 'data','totaltime','bugs','bugs2','status','no'];
+  dataSource = null;
+
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute, private handler: Handler) {
 
   }
@@ -82,6 +90,8 @@ export class RunListComponent implements OnInit {
       }
       this.list = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.list);
+      this.dataSource.sort = this.sort;
        this.times = 0;
        for (var  i = 0; i < this.list.length; i++){
            this.times += this.list[i].task.timeSaved;
@@ -96,7 +106,7 @@ export class RunListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.getRunByJob(this.jobId);
