@@ -11,6 +11,7 @@ import { AdvRunComponent } from '../../dialogs/adv-run/adv-run.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
+import { CicdIntegrationComponent } from '../../dialogs/cicd-integration/cicd-integration.component';
 
 @Component({
   selector: 'app-jobs-list',
@@ -118,4 +119,13 @@ export class JobslistComponent implements OnInit {
   //   if(obj)
   //     this.notificationFlag=obj;
   // }
+  openDialog(){
+    const dialogRef = this.dialog.open(CicdIntegrationComponent, {
+        width:'800px',
+        data: this.id
+    });
+     dialogRef.afterClosed().subscribe(result => {
+      //this.router.navigate(['/app/projects/' , job.project.id,  'jobs', job.id, 'runs']);
+    });
+  }
 }
