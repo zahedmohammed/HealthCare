@@ -99,6 +99,7 @@ getRunById() {
         return;
       }
       this.suites = results['data'];
+      this.length = results['totalElements'];
       //console.log('results -> ', results);
       
      //Get data - Start
