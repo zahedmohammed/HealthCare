@@ -94,6 +94,23 @@ public class RBACGenerator extends AbstractGenerator {
             list.addAll(build(op, path_, role + "_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role));
         });
 
+
+        // TS for allowed Roles
+        if (CollectionUtils.isEmpty(assertions)) {
+            assertions = Arrays.asList("@StatusCode == 200");
+        }
+
+        String allowed_roles = null;
+        if (!StringUtils.isEmpty(match.getDenyRoles())) {
+            allowed_roles = match.getAllowRoles();
+        }
+
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(allowed_roles)) {
+            Arrays.stream(allowed_roles.split(", ")).forEach(role -> {
+                list.addAll(build(op, path_, role + "_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role));
+            });
+        }
+
         return list;
     }
 }

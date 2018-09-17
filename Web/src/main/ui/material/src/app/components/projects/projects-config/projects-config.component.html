@@ -154,6 +154,15 @@
                                                     <label for="name" class="col-md-0 control-label"></label>
                                                     <div class="col-md-5">
                                                         <mat-input-container class="full-width">
+                                                            <input [(ngModel)]="m.allowRoles" [ngModelOptions]="{standalone: true}"
+                                                                   matInput placeholder="Access allowed to">
+                                                        </mat-input-container>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="name" class="col-md-0 control-label"></label>
+                                                    <div class="col-md-5">
+                                                        <mat-input-container class="full-width">
                                                             <input [(ngModel)]="m.denyRoles" [ngModelOptions]="{standalone: true}"
                                                                 matInput placeholder="Access denied to">
                                                         </mat-input-container>

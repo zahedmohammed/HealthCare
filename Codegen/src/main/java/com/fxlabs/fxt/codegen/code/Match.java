@@ -18,6 +18,7 @@ public class Match implements Serializable {
     private String value = "999";
     private String pathPatterns;
     private String denyRoles;
+    private String allowRoles;
     private String methods;
     private String resourceSamples;
     private String queryParams;

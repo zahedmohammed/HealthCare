@@ -19,22 +19,22 @@ public class AutoCodeConfigServiceUtil {
 
         List<AutoCodeGenerator> autoCodeGenerators = new ArrayList<>();
 
-        autoCodeGenerators.add(getNoParamsGet());//1
-        autoCodeGenerators.add(getSLA());//2
-        autoCodeGenerators.add(getAnonymous_invalid());//3
-        autoCodeGenerators.add(getAuth_invalid());//4
-        autoCodeGenerators.add(getRbac());//5
-        autoCodeGenerators.add(getDdos());//6
-        autoCodeGenerators.add(getXss_injection());//8
+        autoCodeGenerators.add(getNoParamsGet(10));
+        autoCodeGenerators.add(getSLA(20));
+        autoCodeGenerators.add(getAnonymous_invalid(30));
+        autoCodeGenerators.add(getAuth_invalid(40));
+        autoCodeGenerators.add(getRbac(50));
+        autoCodeGenerators.add(getDdos(60));
+        autoCodeGenerators.add(getXss_injection(70));
         // autoCodeGenerators.add(getSql_injection());
-        autoCodeGenerators.add(getSql_injection_timebound());//7
-        autoCodeGenerators.add(getLog_forging());//9
-        autoCodeGenerators.add(getInvalid_datatype());//10
-        autoCodeGenerators.add(getSpecial_chars());//11
-        autoCodeGenerators.add(getNull_value());//12
-        autoCodeGenerators.add(getEmpty_value());//13
-        autoCodeGenerators.add(getNegagtive_Number());//15
-        autoCodeGenerators.add(getCreate());//14
+        autoCodeGenerators.add(getSql_injection_timebound(80));
+        autoCodeGenerators.add(getLog_forging(90));
+        autoCodeGenerators.add(getInvalid_datatype(100));
+        autoCodeGenerators.add(getSpecial_chars(110));
+        autoCodeGenerators.add(getNull_value(120));
+        autoCodeGenerators.add(getEmpty_value(130));
+        autoCodeGenerators.add(getNegagtive_Number(140));
+        autoCodeGenerators.add(getCreate(150));
 
         Collections.sort(autoCodeGenerators,
                 (l1, l2) -> l1.getSequenceOrder()> l2.getSequenceOrder()?1:-1);
@@ -59,7 +59,7 @@ public class AutoCodeConfigServiceUtil {
         return projectImports;
     }
 
-    private static AutoCodeGenerator getCreate() {
+    private static AutoCodeGenerator getCreate(int seqOrder) {
 
         AutoCodeGenerator create = new AutoCodeGenerator();
         create.setInactive(false);
@@ -76,13 +76,13 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 401");
         assertions.add("@StatusCode != 404");
         assertions.add("@StatusCode != 500");
-        create.setSequenceOrder(15);
+        create.setSequenceOrder(seqOrder);
         create.setAssertions(assertions);
 
         return create;
     }
 
-    private static AutoCodeGenerator getEmpty_value() {
+    private static AutoCodeGenerator getEmpty_value(int seqOrder) {
 
         AutoCodeGenerator empty_value = new AutoCodeGenerator();
         empty_value.setInactive(false);
@@ -101,11 +101,11 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
         assertions.add("@StatusCode != 500");
         empty_value.setAssertions(assertions);
-        empty_value.setSequenceOrder(13);
+        empty_value.setSequenceOrder(seqOrder);
         return empty_value;
     }
 
-    private static AutoCodeGenerator getNegagtive_Number() {
+    private static AutoCodeGenerator getNegagtive_Number(int seqOrder) {
 
         AutoCodeGenerator negative_number = new AutoCodeGenerator();
         negative_number.setInactive(false);
@@ -124,11 +124,11 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
         //  assertions.add("@StatusCode != 500");
         negative_number.setAssertions(assertions);
-        negative_number.setSequenceOrder(14);
+        negative_number.setSequenceOrder(seqOrder);
         return negative_number;
     }
 
-    private static AutoCodeGenerator getNull_value() {
+    private static AutoCodeGenerator getNull_value(int seqOrder) {
         AutoCodeGenerator null_value = new AutoCodeGenerator();
         null_value.setInactive(false);
 
@@ -146,11 +146,11 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
         assertions.add("@StatusCode != 500");
         null_value.setAssertions(assertions);
-        null_value.setSequenceOrder(12);
+        null_value.setSequenceOrder(seqOrder);
         return null_value;
     }
 
-    private static AutoCodeGenerator getSpecial_chars() {
+    private static AutoCodeGenerator getSpecial_chars(int seqOrder) {
         AutoCodeGenerator special_chars = new AutoCodeGenerator();
         special_chars.setInactive(false);
         special_chars.setSeverity(TestSuiteSeverity.Critical);
@@ -167,11 +167,11 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
         assertions.add("@StatusCode != 500");
         special_chars.setAssertions(assertions);
-        special_chars.setSequenceOrder(11);
+        special_chars.setSequenceOrder(seqOrder);
         return special_chars;
     }
 
-    private static AutoCodeGenerator getInvalid_datatype() {
+    private static AutoCodeGenerator getInvalid_datatype(int seqOrder) {
         AutoCodeGenerator invalid_datatype = new AutoCodeGenerator();
         invalid_datatype.setInactive(false);
 
@@ -189,11 +189,11 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
         //  assertions.add("@StatusCode != 500");
         invalid_datatype.setAssertions(assertions);
-        invalid_datatype.setSequenceOrder(10);
+        invalid_datatype.setSequenceOrder(seqOrder);
         return invalid_datatype;
     }
 
-    private static AutoCodeGenerator getRbac() {
+    private static AutoCodeGenerator getRbac(int seqOrder) {
         AutoCodeGenerator rbac = new AutoCodeGenerator();
         rbac.setInactive(false);
 
@@ -215,6 +215,7 @@ public class AutoCodeConfigServiceUtil {
         admin.setPathPatterns("/api/v1/orgs/**, /api/v1/accounts/**");
         admin.setMethods("Post, Put, Delete");
         admin.setDenyRoles("Writer, Reader");
+        admin.setAllowRoles("Admin");
         matchesList.add(admin);
 
         AutoCodeGeneratorMatches writer = new AutoCodeGeneratorMatches();
@@ -222,6 +223,7 @@ public class AutoCodeConfigServiceUtil {
         writer.setPathPatterns("/api/v1/projects/**, /api/v1/regions/**");
         writer.setMethods("Post, Put, Delete");
         writer.setDenyRoles("Reader");
+        writer.setAllowRoles("Writer");
         matchesList.add(writer);
 
         AutoCodeGeneratorMatches collaborator = new AutoCodeGeneratorMatches();
@@ -229,6 +231,7 @@ public class AutoCodeConfigServiceUtil {
         collaborator.setPathPatterns("/api/v1/projects/**");
         collaborator.setMethods("Post, Delete");
         collaborator.setDenyRoles("Collaborator");
+        collaborator.setAllowRoles("Reader, Writer");
         matchesList.add(collaborator);
 
         AutoCodeGeneratorMatches reader = new AutoCodeGeneratorMatches();
@@ -236,14 +239,15 @@ public class AutoCodeConfigServiceUtil {
         reader.setPathPatterns("/api/v1/**");
         reader.setMethods("Get, Post, Put, Delete");
         reader.setDenyRoles("Other");
+        reader.setAllowRoles("Reader, Writer");
         matchesList.add(reader);
 
         rbac.setMatches(matchesList);
-        rbac.setSequenceOrder(5);
+        rbac.setSequenceOrder(seqOrder);
         return rbac;
     }
 
-    private static AutoCodeGenerator getLog_forging() {
+    private static AutoCodeGenerator getLog_forging(int seqOrder) {
         AutoCodeGenerator log_Forging = new AutoCodeGenerator();
         log_Forging.setInactive(false);
         log_Forging.setSeverity(TestSuiteSeverity.Critical);
@@ -261,11 +265,11 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
         assertions.add("@StatusCode != 500");
         log_Forging.setAssertions(assertions);
-        log_Forging.setSequenceOrder(9);
+        log_Forging.setSequenceOrder(seqOrder);
         return log_Forging;
     }
 
-    private static AutoCodeGenerator getSql_injection_timebound() {
+    private static AutoCodeGenerator getSql_injection_timebound(int seqOrder) {
         AutoCodeGenerator sql_injection_timebound = new AutoCodeGenerator();
 
         sql_injection_timebound.setInactive(false);
@@ -295,7 +299,7 @@ public class AutoCodeConfigServiceUtil {
 
         List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
         sql_injection_timebound.setMatches(matchesList);
-        sql_injection_timebound.setSequenceOrder(7);
+        sql_injection_timebound.setSequenceOrder(seqOrder);
         return sql_injection_timebound;
     }
 
@@ -321,7 +325,7 @@ public class AutoCodeConfigServiceUtil {
 //        return sql_injection;
 //    }
 
-    private static AutoCodeGenerator getXss_injection() {
+    private static AutoCodeGenerator getXss_injection(int seqOrder) {
         AutoCodeGenerator XSS_Injection = new AutoCodeGenerator();
         XSS_Injection.setInactive(false);
         XSS_Injection.setSeverity(TestSuiteSeverity.Critical);
@@ -337,12 +341,12 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
         assertions.add("@StatusCode != 500");
         XSS_Injection.setAssertions(assertions);
-        XSS_Injection.setSequenceOrder(8);
+        XSS_Injection.setSequenceOrder(seqOrder);
 
         return XSS_Injection;
     }
 
-    private static AutoCodeGenerator getDdos() {
+    private static AutoCodeGenerator getDdos(int seqOrder) {
 
         AutoCodeGenerator ddos = new AutoCodeGenerator();
         ddos.setInactive(false);
@@ -365,11 +369,11 @@ public class AutoCodeConfigServiceUtil {
         AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
         match.setName("pageSize, page_size, maxResults, max_results");
         ddos.setMatches(Arrays.asList(match));
-        ddos.setSequenceOrder(6);
+        ddos.setSequenceOrder(seqOrder);
         return ddos;
     }
 
-    private static AutoCodeGenerator getAuth_invalid() {
+    private static AutoCodeGenerator getAuth_invalid(int seqOrder) {
         AutoCodeGenerator auth_invalid = new AutoCodeGenerator();
         auth_invalid.setInactive(false);
 
@@ -385,11 +389,11 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 200");
         auth_invalid.setAssertions(assertions);
 
-        auth_invalid.setSequenceOrder(4);
+        auth_invalid.setSequenceOrder(seqOrder);
         return auth_invalid;
     }
 
-    private static AutoCodeGenerator getAnonymous_invalid() {
+    private static AutoCodeGenerator getAnonymous_invalid(int seqOrder) {
         AutoCodeGenerator anonymous_invalid = new AutoCodeGenerator();
         anonymous_invalid.setInactive(false);
 
@@ -403,12 +407,12 @@ public class AutoCodeConfigServiceUtil {
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
-        anonymous_invalid.setSequenceOrder(3);
+        anonymous_invalid.setSequenceOrder(seqOrder);
         anonymous_invalid.setAssertions(assertions);
         return anonymous_invalid;
     }
 
-    private static AutoCodeGenerator getNoParamsGet() {
+    private static AutoCodeGenerator getNoParamsGet(int seqOrder) {
         AutoCodeGenerator no_params_get = new AutoCodeGenerator();
         no_params_get.setInactive(false);
 
@@ -424,11 +428,11 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode == 200");
 
         no_params_get.setAssertions(assertions);
-        no_params_get.setSequenceOrder(1);
+        no_params_get.setSequenceOrder(seqOrder);
         return no_params_get;
     }
 
-    private static AutoCodeGenerator getSLA() {
+    private static AutoCodeGenerator getSLA(int seqOrder) {
         AutoCodeGenerator sla = new AutoCodeGenerator();
         sla.setInactive(false);
 
@@ -445,7 +449,7 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 404");
 
         sla.setAssertions(assertions);
-        sla.setSequenceOrder(2);
+        sla.setSequenceOrder(seqOrder);
         List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
 
         AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();

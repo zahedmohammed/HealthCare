@@ -23,6 +23,7 @@ export class Matches{
     pathPatterns: string;
     methods: string;
     denyRoles: string;
+    allowRoles: string;
     sample: string;
     queryParams: string;
     bodyProperties: string;
