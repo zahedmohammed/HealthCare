@@ -110,12 +110,21 @@ getRunById() {
      let tb:any = [];
      let rt:any = [];
      let runno:any = [];
+     let success:any = [];
      for (let i = totalData.length-1; i >= 0; i--){
-        tp.push(totalData[i]['totalPassed']);
-        tf.push(totalData[i]['totalFailed']);
-        tb.push(totalData[i]['totalBytes']);
-        rt.push(totalData[i]['requestTime']/1000);
+      //( (s.totalPassed ) / (s.totalPassed + s.totalFailed) )
+        tp[i]=totalData[i]['totalPassed'];
+        tf[i]=totalData[i]['totalFailed'];
+        tb[i]=(totalData[i]['totalBytes']);
+        rt[i]=(totalData[i]['requestTime']/1000);
+        // console.log(tp[i],tf[i])
+        // console.log(totalData[i]['totalPassed'],i)
+        // console.log(totalData[i]['totalFailed'],i)
+        // console.log(tp,tf)
+
+        success.push(tp[i] / (tp[i] + tf[i]));
         // runno.push(i['runNo']);
+        console.log(success);
      }
      //End
 
@@ -132,7 +141,7 @@ getRunById() {
       },
       title: {
         display: true,
-        text: 'Passed / Failed Statistics'
+        text: 'Success Statistics'
       },
       scales: {
         xAxes: [{
@@ -158,7 +167,7 @@ getRunById() {
       },
       title: {
         display: true,
-        text: 'Data (in bytes)'
+        text: 'Data (in Bytes)'
       },
       scales: {
         xAxes: [{
@@ -184,7 +193,7 @@ getRunById() {
       },
       title: {
         display: true,
-        text: 'Time Taken (in milli seconds)'
+        text: 'Time Taken (in Seconds)'
       },
       scales: {
         xAxes: [{
@@ -212,23 +221,23 @@ getRunById() {
           labels: runno,
           datasets: [
             {
-              data: tf,
-              label: 'Failed',
-              borderColor: this.config.danger,
-              backgroundColor: this.config.danger,
-              fill: false,
-              pointRadius: 4,
-              pointHoverRadius: 5
-            },
-            {
-              data: tp,
-              label: 'Passed',          
+              data: success,
+              label: 'Success',
               borderColor: this.config.success,
               backgroundColor: this.config.success,
               fill: false,
               pointRadius: 4,
-					    pointHoverRadius: 5
-            }
+              pointHoverRadius: 5
+            },
+            // {
+            //   data: tp,
+            //   label: 'Passed',          
+            //   borderColor: this.config.success,
+            //   backgroundColor: this.config.success,
+            //   fill: false,
+            //   pointRadius: 4,
+					  //   pointHoverRadius: 5
+            // }
           ]
         },
         options: graph1Options
