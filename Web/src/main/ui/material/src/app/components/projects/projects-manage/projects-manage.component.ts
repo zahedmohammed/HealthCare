@@ -124,8 +124,8 @@ export class ProjectsManageComponent implements OnInit {
     });
   }
 
-  save(matStepper) {
-    this.matStepper = matStepper;
+  save() {
+    // this.matStepper = matStepper;
     if (this.project.id) {
       this.update();
     } else {
