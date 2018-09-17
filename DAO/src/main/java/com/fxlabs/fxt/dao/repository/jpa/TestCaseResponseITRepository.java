@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public interface TestCaseResponseITRepository extends JpaRepository<TestCaseResp
 
     Long countByStatusAndTestCaseResponseIssueTrackerIdLike(String status, String itId);
 
-    @Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.testCaseResponseIssueTrackerId LIKE ?1")
-    Long findSumByTestCaseResponseIssueTrackerIdLike(String itId);
+    @Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.testCaseResponseIssueTrackerId LIKE ?1 and iT.modifiedDate>?2")
+    Long findSumByTestCaseResponseIssueTrackerIdLike(String itId, Date modified_date);
 
 }

@@ -414,7 +414,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         projectsResponse.getData().stream().forEach(p -> {
 
             String itId = p.getName() + "//" + "%";
-            Long count = testCaseResponseITRepository.findSumByTestCaseResponseIssueTrackerIdLike(itId);
+            Long count = testCaseResponseITRepository.findSumByTestCaseResponseIssueTrackerIdLike(itId,getCurrentMonthStartDate());
             logger.info("Check bug count {}", count);
 
             if (count != null) {
