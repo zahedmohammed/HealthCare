@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 import { JobsService } from '../../services/jobs.service';
 import { RunService } from '../../services/run.service';
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
 import {SnackbarService} from '../../services/snackbar.service';
-
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-run-detail',
@@ -35,7 +35,7 @@ export class RunDetailComponent implements OnInit {
   success = 0;
   length = 0;
   page = 0;
-  pageSize = 25;
+  pageSize = 10;
   private _clockSubscription: Subscription;
   project: Base = new Base();
   job: Base = new Base();
@@ -49,6 +49,11 @@ export class RunDetailComponent implements OnInit {
     totalTimeSaved = 0;
     disableButtonNext : boolean = false
     disableButtonPrev : boolean = false
+    displayedColumns: string[] = ['suite', 'category', 'severity', 'status', 'data', 'time', 'analytics'];
+    dataSource = null;
+  
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
 
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
     private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private handler: Handler,  private snackbarService: SnackbarService) { }
@@ -160,6 +165,8 @@ export class RunDetailComponent implements OnInit {
       }
       this.suites = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.suites);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -178,6 +185,8 @@ export class RunDetailComponent implements OnInit {
       }
       this.suites = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.suites);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

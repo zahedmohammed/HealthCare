@@ -2,19 +2,18 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"> {{project.name}} </a>
-        &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a>
-        &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">{{job.name}}</a>
-        &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">Runs</a>
-        &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;{{run.runId}}
+                <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']"> {{project.name}} </a>
+                &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
+                <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs</a>
+                &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
+                <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">{{job.name}}</a>
+                &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;
+                <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs', job.id, 'runs']">Runs</a>
+                &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span>
+                &nbsp;{{run.runId}}
             </section>
         </article>
     </div>
-
-
 
 </div>
 <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
@@ -26,10 +25,9 @@
                     <div class="col-md-4">
                         <h4>Status:
                             <span *ngIf="run.task.status == 'COMPLETED'" class="text-success">{{run.task.status}}</span>
-                            <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'"
-                                  class="text-danger">{{run.task.status}}</span>
-                            <span *ngIf="run.task.status == 'PROCESSING'" class="text-warning"><i
-                                    class="fa fa-spinner fa-spin" aria-hidden="true"></i> {{run.task.status}}</span>
+                            <span *ngIf="run.task.status != 'COMPLETED' && run.task.status != 'PROCESSING'" class="text-danger">{{run.task.status}}</span>
+                            <span *ngIf="run.task.status == 'PROCESSING'" class="text-warning"><i class="fa fa-spinner fa-spin"
+                                    aria-hidden="true"></i> {{run.task.status}}</span>
                         </h4>
                         <h6>{{run.task.description}}</h6>
                         <h6>Region: {{run.regions}}</h6>
@@ -42,10 +40,10 @@
                             Re-Run &nbsp;
                         </button>
 
-                        <button mat-raised-button class="btn-w-sm text-primary float-right"
-                                (click)="nextRun();" [disabled]="disableButtonNext" >Next</button>
-                        <button mat-raised-button class="btn-w-sm text-primary float-right"
-                                (click)="prevRun();" [disabled]="disableButtonPrev" >Previous</button>
+                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="nextRun();"
+                            [disabled]="disableButtonNext">Next</button>
+                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="prevRun();"
+                            [disabled]="disableButtonPrev">Previous</button>
                         &nbsp;
                         <div *ngIf="run.task.status == 'PROCESSING'">
                             <button mat-raised-button class="btn-w-sm text-warning float-right" (click)="cancel();">
@@ -56,12 +54,8 @@
                 </div>
             </div>
         </div>
-
-    <div>
-    
-     </div>
-
-
+        <div>
+        </div>
     </div>
 
     <div class="no-breadcrumbs page-dashboard">
@@ -112,14 +106,11 @@
                         <i class="fa fa-times-circle color-danger"></i>
                     </div>
                     <div class="box-info">
-                        <span>Bugs</span>
+                        <span>Critical</span>
                     </div>
                     <div class="box-bottom text-muted">
-                        <!--<small class="text-success">{{run.stats['Critical_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['Critical_Failed'] || 0}}</small>-->
-                        <small class="text-danger">{{run.task.issuesLogged || 0}}<span class="text-small"> New </span></small>
-                        <small class="text-success">{{run.task.issuesClosed || 0}}<span class="text-small"> Closed </span></small>
-                        <!--<small class="text-danger">{{run.task.totalOpenIssues || 0}}<span class="text-small"> Open</span></small>-->
-
+                        <small class="text-success">{{run.stats['Critical_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['Critical_Failed']
+                            || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -162,7 +153,8 @@
                         <span>SQL</span>
                     </div>
                     <div class="box-bottom">
-                        <small class="text-success">{{run.stats['SQL_Injection_Passed'] || 0}}</small>  / <small class="text-danger">{{run.stats['SQL_Injection_Failed'] || 0}}</small>
+                        <small class="text-success">{{run.stats['SQL_Injection_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['SQL_Injection_Failed']
+                            || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -188,7 +180,8 @@
                         <span>XSS</span>
                     </div>
                     <div class="box-bottom">
-                        <small class="text-success">{{run.stats['XSS_Injection_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['XSS_Injection_Failed'] || 0}}</small>
+                        <small class="text-success">{{run.stats['XSS_Injection_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['XSS_Injection_Failed']
+                            || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -201,7 +194,8 @@
                         <span>DDoS</span>
                     </div>
                     <div class="box-bottom">
-                        <small class="text-success">{{run.stats['DDOS_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['DDOS_Failed'] || 0}}</small>
+                        <small class="text-success">{{run.stats['DDOS_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['DDOS_Failed']
+                            || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -214,7 +208,8 @@
                         <span>Invalid Auth</span>
                     </div>
                     <div class="box-bottom">
-                        <small class="text-success">{{run.stats['UnSecured_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['UnSecured_Failed'] || 0}}</small>
+                        <small class="text-success">{{run.stats['UnSecured_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['UnSecured_Failed']
+                            || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -227,7 +222,8 @@
                         <span>Functional</span>
                     </div>
                     <div class="box-bottom">
-                        <small class="text-success">{{run.stats['Functional_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['Functional_Passed'] || 0}}</small>
+                        <small class="text-success">{{run.stats['Functional_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['Functional_Passed']
+                            || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -236,8 +232,8 @@
         <div class="row">
             <div class="col-md-4">
                 <mat-input-container class="full-width">
-                    <input [(ngModel)]="keyword" name="search" id="search"
-                           matInput type="search" placeholder="Search suites..." (keyup.enter)="search()">
+                    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search suites..."
+                        (keyup.enter)="search()">
                 </mat-input-container>
             </div>
             <div class="col-md-4">
@@ -250,96 +246,64 @@
             </div>
             <div class="col-md-4">
                 <span class="pull-right">Bugs:
-                        <span class="text-danger"><b>{{run.task.issuesLogged || 0}}</b></span>&nbsp;<span class="text-danger small">New</span>&nbsp;
-                        <span class="text-success"><b>{{run.task.issuesClosed || 0}}</b></span>&nbsp;<span class="text-success small">Closed</span>
-                        <span class="text-danger"><b>{{run.task.totalOpenIssues || 0}}</b></span>&nbsp;<span class="text-danger small">Open</span>
+                    <span class="text-danger"><b>{{run.task.issuesLogged || 0}}</b></span>&nbsp;<span class="text-danger small">New</span>&nbsp;
+                    <span class="text-success"><b>{{run.task.issuesClosed || 0}}</b></span>&nbsp;<span class="text-success small">Closed</span>
+                    <span class="text-danger"><b>{{run.task.totalOpenIssues || 0}}</b></span>&nbsp;<span class="text-danger small">Open</span>
                 </span>
             </div>
 
         </div>
     </div>
-    <br/>
-    <article class="article">
-        <div class="box box-default table-box mdl-shadow--2dp">
-            <table class="mdl-data-table">
-                <thead>
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric">Suite</th>
-                    <th class="mdl-data-table__cell--non-numeric">Category</th>
-                    <th class="mdl-data-table__cell--non-numeric">Severity</th>
-                    <th class="mdl-data-table__cell--non-numeric">Status</th>
-                    <!--<th class="mdl-data-table__cell--non-numeric">Total/Pass</th>
-                    <th class="mdl-data-table__cell--non-numeric">Success</th>-->
-                    <th class="mdl-data-table__cell--non-numeric">Data</th>
-                    <th class="mdl-data-table__cell--non-numeric">Time</th>
-                    <th class="mdl-data-table__cell--non-numeric">Analytics</th>
-                </tr>
+    <br />
+    <div class="mat-elevation-z8 box-default">
+        <mat-table [dataSource]="dataSource" matSort matSortActive="suite" matSortDisableClear matSortDirection="desc">
+            <ng-container matColumnDef="suite">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Suite </mat-header-cell>
+                <mat-cell *matCellDef="let suites"> {{suites.suiteName | slice:0:55}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="category">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+                <mat-cell *matCellDef="let suites"> {{suites.category}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="severity">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Severity </mat-header-cell>
+                <mat-cell *matCellDef="let suites"> {{suites.severity}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                <mat-cell *matCellDef="let suites">
+                    <span class="text-success h6"><b>{{suites.tests - suites.failed || 0}}</b></span>&nbsp;<span class="text-success small">Passed</span>&nbsp;
+                    <span *ngIf="suites.failed != 0"><span class="text-danger h6"><b>{{suites.failed || 0}}</b></span>&nbsp;<span
+                            class="text-danger small">Failed</span>&nbsp;</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="data">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Data </mat-header-cell>
+                <mat-cell *matCellDef="let suites"> {{suites.size | byteFormat}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="time">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Time </mat-header-cell>
+                <mat-cell *matCellDef="let suites"> {{suites.time | mstoDuration}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="analytics">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Analytics </mat-header-cell>
+                <mat-cell *matCellDef="let suites">
+                    <a href="javascript:;" (click)="getTestSuiteResponseByName(suites.suiteName)" matTooltip="logs"
+                        matTooltipPosition="above">
+                        <i class="material-icons">
+                            description
+                        </i></a>
+                    <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs', run.id, 'history', suites.suiteName]"
+                        matTooltip="analytics" matTooltipPosition="above"><i class="nav-icon material-icons">timeline</i></a>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
 
-                </thead>
-                <tr *ngFor="let s of suites">
-                    <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed == 0"><span class="text-success"><i
-                            class="material-icons">done</i> </span></td>-->
-                    <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span class="text-danger"><i
-                            class="material-icons">clear</i> </span></td>-->
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{s.suiteName | slice:0:55}}
-                    </td>
-                    <td class="mdl-data-table__cell--non-numeric">{{s.category}}</td>
-
-                    <td class="mdl-data-table__cell--non-numeric"><span>{{s.severity}} </span></td>
-
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <span class="text-success h6"><b>{{s.tests - s.failed || 0}}</b></span>&nbsp;<span class="text-success small">Passed</span>&nbsp;
-                        <span *ngIf="s.failed != 0"><span class="text-danger h6"><b>{{s.failed || 0}}</b></span>&nbsp;<span class="text-danger small">Failed</span>&nbsp;</span>
-                    </td>
-
-                    <!--<td class="mdl-data-table__cell--non-numeric" *ngIf="s.failed != 0"><span
-                            class="text-danger"> Fail: {{s.failed}}</span></td>-->
-
-                    <!--<td class="mdl-data-table__cell--non-numeric">{{s.tests}}/{{s.tests - s.failed}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        {{ ( (s.tests ) / (s.tests + s.failed) ) | percent }}
-                    </td>-->
-
-                    <td class="mdl-data-table__cell--non-numeric">{{s.size | byteFormat}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{s.time | mstoDuration}}</td>
-
-
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <a href="javascript:;" (click)="getTestSuiteResponseByName(s.suiteName)" matTooltip="logs"
-                           matTooltipPosition="above">
-                            <i class="material-icons">
-                                description
-                            </i></a>
-                        <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs', run.id, 'history', s.suiteName]"
-                           matTooltip="analytics" matTooltipPosition="above"><i
-                                class="nav-icon material-icons">timeline</i></a>
-                    </td>
-
-
-                </tr>
-                <!--<tfoot>
-                <tr class="bg-color-info1">
-                    <th class="mdl-data-table__cell--non-numeric">Aggregate</th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric"></th>
-                    <th class="mdl-data-table__cell--non-numeric">
-                        <span class="text-success">Passed: {{total-failed}}</span><span class="text-danger">&nbsp;&nbsp; Failed: {{failed}}</span>
-                    </th>
-                    <th class="mdl-data-table__cell--non-numeric">{{size | byteFormat}}</th>
-                    <th class="mdl-data-table__cell--non-numeric">{{time | mstoDuration}}</th>
-                </tr>
-                </tfoot>-->
-            </table>
-        </div>
-
-        <mat-paginator [pageSize]="pageSize"
-                       hidePageSize="true"
-                       (page)="change($event)"
-                       [length]="length"
-        >
+        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+            [length]="length">
         </mat-paginator>
-
-    </article>
+    </div>
 
 </section>
