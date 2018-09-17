@@ -63,8 +63,10 @@
                                 <td class="mdl-data-table__cell--non-numeric">
                                     <div *ngIf="job.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
                                     <div *ngIf="!job.issueTrackerToDo" class="ml-4">
+<!--
                                         <mat-checkbox [checked]="true" [disabled]="true">
                                         </mat-checkbox>
+-->
                                         <span class="text-danger">{{job.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>&nbsp;<span
                                             class="text-success">{{job.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>
 
