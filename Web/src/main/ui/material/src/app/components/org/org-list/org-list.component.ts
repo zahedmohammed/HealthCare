@@ -13,7 +13,7 @@ export class OrgListComponent implements OnInit {
 
   orgs;
   showSpinner: boolean = false;
-  displayedColumns: string[] = ['name', 'company', 'billing', 'plan', 'date/time'];
+  displayedColumns: string[] = ['name', 'company', 'billing', 'plan', 'createdDate'];
   dataSource = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

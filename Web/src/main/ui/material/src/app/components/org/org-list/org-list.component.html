@@ -40,7 +40,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Plan </mat-header-cell>
                             <mat-cell *matCellDef="let org"> {{org.orgPlan}} </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="date/time">
+                        <ng-container matColumnDef="createdDate">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Create-date </mat-header-cell>
                             <mat-cell *matCellDef="let org"> {{org.createdDate | date:'shortDate'}} </mat-cell>
                         </ng-container>

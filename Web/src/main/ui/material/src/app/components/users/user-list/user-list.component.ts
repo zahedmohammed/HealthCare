@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { OrgService } from '../../../services/org.service';
 import { Org, OrgUser } from '../../../models/org.model';
 import { User } from '../../../models/users.model';
 import { Handler } from '../../dialogs/handler/handler';
-
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-user-list',
@@ -18,6 +18,11 @@ export class UserListComponent implements OnInit {
   org: Org = new Org();
   id;
   orgUsers;
+  displayedColumns: string[] = ['name', 'role', 'status', 'createDate', 'password'];
+  dataSource = null;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   constructor(private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
   ngOnInit() {
@@ -33,7 +38,7 @@ export class UserListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.getOrgUsersById(this.id);
@@ -61,13 +66,13 @@ export class UserListComponent implements OnInit {
         return;
       }
       this.orgUsers = results['data'];
-      this.length=results['totalElements'];
+      this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.orgUsers);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
-
-
 
 }
