@@ -8,14 +8,6 @@
     </div>
 </div>
 <section class="chapter page-terms">
-
-    <!-- <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Org Hub</h1>
-        </div>
-        <p class="text-muted">Manage Org, Users, & Access-Controls</p>
-    </section> -->
-
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
             <article class="article">
@@ -27,18 +19,52 @@
                     <p class="text-muted float-right">Total ({{length}})</p>
                     <div class="divider divider-sm"></div>
                 </h2>
-                <br/>
-                <div class="box box-default table-box mdl-shadow--2dp">
+                <br />
+
+                <div class="mat-elevation-z8 box-default">
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
+                        matSortDirection="desc">
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let org"> <a href="javascript:;" [routerLink]="['/app/orgs', org.id, 'users']">{{org.name}}</a> </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="company">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Company </mat-header-cell>
+                            <mat-cell *matCellDef="let org"> {{org.company}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="billing">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Billing </mat-header-cell>
+                            <mat-cell *matCellDef="let org"> {{org.billingEmail}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="plan">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Plan </mat-header-cell>
+                            <mat-cell *matCellDef="let org"> {{org.orgPlan}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="date/time">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Create-date </mat-header-cell>
+                            <mat-cell *matCellDef="let org"> {{org.createdDate | date:'shortDate'}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+
+                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+                        [length]="length">
+                    </mat-paginator>
+                </div>
+
+                <!-- <div class="box box-default table-box mdl-shadow--2dp">
                     <table class="mdl-data-table">
                         <thead>
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">Name</th>
                             <th class="mdl-data-table__cell--non-numeric">Company</th>
-                            <!-- <th class="mdl-data-table__cell--non-numeric"></th> -->
+                            <!-- <th class="mdl-data-table__cell--non-numeric"></th> 
                             <th class="mdl-data-table__cell--non-numeric">Billing</th>
                             <th class="mdl-data-table__cell--non-numeric">Plan</th>
                             <th class="mdl-data-table__cell--non-numeric">Create-date</th>
-                            <!-- <th class="mdl-data-table__cell--non-numeric"></th> -->
+                            <!-- <th class="mdl-data-table__cell--non-numeric"></th> 
                         </tr>
                         </thead>
                         <tbody>
@@ -46,17 +72,17 @@
                             <td class="mdl-data-table__cell--non-numeric bold">
                                 <a href="javascript:;" [routerLink]="['/app/orgs', org.id, 'users']">{{org.name}}</a></td>
                             <td class="mdl-data-table__cell--non-numeric">{{org.company}}</td>
-                            <!-- <td class="mdl-data-table__cell--non-numeric">{{org.orgType}}</td> -->
+                            <!-- <td class="mdl-data-table__cell--non-numeric">{{org.orgType}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{org.billingEmail}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{org.orgPlan}}</td>
                             <td class="mdl-data-table__cell--non-numeric">{{org.createdDate | date:'shortDate'}}</td>
                             <!-- <td class="mdl-data-table__cell--non-numeric">
                                 <a href="javascript:;" [routerLink]="['/app/orgs', org.id, 'users']">Users</a>
-                            </td> -->
+                            </td> 
                         </tr>
                         </tbody>
                     </table>
-                </div>
+                </div> 
 
                 <mat-paginator [hidden]="length <= pageSize"
                                [pageSize]="pageSize"
@@ -64,7 +90,7 @@
                                (page)="change($event)"
                                [length]="length"
                 >
-                </mat-paginator>
+                </mat-paginator>-->
 
             </article>
         </div>

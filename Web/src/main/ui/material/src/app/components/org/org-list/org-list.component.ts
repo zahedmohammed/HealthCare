@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { OrgService } from '../../../services/org.service';
 import { Handler } from '../../dialogs/handler/handler';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-org-list',
@@ -12,6 +13,11 @@ export class OrgListComponent implements OnInit {
 
   orgs;
   showSpinner: boolean = false;
+  displayedColumns: string[] = ['name', 'company', 'billing', 'plan', 'date/time'];
+  dataSource = null;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   constructor(private orgService: OrgService, private handler: Handler) { }
 
   ngOnInit() {
@@ -27,6 +33,8 @@ export class OrgListComponent implements OnInit {
       }
       this.orgs = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.orgs);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -35,7 +43,7 @@ export class OrgListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.list();
