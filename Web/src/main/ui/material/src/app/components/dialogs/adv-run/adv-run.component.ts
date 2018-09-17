@@ -62,9 +62,6 @@ export class AdvRunComponent implements OnInit {
   }
 
   run() {
-    if (this.regions) {
-      this.newRegion = this.regions['org']['name'] + "/" + this.regions['name'];
-    }
       this.dialogRef.close()
     this.runService.advRun(this.data.id, this.newRegion, this.tags_, this.suites,this.selectedCategories).subscribe(results => {
       this.handler.hideLoader();

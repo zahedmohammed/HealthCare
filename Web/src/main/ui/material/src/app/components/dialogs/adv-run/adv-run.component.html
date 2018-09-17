@@ -45,8 +45,8 @@
             </label>
             <div class="col-md-8">
                 <mat-form-field class="full-width">
-                    <mat-select placeholder="Select region" [(ngModel)]="regions" name="regions">
-                        <mat-option *ngFor="let region of list" [value]="region">
+                    <mat-select placeholder="Select region" [(ngModel)]="newRegion" name="newRegion">
+                        <mat-option *ngFor="let region of list" [value]="region.name">
                             {{region.org.name}}/{{region.name}}
                         </mat-option>
                     </mat-select>
