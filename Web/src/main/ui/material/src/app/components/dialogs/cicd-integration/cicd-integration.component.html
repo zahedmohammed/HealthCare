@@ -1,11 +1,14 @@
-<h2 mat-dialog-title>Integration Script</h2>
+<h2 mat-dialog-title>CICD Job Invoke Script</h2>
 
 <mat-dialog-content class="mat-typography">
-    <div class="callout callout-danger">
-        Instructions goes here !
-    </div>
+
     <div class="callout callout-info text-danger">
         <code>{{integration}} {{data}}</code>
+    </div>
+    <div class="callout callout-danger">
+        <p>Use the command to integrate with build system.</p>
+        <p>In jenkins on the configuration page, in the Build block click in the Add build step dropdown and select Execute shell.</p>
+        <p>Paste the script in the textarea you.</p>
     </div>
 </mat-dialog-content>
 
