@@ -23,6 +23,7 @@ public class AutoCodeGeneratorMatchesMinimal implements Serializable {
     private String value;
     private String methods;
     private String denyRoles;
+    private String allowRoles;
     private String pathPatterns;
     private String resourceSamples;
     private String queryParams;
