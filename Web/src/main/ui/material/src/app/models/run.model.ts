@@ -15,6 +15,11 @@ export class Task {
   totalTestCompleted: number;
   failedTests: number;
   description: string;
+  issuesLogged: number;
+  issuesClosed: number;
+  issuesReopen: number;
+  totalOpenIssues: number;
+
 }
 
 export class Jobs {
