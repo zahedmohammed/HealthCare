@@ -18,6 +18,7 @@ export class DashboardComponent {
   time = "-";
   bytes = "-";
   iBots = "-";
+  iTracker="-";
   eBots = "-";
   suites = "-";
   channels = "-";
@@ -33,6 +34,8 @@ export class DashboardComponent {
       this.get("count-time", "time");
       this.get("count-bytes", "bytes");
       this.get("count-ibots", "iBots");
+      this.get("count-bugs", "bugs");
+
       this.get("count-ebots", "eBots");
       this.get("count-channels", "channels");
   }
@@ -63,6 +66,8 @@ export class DashboardComponent {
         this.bytes = count, 1;
       else if (_var === 'iBots')
         this.iBots = count;
+        else if (_var === 'bugs')
+        this.iTracker = count;
       else if (_var === 'eBots')
         this.eBots = count;
       else if (_var === 'channels')

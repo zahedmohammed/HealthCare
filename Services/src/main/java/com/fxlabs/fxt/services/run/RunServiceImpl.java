@@ -9,10 +9,7 @@ import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.repository.es.SuiteESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteResponseESRepository;
-import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
-import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
-import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
-import com.fxlabs.fxt.dao.repository.jpa.TestSuiteResponseRepository;
+import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
@@ -37,7 +34,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -54,6 +51,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     private TestSuiteResponseConverter testSuiteResponseConverter;
     private TestSuiteESRepository testSuiteESRepository;
     private ProjectService projectService;
+    private TestCaseResponseITRepository testCaseResponseITRepository;
     private SuiteESRepository suiteESRepository;
     private SuiteConverter suiteConverter;
     private TestSuiteService testSuiteService;
@@ -65,11 +63,11 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     @Autowired
     public RunServiceImpl(RunRepository repository, RunConverter converter, JobService projectJobService, EnvironmentRepository environmentRepository,
             /*RunTaskRequestProcessor taskProcessor, */TestSuiteRepository projectDataSetRepository, TestSuiteConverter testSuiteConverter,
-                          TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter,
+                          TestSuiteResponseRepository dataSetRepository, TestSuiteResponseConverter dataSetConverter, TestCaseResponseITRepository testCaseResponseITRepository,
                           TestSuiteESRepository testSuiteESRepository, ProjectService projectService, TestSuiteService testSuiteService,
                           SuiteESRepository suiteESRepository, SuiteConverter suiteConverter, InstantRunTaskRequestProcessor instantRunTaskRequestProcessor,
                           TestSuiteResponseESRepository testSuiteResponseESRepository
-                          ) {
+    ) {
         super(repository, converter);
         this.repository = repository;
         this.jobService = projectJobService;
@@ -86,6 +84,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         this.environmentRepository = environmentRepository;
         this.testSuiteService = testSuiteService;
         this.testSuiteResponseESRepository = testSuiteResponseESRepository;
+        this.testCaseResponseITRepository=testCaseResponseITRepository;
 
     }
 
@@ -207,7 +206,6 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         try {
 
 
-
             Map<String, String> attributes = new HashMap<>();
 
             if (StringUtils.isNotEmpty(region)) {
@@ -234,7 +232,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
                 throw new FxException("Invalid Evnvironment");
             }
 
-           // Job job = jobResponse.getData();
+            // Job job = jobResponse.getData();
 
             Response<TestSuite> testSuiteResponse = testSuiteService.update(dto, user, false);
 
@@ -268,25 +266,25 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         run1.setRegions(run.getAttributes().get("REGION"));
         return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
     }
+
     @Override
-    public Response<com.fxlabs.fxt.dto.run.Run> findRunByJobIdAndRunNo(String jobId,Long runNo, String user) {
-        Optional<Run> run = this.repository.findRunByJobIdAndRunId(jobId,runNo);
-        if(run.isPresent()) {
+    public Response<com.fxlabs.fxt.dto.run.Run> findRunByJobIdAndRunNo(String jobId, Long runNo, String user) {
+        Optional<Run> run = this.repository.findRunByJobIdAndRunId(jobId, runNo);
+        if (run.isPresent()) {
             com.fxlabs.fxt.dto.run.Run run1 = this.converter.convertToDto(run.get());
             run1.setRegions(run.get().getAttributes().get("REGION"));
             return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
-        }
-        else{
+        } else {
 
             return new Response<com.fxlabs.fxt.dto.run.Run>()
-                    .withErrors(true).withMessage(new Message(MessageType.ERROR, null,"No details found for RunNo "+runNo ));
+                    .withErrors(true).withMessage(new Message(MessageType.ERROR, null, "No details found for RunNo " + runNo));
         }
     }
 
     @Override
     public Response<com.fxlabs.fxt.dto.run.Run> stopRun(String runId, String user) {
 
-        if (StringUtils.isEmpty(runId)){
+        if (StringUtils.isEmpty(runId)) {
             throw new FxException("Invalid run");
         }
         Run run = this.repository.findByRunId(runId);
@@ -363,7 +361,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
 
-    private Date getCurrentMonthStartDate(){
+    private Date getCurrentMonthStartDate() {
         Date date = new Date();
 
         date = DateUtils.setMilliseconds(date, 0);
@@ -374,6 +372,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         return date;
 
     }
+
     @Override
     public Response<Long> count(String user, Pageable pageable) {
         // check user has access to project
@@ -390,7 +389,6 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         projectsResponse.getData().stream().forEach(p -> {
 
 
-
             Long count = repository.countByJobProjectIdAndCreatedDateGreaterThan(p.getId(), getCurrentMonthStartDate());
 
 //            Long count = repository.countByJobProjectId(p.getId());
@@ -404,17 +402,39 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     @Override
+    public Response<Long> countBugs(String orgId, Pageable pageable) {
+
+        Response<List<Project>> projectsResponse = projectService.findProjects(orgId, pageable);
+        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+
+        AtomicLong al = new AtomicLong(0);
+        Long totalBugsCount;
+        projectsResponse.getData().stream().forEach(p -> {
+
+            String itId = p.getName() + "//" + "%";
+            Long count = testCaseResponseITRepository.findSumByTestCaseResponseIssueTrackerIdLike(itId);
+            logger.info("Check bug count {}", count);
+
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+        logger.info("Check bug count {}", al.get());
+
+        return new Response<>(al.get());
+    }
+
+
+    @Override
     public Response<List<com.fxlabs.fxt.dto.run.Run>> findAll(String user, Pageable pageable) {
         return super.findAll(user, pageable);
     }
 
     @Override
     public Response<Long> countTests(String user, Pageable pageable) {
-        // check user has access to project
-        // find owned projects org --> projects --> jobs
-        // users --> org or users --> projects
-        // least - a project should be visible to owner
-
         Response<List<Project>> projectsResponse = projectService.findProjects(user, pageable);
         if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
             return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
@@ -424,8 +444,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
         projectsResponse.getData().stream().forEach(p -> {
 
-          //  Long count = repository.countTestsByProject(p.getId());
-            Long count = repository.countTestsByProjectAndCreatedDateGreaterThan(p.getId(),getCurrentMonthStartDate());
+            //  Long count = repository.countTestsByProject(p.getId());
+            Long count = repository.countTestsByProjectAndCreatedDateGreaterThan(p.getId(), getCurrentMonthStartDate());
 
             if (count != null) {
                 al.getAndAdd(count);
@@ -451,8 +471,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         AtomicLong al = new AtomicLong(0);
 
         projectsResponse.getData().stream().forEach(p -> {
-            Long count = repository.countBytesByProjectAndCreatedDateGreaterThan(p.getId(),getCurrentMonthStartDate());
-        //    Long count = repository.countBytesByProject(p.getId());
+            Long count = repository.countBytesByProjectAndCreatedDateGreaterThan(p.getId(), getCurrentMonthStartDate());
+            //    Long count = repository.countBytesByProject(p.getId());
             if (count != null) {
                 al.getAndAdd(count);
             }
@@ -482,8 +502,8 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         AtomicLong al = new AtomicLong(0);
 
         projectsResponse.getData().stream().forEach(p -> {
-            Long count = repository.countTimeByProjectAndCreatedDateGreaterThan(p.getId(),getCurrentMonthStartDate());
-          //  Long count = repository.countTimeByProject(p.getId());
+            Long count = repository.countTimeByProjectAndCreatedDateGreaterThan(p.getId(), getCurrentMonthStartDate());
+            //  Long count = repository.countTimeByProject(p.getId());
             if (count != null) {
                 al.getAndAdd(count);
             }
