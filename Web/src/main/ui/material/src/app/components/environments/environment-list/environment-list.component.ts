@@ -11,6 +11,8 @@ import { AdvRunComponent } from '../../dialogs/adv-run/adv-run.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+
 @Component({
   selector: 'app-environment-list',
   templateUrl: './environment-list.component.html',
@@ -18,18 +20,23 @@ import { Subscription } from 'rxjs/Subscription';
   providers: [JobsService, RunService, ProjectService]
 })
 export class EnvironmentListComponent implements OnInit {
- 
+
   id; // project id
   envs;
   projectId: string = "";
   project: Base = new Base();
   showSpinner: boolean = false;
   //private _clockSubscription: Subscription;
+  displayedColumns: string[] = ['name', 'baseUrl', 'authCount', 'createdDate'];
+  dataSource = null;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private jobsService: JobsService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
-  ngOnInit() {   
+  ngOnInit() {
     this.handler.activateLoader();
     this.route.params.subscribe(params => {
       this.id = params['id'];
@@ -70,6 +77,8 @@ export class EnvironmentListComponent implements OnInit {
       }
       this.envs = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.envs);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -78,11 +87,10 @@ export class EnvironmentListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.list(this.id);
   }
 
- 
 }
