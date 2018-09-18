@@ -12,7 +12,7 @@ import { Handler } from '../../dialogs/handler/handler';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-run-history',
   templateUrl: './run-history.component.html',
@@ -41,7 +41,7 @@ export class RunHistoryComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
-    private route: ActivatedRoute, private dialog: MatDialog, private handler: Handler) { }
+    private route: ActivatedRoute, private dialog: MatDialog, private handler: Handler, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -108,7 +108,7 @@ export class RunHistoryComponent implements OnInit {
       this.length = results['totalElements'];
       this.dataSource = new MatTableDataSource(this.suites);
       this.dataSource.sort = this.sort;
-      //console.log('results -> ', results);
+      console.log('results -> ', results);
 
       //Get data - Start
       let totalData = results['data'];
@@ -119,20 +119,21 @@ export class RunHistoryComponent implements OnInit {
       let rt: any = [];
       let runno: any = [];
       let success: any = [];
+      let crDate: any = [];
+      let crDateConvert: any = [];
       for (let i = totalData.length - 1; i >= 0; i--) {
-        //( (s.totalPassed ) / (s.totalPassed + s.totalFailed) )
         tp[i] = totalData[i]['totalPassed'];
         tf[i] = totalData[i]['totalFailed'];
         tb[i] = (totalData[i]['totalBytes']);
         rt[i] = (totalData[i]['requestTime'] / 1000);
-        // console.log(tp[i],tf[i])
-        // console.log(totalData[i]['totalPassed'],i)
-        // console.log(totalData[i]['totalFailed'],i)
-        // console.log(tp,tf)
-
+        crDate[i] = totalData[i]['createdDate'];
+        let dt = new Date(crDate[i]);
+        //console.log("dt - ", dt);
+        crDateConvert[i] = this.datePipe.transform(dt,"dd-MM-yyyy");
+        //console.log(this.datePipe.transform(dt,"dd-MM-yyyy")); //output : 2018-02-13
+        console.log("crDateConvert - ", crDateConvert[i]);
         success.push(100 * (tp[i] / (tp[i] + tf[i])));
         // runno.push(i['runNo']);
-        //console.log(success);
       }
       //End
 
@@ -162,8 +163,8 @@ export class RunHistoryComponent implements OnInit {
           yAxes: [{
             display: true,
             scaleLabel: {
-              display: false,
-              labelString: 'Some text'
+              display: true,
+              labelString: 'Success'
             }
           }]
         }
@@ -188,8 +189,8 @@ export class RunHistoryComponent implements OnInit {
           yAxes: [{
             display: true,
             scaleLabel: {
-              display: false,
-              labelString: 'Some text'
+              display: true,
+              labelString: 'Data'
             }
           }]
         }
@@ -214,8 +215,8 @@ export class RunHistoryComponent implements OnInit {
           yAxes: [{
             display: true,
             scaleLabel: {
-              display: false,
-              labelString: 'Some text'
+              display: true,
+              labelString: 'Time'
             }
           }]
         }
@@ -226,7 +227,7 @@ export class RunHistoryComponent implements OnInit {
       this.chart = new Chart('canvas1', {
         type: 'line',
         data: {
-          labels: runno,
+          labels: crDateConvert,
           datasets: [
             {
               data: success,

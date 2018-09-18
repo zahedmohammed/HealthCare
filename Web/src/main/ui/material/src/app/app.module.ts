@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
+import {DatePipe} from '@angular/common';
 
 import {
   MatAutocompleteModule,
@@ -354,7 +355,7 @@ import { CicdIntegrationComponent } from './components/dialogs/cicd-integration/
     CicdIntegrationComponent
   ],
   bootstrap: [AppComponent],
-  providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler],
+  providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler, DatePipe],
   entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent,
     SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent, SlackRegisterComponent,
     BotCredentialsComponent, TestsuiteRunComponent, BotDialogComponent, BotSavingDialogComponent, CicdIntegrationComponent]
