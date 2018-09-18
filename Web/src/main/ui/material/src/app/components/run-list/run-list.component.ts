@@ -36,9 +36,9 @@ export class RunListComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService, private route: ActivatedRoute, private handler: Handler) {
-
-  }
+  constructor(private jobsService: JobsService, private runService: RunService,
+              private projectService: ProjectService, private route: ActivatedRoute,
+              private handler: Handler) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -78,6 +78,7 @@ export class RunListComponent implements OnInit {
         return;
       }
       this.job = results['data'];
+
     });
   }
 
@@ -93,10 +94,22 @@ export class RunListComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.list);
       this.dataSource.sort = this.sort;
        this.times = 0;
+       // this.route.data = this.list
+       //  console.log(this.route.data)
        for (var  i = 0; i < this.list.length; i++){
            this.times += this.list[i].task.timeSaved;
         }
        this.totalTimeSaved = this.times;
+
+        let runNum = []
+        for(i=0;i<this.list.length;i++)
+        {
+            runNum.push(this.list[i].runId)
+        }
+        runNum.reverse()
+        localStorage.setItem('listData',JSON.stringify(runNum))
+        localStorage.setItem('totalRuns',this.length.toString())
+
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
