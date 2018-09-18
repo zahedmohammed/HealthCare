@@ -106,11 +106,13 @@
                         <i class="fa fa-times-circle color-danger"></i>
                     </div>
                     <div class="box-info">
-                        <span>Critical</span>
+                        <span>Bugs</span>
                     </div>
                     <div class="box-bottom text-muted">
-                        <small class="text-success">{{run.stats['Critical_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['Critical_Failed']
-                            || 0}}</small>
+                        <!--<small class="text-success">{{run.stats['Critical_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['Critical_Failed'] || 0}}</small>-->
+                        <small class="text-danger">{{run.task.issuesLogged || 0}}<span class="text-small"> New </span></small>
+                        <small class="text-success">{{run.task.issuesClosed || 0}}<span class="text-small"> Closed </span></small>
+                        <!--<small class="text-danger">{{run.task.totalOpenIssues || 0}}<span class="text-small"> Open</span></small>-->
                     </div>
                 </div>
             </div>
