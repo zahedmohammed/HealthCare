@@ -99,7 +99,7 @@ export class RunHistoryComponent implements OnInit {
 
   getTestSuiteResponseHistoryByName() {
     this.handler.activateLoader();
-    this.runService.getTestSuiteResponseHistoryByName(this.jobId, this.suiteName).subscribe(results => {
+    this.runService.getTestSuiteResponseHistoryByName(this.jobId, this.suiteName, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
@@ -319,6 +319,6 @@ export class RunHistoryComponent implements OnInit {
   pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
-    this.list();
+   this.getTestSuiteResponseHistoryByName();
   }
 }

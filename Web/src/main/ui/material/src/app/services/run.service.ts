@@ -90,8 +90,11 @@ constructor(private http: HttpClient) {
     return this.http.get(this.serviceUrl + "/" + id + "/test-suite-response/" + name);
   }
 
-  getTestSuiteResponseHistoryByName(jobId:string, name:string) {
-    return this.http.get(this.serviceUrl + "/" + jobId + "/testSuite/test-suite-responses/" + name);
+  getTestSuiteResponseHistoryByName(jobId:string, name:string, page, pageSize) {
+    let params = new HttpParams();
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/" + jobId + "/testSuite/test-suite-responses/" + name, {params});
   }
 
   deleteByJobIdAndRunId(jobId:string, runId:string) {
