@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { RunService } from '../../../services/run.service';
 import { JobsService } from '../../../services/jobs.service';
@@ -7,6 +7,7 @@ import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSelectModule, MAT_DIA
 import { RegionsService } from '../../../services/regions.service';
 import { Handler } from '../handler/handler';
 import { SnackbarService } from '../../../services/snackbar.service';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-testsuite-run',
@@ -24,6 +25,11 @@ export class TestsuiteRunComponent implements OnInit {
   environment;
   region;
   regions: string;
+  displayedColumns: string[] = ['status', 'success', 'time', 'data'];
+  dataSource = null;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   constructor(
     private regionService: RegionsService, private projectService: ProjectService, private runService: RunService, private router: Router, private handler: Handler,
     @Inject(MAT_DIALOG_DATA) public data: any, private snackbarService: SnackbarService, private jobsService: JobsService,
@@ -36,7 +42,7 @@ export class TestsuiteRunComponent implements OnInit {
   }
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   show = false;
 
   envlist(id: string) {
@@ -47,7 +53,8 @@ export class TestsuiteRunComponent implements OnInit {
         return;
       }
       this.envs = results['data'];
-      console.log("env", this.envs);
+      this.dataSource = new MatTableDataSource(this.envs);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

@@ -32,7 +32,39 @@
         </div>
         <div *ngIf="!processing">
             <div *ngFor="let testCaseResponse of runResult">
-                <div class="box box-default table-box mdl-shadow--2dp">
+                <div class="mat-elevation-z8 box-default">
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="status" matSortDisableClear
+                        matSortDirection="desc">
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                            <mat-cell *matCellDef> <span class="text-success"> Passed:
+                                    {{testCaseResponse.totalPassed}}
+                                    <span class="text-danger" *ngIf="testCaseResponse.failed != 0">&nbsp;&nbsp; Failed:
+                                        {{testCaseResponse.totalFailed}}</span></span> </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="success">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Success </mat-header-cell>
+                            <mat-cell *matCellDef> {{ ( (testCaseResponse.totalPassed ) /
+                                (testCaseResponse.totalPassed + testCaseResponse.totalFailed) ) | percent }} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="time">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Time Taken </mat-header-cell>
+                            <mat-cell *matCellDef> {{testCaseResponse.requestTime | mstoDuration}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="data">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Data </mat-header-cell>
+                            <mat-cell *matCellDef> {{testCaseResponse.totalBytes | byteFormat}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+
+                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+                        [length]="length">
+                    </mat-paginator>
+                </div>
+                <!-- <div class="box box-default table-box mdl-shadow--2dp">
                     <table class="mdl-data-table">
                         <thead>
                             <tr>
@@ -55,10 +87,11 @@
                         <tfoot>
                         </tfoot>
                     </table>
-                </div>
+                </div> -->
                 <mat-dialog-content class="mat-typography">
                     <h2 mat-dialog-title>Wire Logs</h2>
-                    <ace-editor class="col-md-12 border editor" [(text)]="testCaseResponse.logs" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '15', showPrintMargin: false}"
+                    <ace-editor class="col-md-12 border editor" [(text)]="testCaseResponse.logs" [theme]="'github'"
+                        [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '15', showPrintMargin: false}"
                         [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000">
                     </ace-editor>
                 </mat-dialog-content>
