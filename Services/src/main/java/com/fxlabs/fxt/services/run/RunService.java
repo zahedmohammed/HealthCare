@@ -55,5 +55,5 @@ public interface RunService extends GenericService<Run, String> {
 
     public Response<com.fxlabs.fxt.dto.run.Run> stopRun(String runId, String user);
 
-    Response<Long> countBugs(String orgId,Pageable pageable);
+    Response<Long> countBugs(String orgId,String user,Pageable pageable);
 }

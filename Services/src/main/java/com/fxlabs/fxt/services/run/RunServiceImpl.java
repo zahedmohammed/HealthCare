@@ -84,7 +84,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         this.environmentRepository = environmentRepository;
         this.testSuiteService = testSuiteService;
         this.testSuiteResponseESRepository = testSuiteResponseESRepository;
-        this.testCaseResponseITRepository=testCaseResponseITRepository;
+        this.testCaseResponseITRepository = testCaseResponseITRepository;
 
     }
 
@@ -402,7 +402,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     @Override
-    public Response<Long> countBugs(String orgId, Pageable pageable) {
+    public Response<Long> countBugs(String orgId, String user, Pageable pageable) {
 
         Response<List<Project>> projectsResponse = projectService.findProjects(orgId, pageable);
         if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
@@ -413,14 +413,17 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         Long totalBugsCount;
         projectsResponse.getData().stream().forEach(p -> {
 
-            String itId = p.getName() + "//" + "%";
-            Long count = testCaseResponseITRepository.findSumByTestCaseResponseIssueTrackerIdLike(itId,getCurrentMonthStartDate());
-            logger.info("Check bug count {}", count);
+            // String itId = p.getName() + "//" + "%";
+            Response<List<Job>> jobsResponse = jobService.findByProjectId(p.getId(), user, pageable);
+            jobsResponse.getData().stream().forEach(j -> {
+                String itId = p.getName() + "//" + j.getId() + "//" + "%";
 
-            if (count != null) {
-                al.getAndAdd(count);
-            }
-
+                Long count = testCaseResponseITRepository.findSumByTestCaseResponseIssueTrackerIdLike(itId, getCurrentMonthStartDate());
+                logger.info("Check project bug count {}", count);
+                if (count != null) {
+                    al.getAndAdd(count);
+                }
+            });
         });
         logger.info("Check bug count {}", al.get());
 

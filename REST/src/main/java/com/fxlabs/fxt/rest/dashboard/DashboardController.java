@@ -123,7 +123,7 @@ public class DashboardController {
     @RequestMapping(value = "/count-bugs", method = RequestMethod.GET)
     public Response<Long> countBugs(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_MAX_PAGE_SIZE_VALUE, required = false) @Max(100) Integer pageSize) {
-        return runService.countBugs(SecurityUtil.getOrgId(),PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return runService.countBugs(SecurityUtil.getOrgId(),SecurityUtil.getCurrentAuditor(),PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
