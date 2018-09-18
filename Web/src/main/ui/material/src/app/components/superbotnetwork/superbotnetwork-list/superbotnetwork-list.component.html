@@ -8,10 +8,9 @@
         </article>
     </div>
 </div>
-<br/>
+<br />
 <section class="chapter page-terms">
     <article class="article padding-lg-v1">
-
         <div class="container-fluid with-maxwidth chapter">
             <nav mat-tab-nav-bar>
                 <label mat-tab-link [routerLink]="['/app/regions']">My Bots
@@ -19,15 +18,44 @@
                 <label mat-tab-link [active]="true" [routerLink]="['/app/superbotnetwork']">Super-Bot-Network
                 </label>
             </nav>
-
             <article class="article">
                 <h2 class="article-title1">
-                    <h6><p class="text-muted float-left">Ready to use global Test-Bots provided by FX Labs.</p></h6>
+                    <h6>
+                        <p class="text-muted float-left">Ready to use global Test-Bots provided by FX Labs.</p>
+                    </h6>
                     <p class="text-muted float-right">Total ({{length}})</p>
                     <div class="divider divider-sm"></div>
                 </h2>
-                <br/>
-                <div class="box box-default table-box mdl-shadow--2dp">
+                <br />
+                <div class="mat-elevation-z8 box-default">
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
+                        matSortDirection="desc">
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let item"> {{item.org.name}}/{{item.name}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="region">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Region </mat-header-cell>
+                            <mat-cell *matCellDef="let item" [hidden]="item.manual"> {{item.region}} </mat-cell>
+                            <mat-cell *matCellDef="let item" [hidden]="!item.manual"> Registered </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="count">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Count </mat-header-cell>
+                            <mat-cell *matCellDef="let item"> {{item.min}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="cost">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Cost </mat-header-cell>
+                            <mat-cell *matCellDef="let item"> Free </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+
+                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+                        [length]="length">
+                    </mat-paginator>
+                </div>
+                <!-- <div class="box box-default table-box mdl-shadow--2dp">
                     <table class="mdl-data-table">
                         <thead>
                             <tr>
@@ -47,13 +75,11 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </div> -->
             </article>
-
         </div>
-
+        <!-- 
         <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
-        </mat-paginator>
-
+        </mat-paginator> -->
     </article>
 </section>
