@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { VaultService } from '../../../services/vault.service';
 import { Handler } from '../../dialogs/handler/handler';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-vault-list',
@@ -12,6 +13,11 @@ export class VaultListComponent implements OnInit {
 
   keys;
   showSpinner: boolean = false;
+  displayedColumns: string[] = ['key', 'createDate'];
+  dataSource = null;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private vaultService: VaultService, private handler: Handler) { }
 
@@ -28,6 +34,8 @@ export class VaultListComponent implements OnInit {
       }
       this.keys = results['data'];
       this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.keys);
+      this.dataSource.sort = this.sort;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -36,7 +44,7 @@ export class VaultListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.list();
