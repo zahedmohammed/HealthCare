@@ -18,6 +18,7 @@ import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import com.fxlabs.fxt.services.users.SystemSettingService;
 import com.fxlabs.fxt.services.util.AutoCodeConfigServiceUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -610,6 +611,11 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                     pGen.setAssertionDescription(gen.getAssertionDescription());
                     pGen.setSeverity(gen.getSeverity());
                     pGen.setSequenceOrder(gen.getSequenceOrder());
+
+                    if (CollectionUtils.isEmpty(pGen.getMatches()) &&
+                            CollectionUtils.isNotEmpty(gen.getMatches())) {
+                        pGen.setMatches(gen.getMatches());
+                    }
 
                     found = true;
                     break;

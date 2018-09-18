@@ -409,6 +409,16 @@ public class AutoCodeConfigServiceUtil {
         assertions.add("@StatusCode != 200");
         anonymous_invalid.setSequenceOrder(seqOrder);
         anonymous_invalid.setAssertions(assertions);
+
+        List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
+
+        AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
+        match.setPathPatterns("/api/v1/user-signup/**");
+        match.setMethods("Get");
+        matchesList.add(match);
+
+        anonymous_invalid.setMatches(matchesList);
+
         return anonymous_invalid;
     }
 

@@ -12,6 +12,7 @@ import io.swagger.models.parameters.QueryParameter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.AntPathMatcher;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public abstract class AbstractGenerator implements Generator {
     final protected String NOT_EQUALS = "!=";
     final protected String TAG = "V1";
     final protected String AUTHOR = "FX Bot";
+    protected static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
     @Autowired
     protected StubHandler stubHandler;

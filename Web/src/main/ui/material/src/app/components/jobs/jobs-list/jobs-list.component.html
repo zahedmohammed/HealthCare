@@ -123,7 +123,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Bug Management</mat-header-cell>
                             <mat-cell *matCellDef="let element">
                                 <div *ngIf="element.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
-                                <div *ngIf="!element.issueTrackerToDo" class="ml-4">
+                                <div *ngIf="!element.issueTrackerToDo">
                                     <!--
                                     <mat-checkbox [checked]="true" [disabled]="true">
                                     </mat-checkbox>
