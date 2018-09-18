@@ -121,6 +121,7 @@ export class RunHistoryComponent implements OnInit {
       let success: any = [];
       let crDate: any = [];
       let crDateConvert: any = [];
+      let temp: any = [];
       for (let i = totalData.length - 1; i >= 0; i--) {
         tp[i] = totalData[i]['totalPassed'];
         tf[i] = totalData[i]['totalFailed'];
@@ -129,14 +130,18 @@ export class RunHistoryComponent implements OnInit {
         crDate[i] = totalData[i]['createdDate'];
         let dt = new Date(crDate[i]);
         //console.log("dt - ", dt);
-        crDateConvert[i] = this.datePipe.transform(dt,"dd-MM-yyyy");
+        crDateConvert[i] = this.datePipe.transform(dt,"MMM dd yyyy");
+        // for(let j = crDateConvert[i].length - 1; j >= 0; j--){
+        //   console.log(crDateConvert[i]);
+        //   temp[j] = crDateConvert[i];
+        // }
         //console.log(this.datePipe.transform(dt,"dd-MM-yyyy")); //output : 2018-02-13
-        console.log("crDateConvert - ", crDateConvert[i]);
+        //console.log("crDateConvert - ", crDateConvert[i]);
         success.push(100 * (tp[i] / (tp[i] + tf[i])));
         // runno.push(i['runNo']);
       }
       //End
-
+      crDateConvert.reverse();
       for (let i = totalData.length - 1; i >= 0; i--) {
         runno.push(totalData[i].runNo);
       }
