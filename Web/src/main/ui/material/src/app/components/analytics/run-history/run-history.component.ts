@@ -141,6 +141,8 @@ export class RunHistoryComponent implements OnInit {
         // runno.push(i['runNo']);
       }
       //End
+      tb.reverse();
+      rt.reverse();
       crDateConvert.reverse();
       for (let i = totalData.length - 1; i >= 0; i--) {
         runno.push(totalData[i].runNo);
