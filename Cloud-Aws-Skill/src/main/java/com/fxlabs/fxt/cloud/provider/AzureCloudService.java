@@ -26,7 +26,7 @@ import java.util.Map;
  * @author Mohammed Shoukath Ali
  */
 
-@Component
+//@Component
 public class AzureCloudService implements CloudService {
 
 
