@@ -431,7 +431,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
                 }
 
                 // Create GaaS Task
-                this.gaaSTaskRequestProcessor.deleteFile(project, projectSync);
+                this.gaaSTaskRequestProcessor.deleteFile(project, projectSync, true);
             }catch (Exception e){
                 logger.warn(e.getLocalizedMessage());
             }

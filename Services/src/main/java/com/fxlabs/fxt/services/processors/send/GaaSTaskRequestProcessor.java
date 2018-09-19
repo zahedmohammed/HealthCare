@@ -278,7 +278,7 @@ public class GaaSTaskRequestProcessor {
     }
 
 
-    public void deleteFile(Project project, ProjectSync projectSync) {
+    public void deleteFile(Project project, ProjectSync projectSync, boolean deleteManualTestSuite) {
         try {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
@@ -304,6 +304,7 @@ public class GaaSTaskRequestProcessor {
             if (projectSync != null){
                 task.setCategories(projectSync.getCategories());
                 task.setDeleteAll(projectSync.isDeleteAll());
+                task.setDeleteManualTestSuite(deleteManualTestSuite);
             }
             Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
 
