@@ -86,7 +86,8 @@ public class VCDelegate {
                 // 2.1. AutoCode -> delete([] categories)
                 // 2.2. AutoCode -> run()
                 getInactiveCategoriesForDeletion(task);
-                customizedFileDeletion(task, path);
+                autoCodeDeletion(task, path);
+                testSuiteDeletion(task, path);
 
                 //set directory path for the test suite from controlplane and commit to git
                 boolean isCreateTestSuiteFromControlPlane = false;
@@ -208,7 +209,7 @@ public class VCDelegate {
 
     }
 
-    private void customizedFileDeletion(VCTask task, String path) {
+    private void autoCodeDeletion(VCTask task, String path) {
 
         String path_ = path + "/test-suites/AutoCode";
 
@@ -221,6 +222,30 @@ public class VCDelegate {
 
             List<File> filesToDelete = new ArrayList<>();
             List<String> list = AutoCodeConfigUtil.getTypes(task.getCategories());
+
+            if (CollectionUtils.isEmpty(list)){
+                return;
+            }
+
+            list.stream().forEach(category -> {
+                finder(category, filesToDelete, path_);
+            });
+            filesToDelete.stream().forEach(f -> {
+                delete(f);
+            });
+
+        }
+    }
+
+
+    private void testSuiteDeletion(VCTask task, String path) {
+
+        String path_ = path + "/test-suites";
+
+        if (!CollectionUtils.isEmpty(task.getCategories()) && task.isDeleteManualTestSuite()) {
+
+            List<File> filesToDelete = new ArrayList<>();
+            List<String> list = task.getCategories();
 
             if (CollectionUtils.isEmpty(list)){
                 return;
