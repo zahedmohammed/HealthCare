@@ -85,6 +85,7 @@ public class MarkCompleteTaskProcessor {
 
     @Autowired
     private AccountRepository accountRepository;
+
     /**
      * Find Tasks with state 'PROCESSING'
      * If completed-suites >= total-suites
@@ -129,29 +130,37 @@ public class MarkCompleteTaskProcessor {
 
                     run.setStats(statsMap);
 
+                    if ((run.getTask().getStatus().equals(TaskStatus.COMPLETED) && !oldStatus.equals(TaskStatus.COMPLETED))
+                            || (run.getTask().getStatus().equals(TaskStatus.STOPPED) && !oldStatus.equals(TaskStatus.STOPPED))
+                            || (run.getTask().getStatus().equals(TaskStatus.FAIL) && !oldStatus.equals(TaskStatus.FAIL))
+                            || (run.getTask().getStatus().equals(TaskStatus.TIMEOUT) && !oldStatus.equals(TaskStatus.TIMEOUT))
+                    ) {
 
-                    String itId = run.getJob().getProject().getName() + "//" + run.getJob().getId() + "%"  ;
-                    List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndTestCaseResponseIssueTrackerIdLike(run.getId(), itId);
+                        String itId = run.getJob().getProject().getName() + "//" + run.getJob().getId() + "%";
+                        // List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndTestCaseResponseIssueTrackerIdLike(run.getId(), itId);
+                        List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndProjectIdAndJobId(run.getId(), run.getJob().getProject().getName(), run.getJob().getId());
 
-                    long newIssues = 0L;
-                    long closedIssues = 0L;
+                        long newIssues = 0L;
+                        long closedIssues = 0L;
 
-                    for (TestCaseResponseIssueTracker it: itList ){
-                        if ("open".equalsIgnoreCase(it.getStatus()) ){
-                            newIssues++;
+                        for (TestCaseResponseIssueTracker it : itList) {
+                            if ("open".equalsIgnoreCase(it.getStatus())) {
+                                newIssues++;
+                            }
+                            if ("closed".equalsIgnoreCase(it.getStatus())) {
+                                closedIssues++;
+                            }
                         }
-                        if ("closed".equalsIgnoreCase(it.getStatus()) ){
-                            closedIssues++;
-                        }
+
+                        run.getTask().setIssuesLogged(newIssues);
+                        run.getTask().setIssuesClosed(closedIssues);
+
+                        //  long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
+                        long totalOpenIssues = testCaseResponseITRepository.countByStatusAndProjectIdAndJobId("open", run.getJob().getProject().getName(), run.getJob().getId());
+
+                        run.getTask().setTotalOpenIssues(totalOpenIssues);
+                        run.getStats().put("total_issues", totalOpenIssues);
                     }
-
-                    run.getTask().setIssuesLogged( newIssues);
-                    run.getTask().setIssuesClosed(closedIssues);
-
-                    long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
-                    run.getTask().setTotalOpenIssues(totalOpenIssues);
-                    run.getStats().put("total_issues", totalOpenIssues);
-
                     runRepository.saveAndFlush(run);
 
                     if (run.getTask().getStatus().equals(TaskStatus.COMPLETED) && !oldStatus.equals(TaskStatus.COMPLETED)) {
@@ -187,37 +196,37 @@ public class MarkCompleteTaskProcessor {
             for (JobNotification jn : run.getJob().getNotifications()) {
 
                 // Sending Email
-                if (! org.apache.commons.lang3.StringUtils.isBlank(jn.getTo())){
+                if (!org.apache.commons.lang3.StringUtils.isBlank(jn.getTo())) {
 
                     // Project-name, Job-name, Run-Id, Status, Pass/Fail and Region etc.
                     StringBuilder subjet = new StringBuilder();
 
-                    subjet.append("#"+run.getRunId()+". ");
+                    subjet.append("#" + run.getRunId() + ". ");
 //                    subjet.append("(");
                     subjet.append(run.getJob().getProject().getName());
                     subjet.append(" > ");
                     subjet.append(run.getJob().getName());
 //                    subjet.append(")");
                     subjet.append(" - ");
-                    subjet.append(run.getTask().getTotalTestCompleted()+"(passed)");
+                    subjet.append(run.getTask().getTotalTestCompleted() + "(passed)");
                     subjet.append(" / ");
-                    subjet.append(run.getTask().getFailedTests()+"(failed)");
+                    subjet.append(run.getTask().getFailedTests() + "(failed)");
                     subjet.append(" - ");
-                    subjet.append("Status: "+run.getTask().getStatus().toString());
+                    subjet.append("Status: " + run.getTask().getStatus().toString());
                     subjet.append(" - ");
-                    subjet.append("Region: "+run.getJob().getRegions());
+                    subjet.append("Region: " + run.getJob().getRegions());
 
                     sendEmailTask(jn.getTo(), subjet.toString(), formatBody(run));
                 }
 
                 // Sending Message on Slack
-                if (! ( org.apache.commons.lang3.StringUtils.isBlank(jn.getAccount()) && org.apache.commons.lang3.StringUtils.isBlank(jn.getChannel()) ) ){
-                    if ( jn.getAccount() != null ){
+                if (!(org.apache.commons.lang3.StringUtils.isBlank(jn.getAccount()) && org.apache.commons.lang3.StringUtils.isBlank(jn.getChannel()))) {
+                    if (jn.getAccount() != null) {
                         Optional<Account> accountOptional = accountRepository.findById(jn.getAccount());
-                        if (! accountOptional.isPresent()) continue;
+                        if (!accountOptional.isPresent()) continue;
 
                         Account account = accountOptional.get();
-                        if ( account != null ){
+                        if (account != null) {
                             String token = account.getSecretKey();
                             token = encryptor.decrypt(token);
 
@@ -306,7 +315,7 @@ public class MarkCompleteTaskProcessor {
 
         if (job == null || status == null || entityType == null) {
 
-            logger.info("Invalid event for project sync" );
+            logger.info("Invalid event for project sync");
             return;
         }
 
@@ -316,7 +325,7 @@ public class MarkCompleteTaskProcessor {
 
         event.setTaskId(taskId);
 
-        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runNumber);
+        event.setName(job.getProject().getName() + "/" + job.getName() + "/" + runNumber);
         event.setUser(job.getCreatedBy());
         event.setEntityType(entityType);
         event.setEventType(Type.Run);
@@ -330,7 +339,7 @@ public class MarkCompleteTaskProcessor {
         event.setOrg(org);
 
 
-        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]" , job.getId(), status.toString(), event.getEventType());
+        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]", job.getId(), status.toString(), event.getEventType());
         localEventPublisher.publish(event);
     }
 }

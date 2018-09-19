@@ -231,7 +231,8 @@ public class TestCaseResponseProcessor {
 
         String id = projectId + "//" + jobId + "//" + testSuite + "//" + testCase;
 
-        Optional<TestCaseResponseIssueTracker> existingIssue = testCaseResponseITRepository.findByTestCaseResponseIssueTrackerId(id);
+      //  Optional<TestCaseResponseIssueTracker> existingIssue = testCaseResponseITRepository.findByTestCaseResponseIssueTrackerId(id);
+        Optional<TestCaseResponseIssueTracker> existingIssue = testCaseResponseITRepository.findByProjectIdAndJobIdAndTestSuiteNameAndTestCaseNumber(projectId,jobId,testSuite,testCase);
 
         if (!existingIssue.isPresent()) {
             return;

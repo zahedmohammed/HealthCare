@@ -13,13 +13,21 @@ import java.util.Optional;
  */
 public interface TestCaseResponseITRepository extends JpaRepository<TestCaseResponseIssueTracker, String> {
 
-    Optional<TestCaseResponseIssueTracker> findByTestCaseResponseIssueTrackerId(String testCaseResponseIssueTrackerId);
+   // Optional<TestCaseResponseIssueTracker> findByTestCaseResponseIssueTrackerId(String testCaseResponseIssueTrackerId);
 
-    List<TestCaseResponseIssueTracker> findByRunIdAndTestCaseResponseIssueTrackerIdLike(String runId, String itId);
+  //  List<TestCaseResponseIssueTracker> findByRunIdAndTestCaseResponseIssueTrackerIdLike(String runId, String itId);
 
-    Long countByStatusAndTestCaseResponseIssueTrackerIdLike(String status, String itId);
+    //Long countByStatusAndTestCaseResponseIssueTrackerIdLike(String status, String itId);
 
-    @Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.testCaseResponseIssueTrackerId LIKE ?1 and iT.modifiedDate>?2")
-    Long findSumByTestCaseResponseIssueTrackerIdLike(String itId, Date modified_date);
+    //@Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.testCaseResponseIssueTrackerId LIKE ?1 and iT.modifiedDate>?2")
+  //  Long findSumByTestCaseResponseIssueTrackerIdLike(String itId, Date modified_date);
 
+    Optional<TestCaseResponseIssueTracker> findByProjectIdAndJobIdAndTestSuiteNameAndTestCaseNumber(String projectId, String jobId,String testSuite,String testCase);
+
+    List<TestCaseResponseIssueTracker> findByRunIdAndProjectIdAndJobId(String runId, String name, String jobId);
+
+    long countByStatusAndProjectIdAndJobId(String open, String name, String id);
+
+    @Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.projectId=?1 and iT.jobId=?2 and iT.modifiedDate>?3")
+    Long sumByProjectIdAndJobIdAndModifiedDate(String projectId, String jobId, Date currentMonthStartDate);
 }

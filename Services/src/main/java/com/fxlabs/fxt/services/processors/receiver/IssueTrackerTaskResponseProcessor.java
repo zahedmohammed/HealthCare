@@ -74,7 +74,8 @@ public class IssueTrackerTaskResponseProcessor {
 
                 String id = projectId + "//" + jobId + "//" + testSuite + "//" + testCase;
 
-                Optional<TestCaseResponseIssueTracker> existingIssue = testCaseResponseITRepository.findByTestCaseResponseIssueTrackerId(id);
+              //  Optional<TestCaseResponseIssueTracker> existingIssue = testCaseResponseITRepository.findByTestCaseResponseIssueTrackerId(id);
+                Optional<TestCaseResponseIssueTracker> existingIssue = testCaseResponseITRepository.findByProjectIdAndJobIdAndTestSuiteNameAndTestCaseNumber(projectId,jobId,testSuite,testCase);
 
                 if (existingIssue.isPresent()) {
 
@@ -83,6 +84,11 @@ public class IssueTrackerTaskResponseProcessor {
                     testCaseResponseIssueTracker.setValidations(testCaseResponseIssueTracker.getValidations() + 1);
                     testCaseResponseIssueTracker.setStatus(task.getIssueStatus());
                     testCaseResponseIssueTracker.setRunId(task.getRunId());
+
+                    testCaseResponseIssueTracker.setProjectId(response.getProject());
+                    testCaseResponseIssueTracker.setJobId(response.getJobId());
+                    testCaseResponseIssueTracker.setTestSuiteName(response.getSuite());
+                    testCaseResponseIssueTracker.setTestCaseNumber(response.getTestCase());
 
                     testCaseResponseITRepository.save(testCaseResponseIssueTracker);
                     testCaseResponseITESRepository.save(testCaseResponseIssueTracker);
@@ -93,8 +99,14 @@ public class IssueTrackerTaskResponseProcessor {
                 TestCaseResponseIssueTracker  newItResponse = new TestCaseResponseIssueTracker();
                 newItResponse.setIssueId(task.getIssueId());
                 newItResponse.setStatus(task.getIssueStatus());
-                newItResponse.setTestCaseResponseIssueTrackerId(id);
+              //  newItResponse.setTestCaseResponseIssueTrackerId(id);
                 newItResponse.setRunId(task.getRunId());
+
+                newItResponse.setProjectId(response.getProject());
+                newItResponse.setJobId(response.getJobId());
+                newItResponse.setTestSuiteName(response.getSuite());
+                newItResponse.setTestCaseNumber(response.getTestCase());
+
 
                 newItResponse.setValidations(1);
                 testCaseResponseITRepository.save(newItResponse);

@@ -16,6 +16,11 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public class IssueTrackerSaving implements Serializable{
     private String itid;
+    private String projectId;
+    private String jobId;
+    private String testSuiteName;
+    private String testCaseNumber;
+
     private Long totalHourSaving;
     private Long totalCostSaving;
     private int hourlyBugRate;
