@@ -113,6 +113,7 @@ public class ValidatorDelegate {
         } else if (StringUtils.contains(assertion, AND_OPERATOR)) {
             String[] assertions = assertion.split(Pattern.quote(AND_OPERATOR));
             StringJoiner andJoiner = new StringJoiner(ValidatorDelegate.AND_OPERATOR);
+            result = true; // we need this for AND operator
             for (String assertion_ : assertions) {
 
                 String[] tokens = StringUtils.split(assertion_, " ");
