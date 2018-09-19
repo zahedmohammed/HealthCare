@@ -81,7 +81,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         orgUsers.forEach(ou -> {
             orgs.add(ou.getOrg());
         });
-        return new Response<>(converter.convertToDtos(orgs), new Long(orgs.size()), orgs.size());
+        return new Response<>(converter.convertToDtos(orgs), orgUsers.getTotalElements(), orgs.size());
     }
 
     @Override
