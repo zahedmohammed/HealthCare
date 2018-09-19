@@ -42,7 +42,7 @@ export class JobsService {
   }
 
   create(obj: Jobs, categories: string[]) {
-    obj.categories = categories.join(,);
+    obj.categories = categories.join();
     return this.http.post(this.serviceUrl, obj);
   }
 
