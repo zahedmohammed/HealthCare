@@ -42,16 +42,7 @@ export class JobsService {
   }
 
   create(obj: Jobs, categories: string[]) {
-    var cat="";
-     if(categories){
-     for (let category of categories) {
-       console.log("category list",category);
-        cat = cat + category+", " ; 
-    }
-    obj.categories=cat;
-    console.log("cat list","--->"+obj.categories);
-   }
-
+    obj.categories = categories.join(,);
     return this.http.post(this.serviceUrl, obj);
   }
 
