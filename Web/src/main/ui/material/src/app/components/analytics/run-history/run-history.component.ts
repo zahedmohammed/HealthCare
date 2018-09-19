@@ -108,7 +108,7 @@ export class RunHistoryComponent implements OnInit {
       this.length = results['totalElements'];
       this.dataSource = new MatTableDataSource(this.suites);
       this.dataSource.sort = this.sort;
-      console.log('results -> ', results);
+      //console.log('results -> ', results);
 
       //Get data - Start
       let totalData = results['data'];
@@ -270,7 +270,7 @@ export class RunHistoryComponent implements OnInit {
               label: 'Data',
               borderColor: this.config.primary,
               backgroundColor: this.config.primary,
-              fill: false,
+              fill: true,
               pointRadius: 4,
               pointHoverRadius: 5
             },
@@ -308,7 +308,7 @@ export class RunHistoryComponent implements OnInit {
               label: 'Time Taken',
               borderColor: this.config.warning,
               backgroundColor: this.config.warning,
-              fill: false,
+              fill: true,
               pointRadius: 4,
               pointHoverRadius: 5
             }

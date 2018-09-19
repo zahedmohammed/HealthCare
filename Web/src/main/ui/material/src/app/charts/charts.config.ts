@@ -19,5 +19,8 @@ export const CHARTCONFIG = {
     "#b3dfe7",
     "#A4A4BF",
     "#B5C1B4"
-  ]
+  ],
+  lightBlue: '#bfe2cc',
+  lightGreen: '#ace9af',
+  lightYellow: '#f5ecab'
 };
