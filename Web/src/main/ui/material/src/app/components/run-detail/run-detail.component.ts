@@ -121,16 +121,23 @@ export class RunDetailComponent implements OnInit {
 
     calSum() {
 
-        var arrayIndex = this.runNumbers.indexOf(this.run.runId)
-        if ((arrayIndex == this.runNumbers.length - 1))
+        if(this.runNumbers == null)
+        {
             this.disableButtonNext = true
-        else
-            this.disableButtonNext = false
-
-        if (arrayIndex <= 0 || parseInt(this.run.runId) == 1)
             this.disableButtonPrev = true
-        else
-            this.disableButtonPrev = false
+        }
+        else {
+            var arrayIndex = this.runNumbers.indexOf(this.run.runId)
+            if ((arrayIndex == this.runNumbers.length - 1))
+                this.disableButtonNext = true
+            else
+                this.disableButtonNext = false
+
+            if (arrayIndex <= 0 || parseInt(this.run.runId) == 1)
+                this.disableButtonPrev = true
+            else
+                this.disableButtonPrev = false
+        }
         //
         // if (this.totalRuns <= 1)
         //     this.disableButtonPrev = true
