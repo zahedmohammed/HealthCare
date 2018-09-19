@@ -39,22 +39,15 @@
                         <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="rerun();">
                             Re-Run &nbsp;
                         </button>
-
                         <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="nextRun();"
                             [disabled]="disableButtonNext">Next</button>
                         <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="prevRun();"
                             [disabled]="disableButtonPrev">Previous</button>
-                        &nbsp;
-                        <div *ngIf="run.task.status == 'PROCESSING'">
-                            <button mat-raised-button class="btn-w-sm text-warning float-right" (click)="cancel();">
-                                Cancel
-                            </button>
-                        </div>
+                        <button mat-raised-button *ngIf="run.task.status == 'PROCESSING'" class="btn-w-sm text-warning float-right" (click)="cancel();">
+                            Cancel</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
         </div>
     </div>
 
@@ -111,7 +104,7 @@
                     <div class="box-bottom text-muted">
                         <!--<small class="text-success">{{run.stats['Critical_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['Critical_Failed'] || 0}}</small>-->
                         <small class="text-danger">{{run.task.issuesLogged || 0}}<span class="text-small"> New </span></small>
-                        <small class="text-success">{{run.task.issuesClosed || 0}}<span class="text-small"> Closed </span></small>
+                        <small class="text-success">{{run.task.issuesClosed || 0}}<span class="text-small"> Closed</span></small>
                         <!--<small class="text-danger">{{run.task.totalOpenIssues || 0}}<span class="text-small"> Open</span></small>-->
                     </div>
                 </div>
@@ -246,7 +239,7 @@
                     </mat-chip-list>
                 </div>
             </div>
-<!--
+            <!--
             <div class="col-md-4">
                 <span class="pull-right">Bugs:
                     <span class="text-danger"><b>{{run.task.issuesLogged || 0}}</b></span>&nbsp;<span class="text-danger small">New</span>&nbsp;
