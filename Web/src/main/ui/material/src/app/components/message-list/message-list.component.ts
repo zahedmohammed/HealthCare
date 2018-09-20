@@ -10,7 +10,7 @@ import { ProjectService } from './../../services/project.service';
 import { JobsService } from './../../services/jobs.service';
 import { APPCONFIG } from '../../config';
 import { TasksService } from './../../services/tasks.service';
-import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import * as EventSource from 'eventsource';
 
 @Component({
@@ -55,22 +55,22 @@ export class MessageListComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-        this.tasksRes = results['data'];
-        console.log('tasksRes---', this.tasksRes);
-        this.length = results['totalElements'];
-        this.count = 0;
-        for (let entry of this.tasksRes) {
-            if ( entry.status == 'In_progress' ) {
-              this.count = this.count + 1;
-            }
+      this.tasksRes = results['data'];
+      console.log('tasksRes---', this.tasksRes);
+      this.length = results['totalElements'];
+      this.count = 0;
+      for (let entry of this.tasksRes) {
+        if (entry.status == 'In_progress') {
+          this.count = this.count + 1;
         }
+      }
 
-      }, error => {
-        this.handler.hideLoader();
-        this.handler.error(error);
-      });
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
   }
-  
+
   connect() {
     let source = new EventSource('/api/v1/events/register');
     source.addEventListener('message', message => {
@@ -95,7 +95,7 @@ export class MessageListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     //this.list();
