@@ -2,7 +2,7 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                <a href="javascript:;" [routerLink]="['/app/orgs']">Orgs</a> 
+                <a href="javascript:;" [routerLink]="['/app/orgs']">Orgs</a>
                 <span class="text-muted"> &nbsp;<i class="fa fa-chevron-right"></i>&nbsp; </span>New
             </section>
         </article>
@@ -11,48 +11,49 @@
 
 <section class="container-fluid with-maxwidth chapter">
     <br>
-  <article class="article">
-    <div class="box box-default">
-      <div class="box-body">
-      
-            <mat-horizontal-stepper [linear]="true" #stepper>
+    <article class="article">
+        <div class="box box-default">
+            <div class="box-body">
 
-                <mat-step [stepControl]="firstFormGroup">
-                    <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>Org Details</ng-template>
-          <div class="form-group row">
-            <label for="name" class="col-md-0 control-label"></label>
-            <div class="col-md-5 no-margin-bottom">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.name" name="name" id="name"
-                       matInput formControlName="nameCtrl" placeholder="Organization name" autocomplete="off">
-              </mat-input-container>
-            </div>
-          </div>
+                <mat-horizontal-stepper [linear]="true" #stepper>
 
-          <div class="form-group row">
-            <label for="company" class="col-md-0 control-label">
-            </label>
-            <div class="col-md-5">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.company" name="company" id="company"
-                       matInput formControlName="companyCtrl" placeholder="Company" autocomplete="off">
-              </mat-input-container>
-            </div>
-          </div>
+                    <mat-step [stepControl]="firstFormGroup">
+                        <form [formGroup]="firstFormGroup">
+                            <ng-template matStepLabel>Org Details</ng-template>
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5 no-margin-bottom">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="entry.name" name="name" id="name" matInput
+                                            formControlName="nameCtrl" placeholder="Organization name" autocomplete="off">
+                                    </mat-input-container>
+                                </div>
+                            </div>
 
-          <div class="form-group row">
-            <label for="billingEmail" class="col-md-0 control-label">
-            </label>
-            <div class="col-md-5">
-              <mat-input-container class="full-width">
-                <input required [(ngModel)]="entry.billingEmail" name="billingEmail" id="billingEmail"
-                       matInput formControlName="emailCtrl" placeholder="Billing email" autocomplete="off">
-              </mat-input-container>
-            </div>
-          </div>
+                            <div class="form-group row">
+                                <label for="company" class="col-md-0 control-label">
+                                </label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="entry.company" name="company" id="company"
+                                            matInput formControlName="companyCtrl" placeholder="Company" autocomplete="off">
+                                    </mat-input-container>
+                                </div>
+                            </div>
 
-          <!-- <div class="form-group">
+                            <div class="form-group row">
+                                <label for="billingEmail" class="col-md-0 control-label">
+                                </label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="entry.billingEmail" name="billingEmail" id="billingEmail"
+                                            matInput formControlName="emailCtrl" placeholder="Billing email"
+                                            autocomplete="off">
+                                    </mat-input-container>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
               <button mat-raised-button color="primary" (click)="create();"
                       class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Create Organization
               </button>
@@ -60,40 +61,35 @@
               </button>
           </div> -->
 
-          <div>
-              <mat-card-actions class="pull-right">
-                <button mat-raised-button color="primary"
-                        class="nav-btn"
-                        [disabled]="firstFormGroup.invalid"
-                        (click)="create();stepper.next()">Save & Next
-                </button>
-                <button mat-button type="button" 
-                color="primary" 
-                class="btn-w-md" 
-                [routerLink]="['/app/orgs']">Cancel
-                </button>
-                <!-- <button mat-button (click)="gotoAccount(stepper);">Next</button> -->
-              </mat-card-actions>
-            </div>
+                            <div>
+                                <mat-card-actions class="pull-right">
+                                    <button mat-button type="button" color="primary" class="btn-w-md" [routerLink]="['/app/orgs']">Cancel
+                                    </button>
+                                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid"
+                                        (click)="create();stepper.next()">Save & Next
+                                    </button>
+                                    <!-- <button mat-button (click)="gotoAccount(stepper);">Next</button> -->
+                                </mat-card-actions>
+                            </div>
 
-        </form>
-        </mat-step>
-      
+                        </form>
+                    </mat-step>
 
-        <mat-step [stepControl]="secondFormGroup">
-                <form [formGroup]="secondFormGroup" class="px-4">
-                        <ng-template matStepLabel>User Details</ng-template>
-                    <div class="form-group row">
-                        <label for="name" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="account.name" name="name" id="name"
-                                       matInput placeholder="Name" [ngModelOptions]="{standalone: true}">
-                            </mat-input-container>
-                        </div>
-                    </div>
 
-                    <!--<div class="form-group row">
+                    <mat-step [stepControl]="secondFormGroup">
+                        <form [formGroup]="secondFormGroup" class="px-4">
+                            <ng-template matStepLabel>User Details</ng-template>
+                            <div class="form-group row">
+                                <label for="name" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="account.name" name="name" id="name" matInput
+                                            placeholder="Name" [ngModelOptions]="{standalone: true}">
+                                    </mat-input-container>
+                                </div>
+                            </div>
+
+                            <!--<div class="form-group row">
                       <label for="username" class="col-md-2 control-label"></label>
                       <div class="col-md-8">
                         <mat-input-container class="full-width">
@@ -103,70 +99,69 @@
                       </div>
                     </div>-->
 
-                    <div class="form-group row">
-                        <label for="email" class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="account.email" name="email" id="email" type="email"
-                                       matInput placeholder="Email" [ngModelOptions]="{standalone: true}">
-                            </mat-input-container>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-md-0 control-label"></label>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="account.password" name="pass" id="pass" type="password"
-                                       matInput placeholder="Password" min="8" [ngModelOptions]="{standalone: true}">
-                            </mat-input-container>
-                        </div>
-                        <div class="col-md-5">
-                            <mat-input-container class="full-width">
-                                <input required [(ngModel)]="account.confirmPassword" name="confirmPassword" id="confirmPassword"
-                                       type="password"
-                                       matInput placeholder="Confirm password" min="8" [ngModelOptions]="{standalone: true}">
-                            </mat-input-container>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group row">
-                        <label class="col-md-0 control-label">
-                        </label>
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <mat-select placeholder="Role" required [(ngModel)]="account.orgRole" name="roles" [ngModelOptions]="{standalone: true}">
-                                    <mat-option  *ngFor="let role of roles" [value]="role">
-                                        {{role}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p>
-                                    Role 'ADMIN' can manage all the resources in the Org. <br/>
-                                    Role 'PROJECT_MANAGER' can manage everything except Accounts and Users. <br/>
-                                    Role 'USER' has View & Run access only. <br/>
-                                </p>
+                            <div class="form-group row">
+                                <label for="email" class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="account.email" name="email" id="email" type="email"
+                                            matInput placeholder="Email" [ngModelOptions]="{standalone: true}">
+                                    </mat-input-container>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div>
-                            <mat-card-actions class="pull-right">
-                                <button mat-button matStepperPrevious>Back</button>&nbsp;
-                                <button mat-raised-button color="primary"
-                                        class="nav-btn"
-                                        [disabled]="secondFormGroup.invalid"
+                            <div class="form-group row">
+                                <label class="col-md-0 control-label"></label>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="account.password" name="pass" id="pass" type="password"
+                                            matInput placeholder="Password" min="8" [ngModelOptions]="{standalone: true}">
+                                    </mat-input-container>
+                                </div>
+                                <div class="col-md-5">
+                                    <mat-input-container class="full-width">
+                                        <input required [(ngModel)]="account.confirmPassword" name="confirmPassword" id="confirmPassword"
+                                            type="password" matInput placeholder="Confirm password" min="8"
+                                            [ngModelOptions]="{standalone: true}">
+                                    </mat-input-container>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-md-0 control-label">
+                                </label>
+                                <div class="col-md-5">
+                                    <mat-form-field class="full-width">
+                                        <mat-select placeholder="Role" required [(ngModel)]="account.orgRole" name="roles"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <mat-option *ngFor="let role of roles" [value]="role">
+                                                {{role}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>
+                                            Role 'ADMIN' can manage all the resources in the Org. <br />
+                                            Role 'PROJECT_MANAGER' can manage everything except Accounts and Users. <br />
+                                            Role 'USER' has View & Run access only. <br />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <mat-card-actions class="pull-right">
+                                    <button mat-button matStepperPrevious>Back</button>&nbsp;
+                                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="secondFormGroup.invalid"
                                         (click)="createAccount();">Save & Complete
-                                </button>
-                            </mat-card-actions><!-- -->
-            
-                        </div>
+                                    </button>
+                                </mat-card-actions><!-- -->
 
-                    <!-- <div class="form-group">
+                            </div>
+
+                            <!-- <div class="form-group">
                             <button mat-raised-button color="primary" (click)="create();"
                                     class="btn-w-md no-margin-left" [disabled]="!heroForm.valid">Create User
                             </button>
@@ -175,11 +170,11 @@
                             </button>
                     </div> -->
 
-                </form>
-        </mat-step>
-      </mat-horizontal-stepper>
-       
-      </div>
-    </div>
-  </article>
+                        </form>
+                    </mat-step>
+                </mat-horizontal-stepper>
+
+            </div>
+        </div>
+    </article>
 </section>
