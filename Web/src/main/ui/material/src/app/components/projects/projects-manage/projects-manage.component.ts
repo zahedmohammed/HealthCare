@@ -73,7 +73,7 @@ export class ProjectsManageComponent implements OnInit {
     });
 
     this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: [{ value: "name", disabled: true }, Validators.required]
+      nameCtrl: [{ value: "name", disabled: false }, Validators.required]
     });
 
     this.secondFormGroup = this._formBuilder.group({
