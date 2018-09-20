@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { VaultService } from '../../../services/vault.service';
 import { OrgService } from '../../../services/org.service';
 import { Vault } from '../../../models/vault.model';
 import { Handler } from '../../dialogs/handler/handler';
-import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
-import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
-import {SnackbarService}from '../../../services/snackbar.service';
+import { DeleteDialogComponent } from '../../dialogs/delete-dialog/delete-dialog.component';
+import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
+import { SnackbarService } from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-vault-edit',
@@ -53,40 +53,32 @@ export class VaultEditComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-        this.snackbarService.openSnackBar(this.entry.key + " saved successfully", "");
-        this.router.navigate(['/app/vault']);
+      this.snackbarService.openSnackBar(this.entry.key + " saved successfully", "");
+      this.router.navigate(['/app/vault']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
 
- delete() {
-    let dialogRef = this.dialog.open(DeleteDialogComponent, {
-        data: {
-            entry: this.entry
+  delete() {
+    var result = confirm("Are you sure you want to delete '" + this.entry.key + "'?");
+    if (result == true) {
+      this.handler.activateLoader();
+      this.vaultService.delete(this.entry).subscribe(results => {
+        this.handler.hideLoader();
+        if (this.handler.handle(results)) {
+          return;
         }
-    });
+        this.snackbarService.openSnackBar(this.entry.key + " deleted successfully", "");
+        this.router.navigate(['/app/vault']);
+      }, error => {
+        this.handler.hideLoader();
+        this.handler.error(error);
 
-    dialogRef.afterClosed().subscribe(result => {
-        this.snackbarService.openSnackBar(this.entry.key + " deleting...", "");
-        if (result != null) {
-            this.handler.activateLoader();
-            this.vaultService.delete(this.entry).subscribe(results => {
-                this.handler.hideLoader();
-                if (this.handler.handle(results)) {
-                    return;
-                }
-                this.snackbarService.openSnackBar(this.entry.key + " deleted successfully", "");
-                this.router.navigate(['/app/vault']);
-            }, error => {
-                this.handler.hideLoader();
-                this.handler.error(error);
-
-            });
-        }
-    });
-}
+      });
+    }
+  }
 
   getOrgs() {
     this.handler.activateLoader();
