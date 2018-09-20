@@ -41,32 +41,9 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
 
         String endPoint = path;
 
-        for (Parameter param : op.getParameters()) {
-            if (param instanceof QueryParameter) {
-                QueryParameter queryParam = (QueryParameter) param;
-                String name = queryParam.getName();
-                String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@RandomInteger}}";
-                endPoint = endPoint.replaceAll("\\{" + name + "\\}", defaultVal);
-            }
-            if (param instanceof PathParameter) {
-                PathParameter queryParam = (PathParameter) param;
-                String name = queryParam.getName();
-                String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@Random}}";
-                endPoint = endPoint.replaceAll("\\{"+name+"\\}" , defaultVal);
-            }
-        }
-
-        Policies policies = null;
-
-        String postFix = configUtil.getTestSuitePostfix(SCENARIO);
-        List<TestSuiteMin> list = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
-
+        List<TestSuiteMin> list = null;
 
         //  Non-Secured Paths
-
-        if (CollectionUtils.isEmpty(generator.getMatches())) {
-            return list;
-        }
 
         final String path_ = path;
         Match match = null;
@@ -76,8 +53,9 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
                 continue;
             }
             for (String pattern : m.getPathPatterns().split(", ")) {
-                if (ANT_PATH_MATCHER.match(pattern, path_) &&
-                        (StringUtils.isEmpty(m.getMethods()) || org.apache.commons.lang3.StringUtils.containsIgnoreCase(m.getMethods(), method.name()))) {
+                if (ANT_PATH_MATCHER.match(pattern, path_)
+                        && (StringUtils.isEmpty(m.getMethods()) || org.apache.commons.lang3.StringUtils.containsIgnoreCase(m.getMethods(), method.name()))
+                        ) {
                     System.out.print(String.format("Match found for pattern [%s] and path [%s]", pattern, path_));
                     match = m;
                     break;
@@ -88,13 +66,38 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
 
         if (match == null) {
             System.out.println(String.format("No Non-Secured matches found for path [%s]...", path_));
+
+            for (Parameter param : op.getParameters()) {
+                if (param instanceof QueryParameter) {
+                    QueryParameter queryParam = (QueryParameter) param;
+                    String name = queryParam.getName();
+                    String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@RandomInteger}}";
+                    endPoint = endPoint.replaceAll("\\{" + name + "\\}", defaultVal);
+                }
+                if (param instanceof PathParameter) {
+                    PathParameter queryParam = (PathParameter) param;
+                    String name = queryParam.getName();
+                    String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@Random}}";
+                    endPoint = endPoint.replaceAll("\\{"+name+"\\}" , defaultVal);
+                }
+            }
+
+            Policies policies = null;
+
+            String postFix = configUtil.getTestSuitePostfix(SCENARIO);
+            list = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+
+
         }else {
 
-            List<String> assertions = generator.getAssertions();
-            if (CollectionUtils.isEmpty(assertions)) {
-                assertions = Arrays.asList("@StatusCode == 200");
-            }
-            list.addAll(build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies));
+            // Skip non-Secured Endpoints
+
+//
+//            List<String> assertions = generator.getAssertions();
+//            if (CollectionUtils.isEmpty(assertions)) {
+//                assertions = Arrays.asList("@StatusCode == 200");
+//            }
+//            list.addAll(build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies));
         }
         return list;
     }
