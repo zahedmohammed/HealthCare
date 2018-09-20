@@ -198,13 +198,13 @@ export class TestSuiteEditComponent implements OnInit {
     var groupVal = this.thirdFormGroup.value;
     this.testSuite.testCases = groupVal.testCases;
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar("'TestSuite '" + this.testSuite.name + "' creating...", "");
+    this.snackbarService.openSnackBar("'TestSuite '" + this.testSuite.name + "' updating...", "");
     this.testSuiteService.update(this.testSuite).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.snackbarService.openSnackBar("'TestSuite '" + this.project.name + "' created successfully", "");
+      this.snackbarService.openSnackBar("'TestSuite '" + this.project.name + "' updated successfully", "");
       this.router.navigate(['/app/projects', this.id, 'test-suites']);
       // this.project = results['data'];
 
@@ -215,13 +215,13 @@ export class TestSuiteEditComponent implements OnInit {
   }
   saveTestSuiteYaml() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar(" creating...", "");
+    this.snackbarService.openSnackBar(" updating...", "");
     this.testSuiteService.createFromYaml(this.text, this.project.id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.snackbarService.openSnackBar("'TestSuite '" + this.project.name + "' created successfully", "");
+      this.snackbarService.openSnackBar("'TestSuite '" + this.project.name + "' updated successfully", "");
       this.router.navigate(['/app/projects', this.id, 'test-suites']);
       // this.project = results['data'];
 
