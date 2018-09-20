@@ -32,9 +32,14 @@ export class RunHistoryComponent implements OnInit {
   job: Base = new Base();
   showSpinner: boolean = false;
   config = CHARTCONFIG;
-  chart = []; // This will hold our chart info
-  chart2 = []; // This will hold our chart info
-  chart3 = [];
+  // chart = []; // This will hold our chart info
+  // chart2 = []; // This will hold our chart info
+  // chart3 = [];
+
+    chart:Chart = []; // This will hold our chart info
+    chart2:Chart = []; // This will hold our chart info
+    chart3:Chart = []; // This will hold our chart info
+
   displayedColumns: string[] = ['no', 'status', 'region', 'success', 'date/time', 'timeTaken', 'data'];
   dataSource = null;
 
@@ -320,7 +325,17 @@ export class RunHistoryComponent implements OnInit {
   page = 0;
   pageSize = 10;
   change(evt) {
-    this.page = evt['pageIndex'];
+      if(this.chart){
+          this.chart.destroy()
+      }
+      if(this.chart2){
+          this.chart2.destroy()
+      }
+      if(this.chart3){
+          this.chart3.destroy()
+      }
+ 
+      this.page = evt['pageIndex'];
    this.getTestSuiteResponseHistoryByName();
   }
 }
