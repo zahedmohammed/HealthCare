@@ -60,7 +60,7 @@
                             <mat-cell *matCellDef="let item"> {{item.createdDate | date:'shortDate'}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="count">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Count </mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Cluster Size </mat-header-cell>
                             <mat-cell *matCellDef="let item"> {{item.min}} <span matTooltip="10 virtual bots!"
                                     matTooltipPosition="above"><small>x10</small></span> </mat-cell>
                         </ng-container>

@@ -8,7 +8,7 @@
         </article>
     </div>
 </div>
-<br/>
+<br />
 <section class="container-fluid with-maxwidth chapter" xmlns="http://www.w3.org/1999/html">
     <nav mat-tab-nav-bar>
         <label mat-tab-link [active]="true" [routerLink]="['/app/regions']">My Bots
@@ -49,10 +49,12 @@
                                 <div class="pull-right">
                                     <button mat-button type="button" [routerLink]="['/app/regions']">Cancel
                                     </button>
-                                    <button mat-raised-button color="primary" class="btn-w-md" (click)="manualDeploy();" [disabled]="!heroForm1.valid">
+                                    <button mat-raised-button color="primary" class="btn-w-md" (click)="manualDeploy();"
+                                        [disabled]="!heroForm1.valid">
                                         Create Self Hosted Bot & Complete
                                     </button> &nbsp; &nbsp;
-                                    <button mat-raised-button color="primary" class="btn-w-md" matStepperNext (click)="getCloudAccountForExecutionBotPage();" [disabled]="!heroForm1.valid">
+                                    <button mat-raised-button color="primary" class="btn-w-md" matStepperNext (click)="getCloudAccountForExecutionBotPage();"
+                                        [disabled]="!heroForm1.valid">
                                         Auto Deploy to Cloud & Next</button>
                                 </div>
                             </form>
@@ -96,7 +98,7 @@
                                         </div>
                                     </div>
                                     <mat-form-field class="col-md-5">
-                                        <input [(ngModel)]="entry.min" name="min" id="min" matInput placeholder="Count"
+                                        <input [(ngModel)]="entry.min" name="min" id="min" matInput placeholder="Cluster Size (1-100)"
                                             autocomplete="off">
                                     </mat-form-field>
                                     <div class="col-md-7">
