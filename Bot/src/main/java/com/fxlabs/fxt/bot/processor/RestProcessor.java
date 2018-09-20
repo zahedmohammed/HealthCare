@@ -433,6 +433,7 @@ public class RestProcessor {
         if (generateTestCases) {
             TestCaseResponse tc = new TestCaseResponse();
             tc.setProject(task.getProject());
+            tc.setProjectId(task.getProjectId());
             tc.setJob(task.getJob());
             tc.setJobId(task.getJobId());
             tc.setEnv(task.getEnv());

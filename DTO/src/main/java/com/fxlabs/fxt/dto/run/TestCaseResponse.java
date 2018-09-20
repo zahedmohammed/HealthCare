@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class TestCaseResponse extends BaseDto<String> {
 
     private String project;
+    private String projectId;
     private String job;
     private String jobId;
     private String env;

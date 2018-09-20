@@ -224,7 +224,7 @@ public class TestCaseResponseProcessor {
 
 
     private void populateIssueId(TestCaseResponse tc) {
-        String projectId = tc.getProject();
+        String projectId = tc.getProjectId();
         String jobId = tc.getJobId();
         String testSuite = tc.getSuite();
         String testCase = tc.getTestCase();

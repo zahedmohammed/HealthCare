@@ -67,7 +67,7 @@ public class IssueTrackerTaskResponseProcessor {
                 testCaseResponseRepository.save(response);
                 testCaseResponseESRepository.save(response);
 
-                String projectId = response.getProject();
+                String projectId = response.getProjectId();
                 String jobId = response.getJobId();
                 String testSuite = response.getSuite();
                 String testCase = response.getTestCase();
@@ -85,7 +85,7 @@ public class IssueTrackerTaskResponseProcessor {
                     testCaseResponseIssueTracker.setStatus(task.getIssueStatus());
                     testCaseResponseIssueTracker.setRunId(task.getRunId());
 
-                    testCaseResponseIssueTracker.setProjectId(response.getProject());
+                    testCaseResponseIssueTracker.setProjectId(response.getProjectId());
                     testCaseResponseIssueTracker.setJobId(response.getJobId());
                     testCaseResponseIssueTracker.setTestSuiteName(response.getSuite());
                     testCaseResponseIssueTracker.setTestCaseNumber(response.getTestCase());
@@ -102,7 +102,7 @@ public class IssueTrackerTaskResponseProcessor {
               //  newItResponse.setTestCaseResponseIssueTrackerId(id);
                 newItResponse.setRunId(task.getRunId());
 
-                newItResponse.setProjectId(response.getProject());
+                newItResponse.setProjectId(response.getProjectId());
                 newItResponse.setJobId(response.getJobId());
                 newItResponse.setTestSuiteName(response.getSuite());
                 newItResponse.setTestCaseNumber(response.getTestCase());

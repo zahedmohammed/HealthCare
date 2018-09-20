@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 public class TestCaseResponse extends BaseEntity {
 
     private String project;
+    private String projectId;
     private String job;
     private String jobId;
     private String env;

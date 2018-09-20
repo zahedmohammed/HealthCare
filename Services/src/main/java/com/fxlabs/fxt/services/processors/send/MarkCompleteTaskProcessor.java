@@ -138,7 +138,7 @@ public class MarkCompleteTaskProcessor {
 
                         String itId = run.getJob().getProject().getName() + "//" + run.getJob().getId() + "%";
                         // List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndTestCaseResponseIssueTrackerIdLike(run.getId(), itId);
-                        List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndProjectIdAndJobId(run.getId(), run.getJob().getProject().getName(), run.getJob().getId());
+                        List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndProjectIdAndJobId(run.getId(), run.getJob().getProject().getId(), run.getJob().getId());
 
                         long newIssues = 0L;
                         long closedIssues = 0L;
@@ -156,7 +156,7 @@ public class MarkCompleteTaskProcessor {
                         run.getTask().setIssuesClosed(closedIssues);
 
                         //  long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
-                        long totalOpenIssues = testCaseResponseITRepository.countByStatusAndProjectIdAndJobId("open", run.getJob().getProject().getName(), run.getJob().getId());
+                        long totalOpenIssues = testCaseResponseITRepository.countByStatusAndProjectIdAndJobId("open", run.getJob().getProject().getId(), run.getJob().getId());
 
                         run.getTask().setTotalOpenIssues(totalOpenIssues);
                         run.getStats().put("total_issues", totalOpenIssues);
