@@ -131,14 +131,8 @@ export class RunHistoryComponent implements OnInit {
         let dt = new Date(crDate[i]);
         //console.log("dt - ", dt);
         crDateConvert[i] = this.datePipe.transform(dt,"MMM dd yyyy");
-        // for(let j = crDateConvert[i].length - 1; j >= 0; j--){
-        //   console.log(crDateConvert[i]);
-        //   temp[j] = crDateConvert[i];
-        // }
-        //console.log(this.datePipe.transform(dt,"dd-MM-yyyy")); //output : 2018-02-13
-        //console.log("crDateConvert - ", crDateConvert[i]);
         success.push(100 * (tp[i] / (tp[i] + tf[i])));
-        // runno.push(i['runNo']);
+        //runno.push(i['runNo']);
       }
       //End
       tb.reverse();
@@ -164,7 +158,7 @@ export class RunHistoryComponent implements OnInit {
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'Runs'
+              labelString: 'Date'
             }
           }],
           yAxes: [{
