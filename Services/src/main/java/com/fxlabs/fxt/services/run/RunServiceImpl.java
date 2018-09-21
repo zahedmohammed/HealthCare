@@ -320,7 +320,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             runIds.add(run.getId());
         }
 
-        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.testSuiteResponseRepository.findByTestSuiteAndRunIdIn(testSuite, runIds, pageable);
+        Page<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> page = this.testSuiteResponseESRepository.findByTestSuiteAndRunIdIn(testSuite, runIds, pageable);
 
         List<TestSuiteResponse> dataSets = testSuiteResponseConverter.convertToDtos(page.getContent());
         return new Response<List<TestSuiteResponse>>(dataSets, page.getTotalElements(), page.getTotalPages());

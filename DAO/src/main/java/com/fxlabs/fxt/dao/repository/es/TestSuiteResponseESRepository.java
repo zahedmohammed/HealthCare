@@ -39,5 +39,7 @@ public interface TestSuiteResponseESRepository extends ElasticsearchRepository<T
 
     Page<TestSuiteResponse> findByRunIdAndTestSuite(String id, String name, Pageable pageable);
 
+    Page<TestSuiteResponse> findByTestSuiteAndRunIdIn(String testSuite, List<String> runIds, Pageable pageable);
+
 
 }
