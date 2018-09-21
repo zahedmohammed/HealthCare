@@ -48,18 +48,27 @@ public class Run extends BaseDto<String> {
         } catch (Exception e) {
             e.getLocalizedMessage();
         }
-            sb.append(this.task.getStatus().toString()).append(":")
-                    .append(success).append(":")
-                    .append(this.task.getTotalTests()).append(":")
-                    .append(this.task.getFailedTests()).append(":")
-                    .append(this.task.getTimeTaken()).append(":")
-                    .append(this.getRunId()).append(":")
-                    .append("/#/app/projects/" + job.getProject().getId() + "/jobs/" + job.getId() + "/runs/" + this.getId()).append(":")
-                    .append("Bugs Logged = " + this.task.getIssuesLogged() + " Bugs Reopened = " + this.task.getIssuesReopen() +
-                    " Bugs Closed = " + this.task.getIssuesClosed() + " Total Bugs = " + this.task.getTotalOpenIssues() );
+
+         if(this.task.getStatus().toString() == "FAIL")
+
+         {
+             sb.append(this.task.getStatus().toString()).append(":")
+                     .append(this.task.getDescription());
+         }
+                sb.append(this.task.getStatus().toString()).append(":")
+                        .append(success).append(":")
+                        .append(this.task.getTotalTests()).append(":")
+                        .append(this.task.getFailedTests()).append(":")
+                        .append(this.task.getTimeTaken()).append(":")
+                        .append(this.task.getDescription()).append(":")
+                        .append(this.getRunId()).append(":")
+                        .append("/#/app/projects/" + job.getProject().getId() + "/jobs/" + job.getId() + "/runs/" + this.getId()).append(":")
+                        .append("Bugs Logged = " + this.task.getIssuesLogged() + " Bugs Reopened = " + this.task.getIssuesReopen() +
+                                " Bugs Closed = " + this.task.getIssuesClosed() + " Total Bugs = " + this.task.getTotalOpenIssues());
 
 
-        return sb.toString();
+                return sb.toString();
+
     }
 
 }
