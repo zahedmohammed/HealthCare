@@ -9,6 +9,8 @@ import com.fxlabs.fxt.dao.entity.notify.Notification;
 import com.fxlabs.fxt.dao.entity.users.*;
 import com.fxlabs.fxt.dao.repository.es.OrgUsersESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
+import com.fxlabs.fxt.dto.base.Message;
+import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.UserMinimalDto;
 import com.fxlabs.fxt.dto.users.Member;
@@ -201,6 +203,10 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         com.fxlabs.fxt.dto.users.Users users = new com.fxlabs.fxt.dto.users.Users();
         users.setName(dto.getName());
         users.setEmail(dto.getEmail());
+
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
+            return new Response<>(false).withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Password and Confirm Password did not match.")));
+        }
         users.setPassword(dto.getPassword());
 
         Response<com.fxlabs.fxt.dto.users.Users> addUserResponse = usersService.addUser(users, Arrays.asList("ROLE_USER"));
