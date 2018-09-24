@@ -92,15 +92,13 @@ export class RegionEditComponent implements OnInit {
 
   delete() {
     let dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: {
-        entry: this.entry
-      }
+      data: this.entry.name + ' bot'
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.snackbarService.openSnackBar(this.entry.name + " deleting...", "");
       if (result != null) {
-        this.handler.activateLoader();
-        this.regionsService.delete(this.entry).subscribe(results => {
+          this.snackbarService.openSnackBar(this.entry.name + " deleting...", "");
+          this.handler.activateLoader();
+          this.regionsService.delete(this.entry).subscribe(results => {
           this.handler.hideLoader();
           if (this.handler.handle(results)) {
             return;

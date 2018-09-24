@@ -232,21 +232,45 @@ export class JobsEditComponent implements OnInit {
   }
 
   delete() {
-    var r = confirm("Are you sure you want to delete '" + this.job.name + "'?");
-    if (r == true) {
-      this.jobsService.delete(this.job).subscribe(results => {
-          if (this.handler.handle(results)) {
-            return;
-          }
-          this.snackbarService.openSnackBar("'Job '" + this.job.name + "' deleted", "");
-          this.router.navigate(['/app/projects', this.id, 'jobs']);
-        }, error => {
-          this.handler.hideLoader();
-          this.handler.error(error);
+
+      let dialogRef = this.dialog.open(DeleteDialogComponent, {
+          data: this.job.name + ' project'
       });
 
-    }
+      dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+              this.snackbarService.openSnackBar(this.job.name + " deleting...", "");
+              this.handler.activateLoader();
+
+              this.jobsService.delete(this.job).subscribe(results => {
+                  if (this.handler.handle(results)) {
+                      return;
+                  }
+                  this.snackbarService.openSnackBar("'Job '" + this.job.name + "' deleted", "");
+                  this.router.navigate(['/app/projects', this.id, 'jobs']);
+              }, error => {
+                  this.handler.hideLoader();
+                  this.handler.error(error);
+              });
+          }
+      });
+
+    // var r = confirm("Are you sure you want to delete '" + this.job.name + "'?");
+    // if (r == true) {
+    //   this.jobsService.delete(this.job).subscribe(results => {
+    //       if (this.handler.handle(results)) {
+    //         return;
+    //       }
+    //       this.snackbarService.openSnackBar("'Job '" + this.job.name + "' deleted", "");
+    //       this.router.navigate(['/app/projects', this.id, 'jobs']);
+    //     }, error => {
+    //       this.handler.hideLoader();
+    //       this.handler.error(error);
+    //   });
+    //
+    // }
   }
+
   cloneJob() {
     localStorage.setItem('jobClone', JSON.stringify(this.job));
     this.router.navigate(['/app/projects', this.id, 'jobs', 'new']);
