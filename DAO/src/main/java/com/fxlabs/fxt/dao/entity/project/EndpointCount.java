@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author Mohammed Luqman Shareef
@@ -17,9 +16,10 @@ import java.util.Map;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TestSuiteCount implements Serializable {
+public class EndpointCount implements Serializable {
 
-    private Object groupBy;
+    private Object method;
+    private Object category;
     private Long count;
 }
 

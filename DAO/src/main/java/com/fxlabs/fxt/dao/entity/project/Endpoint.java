@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import java.io.Serializable;
  * @author Mohammed Luqman Shareef
  */
 
+@Document(indexName = "fx-api-endpoints")
 @Entity
 @Data
 //@AllArgsConstructor

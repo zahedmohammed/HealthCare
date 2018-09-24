@@ -1,4 +1,4 @@
-package com.fxlabs.fxt.dao.entity.project;
+package com.fxlabs.fxt.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author Mohammed Luqman Shareef
@@ -17,9 +16,15 @@ import java.util.Map;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TestSuiteCount implements Serializable {
+public class Coverage implements Serializable {
 
-    private Object groupBy;
-    private Long count;
+    private String category;
+
+    private int coveredEndpoints;
+    private int totalEndpoints;
+    private int tsCount;
+    private int relevantEndpoints;
+    private int coveragePercentage;
+
 }
 

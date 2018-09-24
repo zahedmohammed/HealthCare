@@ -11,4 +11,7 @@ import java.util.List;
 public interface EndpointRepository extends JpaRepository<Endpoint, String> {
 
     List<Endpoint> findByProjectId(String projectId);
+
+    Long countByMethodAndProjectId(String method, String projectId);
+
 }

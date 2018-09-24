@@ -49,96 +49,81 @@
 
   <!-- Accordian start -->
   <article class="article">
+
+    <div class="mat-elevation-z8 box-default">
+      <mat-table [dataSource]="dataSource" matSort matSortActive="modified-date" matSortDisableClear matSortDirection="desc">
+
+        <!-- Category Column -->
+        <ng-container matColumnDef="category">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.category}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="api-count">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Relevant Endpoints </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.totalEndpoints}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ts-count">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Covered Endpoints </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.coveredEndpoints }} </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="coverage-percent">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Coverage %</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.coveragePercentage}} %</mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
+      </mat-paginator>
+    </div>
+
+    <br/>
+
     <div class="box box-default">
-      <div class="box-body">
-        <mat-accordion>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <p class="non-numeric text-muted">Total No. of API Endpoints in the project : {{ coverage.totalEndpoints
-                  | number}}</p>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="mb-3">
-            </div>
-            <div class="col-md-12" *ngFor="let e of coverage.endpoints">
-              <div class="mb-3">
-                {{e.method}} : {{e.endpoint}}
-              </div>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
 
-        <mat-accordion>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <p class="non-numeric text-muted">No. of Test Suites auto generated : {{ coverage.totalSuites | number }}</p>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="col-md-12" *ngFor="let cat of coverage.countByCategory">
-              <div class="mb-3">
-                {{cat.groupBy}} : {{cat.count}}
-              </div>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-
-        <mat-accordion>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <p class="non-numeric text-muted">No. of test cases in all Test Suites generated : {{ coverage.totalTestCases
-                  | number}}</p>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="mb-3">
-              Average {{ coverage.totalTestCases / coverage.totalSuites | number }} test case(s) per test-suite
-            </div>
-          </mat-expansion-panel>
-
-        </mat-accordion>
-
-        <!-- Accordian end -->
-      </div>
-
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="box box-transparent">                          
-                        <div class="divider divider-md"></div>
-                        <div class="box-body">
-                            <div *ngIf="byCatagory">
-                                <canvas id="canvas1">{{ byCatagory }}</canvas>
-                              </div>
+      <div class="row">
+          <div class="col-md-6">
+              <div class="box box-transparent">
+                  <div class="divider divider-md"></div>
+                  <div class="box-body">
+                      <div *ngIf="byCatagory">
+                          <canvas id="canvas1">{{ byCatagory }}</canvas>
                         </div>
-                      </div> 
-                </div>
-                <div class="col-md-6">
-                    <div class="box box-transparent">
-                        <!-- <div class="box-heading">By Category</div> -->
-                        <div class="divider divider-md"></div>
-                        <div class="box-body">
-                            <div *ngIf="byMethod">
-                                <canvas id="canvas2">{{ byMethod }}</canvas>
-                              </div>
-                        </div>
-                      </div> 
                   </div>
-                  <!-- <div class="col-md-4">
-                      <div class="box box-transparent">
-                          
-                          <div class="divider divider-md"></div>
-                          <div class="box-body">
-                              <div *ngIf="bySeverity">
-                                  <canvas id="canvas3">{{ bySeverity }}</canvas>
-                                </div>
-                          </div>
-                        </div> 
-                  </div> -->
+                </div>
+          </div>
+          <div class="col-md-6">
+              <div class="box box-transparent">
+                  <!-- <div class="box-heading">By Category</div> -->
+                  <div class="divider divider-md"></div>
+                  <div class="box-body">
+                      <div *ngIf="byMethod">
+                          <canvas id="canvas2">{{ byMethod }}</canvas>
+                        </div>
+                  </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-4">
+                <div class="box box-transparent">
 
-                
-                  </div> 
+                    <div class="divider divider-md"></div>
+                    <div class="box-body">
+                        <div *ngIf="bySeverity">
+                            <canvas id="canvas3">{{ bySeverity }}</canvas>
+                          </div>
+                    </div>
+                  </div>
+            </div> -->
+
+
+            </div>
             
 
     </div>

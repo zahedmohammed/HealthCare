@@ -16,7 +16,7 @@ public enum TestSuiteCategory {
 //    Security_XSS("Security_XSS"),
 //    Security_SQL_Injection("Security_SQL_Injection"),
 
-    UnSecured("UnSecured"),
+    UnSecured("Secured Endpoints"),
     DDOS("DDOS"),
     XSS_Injection("XSS_Injection"),
     SQL_Injection("SQL_Injection"),
@@ -24,7 +24,7 @@ public enum TestSuiteCategory {
     RBAC("RBAC"),
     HelloWorld("HelloWorld"),
     SimpleGET("SimpleGET"),
-    SLA("SLA");
+    SLA("Performance SLA");
 
 
 

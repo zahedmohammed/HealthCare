@@ -11,8 +11,6 @@ import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.EndpointRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
-import com.fxlabs.fxt.dto.base.Message;
-import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
 import com.fxlabs.fxt.dto.clusters.Account;
@@ -22,7 +20,6 @@ import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.exceptions.FxException;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -57,6 +53,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     private AccountService accountService;
     private EndpointRepository endpointRepository;
     private EndpointConverter endpointConverter;
+    private TestCoverageService testCoverageService;
 
     public static final String FILE_CONTENT = "FILE_CONTENT";
 
@@ -64,7 +61,8 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     public TestSuiteServiceImpl(TestSuiteRepository repository, TestSuiteConverter converter, TestSuiteESRepository testSuiteESRepository, ProjectConverter projectConverter,
                                 ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                                 ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter, TestSuiteMinConverter testSuiteMinConverter,
-                                AccountService accountService, EndpointRepository endpointRepository, EndpointConverter endpointConverter) {
+                                AccountService accountService, EndpointRepository endpointRepository, EndpointConverter endpointConverter,
+                                TestCoverageService testCoverageService) {
         super(repository, converter);
         this.repository = repository;
         this.testSuiteESRepository = testSuiteESRepository;
@@ -79,6 +77,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         this.projectConverter = projectConverter;
         this.endpointRepository = endpointRepository;
         this.endpointConverter = endpointConverter;
+        this.testCoverageService = testCoverageService;;
     }
 
     @Override
@@ -541,9 +540,9 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
     }
 
     @Override
-    public Response<TestSuiteCoverage> getCoverageByProjectId(String id, String user) {
+    public Response<APICoverageDetails> getCoverageByProjectId(String id, String user) {
 
-        TestSuiteCoverage coverage = new TestSuiteCoverage();
+        APICoverageDetails coverage = new APICoverageDetails();
 
         Optional<com.fxlabs.fxt.dao.entity.project.Project> projectOptional = projectRepository.findById(id);
 
@@ -596,7 +595,10 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             coverage.getCountBySeverity().add(new com.fxlabs.fxt.dto.project.TestSuiteCount(c.getGroupBy().toString(),c.getCount()));
         }
 
-        return new Response<TestSuiteCoverage>(coverage);
+
+        coverage.setCoverage(testCoverageService.getAuoCodeCoverage(id));
+
+        return new Response<APICoverageDetails>(coverage);
     }
 
 }

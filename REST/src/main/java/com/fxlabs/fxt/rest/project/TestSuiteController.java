@@ -3,8 +3,7 @@ package com.fxlabs.fxt.rest.project;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
 import com.fxlabs.fxt.dto.project.TestSuite;
-import com.fxlabs.fxt.dto.project.TestSuiteCoverage;
-import com.fxlabs.fxt.dto.project.TestSuiteMin;
+import com.fxlabs.fxt.dto.project.APICoverageDetails;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.TestSuiteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +109,7 @@ public class TestSuiteController {
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/project-id/{id}/coverage", method = RequestMethod.GET)
-    public Response<TestSuiteCoverage> findCoverageByProjectId(@PathVariable("id") String id) {
+    public Response<APICoverageDetails> findCoverageByProjectId(@PathVariable("id") String id) {
         return service.getCoverageByProjectId(id,SecurityUtil.getCurrentAuditor());
     }
 

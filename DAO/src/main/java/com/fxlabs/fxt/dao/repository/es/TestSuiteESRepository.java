@@ -33,6 +33,8 @@ public interface TestSuiteESRepository extends ElasticsearchRepository<TestSuite
 
     Page<TestSuite> findByProjectId(String projectId, Pageable pageable);
 
+    Stream<TestSuite> findByProjectIdAndInactive(String projectId, Boolean inactive);
+
     Stream<TestSuite> findByProjectIdAndType(String projectId, String type);
 
     Stream<TestSuite> findByProjectIdAndNameIn(String projectId, List<String> name);
