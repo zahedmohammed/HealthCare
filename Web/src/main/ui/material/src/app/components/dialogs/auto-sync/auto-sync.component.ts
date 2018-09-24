@@ -34,7 +34,6 @@ export class AutoSyncComponent implements OnInit {
 
   ngOnInit() {
     this.project = this.data;
-    this.handler.activateLoader();
     this.route.params.subscribe(params => {
       this.id = params['id'];
     });
@@ -65,7 +64,8 @@ export class AutoSyncComponent implements OnInit {
   synchronization() {
     this.showSpinner = true;
     this.projectSync.projectId = this.project.id;
-    this.projectService.projectSync(this.projectSync).subscribe(results => {
+      this.handler.activateLoader();
+      this.projectService.projectSync(this.projectSync).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
