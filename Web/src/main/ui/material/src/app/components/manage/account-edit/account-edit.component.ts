@@ -65,22 +65,26 @@ export class AccountEditComponent implements OnInit {
   }
 
   delete() {
-    var result = confirm("Are you sure you want to delete '" + this.entry.name + "'?");
-    if (result == true) {
-      this.handler.activateLoader();
-      this.accountService.delete(this.entry).subscribe(results => {
-        this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-          return;
-        }
-        this.snackbarService.openSnackBar(this.entry.name + " deleted successfully", "");
-        this.router.navigate(['/app/accounts']);
-      }, error => {
-        this.handler.hideLoader();
-        this.handler.error(error);
-
+      let dialogRef = this.dialog.open(DeleteDialogComponent, {
+          data: this.entry.name + ' credentials'
       });
-    }
+
+      dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+              this.handler.activateLoader();
+              this.accountService.delete(this.entry).subscribe(results => {
+                  this.handler.hideLoader();
+                  if (this.handler.handle(results)) {
+                      return;
+                  }
+                  this.snackbarService.openSnackBar(this.entry.name + " deleted successfully", "");
+                  this.router.navigate(['/app/accounts']);
+              }, error => {
+                  this.handler.hideLoader();
+                  this.handler.error(error);
+              });
+          }
+      });
   }
   
   getOrgs() {

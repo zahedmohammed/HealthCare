@@ -14,6 +14,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {SnackbarService} from '../../services/snackbar.service';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {listenOnPlayer} from "@angular/animations/browser/src/render/shared";
+import {DeleteDialogComponent} from "../dialogs/delete-dialog/delete-dialog.component";
 
 @Component({
     selector: 'app-run-detail',
@@ -138,33 +139,9 @@ export class RunDetailComponent implements OnInit {
             else
                 this.disableButtonPrev = false
         }
-        //
-        // if (this.totalRuns <= 1)
-        //     this.disableButtonPrev = true
-        // else
-        //     this.disableButtonPrev = false
-
-        // if (arrayIndex == 0)
-        //     this.disableButtonPrev = true
-        // else
-        //     this.disableButtonPrev = false
-
-
-        //this.total = 0;
-        //this.failed = 0;
-        //this.size = 0;
-        //this.time = 0;
         this.success = 0;
-        //this.duration = 0;
 
-        /*for(var i = 0; i < this.suites.length; i++){
-            this.total += this.suites[i].tests;
-            this.failed += this.suites[i].failed;
-            this.size += this.suites[i].size;
-            this.time += this.suites[i].time;
-        }*/
         this.success = (this.run.task['totalTests'] - this.run.task['failedTests']) / (this.run.task['totalTests']);
-        //this.duration = Date.parse(this.run.modifiedDate) - Date.parse(this.run.task.startTime);
     }
 
     getRunById() {
@@ -286,20 +263,25 @@ export class RunDetailComponent implements OnInit {
     }
 
     deleteRun() {
-        var r = confirm("Are you sure you want to delete '" + this.run.runId + "'?");
-        if (r == true) {
-            this.runService.deleteByJobIdAndRunId(this.jobId, this.run.runId).subscribe(results => {
-                if (this.handler.handle(results)) {
-                    return;
-                }
-                this.snackbarService.openSnackBar("'JobRun '" + this.run.runId + "' deleted", "");
-                this.router.navigate(['/app/projects', this.project.id, 'jobs', this.jobId, 'runs']);
-            }, error => {
-                this.handler.hideLoader();
-                this.handler.error(error);
-            });
 
-        }
+        let dialogRef = this.dialog.open(DeleteDialogComponent, {
+            data: this.run.runId + ' run number'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result != null) {
+                this.runService.deleteByJobIdAndRunId(this.jobId, this.run.runId).subscribe(results => {
+                    if (this.handler.handle(results)) {
+                        return;
+                    }
+                    this.snackbarService.openSnackBar("'JobRun '" + this.run.runId + "' deleted", "");
+                    this.router.navigate(['/app/projects', this.project.id, 'jobs', this.jobId, 'runs']);
+                }, error => {
+                    this.handler.hideLoader();
+                    this.handler.error(error);
+                });
+            }
+        });
     }
 
     rerun() {

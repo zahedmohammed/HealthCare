@@ -18,6 +18,7 @@ import {SnackbarService} from '../../../services/snackbar.service';
 import {FormBuilder, FormGroup, Validators , FormArray}from '@angular/forms';
 
 import {MatStepper}from '@angular/material';
+import {DeleteDialogComponent} from "../../dialogs/delete-dialog/delete-dialog.component";
 @Component({
   selector: 'app-environment-edit',
   templateUrl: './environment-edit.component.html',
@@ -86,20 +87,25 @@ export class EnvironmentEditComponent implements OnInit {
   }
 
   delete() {
-    var r = confirm("Are you sure you want to delete '" + this.env.name + "'?");
-    if (r == true) {
-      this.projectService.deleteEnv(this.env).subscribe(results => {
-          if (this.handler.handle(results)) {
-            return;
-          }
-          this.snackbarService.openSnackBar("'Environment '" + this.env.name + "' deleted", "");
-           this.router.navigate(['/app/projects', this.id, 'environments']);
-        }, error => {
-          this.handler.hideLoader();
-          this.handler.error(error);
+
+      let dialogRef = this.dialog.open(DeleteDialogComponent, {
+          data: this.env.name + ' environment'
       });
 
-    }
+      dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+              this.projectService.deleteEnv(this.env).subscribe(results => {
+                  if (this.handler.handle(results)) {
+                      return;
+                  }
+                  this.snackbarService.openSnackBar("'Environment '" + this.env.name + "' deleted", "");
+                  this.router.navigate(['/app/projects', this.id, 'environments']);
+              }, error => {
+                  this.handler.hideLoader();
+                  this.handler.error(error);
+              });
+          }
+      });
   }
 
 addItem(): void {
