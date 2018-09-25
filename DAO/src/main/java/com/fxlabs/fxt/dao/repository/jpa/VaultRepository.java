@@ -2,6 +2,7 @@ package com.fxlabs.fxt.dao.repository.jpa;
 
 import com.fxlabs.fxt.dao.entity.vault.Vault;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.swing.text.html.Option;
@@ -20,4 +21,6 @@ public interface VaultRepository extends JpaRepository<Vault, String> {
     Optional<Vault> findByKeyAndOrgId(String key, String org);
 
     Optional<Vault> findByIdAndOrgId(String key, String org);
+
+    Page<Vault> findByKeyContainingIgnoreCase(String keyword,Pageable pageable);
 }

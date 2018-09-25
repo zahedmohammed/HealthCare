@@ -116,6 +116,7 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
         return delete(id, user);
     }
 
+
     @Override
     public Response<com.fxlabs.fxt.dto.vault.Vault> save(com.fxlabs.fxt.dto.vault.Vault dto, String user) {
 
@@ -162,6 +163,20 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
             }
 
             return new Response<>(encryptor.decrypt(vaultOptional.get().getVal()));
+        }
+
+    }
+
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.vault.Vault>> searchVault(String keyword, String org, Pageable pageable) {
+
+        if (StringUtils.isNotEmpty(keyword)) {
+
+            Page<Vault> page = this.repository.findByKeyContainingIgnoreCase(keyword, pageable);
+            return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+
+        } else {
+            return findAll(org, pageable);
         }
 
     }
