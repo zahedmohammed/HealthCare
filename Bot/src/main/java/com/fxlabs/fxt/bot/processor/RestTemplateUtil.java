@@ -22,6 +22,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
@@ -59,7 +62,20 @@ public class RestTemplateUtil {
 
     private ResponseEntity<String> execBasicRequest(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
         // execute request
-        RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            HttpClientFactoryUtil.setRequestFactory(restTemplate);
+        } catch (KeyStoreException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NoSuchAlgorithmException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (KeyManagementException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         if (auth != null && (auth.getAuthType() == AuthType.Basic || auth.getAuthType() == AuthType.BasicAuth || auth.getAuthType() == AuthType.BASIC)) {
             httpHeaders.set("Authorization", AuthBuilder.createBasicAuth(auth.getUsername(), auth.getPassword()));
@@ -89,7 +105,20 @@ public class RestTemplateUtil {
 
     private ResponseEntity<String> execTokenRequest(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
         // execute request
-        RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            HttpClientFactoryUtil.setRequestFactory(restTemplate);
+        } catch (KeyStoreException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NoSuchAlgorithmException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (KeyManagementException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         extractHeader(httpHeaders, auth.getHeader_1());
         extractHeader(httpHeaders, auth.getHeader_2());
@@ -129,7 +158,20 @@ public class RestTemplateUtil {
 
     private ResponseEntity<String> execAuth0Request(String url, HttpMethod method, HttpHeaders httpHeaders, String req, Auth auth) {
         // execute request
-        RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            HttpClientFactoryUtil.setRequestFactory(restTemplate);
+        } catch (KeyStoreException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NoSuchAlgorithmException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (KeyManagementException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         // Get Access Token
         String accessToken = null;
@@ -178,7 +220,19 @@ public class RestTemplateUtil {
         DefaultOAuth2ClientContext clientContext = new DefaultOAuth2ClientContext(atr);
 
         OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails(auth), clientContext);
-        restTemplate.setRequestFactory(HttpClientFactoryUtil.getInstance());
+
+        try {
+            HttpClientFactoryUtil.setRequestFactory(restTemplate);
+        } catch (KeyStoreException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NoSuchAlgorithmException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (KeyManagementException e) {
+            logger.warn(e.getLocalizedMessage(), e);
+            return new ResponseEntity<String>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         //logger.info("Request: [{}]", req);
         HttpEntity<String> request = new HttpEntity<>(req, httpHeaders);

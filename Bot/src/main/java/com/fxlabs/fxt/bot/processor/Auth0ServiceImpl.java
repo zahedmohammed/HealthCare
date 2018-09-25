@@ -1,14 +1,15 @@
 package com.fxlabs.fxt.bot.processor;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 public class Auth0ServiceImpl implements Auth0Service {
@@ -17,7 +18,17 @@ public class Auth0ServiceImpl implements Auth0Service {
     @Cacheable(value = "auth0AccessTokenCache", key = "#tokenURI + #clientId + #clientSecret + #audience", sync = true)
     public String getAccessTokenForClientCredentials(String tokenURI, String clientId, String clientSecret, String audience) {
 
-        RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            HttpClientFactoryUtil.setRequestFactory(restTemplate);
+        } catch (KeyStoreException e) {
+            throw new RuntimeException(e.getLocalizedMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e.getLocalizedMessage());
+        } catch (KeyManagementException e) {
+            throw new RuntimeException(e.getLocalizedMessage());
+        }
 
         String req = String.format("{\"client_id\":\"%s\", \"client_secret\":\"%s\", \"audience\":\"%s\", \"grant_type\":\"client_credentials\"}", clientId, clientSecret, audience);
 
@@ -50,7 +61,17 @@ public class Auth0ServiceImpl implements Auth0Service {
     @Cacheable(value = "auth0AccessTokenCache", key = "#tokenURI + #clientId + #audience + #username + #password + #scope", sync = true)
     public String getAccessTokenForPassword(String tokenURI, String clientId, String audience, String username, String password, String scope) {
 
-        RestTemplate restTemplate = new RestTemplate(HttpClientFactoryUtil.getInstance());
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            HttpClientFactoryUtil.setRequestFactory(restTemplate);
+        } catch (KeyStoreException e) {
+            throw new RuntimeException(e.getLocalizedMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e.getLocalizedMessage());
+        } catch (KeyManagementException e) {
+            throw new RuntimeException(e.getLocalizedMessage());
+        }
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
