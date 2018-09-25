@@ -585,6 +585,10 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         if (!optionalRun.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Run Id..."));
         }
+
+        Page<com.fxlabs.fxt.dao.entity.run.Suite> optionalSuite = this.suiteESRepository.findByRunId(runId.toString(), Pageable.unpaged());
+        this.suiteESRepository.deleteAll(optionalSuite.getContent());
+
         return delete(optionalRun.get().getId(), user);
     }
 
