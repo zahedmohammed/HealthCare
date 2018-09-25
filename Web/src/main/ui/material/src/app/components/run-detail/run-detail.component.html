@@ -109,7 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-sm-6">
+            <div class="col-xl-2 col-sm-6 pointer" (click)="status='Failed';search()">
                 <div class="box box-default">
                     <div class="box-top bg-color-danger">
                         <i class="fa fa-times-circle"></i>
@@ -162,21 +162,7 @@
                         <span>RBAC</span>
                     </div>
                     <div class="box-bottom">
-                        <small class="text-success">0</small> / <small class="text-danger">0</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-sm-6 pointer">
-                <div class="box box-default pricing-table" (click)="category='XSS_Injection';search()">
-                    <div class="box-top">
-                        <i class="fa fa-code color-danger"></i>
-                    </div>
-                    <div class="box-info">
-                        <span>XSS</span>
-                    </div>
-                    <div class="box-bottom">
-                        <small class="text-success">{{run.stats['XSS_Injection_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['XSS_Injection_Failed']
-                            || 0}}</small>
+                        <small class="text-success">{{run.stats['RBAC_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['RBAC_Failed'] || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -205,6 +191,20 @@
                     <div class="box-bottom">
                         <small class="text-success">{{run.stats['UnSecured_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['UnSecured_Failed']
                             || 0}}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 pointer">
+                <div class="box box-default pricing-table" (click)="category='SLA';search()">
+                    <div class="box-top">
+                        <i class="fa fa-clock-o color-danger"></i>
+                    </div>
+                    <div class="box-info">
+                        <span>PERFORMANCE SLA</span>
+                    </div>
+                    <div class="box-bottom">
+                        <small class="text-success">{{run.stats['SLA_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['SLA_Failed']
+                        || 0}}</small>
                     </div>
                 </div>
             </div>

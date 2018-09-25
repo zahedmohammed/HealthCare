@@ -43,6 +43,7 @@ export class RunDetailComponent implements OnInit {
     showSpinner: boolean = false;
     keyword: string = '';
     category: string = '';
+    status: string = '';
     nextRunId: number = 0;
     prevRunId: number = 0;
     runNumResult: any = [];
@@ -191,11 +192,11 @@ export class RunDetailComponent implements OnInit {
     }
 
     search() {
-        if (this.keyword == '' && this.category == '') {
+        if (this.keyword == '' && this.category == '' && this.status == '') {
             return this.getSummary();
         }
         this.handler.activateLoader();
-        this.runService.search(this.id, this.category, this.keyword, this.page, this.pageSize).subscribe(results => {
+        this.runService.search(this.id, this.category, this.keyword, this.status, this.page, this.pageSize).subscribe(results => {
             this.handler.hideLoader();
             if (this.handler.handle(results)) {
                 return;

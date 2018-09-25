@@ -89,10 +89,11 @@ public class RunController {
     public Response<List<Suite>> search(@PathVariable("id") String id,
                                         @RequestParam(value = "category", required = false) String category,
                                         @RequestParam(value = "keyword", required = false) String keyword,
+                                        @RequestParam(value = "status", required = false) String status,
                                         @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                         @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
-        return runService.search(id, category, keyword, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, new Sort(Sort.Direction.DESC, "failed")));
+        return runService.search(id, category, keyword, status, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, new Sort(Sort.Direction.DESC, "failed")));
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

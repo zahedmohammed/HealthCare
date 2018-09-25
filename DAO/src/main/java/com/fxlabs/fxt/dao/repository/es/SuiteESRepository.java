@@ -19,9 +19,29 @@ public interface SuiteESRepository extends ElasticsearchRepository<Suite, String
 
     Page<Suite> findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCase(String runId, TestSuiteCategory category, String keyword, Pageable pageable);
 
+    Page<Suite> findByRunIdAndCategoryAndFailedGreaterThan(String runId, TestSuiteCategory category, Long failed , Pageable pageable);
+
+    Page<Suite> findByRunIdAndSuiteNameStartingWithIgnoreCaseAndFailedGreaterThan(String runId, String keyword, Long failed, Pageable pageable);
+
+    Page<Suite> findByRunIdAndCategoryAndFailed(String runId, TestSuiteCategory category, Long failed, Pageable pageable);
+
+    Page<Suite> findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCaseAndFailedGreaterThan(String runId, TestSuiteCategory category, String keyword, Long failed, Pageable pageable);
+
+    Page<Suite> findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCaseAndFailed(String runId, TestSuiteCategory category, String keyword, Long failed, Pageable pageable);
+
+//    Page<Suite> findByRunIdAndNameStartingWithIgnoreCaseAndFailedGreaterThan(String runId, TestSuiteCategory category, String keyword, Long failed, Pageable pageable);
+
+//    Page<Suite> findByRunIdAndNameStartingWithIgnoreCaseAndFailed(String runId, TestSuiteCategory category, String keyword, Long failed, Pageable pageable);
+
     Page<Suite> findByRunIdAndCategory(String runId, TestSuiteCategory category, Pageable pageable);
+
+    Page<Suite> findByRunIdAndFailedGreaterThan(String runId, Long failed, Pageable pageable);
 
     Page<Suite> findByRunIdAndSuiteNameContainingIgnoreCase(String runId, String keyword, Pageable pageable);
 
+    Page<Suite> findByRunIdAndFailed(String runId, Pageable pageable);
+
     Optional<Suite> findById(String id);
+
+    Page<Suite> findByRunIdAndSuiteNameStartingWithIgnoreCaseAndFailed(String runId, String keyword, Long aLong, Pageable pageable);
 }

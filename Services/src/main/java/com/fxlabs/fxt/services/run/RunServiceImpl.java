@@ -338,7 +338,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     @Override
-    public Response<List<Suite>> search(String runId, String category, String keyword, String org, Pageable pageable) {
+    public Response<List<Suite>> search(String runId, String category, String keyword, String status, String org, Pageable pageable) {
         // TODO check org is entitled to runId
 
         // 1. filter by category and search string
@@ -347,13 +347,49 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         // 4. filter by severity and search string
         // 5. filter by status(pass/fail) and search string
         Page<com.fxlabs.fxt.dao.entity.run.Suite> page = null;
-        if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword)) {
+
+        if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isNotEmpty(status)) {
+            // All three params present
+            if (StringUtils.equalsIgnoreCase("failed", status)) {
+                page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCaseAndFailedGreaterThan(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, new Long(0), pageable);
+            }else if (StringUtils.equalsIgnoreCase("passed", status)) {
+                page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCaseAndFailed(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, new Long(0), pageable);
+            }
+        } else if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isEmpty(status)) {
+            // category and keyword present
             page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCase(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, pageable);
-        } else if (StringUtils.isNotEmpty(category) && StringUtils.isEmpty(keyword)) {
+        } else if (StringUtils.isNotEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isNotEmpty(status)) {
+            // category and status present
+            if (StringUtils.equalsIgnoreCase("failed", status)) {
+                page = this.suiteESRepository.findByRunIdAndCategoryAndFailedGreaterThan(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), new Long(0), pageable);
+            }else if (StringUtils.equalsIgnoreCase("passed", status)) {
+                page = this.suiteESRepository.findByRunIdAndCategoryAndFailed(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), new Long(0), pageable);
+            }
+        } else if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isEmpty(status)) {
+            // keyword and status present
+            if (StringUtils.equalsIgnoreCase("failed", status)) {
+                page = this.suiteESRepository.findByRunIdAndSuiteNameStartingWithIgnoreCaseAndFailedGreaterThan(runId, keyword, new Long(0), pageable);
+            }else if (StringUtils.equalsIgnoreCase("passed", status)) {
+                page = this.suiteESRepository.findByRunIdAndSuiteNameStartingWithIgnoreCaseAndFailed(runId, keyword, new Long(0), pageable);
+            }
+        } else if (StringUtils.isNotEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isEmpty(status)  ) {
+            // Only category is present
             page = this.suiteESRepository.findByRunIdAndCategory(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), pageable);
-        } else if (StringUtils.isEmpty(category) && StringUtils.isNotEmpty(keyword)) {
+        } else if (StringUtils.isEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isEmpty(status)  ) {
+            // Only keyword is present
             page = this.suiteESRepository.findByRunIdAndSuiteNameContainingIgnoreCase(runId, keyword, pageable);
+        } else if (StringUtils.isEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isNotEmpty(status)  ) {
+            // TODO: Only status is present
+            if (StringUtils.equalsIgnoreCase("failed", status)) {
+                page = this.suiteESRepository.findByRunIdAndFailedGreaterThan(runId, new Long(0), pageable);
+            }else if (StringUtils.equalsIgnoreCase("passed", status)) {
+                page = this.suiteESRepository.findByRunIdAndFailed(runId, pageable);
+            }
         }
+        //  category + status
+        // keyword + status
+
+
 
         // filter by
         List<Suite> dataSets = suiteConverter.convertToDtos(page.getContent());

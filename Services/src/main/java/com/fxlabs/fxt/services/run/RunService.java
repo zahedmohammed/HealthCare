@@ -33,7 +33,9 @@ public interface RunService extends GenericService<Run, String> {
 
     Response<List<Suite>> findSummaryByRunId(String runId, String org, Pageable pageable);
 
-    Response<List<Suite>> search(String runId, String category, String keyword, String org, Pageable pageable);
+//    Response<List<Suite>> search(String runId, String category, String keyword, String org, Pageable pageable);
+
+    Response<List<Suite>> search(String runId, String category, String keyword, String status, String org, Pageable pageable);
 
     Response<Long> count(String user, Pageable pageable);
 

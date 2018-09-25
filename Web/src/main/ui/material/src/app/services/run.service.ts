@@ -79,10 +79,13 @@ export class RunService {
         return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary", {params});
     }
 
-    search(runId: string, category: string, keyword: string, page, pageSize) {
+    search(runId: string, category: string, keyword: string, status: string, page, pageSize) {
+
+        console.log("in run service " + status);
         let params = new HttpParams();
         params = params.append('category', category);
         params = params.append('keyword', keyword);
+        params = params.append('status', status);
         params = params.append('page', page);
         params = params.append('pageSize', pageSize);
         return this.http.get(this.serviceUrl + "/" + runId + "/test-suite-summary/search", {params});
