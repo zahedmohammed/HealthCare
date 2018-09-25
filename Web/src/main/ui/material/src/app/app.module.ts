@@ -186,9 +186,9 @@ import { BotDialogComponent } from './components/dialogs/bot-dialog/bot-dialog.c
 import { TestsuiteRunComponent } from './components/dialogs/testsuite-run/testsuite-run.component';
 import { ProjectsConfigComponent } from './components/projects/projects-config/projects-config.component';
 import { BotSavingDialogComponent } from './components/dialogs/bot-saving-dialog/bot-saving-dialog.component';
-import { CicdIntegrationComponent } from './components/dialogs/cicd-integration/cicd-integration.component';
 import { MavenIntegrationComponent } from './components/dialogs/maven-integration/maven-integration.component';
 import { GradleIntegrationComponent } from './components/dialogs/gradle-integration/gradle-integration.component';
+import { JenkinsIntegrationComponent } from './components/dialogs/jenkins-integration/jenkins-integration.component';
 
 @NgModule({
   imports: [
@@ -354,15 +354,15 @@ import { GradleIntegrationComponent } from './components/dialogs/gradle-integrat
     TestsuiteRunComponent,
     ProjectsConfigComponent,
     BotSavingDialogComponent,
-    CicdIntegrationComponent,
     MavenIntegrationComponent,
-    GradleIntegrationComponent
+    GradleIntegrationComponent,
+    JenkinsIntegrationComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler, DatePipe],
   entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent,
     SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent, SlackRegisterComponent,
-    BotCredentialsComponent, TestsuiteRunComponent, BotDialogComponent, BotSavingDialogComponent, CicdIntegrationComponent, MavenIntegrationComponent, GradleIntegrationComponent]
+    BotCredentialsComponent, TestsuiteRunComponent, BotDialogComponent, BotSavingDialogComponent,JenkinsIntegrationComponent, MavenIntegrationComponent, GradleIntegrationComponent]
 })
 
 export class AppModule {

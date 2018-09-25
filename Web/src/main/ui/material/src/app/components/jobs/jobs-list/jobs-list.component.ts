@@ -11,9 +11,9 @@ import { AdvRunComponent } from '../../dialogs/adv-run/adv-run.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
-import { CicdIntegrationComponent } from '../../dialogs/cicd-integration/cicd-integration.component';
 import { MavenIntegrationComponent } from '../../dialogs/maven-integration/maven-integration.component';
 import { GradleIntegrationComponent } from '../../dialogs/gradle-integration/gradle-integration.component';
+import { JenkinsIntegrationComponent } from '../../dialogs/jenkins-integration/jenkins-integration.component';
 
 @Component({
   selector: 'app-jobs-list',
@@ -117,7 +117,7 @@ export class JobslistComponent implements OnInit {
     });
   }
   openJenkins() {
-    const dialogRef = this.dialog.open(CicdIntegrationComponent, {
+    const dialogRef = this.dialog.open(JenkinsIntegrationComponent, {
       width: '800px',
       data: this.id
     });

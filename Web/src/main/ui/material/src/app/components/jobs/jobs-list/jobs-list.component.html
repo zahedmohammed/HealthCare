@@ -39,65 +39,6 @@
                         <p class="text-muted float-right">Total ({{length}})</p>
                     </div>
                 </div>
-                <!--<div class="box box-default table-box mdl-shadow&#45;&#45;2dp">-->
-                <!--<table class="mdl-data-table">-->
-                <!--<thead>-->
-                <!--<tr>-->
-                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Name</th>-->
-                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Env</th>-->
-                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Bot-Region</th>-->
-                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Bug Management</th>-->
-                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Notifications</th>-->
-
-                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Next-Fire</th>-->
-                <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric"></th>-->
-                <!--</tr>-->
-                <!--</thead>-->
-                <!--<tbody>-->
-                <!--<tr *ngFor="let job of jobs">-->
-                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
-                <!--<a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs', job.id, 'edit']">{{job.name}}</a></td>-->
-                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{job.environment?.name}}</td>-->
-                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{job.regions}}</td>-->
-                <!--&lt;!&ndash; Auto bug &ndash;&gt;-->
-                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
-                <!--<div *ngIf="job.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>-->
-                <!--<div *ngIf="!job.issueTrackerToDo" class="ml-4">-->
-                <!--&lt;!&ndash;-->
-                <!--<mat-checkbox [checked]="true" [disabled]="true">-->
-                <!--</mat-checkbox>-->
-                <!--&ndash;&gt;-->
-                <!--<span class="text-danger">{{job.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>&nbsp;<span-->
-                <!--class="text-success">{{job.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>-->
-                <!--</div>-->
-                <!--</td>-->
-                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
-                <!--<div class="ml-4">-->
-                <!--<mat-checkbox [checked]="true" *ngIf="!job.notificationToDo" [disabled]="true"></mat-checkbox>-->
-                <!--</div>-->
-                <!--<div *ngIf="job.notificationToDo" class="ml-3">-->
-                <!--{{"TODO"}}-->
-                <!--</div>-->
-                <!--</td>-->
-
-                <!--&lt;!&ndash;<td class="mdl-data-table__cell&#45;&#45;non-numeric"></td>&ndash;&gt;-->
-                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">{{job.nextFire | date:'short'}}</td>-->
-                <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric">-->
-                <!--<button mat-button color="primary" (click)="advRun(job)" class="btn-w-md"><i class="material-icons">play_circle_outline</i>-->
-                <!--&nbsp; Run &nbsp;-->
-                <!--</button>-->
-                <!--&nbsp;&nbsp;<a href="javascript:;" [routerLink]="['/app/projects' , id, 'jobs' , job.id, 'runs']"-->
-                <!--matTooltip="history" matTooltipPosition="above">-->
-                <!--History</a>&nbsp;&nbsp;-->
-                <!--<button mat-button color="primary" (click)="openDialog()" class="btn-w-md"><i class="material-icons">all_inclusive</i>-->
-                <!--&nbsp; CICD &nbsp;-->
-                <!--</button>-->
-
-                <!--</td>-->
-                <!--</tr>-->
-                <!--</tbody>-->
-                <!--</table>-->
-                <!--</div>-->
                 <div class="mat-elevation-z8 box-default">
                     <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
                         matSortDirection="desc">
@@ -125,10 +66,6 @@
                             <mat-cell *matCellDef="let element">
                                 <div *ngIf="element.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
                                 <div *ngIf="!element.issueTrackerToDo">
-                                    <!--
-                                    <mat-checkbox [checked]="true" [disabled]="true">
-                                    </mat-checkbox>
--->
                                     <span class="text-danger">{{element.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>&nbsp;<span
                                         class="text-success">{{element.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>
                                 </div>
@@ -172,7 +109,8 @@
                                     <button mat-button color="primary" (click)="openJenkins()"><i class="material-icons">all_inclusive</i>
                                         &nbsp; Jenkins &nbsp;
                                     </button><br>
-                                    <button mat-button color="primary" (click)="openMaven()"><i class="material-icons" style="transform: rotate(90deg);">explicit</i>
+                                    <button mat-button color="primary" (click)="openMaven()"><i class="material-icons"
+                                            style="transform: rotate(90deg);">explicit</i>
                                         &nbsp; Maven &nbsp;
                                     </button>
                                     <br>
@@ -180,9 +118,6 @@
                                         &nbsp; Gradle &nbsp;
                                     </button>
                                 </mat-menu>
-                                <!-- <button mat-button color="primary" (click)="openDialog()"><i class="material-icons">all_inclusive</i>
-                            &nbsp; CICD &nbsp;
-                        </button> -->
                             </mat-cell>
                         </ng-container>
 
@@ -195,7 +130,5 @@
                 </div>
             </div>
         </div>
-
-
     </article>
 </section>

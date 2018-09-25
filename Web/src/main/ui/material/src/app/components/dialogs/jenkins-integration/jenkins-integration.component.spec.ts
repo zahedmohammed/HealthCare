@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CicdIntegrationComponent } from './cicd-integration.component';
+import { JenkinsIntegrationComponent } from './jenkins-integration.component';
 
-describe('CicdIntegrationComponent', () => {
-  let component: CicdIntegrationComponent;
-  let fixture: ComponentFixture<CicdIntegrationComponent>;
+describe('JenkinsIntegrationComponent', () => {
+  let component: JenkinsIntegrationComponent;
+  let fixture: ComponentFixture<JenkinsIntegrationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CicdIntegrationComponent ]
+      declarations: [ JenkinsIntegrationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CicdIntegrationComponent);
+    fixture = TestBed.createComponent(JenkinsIntegrationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
