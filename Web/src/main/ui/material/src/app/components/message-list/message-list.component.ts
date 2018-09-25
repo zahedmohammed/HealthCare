@@ -35,12 +35,12 @@ export class MessageListComponent implements OnInit {
   constructor(private messageService: MessageService, private handler: Handler, private tasksService: TasksService, private projectService: ProjectService, private jobsService: JobsService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.tasks();
+   // this.tasks();
     this.connect();
     //this.list();
     let timer = Observable.timer(1, 5000);
     this._clockSubscription = timer.subscribe(t => {
-      this.list();
+       this.tasks();
     });
   }
 
@@ -56,7 +56,6 @@ export class MessageListComponent implements OnInit {
         return;
       }
       this.tasksRes = results['data'];
-      console.log('tasksRes---', this.tasksRes);
       this.length = results['totalElements'];
       this.count = 0;
       for (let entry of this.tasksRes) {

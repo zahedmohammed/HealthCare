@@ -37,6 +37,8 @@
                       class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
                   <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Delete'"><i
                       class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
+                  <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Connected'"><i
+                          class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
                   <div class="tl-content">
                     <p>
                       <span class="text-warning" *ngIf="item?.status == 'In_progress'"><i class="fa fa-spinner fa-spin"></i></span>&nbsp;
@@ -47,6 +49,7 @@
                     <!-- <mat-chip-list> -->
                     <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Run'">{{item.eventType}}</span>
                     <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Sync'">{{item.eventType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Connected'">{{item.eventType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span><a href="javascript:;" [routerLink]="['/app/message', item.logId]" class="text-muted logs"
                         *ngIf="item?.eventType == 'Sync' && item?.logId !== null">See logs</a></span>
                     <!-- </mat-chip-list> -->

@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
+ * @author Mohammed Shoukath Ali
  */
 @Component
 @Transactional
@@ -83,7 +84,7 @@ public class MarkTimeoutTaskProcessor {
      * Calculate total-time, total-completed, total-failed etc
      */
     public void process() {
-        Date dt = DateUtils.addMinutes(new Date(), -30);
+        Date dt = DateUtils.addMinutes(new Date(), -60);
         Stream<Run> runs = runRepository.findByTaskStatusAndCreatedDateLessThan(TaskStatus.PROCESSING, dt);
 
         runs.forEach(run -> {
@@ -101,20 +102,19 @@ public class MarkTimeoutTaskProcessor {
                     run.getTask().setTotalTime(testSuiteResponseService.timeSum(run.getId()));
                 }
                 runRepository.saveAndFlush(run);
+                sendNotification(run);
 
-                if (run.getTask().getStatus().equals(TaskStatus.TIMEOUT)) {
-                    sendNotification(run);
-
-                    try {
-                        projectSyncEvent(run.getJob(), Status.Done, Entity.Job, run.getId(), run.getId(), run.getRunId());
-                    } catch (Exception ex) {
-                        logger.warn(ex.getLocalizedMessage());
-                    }
-                }
                 // TODO - Test-Suites
             } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
+
+            try {
+                projectSyncEvent(run.getJob(), Status.Done, Entity.Job, run.getId(), run.getId(), run.getRunId());
+            } catch (Exception ex) {
+                logger.warn(ex.getLocalizedMessage());
+            }
+
         });
     }
 
@@ -213,7 +213,7 @@ public class MarkTimeoutTaskProcessor {
 
         if (job == null || status == null || entityType == null) {
 
-            logger.info("Invalid event for project sync" );
+            logger.info("Invalid event for project sync");
             return;
         }
 
@@ -223,7 +223,7 @@ public class MarkTimeoutTaskProcessor {
 
         event.setTaskId(taskId);
 
-        event.setName(job.getProject().getName() +  "/" +job.getName() + "/" + runNumber);
+        event.setName(job.getProject().getName() + "/" + job.getName() + "/" + runNumber);
         event.setUser(job.getCreatedBy());
         event.setEntityType(entityType);
         event.setEventType(Type.Run);
@@ -237,7 +237,7 @@ public class MarkTimeoutTaskProcessor {
         event.setOrg(org);
 
 
-        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]" , job.getId(), status.toString(), event.getEventType());
+        logger.info("Sending event for publish on job [{}] and status [{}] for task type [{}]", job.getId(), status.toString(), event.getEventType());
         localEventPublisher.publish(event);
     }
 }
