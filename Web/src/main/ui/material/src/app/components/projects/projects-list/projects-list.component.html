@@ -9,62 +9,63 @@
 </div>
 <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
     <article class="article padding-lg-v1">
-                <div class="row">
-                    <div class="col-md-10">
-                    </div>
-                    <div class="col-md-2">
-                        <p class="text-muted float-right">Total ({{length}})</p>
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col-xl-3 col-lg-6">
-                        <a href="javascript:;" class="item-card bg-color-primary">
-                            <a href="javascript:;" [routerLink]="['/app/projects/new']">
-                                <div class="card__image">
-                                    <!--<img alt="product" [src]="product.img"/>-->
-                                    <div class="text-center text-white">
-                                        <h5 style="color:white">
-                                            <i class="fa fa-plus"></i> &nbsp; New Project</h5>
-                                        <br/>
-                                    </div>
-                                </div>
+        <div class="row">
+            <div class="col-md-10">
+            </div>
+            <div class="col-md-2">
+                <p class="text-muted float-right">Total ({{length}})</p>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-xl-3 col-lg-6">
+                <a href="javascript:;" class="item-card bg-color-primary">
+                    <a href="javascript:;" [routerLink]="['/app/projects/new']">
+                        <div class="card__image">
+                            <!--<img alt="product" [src]="product.img"/>-->
+                            <div class="text-center text-white">
+                                <h5 style="color:white">
+                                    <i class="fa fa-plus"></i> &nbsp; New Project</h5>
+                                <br/>
+                            </div>
+                        </div>
 
-                                <div class="card__body card-white">
-                                    <div class="card__title">
+                        <div class="card__body card-white">
+                            <div class="card__title">
                                         <span>
                                             <h6> .</h6>
                                             <h4 class="text-muted"> .</h4>
                                         </span>
-                                    </div>
-                                    <div class="card__price">
-                                    </div>
-                                </div>
-                            </a>
-                        </a>
-                    </div>
-                    <div class="col-xl-3 col-lg-6" *ngFor="let project of projects">
-                        <a href="javascript:;" class="item-card">
-                            <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']" matTooltip="" matTooltipPosition="above">
-                                <div class="card__image">
-                                    <h5 class="text-center text-muted1">{{project.name}}</h5>
-                                </div>
-                                <!-- </a> -->
-                                <div class="card__body card-white">
-                                    <div class="card__title">
-                                        <h6>Create date</h6>
-                                        <h4 class="text-muted">{{project.createdDate | date:'mediumDate'}}</h4>
-                                    </div>
-                                    <div class="card__price">
-                                    </div>
-                                </div>
-                            </a>
-                        </a>
-                    </div>
-                </div>
+                            </div>
+                            <div class="card__price">
+                            </div>
+                        </div>
+                    </a>
+                </a>
+            </div>
+            <div class="col-xl-3 col-lg-6" *ngFor="let project of projects">
+                <a href="javascript:;" class="item-card">
+                    <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']" matTooltip=""
+                       matTooltipPosition="above">
+                        <div class="card__image">
+                            <h5 class="text-center text-muted1">{{project.name}}</h5>
+                        </div>
+                        <!-- </a> -->
+                        <div class="card__body card-white">
+                            <div class="card__title">
+                                <h6>Create date</h6>
+                                <h4 class="text-muted">{{project.createdDate | date:'mediumDate'}}</h4>
+                            </div>
+                            <div class="card__price">
+                            </div>
+                        </div>
+                    </a>
+                </a>
+            </div>
+        </div>
+        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+                       [length]="length">
+        </mat-paginator>
     </article>
 </section>
 
-
-<mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)" [length]="length">
-</mat-paginator>
