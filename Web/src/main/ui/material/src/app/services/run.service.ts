@@ -112,8 +112,8 @@ export class RunService {
     }
 
 
-    getDetailsByJobIdRunNum(jobId: string, runNum: number,) {
-        return this.http.get(this.serviceUrl + "/job/" + jobId + "/runNo/" + runNum);
+    getDetailsByJobIdRunNum(jobId: string, runNum: string,action:string) {
+        return this.http.get(this.serviceUrl + "/job/" + jobId + "/runNo/" + runNum + "?nav=" + action);
     }
 
 

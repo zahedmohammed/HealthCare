@@ -53,8 +53,7 @@ export class RunDetailComponent implements OnInit {
     totalRuns:number = 0
     times;
     totalTimeSaved = 0;
-    disableButtonNext: boolean = false
-    disableButtonPrev: boolean = false
+
     displayedColumns: string[] = ['suite', 'category', 'severity', 'status', 'data', 'time', 'analytics'];
     dataSource = null;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -124,23 +123,6 @@ export class RunDetailComponent implements OnInit {
 
     calSum() {
 
-        if(this.runNumbers == null)
-        {
-            this.disableButtonNext = true
-            this.disableButtonPrev = true
-        }
-        else {
-            var arrayIndex = this.runNumbers.indexOf(this.run.runId)
-            if ((arrayIndex == this.runNumbers.length - 1))
-                this.disableButtonNext = true
-            else
-                this.disableButtonNext = false
-
-            if (arrayIndex <= 0 || parseInt(this.run.runId) == 1)
-                this.disableButtonPrev = true
-            else
-                this.disableButtonPrev = false
-        }
         this.success = 0;
 
         this.success = (this.run.task['totalTests'] - this.run.task['failedTests']) / (this.run.task['totalTests']);
@@ -300,16 +282,19 @@ export class RunDetailComponent implements OnInit {
         });
     }
 
+
+
     nextRun() {
-        var arrayIndex = 0;
-        arrayIndex = this.runNumbers.indexOf(this.run.runId)
-        this.i = arrayIndex
-        this.i = this.i + 1
+        this.getDetailsByJobIdRunNumber("next")
+    }
 
-        this.nextRunId = this.runNumbers[this.i]
+    prevRun() {
+        this.getDetailsByJobIdRunNumber("prev")
+    }
 
+    getDetailsByJobIdRunNumber(action:string){
         this.handler.activateLoader();
-        this.runService.getDetailsByJobIdRunNum(this.jobId, this.nextRunId).subscribe(runNumRes => {
+        this.runService.getDetailsByJobIdRunNum(this.jobId, this.run.runId,action).subscribe(runNumRes => {
             this.handler.hideLoader();
             if (this.handler.handle(runNumRes)) {
                 return;
@@ -327,43 +312,7 @@ export class RunDetailComponent implements OnInit {
             this.handler.hideLoader();
             this.handler.error(error);
         });
-    }
 
-    prevRun() {
-
-        var arrayIndex = 0;
-
-        arrayIndex = this.runNumbers.indexOf(this.run.runId);
-        if(arrayIndex == 0 && parseInt(this.run.runId) > 1)
-            this.nextRunId = parseInt(this.run.runId) - 1
-        else {
-            this.i = arrayIndex - 1;
-            this.nextRunId = this.runNumbers[this.i];
-        }
-
-        this.handler.activateLoader();
-        this.runService.getDetailsByJobIdRunNum(this.jobId, this.nextRunId).subscribe(runNumRes => {
-            this.handler.hideLoader();
-            if (this.handler.handle(runNumRes)) {
-                return;
-            }
-
-            this.runNumResult = runNumRes['data'];
-            this.job = this.runNumResult['job'];
-            this.project = this.job['project'];
-            this.run = this.runNumResult;
-            this.calSum();
-
-            this.router.navigate(['/app/projects', this.projectId, 'jobs', this.job.id, 'runs', this.run['id']])
-
-            if (this.nextRunId <= 1)
-                this.disableButtonPrev = true
-            else
-                this.disableButtonPrev = false
-        }, error => {
-            this.handler.hideLoader();
-            this.handler.error(error);
-        });
     }
 
 }

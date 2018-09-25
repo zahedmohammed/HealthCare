@@ -40,9 +40,9 @@
                             Re-Run &nbsp;
                         </button>
                         <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="nextRun();"
-                            [disabled]="disableButtonNext">Next</button>
+                            >Next</button>
                         <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="prevRun();"
-                            [disabled]="disableButtonPrev">Previous</button>
+                            >Previous</button>
                         <button mat-raised-button *ngIf="run.task.status == 'PROCESSING'" class="btn-w-sm text-warning float-right"
                             (click)="cancel();">
                             Cancel</button>

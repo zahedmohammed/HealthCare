@@ -101,15 +101,6 @@ export class RunListComponent implements OnInit {
         }
        this.totalTimeSaved = this.times;
 
-        let runNum = []
-        for(i=0;i<this.list.length;i++)
-        {
-            runNum.push(this.list[i].runId)
-        }
-        runNum.reverse()
-        localStorage.setItem('listData',JSON.stringify(runNum))
-        localStorage.setItem('totalRuns',this.length.toString())
-
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
