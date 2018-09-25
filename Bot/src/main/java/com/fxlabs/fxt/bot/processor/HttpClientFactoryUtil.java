@@ -21,7 +21,7 @@ public class HttpClientFactoryUtil {
     public static final HttpComponentsClientHttpRequestFactory getInstance_() {
 
         if (FACTORY != null) {
-            return  FACTORY;
+            return FACTORY;
         }
 
         CloseableHttpClient httpClient
@@ -42,31 +42,33 @@ public class HttpClientFactoryUtil {
     }
 
 
-    public static HttpComponentsClientHttpRequestFactory setRequestFactory(RestTemplate restTemplate) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+    public static void setRequestFactory(RestTemplate restTemplate) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 
-        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
-                .loadTrustMaterial(null, acceptingTrustStrategy)
-                .build();
+        if (FACTORY == null) {
+            TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+            SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
+                    .loadTrustMaterial(null, acceptingTrustStrategy)
+                    .build();
 
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setSSLSocketFactory(csf)
-                .build();
+            SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
 
-        HttpComponentsClientHttpRequestFactory requestFactory =
-                new HttpComponentsClientHttpRequestFactory();
+            CloseableHttpClient httpClient = HttpClients.custom()
+                    .setSSLSocketFactory(csf)
+                    .build();
 
-        requestFactory.setHttpClient(httpClient);
 
-        int timeout = 15000;
-        requestFactory.setConnectTimeout(timeout);
-        requestFactory.setConnectionRequestTimeout(timeout);
-        requestFactory.setReadTimeout(timeout);
+            FACTORY = new HttpComponentsClientHttpRequestFactory();
 
-        restTemplate.setRequestFactory(requestFactory);
 
-        return requestFactory;
+            FACTORY.setHttpClient(httpClient);
+
+            int timeout = 15000;
+            FACTORY.setConnectTimeout(timeout);
+            FACTORY.setConnectionRequestTimeout(timeout);
+            FACTORY.setReadTimeout(timeout);
+        }
+
+        restTemplate.setRequestFactory(FACTORY);
     }
 }
