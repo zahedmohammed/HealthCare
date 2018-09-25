@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Gradle Invoke Plugin</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <div class="callout callout-info text-danger">
+    <code>plugins &#123; id "io.fxlabs.job" version "0.2.7" &#125;<br><br>
+         &nbsp;&nbsp;&nbsp;&nbsp; fxjob &#123;	<br><br>
+         &nbsp;&nbsp;&nbsp;&nbsp; jobId = "{{data}}"<br>
+         &nbsp;&nbsp;&nbsp;&nbsp; username = "&#123;fx_username&#125;"<br>
+         &nbsp;&nbsp;&nbsp;&nbsp; password = "&#123;fx_password&#125;"<br>
+         &nbsp;&nbsp;&nbsp;&nbsp; region = "&#123;bot_region&#125;"<br><br>
+            &#125;</code>
+  </div>
+  <div class="callout callout-danger">
+    <p>To use fxlabs gradle plugin to invoke job include below script in build.gradle.</p>
+    <p>And replace username, password and region with your details from fxlabs and run the below command</p>
+    <code>gradle invoke</code><br><br>
+    <p>which invokes the build on fxlabs</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

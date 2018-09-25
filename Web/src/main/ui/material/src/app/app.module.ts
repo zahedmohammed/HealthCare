@@ -187,6 +187,8 @@ import { TestsuiteRunComponent } from './components/dialogs/testsuite-run/testsu
 import { ProjectsConfigComponent } from './components/projects/projects-config/projects-config.component';
 import { BotSavingDialogComponent } from './components/dialogs/bot-saving-dialog/bot-saving-dialog.component';
 import { CicdIntegrationComponent } from './components/dialogs/cicd-integration/cicd-integration.component';
+import { MavenIntegrationComponent } from './components/dialogs/maven-integration/maven-integration.component';
+import { GradleIntegrationComponent } from './components/dialogs/gradle-integration/gradle-integration.component';
 
 @NgModule({
   imports: [
@@ -352,13 +354,15 @@ import { CicdIntegrationComponent } from './components/dialogs/cicd-integration/
     TestsuiteRunComponent,
     ProjectsConfigComponent,
     BotSavingDialogComponent,
-    CicdIntegrationComponent
+    CicdIntegrationComponent,
+    MavenIntegrationComponent,
+    GradleIntegrationComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler, DatePipe],
   entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent,
     SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent, SlackRegisterComponent,
-    BotCredentialsComponent, TestsuiteRunComponent, BotDialogComponent, BotSavingDialogComponent, CicdIntegrationComponent]
+    BotCredentialsComponent, TestsuiteRunComponent, BotDialogComponent, BotSavingDialogComponent, CicdIntegrationComponent, MavenIntegrationComponent, GradleIntegrationComponent]
 })
 
 export class AppModule {

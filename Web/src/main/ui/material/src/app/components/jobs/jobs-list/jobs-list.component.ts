@@ -6,12 +6,14 @@ import { ProjectService } from '../../../services/project.service';
 import { Base } from '../../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 import { Handler } from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef, MatTableDataSource, MatPaginator, MatSort} from '@angular/material';
+import { VERSION, MatDialog, MatDialogRef, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { AdvRunComponent } from '../../dialogs/adv-run/adv-run.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
 import { CicdIntegrationComponent } from '../../dialogs/cicd-integration/cicd-integration.component';
+import { MavenIntegrationComponent } from '../../dialogs/maven-integration/maven-integration.component';
+import { GradleIntegrationComponent } from '../../dialogs/gradle-integration/gradle-integration.component';
 
 @Component({
   selector: 'app-jobs-list',
@@ -27,35 +29,30 @@ export class JobslistComponent implements OnInit {
   project: Base = new Base();
   showSpinner: boolean = false;
   //private _clockSubscription: Subscription;
-  notificationFlag :boolean;
-  autoBugMngmnt :boolean=false ;
+  notificationFlag: boolean;
+  autoBugMngmnt: boolean = false;
 
-  displayedColumns : string[] = ['name', 'env', 'bot-region', 'bug-management', 'notifications','next-fire','jobsNoHeader'];
+  displayedColumns: string[] = ['name', 'env', 'bot-region', 'bug-management', 'notifications', 'next-fire', 'jobsNoHeader'];
   dataSource = null;
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private jobsService: JobsService, private runService: RunService, private dialog: MatDialog,
     private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
-  ngOnInit() {   
+  ngOnInit() {
     this.handler.activateLoader();
     this.route.params.subscribe(params => {
       this.id = params['id'];
       console.log(params);
       this.loadProject(this.id);
       this.list(this.id);
-      this.notificationFlag=false;
+      this.notificationFlag = false;
     });
-    /*let timer = Observable.timer(1, 10000);
-    this._clockSubscription = timer.subscribe(t => {
-      this.list();
-    });*/
   }
 
   ngOnDestroy(): void {
-    //this._clockSubscription.unsubscribe();
   }
 
   loadProject(id: string) {
@@ -104,8 +101,7 @@ export class JobslistComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      //this.jobs = results['data'];
-      this.router.navigate(['/app/jobs/' , id, 'runs']);
+      this.router.navigate(['/app/jobs/', id, 'runs']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -114,26 +110,34 @@ export class JobslistComponent implements OnInit {
 
   advRun(job) {
     const dialogRef = this.dialog.open(AdvRunComponent, {
-        width:'800px',
-        //height:'85%',
-        data: job
+      width: '800px',
+      data: job
     });
-     dialogRef.afterClosed().subscribe(result => {
-      //this.router.navigate(['/app/projects/' , job.project.id,  'jobs', job.id, 'runs']);
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
-  // notification(obj){
-  //   console.log("chekc obj","-->"+obj);
-  //   if(obj)
-  //     this.notificationFlag=obj;
-  // }
-  openDialog(){
+  openJenkins() {
     const dialogRef = this.dialog.open(CicdIntegrationComponent, {
-        width:'800px',
-        data: this.id
+      width: '800px',
+      data: this.id
     });
-     dialogRef.afterClosed().subscribe(result => {
-      //this.router.navigate(['/app/projects/' , job.project.id,  'jobs', job.id, 'runs']);
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+  openMaven() {
+    const dialogRef = this.dialog.open(MavenIntegrationComponent, {
+      width: '800px',
+      data: this.id
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+  openGradle() {
+    const dialogRef = this.dialog.open(GradleIntegrationComponent, {
+      width: '800px',
+      data: this.id
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 }

@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Maven Invoke Plugin</h2>
+
+<mat-dialog-content class="mat-typography">
+  <p>Add the plugin to pom.xml in plugin sections</p>
+  <div class="callout callout-info text-danger">
+    <code>
+          &#x3C;plugin&#x3E; <br>
+          &nbsp;&nbsp; &#x3C;groupId&#x3E; io.fxlabs &#x3C;/groupId&#x3E; <br>
+          &nbsp;&nbsp; &#x3C;artifactId&#x3E; fxt-job-maven-plugin &#x3C;/artifactId&#x3E;<br>
+          &nbsp;&nbsp; &#x3C;version&#x3E; 2.0.0 &#x3C;/version&#x3E;<br>
+          &nbsp;&nbsp; &#x3C;configuration&#x3E;<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x3C;username&#x3E; "&#123;fxusername&#125;" &#x3C;/username&#x3E;<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x3C;password&#x3E; "&#123;fxpassword&#125;" &#x3C;/password&#x3E;<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x3C;jobId&#x3E; "{{data}}" &#x3C;/jobId&#x3E;<br>
+          &nbsp;&nbsp; &#x3C;/configuration&#x3E;<br>
+          &#x3C;/plugin&#x3E;</code>
+  </div>
+  <div class="callout callout-danger">
+    <p>For latest plugin version go to
+      <a href="https://search.maven.org/artifact/io.fxlabs/fxt-job-maven-plugin" target="_blank">
+        https://search.maven.org/artifact/io.fxlabs/fxt-job-maven-plugin</a></p>
+    <p>After adding plugin to your pom. Replace fxusername and fxpassword with your details from fxlabs</p>
+    <p>Then run below command in project folder</p>
+    <code>mvn clean fxlabs:job</code>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+</mat-dialog-actions>
