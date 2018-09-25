@@ -38,6 +38,7 @@ export class RunDetailComponent implements OnInit {
     length = 0;
     page = 0;
     pageSize = 10;
+    pageSizeOptions: number[] = [20, 50, 100];
     project: Base = new Base();
     job: Base = new Base();
     showSpinner: boolean = false;
@@ -244,6 +245,7 @@ export class RunDetailComponent implements OnInit {
 
     change(evt) {
         this.page = evt['pageIndex'];
+        this.pageSize = evt.pageSize;
         this.getSummary();
     }
 

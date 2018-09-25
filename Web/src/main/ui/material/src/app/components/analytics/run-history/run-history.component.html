@@ -18,7 +18,7 @@
 <section class="container-fluid with-maxwidth no-breadcrumbs chapter1">
   <div class="row box box-default no-margin">
     <div class="col-md-12 m-3">
-        <p><b>Test Suite Name:</b> <code>{{suiteName}}</code></p>
+      <p><b>Test Suite Name:</b> <code>{{suiteName}}</code></p>
     </div>
     <div class="col-md-2">
     </div>
@@ -82,9 +82,7 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
 
-    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-      [length]="length">
+    <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="change($event)" [length]="length">
     </mat-paginator>
   </div>
-
 </section>

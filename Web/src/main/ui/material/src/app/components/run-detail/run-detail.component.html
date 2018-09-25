@@ -43,7 +43,8 @@
                             [disabled]="disableButtonNext">Next</button>
                         <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="prevRun();"
                             [disabled]="disableButtonPrev">Previous</button>
-                        <button mat-raised-button *ngIf="run.task.status == 'PROCESSING'" class="btn-w-sm text-warning float-right" (click)="cancel();">
+                        <button mat-raised-button *ngIf="run.task.status == 'PROCESSING'" class="btn-w-sm text-warning float-right"
+                            (click)="cancel();">
                             Cancel</button>
                     </div>
                 </div>
@@ -162,7 +163,8 @@
                         <span>RBAC</span>
                     </div>
                     <div class="box-bottom">
-                        <small class="text-success">{{run.stats['RBAC_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['RBAC_Failed'] || 0}}</small>
+                        <small class="text-success">{{run.stats['RBAC_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['RBAC_Failed']
+                            || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -204,7 +206,7 @@
                     </div>
                     <div class="box-bottom">
                         <small class="text-success">{{run.stats['SLA_Passed'] || 0}}</small> / <small class="text-danger">{{run.stats['SLA_Failed']
-                        || 0}}</small>
+                            || 0}}</small>
                     </div>
                 </div>
             </div>
@@ -298,8 +300,7 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
 
-        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-            [length]="length">
+        <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" (page)="change($event)" [length]="length">
         </mat-paginator>
     </div>
 

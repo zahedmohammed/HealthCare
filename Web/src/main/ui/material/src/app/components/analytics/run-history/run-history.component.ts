@@ -42,6 +42,7 @@ export class RunHistoryComponent implements OnInit {
 
   displayedColumns: string[] = ['no', 'status', 'region', 'success', 'date/time', 'timeTaken', 'data'];
   dataSource = null;
+  
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -79,6 +80,7 @@ export class RunHistoryComponent implements OnInit {
     });
   }
 
+ 
   getRunById() {
     this.handler.activateLoader();
     this.runService.getDetails(this.id).subscribe(results => {
@@ -324,6 +326,8 @@ export class RunHistoryComponent implements OnInit {
   length = 0;
   page = 0;
   pageSize = 10;
+  pageSizeOptions: number[] = [20, 59, 100];
+
   change(evt) {
       if(this.chart){
           this.chart.destroy()
@@ -336,6 +340,7 @@ export class RunHistoryComponent implements OnInit {
       }
  
       this.page = evt['pageIndex'];
-   this.getTestSuiteResponseHistoryByName();
+      this.pageSize = evt.pageSize;
+      this.getTestSuiteResponseHistoryByName();
   }
 }
