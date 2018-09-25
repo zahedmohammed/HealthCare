@@ -72,7 +72,7 @@
 
         <ng-container matColumnDef="coverage-percent">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Coverage %</mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.coveragePercentage}} %</mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.coveragePercentage}} % <mat-progress-bar mode="determinate" color="accent" value={{element.coveragePercentage}}></mat-progress-bar> </mat-cell>
         </ng-container>
 
 
