@@ -27,11 +27,11 @@ public interface RunRepository extends JpaRepository<Run, String> {
     Optional<Run> findRunByJobIdAndRunId(String jobId, Long runNo);
 
     //check for previous run
-    @Query("SELECT r FROM Run r WHERE r.id IN(SELECT MAX(r1.id) FROM Run r1 WHERE r1.job.id=?1 and r1.runId <?2)")
+    @Query("SELECT r FROM Run r WHERE r.job.id=?1 AND r.runId IN(SELECT MAX(r1.runId) FROM Run r1 WHERE r1.job.id=?1 and r1.runId <?2)")
     Optional<Run> findRunByJobIdAndRunIdCheckPrevRun(String jobId, Long runNo);
 
     //check for next run
-    @Query("SELECT r FROM Run r WHERE r.id IN (SELECT MIN(r1.id) FROM Run r1 WHERE r1.job.id=?1 and r1.runId >?2)")
+    @Query("SELECT r FROM Run r WHERE r.job.id=?1 AND r.runId IN (SELECT MIN(r1.runId) FROM Run r1 WHERE r1.job.id=?1 and r1.runId >?2)")
     Optional<Run> findRunByJobIdAndRunIdCheckNextRun(String jobId, Long runNo);
 
     @Query("SELECT MAX(runId) FROM Run WHERE job.id LIKE ?1")
