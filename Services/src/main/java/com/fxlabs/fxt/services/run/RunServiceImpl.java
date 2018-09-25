@@ -268,8 +268,18 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
     }
 
     @Override
-    public Response<com.fxlabs.fxt.dto.run.Run> findRunByJobIdAndRunNo(String jobId, Long runNo, String user) {
-        Optional<Run> run = this.repository.findRunByJobIdAndRunId(jobId, runNo);
+    public Response<com.fxlabs.fxt.dto.run.Run> findRunByJobIdAndRunNo(String jobId, Long runNo, String nav, String user) {
+        Optional<Run> run = null;
+        if (nav.equalsIgnoreCase("prev")) {
+            run = this.repository.findRunByJobIdAndRunIdCheckPrevRun(jobId, runNo);
+
+        } else if (nav.equalsIgnoreCase("next")) {
+            run = this.repository.findRunByJobIdAndRunIdCheckNextRun(jobId, runNo);
+
+        } else {
+            run = this.repository.findRunByJobIdAndRunId(jobId, runNo);
+        }
+
         if (run.isPresent()) {
             com.fxlabs.fxt.dto.run.Run run1 = this.converter.convertToDto(run.get());
             run1.setRegions(run.get().getAttributes().get("REGION"));
@@ -277,7 +287,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         } else {
 
             return new Response<com.fxlabs.fxt.dto.run.Run>()
-                    .withErrors(true).withMessage(new Message(MessageType.ERROR, null, "No details found for RunNo " + runNo));
+                    .withErrors(true).withMessage(new Message(MessageType.ERROR, null, "No runs found "));
         }
     }
 
