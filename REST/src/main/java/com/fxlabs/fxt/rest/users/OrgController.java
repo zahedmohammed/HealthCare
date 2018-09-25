@@ -131,5 +131,12 @@ public class OrgController {
         return orgService.getUser(SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
     }
 
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    public Response<List<Org>> search(@RequestParam(value = "keyword", required = false) String keyword,
+                                      @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                      @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return orgService.searchOrg(keyword, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
 
 }

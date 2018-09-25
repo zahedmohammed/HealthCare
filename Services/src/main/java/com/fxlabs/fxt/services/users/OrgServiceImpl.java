@@ -4,8 +4,6 @@ import com.fxlabs.fxt.converters.users.OrgConverter;
 import com.fxlabs.fxt.converters.users.OrgUsersConverter;
 import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.clusters.AccountType;
-import com.fxlabs.fxt.dao.entity.it.IssueTracker;
-import com.fxlabs.fxt.dao.entity.notify.Notification;
 import com.fxlabs.fxt.dao.entity.users.*;
 import com.fxlabs.fxt.dao.repository.es.OrgUsersESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
@@ -343,5 +341,22 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         throw new FxException(String.format("User [%s] not entitled to the resource [%s].", user, s));*/
     }
 
+    @Override
+    public Response<List<com.fxlabs.fxt.dto.users.Org>> searchOrg(String keyword, String user, Pageable pageable) {
+        if (StringUtils.isNotEmpty(keyword))
 
+        {
+            Page<Org> orgPage = orgRepository.findByNameContainingIgnoreCase(keyword, pageable);
+
+            List<com.fxlabs.fxt.dto.users.Org> orgs = converter.convertToDtos(orgPage.getContent());
+
+            return new Response<List<com.fxlabs.fxt.dto.users.Org>>(orgs, orgPage.getTotalElements(), orgPage.getTotalPages());
+
+        } else {
+
+            return findAll(user, pageable);
+        }
+
+
+    }
 }

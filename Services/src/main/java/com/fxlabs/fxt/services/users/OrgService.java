@@ -2,14 +2,12 @@ package com.fxlabs.fxt.services.users;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.UserMinimalDto;
-import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.users.Member;
 import com.fxlabs.fxt.dto.users.Org;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -39,4 +37,6 @@ public interface OrgService extends GenericService<Org, String> {
     Response<com.fxlabs.fxt.dto.users.OrgUsers> getUserByOrgUserId(String orgUserId, String orgId);
 
     Response<Org> findByName(String orgName);
+
+    Response<List<Org>> searchOrg(String keyword, String user, Pageable pageable);
 }
