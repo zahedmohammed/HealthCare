@@ -15,6 +15,7 @@ export class OrgListComponent implements OnInit {
   showSpinner: boolean = false;
   displayedColumns: string[] = ['name', 'company', 'billing', 'plan', 'createdDate'];
   dataSource = null;
+  keyword: string = '';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -40,6 +41,27 @@ export class OrgListComponent implements OnInit {
       this.handler.error(error);
     });
   }
+
+  //search Orgs
+
+  searchOrgs() {
+    this.handler.activateLoader();
+      
+    this.orgService.searchOrg(this.keyword, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.orgs = results['data'];
+      this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.orgs);
+      this.dataSource.sort = this.sort;
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
 
   length = 0;
   page = 0;

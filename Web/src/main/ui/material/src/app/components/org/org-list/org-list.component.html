@@ -11,22 +11,28 @@
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
             <article class="article">
-                <h2 class="article-title1">
-                    <button mat-button color="primary" class="btn-w-md pull-left text-justify" [routerLink]="['/app/orgs/new']">
-                        <i class="fa fa-plus"></i>
-                        New Org
-                    </button>
-                    <p class="text-muted float-right">Total ({{length}})</p>
-                    <div class="divider divider-sm"></div>
-                </h2>
-                <br />
-
+                <div class="row">
+                    <div class="col-md-5">
+                        <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/orgs/new']">
+                            <i class="fa fa-plus"></i>
+                            New Org
+                        </button>
+                    </div>
+                    <div class="col-md-7">
+                        <p class="text-muted float-right mt-2">Total ({{length}})</p>
+                        <mat-input-container class="ml-8 mb-2">
+                            <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
+                                (keyup.enter)="searchOrgs()">
+                        </mat-input-container>
+                    </div>
+                </div>
                 <div class="mat-elevation-z8 box-default">
                     <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
                         matSortDirection="desc">
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                            <mat-cell *matCellDef="let org"> <a href="javascript:;" [routerLink]="['/app/orgs', org.id, 'users']">{{org.name}}</a> </mat-cell>
+                            <mat-cell *matCellDef="let org"> <a href="javascript:;" [routerLink]="['/app/orgs', org.id, 'users']">{{org.name}}</a>
+                            </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="company">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Company </mat-header-cell>

@@ -71,4 +71,13 @@ export class OrgService {
     return this.http.post(this.serviceUrl + "/" + orgId + "/users/" + userId + "/reset-password", member);
   }
 
+  searchOrg(keyword:string, page, pageSize){
+    let params = new HttpParams();
+    params = params.append('keyword', keyword);
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/search", {params});
+
+  }
+
 }
