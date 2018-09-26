@@ -326,7 +326,7 @@ export class RunHistoryComponent implements OnInit {
   length = 0;
   page = 0;
   pageSize = 10;
-  pageSizeOptions: number[] = [20, 59, 100];
+  pageSizeOptions: number[] = [20, 50, 100];
 
   change(evt) {
       if(this.chart){
