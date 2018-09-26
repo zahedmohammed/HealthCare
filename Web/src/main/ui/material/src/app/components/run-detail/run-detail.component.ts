@@ -53,6 +53,10 @@ export class RunDetailComponent implements OnInit {
     totalRuns:number = 0
     times;
     totalTimeSaved = 0;
+    searchFlag:boolean;
+    prevKeyword: string = '';
+    prevCategory: string = '';
+    prevStatus: string = '';
 
     displayedColumns: string[] = ['suite', 'category', 'severity', 'status', 'data', 'time', 'analytics'];
     dataSource = null;
@@ -65,13 +69,6 @@ export class RunDetailComponent implements OnInit {
     }
 
     ngOnInit() {
-
-        this.runNumbers = JSON.parse(localStorage.getItem('listData'));
-        this.totalRuns = parseInt(localStorage.getItem('totalRuns'));
-
-        localStorage.removeItem('totalRuns')
-        localStorage.removeItem('listData')
-
         this.route.params.subscribe(params => {
             console.log(params);
             if (params['projectId']) {
@@ -158,6 +155,7 @@ export class RunDetailComponent implements OnInit {
     }
 
     getSummary() {
+        this.searchFlag = false;
         this.handler.activateLoader();
         this.runService.getSummary(this.id, this.page, this.pageSize).subscribe(results => {
             this.handler.hideLoader();
@@ -175,9 +173,43 @@ export class RunDetailComponent implements OnInit {
     }
 
     search() {
+        if(this.prevKeyword != this.keyword)
+            this.searchFlag = true
+        else
+            if(this.prevCategory != this.category)
+                this.searchFlag = true
+        else
+            if(this.prevStatus != this.status)
+                this.searchFlag = true
+        else
+            {
+                this.prevKeyword = this.keyword
+                this.prevCategory = this.category
+                this.prevStatus = this.status
+                this.searchFlag = false
+            }
+
+        if(this.searchFlag)
+        {
+            this.page = 0;
+            this.paginator.pageIndex = 0
+            this.searchFlag = false
+
+        }
+        this.prevKeyword = this.keyword
+        this.prevCategory = this.category
+        this.prevStatus = this.status
+        //
         if (this.keyword == '' && this.category == '' && this.status == '') {
+            // this.page = 0;
+            // this.paginator.pageIndex = 0
             return this.getSummary();
         }
+
+
+        // this.page = 0;
+        // this.paginator.pageIndex = 0
+
         this.handler.activateLoader();
         this.runService.search(this.id, this.category, this.keyword, this.status, this.page, this.pageSize).subscribe(results => {
             this.handler.hideLoader();
@@ -228,7 +260,8 @@ export class RunDetailComponent implements OnInit {
     change(evt) {
         this.page = evt['pageIndex'];
         this.pageSize = evt.pageSize;
-        this.getSummary();
+        // this.getSummary();
+        this.search();
     }
 
 
@@ -293,6 +326,15 @@ export class RunDetailComponent implements OnInit {
     }
 
     getDetailsByJobIdRunNumber(action:string){
+        this.prevKeyword = "";
+        this.prevCategory = "";
+        this.prevStatus = "";
+        this.searchFlag = false;
+
+        this.keyword ="";
+        this.category ="";
+        this.status ="";
+
         this.handler.activateLoader();
         this.runService.getDetailsByJobIdRunNum(this.jobId, this.run.runId,action).subscribe(runNumRes => {
             this.handler.hideLoader();
