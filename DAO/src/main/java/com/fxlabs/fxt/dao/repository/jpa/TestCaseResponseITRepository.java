@@ -26,7 +26,7 @@ public interface TestCaseResponseITRepository extends JpaRepository<TestCaseResp
 
     List<TestCaseResponseIssueTracker> findByRunIdAndProjectIdAndJobId(String runId, String name, String jobId);
 
-    long countByStatusAndProjectIdAndJobId(String open, String name, String id);
+    long countByStatusIgnoreCaseAndProjectIdAndJobId(String open, String name, String id);
 
     @Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.projectId=?1 and iT.jobId=?2 and iT.modifiedDate>?3")
     Long sumByProjectIdAndJobIdAndModifiedDate(String projectId, String jobId, Date currentMonthStartDate);

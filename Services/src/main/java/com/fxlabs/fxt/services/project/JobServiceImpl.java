@@ -186,9 +186,9 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
             }else{
                 String itId = job.getProject().getId() + "//" + job.getId() + "%"  ;
               //  long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
-                long totalOpenIssues = testCaseResponseITRepository.countByStatusAndProjectIdAndJobId("open",job.getProject().getId(),job.getId());
+                long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open",job.getProject().getId(),job.getId());
              //   long totalClosedIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("closed",itId);
-                long totalClosedIssues = testCaseResponseITRepository.countByStatusAndProjectIdAndJobId("closed",job.getProject().getId(),job.getId());
+                long totalClosedIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("closed",job.getProject().getId(),job.getId());
 
                 job.setOpenIssues(totalOpenIssues);
                 job.setClosedIssues(totalClosedIssues);
