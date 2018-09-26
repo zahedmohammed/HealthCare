@@ -40,5 +40,13 @@ export class VaultService {
     return this.http.delete(this.serviceUrl + "/" + obj['id']);
   }
 
+  searchVault(keyword: string, page, pageSize){
+    let params = new HttpParams();
+    params = params.append('keyword', keyword);
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + '/Search', {params})
+  }
+
 }
 

@@ -15,6 +15,7 @@ export class VaultListComponent implements OnInit {
   showSpinner: boolean = false;
   displayedColumns: string[] = ['key', 'createDate'];
   dataSource = null;
+  keyword: string = '';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -28,6 +29,24 @@ export class VaultListComponent implements OnInit {
   list() {
     this.handler.activateLoader();
     this.vaultService.get(this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.keys = results['data'];
+      this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.keys);
+      this.dataSource.sort = this.sort;
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
+  searchVault() {
+
+    this.handler.activateLoader();
+    this.vaultService.searchVault(this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

@@ -12,15 +12,21 @@
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
             <article class="article">
-                <h2 class="article-title1">
-                    <button mat-button color="primary" class="btn-w-md pull-left text-justify" [routerLink]="['/app/vault/new']">
-                        <i class="fa fa-plus"></i>
-                        New Secret
-                    </button>
-                    <p class="text-muted float-right">Total ({{length}})</p>
-                    <div class="divider divider-sm"></div>
-                </h2>
-                <br />
+                    <div class="row">
+                            <div class="col-md-5">
+                                <button mat-button color="primary" class="btn-w-md mt-3" [routerLink]="['/app/vault/new']">
+                                    <i class="fa fa-plus"></i>
+                                   New Secret
+                                </button>
+                            </div>
+                            <div class="col-md-7">
+                                <p class="text-muted float-right mt-4">Total ({{length}})</p>
+                                <mat-input-container class="ml-8">
+                                    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
+                                        (keyup.enter)="searchVault()">
+                                </mat-input-container>
+                            </div>
+                        </div>
 
                 <div class="mat-elevation-z8 box-default">
                     <mat-table [dataSource]="dataSource" matSort matSortActive="key" matSortDisableClear
