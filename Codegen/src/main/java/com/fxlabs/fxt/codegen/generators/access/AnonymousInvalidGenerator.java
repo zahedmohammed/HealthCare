@@ -11,8 +11,10 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component(value = "anonymousInvalidGenerator")
@@ -20,7 +22,6 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
 
     protected static final String SCENARIO = "anonymous_invalid";
     protected static final String AUTH = "Anonymous";
-    protected static final String OPERAND = "401";
 
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
@@ -44,20 +45,30 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
         final String path_ = path;
         Match match = null;
 
-        for (Match m : generator.getMatches()) {
-            if (StringUtils.isEmpty(m.getPathPatterns())) {
-                continue;
-            }
-            for (String pattern : m.getPathPatterns().split(", ")) {
-                if (ANT_PATH_MATCHER.match(pattern, path_)
-                        && (StringUtils.isEmpty(m.getMethods()) || org.apache.commons.lang3.StringUtils.containsIgnoreCase(m.getMethods(), method.name()))
-                ) {
-                    System.out.print(String.format("Match found for pattern [%s] and path [%s]", pattern, path_));
-                    match = m;
-                    break;
+        List<Match> matches = generator.getMatches();
+        if (!CollectionUtils.isEmpty(matches)) {
+            for (Match m : generator.getMatches()) {
+                if (StringUtils.isEmpty(m.getPathPatterns())) {
+                    continue;
                 }
+                for (String pattern : m.getPathPatterns().split(", ")) {
+                    String _method = "";
+                    String _pattern = pattern;
+                    if (org.apache.commons.lang3.StringUtils.contains(pattern, ":")) {
+                        String[] tokens = pattern.split(":");
+                        _method = tokens[0];
+                        _pattern = tokens[1];
+                    }
+                    if (ANT_PATH_MATCHER.match(_pattern, path_)
+                            && (StringUtils.isEmpty(_method) || org.apache.commons.lang3.StringUtils.containsIgnoreCase(m.getMethods(), _method))
+                    ) {
+                        System.out.print(String.format("Match found for pattern [%s] and path [%s]", pattern, path_));
+                        match = m;
+                        break;
+                    }
+                }
+                if (match != null) break;
             }
-            if (match != null) break;
         }
 
         if (match == null) {

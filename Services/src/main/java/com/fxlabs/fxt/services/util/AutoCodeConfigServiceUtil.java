@@ -380,13 +380,22 @@ public class AutoCodeConfigServiceUtil {
         auth_invalid.setType("auth_invalid");
 
         auth_invalid.setDisplayHeaderLabel("Authorization Invalid");
-        auth_invalid.setDisplayHeaderDescription("Authorization Invalid is a test suite to check APIs can be invoked by UnAuthorized users.");
-        auth_invalid.setAssertionDescription("Successful test suite response code is 401, 403. UnSuccessful test suite response code is 200.");
+        auth_invalid.setDisplayHeaderDescription("These tests discover API endpoints which bypasses validation of authentication tokens and credentials.");
+        auth_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
 
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode == 401 OR @StatusCode == 403");
         auth_invalid.setAssertions(assertions);
+
+        List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
+
+        AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
+        match.setPathPatterns("Get:/api/v1/user-signup/**");
+        //match.setMethods("Get");
+        matchesList.add(match);
+
+        auth_invalid.setMatches(matchesList);
 
         auth_invalid.setSequenceOrder(seqOrder);
         return auth_invalid;
@@ -400,20 +409,20 @@ public class AutoCodeConfigServiceUtil {
         anonymous_invalid.setType("anonymous_invalid");
 
         anonymous_invalid.setDisplayHeaderLabel("Secured Endpoints");
-        anonymous_invalid.setDisplayHeaderDescription("Anonymous Invalid is a test suite to check if Secure APIs can be invoked by anonymous users.");
-        anonymous_invalid.setAssertionDescription("Successful test suite response code is 401, 403. UnSuccessful test suite response code is 200.");
+        anonymous_invalid.setDisplayHeaderDescription("These tests discover unsecured API endpoints.");
+        anonymous_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
 
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@StatusCode != 200");
+        assertions.add("@StatusCode == 401 OR @StatusCode == 403");
         anonymous_invalid.setSequenceOrder(seqOrder);
         anonymous_invalid.setAssertions(assertions);
 
         List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
 
         AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
-        match.setPathPatterns("/api/v1/user-signup/**");
-        match.setMethods("Get");
+        match.setPathPatterns("Get:/api/v1/user-signup/**");
+        //match.setMethods("Get");
         matchesList.add(match);
 
         anonymous_invalid.setMatches(matchesList);

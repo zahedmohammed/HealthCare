@@ -149,7 +149,7 @@ public class RestProcessor {
             if (completeTask != null) {
                 botTasks.add(completeTask);
             }
-          //  sender.sendTask(completeTask);
+            //  sender.sendTask(completeTask);
         }
         return botTasks;
     }
@@ -176,12 +176,12 @@ public class RestProcessor {
             suite.setSuiteName(task.getSuiteName());
             if (task.getCategory() != null) {
                 suite.setCategory(TestSuiteCategory.valueOf(task.getCategory())); //.toUpperCase()
-            }else{
+            } else {
                 suite.setCategory(TestSuiteCategory.Bug);
             }
             if (task.getSeverity() != null) {
                 suite.setSeverity(TestSuiteSeverity.valueOf(task.getSeverity())); //.toUpperCase()
-            }else{
+            } else {
                 suite.setSeverity(TestSuiteSeverity.Major);
             }
             // handle GET requests
@@ -464,7 +464,7 @@ public class RestProcessor {
 //        }
 
         BotTask completeTask = new BotTask();
-      //  final Suite suite = new Suite();
+        //  final Suite suite = new Suite();
         List<TestCaseResponse> testCaseResponses = new ArrayList<>();
         boolean generateTestCases = task.isGenerateTestCaseResponse();
 
