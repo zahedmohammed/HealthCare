@@ -11,12 +11,8 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component(value = "anonymousInvalidGenerator")
@@ -29,10 +25,10 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
-        // TODO buildTestCase(testSuite)
-        if (method == io.swagger.models.HttpMethod.POST || method == io.swagger.models.HttpMethod.PUT) {
+        // Security should kick-in before post body validation
+        /*if (method == io.swagger.models.HttpMethod.POST || method == io.swagger.models.HttpMethod.PUT) {
             return null;
-        }
+        }*/
 
         Generator generator = configUtil.get(SCENARIO);
         if (generator == null || generator.isInactive()) {
@@ -55,7 +51,7 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
             for (String pattern : m.getPathPatterns().split(", ")) {
                 if (ANT_PATH_MATCHER.match(pattern, path_)
                         && (StringUtils.isEmpty(m.getMethods()) || org.apache.commons.lang3.StringUtils.containsIgnoreCase(m.getMethods(), method.name()))
-                        ) {
+                ) {
                     System.out.print(String.format("Match found for pattern [%s] and path [%s]", pattern, path_));
                     match = m;
                     break;
@@ -78,7 +74,7 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
                     PathParameter queryParam = (PathParameter) param;
                     String name = queryParam.getName();
                     String defaultVal = queryParam.getDefault() != null ? queryParam.getDefault().toString() : "{{@Random}}";
-                    endPoint = endPoint.replaceAll("\\{"+name+"\\}" , defaultVal);
+                    endPoint = endPoint.replaceAll("\\{" + name + "\\}", defaultVal);
                 }
             }
 
@@ -88,17 +84,8 @@ public class AnonymousInvalidGenerator extends AbstractGenerator {
             list = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
 
 
-        }else {
-
-            // Skip non-Secured Endpoints
-
-//
-//            List<String> assertions = generator.getAssertions();
-//            if (CollectionUtils.isEmpty(assertions)) {
-//                assertions = Arrays.asList("@StatusCode == 200");
-//            }
-//            list.addAll(build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies));
         }
+
         return list;
     }
 }
