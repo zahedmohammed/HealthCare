@@ -1,20 +1,21 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
-import {JobsService} from '../../services/jobs.service';
-import {RunService} from '../../services/run.service';
-import {ProjectService} from '../../services/project.service';
-import {Base} from '../../models/base.model';
-import {Run} from '../../models/run.model';
-import {VERSION, MatDialog, MatDialogRef} from '@angular/material';
-import {MsgDialogComponent} from '../dialogs/msg-dialog/msg-dialog.component';
-import {Handler} from '../dialogs/handler/handler';
-import {Observable} from 'rxjs/Observable';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
+import { JobsService } from '../../services/jobs.service';
+import { RunService } from '../../services/run.service';
+import { ProjectService } from '../../services/project.service';
+import { Base } from '../../models/base.model';
+import { Run } from '../../models/run.model';
+import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
+import { MsgDialogComponent } from '../dialogs/msg-dialog/msg-dialog.component';
+import { Handler } from '../dialogs/handler/handler';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
-import {Subscription} from 'rxjs/Subscription';
-import {SnackbarService} from '../../services/snackbar.service';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {listenOnPlayer} from "@angular/animations/browser/src/render/shared";
-import {DeleteDialogComponent} from "../dialogs/delete-dialog/delete-dialog.component";
+import { Subscription } from 'rxjs/Subscription';
+import { SnackbarService } from '../../services/snackbar.service';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { listenOnPlayer } from "@angular/animations/browser/src/render/shared";
+import { DeleteDialogComponent } from "../dialogs/delete-dialog/delete-dialog.component";
+import { ConfirmDialogComponent } from './../dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-run-detail',
@@ -50,13 +51,9 @@ export class RunDetailComponent implements OnInit {
     runNumResult: any = [];
     runNumbers: any = [];
     i: number = 0;
-    totalRuns:number = 0
+    totalRuns: number = 0
     times;
     totalTimeSaved = 0;
-    searchFlag:boolean;
-    prevKeyword: string = '';
-    prevCategory: string = '';
-    prevStatus: string = '';
 
     displayedColumns: string[] = ['suite', 'category', 'severity', 'status', 'data', 'time', 'analytics'];
     dataSource = null;
@@ -65,10 +62,14 @@ export class RunDetailComponent implements OnInit {
     private _clockSubscription: Subscription;
 
     constructor(private jobsService: JobsService, private runService: RunService, private projectService: ProjectService,
-                private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private handler: Handler, private snackbarService: SnackbarService) {
+        private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private handler: Handler, private snackbarService: SnackbarService) {
     }
 
     ngOnInit() {
+        this.runNumbers = JSON.parse(localStorage.getItem('listData'));
+        this.totalRuns = parseInt(localStorage.getItem('totalRuns'));
+        localStorage.removeItem('totalRuns')
+        localStorage.removeItem('listData')
         this.route.params.subscribe(params => {
             console.log(params);
             if (params['projectId']) {
@@ -92,7 +93,6 @@ export class RunDetailComponent implements OnInit {
                 });
             }
         });
-
     }
 
     ngOnDestroy(): void {
@@ -105,7 +105,6 @@ export class RunDetailComponent implements OnInit {
                 return;
             }
             this.project = results['data'];
-
         });
     }
 
@@ -119,9 +118,7 @@ export class RunDetailComponent implements OnInit {
     }
 
     calSum() {
-
         this.success = 0;
-
         this.success = (this.run.task['totalTests'] - this.run.task['failedTests']) / (this.run.task['totalTests']);
     }
 
@@ -155,7 +152,6 @@ export class RunDetailComponent implements OnInit {
     }
 
     getSummary() {
-        this.searchFlag = false;
         this.handler.activateLoader();
         this.runService.getSummary(this.id, this.page, this.pageSize).subscribe(results => {
             this.handler.hideLoader();
@@ -173,43 +169,9 @@ export class RunDetailComponent implements OnInit {
     }
 
     search() {
-        if(this.prevKeyword != this.keyword)
-            this.searchFlag = true
-        else
-            if(this.prevCategory != this.category)
-                this.searchFlag = true
-        else
-            if(this.prevStatus != this.status)
-                this.searchFlag = true
-        else
-            {
-                this.prevKeyword = this.keyword
-                this.prevCategory = this.category
-                this.prevStatus = this.status
-                this.searchFlag = false
-            }
-
-        if(this.searchFlag)
-        {
-            this.page = 0;
-            this.paginator.pageIndex = 0
-            this.searchFlag = false
-
-        }
-        this.prevKeyword = this.keyword
-        this.prevCategory = this.category
-        this.prevStatus = this.status
-        //
         if (this.keyword == '' && this.category == '' && this.status == '') {
-            // this.page = 0;
-            // this.paginator.pageIndex = 0
             return this.getSummary();
         }
-
-
-        // this.page = 0;
-        // this.paginator.pageIndex = 0
-
         this.handler.activateLoader();
         this.runService.search(this.id, this.category, this.keyword, this.status, this.page, this.pageSize).subscribe(results => {
             this.handler.hideLoader();
@@ -256,32 +218,31 @@ export class RunDetailComponent implements OnInit {
         });
     }
 
-
     change(evt) {
         this.page = evt['pageIndex'];
         this.pageSize = evt.pageSize;
-        // this.getSummary();
-        this.search();
+        this.getSummary();
     }
 
-
     cancel() {
-
-        this.runService.stopRun(this.id).subscribe(results => {
-
-            this.handler.hideLoader();
-            if (this.handler.handle(results)) {
-                return;
-            }
-            //this.router.navigate(['/app/projects/' , this.project.id,  'jobs', this.job.id, 'runs']);
-        }, error => {
-            this.handler.error(error);
+        let dialogRef = this.dialog.open(ConfirmDialogComponent, {
         });
-
+        dialogRef.afterClosed().subscribe(result => {
+            if (result != null) {
+                this.snackbarService.openSnackBar("Run Number '" + this.run.runId + "' stopping...", "");
+                this.runService.stopRun(this.id).subscribe(results => {
+                    this.handler.hideLoader();
+                    if (this.handler.handle(results)) {
+                        return;
+                    }
+                }, error => {
+                    this.handler.error(error);
+                });
+            }
+        });
     }
 
     deleteRun() {
-
         let dialogRef = this.dialog.open(DeleteDialogComponent, {
             data: this.run.runId + ' run number'
         });
@@ -325,36 +286,24 @@ export class RunDetailComponent implements OnInit {
         this.getDetailsByJobIdRunNumber("prev")
     }
 
-    getDetailsByJobIdRunNumber(action:string){
-        this.prevKeyword = "";
-        this.prevCategory = "";
-        this.prevStatus = "";
-        this.searchFlag = false;
-
-        this.keyword ="";
-        this.category ="";
-        this.status ="";
-
+    getDetailsByJobIdRunNumber(action: string) {
         this.handler.activateLoader();
-        this.runService.getDetailsByJobIdRunNum(this.jobId, this.run.runId,action).subscribe(runNumRes => {
+        this.runService.getDetailsByJobIdRunNum(this.jobId, this.run.runId, action).subscribe(runNumRes => {
             this.handler.hideLoader();
             if (this.handler.handle(runNumRes)) {
                 return;
             }
-
             this.runNumResult = runNumRes['data'];
             this.job = this.runNumResult['job'];
             this.project = this.job['project']
             this.run = this.runNumResult;
             this.calSum();
-
             this.router.navigate(['/app/projects', this.projectId, 'jobs', this.job.id, 'runs', this.run['id']])
 
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
         });
-
     }
 
 }
