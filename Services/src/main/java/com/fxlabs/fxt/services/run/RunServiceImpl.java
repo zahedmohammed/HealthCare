@@ -361,13 +361,13 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isNotEmpty(status)) {
             // All three params present
             if (StringUtils.equalsIgnoreCase("failed", status)) {
-                page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCaseAndFailedGreaterThan(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, new Long(0), pageable);
+                page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameContainingIgnoreCaseAndFailedGreaterThan(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, new Long(0), pageable);
             }else if (StringUtils.equalsIgnoreCase("passed", status)) {
-                page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCaseAndFailed(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, new Long(0), pageable);
+                page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameContainingIgnoreCaseAndFailed(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, new Long(0), pageable);
             }
         } else if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isEmpty(status)) {
             // category and keyword present
-            page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameStartingWithIgnoreCase(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, pageable);
+            page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameContainingIgnoreCase(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, pageable);
         } else if (StringUtils.isNotEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isNotEmpty(status)) {
             // category and status present
             if (StringUtils.equalsIgnoreCase("failed", status)) {
@@ -375,12 +375,12 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             }else if (StringUtils.equalsIgnoreCase("passed", status)) {
                 page = this.suiteESRepository.findByRunIdAndCategoryAndFailed(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), new Long(0), pageable);
             }
-        } else if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isEmpty(status)) {
+        } else if (StringUtils.isEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isNotEmpty(status)) {
             // keyword and status present
             if (StringUtils.equalsIgnoreCase("failed", status)) {
-                page = this.suiteESRepository.findByRunIdAndSuiteNameStartingWithIgnoreCaseAndFailedGreaterThan(runId, keyword, new Long(0), pageable);
+                page = this.suiteESRepository.findByRunIdAndSuiteNameContainingIgnoreCaseAndFailedGreaterThan(runId, keyword, new Long(0), pageable);
             }else if (StringUtils.equalsIgnoreCase("passed", status)) {
-                page = this.suiteESRepository.findByRunIdAndSuiteNameStartingWithIgnoreCaseAndFailed(runId, keyword, new Long(0), pageable);
+                page = this.suiteESRepository.findByRunIdAndSuiteNameContainingIgnoreCaseAndFailed(runId, keyword, new Long(0), pageable);
             }
         } else if (StringUtils.isNotEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isEmpty(status)  ) {
             // Only category is present
@@ -393,15 +393,10 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             if (StringUtils.equalsIgnoreCase("failed", status)) {
                 page = this.suiteESRepository.findByRunIdAndFailedGreaterThan(runId, new Long(0), pageable);
             }else if (StringUtils.equalsIgnoreCase("passed", status)) {
-                page = this.suiteESRepository.findByRunIdAndFailed(runId, pageable);
+                page = this.suiteESRepository.findByRunIdAndFailed(runId, new Long(0), pageable);
             }
         }
-        //  category + status
-        // keyword + status
 
-
-
-        // filter by
         List<Suite> dataSets = suiteConverter.convertToDtos(page.getContent());
         return new Response<List<Suite>>(dataSets, page.getTotalElements(), page.getTotalPages());
     }

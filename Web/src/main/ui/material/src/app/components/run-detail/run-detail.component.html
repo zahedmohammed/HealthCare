@@ -123,7 +123,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-sm-6">
+            <div class="col-xl-2 col-sm-6 pointer" (click)="status='Passed';search()">
                 <div class="box box-default">
                     <div class="box-top bg-color-success">
                         <i class="material-icons">check</i>
@@ -237,7 +237,10 @@
                 <div class="full-width">
                     <mat-chip-list>
                         <mat-chip>Filter: </mat-chip>
-                        <mat-chip *ngIf="category">{{category}}</mat-chip>
+                        <mat-chip *ngIf="keyword" (click)="keyword='';search()">{{keyword}}</mat-chip>
+                        <mat-chip *ngIf="category" (click)="category='';search()">{{category}}</mat-chip>
+                        <mat-chip *ngIf="status === 'Failed'" (click)="status='';search()" class="text-danger">{{status}}</mat-chip>
+                        <mat-chip *ngIf="status === 'Passed'" (click)="status='';search()" class="text-success">{{status}}</mat-chip>
                     </mat-chip-list>
                 </div>
             </div>
