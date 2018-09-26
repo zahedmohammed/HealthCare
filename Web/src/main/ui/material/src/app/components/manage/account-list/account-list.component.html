@@ -15,28 +15,29 @@
         </div>
         <p class="text-muted">Manage git, cloud & collaboration endpoint credentials.</p>
     </section> -->
-    <br/>
+    <br />
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
 
             <article class="article">
                 <h2 class="article-title1">
-                    <button mat-button color="primary" class="btn-w-md pull-left"
-                            [routerLink]="['/app/accounts/new']">
+                    <button mat-button color="primary" class="btn-w-md pull-left" [routerLink]="['/app/accounts/new']">
                         <i class="fa fa-plus"></i>
                         New Credential
                     </button>
                     <p class="text-muted float-right">Total ({{length}})</p>
                     <div class="divider divider-sm"></div>
                 </h2>
-                <br/>
+                <br />
 
                 <div class="mat-elevation-z8 box-default">
-                    <mat-table [dataSource]="dataSource" matSort matSortActive="create-date" matSortDisableClear matSortDirection="desc">
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="create-date" matSortDisableClear
+                        matSortDirection="desc">
                         <!-- Name Column -->
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                            <mat-cell *matCellDef="let element" [routerLink]="['/app/accounts', element.id]"> <a href="javascript:;"> {{element.name}} </a></mat-cell>
+                            <mat-cell *matCellDef="let element" [routerLink]="['/app/accounts', element.id]"> <a href="javascript:;">
+                                    {{element.name}} </a></mat-cell>
                         </ng-container>
 
                         <!-- Type Column -->
@@ -55,8 +56,8 @@
                         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                     </mat-table>
 
-                    <mat-paginator [pageSize]="pageSize" hidePageSize="true"
-                                   (page)="change($event)" [length]="length">
+                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+                        [length]="length">
                     </mat-paginator>
 
                 </div>
