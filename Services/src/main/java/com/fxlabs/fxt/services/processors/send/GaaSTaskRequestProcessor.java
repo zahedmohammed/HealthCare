@@ -21,7 +21,6 @@ import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.users.UsersService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.type.EntityType;
 import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -116,7 +114,7 @@ public class GaaSTaskRequestProcessor {
 
             //Set AutoCode configurations
             Optional<com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeConfig> codeConfigOptional = autoCodeConfigRepository.findByProjectId(project.getId());
-            if (codeConfigOptional.isPresent()){
+            if (codeConfigOptional.isPresent()) {
                 AutoCodeConfig dto = autoCodeConfigConverter.convertToDto(codeConfigOptional.get());
                 AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(dto);
                 task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
@@ -125,7 +123,7 @@ public class GaaSTaskRequestProcessor {
                     task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
                 }
             }
-            if (projectSync != null){
+            if (projectSync != null) {
                 task.setCategories(projectSync.getCategories());
                 task.setDeleteAll(projectSync.isDeleteAll());
             }
@@ -189,7 +187,7 @@ public class GaaSTaskRequestProcessor {
                 }
             }
             task.setVcLastCommit(project.getLastCommit());
-            if (codeConfig != null){
+            if (codeConfig != null) {
                 AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(codeConfig);
                 task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
                 if (autoCodeConfigMinimal.getGenPolicy() != null && autoCodeConfigMinimal.getGenPolicy() != GenPolicy.None) {
@@ -249,7 +247,7 @@ public class GaaSTaskRequestProcessor {
 
         if (project == null || status == null || entityType == null) {
 
-            logger.info("Invalid event for project sync" );
+            logger.info("Invalid event for project sync");
             return;
         }
 
@@ -273,7 +271,7 @@ public class GaaSTaskRequestProcessor {
         event.setOrg(org);
 
 
-        logger.info("Sending event for publish on project [{}] and status [{}] for task type [{}]" , project.getId(), status.toString(), event.getName());
+        logger.info("Sending event for publish on project [{}] and status [{}] for task type [{}]", project.getId(), status.toString(), event.getName());
         localEventPublisher.publish(event);
     }
 
@@ -301,7 +299,7 @@ public class GaaSTaskRequestProcessor {
             task.setVcLastCommit(project.getLastCommit());
 
 
-            if (projectSync != null){
+            if (projectSync != null) {
                 task.setCategories(projectSync.getCategories());
                 task.setDeleteAll(projectSync.isDeleteAll());
                 task.setDeleteManualTestSuite(deleteManualTestSuite);

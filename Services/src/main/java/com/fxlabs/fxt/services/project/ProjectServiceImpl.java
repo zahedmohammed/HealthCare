@@ -567,7 +567,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         saveProjectImports(AutoCodeConfigServiceUtil.getAutoCodeConfigImports(projectId), project.getOrg().getId());
 
         // Create GaaS Task
-        this.gaaSTaskRequestProcessor.processAutoCodeconfig(converter.convertToEntity(project), autoCodeConfigConverter.convertToDto(entity) , null);
+        this.gaaSTaskRequestProcessor.processAutoCodeconfig(converter.convertToEntity(project), autoCodeConfigConverter.convertToDto(entity), null);
         AutoCodeConfig autoCodeConfig = autoCodeConfigConverter.convertToDto(entity);
         autoCodeConfigConverter.copyAssertionsToText(autoCodeConfig);
         return new Response<>(autoCodeConfig);
@@ -595,7 +595,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         updateGenerators(response.getData().getGenerators(), AutoCodeConfigServiceUtil.getAutoCodeConfig(null).getGenerators());
         autoCodeConfigConverter.copyAssertionsToText(response.getData());
         Collections.sort(response.getData().getGenerators(),
-                (l1, l2) -> l1.getSequenceOrder()> l2.getSequenceOrder()?1:-1);
+                (l1, l2) -> l1.getSequenceOrder() > l2.getSequenceOrder() ? 1 : -1);
         return response;
     }
 
