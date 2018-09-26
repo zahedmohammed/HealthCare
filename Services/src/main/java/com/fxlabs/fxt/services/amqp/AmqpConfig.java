@@ -284,6 +284,19 @@ public class AmqpConfig {
         return container;
     }
 
+    // -- IT Fx
+    @Bean(name = "iTaaSFxQueue")
+    public Queue iTaaSFxQueue(@Value("${fx.itaas.fx.queue}") String queue) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 3600000);
+        return new Queue(queue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding iTaaSFxQueueBinding(@Value("${fx.itaas.fx.queue.routingkey}") String routingKey, @Qualifier("iTaaSFxQueue") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+    }
+
     // -- IT Github
     @Bean(name = "iTaaSGithubQueue")
     public Queue iTaaSGitHubQueue(@Value("${fx.itaas.github.queue}") String queue) {

@@ -65,7 +65,7 @@ public class JobController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Job> update(@Valid @RequestBody Job dto) {
-        return service.save(dto, SecurityUtil.getCurrentAuditor());
+        return service.update(dto, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

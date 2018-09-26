@@ -46,7 +46,8 @@ export class JobsService {
     return this.http.post(this.serviceUrl, obj);
   }
 
-  update(obj: Jobs) {
+  update(obj: Jobs, categories: string[]) {
+        obj.categories = categories ? categories.join() : '';
     return this.http.put(this.serviceUrl, obj);
   }
 

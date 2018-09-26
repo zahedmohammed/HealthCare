@@ -45,7 +45,7 @@ export class JobsEditComponent implements OnInit {
 
   regions: string[] = ["FXLabs/US_WEST_1", "FXLabs/US_WEST_2", "FXLabs/US_EAST_1", "FXLabs/US_EAST_2", "FXLabs/EU_WEST_1", "FXLabs/EU_CENTRAL_1", "FXLabs/SA_EAST_1"]
 
-  accountTypes = ['GitHub', 'Jira'];
+  accountTypes = ['GitHub', 'Jira', 'FX_Issues'];
 
   context: string = "New";
   firstFormGroup: FormGroup;
@@ -218,7 +218,7 @@ export class JobsEditComponent implements OnInit {
   saveJob() {
     this.handler.activateLoader();
     this.snackbarService.openSnackBar("'Job '" + this.job.name + "' adding.", "");
-    this.jobsService.create(this.job,this.category).subscribe(results => {
+    this.jobsService.update(this.job, this.category).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;

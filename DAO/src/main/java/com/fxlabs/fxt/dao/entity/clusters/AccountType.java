@@ -6,6 +6,6 @@ package com.fxlabs.fxt.dao.entity.clusters;
 public enum AccountType {
 
     AWS, BitBucket, GitHub, Git, GitLab, Microsoft_TFS_Git, Self_Hosted,
-    Microsoft_VSTS_Git, Slack, Email, Local, Jira
+    Microsoft_VSTS_Git, Slack, Email, Local, Jira, FX_Issues
 
 }
