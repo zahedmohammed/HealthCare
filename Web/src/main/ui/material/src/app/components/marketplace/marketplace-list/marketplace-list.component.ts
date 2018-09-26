@@ -35,7 +35,7 @@ export class MarketplaceListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 20;
+  pageSize = 12; 
   change(evt) {
     this.page = evt['pageIndex'];
     this.get();
