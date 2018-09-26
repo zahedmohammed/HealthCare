@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dao.repository.es.TestCaseResponseITESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Account;
+import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.it.IssueTracker;
 import com.fxlabs.fxt.dto.run.TestCaseResponse;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
@@ -51,6 +52,8 @@ public class TestCaseResponseProcessor {
     private String itaasQueue;
     @Value("${fx.itaas.jira.queue.routingkey}")
     private String itaasJiraQueue;
+    @Value("${fx.itaas.fx.queue.routingkey}")
+    private String itaasFxQueue;
     private TextEncryptor encryptor;
     private TestCaseResponseITRepository testCaseResponseITRepository;
     private TestCaseResponseITESRepository testCaseResponseITESRepository;
@@ -173,7 +176,7 @@ public class TestCaseResponseProcessor {
             return null;
         }
         //prop1 will have host url
-        if (StringUtils.isEmpty(issueTrackerResponse.getData().getUrl())) {
+        if (StringUtils.isEmpty(issueTrackerResponse.getData().getUrl()) && !AccountType.FX_Issues.equals(issueTrackerResponse.getData().getAccountType())) {
             return null;
         }
 
@@ -199,6 +202,8 @@ public class TestCaseResponseProcessor {
             case Jira:
                 tc.setIssueTrackerProjectName(issueTrackerResponse.getData().getProjectKey());
                 return itaasJiraQueue;
+            case FX_Issues:
+                return itaasFxQueue;
         }
 
 
