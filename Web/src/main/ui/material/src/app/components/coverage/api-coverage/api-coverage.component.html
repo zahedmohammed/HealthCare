@@ -24,30 +24,6 @@
   </nav>
   <br/>
 
-  <!--<div class="box box-default table-box mdl-shadow&#45;&#45;2dp">
-      <table class="mdl-data-table">
-        <tbody>
-        <tr>
-          <td class="mdl-data-table__cell&#45;&#45;non-numeric text-muted">Total No. of API Endpoints in the project
-          </td>
-          <td> {{ coverage.totalEndpoints | number}}</td>
-        </tr>
-        <tr>
-          <td class="mdl-data-table__cell&#45;&#45;non-numeric text-muted">
-            No. of Test Suites auto generated
-          </td>
-          <td> {{ coverage.totalSuites| number }}</td>
-        </tr>
-        <tr>
-          <td class="mdl-data-table__cell&#45;&#45;non-numeric text-muted">No. of test cases in all Test Suites generated
-          </td>
-          <td> {{ coverage.totalTestCases | number}}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>-->
-
-  <!-- Accordian start -->
   <article class="article">
 
     <div class="mat-elevation-z8 box-default">
@@ -72,7 +48,11 @@
 
         <ng-container matColumnDef="coverage-percent">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Coverage %</mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.coveragePercentage}} % <mat-progress-bar mode="determinate" color="accent" value={{element.coveragePercentage}}></mat-progress-bar> </mat-cell>
+<!--
+          <mat-cell *matCellDef="let element"> {{element.coveredEndpoints * 100 / element.totalEndpoints | number:'.1-2'}} % <mat-progress-bar mode="determinate" color="accent" value={{element.coveragePercentage}}></mat-progress-bar> </mat-cell>
+-->
+            <mat-cell *matCellDef="let element"> {{element.coveragePercentage | number:'.1-2'}} % <mat-progress-bar mode="determinate" color="accent" value={{element.coveragePercentage}}></mat-progress-bar> </mat-cell>
+
         </ng-container>
 
 

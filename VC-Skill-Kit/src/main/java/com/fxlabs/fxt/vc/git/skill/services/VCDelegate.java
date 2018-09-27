@@ -102,31 +102,41 @@ public class VCDelegate {
                     try {
                         // 2/4. Auto-Code
                         String openAPISpec = task.getOpenAPISpec();
-                        Map<String, Map<String, Integer>> pathCountMap = stubGenerator.generate(path, openAPISpec, null, null);
+                        Map<String, Integer> pathCountMap = stubGenerator.generate(path, openAPISpec, null, null);
                         if (pathCountMap != null && pathCountMap.size() > 0) {
                             List<Endpoint> endpoints = new ArrayList<>();
                             Iterator<String> itr = pathCountMap.keySet().iterator();
                             while (itr.hasNext()){
                                 String key = itr.next();
-                                Map<String, Integer> methodsMap = pathCountMap.get(key);
-                                Iterator<String> itrM = methodsMap.keySet().iterator();
-                                while (itrM.hasNext()) {
-                                    String method = itrM.next();
-                                    Endpoint endpoint = new Endpoint(key, method);
-                                    endpoint.setProjectId(task.getProjectId());
-                                    endpoints.add(endpoint);
+                                Integer count = pathCountMap.get(key);
+                                if (StringUtils.indexOf(key,"__") > 0){
+                                    String method = StringUtils.substring(key,0,StringUtils.indexOf(key,"__"));
+                                    String endpoint = StringUtils.substring(key,StringUtils.indexOf(key,"__")+2,key.length());
+                                    Endpoint endpointObj = new Endpoint(endpoint, method);
+                                    endpointObj.setProjectId(task.getProjectId());
+                                    endpoints.add(endpointObj);
                                 }
+//
+//                                Iterator<String> itrM = methodsMap.keySet().iterator();
+//                                while (itrM.hasNext()) {
+//                                    String method = itrM.next();
+//                                    Endpoint endpoint = new Endpoint(key, method);
+//                                    endpoint.setProjectId(task.getProjectId());
+//                                    endpoints.add(endpoint);
+//                                }
                             }
 
                             response.setApiEndpoints(endpoints);
                             int count = 0;
                             Iterator<String> itr_ = pathCountMap.keySet().iterator();
                             while (itr_.hasNext()) {
-                                Map<String, Integer> methodsTSMap = pathCountMap.get(itr_.next());
-                                Iterator<String> itrM = methodsTSMap.keySet().iterator();
-                                while (itrM.hasNext()) {
-                                    count += methodsTSMap.get(itrM.next());
-                                }
+                                count += pathCountMap.get(itr_.next());
+
+//                                Map<String, Integer> methodsTSMap = pathCountMap.get(itr_.next());
+//                                Iterator<String> itrM = methodsTSMap.keySet().iterator();
+//                                while (itrM.hasNext()) {
+//                                    count += methodsTSMap.get(itrM.next());
+//                                }
                             }
                             response.setAutoGenSuitesCount(count);
                         }
