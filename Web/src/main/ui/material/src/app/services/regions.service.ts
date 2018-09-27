@@ -56,6 +56,15 @@ export class RegionsService {
     return this.http.get(this.serviceUrl +  "/superbotnetwork", {params});
   }
 
+  searchBot(keyword: string, page, pageSize){
+    let params = new HttpParams();
+    params = params.append('keyword', keyword);
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + '/search', {params});
+
+  }
+
 }
 
 
