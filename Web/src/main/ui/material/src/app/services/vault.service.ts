@@ -45,7 +45,7 @@ export class VaultService {
     params = params.append('keyword', keyword);
     params = params.append('page', page);
     params = params.append('pageSize', pageSize);
-    return this.http.get(this.serviceUrl + '/Search', {params})
+    return this.http.get(this.serviceUrl + '/search', {params})
   }
 
 }
