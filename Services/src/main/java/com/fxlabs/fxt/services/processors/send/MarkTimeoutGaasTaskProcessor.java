@@ -96,7 +96,7 @@ public class MarkTimeoutGaasTaskProcessor {
         event.setName(event_.getName());
         event.setUser(event_.getCreatedBy());
         event.setEntityType(entityType);
-        event.setEventType(Type.Run);
+        event.setEventType(Type.Sync);
         event.setEntityId(event_.getId());
         event.setLink(event_.getLink());
 
