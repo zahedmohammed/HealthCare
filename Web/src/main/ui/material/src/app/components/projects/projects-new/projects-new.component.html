@@ -100,7 +100,250 @@
                         </form>
                     </mat-step>
 
-                   <!--second form group removed from new project -->
+                    <mat-step [stepControl]="secondFormGroup">
+                        <form [formGroup]="secondFormGroup">
+                            <ng-template matStepLabel>AutoCode Configuration</ng-template>
+
+                            <div class="box-body">
+
+                                <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
+                                    <label for="name" class="col-md-0 control-label"></label>
+                                    <div class="col-md-5">
+                                        <mat-form-field class="full-width">
+                                            <input required [(ngModel)]="autoCodeConfig.openAPISpec" name="spec"
+                                                   id="spec" matInput placeholder="OpenAPISpec URL/file"
+                                                   formControlName="openAPISpec" autocomplete="off">
+                                            <mat-error>Required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="text-muted callout callout-info">
+                                            <p>AutoCode feature automatically generates security/functional tests based on the project's OpenAPISpec.
+                                            <br/>Enter OpenAPISpec public URL or upload the OpenAPISpec .json/.yaml
+                                                file into the Git repository and enter the file name instead.
+                                            <br/>
+                                                e.g. https://example.com/v2/api-docs or open-api-spec.json or open-api-spec.yaml or None. </p>
+
+                                                How-to generate OpenAPISpec for your Java, .Net and other
+                                                applications.
+                                                <a target="_blank" href="https://swagger.io/open-source-integrations/">
+                                                    Learn more
+                                                    <i class="material-icons" style="font-size: 18px;">open_in_new</i>
+                                                </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
+                                    <div class="col-md-12"><div class="callout callout-info">AutoCode configuration allows fully customizable test generation for every test category. You can customize later as well.</div></div>
+                                    <!-- <div class="col-md-12" *ngFor="let res of autoCodeConfig"> -->
+                                    <div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">
+                                        <mat-accordion>
+                                            <mat-expansion-panel>
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title>
+                                                        <b>{{ res.displayHeaderLabel }}</b>
+                                                    </mat-panel-title>
+                                                </mat-expansion-panel-header>
+                                                <div class="mb-3">
+                                                    {{res.displayHeaderDescription}}
+                                                </div>
+                                                <div *ngIf="res.type === 'DDOS'">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <mat-input-container class="full-width">
+                                                                <textarea matInput
+                                                                          placeholder="Page size query param names e.g. Default params: pageSize, page_size, maxResults, max_results"
+                                                                          [(ngModel)]='res.matches[0].name'
+                                                                          [ngModelOptions]="{standalone: true}"></textarea>
+                                                            </mat-input-container>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="res.type === 'sql_injection_timebound'">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <mat-form-field class="full-width">
+                                                                <mat-select placeholder="Database Type" required
+                                                                            [(ngModel)]="res.database.name"
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            name="type">
+                                                                    <mat-option *ngFor="let db of dbs" [value]="db">
+                                                                        {{db}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="res.type === 'rbac'">
+                                                    <div *ngFor="let m of res.matches">
+                                                        <div class="form-group row">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.name"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Description">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.pathPatterns"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Path patterns">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.methods"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Http methods">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.allowRoles"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Access allowed to">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.denyRoles"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Access denied to">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="divider divider-dashed divider-lg pull-in"></div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="res.type === 'sla'">
+                                                    <div *ngFor="let m of res.matches">
+                                                        <div class="form-group row" [hidden]="true">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.pathPatterns"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Path patterns">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row" [hidden]="true">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.methods"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Http methods">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.value"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="SLA (in milliseconds)">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" [hidden]="res.type === 'sla'">
+                                                    <div class="col-md-6">
+                                                        <mat-input-container class="full-width">
+                                                                <textarea matInput placeholder="Assertions"
+                                                                          [(ngModel)]='res.assertionsText'
+                                                                          [ngModelOptions]="{standalone: true}"></textarea>
+                                                        </mat-input-container>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="callout1 text-muted callout-info1">
+                                                            <p> {{res.assertionDescription}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="res.type === 'anonymous_invalid'">
+                                                    <div *ngFor="let m of res.matches">
+
+                                                        <div class="form-group row" [hidden]="false">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.pathPatterns"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Optionally you can skip API paths. e.g. GET:/api/v1/user-signup/** or POST:/api/v1/team-signup etc">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="res.type === 'auth_invalid'">
+                                                    <div *ngFor="let m of res.matches">
+
+                                                        <div class="form-group row" [hidden]="false">
+                                                            <label for="name" class="col-md-0 control-label"></label>
+                                                            <div class="col-md-5">
+                                                                <mat-input-container class="full-width">
+                                                                    <input [(ngModel)]="m.pathPatterns"
+                                                                           [ngModelOptions]="{standalone: true}"
+                                                                           matInput placeholder="Optionally you can skip API paths. e.g. GET:/api/v1/user-signup/** or POST:/api/v1/team-signup etc">
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <mat-checkbox [(ngModel)]="res.inactive"
+                                                                      [ngModelOptions]="{standalone: true}"
+                                                                      color="primary">Skip
+                                                        </mat-checkbox>
+                                                    </div>
+                                                </div>
+                                            </mat-expansion-panel>
+                                        </mat-accordion>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <mat-card-actions class="pull-right">
+                                    <button mat-button matStepperPrevious>Back</button>&nbsp;
+                                    <button mat-raised-button color="primary"
+                                            class="nav-btn"
+                                            [disabled]="secondFormGroup.invalid"
+                                            (click)="saveAutoCode();">Generate & Next
+                                    </button>
+                                </mat-card-actions>
+                            </div>
+                        </form>
+                    </mat-step>
 
                     <mat-step [stepControl]="thirdFormGroup">
                         <form [formGroup]="thirdFormGroup">

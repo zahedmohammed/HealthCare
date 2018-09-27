@@ -1,19 +1,22 @@
 import{RegisterComponent}from'./../../dialogs/register/register.component';
-import { Component, OnInit}from '@angular/core';
-import {Router, ActivatedRoute}from "@angular/router";
+import { Component, OnInit, Inject}from '@angular/core';
+import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
 import {ProjectService}from '../../../services/project.service';
 import {OrgService }from '../../../services/org.service';
 import {JobsService}from '../../../services/jobs.service';
 import {AccountService}from '../../../services/account.service';
+import {Account} from '../../../models/account.model';
 import {Project}from '../../../models/project.model';
 import {AutoCodeConfig}from '../../../models/project-autocode-config.model';
 import {Env, Auth }from '../../../models/project-env.model';
 import {Job}from '../../../models/project-job.model';
+import {OrgUser}from '../../../models/org.model';
 import {Handler} from '../../dialogs/handler/handler';
 import {APPCONFIG} from '../../../config';
-import {MatSnackBar, MatDialog}from '@angular/material';
+import {MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA}from '@angular/material';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {FormBuilder, FormGroup, Validators}from '@angular/forms';
+import {MatStepper} from '@angular/material';
 
 @Component({
   selector: 'app-projects-new',
@@ -38,7 +41,7 @@ export class ProjectsNewComponent implements OnInit {
 
   isLinear = false;
   firstFormGroup: FormGroup;
-  // secondFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
 
   authTypes = ['Basic', 'Token', 'OAuth_2_0', 'Auth0', 'No_Authentication'];
@@ -74,9 +77,9 @@ export class ProjectsNewComponent implements OnInit {
       //urlCtrl: ['', Validators.required],
       //typeCtrl: ['', Validators.required ]
     });
-    // this.secondFormGroup = this._formBuilder.group({
-    //   openAPISpec: ['', Validators.required]
-    // });
+    this.secondFormGroup = this._formBuilder.group({
+      openAPISpec: ['', Validators.required]
+    });
 
     this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', [Validators.required]],
@@ -85,7 +88,26 @@ export class ProjectsNewComponent implements OnInit {
       usernameCtrl: [''],
       pswCtrl:['']
     });
-    }
+
+    /*this.fourthFormGroup = this._formBuilder.group({
+      authNameCtrl:  ['', Validators.required],
+      usernameCtrl:  ['', Validators.required],
+      passwordCtrl:  ['', Validators.required],
+    });
+
+    this.fifthFormGroup = this._formBuilder.group({
+      header1Ctrl:  ['', Validators.required],
+    });
+
+    grantTypeCtrl:  ['', Validators.required],
+      clientIdCtrl:  ['', Validators.required],
+      clientSecretCtrl:  ['', Validators.required],
+      accessTokenUriCtrl:  ['', Validators.required],
+      clientAuthenticationSchemeCtrl:  ['', Validators.required],
+      authorizationSchemeCtrl:  ['', Validators.required],
+      scopeCtrl:  ['', Validators.required]*/
+
+  }
 
 
   setAuthType(obj){
@@ -148,7 +170,7 @@ export class ProjectsNewComponent implements OnInit {
           this.project.account = p.account;
         }
         this.matStepper.next();
-        // this.getAutoCode();
+        this.getAutoCode();
     }, error => {
         this.handler.hideLoader();
         this.handler.error(error);
@@ -170,16 +192,45 @@ export class ProjectsNewComponent implements OnInit {
         this.project.account = p.account;
       }
       this.matStepper.next();
-      // this.getAutoCode();
+      this.getAutoCode();
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
 
+  getAutoCode() {
+    this.projectService.getAutoCodeConfig(this.project.id).subscribe(results => {
+       this.handler.hideLoader();
+        if (this.handler.handle(results)) {
+        return;
+      }
+      this.autoCodeConfig = results['data'];
+      console.log(this.autoCodeConfig);
+    });
+  }
+
+  saveAutoCode() {
+    console.log(this.autoCodeConfig);
+    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saving...", "");
+
+    this.projectService.saveAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
+      this.handler.hideLoader();
+        if (this.handler.handle(results)) {
+        return;
+      }
+      this.autoCodeConfig = results['data'];
+      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
+      //this.getEnvByProjectId(this.project.id);
+      this.matStepper.next();
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
 
   saveEnv() {
-    // console.log(this.env);
+    console.log(this.env);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
     this.env.projectId = this.project.id;
     this.projectService.saveEnv(this.env, this.project.id).subscribe(results => {
