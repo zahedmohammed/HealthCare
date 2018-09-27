@@ -126,6 +126,7 @@ public class GaaSTaskRequestProcessor {
             if (projectSync != null) {
                 task.setCategories(projectSync.getCategories());
                 task.setDeleteAll(projectSync.isDeleteAll());
+                task.setRecreate(projectSync.isRecreate());
             }
             Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
 

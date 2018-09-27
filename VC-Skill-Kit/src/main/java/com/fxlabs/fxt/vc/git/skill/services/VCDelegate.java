@@ -97,7 +97,7 @@ public class VCDelegate {
                     isCreateTestSuiteFromControlPlane = true;
                 }
 
-                if (task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) {
+                if ((task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) || task.isRecreate()) {
                     // TODO Generate tests
                     try {
                         // 2/4. Auto-Code

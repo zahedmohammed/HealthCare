@@ -38,6 +38,7 @@ public class VCTask implements Serializable {
     private String vcLastCommit;
     private List<String> categories;
     private boolean deleteAll = false;
+    private boolean recreate = false;
     private boolean deleteManualTestSuite;
     private String taskId;
 

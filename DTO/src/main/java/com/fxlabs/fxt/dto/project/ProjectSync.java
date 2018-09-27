@@ -19,6 +19,7 @@ public class ProjectSync {
     private String projectId;
     private List<String> categories;
     private boolean deleteAll;
+    private boolean recreate;
 
 }
 
