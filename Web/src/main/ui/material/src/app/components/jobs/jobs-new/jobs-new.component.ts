@@ -52,7 +52,7 @@ export class JobsNewComponent implements OnInit {
   accountTypes = ['FX_Issues', 'GitHub', 'Jira'];
   context: string = "New";
   firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  // secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
 
   constructor(private projectService: ProjectService, private jobsService: JobsService, private accountService: AccountService,
@@ -77,8 +77,8 @@ export class JobsNewComponent implements OnInit {
       nameCtrl: ['', Validators.required]
     });
 
-    this.secondFormGroup = this._formBuilder.group({
-    });
+    // this.secondFormGroup = this._formBuilder.group({
+    // });
 
     this.thirdFormGroup = this._formBuilder.group({
     });

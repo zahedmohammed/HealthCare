@@ -54,6 +54,7 @@ export class JobsEditComponent implements OnInit {
   categories: string[]=[];
   category: string[];
   selectedCategories: string[]=[];
+    defaultTracker = "FX_Issues"
 
   constructor(private projectService: ProjectService, private jobsService: JobsService, private accountService: AccountService,
             private route: ActivatedRoute, private regionService: RegionsService, private router: Router, private handler: Handler,
@@ -163,6 +164,7 @@ export class JobsEditComponent implements OnInit {
 
   getITAccountsByAccountType() {
     this.handler.activateLoader();
+    this.itAccounts.splice(0)
     this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
@@ -217,13 +219,13 @@ export class JobsEditComponent implements OnInit {
 
   saveJob() {
     this.handler.activateLoader();
-    this.snackbarService.openSnackBar("'Job '" + this.job.name + "' adding.", "");
+    this.snackbarService.openSnackBar("'Job '" + this.job.name + "' updating.", "");
     this.jobsService.update(this.job, this.category).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.snackbarService.openSnackBar("'Job '" + this.job.name + "' added.", "");
+      this.snackbarService.openSnackBar("'Job '" + this.job.name + "' updated.", "");
       this.router.navigate(['/app/projects', this.id, 'jobs']);
     }, error => {
       this.handler.hideLoader();
