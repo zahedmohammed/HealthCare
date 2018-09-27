@@ -111,13 +111,13 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     }
 
     @Override
-    public Response<com.fxlabs.fxt.dto.project.Job> save(com.fxlabs.fxt.dto.project.Job job, String user) {
+    public Response<com.fxlabs.fxt.dto.project.Job> save(com.fxlabs.fxt.dto.project.Job job, String user, String org) {
         if (CronUtils.isValidCron(job.getCron())) {
             Date next = CronUtils.cronNext(job.getCron());
             job.setNextFire(next);
         }
 
-        job.setIssueTracker(getFxJobIssueTracker());
+        job.setIssueTracker(getFxJobIssueTracker(org));
 
         return super.save(job, user);
     }
@@ -134,24 +134,24 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
             job.setNextFire(next);
         }
 
-        if (job.getIssueTracker() != null && AccountType.FX_Issues.equals(job.getIssueTracker().getAccountType())) {
-            job.setIssueTracker(getFxJobIssueTracker());
-        }
+//        if (job.getIssueTracker() != null && AccountType.FX_Issues.equals(job.getIssueTracker().getAccountType())) {
+//            job.setIssueTracker(getFxJobIssueTracker());
+//        }
 
         return super.save(job, user);
     }
 
 
-    private com.fxlabs.fxt.dto.project.JobIssueTracker getFxJobIssueTracker() {
-        Optional<com.fxlabs.fxt.dao.entity.users.Org> orgResponse = null;
-        try {
-            orgResponse = orgRepository.findByName("FXLabs");
-        } catch (FxException e) {
-            logger.info(e.getLocalizedMessage());
-        }
-
-        String fXLabsOrg = orgResponse.get().getId();
-        com.fxlabs.fxt.dao.entity.clusters.Account accountsFxIssues = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(com.fxlabs.fxt.dao.entity.clusters.AccountType.FX_Issues, fXLabsOrg, false);
+    private com.fxlabs.fxt.dto.project.JobIssueTracker getFxJobIssueTracker(String org) {
+//        Optional<com.fxlabs.fxt.dao.entity.users.Org> orgResponse = null;
+//        try {
+//            orgResponse = orgRepository.findByName("FXLabs");
+//        } catch (FxException e) {
+//            logger.info(e.getLocalizedMessage());
+//        }
+//
+//        String fXLabsOrg = orgResponse.get().getId();
+        com.fxlabs.fxt.dao.entity.clusters.Account accountsFxIssues = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(com.fxlabs.fxt.dao.entity.clusters.AccountType.FX_Issues, org, false);
 
         JobIssueTracker jobIssueTracker = new JobIssueTracker();
         jobIssueTracker.setAccount(accountsFxIssues.getId());

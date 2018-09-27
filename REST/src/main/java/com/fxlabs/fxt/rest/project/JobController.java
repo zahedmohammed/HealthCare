@@ -59,7 +59,7 @@ public class JobController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Job> create(@Valid @RequestBody Job dto) {
-        return service.save(dto, SecurityUtil.getCurrentAuditor());
+        return service.save(dto, SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})

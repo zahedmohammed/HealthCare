@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface JobService extends GenericService<Job, String> {
 
-    Response<com.fxlabs.fxt.dto.project.Job> save(com.fxlabs.fxt.dto.project.Job job, String user);
+    Response<com.fxlabs.fxt.dto.project.Job> save(com.fxlabs.fxt.dto.project.Job job, String user, String org);
 
     Response<com.fxlabs.fxt.dto.project.Job> update(com.fxlabs.fxt.dto.project.Job job, String user);
 

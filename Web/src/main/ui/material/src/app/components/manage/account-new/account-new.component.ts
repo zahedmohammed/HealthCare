@@ -25,7 +25,7 @@ export class AccountNewComponent implements OnInit {
   accountTypes = [
       '--- Version Control ---', 'Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local',
       '--- Bot Deployment ---', 'AWS', 'Self_Hosted',
-      '--- Issue-Trackers ---', 'GitHub', 'Jira',
+      '--- Issue-Trackers ---', 'FX_Issues', 'GitHub', 'Jira',
       '--- Notifications ---', 'Slack' , 'Email'
       ];
 

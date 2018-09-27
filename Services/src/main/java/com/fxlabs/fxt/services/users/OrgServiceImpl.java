@@ -122,6 +122,16 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
 
         this.accountRepository.save(ca);
 
+        Account caFX = new Account();
+
+        caFX.setOrg(org);
+        caFX.setAccountType(AccountType.FX_Issues);
+        caFX.setCreatedBy(users.getId());
+        caFX.setInactive(false);
+        caFX.setName("FX Issues");
+
+        this.accountRepository.save(caFX);
+
         /*Account caGithub = new Account();
         caGithub.setOrg(org);
         caGithub.setAccountType(AccountType.GitHub);

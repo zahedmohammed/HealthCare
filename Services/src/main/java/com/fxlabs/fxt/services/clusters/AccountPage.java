@@ -11,22 +11,22 @@ import java.util.List;
  */
 public enum AccountPage {
 
-   NOTIFICATION_HUB {
-       @Override
-       public List<AccountType> getAccountTypes() {
-           return Arrays.asList(AccountType.Slack , AccountType.Email);
-       }
-   },
+    NOTIFICATION_HUB {
+        @Override
+        public List<AccountType> getAccountTypes() {
+            return Arrays.asList(AccountType.Slack, AccountType.Email);
+        }
+    },
 
     ISSUE_TRACKER {
         @Override
         public List<AccountType> getAccountTypes() {
-            return Arrays.asList(AccountType.GitHub ,  AccountType.Jira);
+            return Arrays.asList(AccountType.GitHub, AccountType.Jira, AccountType.FX_Issues);
         }
     },
     BOT_HUB {
         @Override
-        public List<AccountType> getAccountTypes( ) {
+        public List<AccountType> getAccountTypes() {
             return Arrays.asList(AccountType.AWS, AccountType.Self_Hosted);
         }
     },

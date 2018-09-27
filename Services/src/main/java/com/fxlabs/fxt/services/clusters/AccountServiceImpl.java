@@ -102,9 +102,9 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Not a valid filter.")));
         }
         List<com.fxlabs.fxt.dao.entity.clusters.Account> accounts = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(AccountPage.valueOf(accountType).getAccountTypes(), org, false);
-        if (AccountPage.ISSUE_TRACKER.toString().equals(accountType)) {
-            accounts = getAccountsFxIssue(accounts);
-        }
+//        if (AccountPage.ISSUE_TRACKER.toString().equals(accountType)) {
+//            accounts = getAccountsFxIssue(accounts);
+//        }
 
         return new Response<>(converter.convertToDtos(accounts));
     }
@@ -200,6 +200,9 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 //                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
 //                }
                 break;
+            case FX_Issues:
+                //TODO
+                break;
             default:
                 logger.info("Invalid Account Type [{}]", dto.getAccountType());
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account type"));
@@ -272,6 +275,10 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 //                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
 //                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "From is empty"));
 //                }
+                break;
+            case FX_Issues:
+                //TODO
+                break;
             default:
                 logger.info("Invalid Account Type [{}]", dto.getAccountType());
                 return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid account type"));
