@@ -1,14 +1,36 @@
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Dashboard</h1>
-        </div>
-        <p class="text-muted">FX Control Plane</p>
-    </section>
+<div class="box box-default">
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                <span>&nbsp;</span>
+            </section>
+        </article>
+    </div>
+</div>
 
-        <section class="container-fluid with-maxwidth no-breadcrumbs page-dashboard chapter">
-        <article class="article padding-lg-v1">
+<form [formGroup]="datePickerForm" class="row">
+    <div class="col-md-7"></div>
+    <div class="col-md-5">
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker1" type="text" formControlName="startDate" placeholder="From"
+                required autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 startView="year"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [min]="datePickerForm.controls.startDate.value" [matDatepicker]="picker2" type="text"
+                formControlName="endDate" placeholder="To" required autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 startView="year"></mat-datepicker>
+        </mat-form-field>
+        <button mat-button class="btn-w-sm text-primary" mat-raised-button mat-default [disabled]="!datePickerForm.valid">Show</button>
+    </div>
+</form>
 
-            <!--
+<section class="container-fluid with-maxwidth no-breadcrumbs page-dashboard chapter">
+    <article class="article padding-lg-v1">
+
+        <!--
            <div class="box box-default">
              <div class="box-body">
                <div myECharts [EChartsOptions]="trafficChart" style="height: 450px;"></div>
@@ -16,171 +38,171 @@
            </div>
             -->
 
-            <div class="row">
-                <!-- Stats -->
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-info">code</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Projects</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{projects}} </span>
-                        </div>
+        <div class="row">
+            <!-- Stats -->
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-info">code</i>
                     </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-info">devices</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Environments</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{envs}} </span>
-                        </div>
+                    <div class="box-info">
+                        <span>Projects</span>
                     </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-info">alarm</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Jobs</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{jobs}} </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-info">assignment</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Test-Suites</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{suites}} </span>
-                        </div>
+                    <div class="box-bottom">
+                        <span>{{projects}} </span>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-warning">directions_run</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Total Runs</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{runs}} </span>
-                        </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-info">devices</i>
                     </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-warning">check</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Test Execution Units ( TEU ) </span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{tests}} </span>
-                        </div>
+                    <div class="box-info">
+                        <span>Environments</span>
                     </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-warning">av_timer</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Total Time</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{time | mstoDuration}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-warning">data_usage</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Data</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{bytes | byteFormat}}</span>
-                        </div>
+                    <div class="box-bottom">
+                        <span>{{envs}} </span>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-success">cloud_queue</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Test Bots</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{eBots}} </span>
-                        </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-info">alarm</i>
                     </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-success">bug_report</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Auto Bug Units ( ABU ) </span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{iTracker}} </span>
-                        </div>
+                    <div class="box-info">
+                        <span>Jobs</span>
                     </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-success">add_alert</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Notification Channels</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>{{channels}} </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="box box-default">
-                        <div class="box-top">
-                            <i class="material-icons color-success">attach_money</i>
-                        </div>
-                        <div class="box-info">
-                            <span>Balance</span>
-                        </div>
-                        <div class="box-bottom">
-                            <span>-</span>
-                        </div>
+                    <div class="box-bottom">
+                        <span>{{jobs}} </span>
                     </div>
                 </div>
             </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-info">assignment</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Test-Suites</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{suites}} </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-warning">directions_run</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Total Runs</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{runs}} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-warning">check</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Test Execution Units ( TEU ) </span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{tests}} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-warning">av_timer</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Total Time</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{time | mstoDuration}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-warning">data_usage</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Data</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{bytes | byteFormat}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-success">cloud_queue</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Test Bots</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{eBots}} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-success">bug_report</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Auto Bug Units ( ABU ) </span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{iTracker}} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-success">add_alert</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Notification Channels</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>{{channels}} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="box box-default">
+                    <div class="box-top">
+                        <i class="material-icons color-success">attach_money</i>
+                    </div>
+                    <div class="box-info">
+                        <span>Balance</span>
+                    </div>
+                    <div class="box-bottom">
+                        <span>-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <!--
+        <!--
             <div class="box box-default">
               <div class="box-body padding-lg">
                 <div class="row">
@@ -231,5 +253,5 @@
               </div>
             </div>
             -->
-        </article>
-        </section>
+    </article>
+</section>

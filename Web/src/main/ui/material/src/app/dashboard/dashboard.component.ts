@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CHARTCONFIG } from '../charts/charts.config';
 import { DashboardService } from '../services/dashboard.service';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms'
 
 @Component({
   selector: 'my-dashboard',
@@ -22,8 +23,17 @@ export class DashboardComponent {
   eBots = "-";
   suites = "-";
   channels = "-";
+  datePicker = { startDate:"", endDate: "" }
 
-  constructor(private dashboardService: DashboardService) {}
+  datePickerForm: FormGroup;
+
+  constructor(private dashboardService: DashboardService, private formBuilder: FormBuilder) {
+    this.datePickerForm = this.formBuilder.group({
+      startDate: [this.datePicker.startDate],
+      endDate: [this.datePicker.endDate]
+    });  
+
+  }
   ngOnInit() {
       this.get("count-projects", "projects");
       this.get("count-jobs", "jobs");
@@ -39,8 +49,7 @@ export class DashboardComponent {
       this.get("count-ebots", "eBots");
       this.get("count-channels", "channels");
   }
-
-
+  
   get(stat: string, _var: string) {
     this.dashboardService.getStat(stat).subscribe(results => {
       if (results['errors']) {
