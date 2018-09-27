@@ -71,7 +71,7 @@ public class MarkTimeoutGaasTaskProcessor {
 
         events.forEach(event -> {
             try {
-                projectSyncEvent(event, com.fxlabs.fxt.dto.events.Status.Timeout, com.fxlabs.fxt.dto.events.Entity.Job, event.getTaskId());
+                projectSyncEvent(event, com.fxlabs.fxt.dto.events.Status.Timeout, com.fxlabs.fxt.dto.events.Entity.valueOf(event.getEntityType().toString()), event.getTaskId());
             } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
