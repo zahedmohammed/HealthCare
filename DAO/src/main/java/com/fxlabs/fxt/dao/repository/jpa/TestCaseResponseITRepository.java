@@ -30,4 +30,7 @@ public interface TestCaseResponseITRepository extends JpaRepository<TestCaseResp
 
     @Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.projectId=?1 and iT.jobId=?2 and iT.modifiedDate>?3")
     Long sumByProjectIdAndJobIdAndModifiedDate(String projectId, String jobId, Date currentMonthStartDate);
+
+    @Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.projectId=?1 and iT.jobId=?2 and iT.modifiedDate>=?3 and iT.modifiedDate<=?4")
+    Long sumByProjectIdAndJobIdAndModifiedDateGreaterThanAndCreatedDateLessThanEqual(String id, String id1, Date fromDate, Date toDate);
 }

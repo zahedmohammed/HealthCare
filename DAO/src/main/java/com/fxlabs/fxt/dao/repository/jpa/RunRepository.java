@@ -72,5 +72,14 @@ public interface RunRepository extends JpaRepository<Run, String> {
 
     Long countByJobProjectIdAndCreatedDateGreaterThan(String project, Date createDate);
 
+    Long countByJobProjectIdAndCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(String project, Date fromDate, Date toDate);
 
+    @Query("SELECT SUM(r.task.totalTestCompleted + r.task.failedTests) FROM Run r WHERE r.createdDate >=?2 AND r.createdDate<=?3 and  r.job.project.id LIKE ?1")
+    Long countTestsByProjectAndCreatedDateGreaterThanAndCreatedDateLessThanEqual(String project, Date fromDate, Date toDate);
+
+    @Query("SELECT SUM(r.task.totalTime) FROM Run r WHERE r.createdDate >=?2 AND r.createdDate<=?3 and r.job.project.id LIKE ?1")
+    Long countTimeByProjectAndCreatedDateGreaterThanAndCreatedDateLessThanEqual(String id, Date fromDate, Date toDate);
+
+    @Query("SELECT SUM(r.task.totalBytes) FROM Run r WHERE r.createdDate >=?2 AND r.createdDate<=?3 and r.job.project.id LIKE ?1")
+    Long countBytesByProjectAndCreatedDateGreaterThanAndCreatedDateLessThanEqual(String id, Date fromDate, Date toDate);
 }
