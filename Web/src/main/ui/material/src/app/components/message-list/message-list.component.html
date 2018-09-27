@@ -38,20 +38,26 @@
                   <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Delete'"><i
                       class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
                   <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Connected'"><i
-                          class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
+                      class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
+                  <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Timeout'"><i
+                      class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
                   <div class="tl-content">
                     <p>
                       <span class="text-warning" *ngIf="item?.status == 'In_progress'"><i class="fa fa-spinner fa-spin"></i></span>&nbsp;
                       <span class="text-success" *ngIf="item?.status == 'Done'"><i class="fa fa-thumbs-up"></i></span>&nbsp;
+                      <span class="text-warning" *ngIf="item?.status == 'Timeout'"><i class="fa fa-hourglass-end"></i></span>&nbsp;
                       <a href="javascript:;" [routerLink]="[item.link]" style="text-decoration: none !important;">{{item.name}}</a>
                       <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:;" [routerLink]="['/app/message', item.entityId]" style="text-decoration: none !important;" *ngIf="item?.eventType == 'Sync'">See logs</a> -->
                     </p>
                     <!-- <mat-chip-list> -->
                     <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Run'">{{item.eventType}}</span>
                     <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Sync'">{{item.eventType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Timeout'">{{item.eventType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Connected'">{{item.eventType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span><a href="javascript:;" [routerLink]="['/app/message', item.logId]" class="text-muted logs"
                         *ngIf="item?.eventType == 'Sync' && item?.logId !== null">See logs</a></span>
+                    <span><a href="javascript:;" [routerLink]="['/app/message', item.logId]" class="text-muted logs"
+                        *ngIf="item?.eventType == 'Timeout' && item?.logId !== null">See logs</a></span>
                     <!-- </mat-chip-list> -->
                     <!-- <h4 class="tl-tile text-primary">{{item.name}}</h4>
                                         <a href="javascript:;" [routerLink]="['/app/message', item.id]" style="text-decoration: none !important;">See logs</a> -->
