@@ -613,6 +613,11 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
     }
 
+    @Override
+    public Response<List<Project>> findProjectsByOrgId(String orgId) {
+      return  new Response<List<Project>>(converter.convertToDtos(projectRepository.findByOrgIdAndInactive(orgId, false)));
+    }
+
     private void updateGenerators(List<AutoCodeGenerator> projGenerator, List<AutoCodeGenerator> defaultGenerators) {
 
         for (AutoCodeGenerator gen : defaultGenerators) {

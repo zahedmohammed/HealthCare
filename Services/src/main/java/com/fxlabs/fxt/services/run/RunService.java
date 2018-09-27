@@ -58,4 +58,14 @@ public interface RunService extends GenericService<Run, String> {
     public Response<com.fxlabs.fxt.dto.run.Run> stopRun(String runId, String user);
 
     Response<Long> countBugs(String orgId,String user,Pageable pageable);
+
+    Response<Long> countRunsByDates(String orgId, String fromDate,String toDate);
+
+    Response<Long> countTestsByDates(String orgId, String fromDate, String toDate);
+
+    Response<Long> countTimeByDates(String orgId, String fromDate, String toDate);
+
+    Response<Long> countBytesByDates(String orgId, String fromDate, String toDate);
+
+    Response<Long> countBugsByDates(String orgId, String currentAuditor, String fromDate, String toDate);
 }

@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -362,7 +364,7 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             // All three params present
             if (StringUtils.equalsIgnoreCase("failed", status)) {
                 page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameContainingIgnoreCaseAndFailedGreaterThan(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, new Long(0), pageable);
-            }else if (StringUtils.equalsIgnoreCase("passed", status)) {
+            } else if (StringUtils.equalsIgnoreCase("passed", status)) {
                 page = this.suiteESRepository.findByRunIdAndCategoryAndSuiteNameContainingIgnoreCaseAndFailed(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), keyword, new Long(0), pageable);
             }
         } else if (StringUtils.isNotEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isEmpty(status)) {
@@ -372,27 +374,27 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             // category and status present
             if (StringUtils.equalsIgnoreCase("failed", status)) {
                 page = this.suiteESRepository.findByRunIdAndCategoryAndFailedGreaterThan(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), new Long(0), pageable);
-            }else if (StringUtils.equalsIgnoreCase("passed", status)) {
+            } else if (StringUtils.equalsIgnoreCase("passed", status)) {
                 page = this.suiteESRepository.findByRunIdAndCategoryAndFailed(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), new Long(0), pageable);
             }
         } else if (StringUtils.isEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isNotEmpty(status)) {
             // keyword and status present
             if (StringUtils.equalsIgnoreCase("failed", status)) {
                 page = this.suiteESRepository.findByRunIdAndSuiteNameContainingIgnoreCaseAndFailedGreaterThan(runId, keyword, new Long(0), pageable);
-            }else if (StringUtils.equalsIgnoreCase("passed", status)) {
+            } else if (StringUtils.equalsIgnoreCase("passed", status)) {
                 page = this.suiteESRepository.findByRunIdAndSuiteNameContainingIgnoreCaseAndFailed(runId, keyword, new Long(0), pageable);
             }
-        } else if (StringUtils.isNotEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isEmpty(status)  ) {
+        } else if (StringUtils.isNotEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isEmpty(status)) {
             // Only category is present
             page = this.suiteESRepository.findByRunIdAndCategory(runId, com.fxlabs.fxt.dao.entity.project.TestSuiteCategory.valueOf(category), pageable);
-        } else if (StringUtils.isEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isEmpty(status)  ) {
+        } else if (StringUtils.isEmpty(category) && StringUtils.isNotEmpty(keyword) && StringUtils.isEmpty(status)) {
             // Only keyword is present
             page = this.suiteESRepository.findByRunIdAndSuiteNameContainingIgnoreCase(runId, keyword, pageable);
-        } else if (StringUtils.isEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isNotEmpty(status)  ) {
+        } else if (StringUtils.isEmpty(category) && StringUtils.isEmpty(keyword) && StringUtils.isNotEmpty(status)) {
             // TODO: Only status is present
             if (StringUtils.equalsIgnoreCase("failed", status)) {
                 page = this.suiteESRepository.findByRunIdAndFailedGreaterThan(runId, new Long(0), pageable);
-            }else if (StringUtils.equalsIgnoreCase("passed", status)) {
+            } else if (StringUtils.equalsIgnoreCase("passed", status)) {
                 page = this.suiteESRepository.findByRunIdAndFailed(runId, new Long(0), pageable);
             }
         }
@@ -412,6 +414,26 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         date = DateUtils.setDays(date, 1);
         return date;
 
+    }
+
+    private Date getFromDate(String fromdate) throws ParseException {
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(fromdate);
+        // Date date = new Date();
+        date = DateUtils.setMilliseconds(date, 0);
+        date = DateUtils.setSeconds(date, 0);
+        date = DateUtils.setMinutes(date, 0);
+        date = DateUtils.setHours(date, 0);
+        return date;
+    }
+
+    private Date getToDate(String todate) throws ParseException {
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(todate);
+        // Date date = new Date();
+        date = DateUtils.setMilliseconds(date, 0);
+        date = DateUtils.setSeconds(date, 59);
+        date = DateUtils.setMinutes(date, 59);
+        date = DateUtils.setHours(date, 23);
+        return date;
     }
 
     @Override
@@ -459,8 +481,149 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
             jobsResponse.getData().stream().forEach(j -> {
                 String itId = p.getName() + "//" + j.getId() + "//" + "%";
 
-              //  Long count = testCaseResponseITRepository.findSumByTestCaseResponseIssueTrackerIdLike(itId, getCurrentMonthStartDate());
-                Long count = testCaseResponseITRepository.sumByProjectIdAndJobIdAndModifiedDate(p.getId(),j.getId(), getCurrentMonthStartDate());
+                //  Long count = testCaseResponseITRepository.findSumByTestCaseResponseIssueTrackerIdLike(itId, getCurrentMonthStartDate());
+                Long count = testCaseResponseITRepository.sumByProjectIdAndJobIdAndModifiedDate(p.getId(), j.getId(), getCurrentMonthStartDate());
+                logger.info("Check project bug count {}", count);
+                if (count != null) {
+                    al.getAndAdd(count);
+                }
+            });
+        });
+        logger.info("Check bug count {}", al.get());
+
+        return new Response<>(al.get());
+    }
+
+    @Override
+    public Response<Long> countRunsByDates(String orgId, String fromDate, String toDate) {
+
+        Response<List<Project>> projectsResponse = projectService.findProjectsByOrgId(orgId);
+/*        if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }*/
+
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+
+
+            Long count = null;
+            try {
+                count = repository.countByJobProjectIdAndCreatedDateGreaterThanEqualAndCreatedDateLessThanEqual(p.getId(), getFromDate(fromDate), getToDate(toDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+    }
+
+    @Override
+    public Response<Long> countTestsByDates(String orgId, String fromDate, String toDate) {
+        Response<List<Project>> projectsResponse = projectService.findProjectsByOrgId(orgId);
+     /*   if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+*/
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = null;
+            try {
+                count = repository.countTestsByProjectAndCreatedDateGreaterThanAndCreatedDateLessThanEqual(p.getId(), getFromDate(fromDate), getToDate(toDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+
+    }
+
+    @Override
+    public Response<Long> countTimeByDates(String orgId, String fromDate, String toDate) {
+
+        Response<List<Project>> projectsResponse = projectService.findProjectsByOrgId(orgId);
+  /*      if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+*/
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = null;
+            try {
+                count = repository.countTimeByProjectAndCreatedDateGreaterThanAndCreatedDateLessThanEqual(p.getId(), getFromDate(fromDate), getToDate(toDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+    }
+
+    @Override
+    public Response<Long> countBytesByDates(String orgId, String fromDate, String toDate) {
+        Response<List<Project>> projectsResponse = projectService.findProjectsByOrgId(orgId);
+  /*      if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+*/
+        AtomicLong al = new AtomicLong(0);
+
+        projectsResponse.getData().stream().forEach(p -> {
+            Long count = null;
+            try {
+                count = repository.countBytesByProjectAndCreatedDateGreaterThanAndCreatedDateLessThanEqual(p.getId(), getFromDate(fromDate), getToDate(toDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (count != null) {
+                al.getAndAdd(count);
+            }
+
+        });
+
+        return new Response<>(al.get());
+    }
+
+    @Override
+    public Response<Long> countBugsByDates(String orgId, String currentAuditor, String fromDate, String toDate) {
+
+        Response<List<Project>> projectsResponse = projectService.findProjectsByOrgId(orgId);
+       /* if (projectsResponse.isErrors() || CollectionUtils.isEmpty(projectsResponse.getData())) {
+            return new Response<>().withMessages(projectsResponse.getMessages()).withErrors(true);
+        }
+*/
+        AtomicLong al = new AtomicLong(0);
+        Long totalBugsCount;
+        projectsResponse.getData().stream().forEach(p -> {
+
+            // String itId = p.getName() + "//" + "%";
+            Response<List<Job>> jobsResponse = jobService.findByProjectId(p.getId(), currentAuditor);
+            jobsResponse.getData().stream().forEach(j -> {
+                String itId = p.getName() + "//" + j.getId() + "//" + "%";
+
+                //  Long count = testCaseResponseITRepository.findSumByTestCaseResponseIssueTrackerIdLike(itId, getCurrentMonthStartDate());
+                Long count = null;
+                try {
+                    count = testCaseResponseITRepository.sumByProjectIdAndJobIdAndModifiedDateGreaterThanAndCreatedDateLessThanEqual(p.getId(), j.getId(), getFromDate(fromDate), getToDate(toDate));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 logger.info("Check project bug count {}", count);
                 if (count != null) {
                     al.getAndAdd(count);

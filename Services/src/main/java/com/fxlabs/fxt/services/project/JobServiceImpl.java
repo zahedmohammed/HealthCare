@@ -202,6 +202,40 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     }
 
     @Override
+    public Response<List<com.fxlabs.fxt.dto.project.Job>> findByProjectId(String projectId, String user) {
+
+        // check user has access to project
+        projectService.isUserEntitled(projectId, user);
+        List<Job> jList = this.jobRepository.findByProjectIdAndInactive(projectId, false);
+        List<com.fxlabs.fxt.dto.project.Job> jobList = converter.convertToDtos(jList);
+        jobList.forEach(job -> {
+            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null &&  job.getNotifications().get(1) == null) {
+                job.setNotificationToDo(true);
+                return;
+            }
+
+            if (StringUtils.isEmpty(job.getNotifications().get(0).getTo()) && StringUtils.isEmpty(job.getNotifications().get(1).getChannel())) {
+                job.setNotificationToDo(true);
+                return;
+            }
+        });
+
+        jobList.forEach(job -> {
+            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())){
+                job.setIssueTrackerToDo(true);
+            }else{
+                long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open",job.getProject().getId(),job.getId());
+                long totalClosedIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("closed",job.getProject().getId(),job.getId());
+
+                job.setOpenIssues(totalOpenIssues);
+                job.setClosedIssues(totalClosedIssues);
+            }
+        });
+
+        return new Response<>(jobList);
+    }
+
+    @Override
     public Response<List<com.fxlabs.fxt.dto.project.Job>> deleteByProjectId(String projectId, String user, Pageable pageable) {
         // check user has access to project
         Response<List<com.fxlabs.fxt.dto.project.Job>> jobs = findByProjectId(projectId, user, pageable);

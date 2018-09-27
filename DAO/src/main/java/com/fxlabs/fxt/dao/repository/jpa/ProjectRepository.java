@@ -22,6 +22,7 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
     List<Project> findByAccountIdAndInactive(String id, boolean inactive);
 
     Page<Project> findByOrgIdAndInactive(String org, boolean inactive, Pageable pageable);
+    List<Project> findByOrgIdAndInactive(String org, boolean inactive);
 
     Long countByOrgIdAndInactive(String org, boolean inactive);
 
