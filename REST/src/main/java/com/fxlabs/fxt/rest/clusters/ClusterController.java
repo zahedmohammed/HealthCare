@@ -114,5 +114,13 @@ public class ClusterController {
         return clusterService.pingExecBot(id, SecurityUtil.getOrgId());
     }
 
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    public Response<List<Cluster>> search(@RequestParam(value = "keyword", required = false) String keyword,
+                                          @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                          @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+
+        return clusterService.search(keyword, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
 
 }

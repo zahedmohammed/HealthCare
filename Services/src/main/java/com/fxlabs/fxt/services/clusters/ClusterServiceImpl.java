@@ -45,7 +45,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -608,6 +608,18 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(id);
         com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.isPresent() ? accountOptional.get() : null;
         return encryptor.decrypt(account.getSecretKey());
+
+    }
+
+    public Response<List<Cluster>> search(String keyword, String org, Pageable pageable) {
+
+        if (StringUtils.isNotEmpty(keyword)) {
+            Page<com.fxlabs.fxt.dao.entity.clusters.Cluster> page = this.clusterRepository.findByOrgIdInAndNameContainingIgnoreCase(Collections.singleton(org), keyword, pageable);
+            return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+        } else {
+
+            return findAll(org, pageable);
+        }
 
     }
 

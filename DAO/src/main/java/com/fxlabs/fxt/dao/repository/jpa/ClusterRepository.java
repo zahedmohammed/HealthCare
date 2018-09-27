@@ -29,4 +29,6 @@ public interface ClusterRepository extends JpaRepository<Cluster, String> {
 
     Optional<Cluster> findByKey(String key);
 
+    Page<Cluster> findByOrgIdInAndNameContainingIgnoreCase(Collection<String> orgs, String keyword, Pageable pageable);
+    
 }

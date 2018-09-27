@@ -40,4 +40,6 @@ public interface ClusterService extends GenericService<Cluster, String> {
     Response<Saving> savings(String id, String o);
 
     public Response<Cluster> findByNameAndOrgId(String name, String orgId);
+
+    Response<List<Cluster>> search(String keyword,String org, Pageable pageable);
 }
