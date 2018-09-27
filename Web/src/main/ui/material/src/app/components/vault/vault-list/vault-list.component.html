@@ -13,18 +13,18 @@
         <div class="container-fluid with-maxwidth chapter">
             <article class="article">
                     <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-9">
                                 <button mat-button color="primary" class="btn-w-md mt-3" [routerLink]="['/app/vault/new']">
                                     <i class="fa fa-plus"></i>
                                    New Secret
                                 </button>
                             </div>
-                            <div class="col-md-7">
-                                <p class="text-muted float-right mt-4">Total ({{length}})</p>
+                            <div class="col-md-3">
                                 <mat-input-container class="ml-8">
                                     <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
                                         (keyup.enter)="searchVault()">
                                 </mat-input-container>
+                                <p class="text-muted float-right mt-4">Total ({{length}})</p>
                             </div>
                         </div>
 
