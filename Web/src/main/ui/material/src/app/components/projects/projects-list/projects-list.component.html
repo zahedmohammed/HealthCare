@@ -10,13 +10,17 @@
 <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
     <article class="article padding-lg-v1">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-11">
+                <mat-input-container class="ml-2 float-right">
+                    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
+                        (keyup.enter)="searchProject()">
+                </mat-input-container>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <p class="text-muted float-right">Total ({{length}})</p>
             </div>
         </div>
-        <br/>
+        <br />
         <div class="row">
             <div class="col-xl-3 col-lg-6">
                 <a href="javascript:;" class="item-card bg-color-primary">
@@ -26,16 +30,16 @@
                             <div class="text-center text-white">
                                 <h5 style="color:white">
                                     <i class="fa fa-plus"></i> &nbsp; New Project</h5>
-                                <br/>
+                                <br />
                             </div>
                         </div>
 
                         <div class="card__body card-white">
                             <div class="card__title">
-                                        <span>
-                                            <h6> .</h6>
-                                            <h4 class="text-muted"> .</h4>
-                                        </span>
+                                <span>
+                                    <h6> .</h6>
+                                    <h4 class="text-muted"> .</h4>
+                                </span>
                             </div>
                             <div class="card__price">
                             </div>
@@ -46,7 +50,7 @@
             <div class="col-xl-3 col-lg-6" *ngFor="let project of projects">
                 <a href="javascript:;" class="item-card">
                     <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']" matTooltip=""
-                       matTooltipPosition="above">
+                        matTooltipPosition="above">
                         <div class="card__image">
                             <h5 class="text-center text-muted1">{{project.name}}</h5>
                         </div>
@@ -64,8 +68,7 @@
             </div>
         </div>
         <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-                       [length]="length">
+            [length]="length">
         </mat-paginator>
     </article>
 </section>
-

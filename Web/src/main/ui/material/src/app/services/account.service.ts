@@ -42,4 +42,13 @@ export class AccountService {
   getAccountByAccountType(accountType: string) {
     return this.http.get(this.serviceUrl + "/account-type/" + accountType);
   }
+
+  searchAccount(keyword: string, page, pageSize){
+    let params = new HttpParams();
+    params = params.append('keyword', keyword);
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + "/search", {params});    
+
+  }
 }

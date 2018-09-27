@@ -13,6 +13,7 @@ export class ProjectsListComponent implements OnInit {
   autocodeConfig; 
   projectTitle:string = "Projects";
   showSpinner: boolean = false;
+  keyword: string = '';
   constructor(private projectService: ProjectService, private handler: Handler) { }
 
   ngOnInit() {
@@ -32,6 +33,24 @@ export class ProjectsListComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  //  Search project By Name
+
+  searchProject(){
+    this.handler.activateLoader();
+    this.projectService.searchProject(this.keyword, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.projects = results['data'];
+      this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+
   }
 
   length = 0;

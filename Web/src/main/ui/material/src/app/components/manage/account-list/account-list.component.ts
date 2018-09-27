@@ -15,6 +15,7 @@ export class AccountListComponent implements OnInit {
   showSpinner: boolean = false;
   displayedColumns: string[] = ['name', 'type', 'create-date'];
   dataSource = null;
+  keyword: string = '';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -40,6 +41,25 @@ export class AccountListComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  //Search Account By Name
+  searchAccount(){
+    this.handler.activateLoader();
+    this.accountService.searchAccount(this.keyword, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.accounts = results['data'];
+      this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.accounts);
+      this.dataSource.sort = this.sort;
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+
   }
 
   length = 0;

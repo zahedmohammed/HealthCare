@@ -16,6 +16,7 @@ export class RegionsListComponent implements OnInit {
   showSpinner: boolean = false;
   displayedColumns: string[] = ['name', 'region', 'createdDate', 'count', 'status'];
   dataSource = null;
+  keyword: string = '';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -42,6 +43,24 @@ export class RegionsListComponent implements OnInit {
     });
   }
 
+  //search bots by name
+  searchBot(){
+    this.handler.activateLoader();
+    this.regionService.searchBot(this.keyword, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.list = results['data'];
+      this.length = results['totalElements'];
+      this.dataSource = new MatTableDataSource(this.list);
+      this.dataSource.sort = this.sort;
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+  
   length = 0;
   page = 0;
   pageSize = 10;

@@ -15,20 +15,25 @@
         </div>
         <p class="text-muted">Manage git, cloud & collaboration endpoint credentials.</p>
     </section> -->
-    <br />
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
 
             <article class="article">
-                <h2 class="article-title1">
-                    <button mat-button color="primary" class="btn-w-md pull-left" [routerLink]="['/app/accounts/new']">
-                        <i class="fa fa-plus"></i>
-                        New Credential
-                    </button>
-                    <p class="text-muted float-right">Total ({{length}})</p>
-                    <div class="divider divider-sm"></div>
-                </h2>
-                <br />
+                <div class="row">
+                    <div class="col-md-9">
+                        <button mat-button color="primary" class="btn-w-md pull-left mt-3" [routerLink]="['/app/accounts/new']">
+                            <i class="fa fa-plus"></i>
+                            New Credentials
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-input-container class="ml-8">
+                            <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
+                                (keyup.enter)="searchAccount()">
+                        </mat-input-container>
+                        <p class="text-muted float-right mt-4">Total ({{length}})</p>
+                    </div>
+                </div>
 
                 <div class="mat-elevation-z8 box-default">
                     <mat-table [dataSource]="dataSource" matSort matSortActive="create-date" matSortDisableClear

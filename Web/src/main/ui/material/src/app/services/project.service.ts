@@ -8,6 +8,7 @@ import { Project } from '../models/project.model';
 import { ProjectSync } from '../models/project-sync.model';
 import { AutoCodeConfig } from '../models/project-autocode-config.model';
 import { Env } from '../models/project-env.model';
+import { HttpXsrfCookieExtractor } from '@angular/common/http/src/xsrf';
 
 
 @Injectable()
@@ -91,6 +92,15 @@ export class ProjectService {
 
  getEnvById(envid:string) {
     return this.http.get(this.envServiceUrl + "/" + envid);
+  }
+
+  searchProject(keyword: string, page, pageSize){
+    let params =new HttpParams();
+    params = params.append('keyword', keyword);
+    params = params.append('page', page);
+    params = params.append('pageSize', pageSize);
+    return this.http.get(this.serviceUrl + '/search', {params});
+
   }
 
 }

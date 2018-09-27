@@ -27,21 +27,23 @@
                 <label mat-tab-link [routerLink]="['/app/superbotnetwork']">Super-Bot-Network
                 </label>
             </nav>
-
+            <br>
             <article class="article">
-                <h2 class="article-title1">
-                    <button mat-button color="primary" class="btn-w-md pull-left text-justify" [routerLink]="['/app/regions/new']">
-                        <i class="fa fa-plus"></i>
-                        New Test Bot
-                    </button>
-                    <!-- <button mat-raised-button color="warn" class="btn-w-md pull-left" [routerLink]="['/app/superbotnetwork']">
-                    Super-Bot-Network
-                </button> -->
-                    <p class="text-muted float-right">Total ({{length}})</p>
-                    <div class="divider divider-sm"></div>
-                </h2>
-                <br />
-
+                <div class="row">
+                    <div class="col-md-9">
+                        <button mat-button color="primary" class="btn-w-md pull-left text-justify mt-3" [routerLink]="['/app/regions/new']">
+                            <i class="fa fa-plus"></i>
+                            New Test Bot
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-input-container class="ml-8">
+                            <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
+                                (keyup.enter)="searchBot()">
+                        </mat-input-container>
+                        <p class="text-muted float-right mt-4">Total ({{length}})</p>
+                    </div>
+                </div>
                 <div class="mat-elevation-z8 box-default">
                     <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
                         matSortDirection="desc">
