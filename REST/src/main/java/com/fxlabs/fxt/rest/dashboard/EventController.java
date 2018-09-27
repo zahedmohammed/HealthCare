@@ -30,6 +30,7 @@ import javax.validation.constraints.Min;
 import java.util.List;
 
 import static com.fxlabs.fxt.rest.base.BaseController.*;
+import static com.fxlabs.fxt.rest.base.BaseController.DEFAULT_SORT;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -56,8 +57,9 @@ public class EventController {
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/orgevents", method = RequestMethod.GET)
-    public Response<List<Event>> getRecentOrgEvents() {
-        return eventService.getRecentOrgEvents(SecurityUtil.getOrgId(), PageRequest.of(0, 10, DEFAULT_SORT));
+    public Response<List<Event>> getRecentOrgEvents(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
+                                                    @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Max(20) Integer pageSize) {
+        return eventService.getRecentOrgEvents(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
 }
