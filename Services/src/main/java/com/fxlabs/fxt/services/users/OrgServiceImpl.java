@@ -356,11 +356,15 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         if (StringUtils.isNotEmpty(keyword))
 
         {
-            Page<Org> orgPage = orgRepository.findByNameContainingIgnoreCase(keyword, pageable);
+            Set<OrgUsers> orgUsers = orgUsersRepository.findByUsersIdAndStatusAndOrgRoleInAndOrgNameContaining(user, OrgUserStatus.ACTIVE, roles, keyword);
 
-            List<com.fxlabs.fxt.dto.users.Org> orgs = converter.convertToDtos(orgPage.getContent());
+            List<Org> orgs = new ArrayList<>();
+            orgUsers.forEach(ou -> {
+                orgs.add(ou.getOrg());
+            });
+            List<com.fxlabs.fxt.dto.users.Org> orgs_ = converter.convertToDtos(orgs);
 
-            return new Response<List<com.fxlabs.fxt.dto.users.Org>>(orgs, orgPage.getTotalElements(), orgPage.getTotalPages());
+            return new Response<List<com.fxlabs.fxt.dto.users.Org>>(orgs_);
 
         } else {
 
