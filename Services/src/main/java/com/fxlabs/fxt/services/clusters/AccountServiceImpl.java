@@ -347,4 +347,20 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     @Override
     public void isUserEntitled(String s, String user) {
     }
+
+    @Override
+    public Response<List<Account>> search(String keyword, String orgId, Pageable pageable) {
+
+        if (StringUtils.isNotEmpty(keyword))
+
+        {
+            Page<com.fxlabs.fxt.dao.entity.clusters.Account> page = this.accountRepository.findByNameContainingIgnoreCase(keyword, pageable);
+            return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+        } else {
+
+            return findAll(orgId, pageable);
+        }
+
+
+    }
 }

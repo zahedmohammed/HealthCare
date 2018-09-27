@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.clusters;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.services.base.GenericService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface AccountService extends GenericService<Account, String> {
     Response<Account> delete(String s, String org, String user);
 
     public Response<List<Account>> findByAccountType(String accountType, String org);
+
+    Response<List<Account>> search(String keyword, String orgId, Pageable pageable);
 }

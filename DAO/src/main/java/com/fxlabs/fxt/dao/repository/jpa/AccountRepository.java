@@ -34,4 +34,6 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     Optional<Account> findByIdAndOrgId(String id, String orgId);
 
+    Page<Account> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
+
 }
