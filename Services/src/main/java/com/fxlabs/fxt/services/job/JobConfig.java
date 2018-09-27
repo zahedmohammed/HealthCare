@@ -146,6 +146,27 @@ public class JobConfig {
                 .build();
     }
 
+    // Project sync Event Task timeout job
+    @Bean(name = "gaasTaskTimeoutJobDetail")
+    public JobDetail gaasTaskTimeoutJobDetail() {
+        return newJob().ofType(MarkTimeoutGaasTaskJob.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_GaasTaskTimeoutRequestProcessor_Job_Detail")).withDescription("Invoke GaasTaskTimeoutRequestProcessor Job service...").build();
+    }
+
+    @Bean
+    public Trigger gaasTaskTimeoutTrigger(@Qualifier("gaasTaskTimeoutJobDetail") JobDetail job) {
+
+        int frequencyInMins = 5;
+        logger.info("Configuring trigger to fire every [{}] mins", frequencyInMins);
+
+        return newTrigger().forJob(job).withIdentity(TriggerKey.triggerKey("Qrtz_GaasTaskTimeoutRequestProcessor_Trigger")).withDescription("GaasTaskTimeoutRequestProcessor trigger")
+                .withSchedule(simpleSchedule()
+                        .withIntervalInMinutes(frequencyInMins)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionNextWithExistingCount()
+                )
+                .build();
+    }
+
     // Recalculate/heal cron's next-fire event
     @Bean(name = "healNextFireJobDetail")
     public JobDetail healNextFireJobDetail() {

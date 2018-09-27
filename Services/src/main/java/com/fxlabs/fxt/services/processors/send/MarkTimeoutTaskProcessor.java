@@ -110,7 +110,7 @@ public class MarkTimeoutTaskProcessor {
             }
 
             try {
-                projectSyncEvent(run.getJob(), Status.Done, Entity.Job, run.getId(), run.getId(), run.getRunId());
+                projectSyncEvent(run.getJob(), Status.Timeout, Entity.Job, run.getId(), run.getId(), run.getRunId());
             } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage());
             }
