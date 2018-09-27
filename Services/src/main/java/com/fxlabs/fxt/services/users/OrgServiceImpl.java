@@ -356,7 +356,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         if (StringUtils.isNotEmpty(keyword))
 
         {
-            Set<OrgUsers> orgUsers = orgUsersRepository.findByUsersIdAndStatusAndOrgRoleInAndOrgNameContaining(user, OrgUserStatus.ACTIVE, roles, keyword);
+            Set<OrgUsers> orgUsers = orgUsersRepository.findByUsersIdAndStatusAndOrgRoleInAndOrgNameContainingIgnoreCase(user, OrgUserStatus.ACTIVE, roles, keyword);
 
             List<Org> orgs = new ArrayList<>();
             orgUsers.forEach(ou -> {
