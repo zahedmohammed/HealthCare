@@ -45,7 +45,7 @@ export class JobsEditComponent implements OnInit {
 
   regions: string[] = ["FXLabs/US_WEST_1", "FXLabs/US_WEST_2", "FXLabs/US_EAST_1", "FXLabs/US_EAST_2", "FXLabs/EU_WEST_1", "FXLabs/EU_CENTRAL_1", "FXLabs/SA_EAST_1"]
 
-  accountTypes = ['GitHub', 'Jira', 'FX_Issues'];
+  accountTypes = ['FX_Issues', 'GitHub', 'Jira'];
 
   context: string = "New";
   firstFormGroup: FormGroup;

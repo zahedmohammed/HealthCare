@@ -151,12 +151,15 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 //        }
 //
 //        String fXLabsOrg = orgResponse.get().getId();
-        com.fxlabs.fxt.dao.entity.clusters.Account accountsFxIssues = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(com.fxlabs.fxt.dao.entity.clusters.AccountType.FX_Issues, org, false);
+        List<com.fxlabs.fxt.dao.entity.clusters.Account> accountsFxIssues = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(com.fxlabs.fxt.dao.entity.clusters.AccountType.FX_Issues, org, false);
+        if (CollectionUtils.isEmpty(accountsFxIssues)) {
+            return null;
+        }
 
         JobIssueTracker jobIssueTracker = new JobIssueTracker();
-        jobIssueTracker.setAccount(accountsFxIssues.getId());
-        jobIssueTracker.setName(accountsFxIssues.getName());
-        jobIssueTracker.setAccountType(accountsFxIssues.getAccountType());
+        jobIssueTracker.setAccount(accountsFxIssues.get(0).getId());
+        jobIssueTracker.setName(accountsFxIssues.get(0).getName());
+        jobIssueTracker.setAccountType(accountsFxIssues.get(0).getAccountType());
        // jobIssueTracker = jobIssueTrackerRepository.save(jobIssueTracker);
         return jobIssueTrackerConverter.convertToDto(jobIssueTracker);
 

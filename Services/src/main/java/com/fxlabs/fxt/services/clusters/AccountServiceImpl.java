@@ -102,27 +102,8 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", String.format("Not a valid filter.")));
         }
         List<com.fxlabs.fxt.dao.entity.clusters.Account> accounts = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(AccountPage.valueOf(accountType).getAccountTypes(), org, false);
-//        if (AccountPage.ISSUE_TRACKER.toString().equals(accountType)) {
-//            accounts = getAccountsFxIssue(accounts);
-//        }
 
         return new Response<>(converter.convertToDtos(accounts));
-    }
-
-    private List<com.fxlabs.fxt.dao.entity.clusters.Account> getAccountsFxIssue(List<com.fxlabs.fxt.dao.entity.clusters.Account> accounts) {
-        Response<Org> orgResponse = null;
-        try {
-            orgResponse = orgService.findByName("FXLabs");
-        } catch (FxException e) {}
-        if (orgResponse != null && !orgResponse.isErrors() && orgResponse.getData() != null) {
-            String fXLabsOrg = orgResponse.getData().getId();
-            com.fxlabs.fxt.dao.entity.clusters.Account accountsFxIssues = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(com.fxlabs.fxt.dao.entity.clusters.AccountType.FX_Issues, fXLabsOrg, false);
-            if (CollectionUtils.isEmpty(accounts) || accounts == null) {
-                accounts = new ArrayList<com.fxlabs.fxt.dao.entity.clusters.Account>();
-            }
-            accounts.add(accountsFxIssues);
-        }
-        return accounts;
     }
 
     @Override
