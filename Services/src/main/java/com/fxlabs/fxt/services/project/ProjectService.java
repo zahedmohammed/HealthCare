@@ -3,6 +3,7 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.services.base.GenericService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -45,5 +46,5 @@ public interface ProjectService extends GenericService<Project, String> {
 
     Response<AutoCodeConfig> getAutoCodeById(String projectId, String orgId);
 
-
+    Response<List<Project>> search(String keyword, String orgId, Pageable pageable);
 }

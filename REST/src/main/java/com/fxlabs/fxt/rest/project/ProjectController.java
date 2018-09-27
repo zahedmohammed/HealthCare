@@ -177,4 +177,12 @@ public class ProjectController {
         return environmentService.delete(envId, SecurityUtil.getCurrentAuditor());
     }
 
+    @Secured({ROLE_USER})
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    public Response<List<Project>> search(@RequestParam(value = "keyword", required = false) String keyword,
+                                          @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
+                                          @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Max(20) Integer pageSize) {
+        return projectService.search(keyword, SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
 }

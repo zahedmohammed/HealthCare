@@ -599,6 +599,20 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return response;
     }
 
+    @Override
+    public Response<List<Project>> search(String keyword, String orgId, Pageable pageable) {
+
+        if (StringUtils.isNotEmpty(keyword)) {
+
+            Page<com.fxlabs.fxt.dao.entity.project.Project> page = projectRepository.findByOrgIdInAndNameContainingIgnoreCase( orgId, keyword, pageable);
+            return new Response<List<Project>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+
+        }else{
+
+            return findProjects(orgId,pageable);
+        }
+    }
+
     private void updateGenerators(List<AutoCodeGenerator> projGenerator, List<AutoCodeGenerator> defaultGenerators) {
 
         for (AutoCodeGenerator gen : defaultGenerators) {
