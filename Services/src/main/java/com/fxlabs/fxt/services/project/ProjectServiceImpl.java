@@ -574,6 +574,61 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
     @Override
+    public Response<AutoCodeConfig> saveNewProjectAutoCode(String projectId, AutoCodeConfig codeConfig, String orgId) {
+
+        if (codeConfig == null || StringUtils.isEmpty(projectId)) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for  Project Autocode configuaration"));
+        }
+
+        if (codeConfig.getGenPolicy() == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Auto-Code option should be selected."));
+        }
+
+        // check OpenAPISpec
+        if (codeConfig.getGenPolicy() == GenPolicy.Create && StringUtils.isEmpty(codeConfig.getOpenAPISpec())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "OpenAPISpec is required."));
+        }
+
+        Optional<com.fxlabs.fxt.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(projectId, orgId);
+        if (!optionalProject.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
+        }
+
+        Project project = converter.convertToDto(optionalProject.get());
+
+
+
+        // check account access
+        if (project.getAccount() != null && !StringUtils.isEmpty(project.getAccount().getId())) {
+            Response<Account> accountResponse = accountService.findById(project.getAccount().getId(), orgId);
+            if (accountResponse == null || accountResponse.isErrors()) {
+                return new Response<>().withErrors(true).withMessages(accountResponse.getMessages());
+            }
+        } else {
+            project.setAccount(null);
+        }
+
+        codeConfig.setProject(project);
+
+
+        autoCodeConfigConverter.copyAssertionsTextToArray(codeConfig);
+
+        List<com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeGenerator> generators = autoCodeGeneratorRepository.saveAll(autoCodeGeneratorConverter.convertToEntities(codeConfig.getGenerators()));
+
+        com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeConfig entity = autoCodeConfigConverter.convertToEntity(codeConfig);
+
+        entity.setGenerators(generators);
+        entity = autoCodeConfigRepository.save(entity);
+        saveProjectImports(AutoCodeConfigServiceUtil.getAutoCodeConfigImports(projectId), project.getOrg().getId());
+
+        // Create GaaS Task
+        this.gaaSTaskRequestProcessor.processNewProjectAutoCodeconfig(converter.convertToEntity(project), autoCodeConfigConverter.convertToDto(entity), null);
+        AutoCodeConfig autoCodeConfig = autoCodeConfigConverter.convertToDto(entity);
+        autoCodeConfigConverter.copyAssertionsToText(autoCodeConfig);
+        return new Response<>(autoCodeConfig);
+    }
+
+    @Override
     public Response<AutoCodeConfig> getAutoCodeById(String projectId, String orgId) {
 
         Optional<com.fxlabs.fxt.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(projectId, orgId);

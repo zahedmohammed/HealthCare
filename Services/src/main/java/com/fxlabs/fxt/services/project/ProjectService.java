@@ -44,6 +44,8 @@ public interface ProjectService extends GenericService<Project, String> {
 
     Response<AutoCodeConfig> saveAutoCode(String projectId, AutoCodeConfig codeConfig, String owner);
 
+    Response<AutoCodeConfig> saveNewProjectAutoCode(String projectId, AutoCodeConfig codeConfig, String owner);
+
     Response<AutoCodeConfig> getAutoCodeById(String projectId, String orgId);
 
     Response<List<Project>> search(String keyword, String orgId, Pageable pageable);
