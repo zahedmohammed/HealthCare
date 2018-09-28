@@ -229,6 +229,25 @@ export class ProjectsNewComponent implements OnInit {
     });
   }
 
+   saveNewProjectAutoCode() {
+    console.log(this.autoCodeConfig);
+    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saving...", "");
+
+    this.projectService.saveNewProjectAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
+      this.handler.hideLoader();
+        if (this.handler.handle(results)) {
+        return;
+      }
+      this.autoCodeConfig = results['data'];
+      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
+      //this.getEnvByProjectId(this.project.id);
+      this.matStepper.next();
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
+
   saveEnv() {
     console.log(this.env);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");

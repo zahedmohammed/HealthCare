@@ -106,7 +106,7 @@
 
                             <div class="box-body">
 
-                                <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
+                                <div class="form-group row">
                                     <label for="name" class="col-md-0 control-label"></label>
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
@@ -136,7 +136,7 @@
                                 </div>
 
 
-                                <div class="form-group row" *ngIf="autoCodeConfig.genPolicy === 'Create'">
+                                <div class="form-group row">
                                     <div class="col-md-12"><div class="callout callout-info">AutoCode configuration allows fully customizable test generation for every test category. You can customize later as well.</div></div>
                                     <!-- <div class="col-md-12" *ngFor="let res of autoCodeConfig"> -->
                                     <div class="col-md-12" *ngFor="let res of autoCodeConfig.generators">
@@ -338,7 +338,7 @@
                                     <button mat-raised-button color="primary"
                                             class="nav-btn"
                                             [disabled]="secondFormGroup.invalid"
-                                            (click)="saveAutoCode();">Generate & Next
+                                            (click)="saveNewProjectAutoCode();">Generate & Next
                                     </button>
                                 </mat-card-actions>
                             </div>

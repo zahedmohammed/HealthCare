@@ -68,6 +68,10 @@ export class ProjectService {
     return this.http.post(this.serviceUrl + "/" +  projectId + "/autocodeconfig", autoCodeConfig);
   }
 
+  saveNewProjectAutoCodeConfig(autoCodeConfig: AutoCodeConfig, projectId: string) {
+    return this.http.post(this.serviceUrl + "/" +  projectId + "/new/autocodeconfig", autoCodeConfig);
+  }
+
   getAutoCodeConfig(projectId: string) {
     return this.http.get(this.serviceUrl + "/" + projectId + "/autocodeconfig");
   }
