@@ -54,7 +54,7 @@ export class RunDetailComponent implements OnInit {
     totalRuns: number = 0
     times;
     totalTimeSaved = 0;
-    searchFlag:boolean;
+    searchFlag: boolean;
     prevKeyword: string = '';
     prevCategory: string = '';
     prevStatus: string = '';
@@ -70,12 +70,6 @@ export class RunDetailComponent implements OnInit {
     }
 
     ngOnInit() {
-
-        this.runNumbers = JSON.parse(localStorage.getItem('listData'));
-        this.totalRuns = parseInt(localStorage.getItem('totalRuns'));
-        localStorage.removeItem('totalRuns')
-        localStorage.removeItem('listData')
-
         this.route.params.subscribe(params => {
             console.log(params);
             if (params['projectId']) {
@@ -88,7 +82,6 @@ export class RunDetailComponent implements OnInit {
             }
             if (params['runId']) {
                 this.id = params['runId'];
-                // let timer = Observable.timer(100, 10000);
                 let timer = Observable.timer(100, 10000);
                 this._clockSubscription = timer.subscribe(t => {
                     this.getRunById();
@@ -176,43 +169,31 @@ export class RunDetailComponent implements OnInit {
     }
 
     search() {
-        if(this.prevKeyword != this.keyword)
+        if (this.prevKeyword != this.keyword)
             this.searchFlag = true
         else
-            if(this.prevCategory != this.category)
+            if (this.prevCategory != this.category)
                 this.searchFlag = true
-        else
-            if(this.prevStatus != this.status)
-                this.searchFlag = true
-        else
-            {
-                this.prevKeyword = this.keyword
-                this.prevCategory = this.category
-                this.prevStatus = this.status
-                this.searchFlag = false
-            }
-
-        if(this.searchFlag)
-        {
+            else
+                if (this.prevStatus != this.status)
+                    this.searchFlag = true
+                else {
+                    this.prevKeyword = this.keyword
+                    this.prevCategory = this.category
+                    this.prevStatus = this.status
+                    this.searchFlag = false
+                }
+        if (this.searchFlag) {
             this.page = 0;
             this.paginator.pageIndex = 0
             this.searchFlag = false
-
         }
         this.prevKeyword = this.keyword
         this.prevCategory = this.category
         this.prevStatus = this.status
-        //
         if (this.keyword == '' && this.category == '' && this.status == '') {
-            // this.page = 0;
-            // this.paginator.pageIndex = 0
             return this.getSummary();
         }
-
-
-        // this.page = 0;
-        // this.paginator.pageIndex = 0
-
         this.handler.activateLoader();
         this.runService.search(this.id, this.category, this.keyword, this.status, this.page, this.pageSize).subscribe(results => {
             this.handler.hideLoader();
@@ -240,9 +221,7 @@ export class RunDetailComponent implements OnInit {
             var arrayLength = this.list.length;
             var msg = '';
             for (var i = 0; i < arrayLength; i++) {
-                //alert(this.list[i]);
                 msg += this.list[i].logs;
-                //Do something
             }
             this.showDialog(msg);
         }, error => {
@@ -254,7 +233,6 @@ export class RunDetailComponent implements OnInit {
     showDialog(msg) {
         this.dialog.open(MsgDialogComponent, {
             width: '100%',
-            //height:'90%',
             data: msg
         });
     }
@@ -262,26 +240,22 @@ export class RunDetailComponent implements OnInit {
     change(evt) {
         this.page = evt['pageIndex'];
         this.pageSize = evt.pageSize;
-        // this.getSummary();
         this.search();
     }
 
     cancel() {
-        let dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result != null) {
-                this.snackbarService.openSnackBar("Run Number '" + this.run.runId + "' stopping...", "");
-                this.runService.stopRun(this.id).subscribe(results => {
-                    this.handler.hideLoader();
-                    if (this.handler.handle(results)) {
-                        return;
-                    }
-                }, error => {
-                    this.handler.error(error);
-                });
-            }
-        });
+        var r = confirm("Are you sure you want to Cancel this run?");
+        if (r == true) {
+            this.snackbarService.openSnackBar("Run Number '" + this.run.runId + "' cancelling...", "");
+            this.runService.stopRun(this.id).subscribe(results => {
+                this.handler.hideLoader();
+                if (this.handler.handle(results)) {
+                    return;
+                }
+            }, error => {
+                this.handler.error(error);
+            });
+        }
     }
 
     deleteRun() {
@@ -318,8 +292,6 @@ export class RunDetailComponent implements OnInit {
         });
     }
 
-
-
     nextRun() {
         this.getDetailsByJobIdRunNumber("next")
     }
@@ -328,18 +300,14 @@ export class RunDetailComponent implements OnInit {
         this.getDetailsByJobIdRunNumber("prev")
     }
 
-
-    getDetailsByJobIdRunNumber(action:string){
+    getDetailsByJobIdRunNumber(action: string) {
         this.prevKeyword = "";
         this.prevCategory = "";
         this.prevStatus = "";
         this.searchFlag = false;
-
-        this.keyword ="";
-        this.category ="";
-        this.status ="";
-
-
+        this.keyword = "";
+        this.category = "";
+        this.status = "";
         this.handler.activateLoader();
         this.runService.getDetailsByJobIdRunNum(this.jobId, this.run.runId, action).subscribe(runNumRes => {
             this.handler.hideLoader();
