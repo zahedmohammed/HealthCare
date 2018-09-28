@@ -65,12 +65,8 @@ export class AccountEditComponent implements OnInit {
   }
 
   delete() {
-      let dialogRef = this.dialog.open(DeleteDialogComponent, {
-          data: this.entry.name + ' credentials'
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
+      var result = confirm("Are you sure you want to delete this account?");
+      if (result == true) {
               this.handler.activateLoader();
               this.accountService.delete(this.entry).subscribe(results => {
                   this.handler.hideLoader();
@@ -84,7 +80,6 @@ export class AccountEditComponent implements OnInit {
                   this.handler.error(error);
               });
           }
-      });
   }
   
   getOrgs() {

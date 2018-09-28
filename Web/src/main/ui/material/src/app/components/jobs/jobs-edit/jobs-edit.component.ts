@@ -235,12 +235,8 @@ export class JobsEditComponent implements OnInit {
 
   delete() {
 
-      let dialogRef = this.dialog.open(DeleteDialogComponent, {
-          data: this.job.name + ' project'
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
+      var r = confirm("Are you sure you want to delete this job?");
+          if (r == true) {
               this.snackbarService.openSnackBar(this.job.name + " deleting...", "");
               this.handler.activateLoader();
 
@@ -255,7 +251,6 @@ export class JobsEditComponent implements OnInit {
                   this.handler.error(error);
               });
           }
-      });
   }
 
   cloneJob() {

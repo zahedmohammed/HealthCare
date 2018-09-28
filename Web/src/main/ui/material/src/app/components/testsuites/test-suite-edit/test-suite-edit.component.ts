@@ -246,12 +246,8 @@ export class TestSuiteEditComponent implements OnInit {
 
     deleteSuite() {
 
-        let dialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: this.testSuite.name + ' test suite'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result != null) {
+        var r = confirm("Are you sure you want to delete this test suite?");
+        if (r == true) {
                 this.testSuiteService.delete(this.testSuite.id).subscribe(results => {
                     if (this.handler.handle(results)) {
                         return;
@@ -263,7 +259,6 @@ export class TestSuiteEditComponent implements OnInit {
                     this.handler.error(error);
                 });
             }
-        });
     }
 
     list(id: string) {
@@ -281,13 +276,4 @@ export class TestSuiteEditComponent implements OnInit {
         });
     }
 
-    run() {
-        const dialogRef = this.dialog.open(TestsuiteRunComponent, {
-            width: '80%',
-            //height:'85%',
-            data: this.testSuite
-        });
-        dialogRef.afterClosed().subscribe(result => {
-        });
-    }
 }

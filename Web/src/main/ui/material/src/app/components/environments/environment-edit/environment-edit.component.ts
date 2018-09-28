@@ -88,12 +88,8 @@ export class EnvironmentEditComponent implements OnInit {
 
   delete() {
 
-      let dialogRef = this.dialog.open(DeleteDialogComponent, {
-          data: this.env.name + ' environment'
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
+      var r = confirm("Are you sure you want to delete this environment?");
+      if (r == true) {
               this.projectService.deleteEnv(this.env).subscribe(results => {
                   if (this.handler.handle(results)) {
                       return;
@@ -105,7 +101,6 @@ export class EnvironmentEditComponent implements OnInit {
                   this.handler.error(error);
               });
           }
-      });
   }
 
 addItem(): void {

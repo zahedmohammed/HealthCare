@@ -237,12 +237,8 @@ export class ProjectsManageComponent implements OnInit {
     }
 
     delete() {
-        let dialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: this.project.name + ' project'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result != null) {
+        var r = confirm("Are you sure you want to delete this project?");
+        if (r == true) {
                 this.projectService.delete(this.project).subscribe(results => {
                     if (this.handler.handle(results)) {
                         return;
@@ -254,7 +250,6 @@ export class ProjectsManageComponent implements OnInit {
                     this.handler.error(error);
                 });
             }
-        });
     }
 
     setAccount(account) {
