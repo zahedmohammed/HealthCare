@@ -91,11 +91,8 @@ export class RegionEditComponent implements OnInit {
   }
 
   delete() {
-    let dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: this.entry.name + ' bot'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
+      var r = confirm("Are you sure you want to delete this test bot?");
+      if (r == true) {
           this.snackbarService.openSnackBar(this.entry.name + " deleting...", "");
           this.handler.activateLoader();
           this.regionsService.delete(this.entry).subscribe(results => {
@@ -110,7 +107,6 @@ export class RegionEditComponent implements OnInit {
           this.handler.error(error);
         });
       }
-    });
   }
 
   ping() {

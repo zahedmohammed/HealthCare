@@ -65,7 +65,7 @@ export class AccountEditComponent implements OnInit {
   }
 
   delete() {
-      var result = confirm("Are you sure you want to delete this account?");
+      var result = confirm("Are you sure you want to delete this credential?");
       if (result == true) {
               this.handler.activateLoader();
               this.accountService.delete(this.entry).subscribe(results => {

@@ -62,12 +62,8 @@ export class VaultEditComponent implements OnInit {
   }
 
   delete() {
-      let dialogRef = this.dialog.open(DeleteDialogComponent, {
-          data: this.entry.key
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
+      var result = confirm("Are you sure you want to delete this secret?");
+      if (result == true) {
               this.handler.activateLoader();
               this.vaultService.delete(this.entry).subscribe(results => {
                   this.handler.hideLoader();
@@ -82,7 +78,6 @@ export class VaultEditComponent implements OnInit {
 
               });
           }
-      });
   }
 
   getOrgs() {

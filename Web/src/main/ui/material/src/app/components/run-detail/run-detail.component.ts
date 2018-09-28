@@ -259,12 +259,8 @@ export class RunDetailComponent implements OnInit {
     }
 
     deleteRun() {
-        let dialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: this.run.runId + ' run number'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result != null) {
+        var r = confirm("Are you sure you want to delete this run?");
+        if (r == true) {
                 this.runService.deleteByJobIdAndRunId(this.jobId, this.run.runId).subscribe(results => {
                     if (this.handler.handle(results)) {
                         return;
@@ -276,7 +272,6 @@ export class RunDetailComponent implements OnInit {
                     this.handler.error(error);
                 });
             }
-        });
     }
 
     rerun() {
