@@ -19,11 +19,15 @@ export class AutoSyncComponent implements OnInit {
 
   id; // project id
   checked = false;
-  showCategories = false;
+  showCategories1 = false;
+  showCategories2 = false;
   projectId: string = "";
   showSpinner: boolean = false;
   projectSync: ProjectSync = new ProjectSync();
   deleteAllChecked=false;
+  deleteOrCreate:boolean = true;
+  checked2: boolean = false;
+  checked3: boolean = false;
   project;
   categories=['SimpleGET','Functional','SLA', 'Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
 
@@ -60,8 +64,11 @@ export class AutoSyncComponent implements OnInit {
     }
   }
 
-
   synchronization() {
+    if(this.showCategories2)
+      this.projectSync.recreate = true;
+
+    console.log(this.projectSync)
     this.showSpinner = true;
     this.projectSync.projectId = this.project.id;
       this.handler.activateLoader();
