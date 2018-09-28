@@ -24,9 +24,16 @@ export class DashboardComponent {
   suites = "-";
   channels = "-";
   datePicker = { startDate:"", endDate: "" }
-
+  selectedMonth="";
+   today = new Date();
+  mm;
+  yy;
+  nextMonth=false;
+  prevMonth=true;
   datePickerForm: FormGroup;
+  
 
+  months=["JAN", "FEB", "MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
   constructor(private dashboardService: DashboardService, private formBuilder: FormBuilder) {
     this.datePickerForm = this.formBuilder.group({
       startDate: [this.datePicker.startDate],
@@ -48,8 +55,84 @@ export class DashboardComponent {
 
       this.get("count-ebots", "eBots");
       this.get("count-channels", "channels");
+
+      this.mm = this.today.getMonth();
+      this.yy=this.today.getFullYear();
+      this.selectedMonth=this.months[this.mm];
   }
-  
+  getNextMonth(){
+    if(this.mm==11){
+      this.mm=0;
+      this.selectedMonth=this.months[this.mm];
+      this.nextMonth=true;
+      this.prevMonth=true;
+      this.yy=this.yy+1;
+
+    }
+    else if(this.mm<11 ){
+      this.mm=this.mm+1;
+      this.selectedMonth=this.months[this.mm];
+      this.nextMonth=true;
+      this.prevMonth=true;
+      }     
+      if(this.mm==this.today.getMonth() && this.yy==this.today.getFullYear()){
+        this.nextMonth=false;
+        this.prevMonth=true;
+      }
+    this.getDates();
+  }
+  getPrevMonth(){
+    if(this.mm==0){
+      this.mm=11;
+      this.selectedMonth=this.months[this.mm];
+      this.nextMonth=true;
+      this.prevMonth=true;
+       this.yy=this.yy-1;
+    }
+    else if(this.mm>0 ){
+      this.mm=this.mm-1;
+      this.selectedMonth=this.months[this.mm];
+      this.nextMonth=true;
+      this.prevMonth=true;
+      }  
+      this.getDates();       
+  }
+  getDates(){
+    var month=this.mm+1;
+    var from="01/"+month+"/"+this.yy;
+    var to="31/"+month+"/"+this.yy;
+    console.log("dates",from+","+to);
+
+    this.getdata("count-runs-between", "runs",from,to);
+    this.getdata("count-tests-between", "tests",from,to);
+    this.getdata("count-time-between", "time",from,to);
+    this.getdata("count-bytes-between", "bytes",from,to);
+    this.getdata("count-bugs-between", "bugs",from,to);
+  }
+
+  getdata(stat: string, _var: string,fromDate: string, toDate:string) {
+    this.dashboardService.getStatByMonth(stat,fromDate,toDate).subscribe(results => {
+      if (results['errors']) {
+        // TODO - handle errors
+        return;
+      }
+      var count = results['data'];
+      if (_var === 'runs')
+        this.runs = count;
+      else if (_var === 'tests')
+        this.tests = count;
+      else if (_var === 'time')
+        this.time = count;
+      else if (_var === 'bytes')
+        this.bytes = count, 1;
+      else if (_var === 'bugs')
+        this.iTracker = count;
+    }, error => {
+      console.log("Unable to fetch stat");
+    });
+  }
+
+
   get(stat: string, _var: string) {
     this.dashboardService.getStat(stat).subscribe(results => {
       if (results['errors']) {

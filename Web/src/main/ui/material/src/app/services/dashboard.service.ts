@@ -16,6 +16,9 @@ export class DashboardService {
     return this.http.get(this.serviceUrl + "/" + name);
   }
 
+  getStatByMonth(name: string,fromDate:string,toDate:string) {
+    return this.http.get(this.serviceUrl + "/" + name+"?fromDate="+fromDate+"&toDate="+toDate);
+  }
   botSavings(botid: string) {
     return this.http.get(this.serviceUrl + "/bots/" + botid + "/savings");
 

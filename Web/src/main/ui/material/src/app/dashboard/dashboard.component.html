@@ -9,9 +9,9 @@
 </div>
 
 <form [formGroup]="datePickerForm" class="row">
-    <div class="col-md-7"></div>
-    <div class="col-md-5">
-        <mat-form-field>
+    <div class="col-md-10"></div>
+    <div class="col-md-2">
+        <!-- <mat-form-field>
             <input matInput [matDatepicker]="picker1" type="text" formControlName="startDate" placeholder="From"
                 required autocomplete="off">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -23,7 +23,12 @@
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2 startView="year"></mat-datepicker>
         </mat-form-field>
-        <button mat-button class="btn-w-sm text-primary" mat-raised-button mat-default [disabled]="!datePickerForm.valid">Show</button>
+        <button mat-button class="btn-w-sm text-primary" mat-raised-button mat-default [disabled]="!datePickerForm.valid">Show</button> -->
+
+       <a (click)="getPrevMonth()" href="javascript:void(0);" > <i class="fa fa-chevron-left" *ngIf="prevMonth"></i> </a>
+       <a ><i class="fa fa-chevron-left" *ngIf="!prevMonth"></i></a>&nbsp;<b> {{selectedMonth}},</b>&nbsp;<b>{{yy}}</b> &nbsp; 
+       <a (click)="getNextMonth()" href="javascript:void(0);"><i class="fa fa-chevron-right" *ngIf="nextMonth" ></i></a>
+       <a ><i class="fa fa-chevron-right" *ngIf="!nextMonth"></i></a>
     </div>
 </form>
 
