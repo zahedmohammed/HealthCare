@@ -8,72 +8,58 @@
     </article>
   </div>
 </div>
-<div class="container-fluid with-maxwidth">
-  <article class="article">
-    <div class="box box-default">
-      <div class="box-body">
-        <div class="ui-timline-container ui-timline-left">
-          <section class="ui-timeline">
-            <article class="tl-item">
-              <div class="tl-body">
-                <div class="tl-entry">
-                  <div class="tl-caption">
-                    <a href="javascript:;" class="btn btn-primary btn-block">Tasks</a>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </section>
-          <section class="ui-timeline container-fluid with-maxwidth" *ngFor="let item of tasksRes; let i=index;">
-            <article class="tl-item">
-              <div class="tl-body">
-                <div class="tl-entry">
-                  <div class="tl-time text-muted">{{item.modifiedDate | timeAgo}}</div>
-                  <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Run'"><i
-                      class="material-icons color-white">directions_run</i></div>
-                  <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Sync'"><i
-                      class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
-                  <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Deploy'"><i
-                      class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
-                  <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Delete'"><i
-                      class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
-                  <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Connected'"><i
-                      class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
-                  <div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary" *ngIf="item?.eventType == 'Timeout'"><i
-                      class="fa fa-refresh" aria-hidden="true" style="color:white"></i></div>
-                  <div class="tl-content">
-                    <p>
-                      <span class="text-warning" *ngIf="item?.status == 'In_progress'"><i class="fa fa-spinner fa-spin"></i></span>&nbsp;
-                      <span class="text-success" *ngIf="item?.status == 'Done'"><i class="fa fa-thumbs-up"></i></span>&nbsp;
-                      <span class="text-warning" *ngIf="item?.status == 'Timeout'"><i class="fa fa-hourglass-end"></i></span>&nbsp;
-                      <a href="javascript:;" [routerLink]="[item.link]" style="text-decoration: none !important;">{{item.name}}</a>
-                      <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="javascript:;" [routerLink]="['/app/message', item.entityId]" style="text-decoration: none !important;" *ngIf="item?.eventType == 'Sync'">See logs</a> -->
-                    </p>
-                    <!-- <mat-chip-list> -->
-                    <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Run'">{{item.eventType}}</span>
-                    <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Sync'">{{item.eventType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Timeout'">{{item.eventType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span selected="true" class="text-muted" *ngIf="item?.eventType == 'Connected'">{{item.eventType}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span><a href="javascript:;" [routerLink]="['/app/message', item.logId]" class="text-muted logs"
-                        *ngIf="item?.eventType == 'Sync' && item?.logId !== null">See logs</a></span>
-                    <span><a href="javascript:;" [routerLink]="['/app/message', item.logId]" class="text-muted logs"
-                        *ngIf="item?.eventType == 'Timeout' && item?.logId !== null">See logs</a></span>
-                    <!-- </mat-chip-list> -->
-                    <!-- <h4 class="tl-tile text-primary">{{item.name}}</h4>
-                                        <a href="javascript:;" [routerLink]="['/app/message', item.id]" style="text-decoration: none !important;">See logs</a> -->
-                    <!-- <p *ngIf="item?.status == 'In_progress'" class="text-warning">{{errorMsg}}</p>
-                                        
-                                        <p *ngIf="item?.status == 'Done'" class="text-muted">{{infoMsg}}</p> -->
-                  </div>
-                </div>
-              </div>
-            </article>
-          </section>
-        </div>
-      </div>
+<section class="container-fluid with-maxwidth chapter">
+  <article class="article1">
+    <div class="mat-elevation-z8 box-default">
+      <mat-table [dataSource]="dataSource" matSort matSortActive="modified-date" matSortDisableClear matSortDirection="desc">
+
+
+        <ng-container matColumnDef="Project">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Project </mat-header-cell>
+          <mat-cell *matCellDef="let taskData"> {{taskData.name }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Task">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Task </mat-header-cell>
+          <mat-cell *matCellDef="let taskData"> {{taskData.eventType}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="statusType">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+          <mat-cell *matCellDef="let taskData">
+            <span *ngIf="taskData.status == 'Done'" class="text-success"><i class="fa fa-check"></i> COMPELETED</span>
+            <span *ngIf="taskData.status == 'In_progress'" class="text-warning"> <i class="fa fa-spinner fa-spin"></i>
+              PROCESSING</span>
+            <span *ngIf="taskData.status == 'Timeout'" class="text-danger"><i class="fa fa-hourglass-end"></i> TIMEOUT</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Time">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Time </mat-header-cell>
+          <mat-cell *matCellDef="let taskData"> {{taskData.modifiedDate | timeAgo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="logs">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Logs </mat-header-cell>
+          <mat-cell *matCellDef="let taskData">
+            <a href="javascript:;" *ngIf="taskData.logId != null" [routerLink]="['/app/message', taskData?.logId]">
+              <i class="material-icons" *ngIf="taskData.logId != null">
+                description
+              </i>
+            </a>
+            <span *ngIf="!taskData.logId">
+                NA
+              </span>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
       <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
         [length]="length">
       </mat-paginator>
     </div>
   </article>
-</div>
+</section>

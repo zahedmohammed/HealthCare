@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from '../../services/message.service';
 import { Handler } from '../dialogs/handler/handler';
 import { Observable } from 'rxjs/Observable';
@@ -12,6 +12,8 @@ import { APPCONFIG } from '../../config';
 import { TasksService } from './../../services/tasks.service';
 import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import * as EventSource from 'eventsource';
+import { VERSION, MatDialog, MatDialogRef, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+
 
 @Component({
   selector: 'app-message-list',
@@ -32,12 +34,15 @@ export class MessageListComponent implements OnInit {
   private _clockSubscription: Subscription;
   infoMsg = 'Congratulations! The syncing task has successfully ran without any issues. So if you want you can chech the logs. Thank you!';
   errorMsg = 'Unfortunately while syncing the task, the system encountered with some issues with this task. So please check the logs and re-run. Thank you!';
+  dataSource = null;
+  displayedColumns: string[] = ['Project', 'Task', 'statusType', 'Time',  'logs'];
+  
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   constructor(private messageService: MessageService, private handler: Handler, private tasksService: TasksService, private projectService: ProjectService, private jobsService: JobsService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-   // this.tasks();
     this.connect();
-    //this.list();
     let timer = Observable.timer(1, 5000);
     this._clockSubscription = timer.subscribe(t => {
        this.tasks();
@@ -56,6 +61,8 @@ export class MessageListComponent implements OnInit {
         return;
       }
       this.tasksRes = results['data'];
+      this.dataSource = new MatTableDataSource(this.tasksRes);
+      this.dataSource.sort = this.sort
       this.length = results['totalElements'];
       this.count = 0;
       for (let entry of this.tasksRes) {
@@ -97,7 +104,6 @@ export class MessageListComponent implements OnInit {
   pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
-    //this.list();
     this.tasks();
   }
 
