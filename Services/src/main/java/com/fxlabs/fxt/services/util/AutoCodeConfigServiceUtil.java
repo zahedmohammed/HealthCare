@@ -15,7 +15,7 @@ public class AutoCodeConfigServiceUtil {
         AutoCodeConfig autoCodeConfig = new AutoCodeConfig();
 
         autoCodeConfig.setProject(project);
-        autoCodeConfig.setGenPolicy(GenPolicy.Create);
+        autoCodeConfig.setGenPolicy(GenPolicy.None);
 
         List<AutoCodeGenerator> autoCodeGenerators = new ArrayList<>();
 
