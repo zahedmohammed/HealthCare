@@ -28,6 +28,8 @@ public interface EventRepository extends JpaRepository<Event, String> {
 
     Page<Event> findByOrgIdAndModifiedDateAfter(String orgId, Date dt, Pageable pageable);
 
+    Page<Event> findByOrgId(String orgId, Pageable pageable);
+
     Stream<Event> findByStatusAndEntityTypeAndCreatedDateLessThan(Status status, Entity entityType, Date dt);
 
 

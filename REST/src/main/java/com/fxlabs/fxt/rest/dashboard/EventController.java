@@ -59,7 +59,7 @@ public class EventController {
     @RequestMapping(value = "/orgevents", method = RequestMethod.GET)
     public Response<List<Event>> getRecentOrgEvents(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
                                                     @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Max(20) Integer pageSize) {
-        return eventService.getRecentOrgEvents(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return eventService.getOrgEvents(SecurityUtil.getOrgId(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
 }

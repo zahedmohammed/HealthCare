@@ -173,4 +173,10 @@ public class RemoteEventService {
         return new Response<List<Event>>(eventConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
     }
 
+    public Response<List<Event>> getOrgEvents(String orgId, Pageable pageable) {
+
+        Page<com.fxlabs.fxt.dao.entity.event.Event> page = eventRepository.findByOrgId(orgId, pageable);
+        return new Response<List<Event>>(eventConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
+    }
+
 }
