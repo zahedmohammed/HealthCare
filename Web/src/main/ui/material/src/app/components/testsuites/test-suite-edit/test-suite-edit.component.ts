@@ -276,4 +276,15 @@ export class TestSuiteEditComponent implements OnInit {
         });
     }
 
+    
+    run() {
+        const dialogRef = this.dialog.open(TestsuiteRunComponent, {
+            width: '80%',
+            //height:'85%',
+            data: this.testSuite
+        });
+        dialogRef.afterClosed().subscribe(result => {
+        });
+    }
+
 }
