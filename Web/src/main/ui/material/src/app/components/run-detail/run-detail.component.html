@@ -237,10 +237,10 @@
                 <div class="full-width">
                     <mat-chip-list>
                         <mat-chip>Filter: </mat-chip>
-                        <mat-chip *ngIf="keyword" (click)="keyword='';search()">{{keyword}}</mat-chip>
-                        <mat-chip *ngIf="category" (click)="category='';search()">{{category}}</mat-chip>
-                        <mat-chip *ngIf="status === 'Failed'" (click)="status='';search()" class="text-danger">{{status}}</mat-chip>
-                        <mat-chip *ngIf="status === 'Passed'" (click)="status='';search()" class="text-success">{{status}}</mat-chip>
+                        <mat-chip *ngIf="keyword" (removed)="keyword='';search()">{{keyword}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+                        <mat-chip *ngIf="category" (removed)="category='';search()">{{category}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+                        <mat-chip *ngIf="status === 'Failed'" (removed)="status='';search()" class="text-danger">{{status}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+                        <mat-chip *ngIf="status === 'Passed'" (removed)="status='';search()" class="text-success">{{status}}<mat-icon matChipRemove>cancel</mat-icon></mat-chip>
                     </mat-chip-list>
                 </div>
             </div>
