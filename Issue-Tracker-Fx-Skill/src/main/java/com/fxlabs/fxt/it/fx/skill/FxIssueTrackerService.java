@@ -40,6 +40,7 @@ public class FxIssueTrackerService implements IssueTrackerService {
 
         if (StringUtils.isNotEmpty(task.getIssueId())) {
             //TODO update issue
+            logger.info("Updating issueid [{}]", task.getIssueId());
             if (StringUtils.equals(task.getResult(), "pass")) {
 
                 response.setIssueStatus("CLOSED");
@@ -50,6 +51,7 @@ public class FxIssueTrackerService implements IssueTrackerService {
         } else {
             response.setIssueId(String.valueOf(RandomStringUtils.randomAlphabetic(20)));
             response.setIssueStatus("OPEN");
+            logger.info("Creating task [{}]", response.getIssueId());
         }
 
         response.setTestCaseResponseId(task.getId());
