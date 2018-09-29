@@ -141,7 +141,7 @@ export class ProjectsConfigComponent implements OnInit {
             if (this.handler.handle(results)) {
                 return;
             }
-            this.autoCodeConfig = results['data'];
+
             this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
             this.getAutoCode();
             // this.matStepper.next();
