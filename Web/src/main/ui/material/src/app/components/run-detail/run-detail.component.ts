@@ -261,17 +261,17 @@ export class RunDetailComponent implements OnInit {
     deleteRun() {
         var r = confirm("Are you sure you want to delete this run?");
         if (r == true) {
-                this.runService.deleteByJobIdAndRunId(this.jobId, this.run.runId).subscribe(results => {
-                    if (this.handler.handle(results)) {
-                        return;
-                    }
-                    this.snackbarService.openSnackBar("'JobRun '" + this.run.runId + "' deleted", "");
-                    this.router.navigate(['/app/projects', this.project.id, 'jobs', this.jobId, 'runs']);
-                }, error => {
-                    this.handler.hideLoader();
-                    this.handler.error(error);
-                });
-            }
+            this.runService.deleteByJobIdAndRunId(this.jobId, this.run.runId).subscribe(results => {
+                if (this.handler.handle(results)) {
+                    return;
+                }
+                this.snackbarService.openSnackBar("'JobRun '" + this.run.runId + "' deleted", "");
+                this.router.navigate(['/app/projects', this.project.id, 'jobs', this.jobId, 'runs']);
+            }, error => {
+                this.handler.hideLoader();
+                this.handler.error(error);
+            });
+        }
     }
 
     rerun() {
@@ -319,6 +319,27 @@ export class RunDetailComponent implements OnInit {
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
+        });
+    }
+    refresh() {
+        this.route.params.subscribe(params => {
+            console.log(params);
+            if (params['projectId']) {
+                this.projectId = params['projectId'];
+                this.loadProject(this.projectId);
+            }
+            if (params['jobId']) {
+                this.jobId = params['jobId'];
+                this.loadJob(this.jobId);
+            }
+            if (params['runId']) {
+                this.id = params['runId'];
+                this.getRunById();
+                this.getSummary();
+                if (this.run.task.status == 'COMPLETED' || this.run.task.status == 'TIMEOUT') {
+                    this._clockSubscription.unsubscribe();
+                }
+            }
         });
     }
 
