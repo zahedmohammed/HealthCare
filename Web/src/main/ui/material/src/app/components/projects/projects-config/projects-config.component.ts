@@ -120,65 +120,8 @@ export class ProjectsConfigComponent implements OnInit {
         });
     }
 
-    // save(matStepper) {
-    //     this.matStepper = matStepper;
-    //     if (this.project.id) {
-    //         this.update();
-    //     } else {
-    //         this.create();
-    //     }
-    // }
 
-    // create() {
-    //     this.handler.activateLoader();
-    //     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' creating...", "");
-    //     this.projectService.create(this.project).subscribe(results => {
-    //         this.handler.hideLoader();
-    //         if (this.handler.handle(results)) {
-    //             return;
-    //         }
-    //         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
-    //         this.project = results['data'];
-    //         if (!this.project.account) {
-    //             let p: Project = new Project();
-    //             this.project.account = p.account;
-    //         }
-    //         this.matStepper.next();
-    //         this.getAutoCode();
-    //     }, error => {
-    //         this.handler.hideLoader();
-    //         this.handler.error(error);
-    //     });
-    // }
-    //
-    // update() {
-    //     console.log(this.project);
-    //     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saving...", "");
-    //     this.projectService.update(this.project).subscribe(results => {
-    //         this.handler.hideLoader();
-    //         if (this.handler.handle(results)) {
-    //             return;
-    //         }
-    //         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saved successfully", "");
-    //         this.project = results['data'];
-    //         if (!this.project.account) {
-    //             let p: Project = new Project();
-    //             this.project.account = p.account;
-    //         }
-    //         this.matStepper.next();
-    //         this.getAutoCode();
-    //     }, error => {
-    //         this.handler.hideLoader();
-    //         this.handler.error(error);
-    //     });
-    // }
-
-    // gotoAutoCode(matStepper) {
-    //     this.matStepper = matStepper;
-    //     this.matStepper.next();
-    // }
-
-    getAutoCode() {
+   getAutoCode() {
         this.projectService.getAutoCodeConfig(this.id).subscribe(results => {
             this.handler.hideLoader();
             if (this.handler.handle(results)) {
@@ -200,58 +143,14 @@ export class ProjectsConfigComponent implements OnInit {
             }
             this.autoCodeConfig = results['data'];
             this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
+            this.getAutoCode();
             // this.matStepper.next();
-            this.router.navigate(['/app/projects/' + this.project.id + '/jobs']);
+            //this.router.navigate(['/app/projects/' + this.project.id + '/configuration']);
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
         });
     }
-
-    // gotoEnv(matStepper) {
-    //     this.matStepper = matStepper;
-    //     this.matStepper.next();
-    // }
-    //
-    // addEnv() {
-    //     this.env = new Env();
-    //     this.env.auths.push(new Auth);
-    //     this.envs.push(this.env);
-    // }
-    // addAuth(env) {
-    //     env.auths.push({});
-    // }
-
-    // getEnvs() {
-    //     this.projectService.getEnvsByProjectId(this.id).subscribe(results => {
-    //         this.handler.hideLoader();
-    //         if (this.handler.handle(results)) {
-    //             return;
-    //         }
-    //         this.envs = results['data'];
-    //         if (!this.envs) {
-    //         }
-    //         console.log(this.envs);
-    //     });
-    // }
-
-    // saveEnv() {
-    //     console.log(this.envs);
-    //     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' Environment saving...", "");
-    //
-    //     this.projectService.saveEnvs(this.envs, this.project.id).subscribe(results => {
-    //         this.handler.hideLoader();
-    //         if (this.handler.handle(results)) {
-    //             return;
-    //         }
-    //         this.envs = results['data'];
-    //         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' environments saved successfully", "");
-    //         this.router.navigate(['/app/projects']);
-    //     }, error => {
-    //         this.handler.hideLoader();
-    //         this.handler.error(error);
-    //     });
-    // }
 
     getAccountsForProjectPage() {
         this.handler.activateLoader();
