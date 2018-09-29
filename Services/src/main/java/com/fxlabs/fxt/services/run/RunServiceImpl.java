@@ -757,6 +757,11 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         Page<com.fxlabs.fxt.dao.entity.run.Suite> optionalSuite = this.suiteESRepository.findByRunId(runId.toString(), Pageable.unpaged());
         this.suiteESRepository.deleteAll(optionalSuite.getContent());
 
+        List<com.fxlabs.fxt.dao.entity.run.TestSuiteResponse> responseList = this.testSuiteResponseRepository.findByRunId(runId.toString());
+        if (!CollectionUtils.isEmpty(responseList))
+            this.testSuiteResponseRepository.deleteAll();
+
+
         return delete(optionalRun.get().getId(), user);
     }
 

@@ -172,7 +172,7 @@ public class VaultServiceImpl extends GenericServiceImpl<Vault, com.fxlabs.fxt.d
 
         if (StringUtils.isNotEmpty(keyword)) {
 
-            Page<Vault> page = this.repository.findByKeyContainingIgnoreCase(keyword, pageable);
+            Page<Vault> page = this.repository.findByOrgIdAndKeyContainingIgnoreCase(org, keyword, pageable);
             return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
 
         } else {

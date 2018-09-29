@@ -22,5 +22,5 @@ public interface VaultRepository extends JpaRepository<Vault, String> {
 
     Optional<Vault> findByIdAndOrgId(String key, String org);
 
-    Page<Vault> findByKeyContainingIgnoreCase(String keyword,Pageable pageable);
+    Page<Vault> findByOrgIdAndKeyContainingIgnoreCase(String org, String keyword,Pageable pageable);
 }
