@@ -118,10 +118,8 @@ public class GaaSTaskRequestProcessor {
                 AutoCodeConfig dto = autoCodeConfigConverter.convertToDto(codeConfigOptional.get());
                 AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(dto);
                 task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
-                if (autoCodeConfigMinimal.getGenPolicy() != null && autoCodeConfigMinimal.getGenPolicy() != GenPolicy.None) {
-                    task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
-                    task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
-                }
+                task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
+                task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
             }
             if (projectSync != null) {
                 task.setCategories(projectSync.getCategories());
