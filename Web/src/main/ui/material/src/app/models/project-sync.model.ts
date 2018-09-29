@@ -2,7 +2,7 @@ export class ProjectSync {
 
     deleteAll: boolean;
     projectId: string;
-    categories:string[];
+    categories = new Array<string>();
     recreate:boolean;
 
 }

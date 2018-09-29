@@ -58,8 +58,8 @@ export class AutoSyncComponent implements OnInit {
   }
   selectionChange(){
     console.log("check length",this.projectSync.categories.length)
-    if(this.projectSync.categories.length<10){
-      this.projectSync.deleteAll = false;
+    if (this.projectSync.categories.length<10) {
+        this.projectSync.deleteAll = false;
         this.deleteAllChecked=true;
     }
   }
@@ -71,7 +71,9 @@ export class AutoSyncComponent implements OnInit {
     console.log(this.projectSync)
     this.showSpinner = true;
     this.projectSync.projectId = this.project.id;
-    this.projectSync.deleteAll = this.checked2;
+    if (this.projectSync.categories.length == 0 && this.checked2) {
+        this.projectSync.deleteAll = this.checked2;
+    }
       this.handler.activateLoader();
       this.projectService.projectSync(this.projectSync).subscribe(results => {
       this.handler.hideLoader();
