@@ -95,10 +95,9 @@ public class GaaSTaskRequestProcessor {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
             task.setProjectName(project.getName());
-            if (project.getGenPolicy() != null && task.getGenPolicy() != GenPolicy.None) {
-                task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
-                task.setOpenAPISpec(project.getOpenAPISpec());
-            }
+
+            task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
+            task.setOpenAPISpec(project.getOpenAPISpec());
             task.setVcUrl(project.getUrl());
             task.setVcBranch(project.getBranch());
 
@@ -165,15 +164,11 @@ public class GaaSTaskRequestProcessor {
     }
 
 
-    public void processAutoCodeconfig(Project project, AutoCodeConfig codeConfig, List<TestSuiteAddToVCRequest> testSuiteAddToVCRequests) {
+    public void addTestSuitesToVc(Project project, List<TestSuiteAddToVCRequest> testSuiteAddToVCRequests) {
         try {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
             task.setProjectName(project.getName());
-            if (project.getGenPolicy() != null && task.getGenPolicy() != GenPolicy.None) {
-                task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
-                task.setOpenAPISpec(project.getOpenAPISpec());
-            }
             task.setVcUrl(project.getUrl());
             task.setVcBranch(project.getBranch());
 
@@ -186,15 +181,6 @@ public class GaaSTaskRequestProcessor {
                 }
             }
             task.setVcLastCommit(project.getLastCommit());
-            if (codeConfig != null) {
-                AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(codeConfig);
-                task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
-                if (autoCodeConfigMinimal.getGenPolicy() != null && autoCodeConfigMinimal.getGenPolicy() != GenPolicy.None) {
-                    task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
-                    task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
-                }
-            }
-
 
             if (!CollectionUtils.isEmpty(testSuiteAddToVCRequests)) {
                 task.setTestSuiteAddToVCRequests(testSuiteAddToVCRequests);
@@ -241,7 +227,77 @@ public class GaaSTaskRequestProcessor {
         }
     }
 
-    public void processNewProjectAutoCodeconfig(Project project, AutoCodeConfig codeConfig, List<TestSuiteAddToVCRequest> testSuiteAddToVCRequests) {
+    //Configuaration Tab save autocode config
+    public void processAutoCodeconfig(Project project, AutoCodeConfig codeConfig) {
+        try {
+            VCTask task = new VCTask();
+            task.setProjectId(project.getId());
+            task.setProjectName(project.getName());
+            if (project.getGenPolicy() != null && task.getGenPolicy() != GenPolicy.None) {
+                task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
+                task.setOpenAPISpec(project.getOpenAPISpec());
+            }
+            task.setVcUrl(project.getUrl());
+            task.setVcBranch(project.getBranch());
+
+            if (project.getAccount() != null) {
+                Optional<Account> accountOptional = accountRepository.findById(project.getAccount().getId());
+                Account account = accountOptional.isPresent() ? accountOptional.get() : null;
+                task.setVcUsername(account.getAccessKey());
+                if (StringUtils.isNotEmpty(account.getSecretKey())) {
+                    task.setVcPassword(encryptor.decrypt(account.getSecretKey()));
+                }
+            }
+            task.setVcLastCommit(project.getLastCommit());
+            if (codeConfig != null) {
+                AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(codeConfig);
+                task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
+                if (autoCodeConfigMinimal.getGenPolicy() != null && autoCodeConfigMinimal.getGenPolicy() != GenPolicy.None) {
+                    task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
+                    task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
+                }
+            }
+            Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
+
+            String ownerEmail = usersResponse.getData().getEmail();//projectUsersList.get(0).getUsers().getEmail();
+            Optional<UsersPassword> usersPasswordOptional = usersPasswordRepository.findByUsersEmailAndActive(ownerEmail, true);
+            if (!usersPasswordOptional.isPresent()) {
+                logger.warn("Ignoring Git sync for project with ID [{}] with name [{}] because of no valid owner is active.", project.getId(), project.getName());
+                return;
+            }
+
+            Response<String> accessKeyResponse = usersService.generate(ownerEmail, project.getOrg().getName());
+
+            String[] accessKey = accessKeyResponse.getData().split(":");
+
+            task.setProjectUser(accessKey[0]);
+            task.setProjectGrant(accessKey[1]);
+            //TODO
+
+            Optional<SystemSetting> systemSettingOptional = this.systemSettingRepository.findByKey("fx.base.url");
+            if (systemSettingOptional.isPresent()) {
+                task.setFxUrl(systemSettingOptional.get().getValue());
+            } else {
+                task.setFxUrl("http://fx-control-plane:8080");
+            }
+
+            //Sending event
+            String taskId = RandomStringUtils.randomAlphanumeric(24);
+            task.setTaskId(taskId);
+            try {
+                projectSyncEvent(project, Status.In_progress, Entity.Project, task.getTaskId());
+            } catch (Exception ex) {
+                logger.warn("Exception sending project sync event");
+            }
+
+
+            amqpClientService.sendTask(task, gaaSQueue);
+        } catch (Exception ex) {
+            logger.warn(ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    public void processNewProjectAutoCodeconfig(Project project, AutoCodeConfig codeConfig) {
         try {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
@@ -261,7 +317,7 @@ public class GaaSTaskRequestProcessor {
             if (codeConfig != null) {
                 AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(codeConfig);
                 task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
-                task.setGenPolicy(GenPolicy.Create);
+                task.setRecreate(true);
                 task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
             }
 
@@ -342,10 +398,6 @@ public class GaaSTaskRequestProcessor {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
             task.setProjectName(project.getName());
-            if (project.getGenPolicy() != null && task.getGenPolicy() != GenPolicy.None) {
-                task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
-                task.setOpenAPISpec(project.getOpenAPISpec());
-            }
             task.setVcUrl(project.getUrl());
             task.setVcBranch(project.getBranch());
 

@@ -97,7 +97,7 @@ public class VCDelegate {
                     isCreateTestSuiteFromControlPlane = true;
                 }
 
-                if ((task.getGenPolicy() != null && task.getGenPolicy() == GenPolicy.Create) || task.isRecreate()) {
+                if (task.isRecreate()) {
                     // TODO Generate tests
                     try {
                         // 2/4. Auto-Code
@@ -228,7 +228,7 @@ public class VCDelegate {
         }
 
 
-        if (!CollectionUtils.isEmpty(task.getCategories()) && !task.isDeleteAll()) {
+        if (!CollectionUtils.isEmpty(task.getCategories())) {
 
             List<File> filesToDelete = new ArrayList<>();
             List<String> list = AutoCodeConfigUtil.getTypes(task.getCategories());
