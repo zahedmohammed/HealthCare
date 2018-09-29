@@ -71,6 +71,7 @@ export class AutoSyncComponent implements OnInit {
     console.log(this.projectSync)
     this.showSpinner = true;
     this.projectSync.projectId = this.project.id;
+    this.projectSync.deleteAll = this.checked2;
       this.handler.activateLoader();
       this.projectService.projectSync(this.projectSync).subscribe(results => {
       this.handler.hideLoader();
