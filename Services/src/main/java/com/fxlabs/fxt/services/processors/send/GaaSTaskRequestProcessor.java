@@ -96,7 +96,7 @@ public class GaaSTaskRequestProcessor {
             task.setProjectId(project.getId());
             task.setProjectName(project.getName());
 
-            task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
+            // task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
             task.setOpenAPISpec(project.getOpenAPISpec());
             task.setVcUrl(project.getUrl());
             task.setVcBranch(project.getBranch());
@@ -117,7 +117,7 @@ public class GaaSTaskRequestProcessor {
                 AutoCodeConfig dto = autoCodeConfigConverter.convertToDto(codeConfigOptional.get());
                 AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(dto);
                 task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
-                task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
+                //   task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
                 task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
             }
             if (projectSync != null) {
@@ -233,10 +233,7 @@ public class GaaSTaskRequestProcessor {
             VCTask task = new VCTask();
             task.setProjectId(project.getId());
             task.setProjectName(project.getName());
-            if (project.getGenPolicy() != null && task.getGenPolicy() != GenPolicy.None) {
-                task.setGenPolicy(GenPolicy.valueOf(project.getGenPolicy().name()));
-                task.setOpenAPISpec(project.getOpenAPISpec());
-            }
+            task.setOpenAPISpec(project.getOpenAPISpec());
             task.setVcUrl(project.getUrl());
             task.setVcBranch(project.getBranch());
 
@@ -252,10 +249,7 @@ public class GaaSTaskRequestProcessor {
             if (codeConfig != null) {
                 AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(codeConfig);
                 task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
-                if (autoCodeConfigMinimal.getGenPolicy() != null && autoCodeConfigMinimal.getGenPolicy() != GenPolicy.None) {
-                    task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
-                    task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
-                }
+                task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());
             }
             Response<Users> usersResponse = usersService.findById(project.getCreatedBy());
 
