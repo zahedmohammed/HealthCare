@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.services.processors.send;
 
+import com.fxlabs.fxt.converters.alerts.EventConverter;
 import com.fxlabs.fxt.dao.entity.event.Entity;
 import com.fxlabs.fxt.dao.entity.event.Event;
 
@@ -60,6 +61,9 @@ public class MarkTimeoutGaasTaskProcessor {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private EventConverter eventConverter;
+
     /**
      * Find project event with state 'Progress'
      * If timeout >= NOW
@@ -71,7 +75,10 @@ public class MarkTimeoutGaasTaskProcessor {
 
         events.forEach(event -> {
             try {
-                projectSyncEvent(event, com.fxlabs.fxt.dto.events.Status.Timeout, com.fxlabs.fxt.dto.events.Entity.valueOf(event.getEntityType().toString()), event.getTaskId());
+                event.setStatus(Status.Timeout);
+                eventRepository.save(event);
+                localEventPublisher.publish(eventConverter.convertToDto(event));
+                //projectSyncEvent(event, com.fxlabs.fxt.dto.events.Status.Timeout, com.fxlabs.fxt.dto.events.Entity.valueOf(event.getEntityType().toString()), event.getTaskId());
             } catch (Exception ex) {
                 logger.warn(ex.getLocalizedMessage(), ex);
             }
