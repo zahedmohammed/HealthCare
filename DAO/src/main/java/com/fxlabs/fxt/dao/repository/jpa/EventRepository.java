@@ -30,7 +30,7 @@ public interface EventRepository extends JpaRepository<Event, String> {
 
     Page<Event> findByOrgId(String orgId, Pageable pageable);
 
-    Stream<Event> findByStatusAndEntityTypeAndCreatedDateLessThan(Status status, Entity entityType, Date dt);
+    Stream<Event> findByStatusAndEntityTypeAndCreatedDateBetween(Status status, Entity entityType, Date dt, Date dt2);
 
 
 }
