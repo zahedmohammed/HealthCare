@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.codegen.generators;
 
+import com.fxlabs.fxt.codegen.code.Match;
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
 import com.fxlabs.fxt.dto.project.Policies;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
@@ -30,47 +31,68 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
 
+        // TODO
         if (!configUtil.isDDOSSupportedMethod(method)) {
+            return allTestSuites;
+        }
+
+        Match match = null;
+
+        match = isSkipPath(path, SCENARIO);
+
+        if (match != null) {
             return allTestSuites;
         }
 
         String endPoint = path;
         Policies policies = null;
 
+        // Fix path param by replacing with a random
         for (Parameter param : op.getParameters()) {
             if (param instanceof PathParameter) {
                 PathParameter pathParam = (PathParameter) param;
                 String name = pathParam.getName();
                 String defaultVal = pathParam.getDefault() != null ? pathParam.getDefault().toString() : "{{@Random}}";
-                endPoint = endPoint.replaceAll("\\{"+name+"\\}" , defaultVal);
+                endPoint = endPoint.replaceAll("\\{" + name + "\\}", defaultVal);
             }
         }
 
 
+        List<TestSuiteMin> testSuites = null;
         for (Parameter param : op.getParameters()) {
 
-            if (!configUtil.isDDOSSupportedParam(param)) {
-                continue;
-            }
-
-            if (!configUtil.isDDOSSupportedType(param)) {
-                continue;
-            }
 
             if (!configUtil.isDDOSSupportedName(param.getName())) {
                 continue;
             }
 
-            int biggerNumber = configUtil.getDDOSSupportedValue(param.getName());
+            if (!configUtil.isDDOSSupportedParam(param)) {
+                continue;
+            }
+
+            /*if (!configUtil.isDDOSSupportedType(param)) {
+                continue;
+            }*/
+
+            String value = configUtil.getDDOSSupportedValue(param.getName());
 
 
             String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + param.getName();
-            List<TestSuiteMin> testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
-            for (TestSuiteMin testSuite : testSuites) {
-                testSuite.setEndpoint(endPoint + "?" + param.getName() + "=" + biggerNumber);
+
+            if (testSuites == null) {
+                testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+                allTestSuites.addAll(testSuites);
+                if (testSuites != null && testSuites.size() > 0) {
+                    testSuites.get(0).setEndpoint(endPoint + "?" + param.getName() + "=" + value);
+                }
+            } else {
+                if (testSuites != null && testSuites.size() > 0) {
+                    testSuites.get(0).setEndpoint(testSuites.get(0).getEndpoint() + "&" + param.getName() + "=" + value);
+                }
             }
-            allTestSuites.addAll(testSuites);
+
         }
+
         return allTestSuites;
     }
 

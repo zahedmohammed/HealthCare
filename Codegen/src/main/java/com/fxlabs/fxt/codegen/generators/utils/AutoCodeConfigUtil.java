@@ -1,10 +1,11 @@
 package com.fxlabs.fxt.codegen.generators.utils;
 
-import com.fxlabs.fxt.codegen.code.*;
 import com.fxlabs.fxt.codegen.code.AutoCodeConfig;
-import com.fxlabs.fxt.codegen.code.Database;
-import com.fxlabs.fxt.codegen.code.TestSuite;
-import com.fxlabs.fxt.dto.project.*;
+import com.fxlabs.fxt.codegen.code.Generator;
+import com.fxlabs.fxt.codegen.code.Match;
+import com.fxlabs.fxt.dto.project.ResourceSample;
+import com.fxlabs.fxt.dto.project.TestSuiteCategory;
+import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import io.swagger.models.HttpMethod;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.QueryParameter;
@@ -74,34 +75,34 @@ public class AutoCodeConfigUtil {
     }
 
 
-    public static List<String> getTypes(List<String> categories){
+    public static List<String> getTypes(List<String> categories) {
         List<String> list = new ArrayList<>();
 
-        if (CollectionUtils.isEmpty(categories))  return list;
+        if (CollectionUtils.isEmpty(categories)) return list;
 
         List<TestSuiteCategory> categories_ = new ArrayList<>();
-        for (String cat :categories) {
+        for (String cat : categories) {
             try {
                 categories_.add(TestSuiteCategory.valueOf(cat));
-            }catch (Exception e){
-               e.getLocalizedMessage();
+            } catch (Exception e) {
+                e.getLocalizedMessage();
             }
         }
-       return getTypesForCategories(categories_);
+        return getTypesForCategories(categories_);
     }
 
 
-    public static final List<String> getTypesForCategories(List<TestSuiteCategory> categories){
+    public static final List<String> getTypesForCategories(List<TestSuiteCategory> categories) {
         List<String> list = new ArrayList<>();
 
-        if (CollectionUtils.isEmpty(categories))  return list;
+        if (CollectionUtils.isEmpty(categories)) return list;
 
         Iterator<String> itr = TYPE_CATEGORY_MAP.keySet().iterator();
 
-        while(itr.hasNext()){
+        while (itr.hasNext()) {
             String type = itr.next();
             TestSuiteCategory category = TYPE_CATEGORY_MAP.get(type);
-            if (category != null  && categories.contains(category)){
+            if (category != null && categories.contains(category)) {
                 list.add(type);
             }
         }
@@ -133,9 +134,9 @@ public class AutoCodeConfigUtil {
         if (this.config == null) return false;
 
         boolean isDBGivenName = false;
-        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
             for (Generator gen : this.config.getGenerators()) {
-                if (gen.getDatabase()!=null && StringUtils.equalsIgnoreCase(gen.getDatabase().getName(), dbName)) {
+                if (gen.getDatabase() != null && StringUtils.equalsIgnoreCase(gen.getDatabase().getName(), dbName)) {
                     return true;
                 }
             }
@@ -146,14 +147,14 @@ public class AutoCodeConfigUtil {
     public String getResourceSample(String generatorType, String resourceName) {
         if (this.config == null) return null;
         boolean isDBGivenName = false;
-        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
             for (Generator gen : this.config.getGenerators()) {
-                if (! CollectionUtils.isEmpty( gen.getMatches()) ) {
+                if (!CollectionUtils.isEmpty(gen.getMatches())) {
                     Match match = gen.getMatches().get(0);
-                    if (match != null){
-                        if ( StringUtils.containsIgnoreCase(match.getResourceSamples(),resourceName)){
+                    if (match != null) {
+                        if (StringUtils.containsIgnoreCase(match.getResourceSamples(), resourceName)) {
                             ResourceSample resSample = getResourceSamples(resourceName);
-                            return resSample == null ? null: resSample.getSample();
+                            return resSample == null ? null : resSample.getSample();
                         }
                     }
 
@@ -166,11 +167,11 @@ public class AutoCodeConfigUtil {
     public String getQueryParams(String generatorType) {
         if (this.config == null) return null;
         boolean isDBGivenName = false;
-        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
             for (Generator gen : this.config.getGenerators()) {
-                if (! CollectionUtils.isEmpty( gen.getMatches()) ) {
+                if (!CollectionUtils.isEmpty(gen.getMatches())) {
                     Match match = gen.getMatches().get(0);
-                    if (match != null){
+                    if (match != null) {
                         return match.getQueryParams();
                     }
 
@@ -183,11 +184,11 @@ public class AutoCodeConfigUtil {
     public String getBodyProperties(String generatorType) {
         if (this.config == null) return null;
         boolean isDBGivenName = false;
-        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
             for (Generator gen : this.config.getGenerators()) {
-                if (! CollectionUtils.isEmpty( gen.getMatches()) ) {
+                if (!CollectionUtils.isEmpty(gen.getMatches())) {
                     Match match = gen.getMatches().get(0);
-                    if (match != null){
+                    if (match != null) {
                         return match.getBodyProperties();
                     }
 
@@ -200,11 +201,11 @@ public class AutoCodeConfigUtil {
     public String getResourceSampleMappings(String generatorType) {
         if (this.config == null) return null;
         boolean isDBGivenName = false;
-        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
             for (Generator gen : this.config.getGenerators()) {
-                if (! CollectionUtils.isEmpty( gen.getMatches()) ) {
+                if (!CollectionUtils.isEmpty(gen.getMatches())) {
                     Match match = gen.getMatches().get(0);
-                    if (match != null){
+                    if (match != null) {
                         return match.getResourceSamples();
                     }
 
@@ -217,9 +218,9 @@ public class AutoCodeConfigUtil {
     public String getDBVersion(String generatorType, String dbName) {
         if (this.config == null) return null;
         boolean isDBGivenName = false;
-        if (!CollectionUtils.isEmpty(this.config.getGenerators()) ) {
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
             for (Generator gen : this.config.getGenerators()) {
-                if (gen.getDatabase()!=null && StringUtils.equalsIgnoreCase(gen.getDatabase().getName(), dbName)) {
+                if (gen.getDatabase() != null && StringUtils.equalsIgnoreCase(gen.getDatabase().getName(), dbName)) {
                     return gen.getDatabase().getVersion();
                 }
             }
@@ -245,13 +246,14 @@ public class AutoCodeConfigUtil {
         return this.config.getGenerators().stream().filter(generator -> StringUtils.equals(generator.getType(), type)).findFirst().orElse(null);
 //        return null;
     }
+
     public List<String> getAssertions(String type) {
 
         if (this.config == null) return DEFAULT_ASSERTIONS;
 
         String version = null;
         if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
-            for (Generator gen: this.config.getGenerators()) {
+            for (Generator gen : this.config.getGenerators()) {
                 if (StringUtils.equalsIgnoreCase(gen.getType(), type)) {
                     if (CollectionUtils.isEmpty(gen.getAssertions()) ||
                             gen.getAssertions().get(0) == null ||
@@ -273,7 +275,7 @@ public class AutoCodeConfigUtil {
 
         String version = null;
         if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
-            for (Generator gen: this.config.getGenerators()) {
+            for (Generator gen : this.config.getGenerators()) {
                 if (StringUtils.equalsIgnoreCase(gen.getType(), type)) {
                     try {
                         severity = TestSuiteSeverity.valueOf(gen.getSeverity());
@@ -296,7 +298,7 @@ public class AutoCodeConfigUtil {
 
         String version = null;
         if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
-            for (Generator gen: this.config.getGenerators()) {
+            for (Generator gen : this.config.getGenerators()) {
                 if (StringUtils.equalsIgnoreCase(gen.getType(), type)) {
                     return gen.getPostfix() != null ? gen.getPostfix() : gen.getType();
                 }
@@ -363,39 +365,55 @@ public class AutoCodeConfigUtil {
 
         boolean isPresent = false;
         if (gen != null && !CollectionUtils.isEmpty(gen.getMatches())) {
-            isPresent = gen.getMatches().stream().filter(match ->
-                    StringUtils.contains(match.getName(), name)).findFirst().isPresent();
+            for (Match match : gen.getMatches()) {
+                if (StringUtils.isEmpty(match.getName())) {
+                    continue;
+                }
+                for (String prop : match.getName().split(",|\\n|\\t")) {
+                    //System.out.println (" Prop : " + prop + " Name: " + name + " Variables: " + match.getName());
+                    if (prop.contains("=")) {
+                        if (StringUtils.startsWithIgnoreCase(prop, name + "=")) {
+                            return true;
+                        }
+                    } else {
+                        if (StringUtils.equalsIgnoreCase(prop, name)) {
+                            return true;
+                        }
+                    }
+
+                }
+            }
         }
 
         return isPresent || DEFAULT_DDOS_PARAM_NAMES.stream().filter(s -> StringUtils.equalsIgnoreCase(s, name)).findFirst().isPresent();
 
     }
 
-    private static final int DEFAULT_DDOS_VALUE = 1001;
+    private static final String DEFAULT_DDOS_VALUE = "1001";
 
-    public int getDDOSSupportedValue(String name) {
+    public String getDDOSSupportedValue(String name) {
         if (StringUtils.isEmpty(name)) {
             return DEFAULT_DDOS_VALUE;
         }
-        Generator gen= get("DDOS");
+        Generator gen = get("DDOS");
 
         if (gen == null || CollectionUtils.isEmpty(gen.getMatches())) {
             return DEFAULT_DDOS_VALUE;
         }
 
-        Optional<Match> matchOptional = gen.getMatches().stream().filter(match ->
-                StringUtils.equals(match.getName(), name)).findFirst();
-
-        if (matchOptional.isPresent()) {
-            if (!StringUtils.isEmpty(matchOptional.get().getValue())) {
-                try {
-                    int val = Integer.parseInt(matchOptional.get().getValue());
-                    return val;
-                } catch (NumberFormatException nfe) {
-                    // TODO Logger
+        for (Match match : gen.getMatches()) {
+            if (StringUtils.isEmpty(match.getName())) {
+                continue;
+            }
+            for (String prop : match.getName().split(",|\\n|\\t")) {
+                if (prop.contains("=")) {
+                    if (StringUtils.startsWithIgnoreCase(prop, name + "=")) {
+                        return prop.split("=")[1];
+                    }
                 }
             }
         }
+
         return DEFAULT_DDOS_VALUE;
     }
     // ###################     DDOS support end   ###################
@@ -424,13 +442,13 @@ public class AutoCodeConfigUtil {
     }
 
 
-    public ResourceSample getResourceSamples(String resource){
+    public ResourceSample getResourceSamples(String resource) {
 
-        if (this.config == null || this.config.getResourceSamples()  == null) {
+        if (this.config == null || this.config.getResourceSamples() == null) {
             return null;
         }
 
-        for (ResourceSample sample : config.getResourceSamples()){
+        for (ResourceSample sample : config.getResourceSamples()) {
             if (StringUtils.equals(sample.getResource(), resource)) {
                 return sample;
             }

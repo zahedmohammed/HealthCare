@@ -155,7 +155,7 @@
                                                         <div class="col-md-6">
                                                             <mat-input-container class="full-width">
                                                                 <textarea matInput
-                                                                          placeholder="Page size query param names e.g. Default params: pageSize, page_size, maxResults, max_results"
+                                                                          placeholder="Page size query param names e.g. pageSize=10000,page_size=10000,maxResults=10000,max_results=10000"
                                                                           [(ngModel)]='res.matches[0].name'
                                                                           [ngModelOptions]="{standalone: true}"></textarea>
                                                             </mat-input-container>
@@ -282,36 +282,18 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div *ngIf="res.type === 'anonymous_invalid'">
+                                                <div *ngIf="res.type === 'anonymous_invalid' || res.type === 'auth_invalid' || res.type === 'DDOS'" >
                                                     <div *ngFor="let m of res.matches">
-
                                                         <div class="form-group row" [hidden]="false">
                                                             <label for="name" class="col-md-0 control-label"></label>
-                                                            <div class="col-md-5">
+                                                            <div class="col-md-6">
                                                                 <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.pathPatterns"
+                                                                    <textarea matInput [(ngModel)]="m.pathPatterns"
                                                                            [ngModelOptions]="{standalone: true}"
-                                                                           matInput placeholder="Optionally you can skip API paths. e.g. GET:/api/v1/user-signup/** or POST:/api/v1/team-signup etc">
+                                                                              placeholder="Optionally you can skip API paths. e.g. GET:/api/v1/user-signup/** or POST:/api/v1/team-signup etc"></textarea>
                                                                 </mat-input-container>
                                                             </div>
                                                         </div>
-
-                                                    </div>
-                                                </div>
-                                                <div *ngIf="res.type === 'auth_invalid'">
-                                                    <div *ngFor="let m of res.matches">
-
-                                                        <div class="form-group row" [hidden]="false">
-                                                            <label for="name" class="col-md-0 control-label"></label>
-                                                            <div class="col-md-5">
-                                                                <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.pathPatterns"
-                                                                           [ngModelOptions]="{standalone: true}"
-                                                                           matInput placeholder="Optionally you can skip API paths. e.g. GET:/api/v1/user-signup/** or POST:/api/v1/team-signup etc">
-                                                                </mat-input-container>
-                                                            </div>
-                                                        </div>
-
                                                     </div>
                                                 </div>
 

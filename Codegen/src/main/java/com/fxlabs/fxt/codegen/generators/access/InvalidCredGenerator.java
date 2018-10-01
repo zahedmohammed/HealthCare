@@ -42,38 +42,12 @@ public class InvalidCredGenerator extends AbstractGenerator {
 
         //  Non-Secured Paths
 
-        final String path_ = path;
         Match match = null;
 
-        List<Match> matches = generator.getMatches();
-        if (!CollectionUtils.isEmpty(matches)) {
-            for (Match m : generator.getMatches()) {
-                if (StringUtils.isEmpty(m.getPathPatterns())) {
-                    continue;
-                }
-                for (String pattern : m.getPathPatterns().split(", ")) {
-                    String _method = "";
-                    String _pattern = pattern;
-                    if (org.apache.commons.lang3.StringUtils.contains(pattern, ":")) {
-                        String[] tokens = pattern.split(":");
-                        _method = tokens[0];
-                        _pattern = tokens[1];
-                    }
-                    System.out.print(String.format("Match check pattern [%s] and path [%s]", pattern, path_));
-                    if (ANT_PATH_MATCHER.match(_pattern, path_)
-                            && (StringUtils.isEmpty(_method) || org.apache.commons.lang3.StringUtils.containsIgnoreCase(m.getMethods(), _method))
-                    ) {
-                        System.out.print(String.format("Match found for pattern [%s] and path [%s]", pattern, path_));
-                        match = m;
-                        break;
-                    }
-                }
-                if (match != null) break;
-            }
-        }
+        match = isSkipPath(path, SCENARIO);
 
         if (match == null) {
-            System.out.println(String.format("No Invalid-Secured matches found for path [%s]...", path_));
+            System.out.println(String.format("No Invalid-Secured matches found for path [%s]...", path));
 
             for (Parameter param : op.getParameters()) {
                 if (param instanceof QueryParameter) {

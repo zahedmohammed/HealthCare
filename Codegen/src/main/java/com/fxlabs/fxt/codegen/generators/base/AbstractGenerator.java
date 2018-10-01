@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.codegen.generators.base;
 
+import com.fxlabs.fxt.codegen.code.Match;
 import com.fxlabs.fxt.codegen.code.StubHandler;
 import com.fxlabs.fxt.codegen.generators.json.JSONFactory;
 import com.fxlabs.fxt.codegen.generators.utils.AutoCodeConfigUtil;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -298,6 +300,39 @@ public abstract class AbstractGenerator implements Generator {
             testSuite.setPolicies(policies);
         }
         return this;
+    }
+
+    protected Match isSkipPath(String path_, String SCENARIO) {
+
+        com.fxlabs.fxt.codegen.code.Generator generator = configUtil.get(SCENARIO);
+        if (generator == null || generator.isInactive()) {
+            return null;
+        }
+
+        List<Match> matches = generator.getMatches();
+        if (!CollectionUtils.isEmpty(matches)) {
+            for (Match m : generator.getMatches()) {
+                if (org.springframework.util.StringUtils.isEmpty(m.getPathPatterns())) {
+                    continue;
+                }
+                for (String pattern : m.getPathPatterns().split(", ")) {
+                    String _method = "";
+                    String _pattern = pattern;
+                    if (org.apache.commons.lang3.StringUtils.contains(pattern, ":")) {
+                        String[] tokens = pattern.split(":");
+                        _method = tokens[0];
+                        _pattern = tokens[1];
+                    }
+                    if (ANT_PATH_MATCHER.match(_pattern, path_)
+                            && (org.springframework.util.StringUtils.isEmpty(_method) || org.apache.commons.lang3.StringUtils.containsIgnoreCase(m.getMethods(), _method))
+                    ) {
+                        System.out.print(String.format("Match found for pattern [%s] and path [%s]", pattern, path_));
+                        return m;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }

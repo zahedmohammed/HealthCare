@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -29,6 +30,10 @@ public class DataEvaluator {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String PASSWORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~@#%*()-_=+:,.?";
+
+    String DATE_FORMAT = "yyyy-MM-dd";
+    String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
+    String TIME_FORMAT = "HH:mm";
 
     private DataReader reader;
 
@@ -218,7 +223,8 @@ public class DataEvaluator {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
                         val = df.format(new Date());
                     } else {
-                        val = String.valueOf(new Date().getTime());
+                        SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                        val = df.format(new Date());
                     }
                     break;
                 case "@RandomDate":
@@ -226,7 +232,8 @@ public class DataEvaluator {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
                         val = df.format(RandomDate.createRandomDate(1950, 2024));
                     } else {
-                        val = String.valueOf(new Date().getTime());
+                        SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                        val = df.format(RandomDate.createRandomDate(1950, 2024));
                     }
                     break;
                 case "@RandomDOB":
@@ -234,7 +241,8 @@ public class DataEvaluator {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
                         val = df.format(RandomDate.createRandomDate(1950, 2000));
                     } else {
-                        val = String.valueOf(new Date().getTime());
+                        SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                        val = df.format(RandomDate.createRandomDate(1950, 2000));
                     }
                     break;
 
@@ -242,18 +250,28 @@ public class DataEvaluator {
                 case "@StartDate":
                     if (StringUtils.isNotEmpty(PATH)) {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
-                        val = df.format(RandomDate.createRandomDate(2016, 2018));
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, -1);
+                        val = df.format(calendar.getTime());
                     } else {
-                        val = String.valueOf(new Date().getTime());
+                        SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, -1);
+                        val = df.format(calendar.getTime());
                     }
                     break;
                 case "@FutureDate":
                 case "@EndDate":
                     if (StringUtils.isNotEmpty(PATH)) {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
-                        val = df.format(RandomDate.createRandomDate(2018, 2020));
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, 1);
+                        val = df.format(calendar.getTime());
                     } else {
-                        val = String.valueOf(new Date().getTime());
+                        SimpleDateFormat df = new SimpleDateFormat(DATE_FORMAT);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, 1);
+                        val = df.format(calendar.getTime());
                     }
                     break;
 
@@ -262,7 +280,36 @@ public class DataEvaluator {
                         SimpleDateFormat df = new SimpleDateFormat(PATH);
                         val = df.format(new Date());
                     } else {
-                        val = String.valueOf(new Date().getTime());
+                        SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
+                        val = df.format(new Date());
+                    }
+                    break;
+                case "@PastDateTime":
+                case "@PStartDateTime":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, -1);
+                        val = df.format(calendar.getTime());
+                    } else {
+                        SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, -1);
+                        val = df.format(calendar.getTime());
+                    }
+                    break;
+                case "@FutureDateTime":
+                case "@EndDateTime":
+                    if (StringUtils.isNotEmpty(PATH)) {
+                        SimpleDateFormat df = new SimpleDateFormat(PATH);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, 1);
+                        val = df.format(calendar.getTime());
+                    } else {
+                        SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.YEAR, 1);
+                        val = df.format(calendar.getTime());
                     }
                     break;
                 case "@RandomUUID":
