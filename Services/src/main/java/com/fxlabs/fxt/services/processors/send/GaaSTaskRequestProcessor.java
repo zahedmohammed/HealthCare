@@ -278,12 +278,6 @@ public class GaaSTaskRequestProcessor {
             //Sending event
             String taskId = RandomStringUtils.randomAlphanumeric(24);
             task.setTaskId(taskId);
-            try {
-                projectSyncEvent(project, Status.In_progress, Entity.Project, task.getTaskId());
-            } catch (Exception ex) {
-                logger.warn("Exception sending project sync event");
-            }
-
 
             amqpClientService.sendTask(task, gaaSQueue);
         } catch (Exception ex) {
