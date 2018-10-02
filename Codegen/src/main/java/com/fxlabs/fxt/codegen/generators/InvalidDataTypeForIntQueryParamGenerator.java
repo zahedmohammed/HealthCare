@@ -51,7 +51,7 @@ public class InvalidDataTypeForIntQueryParamGenerator extends AbstractGenerator 
                 if (!"integer".equals(queryParam.getType())) {
                     continue;
                 }
-                String postFix = configUtil.getTestSuitePostfix(SCENARIO) + "_" + queryParam.getName();
+                String postFix = PARAM_TYPE + "_" + queryParam.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO) ;
                 List<TestSuiteMin> testSuites = build(op, path, endPoint, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
                 for (TestSuiteMin testSuite : testSuites) {
                     testSuite.setEndpoint(endPoint + "?" + queryParam.getName() + "=" + RandomStringUtils.randomAlphanumeric(6));

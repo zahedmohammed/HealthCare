@@ -86,7 +86,7 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
                 String value = configUtil.getDDOSSupportedValue(param.getName());
 
 
-                String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + param.getName();
+                String postFix = PARAM_TYPE + "_" + param.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO) ;
 
                 if (testSuites == null) {
                     testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);

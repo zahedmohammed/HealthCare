@@ -46,10 +46,11 @@ public class NegativeQueryParamGenerator extends AbstractGenerator {
                 if (param instanceof QueryParameter){
                     QueryParameter queryParam = (QueryParameter) param;
                     if ("integer".equals(queryParam.getType())){
-                        String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_"  + queryParam.getName() ;
+                        String postFix = PARAM_TYPE + "_"  + queryParam.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO)  ;
                         List<TestSuiteMin> testSuites = build(op, path, endPoint, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
                         for (TestSuiteMin testSuite : testSuites) {
                             testSuite.setEndpoint(endPoint + "?" + queryParam.getName() + "=" + "-1");
+                            testSuite.setCategory(TestSuiteCategory.Negative);
                         }
                         allTestSuites.addAll(testSuites);
                     }

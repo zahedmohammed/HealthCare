@@ -41,7 +41,7 @@ public class MongoDBSQLInjectionQueryParamGenerator extends AbstractGenerator {
             for (Parameter param : op.getParameters()) {
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
-                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(GENERATOR_TYPE) + "_" + DB_NAME + "_" + queryParam.getName();
+                    String postFix = PARAM_TYPE + "_" + queryParam.getName() + "_" + DB_NAME  + "_" + configUtil.getTestSuitePostfix(GENERATOR_TYPE) ;
                     List<TestSuiteMin> testSuites = build(op, path, postFix, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                     for (TestSuiteMin testSuite : testSuites) {
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "{{@MongoDBSQLInjections}}");

@@ -49,13 +49,14 @@ public class NegativePathParamGenerator extends AbstractGenerator {
                 if (param instanceof PathParameter){
                     PathParameter pathParam = (PathParameter) param;
                     if ("integer".equals(pathParam.getType())){
-                        String postFix = PARARM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + pathParam.getName() ;
+                        String postFix = PARARM_TYPE + "_" + pathParam.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO) ;
                         List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                         for (TestSuiteMin testSuite : testSuites) {
                             String name = pathParam.getName();
                             String endPoint = testSuite.getEndpoint();
                             endPoint = endPoint.replace("\\{"+name+"\\}" , "-1");
                             testSuite.setEndpoint(path );
+                            testSuite.setCategory(TestSuiteCategory.Negative);
                         }
                         allTestSuites.addAll(testSuites);
                     }

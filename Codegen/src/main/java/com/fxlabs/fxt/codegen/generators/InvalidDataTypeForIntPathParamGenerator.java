@@ -40,7 +40,7 @@ public class InvalidDataTypeForIntPathParamGenerator extends AbstractGenerator {
                 if (!"integer".equals(pathParam.getType())) {
                     continue;
                 }
-                String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + pathParam.getName();
+                String postFix = PARAM_TYPE + "_" + pathParam.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO) ;
                 List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                 for (TestSuiteMin testSuite : testSuites) {
                     String _path = path.replace("{" + pathParam.getName() + "}", RandomStringUtils.randomAlphanumeric(6));

@@ -44,7 +44,7 @@ public class SpecialCharacterPathParamGenerator extends AbstractGenerator {
                     continue;
                 }
 
-                String postFix = PARAM_TYPE + "_" +configUtil.getTestSuitePostfix(SCENARIO) + "_" + pathParam.getName();
+                String postFix = PARAM_TYPE + "_" + pathParam.getName() + "_" +configUtil.getTestSuitePostfix(SCENARIO) ;
                 List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
 
                 for (TestSuiteMin testSuite : testSuites) {

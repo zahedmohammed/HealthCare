@@ -33,6 +33,7 @@ public class SLAGetGenerator extends AbstractGenerator {
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
 
+        final String path_ =  path;
         if (method != io.swagger.models.HttpMethod.GET) {
             return null;
         }
@@ -66,7 +67,6 @@ public class SLAGetGenerator extends AbstractGenerator {
             return null;
         }
 
-        final String path_ = path;
         Match match = null;
 
         for (Match m : generator.getMatches()) {
@@ -124,11 +124,10 @@ public class SLAGetGenerator extends AbstractGenerator {
         String postFix = configUtil.getTestSuitePostfix(TYPE);
 
         List<TestSuiteMin> allTestSuites = new ArrayList<>();
-        List<TestSuiteMin> testSuites = build(op, path, postFix, TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
-        for (TestSuiteMin testSuite : testSuites) {
-            testSuite.setEndpoint(path );
-            System.out.println(testSuite.getName());
-        }
+        List<TestSuiteMin> testSuites = build(op, path_, path,  postFix, TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, null);
+//        for (TestSuiteMin testSuite : testSuites) {
+//            testSuite.setEndpoint(path );
+//        }
         allTestSuites.addAll(testSuites);
         return allTestSuites;
 

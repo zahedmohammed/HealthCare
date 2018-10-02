@@ -27,6 +27,7 @@ public class RBACGenerator extends AbstractGenerator {
     protected static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
+        final String path_ = path;
 
         for (Parameter param : op.getParameters()) {
             if (param instanceof PathParameter) {
@@ -51,7 +52,7 @@ public class RBACGenerator extends AbstractGenerator {
             return null;
         }
 
-        final String path_ = path;
+        final String endPoint = path;
         Match match = null;
 
         for (Match m : generator.getMatches()) {
@@ -91,7 +92,7 @@ public class RBACGenerator extends AbstractGenerator {
         List<TestSuiteMin> list = new ArrayList<>();
 
         Arrays.stream(roles.split(", ")).forEach(role -> {
-            list.addAll(build(op, path_, role + "_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role));
+            list.addAll(build(op, path_, endPoint, role + "_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role, null));
         });
 
 
@@ -107,7 +108,7 @@ public class RBACGenerator extends AbstractGenerator {
 
         if (org.apache.commons.lang3.StringUtils.isNotEmpty(allowed_roles)) {
             Arrays.stream(allowed_roles.split(", ")).forEach(role -> {
-                list.addAll(build(op, path_, role + "_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role));
+                list.addAll(build(op, path_, endPoint, role + "_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role, null));
             });
         }
 

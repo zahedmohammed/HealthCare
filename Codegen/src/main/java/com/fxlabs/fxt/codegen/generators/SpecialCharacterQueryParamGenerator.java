@@ -46,7 +46,7 @@ public class SpecialCharacterQueryParamGenerator extends AbstractGenerator {
                     continue;
                 }
 
-                String postFix = PARAM_TYPE + "_" +configUtil.getTestSuitePostfix(SCENARIO) + "_" + queryParam.getName();
+                String postFix = PARAM_TYPE + "_" + queryParam.getName() + "_" +configUtil.getTestSuitePostfix(SCENARIO) ;
                 List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
                 for (TestSuiteMin testSuite : testSuites) {
                     testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + "!@#$%^&*()");

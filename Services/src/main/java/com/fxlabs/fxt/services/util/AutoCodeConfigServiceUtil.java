@@ -504,6 +504,8 @@ public class AutoCodeConfigServiceUtil {
         TYPE_CATEGORY_MAP.put("special_chars", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("null_value", TestSuiteCategory.Negative);
         TYPE_CATEGORY_MAP.put("empty_value", TestSuiteCategory.Negative);
+        TYPE_CATEGORY_MAP.put("negative_number", TestSuiteCategory.Negative);
+        TYPE_CATEGORY_MAP.put("Abstract", TestSuiteCategory.Functional);
         TYPE_CATEGORY_MAP.put("create", TestSuiteCategory.Functional);
         TYPE_CATEGORY_MAP.put("no_params", TestSuiteCategory.SimpleGET);
         TYPE_CATEGORY_MAP.put("sla", TestSuiteCategory.SLA);

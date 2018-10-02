@@ -57,7 +57,7 @@ public class MySQLTimeboundSQLInjectionPathParamGenerator extends AbstractGenera
 //                }
                 if (param instanceof PathParameter) {
                     PathParameter pathParam = (PathParameter) param;
-                    String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(GENERATOR_TYPE) + "_" + DB_NAME + "_" + pathParam.getName();
+                    String postFix = PARAM_TYPE + "_" + pathParam.getName() + "_" + DB_NAME  + "_" + configUtil.getTestSuitePostfix(GENERATOR_TYPE) ;
                     List<TestSuiteMin> testSuites = build(op, path, endPoint, postFix, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
                     for (TestSuiteMin testSuite : testSuites) {
                         String _path = path.replace("{" + pathParam.getName() + "}", "{{"+INJECTION_DATASET+"}}");
