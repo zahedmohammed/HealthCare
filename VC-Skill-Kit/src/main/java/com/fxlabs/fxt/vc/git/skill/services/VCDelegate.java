@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.CaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -237,7 +238,8 @@ public class VCDelegate {
                 return;
             }
 
-            list.stream().forEach(category -> {
+            list.stream().forEach(category_ -> {
+                String category = CaseUtils.toCamelCase(category_, true, '_','-');
                 finder(category, filesToDelete, path_);
             });
             filesToDelete.stream().forEach(f -> {
@@ -273,6 +275,8 @@ public class VCDelegate {
 
 
     private void finder(String category, List<File> files, String path) {
+
+
         File dir = new File(path);
 
         List<File> list = new ArrayList<>();
