@@ -171,14 +171,11 @@ export class JobsEditComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      //this.itAccounts = results['data'];
       this.itAccounts = new Array();
-      console.log(this.job.issueTracker)
         for (let entry of results['data']) {
-          console.log(entry)
-            // if(entry.accountType == this.job.issueTracker.accountType){
+             if(entry.accountType == this.job.issueTracker.accountType){
                 this.itAccounts.push(entry);
-            // }
+             }
         }
 
     }, error => {
