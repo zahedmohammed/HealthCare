@@ -137,7 +137,7 @@ export class RunHistoryComponent implements OnInit {
         crDate[i] = totalData[i]['createdDate'];
         let dt = new Date(crDate[i]);
         //console.log("dt - ", dt);
-        crDateConvert[i] = this.datePipe.transform(dt,"MMM dd yyyy");
+        crDateConvert[i] = this.datePipe.transform(dt,"MMM dd");
         success.push(100 * (tp[i] / (tp[i] + tf[i])));
         //runno.push(i['runNo']);
       }
@@ -145,6 +145,7 @@ export class RunHistoryComponent implements OnInit {
       tb.reverse();
       rt.reverse();
       crDateConvert.reverse();
+
       for (let i = totalData.length - 1; i >= 0; i--) {
         runno.push(totalData[i].runNo);
       }
@@ -231,90 +232,70 @@ export class RunHistoryComponent implements OnInit {
       };
       // Options End
 
+      //Graph 1 Data
+      let graph1Data = {
+        labels: crDateConvert,
+        datasets: [
+          {
+            data: success,
+            label: 'Success (%)',
+            borderColor: this.config.success,
+            backgroundColor: this.config.success,
+            fill: false,
+            pointRadius: 4,
+            pointHoverRadius: 5
+          }
+        ]
+      };
+
+      //Graph 2 Data
+      let graph2Data = {
+        labels: runno,
+        datasets: [
+          {
+            data: tb,
+            label: 'Data',
+            borderColor: this.config.primary,
+            backgroundColor: this.config.primary,
+            fill: true,
+            pointRadius: 4,
+            pointHoverRadius: 5
+          }
+        ]
+      };
+
+      //Graph 3 Data
+      let graph3Data = {
+        labels: runno,
+        datasets: [
+          {
+            data: rt,
+            label: 'Time Taken',
+            borderColor: this.config.warning,
+            backgroundColor: this.config.warning,
+            fill: true,
+            pointRadius: 4,
+            pointHoverRadius: 5
+          }
+        ]
+      };
+
       //Graph 1 Start
       this.chart = new Chart('canvas1', {
         type: 'line',
-        data: {
-          labels: crDateConvert,
-          datasets: [
-            {
-              data: success,
-              label: 'Success (%)',
-              borderColor: this.config.success,
-              backgroundColor: this.config.success,
-              fill: false,
-              pointRadius: 4,
-              pointHoverRadius: 5
-            },
-            // {
-            //   data: tp,
-            //   label: 'Passed',          
-            //   borderColor: this.config.success,
-            //   backgroundColor: this.config.success,
-            //   fill: false,
-            //   pointRadius: 4,
-            //   pointHoverRadius: 5
-            // }
-          ]
-        },
+        data: graph1Data,
         options: graph1Options
       });
-
       //Graph 2 Start
       this.chart2 = new Chart('canvas2', {
         type: 'line',
-        data: {
-          labels: runno,
-          datasets: [
-            {
-              data: tb,
-              label: 'Data',
-              borderColor: this.config.primary,
-              backgroundColor: this.config.primary,
-              fill: true,
-              pointRadius: 4,
-              pointHoverRadius: 5
-            },
-            // {
-            //   data: rt,
-            //   label: 'Request Time',
-            //   borderColor: this.config.warning,
-            //   backgroundColor: this.config.warning,
-            //   fill: false,
-            //   pointRadius: 4,
-            //   pointHoverRadius: 5
-            // }
-          ]
-        },
+        data: graph2Data,
         options: graph2Options
       });
-
       //Graph 3 Start
       this.chart3 = new Chart('canvas3', {
         type: 'line',
-        data: {
-          labels: runno,
-          datasets: [
-            // {
-            //   data: tb,
-            //   label: 'Total Bytes',
-            //   borderColor: this.config.primary,
-            //   backgroundColor: this.config.primary,
-            //   fill: false,
-            //   pointRadius: 4,
-            //   pointHoverRadius: 5
-            // },
-            {
-              data: rt,
-              label: 'Time Taken',
-              borderColor: this.config.warning,
-              backgroundColor: this.config.warning,
-              fill: true,
-              pointRadius: 4,
-              pointHoverRadius: 5
-            }
-          ]
-        },
+        data: graph3Data,
         options: graph3Options
       });
     }, error => {

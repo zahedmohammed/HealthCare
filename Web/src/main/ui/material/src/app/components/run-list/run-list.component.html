@@ -16,15 +16,11 @@
 <!-- <pre>{{list | json}}</pre> -->
 <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
     <article class="article">
-        <!-- 
-    <div class="box box-default">
-        <div class="box-body"> -->
-
-        <mat-tab-group>
+        <mat-tab-group (selectedTabChange)="getAnalyticsData()">
             <mat-tab label="Runs">
-                <section class="box box-transparent mt-4">
-                    <!-- <div class="box-body"> -->
-                        <div class="box box-default">
+                <div class="box box-default mt-4">
+                    <div class="box-body">
+                        <section class="box box-transparent">
                             <div class="box-body">
                                 <div class="article-title-style">
                                     <div class="mat-elevation-z8 box-default">
@@ -146,45 +142,55 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <!-- </div> -->
-                </section>
+                        </section>
+                    </div>
+                </div>
             </mat-tab>
             <mat-tab label="Analytics">
-                <section class="box box-transparent">
+                <div class="box box-default mt-4">
                     <div class="box-body">
-                        <div class="row article-title-style">
-                            <!-- <div class="col-md-6">
-                                    <div *ngIf="chart">
-                                        <canvas id="canvas1">{{ chart }}</canvas>
+                        <section class="box box-transparent">
+                            <div class="box-body">
+                                <div class="row article-title-style">
+                                    <div class="col-md-6">
+                                        <div *ngIf="chart">
+                                            <canvas id="canvas1">{{ chart }}</canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div *ngIf="chart2">
+                                            <canvas id="canvas2">{{ chart2 }}</canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div *ngIf="chart3">
+                                            <canvas id="canvas3">{{ chart3 }}</canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div *ngIf="chart4">
+                                            <canvas id="canvas4">{{ chart4 }}</canvas>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div *ngIf="chart2">
-                                        <canvas id="canvas2">{{ chart2 }}</canvas>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div *ngIf="chart3">
-                                        <canvas id="canvas3">{{ chart3 }}</canvas>
-                                    </div>
-                                </div> -->
-                        </div>
+                            </div>
+                        </section>
                     </div>
-                </section>
+                </div>
             </mat-tab>
-            <mat-tab label="Auto Suggest">
-                <section class="box box-transparent">
+            <mat-tab label="AutoSuggest">
+                <div class="box box-default mt-4">
                     <div class="box-body">
-                        <div class="row article-title-style">
+                        <section class="box box-transparent">
+                            <div class="box-body">
+                                <div class="row article-title-style">
 
-                        </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
-                </section>
+                </div>
             </mat-tab>
         </mat-tab-group>
-        <!-- 
-        </div>
-    </div> -->
     </article>
 </section>

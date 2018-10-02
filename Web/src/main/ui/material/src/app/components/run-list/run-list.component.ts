@@ -1,5 +1,6 @@
+import { CHARTCONFIG } from './../../charts/charts.config';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { JobsService } from '../../services/jobs.service';
 import { RunService } from '../../services/run.service';
 import { ProjectService } from '../../services/project.service';
@@ -8,8 +9,10 @@ import { Handler } from '../dialogs/handler/handler';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
-import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
-
+import { MatPaginator, MatSort, MatTableDataSource } from "@angular/material";
+import { Chart } from 'chart.js';
+import 'chartjs-plugin-labels';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-run-list',
@@ -23,29 +26,33 @@ export class RunListComponent implements OnInit {
   times;
   totalTimeSaved = 0;
   projectId;
-  jobId:string =  "";
-  title:string = "";
+  jobId: string = "";
+  title: string = "";
   project: Base = new Base();
   job: Base = new Base();
   showSpinner: boolean = false;
   private _clockSubscription: Subscription;
-  displayedColumns: string[] = ['region', 'date', 'passfail', 'success', 'data','totaltime','bugs','bugs2','status','no'];
+  displayedColumns: string[] = ['region', 'date', 'passfail', 'success', 'data', 'totaltime', 'bugs', 'bugs2', 'status', 'no'];
   dataSource = null;
+  config = CHARTCONFIG;
+  chart: Chart = []; // This will hold our chart info
+  chart2: Chart = []; // This will hold our chart info
+  chart3: Chart = []; // This will hold our chart info
+  chart4: Chart = []; // This will hold our chart info
 
-
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private jobsService: JobsService, private runService: RunService,
-              private projectService: ProjectService, private route: ActivatedRoute,
-              private handler: Handler) { }
+    private projectService: ProjectService, private route: ActivatedRoute,
+    private handler: Handler, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       console.log(params);
       if (params['projectId']) {
-       this.projectId = params['projectId'];
-       this.loadProject(this.projectId);
+        this.projectId = params['projectId'];
+        this.loadProject(this.projectId);
       }
       if (params['jobId']) {
         this.jobId = params['jobId'];
@@ -82,6 +89,292 @@ export class RunListComponent implements OnInit {
     });
   }
 
+  //Graph Analytics - Start
+  getAnalyticsData() {
+    let totalData = this.list;
+    let totalPass: any = [];
+    let totalFail: any = [];
+    let totalBytes: any = [];
+    let dateTime: any = [];
+    let dtDateConvert: any = [];
+    let crDate: any = [];
+    let totalOpenIssues: any = [];
+    let issuesClosed: any = [];
+    let issuesLogged: any = [];
+    let issuesReopen: any = [];
+    let totalTime: any = [];
+
+    for (let i = 0; i < totalData.length; i++) {
+      let openIssues: any[] = totalData[i].task.totalOpenIssues;
+      totalOpenIssues.push(openIssues);      
+
+      let failed: any[] = totalData[i].task.failedTests;
+      totalFail.push(failed);      
+
+      let passed: any[] = totalData[i].task.totalTestCompleted;
+      totalPass.push(passed);      
+
+      let dateTimeX: any[] = totalData[i].createdDate;
+      dateTime.push(dateTimeX);
+      crDate[i] = dateTimeX;
+      let dt = new Date(crDate[i]);
+      dtDateConvert[i] = this.datePipe.transform(dt, "MMM dd");
+     
+      let bytes: any[] = totalData[i].task.totalBytes;
+      totalBytes.push(bytes);      
+
+      let closed: any[] = totalData[i].task.issuesClosed;
+      issuesClosed.push(closed);
+
+      let logged: any[] = totalData[i].task.issuesLogged;
+      issuesLogged.push(logged);
+
+      let reopen: any[] = totalData[i].task.issuesReopen;
+      issuesReopen.push(reopen);
+
+      let totalTimeArr: any[] = totalData[i].task.totalTime;
+      totalTime.push(totalTimeArr);
+    }
+    totalOpenIssues.reverse();
+    totalFail.reverse();
+    totalPass.reverse();
+    dtDateConvert.reverse();
+    totalBytes.reverse();
+    issuesClosed.reverse();
+    issuesLogged.reverse();
+    issuesReopen.reverse();
+    totalTime.reverse();
+
+    // Options Start for Graphs
+    let graph1Options = {
+      responsive: true,
+      legend: {
+        display: true
+      },
+      title: {
+        display: true,
+        text: 'Passed & Failed Analytics'
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Date'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Pass / Fail'
+          }
+        }]
+      }
+    };
+
+    let graph2Options = {
+      responsive: true,
+      legend: {
+        display: true
+      },
+      title: {
+        display: true,
+        text: 'Issues Analytics'
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Date'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Issues'
+          }
+        }]
+      }
+    };
+
+    let graph3Options = {
+      responsive: true,
+      legend: {
+        display: true
+      },
+      title: {
+        display: true,
+        text: 'Data Analytics'
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Date'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Data (In Bytes)'
+          }
+        }]
+      }
+    };
+
+    let graph4Options = {
+      responsive: true,
+      legend: {
+        display: true
+      },
+      title: {
+        display: true,
+        text: 'Time Analytics'
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Date'
+          }
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Total Time ( In Milli Seconds )'
+          }
+        }]
+      }
+    };
+
+    //Graph 1 Data - Passed Failed
+    let graph1Data = {
+      labels: dtDateConvert,
+      datasets: [
+        {
+          data: totalPass,
+          label: 'Passed',
+          borderColor: this.config.success,
+          backgroundColor: this.config.success,
+          fill: false,
+          pointRadius: 4,
+          pointHoverRadius: 5
+        },
+        {
+          data: totalFail,
+          label: 'Failed',
+          borderColor: this.config.danger,
+          backgroundColor: this.config.danger,
+          fill: false,
+          pointRadius: 4,
+          pointHoverRadius: 5
+        }
+      ]
+    };
+
+    //Graph 2 Data - Issues
+    let graph2Data = {
+      labels: dtDateConvert,
+      datasets: [
+        {
+          data: issuesClosed,
+          label: 'Closed',
+          borderColor: this.config.success,
+          backgroundColor: this.config.success,
+          fill: false,
+          pointRadius: 4,
+          pointHoverRadius: 5
+        },
+        {
+          data: issuesLogged,
+          label: 'Logged',
+          borderColor: this.config.danger,
+          backgroundColor: this.config.danger,
+          fill: false,
+          pointRadius: 4,
+          pointHoverRadius: 5
+        },
+        {
+          data: issuesReopen,
+          label: 'Open',
+          borderColor: this.config.warning,
+          backgroundColor: this.config.warning,
+          fill: false,
+          pointRadius: 4,
+          pointHoverRadius: 5
+        }
+      ]
+    };
+
+    //Graph 3 Data - Bytes
+    let graph3Data = {
+      labels: dtDateConvert,
+      datasets: [
+        {
+          data: totalBytes,
+          label: 'Bytes',
+          borderColor: this.config.info,
+          backgroundColor: this.config.info,
+          fill: false,
+          pointRadius: 4,
+          pointHoverRadius: 5
+        },
+      ]
+    };
+
+    //Graph 4 Data - Total Time
+    let graph4Data = {
+      labels: dtDateConvert,
+      datasets: [
+        {
+          data: totalTime,
+          label: 'Time',
+          borderColor: this.config.infoAlt,
+          backgroundColor: this.config.infoAlt,
+          fill: false,
+          pointRadius: 4,
+          pointHoverRadius: 5
+        }
+      ]
+    }
+    
+    //Graph 1 Start
+    this.chart = new Chart('canvas1', {
+      type: 'line',
+      data: graph1Data,
+      options: graph1Options
+    });
+
+    //Graph 2 Start
+    this.chart2 = new Chart('canvas2', {
+      type: 'line',
+      data: graph2Data,
+      options: graph2Options
+    });
+
+    //Graph 3 Start
+    this.chart3 = new Chart('canvas3', {
+      type: 'line',
+      data: graph3Data,
+      options: graph3Options
+    });
+
+    //Graph 4 Start
+    this.chart4 = new Chart('canvas4', {
+      type: 'line',
+      data: graph4Data,
+      options: graph4Options
+    });
+  }
+//End Graph
+
   getRunByJob(id: string) {
     this.handler.activateLoader();
     this.runService.get(id, this.page, this.pageSize).subscribe(results => {
@@ -93,21 +386,12 @@ export class RunListComponent implements OnInit {
       this.length = results['totalElements'];
       this.dataSource = new MatTableDataSource(this.list);
       this.dataSource.sort = this.sort;
-       this.times = 0;
-       // this.route.data = this.list
-       //  console.log(this.route.data)
-       for (var  i = 0; i < this.list.length; i++){
-           this.times += this.list[i].task.timeSaved;
-        }
-       this.totalTimeSaved = this.times;
-
+      this.times = 0;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
-
-
   length = 0;
   page = 0;
   pageSize = 10;
