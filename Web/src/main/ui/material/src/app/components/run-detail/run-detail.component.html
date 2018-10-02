@@ -38,9 +38,12 @@
                         <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="rerun();">
                             Re-Run &nbsp;
                         </button>
-                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="nextRun();">Next<i class="material-icons">keyboard_arrow_right</i></button>
-                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="prevRun();"><i class="material-icons">keyboard_arrow_left</i>Previous</button>
-                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="refresh();"><i class="material-icons">refresh</i>&nbsp; Refresh</button>
+                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="nextRun();">Next<i
+                                class="material-icons">keyboard_arrow_right</i></button>
+                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="prevRun();"><i
+                                class="material-icons">keyboard_arrow_left</i>Previous</button>
+                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="refresh();"><i
+                                class="material-icons">refresh</i>&nbsp; Refresh</button>
                         <button mat-raised-button *ngIf="run.task.status == 'PROCESSING'" class="btn-w-sm text-warning float-right"
                             (click)="cancel();">Cancel</button>
                     </div>
@@ -221,81 +224,90 @@
             </div>
 
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <mat-input-container class="full-width">
-                    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search suites..."
-                        (keyup.enter)="search()">
-                </mat-input-container>
-            </div>
-            <div class="col-md-4">
-                <div class="full-width">
-                    <mat-chip-list>
-                        <mat-chip>Filter: </mat-chip>
-                        <mat-chip *ngIf="keyword" (removed)="keyword='';search()">{{keyword}}<mat-icon matChipRemove>cancel</mat-icon>
-                        </mat-chip>
-                        <mat-chip *ngIf="category" (removed)="category='';search()">{{category}}<mat-icon matChipRemove>cancel</mat-icon>
-                        </mat-chip>
-                        <mat-chip *ngIf="status === 'Failed'" (removed)="status='';search()" class="text-danger">{{status}}<mat-icon
-                                matChipRemove>cancel</mat-icon>
-                        </mat-chip>
-                        <mat-chip *ngIf="status === 'Passed'" (removed)="status='';search()" class="text-success">{{status}}<mat-icon
-                                matChipRemove>cancel</mat-icon>
-                        </mat-chip>
-                    </mat-chip-list>
-                </div>
-            </div>
-        </div>
+
     </div>
     <br />
-    <div class="mat-elevation-z8 box-default">
-        <mat-table [dataSource]="dataSource" matSort matSortActive="suite" matSortDisableClear matSortDirection="desc">
-            <ng-container matColumnDef="suite">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Suite </mat-header-cell>
-                <mat-cell *matCellDef="let suites"> {{suites.suiteName | slice:0:55}} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="category">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
-                <mat-cell *matCellDef="let suites"> {{suites.category}} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="severity">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Severity </mat-header-cell>
-                <mat-cell *matCellDef="let suites"> {{suites.severity}} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="status">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-                <mat-cell *matCellDef="let suites">
-                    <span class="text-success h6"><b>{{suites.tests - suites.failed || 0}}</b></span>&nbsp;<span class="text-success small">Passed</span>&nbsp;
-                    <span *ngIf="suites.failed != 0"><span class="text-danger h6"><b>{{suites.failed || 0}}</b></span>&nbsp;<span
-                            class="text-danger small">Failed</span>&nbsp;</span>
-                </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="data">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Data </mat-header-cell>
-                <mat-cell *matCellDef="let suites"> {{suites.size | byteFormat}} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="time">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Time </mat-header-cell>
-                <mat-cell *matCellDef="let suites"> {{suites.time | mstoDuration}} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="analytics">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Analytics </mat-header-cell>
-                <mat-cell *matCellDef="let suites">
-                    <a href="javascript:;" (click)="getTestSuiteResponseByName(suites.suiteName)" matTooltip="logs"
-                        matTooltipPosition="above">
-                        <i class="material-icons">
-                            description
-                        </i></a>
-                    <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs', run.id, 'history', suites.suiteName]"
-                        matTooltip="analytics" matTooltipPosition="above"><i class="nav-icon material-icons">timeline</i></a>
-                </mat-cell>
-            </ng-container>
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </mat-table>
+    <div class="box1 box-default">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-input-container class="full-width">
+                        <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search suites..."
+                            (keyup.enter)="search()">
+                    </mat-input-container>
+                </div>
+                <div class="col-md-4">
+                    <div class="full-width">
+                        <mat-chip-list>
+                            <mat-chip>Filter: </mat-chip>
+                            <mat-chip *ngIf="keyword" (removed)="keyword='';search()">{{keyword}}<mat-icon
+                                    matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            <mat-chip *ngIf="category" (removed)="category='';search()">{{category}}<mat-icon
+                                    matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            <mat-chip *ngIf="status === 'Failed'" (removed)="status='';search()" class="text-danger">{{status}}<mat-icon
+                                    matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            <mat-chip *ngIf="status === 'Passed'" (removed)="status='';search()" class="text-success">{{status}}<mat-icon
+                                    matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                </div>
+            </div>
+            <div class="mat-elevation-z8 box-default">
+                <mat-table [dataSource]="dataSource" matSort matSortActive="suite" matSortDisableClear matSortDirection="desc">
+                    <ng-container matColumnDef="suite">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Suite </mat-header-cell>
+                        <mat-cell *matCellDef="let suites"> {{suites.suiteName | slice:0:55}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="category">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+                        <mat-cell *matCellDef="let suites"> {{suites.category}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="severity">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Severity </mat-header-cell>
+                        <mat-cell *matCellDef="let suites"> {{suites.severity}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let suites">
+                            <span class="text-success h6"><b>{{suites.tests - suites.failed || 0}}</b></span>&nbsp;<span
+                                class="text-success small">Passed</span>&nbsp;
+                            <span *ngIf="suites.failed != 0"><span class="text-danger h6"><b>{{suites.failed || 0}}</b></span>&nbsp;<span
+                                    class="text-danger small">Failed</span>&nbsp;</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="data">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Data </mat-header-cell>
+                        <mat-cell *matCellDef="let suites"> {{suites.size | byteFormat}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="time">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Time </mat-header-cell>
+                        <mat-cell *matCellDef="let suites"> {{suites.time | mstoDuration}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="analytics">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Analytics </mat-header-cell>
+                        <mat-cell *matCellDef="let suites">
+                            <a href="javascript:;" (click)="getTestSuiteResponseByName(suites.suiteName)" matTooltip="logs"
+                                matTooltipPosition="above">
+                                <i class="material-icons">
+                                    description
+                                </i></a>
+                            <a href="javascript:;" [routerLink]="['/app/projects', projectId, 'jobs', jobId, 'runs', run.id, 'history', suites.suiteName]"
+                                matTooltip="analytics" matTooltipPosition="above"><i class="nav-icon material-icons">timeline</i></a>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
 
-        <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" (page)="change($event)" [length]="length">
-        </mat-paginator>
+                <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" (page)="change($event)"
+                    [length]="length">
+                </mat-paginator>
+            </div>
+        </div>
     </div>
 
 </section>

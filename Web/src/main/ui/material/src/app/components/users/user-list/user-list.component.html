@@ -21,85 +21,54 @@
     <br />
 
     <article class="article">
-        <h2 class="article-title1">
-            <button mat-button color="primary" class="btn-w-md pull-left text-justify" [routerLink]="['/app/orgs', org.id, 'users', 'new']">
-                <i class="fa fa-plus"></i>
-                New User
-            </button>
-            <p class="text-muted float-right">Total ({{length}})</p>
-            <div class="divider divider-sm"></div>
-        </h2>
-        <br />
+        <div class="box1 box-default">
+            <div class="box-body">
+                <h2 class="article-title1">
+                    <button mat-button color="primary" class="btn-w-md pull-left text-justify" [routerLink]="['/app/orgs', org.id, 'users', 'new']">
+                        <i class="fa fa-plus"></i>
+                        New User
+                    </button>
+                    <p class="text-muted float-right">Total ({{length}})</p>
+                    <div class="divider divider-sm"></div>
+                </h2>
+                <br />
 
-        <div class="mat-elevation-z8 box-default">
-            <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="desc">
-                <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                    <mat-cell *matCellDef="let orgUser"> <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id]">{{orgUser.users.name}}</a>
-                    </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="role">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
-                    <mat-cell *matCellDef="let orgUser"> {{orgUser.orgRole}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="status">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-                    <mat-cell *matCellDef="let orgUser"> {{orgUser.status}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="createDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Create-date </mat-header-cell>
-                    <mat-cell *matCellDef="let orgUser"> {{orgUser.createdDate | date:'shortDate'}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="password">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-                    <mat-cell *matCellDef="let orgUser">
-                        <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id, 'password-reset']">Password</a>
-                    </mat-cell>
-                </ng-container>
+                <div class="mat-elevation-z8 box-default">
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
+                        matSortDirection="desc">
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let orgUser"> <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id]">{{orgUser.users.name}}</a>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="role">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
+                            <mat-cell *matCellDef="let orgUser"> {{orgUser.orgRole}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                            <mat-cell *matCellDef="let orgUser"> {{orgUser.status}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="createDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Create-date </mat-header-cell>
+                            <mat-cell *matCellDef="let orgUser"> {{orgUser.createdDate | date:'shortDate'}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="password">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                            <mat-cell *matCellDef="let orgUser">
+                                <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id, 'password-reset']">Password</a>
+                            </mat-cell>
+                        </ng-container>
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
 
-            <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-                [length]="length">
-            </mat-paginator>
+                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+                        [length]="length">
+                    </mat-paginator>
+                </div>
+            </div>
         </div>
-
-        <!-- <div class="box box-default table-box mdl-shadow--2dp">
-            <table class="mdl-data-table">
-                <thead>
-                    <tr>
-                        <th class="mdl-data-table__cell--non-numeric">Name</th>
-                        <!--<th class="mdl-data-table__cell--non-numeric">Username</th>
-                    <th class="mdl-data-table__cell--non-numeric">Active</th>
-                        <th class="mdl-data-table__cell--non-numeric">Role</th>
-                        <th class="mdl-data-table__cell--non-numeric">Status</th>
-                        <th class="mdl-data-table__cell--non-numeric">Create-date</th>
-                        <th class="mdl-data-table__cell--non-numeric"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let orgUser of orgUsers">
-                        <td class="mdl-data-table__cell--non-numeric">
-                            <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id]">{{orgUser.users.name}}</a>
-                        </td>
-                        <!--<td class="mdl-data-table__cell--non-numeric">{{orgUser.users.username}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{!orgUser.users.inactive}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{orgUser.orgRole}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{orgUser.status}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">{{orgUser.createdDate | date:'shortDate'}}</td>
-                        <td class="mdl-data-table__cell--non-numeric">
-                            <a href="javascript:;" [routerLink]="['/app/orgs/', org.id, 'users', orgUser.id, 'password-reset']">Password</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-            [length]="length">
-        </mat-paginator> -->
-
     </article>
 </section>

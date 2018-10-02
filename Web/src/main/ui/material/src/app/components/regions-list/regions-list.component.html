@@ -10,14 +10,6 @@
 <br />
 <section class="chapter page-terms">
 
-    <!-- <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Test Bots</h1>
-        </div>
-        <p class="text-muted">Launch test execution bots across private/public cloud regions.
-            Test from regions where your customers are.</p>
-    </section> -->
-
     <article class="article padding-lg-v1">
 
         <div class="container-fluid with-maxwidth chapter">
@@ -29,91 +21,62 @@
             </nav>
             <br>
             <article class="article">
-                <div class="row">
-                    <div class="col-md-9">
-                        <button mat-button color="primary" class="btn-w-md pull-left text-justify mt-3" [routerLink]="['/app/regions/new']">
-                            <i class="fa fa-plus"></i>
-                            New Test Bot
-                        </button>
-                    </div>
-                    <div class="col-md-3">
-                        <mat-input-container class="ml-8">
-                            <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
-                                (keyup.enter)="searchBot()">
-                        </mat-input-container>
-                        <p class="text-muted float-right mt-4">Total ({{length}})</p>
+                <div class="box box-default">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <button mat-button color="primary" class="btn-w-md pull-left text-justify mt-3"
+                                    [routerLink]="['/app/regions/new']">
+                                    <i class="fa fa-plus"></i>
+                                    New Test Bot
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-input-container class="ml-8">
+                                    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search"
+                                        placeholder="Search by name..." (keyup.enter)="searchBot()">
+                                </mat-input-container>
+                                <p class="text-muted float-right mt-3">Total ({{length}})</p>
+                            </div>
+                        </div>
+                        <div class="mat-elevation-z8 box-default">
+                            <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
+                                matSortDirection="desc">
+                                <ng-container matColumnDef="name">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let item"> <a href="javascript:;" [routerLink]="['/app/regions', item.id]">{{item.name}}</a>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="region">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Region </mat-header-cell>
+                                    <mat-cell *matCellDef="let item" [hidden]="item.manual"> {{item.region}} </mat-cell>
+                                    <mat-cell *matCellDef="let item" [hidden]="!item.manual"> Registered </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="createdDate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Create-date </mat-header-cell>
+                                    <mat-cell *matCellDef="let item"> {{item.createdDate | date:'shortDate'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="count">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Cluster Size </mat-header-cell>
+                                    <mat-cell *matCellDef="let item"> {{item.min}} <span matTooltip="10 virtual bots!"
+                                            matTooltipPosition="above"><small>x10</small></span> </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                                    <mat-cell *matCellDef="let item"> Ok </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            </mat-table>
+
+                            <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true"
+                                (page)="change($event)" [length]="length">
+                            </mat-paginator>
+                        </div>
                     </div>
                 </div>
-                <div class="mat-elevation-z8 box-default">
-                    <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
-                        matSortDirection="desc">
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                            <mat-cell *matCellDef="let item"> <a href="javascript:;" [routerLink]="['/app/regions', item.id]">{{item.name}}</a>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="region">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Region </mat-header-cell>
-                            <mat-cell *matCellDef="let item" [hidden]="item.manual"> {{item.region}} </mat-cell>
-                            <mat-cell *matCellDef="let item" [hidden]="!item.manual"> Registered </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="createdDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Create-date </mat-header-cell>
-                            <mat-cell *matCellDef="let item"> {{item.createdDate | date:'shortDate'}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="count">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Cluster Size </mat-header-cell>
-                            <mat-cell *matCellDef="let item"> {{item.min}} <span matTooltip="10 virtual bots!"
-                                    matTooltipPosition="above"><small>x10</small></span> </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-                            <mat-cell *matCellDef="let item"> Ok </mat-cell>
-                        </ng-container>
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
-
-                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-                        [length]="length">
-                    </mat-paginator>
-                </div>
-
-                <!-- <div class="box box-default table-box mdl-shadow--2dp">
-                    <table class="mdl-data-table">
-                        <thead>
-                            <tr>
-                                <th class="mdl-data-table__cell--non-numeric">Name</th>
-                                <th class="mdl-data-table__cell--non-numeric">Region</th>
-                                <th class="mdl-data-table__cell--non-numeric">Create-Date</th>
-                                <!--<th class="mdl-data-table__cell--non-numeric">Visibility</th>
-                                <th class="mdl-data-table__cell--non-numeric">Count</th>
-                                <th class="mdl-data-table__cell--non-numeric">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of list">
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    <a href="javascript:;" [routerLink]="['/app/regions', item.id]">{{item.name}}</a></td>
-                                <td class="mdl-data-table__cell--non-numeric" [hidden]="item.manual">{{item.region}}</td>
-                                <td class="mdl-data-table__cell--non-numeric" [hidden]="!item.manual">Registered</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.createdDate | date:'shortDate'}}</td>
-                                <!--<td class="mdl-data-table__cell--non-numeric">{{item.visibility}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{item.min}} <span matTooltip="10 virtual bots!"
-                                        matTooltipPosition="above"><small>x10</small></span>
-                                </td>
-                                <td class="mdl-data-table__cell--non-numeric text-success">OK</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> -->
             </article>
-
         </div>
-
-        <!-- <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-            [length]="length">
-        </mat-paginator> -->
-
     </article>
 </section>

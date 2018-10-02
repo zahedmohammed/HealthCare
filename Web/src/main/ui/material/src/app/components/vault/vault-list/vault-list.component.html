@@ -12,65 +12,46 @@
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
             <article class="article">
-                    <div class="row">
+                <div class="box1 box-default">
+                    <div class="box-body">
+                        <div class="row">
                             <div class="col-md-9">
                                 <button mat-button color="primary" class="btn-w-md mt-3" [routerLink]="['/app/vault/new']">
                                     <i class="fa fa-plus"></i>
-                                   New Secret
+                                    New Secret
                                 </button>
                             </div>
                             <div class="col-md-3">
-                                <mat-input-container class="ml-8">
-                                    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
-                                        (keyup.enter)="searchVault()">
+                                <mat-input-container class="ml-2">
+                                    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search"
+                                        placeholder="Search by name..." (keyup.enter)="searchVault()">
                                 </mat-input-container>
                                 <p class="text-muted float-right mt-4">Total ({{length}})</p>
                             </div>
                         </div>
 
-                <div class="mat-elevation-z8 box-default">
-                    <mat-table [dataSource]="dataSource" matSort matSortActive="key" matSortDisableClear
-                        matSortDirection="desc">
-                        <ng-container matColumnDef="key">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Key </mat-header-cell>
-                            <mat-cell *matCellDef="let key"> <a href="javascript:;" [routerLink]="['/app/vault', key.id]">{{key.key}}</a>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="createDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Create-date </mat-header-cell>
-                            <mat-cell *matCellDef="let key"> {{key.createdDate | date:'shortDate'}} </mat-cell>
-                        </ng-container>
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
+                        <div class="mat-elevation-z8 box-default">
+                            <mat-table [dataSource]="dataSource" matSort matSortActive="key" matSortDisableClear
+                                matSortDirection="desc">
+                                <ng-container matColumnDef="key">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Key </mat-header-cell>
+                                    <mat-cell *matCellDef="let key"> <a href="javascript:;" [routerLink]="['/app/vault', key.id]">{{key.key}}</a>
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="createDate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Create-date </mat-header-cell>
+                                    <mat-cell *matCellDef="let key"> {{key.createdDate | date:'shortDate'}} </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            </mat-table>
 
-                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-                        [length]="length">
-                    </mat-paginator>
+                            <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true"
+                                (page)="change($event)" [length]="length">
+                            </mat-paginator>
+                        </div>
+                    </div>
                 </div>
-                <!-- <div class="box box-default table-box mdl-shadow--2dp">
-                    <table class="mdl-data-table">
-                        <thead>
-                            <tr>
-                                <th class="mdl-data-table__cell--non-numeric">Key</th>
-                                <th class="mdl-data-table__cell--non-numeric">Create-date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let key of keys">
-                                <td class="mdl-data-table__cell--non-numeric bold">
-                                    <a href="javascript:;" [routerLink]="['/app/vault', key.id]">{{key.key}}</a></td>
-                                <td class="mdl-data-table__cell--non-numeric">{{key.createdDate | date:'shortDate'}}</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-                    [length]="length">
-                </mat-paginator> -->
-
             </article>
         </div>
     </article>

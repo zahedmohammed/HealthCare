@@ -7,92 +7,58 @@
         </article>
     </div>
 </div>
-<section class="chapter page-terms">
 
-    <!-- <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Accounts</h1>
-        </div>
-        <p class="text-muted">Manage git, cloud & collaboration endpoint credentials.</p>
-    </section> -->
+<section class="chapter page-terms">
     <article class="article padding-lg-v1">
         <div class="container-fluid with-maxwidth chapter">
-
             <article class="article">
-                <div class="row">
-                    <div class="col-md-9">
-                        <button mat-button color="primary" class="btn-w-md pull-left mt-3" [routerLink]="['/app/accounts/new']">
-                            <i class="fa fa-plus"></i>
-                            New Credentials
-                        </button>
-                    </div>
-                    <div class="col-md-3">
-                        <mat-input-container class="ml-8">
-                            <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
-                                (keyup.enter)="searchAccount()">
-                        </mat-input-container>
-                        <p class="text-muted float-right mt-4">Total ({{length}})</p>
+                <div class="box1 box-default">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <button mat-button color="primary" class="btn-w-md pull-left mt-3" [routerLink]="['/app/accounts/new']">
+                                    <i class="fa fa-plus"></i> New Credentials</button>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-input-container>
+                                    <input [(ngModel)]="keyword" name="search" id="search" matInput type="search"
+                                        placeholder="Search by name..." (keyup.enter)="searchAccount()">
+                                </mat-input-container>
+                                <p class="text-muted float-right mt-3">Total ({{length}})</p>
+                            </div>
+                        </div>
+                        <div class="mat-elevation-z8 box-default">
+                            <mat-table [dataSource]="dataSource" matSort matSortActive="create-date"
+                                matSortDisableClear matSortDirection="desc">
+                                <!-- Name Column -->
+                                <ng-container matColumnDef="name">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" [routerLink]="['/app/accounts', element.id]">
+                                        <a href="javascript:;">
+                                            {{element.name}} </a></mat-cell>
+                                </ng-container>
+                                <!-- Type Column -->
+                                <ng-container matColumnDef="type">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.accountType}} </mat-cell>
+                                </ng-container>
+                                <!-- Create Date Column -->
+                                <ng-container matColumnDef="create-date">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Create Date </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.createdDate | date:'shortDate'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            </mat-table>
+                            <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true"
+                                (page)="change($event)" [length]="length">
+                            </mat-paginator>
+
+                        </div>
                     </div>
                 </div>
-
-                <div class="mat-elevation-z8 box-default">
-                    <mat-table [dataSource]="dataSource" matSort matSortActive="create-date" matSortDisableClear
-                        matSortDirection="desc">
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                            <mat-cell *matCellDef="let element" [routerLink]="['/app/accounts', element.id]"> <a href="javascript:;">
-                                    {{element.name}} </a></mat-cell>
-                        </ng-container>
-
-                        <!-- Type Column -->
-                        <ng-container matColumnDef="type">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.accountType}} </mat-cell>
-                        </ng-container>
-
-                        <!-- Create Date Column -->
-                        <ng-container matColumnDef="create-date">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Create Date </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.createdDate | date:'shortDate'}} </mat-cell>
-                        </ng-container>
-
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
-
-                    <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
-                        [length]="length">
-                    </mat-paginator>
-
-                </div>
-
-                <!--<div class="box box-default table-box mdl-shadow--2dp">
-                    <table class="mdl-data-table">
-                        <thead>
-                        <tr>
-                            <th class="mdl-data-table__cell--non-numeric">Name</th>
-                            <th class="mdl-data-table__cell--non-numeric">Type</th>
-                            <th class="mdl-data-table__cell--non-numeric">Create-date</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let account of accounts">
-                            <td class="mdl-data-table__cell--non-numeric bold">
-                                <a href="javascript:;"
-                                   [routerLink]="['/app/accounts', account.id]">{{account.name}}</a></td>
-                            <td class="mdl-data-table__cell--non-numeric bold">{{account.accountType}}</td>
-                            <td class="mdl-data-table__cell--non-numeric">{{account.createdDate | date:'shortDate'}}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>-->
-
-
-
             </article>
         </div>
     </article>
-
 </section>
