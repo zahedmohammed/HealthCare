@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -57,40 +58,49 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
             }
         }
 
-
         List<TestSuiteMin> testSuites = null;
-        for (Parameter param : op.getParameters()) {
+
+        // check full mapping exists for the path
+        String val = configUtil.getDDOSMappedValue(path);
+        if (StringUtils.isNotEmpty(val)) {
+            String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_Mapped";
+            testSuites = build(op, path, val, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+            allTestSuites.addAll(testSuites);
+        } else {
+
+            for (Parameter param : op.getParameters()) {
 
 
-            if (!configUtil.isDDOSSupportedName(param.getName())) {
-                continue;
-            }
-
-            if (!configUtil.isDDOSSupportedParam(param)) {
-                continue;
-            }
-
-            /*if (!configUtil.isDDOSSupportedType(param)) {
-                continue;
-            }*/
-
-            String value = configUtil.getDDOSSupportedValue(param.getName());
-
-
-            String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + param.getName();
-
-            if (testSuites == null) {
-                testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
-                allTestSuites.addAll(testSuites);
-                if (testSuites != null && testSuites.size() > 0) {
-                    testSuites.get(0).setEndpoint(endPoint + "?" + param.getName() + "=" + value);
+                if (!configUtil.isDDOSSupportedName(param.getName())) {
+                    continue;
                 }
-            } else {
-                if (testSuites != null && testSuites.size() > 0) {
-                    testSuites.get(0).setEndpoint(testSuites.get(0).getEndpoint() + "&" + param.getName() + "=" + value);
-                }
-            }
 
+                if (!configUtil.isDDOSSupportedParam(param)) {
+                    continue;
+                }
+
+                /*if (!configUtil.isDDOSSupportedType(param)) {
+                    continue;
+                }*/
+
+                String value = configUtil.getDDOSSupportedValue(param.getName());
+
+
+                String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_" + param.getName();
+
+                if (testSuites == null) {
+                    testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+                    allTestSuites.addAll(testSuites);
+                    if (testSuites != null && testSuites.size() > 0) {
+                        testSuites.get(0).setEndpoint(endPoint + "?" + param.getName() + "=" + value);
+                    }
+                } else {
+                    if (testSuites != null && testSuites.size() > 0) {
+                        testSuites.get(0).setEndpoint(testSuites.get(0).getEndpoint() + "&" + param.getName() + "=" + value);
+                    }
+                }
+
+            }
         }
 
         return allTestSuites;

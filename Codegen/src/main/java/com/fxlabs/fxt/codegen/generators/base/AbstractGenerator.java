@@ -315,7 +315,7 @@ public abstract class AbstractGenerator implements Generator {
                 if (org.springframework.util.StringUtils.isEmpty(m.getPathPatterns())) {
                     continue;
                 }
-                for (String pattern : m.getPathPatterns().split(", ")) {
+                for (String pattern : m.getPathPatterns().split(",|\\n|\\s+")) {
                     String _method = "";
                     String _pattern = pattern;
                     if (org.apache.commons.lang3.StringUtils.contains(pattern, ":")) {

@@ -366,10 +366,10 @@ public class AutoCodeConfigUtil {
         boolean isPresent = false;
         if (gen != null && !CollectionUtils.isEmpty(gen.getMatches())) {
             for (Match match : gen.getMatches()) {
-                if (StringUtils.isEmpty(match.getName())) {
+                if (StringUtils.isEmpty(match.getResourceSamples())) {
                     continue;
                 }
-                for (String prop : match.getName().split(",|\\n|\\t")) {
+                for (String prop : match.getResourceSamples().split(",|\\n|\\s+")) {
                     //System.out.println (" Prop : " + prop + " Name: " + name + " Variables: " + match.getName());
                     if (prop.contains("=")) {
                         if (StringUtils.startsWithIgnoreCase(prop, name + "=")) {
@@ -402,10 +402,10 @@ public class AutoCodeConfigUtil {
         }
 
         for (Match match : gen.getMatches()) {
-            if (StringUtils.isEmpty(match.getName())) {
+            if (StringUtils.isEmpty(match.getResourceSamples())) {
                 continue;
             }
-            for (String prop : match.getName().split(",|\\n|\\t")) {
+            for (String prop : match.getResourceSamples().split(",|\\n|\\t")) {
                 if (prop.contains("=")) {
                     if (StringUtils.startsWithIgnoreCase(prop, name + "=")) {
                         return prop.split("=")[1];
@@ -415,6 +415,32 @@ public class AutoCodeConfigUtil {
         }
 
         return DEFAULT_DDOS_VALUE;
+    }
+
+    public String getDDOSMappedValue(String path) {
+        if (StringUtils.isEmpty(path)) {
+            return null;
+        }
+        Generator gen = get("DDOS");
+
+        if (gen == null || CollectionUtils.isEmpty(gen.getMatches())) {
+            return null;
+        }
+
+        for (Match match : gen.getMatches()) {
+            if (StringUtils.isEmpty(match.getResourceSamples())) {
+                continue;
+            }
+            for (String prop : match.getResourceSamples().split(",|\\n|\\t")) {
+                if (prop.contains("?")) {
+                    if (StringUtils.startsWithIgnoreCase(prop, path + "?")) {
+                        return prop;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
     // ###################     DDOS support end   ###################
 

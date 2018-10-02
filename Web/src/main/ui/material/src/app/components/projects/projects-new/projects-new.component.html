@@ -152,11 +152,11 @@
                                                 </div>
                                                 <div *ngIf="res.type === 'DDOS'">
                                                     <div class="row">
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-10">
                                                             <mat-input-container class="full-width">
-                                                                <textarea matInput
+                                                                <textarea matInput rows="5"
                                                                           placeholder="Page size query param names e.g. pageSize=10000,page_size=10000,maxResults=10000,max_results=10000"
-                                                                          [(ngModel)]='res.matches[0].name'
+                                                                          [(ngModel)]='res.matches[0].resourceSamples'
                                                                           [ngModelOptions]="{standalone: true}"></textarea>
                                                             </mat-input-container>
                                                         </div>
@@ -270,7 +270,7 @@
                                                 <div class="row" [hidden]="res.type === 'sla'">
                                                     <div class="col-md-6">
                                                         <mat-input-container class="full-width">
-                                                                <textarea matInput placeholder="Assertions"
+                                                                <textarea matInput placeholder="Assertions" rows="3"
                                                                           [(ngModel)]='res.assertionsText'
                                                                           [ngModelOptions]="{standalone: true}"></textarea>
                                                         </mat-input-container>
@@ -288,9 +288,9 @@
                                                             <label for="name" class="col-md-0 control-label"></label>
                                                             <div class="col-md-6">
                                                                 <mat-input-container class="full-width">
-                                                                    <textarea matInput [(ngModel)]="m.pathPatterns"
+                                                                    <textarea matInput [(ngModel)]="m.pathPatterns" rows="5"
                                                                            [ngModelOptions]="{standalone: true}"
-                                                                              placeholder="Optionally you can skip API paths. e.g. GET:/api/v1/user-signup/** or POST:/api/v1/team-signup etc"></textarea>
+                                                                              placeholder="Skip Paths (e.g. GET:/api/v1/user-signup/** or /api/v1/team-signup etc)"></textarea>
                                                                 </mat-input-container>
                                                             </div>
                                                         </div>
