@@ -3,6 +3,8 @@ package com.fxlabs.fxt.services.project;
 import com.fxlabs.fxt.converters.project.JobConverter;
 import com.fxlabs.fxt.converters.project.JobIssueTrackerConverter;
 import com.fxlabs.fxt.converters.project.JobNotificationConverter;
+import com.fxlabs.fxt.dao.entity.clusters.Account;
+import com.fxlabs.fxt.dao.entity.clusters.AccountType;
 import com.fxlabs.fxt.dao.entity.it.IssueTracker;
 import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.project.Job;
@@ -10,7 +12,6 @@ import com.fxlabs.fxt.dao.entity.project.JobIssueTracker;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.users.Org;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
@@ -46,8 +47,6 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
     private TestCaseResponseITRepository testCaseResponseITRepository;
 
-
-
     private OrgRepository orgRepository;
 
     private IssueTrackerRepository issueTrackerRepository;
@@ -57,7 +56,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     @Autowired
     public JobServiceImpl(JobRepository repository, JobConverter converter, ProjectService projectService, RunRepository runRepository, AccountRepository accountRepository,
                           JobNotificationConverter projectNotificationConverter, JobIssueTrackerConverter jobIssueTrackerConverter, OrgRepository orgRepository,
-                           JobIssueTrackerRepository jobIssueTrackerRepository, TestCaseResponseITRepository testCaseResponseITRepository, IssueTrackerRepository issueTrackerRepository) {
+                          JobIssueTrackerRepository jobIssueTrackerRepository, TestCaseResponseITRepository testCaseResponseITRepository, IssueTrackerRepository issueTrackerRepository) {
         super(repository, converter);
         this.jobRepository = repository;
         this.projectService = projectService;
@@ -79,7 +78,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         Response response = new Response<>();
         jobs.forEach(job -> {
 
-           // getSavedProjectNotification(job);
+            // getSavedProjectNotification(job);
             getSavedProjectIssueTracker(job);
 
             Response<com.fxlabs.fxt.dto.project.Job> jobResponse = save(job, user);
@@ -117,7 +116,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
             job.setNextFire(next);
         }
 
-        job.setIssueTracker(getFxJobIssueTracker(org));
+        job.setIssueTracker(getFxJobIssueTracker(org, user));
 
         return super.save(job, user);
     }
@@ -142,7 +141,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
     }
 
 
-    private com.fxlabs.fxt.dto.project.JobIssueTracker getFxJobIssueTracker(String org) {
+    private com.fxlabs.fxt.dto.project.JobIssueTracker getFxJobIssueTracker(String org, String user) {
 //        Optional<com.fxlabs.fxt.dao.entity.users.Org> orgResponse = null;
 //        try {
 //            orgResponse = orgRepository.findByName("FXLabs");
@@ -150,17 +149,42 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 //            logger.info(e.getLocalizedMessage());
 //        }
 //
-//        String fXLabsOrg = orgResponse.get().getId();
-        List<com.fxlabs.fxt.dao.entity.clusters.Account> accountsFxIssues = this.accountRepository.findByAccountTypeInAndOrgIdAndInactive(com.fxlabs.fxt.dao.entity.clusters.AccountType.FX_Issues, org, false);
+//        String fXLabsOrg = orgResponse.get().getId()
+        com.fxlabs.fxt.dao.entity.clusters.Account fxAccount = null;
+        List<com.fxlabs.fxt.dao.entity.clusters.Account> accountsFxIssues = this.accountRepository.findByAccountTypeAndOrgIdAndInactive(com.fxlabs.fxt.dao.entity.clusters.AccountType.FX_Issues, org, false);
+
         if (CollectionUtils.isEmpty(accountsFxIssues)) {
-            return null;
+
+            Optional<com.fxlabs.fxt.dao.entity.users.Org> orgResponse = null;
+            try {
+                orgResponse = orgRepository.findById(org);
+            } catch (FxException e) {
+                logger.info(e.getLocalizedMessage());
+                return null;
+            }
+
+            if (!orgResponse.isPresent() || StringUtils.isEmpty(user)) {
+                return null;
+            }
+
+            Account caFX = new Account();
+            caFX.setOrg(orgResponse.get());
+            caFX.setAccountType(AccountType.FX_Issues);
+            caFX.setCreatedBy(user);
+            caFX.setInactive(false);
+            caFX.setName("FX Issues");
+
+            fxAccount = this.accountRepository.save(caFX);
+
+        } else {
+            fxAccount = accountsFxIssues.get(0);
         }
 
         JobIssueTracker jobIssueTracker = new JobIssueTracker();
-        jobIssueTracker.setAccount(accountsFxIssues.get(0).getId());
-        jobIssueTracker.setName(accountsFxIssues.get(0).getName());
-        jobIssueTracker.setAccountType(accountsFxIssues.get(0).getAccountType());
-       // jobIssueTracker = jobIssueTrackerRepository.save(jobIssueTracker);
+        jobIssueTracker.setAccount(fxAccount.getId());
+        jobIssueTracker.setName(fxAccount.getName());
+        jobIssueTracker.setAccountType(fxAccount.getAccountType());
+        // jobIssueTracker = jobIssueTrackerRepository.save(jobIssueTracker);
         return jobIssueTrackerConverter.convertToDto(jobIssueTracker);
 
     }
@@ -172,7 +196,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         Page<Job> page = this.jobRepository.findByProjectIdAndInactive(projectId, false, pageable);
         List<com.fxlabs.fxt.dto.project.Job> jobList = converter.convertToDtos(page.getContent());
         jobList.forEach(job -> {
-            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null &&  job.getNotifications().get(1) == null) {
+            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null && job.getNotifications().get(1) == null) {
                 job.setNotificationToDo(true);
                 return;
             }
@@ -184,14 +208,14 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         });
 
         jobList.forEach(job -> {
-            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())){
+            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())) {
                 job.setIssueTrackerToDo(true);
-            }else{
-                String itId = job.getProject().getId() + "//" + job.getId() + "%"  ;
-              //  long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
-                long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open",job.getProject().getId(),job.getId());
-             //   long totalClosedIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("closed",itId);
-                long totalClosedIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("closed",job.getProject().getId(),job.getId());
+            } else {
+                String itId = job.getProject().getId() + "//" + job.getId() + "%";
+                //  long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
+                long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open", job.getProject().getId(), job.getId());
+                //   long totalClosedIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("closed",itId);
+                long totalClosedIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("closed", job.getProject().getId(), job.getId());
 
                 job.setOpenIssues(totalOpenIssues);
                 job.setClosedIssues(totalClosedIssues);
@@ -209,7 +233,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         List<Job> jList = this.jobRepository.findByProjectIdAndInactive(projectId, false);
         List<com.fxlabs.fxt.dto.project.Job> jobList = converter.convertToDtos(jList);
         jobList.forEach(job -> {
-            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null &&  job.getNotifications().get(1) == null) {
+            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null && job.getNotifications().get(1) == null) {
                 job.setNotificationToDo(true);
                 return;
             }
@@ -221,11 +245,11 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         });
 
         jobList.forEach(job -> {
-            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())){
+            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())) {
                 job.setIssueTrackerToDo(true);
-            }else{
-                long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open",job.getProject().getId(),job.getId());
-                long totalClosedIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("closed",job.getProject().getId(),job.getId());
+            } else {
+                long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open", job.getProject().getId(), job.getId());
+                long totalClosedIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("closed", job.getProject().getId(), job.getId());
 
                 job.setOpenIssues(totalOpenIssues);
                 job.setClosedIssues(totalClosedIssues);
@@ -269,7 +293,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
         List<com.fxlabs.fxt.dto.project.Job> jobList = converter.convertToDtos(jobs);
         jobList.forEach(job -> {
-            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null &&  job.getNotifications().get(1) == null) {
+            if (CollectionUtils.isEmpty(job.getNotifications()) || job.getNotifications().get(0) == null && job.getNotifications().get(1) == null) {
                 job.setNotificationToDo(true);
                 return;
             }
@@ -281,7 +305,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         });
 
         jobList.forEach(job -> {
-            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())){
+            if (job.getIssueTracker() == null || StringUtils.isEmpty(job.getIssueTracker().getAccountType())) {
                 job.setIssueTrackerToDo(true);
             }
         });

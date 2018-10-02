@@ -30,7 +30,7 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     List<Account> findByAccountTypeInAndOrgIdAndInactive(List<AccountType> types, String orgId, boolean inactive);
 
-    List<Account> findByAccountTypeInAndOrgIdAndInactive(AccountType types, String fxOrgId, boolean inactive);
+    List<Account> findByAccountTypeAndOrgIdAndInactive(AccountType types, String fxOrgId, boolean inactive);
 
     Optional<Account> findByIdAndOrgId(String id, String orgId);
 

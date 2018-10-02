@@ -2,11 +2,16 @@ package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.converters.project.EnvironmentConverter;
 import com.fxlabs.fxt.converters.project.ProjectConverter;
+import com.fxlabs.fxt.dao.entity.clusters.Account;
+import com.fxlabs.fxt.dao.entity.clusters.AccountType;
 import com.fxlabs.fxt.dao.entity.project.Environment;
 import com.fxlabs.fxt.dao.entity.project.Job;
+import com.fxlabs.fxt.dao.entity.project.JobIssueTracker;
 import com.fxlabs.fxt.dao.entity.project.JobNotification;
+import com.fxlabs.fxt.dao.repository.jpa.AccountRepository;
 import com.fxlabs.fxt.dao.repository.jpa.EnvironmentRepository;
 import com.fxlabs.fxt.dao.repository.jpa.JobRepository;
+import com.fxlabs.fxt.dao.repository.jpa.OrgRepository;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.MessageType;
 import com.fxlabs.fxt.dto.base.Response;
@@ -42,18 +47,22 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
     private JobRepository jobRepository;
     private ProjectConverter projectConverter;
     private TextEncryptor encryptor;
+    private OrgRepository orgRepository;
+    private AccountRepository accountRepository;
     private final static String PASSWORD_MASKED = "PASSWORD-MASKED";
 
 
     @Autowired
-    public EnvironmentServiceImpl(EnvironmentRepository repository, JobRepository jobRepository, ProjectConverter projectConverter,
-                                  EnvironmentConverter converter, ProjectService projectService, TextEncryptor encryptor) {
+    public EnvironmentServiceImpl(EnvironmentRepository repository, JobRepository jobRepository, ProjectConverter projectConverter, AccountRepository accountRepository,
+                                  EnvironmentConverter converter, ProjectService projectService, TextEncryptor encryptor, OrgRepository orgRepository) {
         super(repository, converter);
         this.environmentRepository = repository;
         this.projectService = projectService;
         this.jobRepository = jobRepository;
         this.projectConverter = projectConverter;
         this.encryptor = encryptor;
+        this.orgRepository = orgRepository;
+        this.accountRepository = accountRepository;
     }
 
 
@@ -179,11 +188,9 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
         job.setRegions("FXLabs/US_WEST_1");
         job.setInactive(false);
 
+
         //Setting default issuetracker
-        com.fxlabs.fxt.dao.entity.project.JobIssueTracker jobIssueTracker = new com.fxlabs.fxt.dao.entity.project.JobIssueTracker();
-        jobIssueTracker.setUrl("");
-        jobIssueTracker.setAccount("");
-        jobIssueTracker.setName("FXLabs/Dev-IssueTracker");
+        com.fxlabs.fxt.dao.entity.project.JobIssueTracker jobIssueTracker = getFxJobIssueTracker(orgId, environmentResponse.getData().getCreatedBy());
         job.setIssueTracker(jobIssueTracker);
 
         //Setting default notification
@@ -210,6 +217,55 @@ public class EnvironmentServiceImpl extends GenericServiceImpl<Environment, com.
 
         return environmentResponse;
     }
+
+    private JobIssueTracker getFxJobIssueTracker(String org, String user) {
+//        Optional<com.fxlabs.fxt.dao.entity.users.Org> orgResponse = null;
+//        try {
+//            orgResponse = orgRepository.findByName("FXLabs");
+//        } catch (FxException e) {
+//            logger.info(e.getLocalizedMessage());
+//        }
+//
+//        String fXLabsOrg = orgResponse.get().getId()
+        com.fxlabs.fxt.dao.entity.clusters.Account fxAccount = null;
+        List<com.fxlabs.fxt.dao.entity.clusters.Account> accountsFxIssues = this.accountRepository.findByAccountTypeAndOrgIdAndInactive(com.fxlabs.fxt.dao.entity.clusters.AccountType.FX_Issues, org, false);
+
+        if (CollectionUtils.isEmpty(accountsFxIssues)) {
+
+            Optional<com.fxlabs.fxt.dao.entity.users.Org> orgResponse = null;
+            try {
+                orgResponse = orgRepository.findById(org);
+            } catch (FxException e) {
+                logger.info(e.getLocalizedMessage());
+                return null;
+            }
+
+            if (!orgResponse.isPresent() || StringUtils.isEmpty(user)) {
+                return null;
+            }
+
+            Account caFX = new Account();
+            caFX.setOrg(orgResponse.get());
+            caFX.setAccountType(AccountType.FX_Issues);
+            caFX.setCreatedBy(user);
+            caFX.setInactive(false);
+            caFX.setName("FX Issues");
+
+            fxAccount = this.accountRepository.save(caFX);
+
+        } else {
+            fxAccount = accountsFxIssues.get(0);
+        }
+
+        JobIssueTracker jobIssueTracker = new JobIssueTracker();
+        jobIssueTracker.setAccount(fxAccount.getId());
+        jobIssueTracker.setName(fxAccount.getName());
+        jobIssueTracker.setAccountType(fxAccount.getAccountType());
+        // jobIssueTracker = jobIssueTrackerRepository.save(jobIssueTracker);
+        return jobIssueTracker;
+
+    }
+
 
     @Override
     public Response<com.fxlabs.fxt.dto.project.Environment> update(com.fxlabs.fxt.dto.project.Environment environment, String projectId, String orgId) {
