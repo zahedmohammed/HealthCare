@@ -54,7 +54,6 @@ export class JobsEditComponent implements OnInit {
   categories: string[]=[];
   category: string[];
   selectedCategories: string[]=[];
-    defaultTracker = "FX_Issues"
 
   constructor(private projectService: ProjectService, private jobsService: JobsService, private accountService: AccountService,
             private route: ActivatedRoute, private regionService: RegionsService, private router: Router, private handler: Handler,
@@ -119,6 +118,8 @@ export class JobsEditComponent implements OnInit {
         return;
       }
       this.job = results['data'];
+
+      console.log(this.job)
       if ( this.job.categories ){
           this.selectedCategories = this.job.categories.split(",")
           .map(function(item) {
@@ -172,10 +173,12 @@ export class JobsEditComponent implements OnInit {
       }
       //this.itAccounts = results['data'];
       this.itAccounts = new Array();
+      console.log(this.job.issueTracker)
         for (let entry of results['data']) {
-            if(entry.accountType == this.job.issueTracker.accountType){
+          console.log(entry)
+            // if(entry.accountType == this.job.issueTracker.accountType){
                 this.itAccounts.push(entry);
-            }
+            // }
         }
 
     }, error => {
