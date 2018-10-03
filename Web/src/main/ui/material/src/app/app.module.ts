@@ -190,6 +190,7 @@ import { MavenIntegrationComponent } from './components/dialogs/maven-integratio
 import { GradleIntegrationComponent } from './components/dialogs/gradle-integration/gradle-integration.component';
 import { JenkinsIntegrationComponent } from './components/dialogs/jenkins-integration/jenkins-integration.component';
 import { ConfirmDialogComponent } from './components/dialogs/confirm-dialog/confirm-dialog.component';
+import { TestsuitEditDialogComponent } from './components/dialogs/testsuit-edit-dialog/testsuit-edit-dialog.component';
 
 @NgModule({
   imports: [
@@ -358,13 +359,15 @@ import { ConfirmDialogComponent } from './components/dialogs/confirm-dialog/conf
     MavenIntegrationComponent,
     GradleIntegrationComponent,
     JenkinsIntegrationComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    TestsuitEditDialogComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler, DatePipe],
   entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent,
     SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent, SlackRegisterComponent,
-    BotCredentialsComponent, TestsuiteRunComponent, BotDialogComponent, BotSavingDialogComponent,JenkinsIntegrationComponent, MavenIntegrationComponent, GradleIntegrationComponent, ConfirmDialogComponent]
+    BotCredentialsComponent, TestsuiteRunComponent, BotDialogComponent, BotSavingDialogComponent,JenkinsIntegrationComponent, MavenIntegrationComponent,
+    GradleIntegrationComponent, ConfirmDialogComponent,TestsuitEditDialogComponent]
 })
 
 export class AppModule {
