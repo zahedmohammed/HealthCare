@@ -45,6 +45,7 @@ export class RegionsListComponent implements OnInit {
 
   //search bots by name
   searchBot(){
+    if(this.keyword.length>1){
     this.handler.activateLoader();
     this.regionService.searchBot(this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
@@ -59,6 +60,9 @@ export class RegionsListComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+   }
+  else if(this.keyword.length==0){
+    this.get();  }
   }
   
   length = 0;
