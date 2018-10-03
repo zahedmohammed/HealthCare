@@ -265,6 +265,7 @@ export class RunListComponent implements OnInit {
           backgroundColor: this.config.success,
           pointBackgroundColor: this.config.lightBlack,
           pointBorderWidth: 1,
+          pointBorderColor: "#FFF",
           fill: false,
           pointRadius: 3,
           pointHoverRadius: 4
@@ -275,6 +276,7 @@ export class RunListComponent implements OnInit {
           borderColor: this.config.danger,
           backgroundColor: this.config.danger,
           pointBackgroundColor: this.config.lightBlack,
+          pointBorderColor: "#FFF",
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
@@ -410,22 +412,22 @@ export class RunListComponent implements OnInit {
   page = 0;
   pageSize = 10;
   change(evt) {
-    if(this.graph1){
-        this.graph1.destroy();
-        this.graph1.clear();
-    }
-    if(this.graph2){
-        this.graph2.destroy();
-        this.graph2.clear();
-    }
-    if(this.graph3){
-        this.graph3.destroy();
-        this.graph3.clear();
-    }
-    if(this.graph4){
-        this.graph4.destroy();
-        this.graph4.clear();
-    }
+    // if(this.graph1){
+    //     this.graph1.destroy();
+    //     //this.graph1.clear();
+    // }
+    // if(this.graph2){
+    //     this.graph2.destroy();
+    //     //this.graph2.clear();
+    // }
+    // if(this.graph3){
+    //     this.graph3.destroy();
+    //     //this.graph3.clear();
+    // }
+    // if(this.graph4){
+    //     this.graph4.destroy();
+    //     //this.graph4.clear();
+    // }
       this.page = evt['pageIndex'];
       this.getRunByJob(this.jobId);
   }
