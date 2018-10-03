@@ -97,7 +97,6 @@ export class TestSuiteListComponent implements OnInit {
   }
 
   search() {
-    this.handler.activateLoader();
      if (this.keyword == '' && this.category == '') {
        return this.list(this.id);
     }
@@ -107,6 +106,9 @@ export class TestSuiteListComponent implements OnInit {
     } else {
       category_ = this.category;
     }
+    if(this.keyword.length>1 || this.keyword.length==0){
+      this.handler.activateLoader();
+
     this.testSuiteService.searchTestSuite(this.id, category_, this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
@@ -120,6 +122,7 @@ export class TestSuiteListComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+   }
   }
 
 

@@ -48,7 +48,8 @@
               </mat-form-field>
               <mat-input-container class="ml-4">
                 <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
-                  (keyup.enter)="search()">
+                  (keyup)="search()">
+                  <mat-icon matSuffix>search</mat-icon>
               </mat-input-container>
             </div>
           </div>
