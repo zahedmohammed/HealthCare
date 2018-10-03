@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dto.project.Project;
 import com.fxlabs.fxt.dto.project.ProjectFile;
 import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
         String md5Hex = dto.getProps().get(Project.MD5_HEX);
 
 
-        return saveProjectFile(projectId, fileName, content, modified, md5Hex, false, "");
+        return saveProjectFile(projectId, fileName, content, modified, md5Hex, false, StringUtils.EMPTY);
     }
 
     @Override
@@ -89,7 +90,7 @@ public class ProjectFileServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.da
         String modified = dto.getProps().get(Project.MODIFIED_DATE);
         String md5Hex = dto.getProps().get(Project.MD5_HEX);
 
-        return saveProjectFile(projectId, fileName, content, modified, md5Hex, false, "");
+        return saveProjectFile(projectId, fileName, content, modified, md5Hex, false, StringUtils.EMPTY);
     }
 
     @Override
