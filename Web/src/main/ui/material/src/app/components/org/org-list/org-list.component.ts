@@ -45,6 +45,7 @@ export class OrgListComponent implements OnInit {
   //search Orgs
 
   searchOrgs() {
+    if(this.keyword.length>1){
     this.handler.activateLoader();
       
     this.orgService.searchOrg(this.keyword, this.page, this.pageSize).subscribe(results => {
@@ -60,6 +61,10 @@ export class OrgListComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+  else if(this.keyword.length==0){
+    this.list();
+  }
   }
 
 
