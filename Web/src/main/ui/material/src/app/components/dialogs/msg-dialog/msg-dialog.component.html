@@ -1,8 +1,13 @@
-<h2 mat-dialog-title>Wire Logs</h2>
+
+<h6 mat-dialog-title>{{currentSuiteName}}</h6>
+<button mat-button class="float-right"   (click)="nextSuite()">Next</button>
+<button mat-button class="float-right"  (click)="previousSuite()">Previous</button>
+<p>Wire Logs</p>
+
 
 <mat-dialog-content class="mat-typography">
     <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
-    <ace-editor class="col-md-12 border editor" id="editor" [(text)]="data" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
+    <ace-editor class="col-md-12 border editor" id="editor" [(text)]="logData" [theme]="'github'" [mode]="'yaml'" [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false}"
                 [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" #editor>
     </ace-editor>
 </mat-dialog-content>

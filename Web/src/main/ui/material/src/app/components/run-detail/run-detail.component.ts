@@ -58,6 +58,8 @@ export class RunDetailComponent implements OnInit {
     prevKeyword: string = '';
     prevCategory: string = '';
     prevStatus: string = '';
+    wireLogDetails: any =[];
+    renderedData;
 
     displayedColumns: string[] = ['suite', 'category', 'severity', 'status', 'data', 'time', 'analytics'];
     dataSource = null;
@@ -162,11 +164,13 @@ export class RunDetailComponent implements OnInit {
             this.length = results['totalElements'];
             this.dataSource = new MatTableDataSource(this.suites);
             this.dataSource.sort = this.sort;
+            this.dataSource.connect().subscribe(d => this.renderedData = d);
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
         });
     }
+
 
     search() {
         if (this.prevKeyword != this.keyword)
@@ -204,6 +208,7 @@ export class RunDetailComponent implements OnInit {
             this.length = results['totalElements'];
             this.dataSource = new MatTableDataSource(this.suites);
             this.dataSource.sort = this.sort;
+            this.dataSource.connect().subscribe(d => this.renderedData = d);
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
@@ -223,17 +228,22 @@ export class RunDetailComponent implements OnInit {
             for (var i = 0; i < arrayLength; i++) {
                 msg += this.list[i].logs;
             }
-            this.showDialog(msg);
+            this.showDialog(msg,name);
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
         });
     }
 
-    showDialog(msg) {
+    showDialog(msg,suitName) {
+
+        for(var i=0;i<this.suites.length;i++)
+        {
+            this.wireLogDetails[i] = this.renderedData[i].suiteName
+        }
         this.dialog.open(MsgDialogComponent, {
             width: '100%',
-            data: msg
+            data: [msg,suitName,this.wireLogDetails,this.projectId,this.jobId,this.id]
         });
     }
 
