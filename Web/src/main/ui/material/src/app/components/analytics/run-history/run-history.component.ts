@@ -132,7 +132,7 @@ export class RunHistoryComponent implements OnInit {
       for (let i = totalData.length - 1; i >= 0; i--) {
         tp[i] = totalData[i]['totalPassed'];
         tf[i] = totalData[i]['totalFailed'];
-        tb[i] = (totalData[i]['totalBytes']);
+        tb[i] = (totalData[i]['totalBytes'] / 1024);
         rt[i] = (totalData[i]['requestTime'] / 1000);
         crDate[i] = totalData[i]['createdDate'];
         let dt = new Date(crDate[i]);

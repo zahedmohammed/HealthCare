@@ -263,6 +263,8 @@ export class RunListComponent implements OnInit {
           label: 'Passed',
           borderColor: this.config.success,
           backgroundColor: this.config.success,
+          pointBackgroundColor: this.config.lightGreen,
+          pointBorderWidth: 2,
           fill: false,
           pointRadius: 4,
           pointHoverRadius: 5
@@ -272,6 +274,8 @@ export class RunListComponent implements OnInit {
           label: 'Failed',
           borderColor: this.config.danger,
           backgroundColor: this.config.danger,
+          pointBackgroundColor: this.config.lightGreen,
+          pointBorderWidth: 2,
           fill: false,
           pointRadius: 4,
           pointHoverRadius: 5
@@ -288,6 +292,8 @@ export class RunListComponent implements OnInit {
           label: 'Closed',
           borderColor: this.config.success,
           backgroundColor: this.config.success,
+          pointBackgroundColor: this.config.lightGreen,
+          pointBorderWidth: 2,
           fill: false,
           pointRadius: 4,
           pointHoverRadius: 5
@@ -297,15 +303,19 @@ export class RunListComponent implements OnInit {
           label: 'Logged',
           borderColor: this.config.danger,
           backgroundColor: this.config.danger,
+          pointBackgroundColor: this.config.lightGreen,
+          pointBorderWidth: 2,
           fill: false,
           pointRadius: 4,
           pointHoverRadius: 5
         },
         {
-          data: issuesReopen,
+          data: totalOpenIssues,
           label: 'Open',
           borderColor: this.config.warning,
           backgroundColor: this.config.warning,
+          pointBackgroundColor: this.config.lightGreen,
+          pointBorderWidth: 2,
           fill: false,
           pointRadius: 4,
           pointHoverRadius: 5
@@ -322,6 +332,8 @@ export class RunListComponent implements OnInit {
           label: 'Bytes',
           borderColor: this.config.info,
           backgroundColor: this.config.info,
+          pointBackgroundColor: this.config.lightGreen,
+          pointBorderWidth: 2,
           fill: false,
           pointRadius: 4,
           pointHoverRadius: 5
@@ -338,6 +350,8 @@ export class RunListComponent implements OnInit {
           label: 'Time',
           borderColor: this.config.infoAlt,
           backgroundColor: this.config.infoAlt,
+          pointBackgroundColor: this.config.lightGreen,
+          pointBorderWidth: 2,
           fill: false,
           pointRadius: 4,
           pointHoverRadius: 5
@@ -396,8 +410,20 @@ export class RunListComponent implements OnInit {
   page = 0;
   pageSize = 10;
   change(evt) {
-    this.page = evt['pageIndex'];
-    this.getRunByJob(this.jobId);
+    if(this.chart){
+        this.chart.destroy();
+    }
+    if(this.chart2){
+        this.chart2.destroy();
+    }
+    if(this.chart3){
+        this.chart3.destroy();
+    }
+    if(this.chart4){
+        this.chart4.destroy();
+    }
+      this.page = evt['pageIndex'];
+      this.getRunByJob(this.jobId);
   }
 
 }
