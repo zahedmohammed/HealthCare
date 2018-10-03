@@ -66,6 +66,74 @@
 
     <br/>
 
+
+ <!-- Accordian start -->
+ <div class="mat-elevation-z8 box-default">
+
+ <mat-accordion>
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title>
+              <p class="non-numeric text-muted">Total No. of API Endpoints in the project : {{ coverageDetails.totalEndpoints | number}}</p>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="mb-3">
+      </div>
+      <div class="col-md-12" *ngFor="let e of coverageDetails.endpoints">
+          <div class="mb-3">
+              <div class="callout callout-danger" *ngIf="e.method=='DELETE'">
+                  <span class="button text-danger"><b>{{e.method}}</b></span>
+                  <span class="opblock-summary-path">{{e.endpoint}}</span>
+                </div>
+                <div class="callout callout-success" *ngIf="e.method=='POST'">
+                    <span class="button text-success"><b>{{e.method}}</b></span>
+                    <span class="opblock-summary-path">{{e.endpoint}}</span>
+                  </div> 
+                  <div class="callout callout-warning " *ngIf="e.method=='PUT'">
+                      <span class="button text-warning"><b>{{e.method}}</b></span>
+                      <span class="opblock-summary-path">{{e.endpoint}}</span>
+                    </div> 
+                    <div class="callout callout-info" *ngIf="e.method=='GET'">
+                        <span class="button text-info"><b>{{e.method}}</b></span>
+                        <span class="opblock-summary-path">{{e.endpoint}}</span>
+                      </div>
+      
+          </div>
+      </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title>
+              <p class="non-numeric text-muted">No. of Test Suites auto generated : {{ coverageDetails.totalSuites | number }}</p>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="col-md-12" *ngFor="let cat of coverageDetails.countByCategory">
+          <div class="mb-3">
+
+              {{cat.groupBy}} : {{cat.count}}
+          </div>
+      </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel>
+      <mat-expansion-panel-header>
+          <mat-panel-title>
+              <p class="non-numeric text-muted">No. of test cases in all Test Suites generated : {{ coverageDetails.totalTestCases  | number}}</p>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="mb-3">
+          Average {{ coverageDetails.totalTestCases / coverageDetails.totalSuites  | number }} test case(s) per test-suite
+      </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<!-- Accordian end -->
+</div>  
+<br/>
+
+
     <div class="box box-default">
 
       <div class="row">
