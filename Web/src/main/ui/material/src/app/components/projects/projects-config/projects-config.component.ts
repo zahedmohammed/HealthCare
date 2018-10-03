@@ -17,6 +17,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
 import { MatStepper } from '@angular/material';
 import {AutoSyncComponent} from "../../dialogs/auto-sync/auto-sync.component";
+import {AutoSyncSaveConfigComponent} from "../../dialogs/auto-sync-save-config/auto-sync-save-config.component";
 
 
 @Component({
@@ -143,6 +144,7 @@ export class ProjectsConfigComponent implements OnInit {
             }
 
             this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
+            this.onSave();
             this.getAutoCode();
             // this.matStepper.next();
             //this.router.navigate(['/app/projects/' + this.project.id + '/configuration']);
@@ -207,6 +209,14 @@ export class ProjectsConfigComponent implements OnInit {
         });
     }
 
+    onSave(){
+        const dialogRef = this.dialog.open(AutoSyncSaveConfigComponent, {
+            //width:'450px',
+            data: this.project
+        });
+        dialogRef.afterClosed().subscribe(result => {
+        });
+    }
 
     projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
     visibilities = ['PRIVATE', 'ORG_PUBLIC'];
