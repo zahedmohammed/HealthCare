@@ -45,6 +45,7 @@ export class AccountListComponent implements OnInit {
 
   //Search Account By Name
   searchAccount(){
+    if(this.keyword.length>1){
     this.handler.activateLoader();
     this.accountService.searchAccount(this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
@@ -59,6 +60,10 @@ export class AccountListComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+  if(this.keyword.length==0){
+    this.list();
+  }
 
   }
 

@@ -352,7 +352,7 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     public Response<List<Account>> search(String keyword, String orgId, Pageable pageable) {
 
         if (StringUtils.isNotEmpty(keyword)) {
-            Page<com.fxlabs.fxt.dao.entity.clusters.Account> page = this.accountRepository.findByOrgIdAndNameContainingIgnoreCase(orgId, keyword, pageable);
+            Page<com.fxlabs.fxt.dao.entity.clusters.Account> page = this.accountRepository.findByOrgIdAndNameContainingIgnoreCaseAndInactive(orgId, keyword,false, pageable);
             return new Response<>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
         } else {
 
