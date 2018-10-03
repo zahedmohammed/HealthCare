@@ -34,5 +34,5 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
 
     Stream<Project> findByInactive(boolean inactive);
 
-    Page<Project> findByOrgIdAndNameContainingIgnoreCase(String org, String keyword, Pageable pageable);
+    Page<Project> findByOrgIdAndNameContainingIgnoreCaseAndInactive(String org, String keyword,boolean inactive, Pageable pageable);
 }

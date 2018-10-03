@@ -38,6 +38,7 @@ export class ProjectsListComponent implements OnInit {
   //  Search project By Name
 
   searchProject(){
+    if(this.keyword.length>1){
     this.handler.activateLoader();
     this.projectService.searchProject(this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
@@ -50,7 +51,10 @@ export class ProjectsListComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
-
+  }
+   if(this.keyword.length<=1){
+    this.list();
+   }
   }
 
   length = 0;

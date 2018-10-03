@@ -659,7 +659,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         if (StringUtils.isNotEmpty(keyword)) {
 
-            Page<com.fxlabs.fxt.dao.entity.project.Project> page = projectRepository.findByOrgIdAndNameContainingIgnoreCase( orgId, keyword, pageable);
+            Page<com.fxlabs.fxt.dao.entity.project.Project> page = projectRepository.findByOrgIdAndNameContainingIgnoreCaseAndInactive( orgId, keyword,false, pageable);
             return new Response<List<Project>>(converter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());
 
         }else{
