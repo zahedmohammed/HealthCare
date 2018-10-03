@@ -9,6 +9,7 @@ import com.fxlabs.fxt.dao.entity.project.TestSuiteCount;
 import com.fxlabs.fxt.dao.repository.es.ProjectFileESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.EndpointRepository;
+import com.fxlabs.fxt.dao.repository.jpa.ProjectFileRepository;
 import com.fxlabs.fxt.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
@@ -24,12 +25,14 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -40,9 +43,11 @@ import java.util.concurrent.atomic.AtomicLong;
 @Transactional
 public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxlabs.fxt.dto.project.TestSuite, String> implements TestSuiteService {
 
-    private TestSuiteESRepository testSuiteESRepository;
+
     private ProjectFileService projectFileService;
     private ProjectFileESRepository projectFileESRepository;
+    private ProjectFileRepository projectFileRepository;
+    private TestSuiteESRepository testSuiteESRepository;
     private ProjectService projectService;
     private ProjectRepository projectRepository;
     private ProjectConverter projectConverter;
@@ -62,7 +67,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
                                 ProjectFileService projectFileService, ProjectService projectService, ProjectRepository projectRepository, GaaSTaskRequestProcessor gaaSTaskRequestProcessor,
                                 ProjectFileESRepository projectFileESRepository, TestSuiteConverter testSuiteConverter, TestSuiteMinConverter testSuiteMinConverter,
                                 AccountService accountService, EndpointRepository endpointRepository, EndpointConverter endpointConverter,
-                                TestCoverageService testCoverageService) {
+                                TestCoverageService testCoverageService, ProjectFileRepository projectFileRepository) {
         super(repository, converter);
         this.repository = repository;
         this.testSuiteESRepository = testSuiteESRepository;
@@ -78,6 +83,8 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         this.endpointRepository = endpointRepository;
         this.endpointConverter = endpointConverter;
         this.testCoverageService = testCoverageService;;
+        this.projectFileRepository = projectFileRepository;
+
     }
 
     @Override
@@ -91,10 +98,6 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         Page<TestSuite> page = testSuiteESRepository.findByPublishToMarketplaceAndNameStartsWithIgnoreCase(Boolean.TRUE, keyword, pageable);
         List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
 
-//        testSuites.forEach(testSuite -> {
-//            testSuiteConverter.copyArraysToText(testSuite);
-//        });
-
         return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
     }
     @Override
@@ -103,19 +106,12 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         List<com.fxlabs.fxt.dto.project.TestSuite> testSuites = converter.convertToDtos(page.getContent());
 
-//        testSuites.forEach(testSuite -> {
-//            testSuiteConverter.copyArraysToText(testSuite);
-//        });
+
 
         return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
     }
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> create(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
-
-//        String fileName = testSuite.getProps().get(Project.FILE_NAME);
-//        if (StringUtils.contains(fileName, "-")){
-//            throw new FxException(String.format("FileName [%s] should not contain hypen '-'.", fileName));
-//        }
 
         Optional<TestSuite> testSuiteOptional = ((TestSuiteRepository) repository).findByProjectIdAndName(testSuite.getProject().getId(), testSuite.getName());
 
@@ -336,7 +332,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         Response<ProjectFile> projectFileResponse = this.projectFileService.findByProjectIdAndFilename(testSuiteOptional.get().getProject().getId(), testSuiteOptional.get().getName() + ".yaml");
         //
 
-        if (!projectFileResponse.isErrors() && projectFileResponse.getData() == null) {
+        if (projectFileResponse == null || projectFileResponse.isErrors() || projectFileResponse.getData() == null) {
             throw new FxException("Invalid request for test-suite");
         }
        // String yaml = testSuiteMinConverter.copyTestSuiteToYaml(testSuiteMinConverter.convertToEntity(dto));
@@ -381,6 +377,30 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             }
 
         });
+    }
+
+    @Override
+    public Response<Boolean> deleteAllTestSuitesByProjectId(String projectId, String orgId) {
+
+        if (StringUtils.isEmpty(projectId)) {
+            throw new FxException("Invalid request for file's deletion");
+        }
+        AtomicInteger page = new AtomicInteger(0);
+        AtomicInteger pageSize = new AtomicInteger(0);
+        // PageRequest.of(page.addAndGet(1), pageSize.addAndGet(100));
+        // Page<TestSuite> pagedResult = testSuiteESRepository.findByProjectId(projectId,PageRequest.of(page.addAndGet(1), pageSize.addAndGet(100)));
+
+        try {
+            testSuiteESRepository.deleteInBatchByProjectIdAndAutoGenerated(projectId, true);
+            repository.deleteInBatchByProjectIdAndAutoGenerated(projectId, true);
+            projectFileRepository.deleteInBatchByProjectIdAndAutoGenerated(projectId, true);
+            projectFileESRepository.deleteInBatchByProjectIdAndAutoGenerated(projectId, true);
+        } catch (Exception e) {
+            return new Response<>().withErrors(true);
+        }
+
+        return new Response<>(true);
+
     }
 
 

@@ -34,4 +34,6 @@ public interface TestSuiteService extends GenericService<TestSuite, String> {
     Response<APICoverageDetails> getCoverageByProjectId(String id, String user);
 
     public Response<com.fxlabs.fxt.dto.project.TestSuite> delete(String id, String user);
+
+    public Response<Boolean> deleteAllTestSuitesByProjectId(String  projectId, String orgId);
 }

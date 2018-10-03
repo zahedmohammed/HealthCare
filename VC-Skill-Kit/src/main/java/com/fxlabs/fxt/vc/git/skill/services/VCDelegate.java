@@ -73,12 +73,13 @@ public class VCDelegate {
             response = versionControlService.process(_task, path);
             response.setProjectId(task.getProjectId());
             response.setProjectName(task.getProjectName());
-
+            boolean pushToControlPlane = true;
             if (response.isSuccess()) {
                 CodegenThreadUtils.taskLogger.set(new com.fxlabs.fxt.codegen.code.BotLogger());
                 // 1.2 Setup Fxfile.yaml & AutoCodeConfig.yaml
                 AutoCodeConfigMinimal autoCodeConfigContent = null;
                 if (task.getAutoCodeConfigMinimal() != null) {
+                    pushToControlPlane = false;
                     autoCodeConfigContent = task.getAutoCodeConfigMinimal();
                 }
 
@@ -87,19 +88,20 @@ public class VCDelegate {
                 // 2.1. AutoCode -> delete([] categories)
                 // 2.2. AutoCode -> run()
                 getInactiveCategoriesForDeletion(task);
-                autoCodeDeletion(task, path);
-                testSuiteDeletion(task, path);
+                autoCodeDeletion(task, path, pushToControlPlane);
+                testSuiteDeletion(task, path, pushToControlPlane);
 
                 //set directory path for the test suite from controlplane and commit to git
-                boolean isCreateTestSuiteFromControlPlane = false;
+
                 if (!CollectionUtils.isEmpty(task.getTestSuiteAddToVCRequests())) {
                     setParent(task.getTestSuiteAddToVCRequests());
                     int count = stubGenerator.addTestSuite(path, task.getTestSuiteAddToVCRequests());
-                    isCreateTestSuiteFromControlPlane = true;
+                    pushToControlPlane = false;
                 }
 
                 if (task.isRecreate()) {
                     // TODO Generate tests
+                    pushToControlPlane = true;
                     try {
                         // 2/4. Auto-Code
                         String openAPISpec = task.getOpenAPISpec();
@@ -117,14 +119,7 @@ public class VCDelegate {
                                     endpointObj.setProjectId(task.getProjectId());
                                     endpoints.add(endpointObj);
                                 }
-//
-//                                Iterator<String> itrM = methodsMap.keySet().iterator();
-//                                while (itrM.hasNext()) {
-//                                    String method = itrM.next();
-//                                    Endpoint endpoint = new Endpoint(key, method);
-//                                    endpoint.setProjectId(task.getProjectId());
-//                                    endpoints.add(endpoint);
-//                                }
+
                             }
 
                             response.setApiEndpoints(endpoints);
@@ -132,12 +127,6 @@ public class VCDelegate {
                             Iterator<String> itr_ = pathCountMap.keySet().iterator();
                             while (itr_.hasNext()) {
                                 count += pathCountMap.get(itr_.next());
-
-//                                Map<String, Integer> methodsTSMap = pathCountMap.get(itr_.next());
-//                                Iterator<String> itrM = methodsTSMap.keySet().iterator();
-//                                while (itrM.hasNext()) {
-//                                    count += methodsTSMap.get(itrM.next());
-//                                }
                             }
                             response.setAutoGenSuitesCount(count);
                         }
@@ -163,7 +152,7 @@ public class VCDelegate {
                 CredUtils.errors.set(Boolean.FALSE);
 
                 // 4/4. Push to Control-Plane
-                if (!isCreateTestSuiteFromControlPlane) {
+                if (pushToControlPlane) {
                     Project project = service.load(response.getPath(), task.getProjectId());
                 }
 
@@ -220,12 +209,13 @@ public class VCDelegate {
 
     }
 
-    private void autoCodeDeletion(VCTask task, String path) {
+    private void autoCodeDeletion(VCTask task, String path, boolean pushToControlPlane) {
 
         String path_ = path + "/test-suites/AutoCode";
 
         if (task.isDeleteAll()) {
             delete(new File(path_));
+            pushToControlPlane = false;
         }
 
 
@@ -245,17 +235,18 @@ public class VCDelegate {
             filesToDelete.stream().forEach(f -> {
                 delete(f);
             });
-
+            pushToControlPlane = false;
         }
     }
 
 
-    private void testSuiteDeletion(VCTask task, String path) {
+    private void testSuiteDeletion(VCTask task, String path, boolean pushToControlPlane) {
 
         String path_ = path + "/test-suites";
 
         if (!CollectionUtils.isEmpty(task.getCategories()) && task.isDeleteManualTestSuite()) {
 
+            pushToControlPlane = false;
             List<File> filesToDelete = new ArrayList<>();
             List<String> list = task.getCategories();
 
