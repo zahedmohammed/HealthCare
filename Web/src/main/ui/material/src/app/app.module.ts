@@ -360,7 +360,7 @@ import { TestsuitEditDialogComponent } from './components/dialogs/testsuit-edit-
     GradleIntegrationComponent,
     JenkinsIntegrationComponent,
     ConfirmDialogComponent,
-    TestsuitEditDialogComponent
+    TestsuitEditDialogComponent 
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler, DatePipe],
