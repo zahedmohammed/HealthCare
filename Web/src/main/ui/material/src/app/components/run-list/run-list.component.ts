@@ -35,10 +35,10 @@ export class RunListComponent implements OnInit {
   displayedColumns: string[] = ['region', 'date', 'passfail', 'success', 'data', 'totaltime', 'bugs', 'bugs2', 'status', 'no'];
   dataSource = null;
   config = CHARTCONFIG;
-  chart: Chart = []; // This will hold our chart info
-  chart2: Chart = []; // This will hold our chart info
-  chart3: Chart = []; // This will hold our chart info
-  chart4: Chart = []; // This will hold our chart info
+  graph1: Chart = []; // This will hold our chart info
+  graph2: Chart = []; // This will hold our chart info
+  graph3: Chart = []; // This will hold our chart info
+  graph4: Chart = []; // This will hold our chart info
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -263,22 +263,22 @@ export class RunListComponent implements OnInit {
           label: 'Passed',
           borderColor: this.config.success,
           backgroundColor: this.config.success,
-          pointBackgroundColor: this.config.lightGreen,
-          pointBorderWidth: 2,
+          pointBackgroundColor: this.config.lightBlack,
+          pointBorderWidth: 1,
           fill: false,
-          pointRadius: 4,
-          pointHoverRadius: 5
+          pointRadius: 3,
+          pointHoverRadius: 4
         },
         {
           data: totalFail,
           label: 'Failed',
           borderColor: this.config.danger,
           backgroundColor: this.config.danger,
-          pointBackgroundColor: this.config.lightGreen,
-          pointBorderWidth: 2,
+          pointBackgroundColor: this.config.lightBlack,
+          pointBorderWidth: 1,
           fill: false,
-          pointRadius: 4,
-          pointHoverRadius: 5
+          pointRadius: 3,
+          pointHoverRadius: 4
         }
       ]
     };
@@ -292,33 +292,33 @@ export class RunListComponent implements OnInit {
           label: 'Closed',
           borderColor: this.config.success,
           backgroundColor: this.config.success,
-          pointBackgroundColor: this.config.lightGreen,
-          pointBorderWidth: 2,
+          pointBackgroundColor: this.config.lightBlack,
+          pointBorderWidth: 1,
           fill: false,
-          pointRadius: 4,
-          pointHoverRadius: 5
+          pointRadius: 3,
+          pointHoverRadius: 4
         },
         {
           data: issuesLogged,
           label: 'Logged',
           borderColor: this.config.danger,
           backgroundColor: this.config.danger,
-          pointBackgroundColor: this.config.lightGreen,
-          pointBorderWidth: 2,
+          pointBackgroundColor: this.config.lightBlack,
+          pointBorderWidth: 1,
           fill: false,
-          pointRadius: 4,
-          pointHoverRadius: 5
+          pointRadius: 3,
+          pointHoverRadius: 4
         },
         {
           data: totalOpenIssues,
           label: 'Open',
           borderColor: this.config.warning,
           backgroundColor: this.config.warning,
-          pointBackgroundColor: this.config.lightGreen,
-          pointBorderWidth: 2,
+          pointBackgroundColor: this.config.lightBlack,
+          pointBorderWidth: 1,
           fill: false,
-          pointRadius: 4,
-          pointHoverRadius: 5
+          pointRadius: 3,
+          pointHoverRadius: 4
         }
       ]
     };
@@ -332,11 +332,11 @@ export class RunListComponent implements OnInit {
           label: 'Bytes',
           borderColor: this.config.info,
           backgroundColor: this.config.info,
-          pointBackgroundColor: this.config.lightGreen,
-          pointBorderWidth: 2,
+          pointBackgroundColor: this.config.lightBlack,
+          pointBorderWidth: 1,
           fill: false,
-          pointRadius: 4,
-          pointHoverRadius: 5
+          pointRadius: 3,
+          pointHoverRadius: 4
         },
       ]
     };
@@ -350,38 +350,38 @@ export class RunListComponent implements OnInit {
           label: 'Time',
           borderColor: this.config.infoAlt,
           backgroundColor: this.config.infoAlt,
-          pointBackgroundColor: this.config.lightGreen,
-          pointBorderWidth: 2,
+          pointBackgroundColor: this.config.lightBlack,
+          pointBorderWidth: 1,
           fill: false,
-          pointRadius: 4,
-          pointHoverRadius: 5
+          pointRadius: 3,
+          pointHoverRadius: 4
         }
       ]
     }
     
     //Graph 1 Start
-    this.chart = new Chart('canvas1', {
+    this.graph1 = new Chart('canvasGraph1', {
       type: 'line',
       data: graph1Data,
       options: graph1Options
     });
 
     //Graph 2 Start
-    this.chart2 = new Chart('canvas2', {
+    this.graph2 = new Chart('canvasGraph2', {
       type: 'line',
       data: graph2Data,
       options: graph2Options
     });
 
     //Graph 3 Start
-    this.chart3 = new Chart('canvas3', {
+    this.graph3 = new Chart('canvasGraph3', {
       type: 'line',
       data: graph3Data,
       options: graph3Options
     });
 
     //Graph 4 Start
-    this.chart4 = new Chart('canvas4', {
+    this.graph4 = new Chart('canvasGraph4', {
       type: 'line',
       data: graph4Data,
       options: graph4Options
@@ -410,17 +410,21 @@ export class RunListComponent implements OnInit {
   page = 0;
   pageSize = 10;
   change(evt) {
-    if(this.chart){
-        this.chart.destroy();
+    if(this.graph1){
+        this.graph1.destroy();
+        this.graph1.clear();
     }
-    if(this.chart2){
-        this.chart2.destroy();
+    if(this.graph2){
+        this.graph2.destroy();
+        this.graph2.clear();
     }
-    if(this.chart3){
-        this.chart3.destroy();
+    if(this.graph3){
+        this.graph3.destroy();
+        this.graph3.clear();
     }
-    if(this.chart4){
-        this.chart4.destroy();
+    if(this.graph4){
+        this.graph4.destroy();
+        this.graph4.clear();
     }
       this.page = evt['pageIndex'];
       this.getRunByJob(this.jobId);
