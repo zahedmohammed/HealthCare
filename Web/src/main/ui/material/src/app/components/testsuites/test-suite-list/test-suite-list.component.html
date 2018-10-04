@@ -30,7 +30,8 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-7">
-            <button mat-button color="primary" class="btn-w-md mt-3" [routerLink]="['/app/projects', id, 'test-suites', 'new']">
+            <!--<button mat-button color="primary" class="btn-w-md mt-3" [routerLink]="['/app/projects', id, 'test-suites', 'new']">-->
+            <button mat-button color="primary" class="btn-w-md mt-3" (click)="newTestSuite()">
               <i class="fa fa-plus"></i>
               New Test Suite
             </button>

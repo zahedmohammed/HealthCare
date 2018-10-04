@@ -15,6 +15,7 @@ import { ProjectSync } from '../../../models/project-sync.model';
 import { SnackbarService}from '../../../services/snackbar.service';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import {TestsuitEditDialogComponent} from "../../dialogs/testsuit-edit-dialog/testsuit-edit-dialog.component";
+import {TestsuitNewDialogComponent} from "../../dialogs/testsuit-new-dialog/testsuit-new-dialog.component";
 
 @Component({
 selector: 'app-test-suite-list',
@@ -48,7 +49,18 @@ export class TestSuiteListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private testSuiteService: TestSuiteService, private runService: RunService, private dialog: MatDialog,
-    private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
+    private projectService: ProjectService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) {
+      dialog.afterAllClosed.subscribe(()=>
+      {
+          if(this.id != null) {
+              this.page = 0;
+              this.keyword="";
+              this.category="";
+              this.loadProject(this.id);
+              this.searchByCategory();
+          }
+      })
+  }
 
   ngOnInit() {
     this.handler.activateLoader();
@@ -142,7 +154,7 @@ export class TestSuiteListComponent implements OnInit {
     } else {
       category_ = this.category;
     }
-    console.log("check cat",this.category + "/" + this.currentCategory)
+    // console.log("check cat",this.category + "/" + this.currentCategory)
 
     if(!this.category.match(this.currentCategory)){
       this.page=0;
@@ -191,13 +203,11 @@ export class TestSuiteListComponent implements OnInit {
         // });
     }
 
-  // open() {
-  //   const dialogRef = this.dialog.open(AutoSyncComponent, {
-  //     //width:'450px',
-  //     data: this.project
-  // });
-  //  dialogRef.afterClosed().subscribe(result => {
-  // });
-  // }
+    newTestSuite(){
+        const dialogRef = this.dialog.open(TestsuitNewDialogComponent, {
+            width: '100%',
+            data: [this.id]
+        });
+    }
 
 }

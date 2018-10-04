@@ -12,6 +12,8 @@ import {TestCase, TestSuite} from "../../../models/test-suite.model";
 import {Project} from "../../../models/project.model";
 import {MsgDialogComponent} from "../msg-dialog/msg-dialog.component";
 import {TestsuiteRunComponent} from "../testsuite-run/testsuite-run.component";
+import {TestSuiteNewComponent} from "../../testsuites/test-suite-new/test-suite-new.component";
+import {TestsuitNewDialogComponent} from "../testsuit-new-dialog/testsuit-new-dialog.component";
 
 @Component({
   selector: 'app-testsuit-edit-dialog',
@@ -31,8 +33,9 @@ export class TestsuitEditDialogComponent implements OnInit {
     currentSuiteName:string;
 
     constructor(private testSuiteService: TestSuiteService, private runService: RunService,private dialog: MatDialog,
-                @Inject(MAT_DIALOG_DATA) public data: any,private _formBuilder: FormBuilder,public dialogRef: MatDialogRef<MsgDialogComponent>,
-                private projectService: ProjectService, private handler: Handler, private snackbarService: SnackbarService) {
+                @Inject(MAT_DIALOG_DATA) public data: any,private _formBuilder: FormBuilder,public dialogRef: MatDialogRef<TestsuitEditDialogComponent>,
+                private projectService: ProjectService, private handler: Handler, private snackbarService: SnackbarService,
+                private router: Router) {
         this.projectId = data[0];
         this.testSuiteId = data[1];
         this.currentSuiteName = data[2];
@@ -116,11 +119,9 @@ export class TestsuitEditDialogComponent implements OnInit {
                 return;
             }
             this.testSuite = results['data'];
-            console.log("testSuite", this.testSuite);
             let k: TestCase = new TestCase();
             if (this.testSuite.testCases.length == 0) this.testSuite.testCases = [k];
             for (var i = 0; i < this.testSuite.testCases.length; i++) this.addItem1(this.testSuite.testCases[i]);
-            console.log(this.firstFormGroup);
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
@@ -149,5 +150,34 @@ export class TestsuitEditDialogComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
         });
     }
+
+    deleteSuite() {
+
+        var r = confirm("Are you sure you want to delete this test suite?");
+        if (r == true) {
+            this.snackbarService.openSnackBar("Deleting...", "");
+            this.testSuiteService.delete(this.testSuite.id).subscribe(results => {
+                if (this.handler.handle(results)) {
+                    return;
+                }
+                this.dialogRef.close();
+                this.snackbarService.openSnackBar("'TestSuite '" + this.testSuite.name + "' deleted", "");
+                this.router.navigate(['/app/projects', this.projectId, 'test-suites']);
+            }, error => {
+                this.handler.hideLoader();
+                this.handler.error(error);
+            });
+        }
+    }
+
+    cloneTestSuite() {
+        this.dialogRef.close();
+        const dialogRef = this.dialog.open(TestsuitNewDialogComponent, {
+            width: '100%',
+            data: [this.projectId,this.testSuite.yaml]
+        });
+
+    }
+
 
 }
