@@ -25,7 +25,6 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
     protected static final String SCENARIO = "DDOS";
     protected static final String PARAM_TYPE = "query_param";
     protected static final String AUTH = "Default";
-    protected static final String OPERAND = "200";
 
     @Override
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
@@ -61,7 +60,7 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
         List<TestSuiteMin> testSuites = null;
 
         // check full mapping exists for the path
-        String val = configUtil.getDDOSMappedValue(path);
+        String val = configUtil.getDDOSMappedValue(path, SCENARIO);
         if (StringUtils.isNotEmpty(val)) {
             String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_Mapped";
             testSuites = build(op, path, val, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
@@ -70,8 +69,7 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
 
             for (Parameter param : op.getParameters()) {
 
-
-                if (!configUtil.isDDOSSupportedName(param.getName())) {
+                if (!configUtil.isDDOSSupportedName(param.getName(), SCENARIO)) {
                     continue;
                 }
 
@@ -83,7 +81,7 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
                     continue;
                 }*/
 
-                String value = configUtil.getDDOSSupportedValue(param.getName());
+                String value = configUtil.getDDOSSupportedValue(param.getName(), SCENARIO);
 
 
                 String postFix = PARAM_TYPE + "_" + param.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO) ;

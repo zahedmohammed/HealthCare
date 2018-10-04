@@ -459,23 +459,22 @@ public class AutoCodeConfigServiceUtil {
         sla.setType("sla");
 
         sla.setDisplayHeaderLabel("Performance SLA");
-        sla.setDisplayHeaderDescription("To test if the response time of an API is within the agreed upon SLA (in milliseconds).");
-        sla.setAssertionDescription("Successful test suite response code is 200 along with reponse time lesser than or equal to the given value.");
+        sla.setDisplayHeaderDescription("Continuously measure and track performance SLAs (in milliseconds).");
+        //sla.setAssertionDescription("Successful test suite response code is 200 along with response time lesser than the given value.");
 
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@StatusCode == 200");
-        assertions.add("@StatusCode != 404");
+        assertions.add("@StatusCode == 200 AND @ResponseTime < 500");
 
         sla.setAssertions(assertions);
         sla.setSequenceOrder(seqOrder);
         List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
 
         AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
-//        admin.setName("Admin access");
-        match.setPathPatterns("/**");
-        match.setMethods("Get");
-        match.setValue("1000");
+        //admin.setName("Admin access");
+        //match.setPathPatterns("/**");
+        //match.setMethods("Get");
+        //match.setValue("1000");
         matchesList.add(match);
 
         sla.setMatches(matchesList);

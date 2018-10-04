@@ -358,12 +358,12 @@ public class AutoCodeConfigUtil {
     // TODO Default names for pageSize in Java Spring, Jersey, Python, Ruby, .Net etc.
     private static final Collection<String> DEFAULT_DDOS_PARAM_NAMES = Arrays.asList("pageSize", "page_size", "maxResults", "max_results");
 
-    public boolean isDDOSSupportedName(String name) {
+    public boolean isDDOSSupportedName(String name, String genType) {
         if (StringUtils.isEmpty(name)) {
             return false;
         }
 
-        Generator gen = get("DDOS");
+        Generator gen = get(genType);
 
         boolean isPresent = false;
         if (gen != null && !CollectionUtils.isEmpty(gen.getMatches())) {
@@ -393,11 +393,11 @@ public class AutoCodeConfigUtil {
 
     private static final String DEFAULT_DDOS_VALUE = "1001";
 
-    public String getDDOSSupportedValue(String name) {
+    public String getDDOSSupportedValue(String name, String genType) {
         if (StringUtils.isEmpty(name)) {
             return DEFAULT_DDOS_VALUE;
         }
-        Generator gen = get("DDOS");
+        Generator gen = get(genType);
 
         if (gen == null || CollectionUtils.isEmpty(gen.getMatches())) {
             return DEFAULT_DDOS_VALUE;
@@ -419,11 +419,11 @@ public class AutoCodeConfigUtil {
         return DEFAULT_DDOS_VALUE;
     }
 
-    public String getDDOSMappedValue(String path) {
+    public String getDDOSMappedValue(String path, String genType) {
         if (StringUtils.isEmpty(path)) {
             return null;
         }
-        Generator gen = get("DDOS");
+        Generator gen = get(genType);
 
         if (gen == null || CollectionUtils.isEmpty(gen.getMatches())) {
             return null;

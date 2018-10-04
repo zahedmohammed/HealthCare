@@ -234,55 +234,18 @@
                                                     </div>
                                                 </div>
                                                 <div *ngIf="res.type === 'sla'">
-                                                    <div *ngFor="let m of res.matches">
-                                                        <div class="form-group row" [hidden]="true">
-                                                            <label for="name" class="col-md-0 control-label"></label>
-                                                            <div class="col-md-5">
-                                                                <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.pathPatterns"
-                                                                           [ngModelOptions]="{standalone: true}"
-                                                                           matInput placeholder="Path patterns">
-                                                                </mat-input-container>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row" [hidden]="true">
-                                                            <label for="name" class="col-md-0 control-label"></label>
-                                                            <div class="col-md-5">
-                                                                <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.methods"
-                                                                           [ngModelOptions]="{standalone: true}"
-                                                                           matInput placeholder="Http methods">
-                                                                </mat-input-container>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="name" class="col-md-0 control-label"></label>
-                                                            <div class="col-md-5">
-                                                                <mat-input-container class="full-width">
-                                                                    <input [(ngModel)]="m.value"
-                                                                           [ngModelOptions]="{standalone: true}"
-                                                                           matInput placeholder="SLA (in milliseconds)">
-                                                                </mat-input-container>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row" [hidden]="res.type === 'sla'">
-                                                    <div class="col-md-6">
-                                                        <mat-input-container class="full-width">
-                                                                <textarea matInput placeholder="Assertions" rows="3"
-                                                                          [(ngModel)]='res.assertionsText'
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <mat-input-container class="full-width">
+                                                                <textarea matInput rows="5"
+                                                                          placeholder="Map required query params e.g. pageSize=10000,page_size=10000,maxResults=10000,max_results=10000"
+                                                                          [(ngModel)]='res.matches[0].resourceSamples'
                                                                           [ngModelOptions]="{standalone: true}"></textarea>
-                                                        </mat-input-container>
-                                                    </div>
-                                                    <div class="col-md-7">
-                                                        <div class="callout1 text-muted callout-info1">
-                                                            <p> {{res.assertionDescription}}
-                                                            </p>
+                                                            </mat-input-container>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div *ngIf="res.type === 'anonymous_invalid' || res.type === 'auth_invalid' || res.type === 'DDOS'" >
+                                                <div *ngIf="res.type === 'anonymous_invalid' || res.type === 'auth_invalid' || res.type === 'DDOS' || res.type === 'sla'" >
                                                     <div *ngFor="let m of res.matches">
                                                         <div class="form-group row" [hidden]="false">
                                                             <label for="name" class="col-md-0 control-label"></label>
