@@ -143,6 +143,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         jobRepository.saveAll(responseJobs);
         // TODO - Delete Jobs
+
+        List<com.fxlabs.fxt.dao.entity.project.ProjectFile> list = this.projectFileRepository.findByProjectId(id);
+        if(!CollectionUtils.isEmpty(list))
+            this.projectFileRepository.deleteAll();
+
+        List<com.fxlabs.fxt.dao.entity.project.ProjectFile> fileESList = this.projectFileESRepository.findByProjectId(id);
+        if(!CollectionUtils.isEmpty(fileESList))
+            this.projectFileESRepository.deleteAll();
+
         return save(project, user);
     }
 
