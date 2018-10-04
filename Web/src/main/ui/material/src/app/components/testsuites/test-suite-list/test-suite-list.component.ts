@@ -39,7 +39,11 @@ export class TestSuiteListComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'category', 'type', 'auto-created', 'modified-date'];
   dataSource = null;
-
+  length = 0;
+  page = 0;
+  pageSize = 10;
+  pageIndex=0;
+  currentCategory;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -81,6 +85,7 @@ export class TestSuiteListComponent implements OnInit {
       }
       this.testsuites = results['data'];
       this.length = results['totalElements'];
+      this.pageIndex=0;
       this.dataSource = new MatTableDataSource(this.testsuites);
       this.dataSource.sort = this.sort;
     }, error => {
@@ -89,15 +94,13 @@ export class TestSuiteListComponent implements OnInit {
     });
   }
 
-  length = 0;
-  page = 0;
-  pageSize = 10;
   change(evt) {
     this.page = evt['pageIndex'];
     this.searchByCategory();
   }
 
   search() {
+    
      if (this.keyword == '' && this.category == '') {
        return this.list(this.id);
     }
@@ -139,6 +142,12 @@ export class TestSuiteListComponent implements OnInit {
     } else {
       category_ = this.category;
     }
+    console.log("check cat",this.category + "/" + this.currentCategory)
+
+    if(!this.category.match(this.currentCategory)){
+      this.page=0;
+      this.pageIndex=0;
+    }
     this.testSuiteService.searchTestSuite(this.id, category_, this.keyword, this.page, this.pageSize).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
@@ -146,8 +155,12 @@ export class TestSuiteListComponent implements OnInit {
       }
       this.testsuites = results['data'];
       this.length = results['totalElements'];
+      if(!this.category.match(this.currentCategory) && this.page!=0){
+        this.page=0;
+      }
       this.dataSource = new MatTableDataSource(this.testsuites);
       this.dataSource.sort = this.sort;
+      this.currentCategory=this.category;
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

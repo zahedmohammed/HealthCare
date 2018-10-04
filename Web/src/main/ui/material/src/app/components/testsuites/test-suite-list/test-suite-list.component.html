@@ -94,7 +94,7 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </mat-table>
 
-          <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true" (page)="change($event)"
+          <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" [pageIndex]="page" hidePageSize="true" (page)="change($event)"
             [length]="length">
           </mat-paginator>
         </div>
