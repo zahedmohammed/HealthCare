@@ -111,7 +111,14 @@ public class MarkCompleteTaskProcessor {
 
                     TaskStatus oldStatus = run.getTask().getStatus();
                     Long count = failed + passed;
-                    if (count >= run.getTask().getTotalTests()) {
+                    // TODO: Mark complete on 96% or above
+                    double per = 0.0;
+
+                    if (count > 20) {
+                        per = count * 100 / run.getTask().getTotalTests();
+                    }
+
+                    if (count >= run.getTask().getTotalTests() || per >= 96.00) {
                         run.getTask().setTotalTests(count);
                         run.getTask().setEndTime(new Date());
                         run.getTask().setStatus(TaskStatus.COMPLETED);
