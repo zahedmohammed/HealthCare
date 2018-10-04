@@ -276,7 +276,8 @@ public class AutoCodeConfigServiceUtil {
         sql_injection_timebound.setSeverity(TestSuiteSeverity.Critical);
         sql_injection_timebound.setType("sql_injection_timebound");
         sql_injection_timebound.setDisplayHeaderLabel("SQL Injection");
-        sql_injection_timebound.setDisplayHeaderDescription("SQL injection attacks are a type of injection attack, in which SQL commands are injected into data-plane input in order to affect the execution of predefined SQL commands.");
+        sql_injection_timebound.setDisplayHeaderDescription("SQL Injection is an Attack. It is executed by insertion or Injection of either partial or complete SQL query via\n" +
+                "query parameters, request body parameters, path parameters and passed to the application server/database.");
         sql_injection_timebound.setAssertionDescription("Successful test suite response codes are 200 or 408. UnSuccessful test suite response codes are 400, 404, 500.");
 
         List<String> assertions = new ArrayList<>();
