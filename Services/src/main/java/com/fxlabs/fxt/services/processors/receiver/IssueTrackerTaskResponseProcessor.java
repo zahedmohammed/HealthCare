@@ -82,8 +82,11 @@ public class IssueTrackerTaskResponseProcessor {
                     TestCaseResponseIssueTracker testCaseResponseIssueTracker = existingIssue.get();
 
                     testCaseResponseIssueTracker.setValidations(testCaseResponseIssueTracker.getValidations() + 1);
-                    testCaseResponseIssueTracker.setStatus(task.getIssueStatus());
-                    testCaseResponseIssueTracker.setRunId(task.getRunId());
+
+                    if ( ! StringUtils.equalsIgnoreCase(testCaseResponseIssueTracker.getStatus(),task.getIssueStatus())) {
+                        testCaseResponseIssueTracker.setRunId(task.getRunId());
+                        testCaseResponseIssueTracker.setStatus(task.getIssueStatus());
+                    }
 
                     testCaseResponseIssueTracker.setProjectId(response.getProjectId());
                     testCaseResponseIssueTracker.setJobId(response.getJobId());
