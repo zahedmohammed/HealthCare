@@ -192,6 +192,7 @@ import { JenkinsIntegrationComponent } from './components/dialogs/jenkins-integr
 import { ConfirmDialogComponent } from './components/dialogs/confirm-dialog/confirm-dialog.component';
 import { TestsuitEditDialogComponent } from './components/dialogs/testsuit-edit-dialog/testsuit-edit-dialog.component';
 import { AutoSyncSaveConfigComponent } from './components/dialogs/auto-sync-save-config/auto-sync-save-config.component';
+import { TestsuitNewDialogComponent } from './components/dialogs/testsuit-new-dialog/testsuit-new-dialog.component';
 
 @NgModule({
   imports: [
@@ -362,14 +363,15 @@ import { AutoSyncSaveConfigComponent } from './components/dialogs/auto-sync-save
     JenkinsIntegrationComponent,
     ConfirmDialogComponent,
     TestsuitEditDialogComponent,
-    AutoSyncSaveConfigComponent
+    AutoSyncSaveConfigComponent,
+    TestsuitNewDialogComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler, DatePipe],
   entryComponents: [MsgDialogComponent, AdvRunComponent, ErrorDialogComponent, ResponseDialogComponent, DeleteDialogComponent,
     SuitDailogComponent, ProjectsSyncComponent, RegisterComponent, AutoSyncComponent, IssueTrackerRegisterComponent, SlackRegisterComponent,
     BotCredentialsComponent, TestsuiteRunComponent, BotDialogComponent, BotSavingDialogComponent,JenkinsIntegrationComponent, MavenIntegrationComponent,
-    GradleIntegrationComponent, ConfirmDialogComponent,TestsuitEditDialogComponent,
+    GradleIntegrationComponent, ConfirmDialogComponent,TestsuitEditDialogComponent,TestsuitNewDialogComponent,
          AutoSyncSaveConfigComponent]
 })
 
