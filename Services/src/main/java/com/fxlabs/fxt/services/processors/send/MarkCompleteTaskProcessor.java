@@ -129,45 +129,11 @@ public class MarkCompleteTaskProcessor {
                     // count total-time
                     // count total-bytes
                     run.getTask().setTotalSuiteCompleted(count);
-
                     run.getTask().setFailedTests(failed);
                     run.getTask().setTotalTestCompleted(passed);
                     run.getTask().setTotalTime(time);
                     run.getTask().setTotalBytes(bytes);
-
                     run.setStats(statsMap);
-
-                    if ((run.getTask().getStatus().equals(TaskStatus.COMPLETED) && !oldStatus.equals(TaskStatus.COMPLETED))
-                            || (run.getTask().getStatus().equals(TaskStatus.STOPPED) && !oldStatus.equals(TaskStatus.STOPPED))
-                            || (run.getTask().getStatus().equals(TaskStatus.FAIL) && !oldStatus.equals(TaskStatus.FAIL))
-                            || (run.getTask().getStatus().equals(TaskStatus.TIMEOUT) && !oldStatus.equals(TaskStatus.TIMEOUT))
-                    ) {
-
-                        String itId = run.getJob().getProject().getName() + "//" + run.getJob().getId() + "%";
-                        // List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndTestCaseResponseIssueTrackerIdLike(run.getId(), itId);
-                        List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndProjectIdAndJobId(run.getId(), run.getJob().getProject().getId(), run.getJob().getId());
-
-                        long newIssues = 0L;
-                        long closedIssues = 0L;
-
-                        for (TestCaseResponseIssueTracker it : itList) {
-                            if ("open".equalsIgnoreCase(it.getStatus())) {
-                                newIssues++;
-                            }
-                            if ("closed".equalsIgnoreCase(it.getStatus())) {
-                                closedIssues++;
-                            }
-                        }
-
-                        run.getTask().setIssuesLogged(newIssues);
-                        run.getTask().setIssuesClosed(closedIssues);
-
-                        //  long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
-                        long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open", run.getJob().getProject().getId(), run.getJob().getId());
-
-                        run.getTask().setTotalOpenIssues(totalOpenIssues);
-                        run.getStats().put("total_issues", totalOpenIssues);
-                    }
                     runRepository.saveAndFlush(run);
 
                     if (run.getTask().getStatus().equals(TaskStatus.COMPLETED) && !oldStatus.equals(TaskStatus.COMPLETED)) {
@@ -178,11 +144,7 @@ public class MarkCompleteTaskProcessor {
                         } catch (Exception ex) {
                             logger.warn(ex.getLocalizedMessage());
                         }
-
-
                     }
-
-
                     // TODO - Test-Suites
                 } catch (Exception ex) {
                     logger.warn(ex.getLocalizedMessage(), ex);

@@ -2,9 +2,11 @@ package com.fxlabs.fxt.services.processors.receiver;
 
 import com.fxlabs.fxt.converters.run.TestCaseResponseConverter;
 import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
+import com.fxlabs.fxt.dao.entity.run.Run;
 import com.fxlabs.fxt.dao.entity.run.TestCaseResponse;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseITESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.RunRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseITRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseRepository;
 import com.fxlabs.fxt.dto.it.ITTaskResponse;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -41,6 +44,9 @@ public class IssueTrackerTaskResponseProcessor {
 
     @Autowired
     private TestCaseResponseITESRepository testCaseResponseITESRepository;
+
+    @Autowired
+    private RunRepository runRepository;
 
 
     @Autowired
@@ -96,6 +102,8 @@ public class IssueTrackerTaskResponseProcessor {
                     testCaseResponseITRepository.save(testCaseResponseIssueTracker);
                     testCaseResponseITESRepository.save(testCaseResponseIssueTracker);
 
+                    updateRun(task.getRunId(), response.getProjectId(), response.getJobId());
+
                     return;
                 }
 
@@ -112,11 +120,45 @@ public class IssueTrackerTaskResponseProcessor {
 
 
                 newItResponse.setValidations(1);
-                testCaseResponseITRepository.save(newItResponse);
+                testCaseResponseITRepository.saveAndFlush(newItResponse);
                 testCaseResponseITESRepository.save(newItResponse);
+
+                updateRun(task.getRunId(), response.getProjectId(), response.getJobId());
             }
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         }
+    }
+
+    private void updateRun(String runId, String projectId, String jobId){
+        List<TestCaseResponseIssueTracker> itList = testCaseResponseITRepository.findByRunIdAndProjectIdAndJobId(runId, projectId, jobId);
+
+        long newIssues = 0L;
+        long closedIssues = 0L;
+
+        for (TestCaseResponseIssueTracker it : itList) {
+            if ("open".equalsIgnoreCase(it.getStatus())) {
+                newIssues++;
+            }
+            if ("closed".equalsIgnoreCase(it.getStatus())) {
+                closedIssues++;
+            }
+        }
+
+        Optional<Run> runOptional = runRepository.findById(runId);
+
+        if (runOptional.isPresent()) {
+            Run run = runOptional.get();
+            run.getTask().setIssuesLogged(newIssues);
+            run.getTask().setIssuesClosed(closedIssues);
+
+            //  long totalOpenIssues = testCaseResponseITRepository.countByStatusAndTestCaseResponseIssueTrackerIdLike("open",itId);
+            long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open", run.getJob().getProject().getId(), run.getJob().getId());
+
+            run.getTask().setTotalOpenIssues(totalOpenIssues);
+            run.getStats().put("total_issues", totalOpenIssues);
+            runRepository.saveAndFlush(run);
+        }
+
     }
 }
