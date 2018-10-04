@@ -43,7 +43,7 @@ public class TestCoverageService {
 
 
         testSuites.forEach(testSuite -> {
-            if (endpointTSByCategory.get(testSuite.getCategory().toString()) == null) {
+            if (testSuite.getCategory() != null && endpointTSByCategory.get(testSuite.getCategory().toString()) == null) {
                 endpointTSByCategory.put(testSuite.getCategory().toString(), new HashMap<String, Integer>());
             }
 
@@ -75,11 +75,13 @@ public class TestCoverageService {
 
         int totalEndpoints = endpoints != null ? endpoints.size() : 0;
 
+//        coverages.add(getCoverage(endpointTSByCategory, TestSuiteCategory.SQL_Injection.toString() , totalEndpoints));
         coverages.add(getCoverage(endpointTSByCategory, TestSuiteCategory.UnSecured.toString() , totalEndpoints));
         coverages.add(getCoverage(endpointTSByCategory, TestSuiteCategory.RBAC.toString(), totalEndpoints));
         coverages.add(getCoverage(endpointTSByCategory, TestSuiteCategory.Negative.toString() , totalEndpoints));
         coverages.add(getCoverage(endpointTSByCategory, TestSuiteCategory.Functional.toString() , totalEndpoints));
         coverages.add(getCoverage(endpointTSByCategory, TestSuiteCategory.SLA.toString() , totalEndpoints));
+        coverages.add(getCoverage(endpointTSByCategory, TestSuiteCategory.DDOS.toString() , totalEndpoints));
 
 //        coverages.add(getCoverage(endpointTSByCategory, "ALL", totalTS.intValue() , totalEndpoints, totalEndpoints * 5));
 

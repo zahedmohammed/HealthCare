@@ -203,7 +203,64 @@
                         <section class="box box-transparent">
                             <div class="box-body">
                                 <div class="row article-title-style">
+                                    <div class="mat-elevation-z8 box-default">
 
+                                        <mat-table [dataSource]="autoSuggestDS" matSort matSortActive="no" matSortDisableClear
+                                                   matSortDirection="desc">
+
+                                            <!-- ['testSuiteName', 'endPoint', 'method', 'category', 'issueDesc','estimates','suggestion'] -->
+                                            <!-- Column testSuiteName-->
+                                            <ng-container matColumnDef="testSuiteName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Suite Name
+                                                </mat-header-cell>
+                                                <!--<mat-cell *matCellDef="let element" matTooltip="{{element.testSuiteName}}" matTooltipPosition="above"> {{element.testSuiteName | slice:0:15}}... </mat-cell>-->
+                                                <mat-cell *matCellDef="let element" matTooltip="{{element.testSuiteName}}" matTooltipPosition="above"> {{element.testSuiteName| slice:0:25}}</mat-cell>
+                                            </ng-container>
+
+                                            <!-- Column category-->
+                                            <ng-container matColumnDef="category">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Category
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" style="overflow: initial;"> {{element.category}} </mat-cell>
+                                            </ng-container>
+
+                                            <!-- Column endPoint-->
+                                            <ng-container matColumnDef="endPoint">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> End Point
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element"> {{element.method}}: {{element.endPoint}} </mat-cell>
+                                            </ng-container>
+
+                                            <!-- Column method-->
+                                            <!--
+                                                                                        <ng-container matColumnDef="method">
+                                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header> Method
+                                                                                            </mat-header-cell>
+                                                                                            <mat-cell *matCellDef="let element"> {{element.method}} </mat-cell>
+                                                                                        </ng-container>
+                                            -->
+
+
+                                            <!-- Column issueDesc-->
+                                            <ng-container matColumnDef="issueDesc">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Description
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element"> {{element.issueDesc}} </mat-cell>
+                                            </ng-container>
+
+                                            <!-- Column suggestion-->
+                                            <ng-container matColumnDef="suggestion">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Suggestion
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element"> {{element.suggestion}} <br/>
+                                                    <b>Effort Estimates: </b> {{element.estimates}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <mat-header-row *matHeaderRowDef="autoSuggestColumns"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: autoSuggestColumns;"></mat-row>
+                                        </mat-table>
+                                    </div>
                                 </div>
                             </div>
                         </section>

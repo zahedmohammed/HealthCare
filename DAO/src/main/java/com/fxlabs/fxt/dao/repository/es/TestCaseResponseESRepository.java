@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -16,4 +17,6 @@ public interface TestCaseResponseESRepository extends ElasticsearchRepository<Te
     List<TestCaseResponse> findByProjectAndJobAndSuiteAndTestCase(String project, String job, String suite, String testCase, Pageable pageable);
 
     List<TestCaseResponse> findByProjectAndJobIdAndSuiteAndTestCase(String project, String jobId, String suite, String testCase, Pageable pageable);
+
+    Stream<TestCaseResponse> findByJobIdAndIssueIdIn(String jobId, List<String> issueId);
 }

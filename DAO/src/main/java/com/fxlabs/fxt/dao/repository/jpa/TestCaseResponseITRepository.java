@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * @author Mohammed Shoukath Ali
@@ -24,7 +25,9 @@ public interface TestCaseResponseITRepository extends JpaRepository<TestCaseResp
 
     Optional<TestCaseResponseIssueTracker> findByProjectIdAndJobIdAndTestSuiteNameAndTestCaseNumber(String projectId, String jobId,String testSuite,String testCase);
 
-    List<TestCaseResponseIssueTracker> findByRunIdAndProjectIdAndJobId(String runId, String name, String jobId);
+    List<TestCaseResponseIssueTracker> findByRunIdAndProjectIdAndJobId(String runId, String projectId, String jobId);
+
+    Stream<TestCaseResponseIssueTracker> findByJobIdAndStatusIgnoreCase(String jobId, String status);
 
     long countByStatusIgnoreCaseAndProjectIdAndJobId(String open, String name, String id);
 

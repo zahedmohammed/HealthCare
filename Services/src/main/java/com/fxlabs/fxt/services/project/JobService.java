@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.AutoSuggestion;
 import com.fxlabs.fxt.dto.project.Job;
 import com.fxlabs.fxt.services.base.GenericService;
 import org.springframework.data.domain.Pageable;
@@ -29,5 +30,7 @@ public interface JobService extends GenericService<Job, String> {
     Response<Long> count(String user, Pageable pageable);
 
     Response<List<com.fxlabs.fxt.dto.project.Job>> findJobsByIssueTracker(String issueTracker);
+
+    Response<List<AutoSuggestion>> getAutoSuggestions(String id, String user, Pageable pageable);
 
 }

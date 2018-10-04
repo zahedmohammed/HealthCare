@@ -55,4 +55,8 @@ export class JobsService {
     return this.http.delete(this.serviceUrl + "/" + obj['id']);
   }
 
+  getAutoSuggestions(id: string) {
+    return this.http.get(this.serviceUrl + "/" + id + "/auto-suggestions");
+  }
+
 }

@@ -34,6 +34,9 @@ export class RunListComponent implements OnInit {
   private _clockSubscription: Subscription;
   displayedColumns: string[] = ['region', 'date', 'passfail', 'success', 'data', 'totaltime', 'bugs', 'bugs2', 'status', 'no'];
   dataSource = null;
+  autoSuggestColumns: string[] = ['testSuiteName', 'category', 'endPoint', 'issueDesc', 'suggestion'];
+  autoSuggestDS = null;
+
   config = CHARTCONFIG;
   graph1: Chart = []; // This will hold our chart info
   graph2: Chart = []; // This will hold our chart info
@@ -59,6 +62,7 @@ export class RunListComponent implements OnInit {
         this.jobId = params['jobId'];
         this.loadJob(this.jobId);
         this.getRunByJob(this.jobId);
+        this.loadSuggestions(this.jobId);
         let timer = Observable.timer(10000, 15000);
         this._clockSubscription = timer.subscribe(t => {
           this.getRunByJob(this.jobId);
@@ -87,6 +91,15 @@ export class RunListComponent implements OnInit {
       }
       this.job = results['data'];
 
+    });
+  }
+
+  loadSuggestions(id: string) {
+    this.jobsService.getAutoSuggestions(id).subscribe(results => {
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.autoSuggestDS = new MatTableDataSource(results['data']);
     });
   }
 
