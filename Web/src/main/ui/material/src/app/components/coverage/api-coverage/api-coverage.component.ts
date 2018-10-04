@@ -129,7 +129,7 @@ getCoverage(){
           },
           title:{
             text:'Test Suite Categories',
-            display:true
+            display:false
           },
           animation: {
             duration: 1000,
@@ -173,7 +173,7 @@ getCoverage(){
           },
           title:{
             text:'HTTP Methods',
-            display:true
+            display:false
           },
           animation: {
             duration: 1000,

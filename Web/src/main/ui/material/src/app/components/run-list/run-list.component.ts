@@ -39,6 +39,7 @@ export class RunListComponent implements OnInit {
   graph2: Chart = []; // This will hold our chart info
   graph3: Chart = []; // This will hold our chart info
   graph4: Chart = []; // This will hold our chart info
+  line1: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -152,7 +153,7 @@ export class RunListComponent implements OnInit {
         display: true
       },
       title: {
-        display: true,
+        display: false,
         text: 'Passed & Failed Analytics'
       },
       scales: {
@@ -179,7 +180,7 @@ export class RunListComponent implements OnInit {
         display: true
       },
       title: {
-        display: true,
+        display: false,
         text: 'Issues Analytics'
       },
       scales: {
@@ -206,7 +207,7 @@ export class RunListComponent implements OnInit {
         display: true
       },
       title: {
-        display: true,
+        display: false,
         text: 'Data Analytics'
       },
       scales: {
@@ -233,7 +234,7 @@ export class RunListComponent implements OnInit {
         display: true
       },
       title: {
-        display: true,
+        display: false,
         text: 'Time Analytics'
       },
       scales: {
@@ -431,5 +432,4 @@ export class RunListComponent implements OnInit {
       this.page = evt['pageIndex'];
       this.getRunByJob(this.jobId);
   }
-
 }

@@ -158,7 +158,7 @@ export class RunHistoryComponent implements OnInit {
           display: true
         },
         title: {
-          display: true,
+          display: false,
           text: 'Success Statistics'
         },
         scales: {
@@ -184,7 +184,7 @@ export class RunHistoryComponent implements OnInit {
           display: true
         },
         title: {
-          display: true,
+          display: false,
           text: 'Data (in Bytes)'
         },
         scales: {
@@ -210,7 +210,7 @@ export class RunHistoryComponent implements OnInit {
           display: true
         },
         title: {
-          display: true,
+          display: false,
           text: 'Time Taken (in Seconds)'
         },
         scales: {

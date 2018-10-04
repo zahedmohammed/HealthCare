@@ -148,34 +148,53 @@
             </mat-tab>
             <mat-tab label="Analytics">
                 <div class="box box-default mt-4">
-                    <div class="box-body">
-                        <section class="box box-transparent">
-                            <div class="box-body">
-                                <div class="row article-title-style">
-                                    <div class="col-md-6">
+                    <section class="box-body">
+                        <div class="row article-title-style">
+                            <div class="col-xl-6">
+                                <div class="box box-default">
+                                    <div class="box-body mat-elevation-z8">
+                                        <p class="text-dark font-weight-bold">Passed & Failed Analytics</p>
                                         <div *ngIf="graph1">
                                             <canvas id="canvasGraph1">{{ graph1 }}</canvas>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="box box-default">
+                                    <div class="box-body mat-elevation-z8">
+                                        <p class="text-dark font-weight-bold">Issues Analytics</p>
                                         <div *ngIf="graph2">
                                             <canvas id="canvasGraph2">{{ graph2 }}</canvas>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="box box-default">
+                                    <div class="box-body mat-elevation-z8">
+                                        <p class="text-dark font-weight-bold">Data Analytics</p>
                                         <div *ngIf="graph3">
                                             <canvas id="canvasGraph3">{{ graph3 }}</canvas>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="box box-default">
+                                    <div class="box-body mat-elevation-z8">
+                                        <p class="text-dark font-weight-bold">Time Analytics</p>
                                         <div *ngIf="graph4">
                                             <canvas id="canvasGraph4">{{ graph4 }}</canvas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </section>
-                    </div>
+                        </div>
+                    </section>
                 </div>
             </mat-tab>
             <mat-tab label="AutoSuggest">

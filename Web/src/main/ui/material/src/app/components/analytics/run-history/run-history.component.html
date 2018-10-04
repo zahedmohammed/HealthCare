@@ -20,26 +20,43 @@
     <div class="col-md-12 m-3">
       <p><b>Test Suite Name:</b> <code>{{suiteName}}</code></p>
     </div>
-    <div class="col-md-2">
+    <div class="col-xl-2">
     </div>
-    <div class="col-md-8">
-      <div *ngIf="chart">
-        <canvas id="canvas1">{{ chart }}</canvas>
+    <div class="col-xl-8">
+      <div class="box box-default">
+        <div class="box-body mat-elevation-z8">
+          <p class="text-dark font-weight-bold">Success Statistics</p>
+          <div *ngIf="chart">
+            <canvas id="canvas1">{{ chart }}</canvas>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-md-2"></div>
-    <br />
-    <div class="col-md-6">
-      <div *ngIf="chart2">
-        <canvas id="canvas2">{{ chart2 }}</canvas>
-      </div>
-    </div>
-    <div class="col-md-6">
 
-      <div *ngIf="chart3">
-        <canvas id="canvas3">{{ chart3 }}</canvas>
+    <div class="col-xl-2"></div>
+    <br />
+    <div class="col-xl-6">
+      <div class="box box-default">
+        <div class="box-body mat-elevation-z8">
+          <p class="text-dark font-weight-bold">Data (in Bytes)</p>
+          <div *ngIf="chart2">
+            <canvas id="canvas2">{{ chart2 }}</canvas>
+          </div>
+        </div>
       </div>
     </div>
+
+    <div class="col-xl-6">
+      <div class="box box-default">
+        <div class="box-body mat-elevation-z8">
+          <p class="text-dark font-weight-bold">Time Taken (in Seconds)</p>
+          <div *ngIf="chart3">
+            <canvas id="canvas3">{{ chart3 }}</canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
   <br />
 
