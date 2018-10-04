@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ProjectSync } from '../../../models/project-sync.model';
 import { SnackbarService}from '../../../services/snackbar.service';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import {TestsuitEditDialogComponent} from "../../dialogs/testsuit-edit-dialog/testsuit-edit-dialog.component";
 
 @Component({
 selector: 'app-test-suite-list',
@@ -167,6 +168,15 @@ export class TestSuiteListComponent implements OnInit {
       this.handler.error(error);
     });
   }
+
+  showTSDialog(testSuiteID,testSuiteName){
+          const dialogRef = this.dialog.open(TestsuitEditDialogComponent, {
+            width: '100%',
+            data: [this.id,testSuiteID,testSuiteName]
+        });
+        //  dialogRef.afterClosed().subscribe(result => {
+        // });
+    }
 
   // open() {
   //   const dialogRef = this.dialog.open(AutoSyncComponent, {
