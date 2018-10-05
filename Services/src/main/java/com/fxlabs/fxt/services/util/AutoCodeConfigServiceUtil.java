@@ -357,7 +357,7 @@ public class AutoCodeConfigServiceUtil {
         ddos.setType("DDOS");
 
         ddos.setDisplayHeaderLabel("Distributed Denial of Service");
-        ddos.setDisplayHeaderDescription("A Distributed Denial of Service (DDoS) attack is an attempt to make an online service unavailable by overwhelming it with traffic from multiple sources.");
+        ddos.setDisplayHeaderDescription("Distributed Denial of service is flooding the targeted machine or resource with superfluous requests from many different sources in an attempt to overload systems and prevent some or all legitimate requests from being fulfilled.");
         ddos.setAssertionDescription("Successful test suite response code is 401, 404, 500 or 503. UnSuccessful test suite response code is 200.");
 
 
