@@ -76,7 +76,8 @@
 
                                             <div class="col-md-4">
                                                 <mat-panel-title>
-                                                    <b>{{ res.displayHeaderLabel }}</b>
+                                                    <b>{{ res.displayHeaderLabel }}</b>&nbsp;
+                                                    <span><sup *ngIf="res.newlyAdded === true" class="inactivered text-small"> New </sup></span>
                                                 </mat-panel-title>
                                             </div>
 

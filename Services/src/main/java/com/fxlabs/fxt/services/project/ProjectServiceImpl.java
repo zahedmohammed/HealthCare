@@ -737,8 +737,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 }
             }
             if (!found) {
+                gen.setNewlyAdded(true);
                 projGenerator.add(gen);
-
             }
         }
     }

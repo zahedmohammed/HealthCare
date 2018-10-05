@@ -30,6 +30,7 @@ public class AutoCodeGenerator extends BasicBaseDto {
     protected boolean inactive = false;
     private List<AutoCodeGeneratorMatches> matches;
     private int sequenceOrder;
+    private boolean newlyAdded;
 
 }
 
