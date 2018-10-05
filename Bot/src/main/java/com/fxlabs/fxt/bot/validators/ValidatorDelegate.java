@@ -3,6 +3,7 @@ package com.fxlabs.fxt.bot.validators;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.Context;
 import com.fxlabs.fxt.bot.processor.DataEvaluator;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,9 +107,12 @@ public class ValidatorDelegate {
                     orJoiner.add(resolved.toString());
 
                 }
-
+                AssertionLogger.LogType logType = AssertionLogger.LogType.INFO;
+                if (BooleanUtils.isFalse(result)) {
+                    logType = AssertionLogger.LogType.ERROR;
+                }
                 String msg = String.format("Assertion [%s] resolved-to [%s] result [%s]", assertion, orJoiner.toString(), (result ? "Passed" : "Failed"));
-                context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
+                context.getLogs().append(logType, context.getSuitename(), msg);
                 assertionLogs.append(msg);
 
             } else if (StringUtils.contains(assertion, AND_OPERATOR)) {
@@ -134,8 +138,12 @@ public class ValidatorDelegate {
 
                 }
 
+                AssertionLogger.LogType logType = AssertionLogger.LogType.INFO;
+                if (BooleanUtils.isFalse(result)) {
+                    logType = AssertionLogger.LogType.ERROR;
+                }
                 String msg = String.format("Assertion [%s] resolved-to [%s] result [%s]", assertion, andJoiner.toString(), (result ? "Passed" : "Failed"));
-                context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
+                context.getLogs().append(logType, context.getSuitename(), msg);
                 assertionLogs.append(msg);
 
             } else {
@@ -151,9 +159,13 @@ public class ValidatorDelegate {
 
 
                 result = processAssertion(operand1, OPERATOR, operand2, assertion, context, assertionLogs);
+                AssertionLogger.LogType logType = AssertionLogger.LogType.INFO;
+                if (BooleanUtils.isFalse(result)) {
+                    logType = AssertionLogger.LogType.ERROR;
+                }
 
                 String msg = String.format("Assertion [%s] resolved-to [%s %s %s] result [%s]", assertion, operand1, OPERATOR, operand2, (result ? "Passed" : "Failed"));
-                context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), msg);
+                context.getLogs().append(logType, context.getSuitename(), msg);
                 assertionLogs.append(msg);
             }
         } catch (Exception e) {
