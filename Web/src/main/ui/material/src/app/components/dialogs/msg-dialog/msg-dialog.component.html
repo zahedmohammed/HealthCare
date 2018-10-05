@@ -1,8 +1,15 @@
 
 <h6 mat-dialog-title>{{currentSuiteName}}</h6>
-<button mat-button class="float-right"   (click)="nextSuite()">Next</button>
-<button mat-button class="float-right"  (click)="previousSuite()">Previous</button>
-<p>Wire Logs</p>
+<button mat-raised-button class="float-right"   (click)="nextSuite()">
+    Next<i class="material-icons">keyboard_arrow_right</i></button>
+<button mat-raised-button class="float-right"  (click)="previousSuite()">
+    <i class="material-icons">keyboard_arrow_left</i>Previous</button>
+<p>
+    <span class="text-success h6"><b>{{passed}}</b></span>&nbsp;<span
+        class="text-success small">Passed</span>&nbsp;
+    <span *ngIf="failed != 0"><span class="text-danger h6"><b>{{failed}}</b></span>&nbsp;<span
+            class="text-danger small">Failed</span>&nbsp;</span>
+</p>
 
 
 <mat-dialog-content class="mat-typography">

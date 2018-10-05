@@ -27,6 +27,8 @@ export class MsgDialogComponent implements AfterViewInit {
     projectId:string;
     jobId:string;
     runId:string;
+    passed:number;
+    failed:number;
     logData;
     list;
     nextSuitName:string;
@@ -38,10 +40,12 @@ export class MsgDialogComponent implements AfterViewInit {
 
         this.logData = data[0];
         this.currentSuiteName = data[1];
-        this.suitNames = data[2]
-        this.projectId = data[3]
-        this.jobId = data[4]
-        this.runId = data[5]
+        this.suitNames = data[2];
+        this.projectId = data[3];
+        this.jobId = data[4];
+        this.runId = data[5];
+        this.passed = data[6];
+        this.failed = data[7];
 
 
     }
@@ -97,6 +101,9 @@ export class MsgDialogComponent implements AfterViewInit {
                 msg += this.list[i].logs;
             }
             this.logData = msg;
+            this.passed = this.list[0].totalPassed;
+            this.failed = this.list[0].totalFailed;
+
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);

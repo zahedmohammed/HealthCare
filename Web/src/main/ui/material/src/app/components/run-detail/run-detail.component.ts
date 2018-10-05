@@ -60,6 +60,7 @@ export class RunDetailComponent implements OnInit {
     prevStatus: string = '';
     wireLogDetails: any =[];
     renderedData;
+    passed = 0;
 
     displayedColumns: string[] = ['suite', 'category', 'severity', 'status', 'data', 'time', 'analytics'];
     dataSource = null;
@@ -228,6 +229,9 @@ export class RunDetailComponent implements OnInit {
             for (var i = 0; i < arrayLength; i++) {
                 msg += this.list[i].logs;
             }
+            this.passed = this.list[0].totalPassed;
+            this.failed = this.list[0].totalFailed;
+
             this.showDialog(msg,name);
         }, error => {
             this.handler.hideLoader();
@@ -243,7 +247,7 @@ export class RunDetailComponent implements OnInit {
         }
         this.dialog.open(MsgDialogComponent, {
             width: '100%',
-            data: [msg,suitName,this.wireLogDetails,this.projectId,this.jobId,this.id]
+            data: [msg,suitName,this.wireLogDetails,this.projectId,this.jobId,this.id,this.passed,this.failed]
         });
     }
 
