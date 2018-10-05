@@ -62,7 +62,7 @@
 
                         <!--Bug Management-->
                         <ng-container matColumnDef="bug-management">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Bug Management</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>AutoIssues</mat-header-cell>
                             <mat-cell *matCellDef="let element">
                                 <div *ngIf="element.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
                                 <div *ngIf="!element.issueTrackerToDo">
