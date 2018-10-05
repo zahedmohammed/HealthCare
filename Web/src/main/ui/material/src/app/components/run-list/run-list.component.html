@@ -153,7 +153,7 @@
                             <div class="col-xl-6">
                                 <div class="box box-default">
                                     <div class="box-body mat-elevation-z8">
-                                        <p class="text-dark font-weight-bold">Passed & Failed Analytics</p>
+                                        <p class="text-dark font-weight-bold">Passed & Failed</p>
                                         <div *ngIf="graph1">
                                             <canvas id="canvasGraph1">{{ graph1 }}</canvas>
                                         </div>
@@ -164,7 +164,7 @@
                             <div class="col-xl-6">
                                 <div class="box box-default">
                                     <div class="box-body mat-elevation-z8">
-                                        <p class="text-dark font-weight-bold">Issues Analytics</p>
+                                        <p class="text-dark font-weight-bold">AutoIssues</p>
                                         <div *ngIf="graph2">
                                             <canvas id="canvasGraph2">{{ graph2 }}</canvas>
                                         </div>
@@ -175,7 +175,7 @@
                             <div class="col-xl-6">
                                 <div class="box box-default">
                                     <div class="box-body mat-elevation-z8">
-                                        <p class="text-dark font-weight-bold">Data Analytics</p>
+                                        <p class="text-dark font-weight-bold">Data</p>
                                         <div *ngIf="graph3">
                                             <canvas id="canvasGraph3">{{ graph3 }}</canvas>
                                         </div>
@@ -186,7 +186,7 @@
                             <div class="col-xl-6">
                                 <div class="box box-default">
                                     <div class="box-body mat-elevation-z8">
-                                        <p class="text-dark font-weight-bold">Time Analytics</p>
+                                        <p class="text-dark font-weight-bold">Time</p>
                                         <div *ngIf="graph4">
                                             <canvas id="canvasGraph4">{{ graph4 }}</canvas>
                                         </div>
@@ -198,76 +198,17 @@
                 </div>
             </mat-tab>
             <mat-tab label="AutoSuggest">
+
                 <div class="box box-default mt-4">
-                    <div class="box-body">
-                        <section class="box box-transparent">
-                            <div class="box-body">
-                                <div class="row article-title-style">
-                                    <div class="mat-elevation-z8 box-default">
-
-                                        <mat-table [dataSource]="autoSuggestDS" matSort matSortActive="no"
-                                            matSortDisableClear matSortDirection="desc">
-
-                                            <!-- ['testSuiteName', 'endPoint', 'method', 'category', 'issueDesc','estimates','suggestion'] -->
-                                            <!-- Column testSuiteName-->
-                                            <ng-container matColumnDef="testSuiteName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Suite Name
-                                                </mat-header-cell>
-                                                <!--<mat-cell *matCellDef="let element" matTooltip="{{element.testSuiteName}}" matTooltipPosition="above"> {{element.testSuiteName | slice:0:15}}... </mat-cell>-->
-                                                <mat-cell *matCellDef="let element" matTooltip="{{element.testSuiteName}}"
-                                                    matTooltipPosition="above"> {{element.testSuiteName| slice:0:25}}</mat-cell>
-                                            </ng-container>
-
-                                            <!-- Column category-->
-                                            <ng-container matColumnDef="category">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Category
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" style="overflow: initial;">
-                                                    {{element.category}} </mat-cell>
-                                            </ng-container>
-
-                                            <!-- Column endPoint-->
-                                            <ng-container matColumnDef="endPoint">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> End Point
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element"> {{element.method}}:
-                                                    {{element.endPoint}} </mat-cell>
-                                            </ng-container>
-
-                                            <!-- Column method-->
-                                            <!--
-                                                                                        <ng-container matColumnDef="method">
-                                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header> Method
-                                                                                            </mat-header-cell>
-                                                                                            <mat-cell *matCellDef="let element"> {{element.method}} </mat-cell>
-                                                                                        </ng-container>
-                                            -->
+                    <section class="box box-transparent">
+                        <div class="box-body">
+                            <div class="row article-title-style">
 
 
-                                            <!-- Column issueDesc-->
-                                            <ng-container matColumnDef="issueDesc">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Description
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element"> {{element.issueDesc}} </mat-cell>
-                                            </ng-container>
 
-                                            <!-- Column suggestion-->
-                                            <ng-container matColumnDef="suggestion">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Suggestion
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element"> {{element.suggestion}} <br />
-                                                    <b>Effort Estimates: </b> {{element.estimates}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <mat-header-row *matHeaderRowDef="autoSuggestColumns"></mat-header-row>
-                                            <mat-row *matRowDef="let row; columns: autoSuggestColumns;"></mat-row>
-                                        </mat-table>
-                                    </div>
-                                </div>
                             </div>
-                        </section>
-                    </div>
+                        </div>
+                    </section>
                 </div>
             </mat-tab>
         </mat-tab-group>

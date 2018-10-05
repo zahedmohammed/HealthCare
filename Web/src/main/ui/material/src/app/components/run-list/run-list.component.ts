@@ -36,6 +36,7 @@ export class RunListComponent implements OnInit {
   dataSource = null;
   autoSuggestColumns: string[] = ['testSuiteName', 'category', 'endPoint', 'issueDesc', 'suggestion'];
   autoSuggestDS = null;
+  autoSuggest: any;
 
   config = CHARTCONFIG;
   graph1: Chart = []; // This will hold our chart info
@@ -100,6 +101,8 @@ export class RunListComponent implements OnInit {
         return;
       }
       this.autoSuggestDS = new MatTableDataSource(results['data']);
+      this.autoSuggest = results['data'];
+      console.log(this.autoSuggest)
     });
   }
 
@@ -117,8 +120,12 @@ export class RunListComponent implements OnInit {
     let issuesLogged: any = [];
     let issuesReopen: any = [];
     let totalTime: any = [];
+    let runId: any = [];
 
     for (let i = 0; i < totalData.length; i++) {
+      let rid: any[] = totalData[i].runId;
+      runId.push(rid);
+
       let openIssues: any[] = totalData[i].task.totalOpenIssues;
       totalOpenIssues.push(openIssues);      
 
@@ -134,7 +141,7 @@ export class RunListComponent implements OnInit {
       let dt = new Date(crDate[i]);
       dtDateConvert[i] = this.datePipe.transform(dt, "MMM dd");
      
-      let bytes: any[] = totalData[i].task.totalBytes;
+      let bytes = totalData[i].task.totalBytes / 1024;
       totalBytes.push(bytes);      
 
       let closed: any[] = totalData[i].task.issuesClosed;
@@ -146,7 +153,7 @@ export class RunListComponent implements OnInit {
       let reopen: any[] = totalData[i].task.issuesReopen;
       issuesReopen.push(reopen);
 
-      let totalTimeArr: any[] = totalData[i].task.totalTime;
+      let totalTimeArr = totalData[i].task.totalTime / 1000;
       totalTime.push(totalTimeArr);
     }
     totalOpenIssues.reverse();
@@ -158,6 +165,7 @@ export class RunListComponent implements OnInit {
     issuesLogged.reverse();
     issuesReopen.reverse();
     totalTime.reverse();
+    runId.reverse();
 
     // Options Start for Graphs
     let graph1Options = {
@@ -174,7 +182,7 @@ export class RunListComponent implements OnInit {
           display: true,
           scaleLabel: {
             display: true,
-            labelString: 'Date'
+            labelString: 'Run No'
           }
         }],
         yAxes: [{
@@ -201,7 +209,7 @@ export class RunListComponent implements OnInit {
           display: true,
           scaleLabel: {
             display: true,
-            labelString: 'Date'
+            labelString: 'Run No'
           }
         }],
         yAxes: [{
@@ -228,14 +236,14 @@ export class RunListComponent implements OnInit {
           display: true,
           scaleLabel: {
             display: true,
-            labelString: 'Date'
+            labelString: 'Run No'
           }
         }],
         yAxes: [{
           display: true,
           scaleLabel: {
             display: true,
-            labelString: 'Data (In Bytes)'
+            labelString: 'Data ( In KBs )'
           }
         }]
       }
@@ -255,14 +263,14 @@ export class RunListComponent implements OnInit {
           display: true,
           scaleLabel: {
             display: true,
-            labelString: 'Date'
+            labelString: 'Run No'
           }
         }],
         yAxes: [{
           display: true,
           scaleLabel: {
             display: true,
-            labelString: 'Total Time ( In Milli Seconds )'
+            labelString: 'Total Time ( In Seconds )'
           }
         }]
       }
@@ -270,16 +278,18 @@ export class RunListComponent implements OnInit {
 
     //Graph 1 Data - Passed Failed
     let graph1Data = {
-      labels: dtDateConvert,
+      labels: runId,
       datasets: [
         {
           data: totalPass,
           label: 'Passed',
-          borderColor: this.config.success,
           backgroundColor: this.config.success,
-          pointBackgroundColor: this.config.lightBlack,
-          pointBorderWidth: 1,
-          pointBorderColor: "#FFF",
+          borderColor: this.config.success,
+          pointBorderColor: "rgba(38, 185, 154, 0.7)",
+          pointBackgroundColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointBorderWidth: 1,          
           fill: false,
           pointRadius: 3,
           pointHoverRadius: 4
@@ -287,11 +297,13 @@ export class RunListComponent implements OnInit {
         {
           data: totalFail,
           label: 'Failed',
-          borderColor: this.config.danger,
           backgroundColor: this.config.danger,
-          pointBackgroundColor: this.config.lightBlack,
-          pointBorderColor: "#FFF",
-          pointBorderWidth: 1,
+          borderColor: this.config.danger,
+          pointBorderColor: "rgba(3, 88, 106, 0.70)",
+          pointBackgroundColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(151,187,205,1)",
+          pointBorderWidth: 1,         
           fill: false,
           pointRadius: 3,
           pointHoverRadius: 4
@@ -301,14 +313,17 @@ export class RunListComponent implements OnInit {
 
     //Graph 2 Data - Issues
     let graph2Data = {
-      labels: dtDateConvert,
+      labels: runId,
       datasets: [
         {
           data: issuesClosed,
           label: 'Closed',
           borderColor: this.config.success,
           backgroundColor: this.config.success,
-          pointBackgroundColor: this.config.lightBlack,
+          pointBorderColor: "rgba(38, 185, 154, 0.7)",
+          pointBackgroundColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
@@ -316,10 +331,13 @@ export class RunListComponent implements OnInit {
         },
         {
           data: issuesLogged,
-          label: 'Logged',
+          label: 'New',
           borderColor: this.config.danger,
           backgroundColor: this.config.danger,
-          pointBackgroundColor: this.config.lightBlack,
+          pointBorderColor: "rgba(38, 185, 154, 0.7)",
+          pointBackgroundColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
@@ -330,7 +348,10 @@ export class RunListComponent implements OnInit {
           label: 'Open',
           borderColor: this.config.warning,
           backgroundColor: this.config.warning,
-          pointBackgroundColor: this.config.lightBlack,
+          pointBorderColor: "rgba(38, 185, 154, 0.7)",
+          pointBackgroundColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
@@ -339,16 +360,19 @@ export class RunListComponent implements OnInit {
       ]
     };
 
-    //Graph 3 Data - Bytes
+    //Graph 3 Data - KiloBytes
     let graph3Data = {
-      labels: dtDateConvert,
+      labels: runId,
       datasets: [
         {
           data: totalBytes,
-          label: 'Bytes',
+          label: 'Data (In KBs)',
           borderColor: this.config.info,
           backgroundColor: this.config.info,
-          pointBackgroundColor: this.config.lightBlack,
+          pointBorderColor: "rgba(38, 185, 154, 0.7)",
+          pointBackgroundColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
@@ -359,14 +383,17 @@ export class RunListComponent implements OnInit {
 
     //Graph 4 Data - Total Time
     let graph4Data = {
-      labels: dtDateConvert,
+      labels: runId,
       datasets: [
         {
           data: totalTime,
-          label: 'Time',
+          label: 'Time (In Seconds)',
           borderColor: this.config.infoAlt,
           backgroundColor: this.config.infoAlt,
-          pointBackgroundColor: this.config.lightBlack,
+          pointBorderColor: "rgba(38, 185, 154, 0.7)",
+          pointBackgroundColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
@@ -426,22 +453,26 @@ export class RunListComponent implements OnInit {
   page = 0;
   pageSize = 10;
   change(evt) {
-    // if(this.graph1){
-    //     this.graph1.destroy();
-    //     //this.graph1.clear();
-    // }
-    // if(this.graph2){
-    //     this.graph2.destroy();
-    //     //this.graph2.clear();
-    // }
-    // if(this.graph3){
-    //     this.graph3.destroy();
-    //     //this.graph3.clear();
-    // }
-    // if(this.graph4){
-    //     this.graph4.destroy();
-    //     //this.graph4.clear();
-    // }
+    if(this.graph1 != undefined){
+      console.log("this.graph1", this.graph1)
+        this.graph1.destroy();
+        //this.graph1.clear();
+    }
+    if(this.graph2 != undefined){
+      console.log("this.graph2", this.graph2)
+        this.graph2.destroy();
+        //this.graph2.clear();
+    }
+    if(this.graph3 != undefined){
+      console.log("this.graph3", this.graph3)
+        this.graph3.destroy();
+        //this.graph3.clear();
+    }
+    if(this.graph4 != undefined){
+      console.log("this.graph4", this.graph4)
+        this.graph4.destroy();
+        //this.graph4.clear();
+    }
       this.page = evt['pageIndex'];
       this.getRunByJob(this.jobId);
   }
