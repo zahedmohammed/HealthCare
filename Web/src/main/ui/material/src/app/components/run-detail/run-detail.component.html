@@ -64,7 +64,7 @@
                         <span>Test Executions</span>
                     </div>
                     <div class="box-bottom text-muted">
-                        <span>{{run.task['totalTests']}}</span>
+                        <small class="font-weight-light">{{run.task['totalTests']}}</small>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                         <span>Data</span>
                     </div>
                     <div class="box-bottom text-muted">
-                        <span>{{run.task['totalBytes'] | byteFormat}}</span>
+                        <small class="font-weight-light">{{run.task['totalBytes'] | byteFormat}}</small>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                         <span>Duration</span>
                     </div>
                     <div class="box-bottom text-muted">
-                        <span>{{run.task['totalTime'] | mstoDuration}}</span>
+                        <small class="font-weight-light">{{run.task['totalTime'] | mstoDuration}}</small>
                     </div>
                 </div>
             </div>
@@ -103,34 +103,34 @@
                         <span>Bugs</span>
                     </div>
                     <div class="box-bottom text-muted">
-                        <small class="text-danger">{{run.task.issuesLogged || 0}}<span class="text-small"> New </span></small>
-                        <small class="text-success">{{run.task.issuesClosed || 0}}<span class="text-small"> Closed</span></small>
+                        <small class="text-danger h4">{{run.task.issuesLogged || 0}}<span class="text-small"> New </span></small>
+                        <small class="text-success h4">{{run.task.issuesClosed || 0}}<span class="text-small"> Closed</span></small>
                     </div>
                 </div>
             </div>
             <div class="col-xl-2 col-sm-6 pointer" (click)="status='Failed';search()">
-                <div class="box box-default">
+                <div class="box box-default pricing-table">
                     <div class="box-top bg-color-danger">
                         <i class="fa fa-times-circle"></i>
                     </div>
                     <div class="box-info">
                         <span>Fail</span>
                     </div>
-                    <div class="box-bottom text-muted">
-                        <span>{{run.task['failedTests']}}</span>
+                    <div class="box-bottom text-danger">
+                        <small>{{run.task['failedTests']}}</small>
                     </div>
                 </div>
             </div>
             <div class="col-xl-2 col-sm-6 pointer" (click)="status='Passed';search()">
-                <div class="box box-default">
+                <div class="box box-default pricing-table">
                     <div class="box-top bg-color-success">
                         <i class="material-icons">check</i>
                     </div>
                     <div class="box-info">
                         <span>Success Rate</span>
                     </div>
-                    <div class="box-bottom text-muted">
-                        <span>{{success | percent}}</span>
+                    <div class="box-bottom text-success">
+                        <small>{{success | percent}}</small>
                     </div>
                 </div>
             </div>
