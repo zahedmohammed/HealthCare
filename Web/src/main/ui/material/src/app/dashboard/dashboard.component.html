@@ -8,42 +8,18 @@
     </div>
 </div>
 
-<form [formGroup]="datePickerForm" class="row">
-    <div class="col-md-10"></div>
-    <div class="col-md-2">
-        <!-- <mat-form-field>
-            <input matInput [matDatepicker]="picker1" type="text" formControlName="startDate" placeholder="From"
-                required autocomplete="off">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1 startView="year"></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [min]="datePickerForm.controls.startDate.value" [matDatepicker]="picker2" type="text"
-                formControlName="endDate" placeholder="To" required autocomplete="off">
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2 startView="year"></mat-datepicker>
-        </mat-form-field>
-        <button mat-button class="btn-w-sm text-primary" mat-raised-button mat-default [disabled]="!datePickerForm.valid">Show</button> -->
-
-       <a (click)="getPrevMonth()" href="javascript:void(0);" > <i class="fa fa-chevron-left" *ngIf="prevMonth"></i> </a>
-       <a ><i class="fa fa-chevron-left" *ngIf="!prevMonth"></i></a>&nbsp;<b> {{selectedMonth}},</b>&nbsp;<b>{{yy}}</b> &nbsp; 
-       <a (click)="getNextMonth()" href="javascript:void(0);"><i class="fa fa-chevron-right" *ngIf="nextMonth" ></i></a>
-       <a ><i class="fa fa-chevron-right" *ngIf="!nextMonth"></i></a>
-    </div>
-</form>
-
 <section class="container-fluid with-maxwidth no-breadcrumbs page-dashboard chapter">
-    <article class="article padding-lg-v1">
 
-        <!--
-           <div class="box box-default">
-             <div class="box-body">
-               <div myECharts [EChartsOptions]="trafficChart" style="height: 450px;"></div>
-             </div>
-           </div>
-            -->
-
+    <article class="article">
         <div class="row">
+            <div class="col-md-12">
+                <span class="float-right">
+                <a (click)="getPrevMonth()" href="javascript:void(0);"> <i class="fa fa-chevron-left" *ngIf="prevMonth"></i></a>
+                <a><i class="fa fa-chevron-left" *ngIf="!prevMonth"></i></a>&nbsp;<b> {{selectedMonth}},</b>&nbsp;<b>{{yy}}</b>
+                &nbsp;
+                <a (click)="getNextMonth()" href="javascript:void(0);"><i class="fa fa-chevron-right" *ngIf="nextMonth"></i></a>
+                <a><i class="fa fa-chevron-right" *ngIf="!nextMonth"></i></a></span>
+            </div><br /> <br />
             <!-- Stats -->
             <div class="col-xl-3 col-sm-6">
                 <div class="box box-default">
@@ -201,62 +177,10 @@
                         <span>Balance</span>
                     </div>
                     <div class="box-bottom">
-                        <span>-</span>
+                        <span>{{balance}}</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!--
-            <div class="box box-default">
-              <div class="box-body padding-lg">
-                <div class="row">
-                  <div class="col-xl-4">
-                    <div class="box box-transparent">
-                      <div class="box-heading">Platform</div>
-                      <div class="divider divider-md"></div>
-                      <div class="box-body">
-                        <div class="vprogressbar-container brand-success">
-                          <ul class="vprogressbar clearfix">
-                            <li><span class="vprogressbar-percent bg-color-info-alt" style="height: 65%; opacity: 0.85;"></span></li>
-                            <li><span class="vprogressbar-percent bg-color-success" style="height: 50%; opacity: 0.85;"></span></li>
-                            <li><span class="vprogressbar-percent bg-color-warning" style="height: 40%; opacity: 0.85;"></span></li>
-                            <li><span class="vprogressbar-percent bg-color-primary" style="height: 80%; opacity: 0.85;"></span></li>
-                          </ul>
-                          <ul class="vprogressbar-legend">
-                            <li><span class="vpointer bg-color-info-alt"></span> Direct</li>
-                            <li><span class="vpointer bg-color-success"></span> Instagram</li>
-                            <li><span class="vpointer bg-color-warning"></span> Twitter</li>
-                            <li><span class="vpointer bg-color-primary"></span> Facebook</li>
-                          </ul>
-                          <div class="vprogressbar-info">
-                            <span>Source of Acquisition</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-4">
-                    <div class="box box-transparent">
-                      <div class="box-heading">Nationality</div>
-                      <div class="divider divider-md"></div>
-                      <div class="box-body">
-                        <div myECharts [EChartsOptions]="donutChart" style="height: 300px;"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-4">
-                    <section class="box box-transparent">
-                      <div class="box-heading">Budget vs Spending</div>
-                      <div class="divider divider-md"></div>
-                      <div class="box-body">
-                        <div myECharts [EChartsOptions]="radarChart" style="height: 300px;"></div>
-                      </div>
-                    </section>
-                  </div>
-                </div>
-              </div>
-            </div>
-            -->
     </article>
 </section>
