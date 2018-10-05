@@ -197,7 +197,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div *ngIf="res.type === 'anonymous_invalid' || res.type === 'auth_invalid' || res.type === 'DDOS' || res.type === 'sla'" >
+                                        <div *ngIf="res.type === 'anonymous_invalid' || res.type === 'auth_invalid' || res.type === 'auth_invalid_empty' || res.type === 'auth_invalid_sql' || res.type === 'DDOS' || res.type === 'sla'" >
                                             <div *ngFor="let m of res.matches">
                                                 <div class="form-group row" [hidden]="false">
                                                     <label for="name" class="col-md-0 control-label"></label>

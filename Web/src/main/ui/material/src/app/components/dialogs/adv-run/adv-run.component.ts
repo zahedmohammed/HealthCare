@@ -25,7 +25,7 @@ export class AdvRunComponent implements OnInit {
   newRegion;
   category: string[];
   selectedCategories:string[]=[];
-  categories=['SimpleGET','Functional','SLA','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+  categories=['SimpleGET','Functional','SLA','Negative','UnSecured', 'InvalidAuth', 'InvalidAuthSQL', 'InvalidAuthEmpty', 'DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
 
   constructor(private regionService: RegionsService, private runService: RunService, private router: Router, private handler: Handler,
     @Inject(MAT_DIALOG_DATA) public data: any,

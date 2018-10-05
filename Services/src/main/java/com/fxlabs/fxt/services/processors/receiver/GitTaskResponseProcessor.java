@@ -90,9 +90,9 @@ public class GitTaskResponseProcessor {
 
                 endpointRepository.deleteAll(endpointRepository.findByProjectId(project.getId()));
 
-                endpointRepository.saveAll(endpointConverter.convertToEntities(task.getApiEndpoints()));
-
-
+                if (!CollectionUtils.isEmpty(task.getApiEndpoints())) {
+                    endpointRepository.saveAll(endpointConverter.convertToEntities(task.getApiEndpoints()));
+                }
 
                 NameDto o = new NameDto();
                 o.setId(project.getOrg().getId());
@@ -107,8 +107,6 @@ public class GitTaskResponseProcessor {
             } catch (Exception ex) {
                 logger.warn("Exception sending project sync event");
             }
-
-
 
 
         } catch (RuntimeException ex) {

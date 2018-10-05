@@ -23,6 +23,8 @@ public class AutoCodeConfigServiceUtil {
         autoCodeGenerators.add(getSLA(20));
         autoCodeGenerators.add(getAnonymous_invalid(30));
         autoCodeGenerators.add(getAuth_invalid(40));
+        autoCodeGenerators.add(getAuth_invalid_empty(41));
+        autoCodeGenerators.add(getAuth_invalid_sql(42));
         autoCodeGenerators.add(getRbac(50));
         autoCodeGenerators.add(getDdos(60));
         autoCodeGenerators.add(getXss_injection(70));
@@ -380,8 +382,8 @@ public class AutoCodeConfigServiceUtil {
         auth_invalid.setSeverity(TestSuiteSeverity.Critical);
         auth_invalid.setType("auth_invalid");
 
-        auth_invalid.setDisplayHeaderLabel("Authorization Invalid");
-        auth_invalid.setDisplayHeaderDescription("These tests discover API endpoints which bypasses validation of authentication tokens and credentials.");
+        auth_invalid.setDisplayHeaderLabel("Authentication Invalid");
+        auth_invalid.setDisplayHeaderDescription("Identifies endpoints that skips token validation. Note: Environment should have an Auth with name 'Invalid_Auth'");
         auth_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
 
 
@@ -392,8 +394,63 @@ public class AutoCodeConfigServiceUtil {
         List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
 
         AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
-        match.setPathPatterns("Get:/api/v1/user-signup/**");
-        //match.setMethods("Get");
+        match.setPathPatterns("");
+        matchesList.add(match);
+
+        auth_invalid.setMatches(matchesList);
+
+        auth_invalid.setSequenceOrder(seqOrder);
+        return auth_invalid;
+    }
+
+    private static AutoCodeGenerator getAuth_invalid_empty(int seqOrder) {
+        AutoCodeGenerator auth_invalid = new AutoCodeGenerator();
+        auth_invalid.setInactive(false);
+
+        auth_invalid.setSeverity(TestSuiteSeverity.Critical);
+        auth_invalid.setType("auth_invalid_empty");
+
+        auth_invalid.setDisplayHeaderLabel("Authentication Invalid [Empty]");
+        auth_invalid.setDisplayHeaderDescription("Identifies endpoints that skips token validation. Note: Environment should have an Auth with name 'Invalid_Auth_Empty'");
+        auth_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
+
+
+        List<String> assertions = new ArrayList<>();
+        assertions.add("@StatusCode == 401 OR @StatusCode == 403");
+        auth_invalid.setAssertions(assertions);
+
+        List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
+
+        AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
+        match.setPathPatterns("");
+        matchesList.add(match);
+
+        auth_invalid.setMatches(matchesList);
+
+        auth_invalid.setSequenceOrder(seqOrder);
+        return auth_invalid;
+    }
+
+    private static AutoCodeGenerator getAuth_invalid_sql(int seqOrder) {
+        AutoCodeGenerator auth_invalid = new AutoCodeGenerator();
+        auth_invalid.setInactive(false);
+
+        auth_invalid.setSeverity(TestSuiteSeverity.Critical);
+        auth_invalid.setType("auth_invalid_sql");
+
+        auth_invalid.setDisplayHeaderLabel("Authentication Invalid [SQL]");
+        auth_invalid.setDisplayHeaderDescription("Identifies endpoints that skips token validation. Note: Environment should have an Auth with name 'Invalid_Auth_SQL'");
+        auth_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
+
+
+        List<String> assertions = new ArrayList<>();
+        assertions.add("@StatusCode == 401 OR @StatusCode == 403");
+        auth_invalid.setAssertions(assertions);
+
+        List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
+
+        AutoCodeGeneratorMatches match = new AutoCodeGeneratorMatches();
+        match.setPathPatterns("");
         matchesList.add(match);
 
         auth_invalid.setMatches(matchesList);
@@ -410,7 +467,7 @@ public class AutoCodeConfigServiceUtil {
         anonymous_invalid.setType("anonymous_invalid");
 
         anonymous_invalid.setDisplayHeaderLabel("Secured Endpoints");
-        anonymous_invalid.setDisplayHeaderDescription("These tests discover unsecured API endpoints.");
+        anonymous_invalid.setDisplayHeaderDescription("Identifies unsecured endpoints.");
         anonymous_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
 
 

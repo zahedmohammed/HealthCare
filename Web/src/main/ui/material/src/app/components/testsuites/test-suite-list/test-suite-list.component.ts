@@ -36,7 +36,7 @@ export class TestSuiteListComponent implements OnInit {
   projectSync: ProjectSync = new ProjectSync();
   //private _clockSubscription: Subscription;
   selectedCategories:string;
-  categories=['All','SimpleGET','Functional','SLA','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+  categories=['All','SimpleGET','Functional','SLA','Negative','UnSecured', 'InvalidAuth', 'InvalidAuthSQL', 'InvalidAuthEmpty', 'DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
 
   displayedColumns: string[] = ['name', 'category', 'type', 'auto-created', 'modified-date'];
   dataSource = null;

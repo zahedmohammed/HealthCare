@@ -17,6 +17,9 @@ public enum TestSuiteCategory {
 //    Security_SQL_Injection("Security_SQL_Injection"),
 
     UnSecured("UnSecured"),
+    InvalidAuthSQL("InvalidAuthSQL"),
+    InvalidAuthEmpty("InvalidAuthEmpty"),
+    InvalidAuth("InvalidAuth"),
     DDOS("DDOS"),
     XSS_Injection("XSS_Injection"),
     SQL_Injection("SQL_Injection"),

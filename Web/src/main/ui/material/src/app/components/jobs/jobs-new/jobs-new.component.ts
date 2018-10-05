@@ -101,7 +101,7 @@ export class JobsNewComponent implements OnInit {
     this.crons[0] = new Cron("0 0 12 * * ?", "Fire at 12pm (noon) every day"),
     this.crons[1] = new Cron("0 15 10 * * ?", "Fire at 10:15am every day"),
     this.crons[2] = new Cron("0 15 10 ? * MON-FRI", "Fire at 10:15am every Monday, Tuesday, Wednesday, Thursday and Friday")
-    this.categories=['SimpleGET','Functional','SLA','Negative','UnSecured','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
+    this.categories=['SimpleGET','Functional','SLA','Negative','UnSecured', 'InvalidAuth', 'InvalidAuthSQL', 'InvalidAuthEmpty','DDOS','XSS_Injection','SQL_Injection','Log_Forging','RBAC'];
 
   }
 

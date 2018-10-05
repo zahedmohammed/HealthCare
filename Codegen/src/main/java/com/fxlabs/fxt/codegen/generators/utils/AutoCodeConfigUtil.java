@@ -57,7 +57,11 @@ public class AutoCodeConfigUtil {
         DEFAULT_ASSERTIONS.add("@StatusCode != 200");
 
         TYPE_CATEGORY_MAP.put("anonymous_invalid", TestSuiteCategory.UnSecured);
-        TYPE_CATEGORY_MAP.put("auth_invalid", TestSuiteCategory.UnSecured);
+
+        TYPE_CATEGORY_MAP.put("auth_invalid_sql", TestSuiteCategory.InvalidAuthSQL);
+        TYPE_CATEGORY_MAP.put("auth_invalid_empty", TestSuiteCategory.InvalidAuthEmpty);
+        TYPE_CATEGORY_MAP.put("auth_invalid", TestSuiteCategory.InvalidAuth);
+
         TYPE_CATEGORY_MAP.put("DDOS", TestSuiteCategory.DDOS);
         TYPE_CATEGORY_MAP.put("XSS_Injection", TestSuiteCategory.XSS_Injection);
         TYPE_CATEGORY_MAP.put("sql_injection", TestSuiteCategory.SQL_Injection);
