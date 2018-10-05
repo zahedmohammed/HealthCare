@@ -50,7 +50,7 @@
               <mat-input-container class="ml-4">
                 <input [(ngModel)]="keyword" name="search" id="search" matInput type="search" placeholder="Search by name..."
                   (keyup)="search()">
-                  <mat-icon matSuffix>search</mat-icon>
+                <mat-icon matSuffix class="text-muted">search</mat-icon>
               </mat-input-container>
             </div>
           </div>
@@ -95,8 +95,8 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </mat-table>
 
-          <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" [pageIndex]="page" hidePageSize="true" (page)="change($event)"
-            [length]="length">
+          <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" [pageIndex]="page" hidePageSize="true"
+            (page)="change($event)" [length]="length">
           </mat-paginator>
         </div>
       </div>
