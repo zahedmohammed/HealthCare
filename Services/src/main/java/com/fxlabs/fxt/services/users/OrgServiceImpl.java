@@ -280,6 +280,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
         Response<com.fxlabs.fxt.dto.users.Users> usersResponse = this.usersService.findById(id);
         usersResponse.getData().setName(users.getName());
         usersResponse.getData().setCompany(users.getCompany());
+       // usersResponse.getData().setInactive(users.isInactive());
 
 
         this.usersService.save(usersResponse.getData());
@@ -297,6 +298,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
             throw new FxException(String.format("User role can't be changed to [%s].", OrgRole.ENTERPRISE_ADMIN));
         }
         orgUsers_.setOrgRole(OrgRole.valueOf(orgUser.getOrgRole().toString()));
+        orgUsers_.setStatus(OrgUserStatus.valueOf(orgUser.getStatus().toString()));
         this.orgUsersRepository.save(orgUsers_);
 
         return new Response<>(true);
@@ -322,6 +324,7 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     public Response<com.fxlabs.fxt.dto.users.Org> findByName(String orgName) {
 
         Optional<Org> orgOptional = this.orgRepository.findByName(orgName);
+
         if (!orgOptional.isPresent()) {
             throw new FxException("User not entitled to the resource");
         }
