@@ -5,6 +5,7 @@ import com.fxlabs.fxt.bot.amqp.Sender;
 import com.fxlabs.fxt.bot.assertions.AssertionLogger;
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.assertions.Context;
+import com.fxlabs.fxt.dto.project.Auth;
 import com.fxlabs.fxt.dto.project.TestCase;
 import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
@@ -221,12 +222,6 @@ public class RestProcessor {
             //RestTemplate restTemplate = new RestTemplate();
             //String url = task.getEndpoint();
             HttpMethod method = HttpMethodConverter.convert(task.getMethod());
-            HttpHeaders httpHeaders = new HttpHeaders();
-
-            httpHeaders.set("Content-Type", "application/json");
-            httpHeaders.set("Accept", "application/json");
-
-            headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
 
             logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
 
@@ -237,13 +232,25 @@ public class RestProcessor {
             }
 
             if (count > 0L) {
+                Auth auth = headerUtils.clone(task.getAuth());
                 LongStream.range(0, count).forEach(lc -> {
+                    HttpHeaders httpHeaders = new HttpHeaders();
+                    httpHeaders.set("Content-Type", "application/json");
+                    httpHeaders.set("Accept", "application/json");
+                    headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
+                    headerUtils.copyAuth(auth, task.getAuth(), parentContext, task.getSuiteName());
                     task.getTestCases().parallelStream().forEach(testCase -> {
                         processTask(task, testCaseResponses, generateTestCases, totalFailed, totalPassed, totalTime, totalSize, logs, parentContext, method, httpHeaders, testCase);
                     });
                 });
 
             } else {
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.set("Content-Type", "application/json");
+                httpHeaders.set("Accept", "application/json");
+                headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
+                Auth auth = headerUtils.clone(task.getAuth());
+                headerUtils.copyAuth(auth, task.getAuth(), parentContext, task.getSuiteName());
                 task.getTestCases().parallelStream().forEach(testCase -> {
                     processTask(task, testCaseResponses, generateTestCases, totalFailed, totalPassed, totalTime, totalSize, logs, parentContext, method, httpHeaders, testCase);
                 });
@@ -511,12 +518,7 @@ public class RestProcessor {
             //RestTemplate restTemplate = new RestTemplate();
             //String url = task.getEndpoint();
             HttpMethod method = HttpMethodConverter.convert(task.getMethod());
-            HttpHeaders httpHeaders = new HttpHeaders();
 
-            httpHeaders.set("Content-Type", "application/json");
-            httpHeaders.set("Accept", "application/json");
-
-            headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
 
             logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
 
@@ -527,13 +529,25 @@ public class RestProcessor {
             }
 
             if (count > 0L) {
+                Auth auth = headerUtils.clone(task.getAuth());
                 LongStream.range(0, count).forEach(lc -> {
+                    HttpHeaders httpHeaders = new HttpHeaders();
+                    httpHeaders.set("Content-Type", "application/json");
+                    httpHeaders.set("Accept", "application/json");
+                    headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
+                    headerUtils.copyAuth(auth, task.getAuth(), parentContext, task.getSuiteName());
                     task.getTestCases().parallelStream().forEach(testCase -> {
                         processTask(task, testCaseResponses, generateTestCases, totalFailed, totalPassed, totalTime, totalSize, logs, parentContext, method, httpHeaders, testCase);
                     });
                 });
 
             } else {
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.set("Content-Type", "application/json");
+                httpHeaders.set("Accept", "application/json");
+                headerUtils.copyHeaders(httpHeaders, task.getHeaders(), parentContext, task.getSuiteName());
+                Auth auth = headerUtils.clone(task.getAuth());
+                headerUtils.copyAuth(auth, task.getAuth(), parentContext, task.getSuiteName());
                 task.getTestCases().parallelStream().forEach(testCase -> {
                     processTask(task, testCaseResponses, generateTestCases, totalFailed, totalPassed, totalTime, totalSize, logs, parentContext, method, httpHeaders, testCase);
                 });

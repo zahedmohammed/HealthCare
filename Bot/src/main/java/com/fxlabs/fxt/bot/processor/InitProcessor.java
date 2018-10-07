@@ -3,6 +3,7 @@ package com.fxlabs.fxt.bot.processor;
 
 import com.fxlabs.fxt.bot.assertions.AssertionValidator;
 import com.fxlabs.fxt.bot.assertions.Context;
+import com.fxlabs.fxt.dto.project.Auth;
 import com.fxlabs.fxt.dto.run.BotTask;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -61,6 +62,8 @@ public class InitProcessor {
         httpHeaders.set("Accept", "application/json");
 
         headerUtils.copyHeaders(httpHeaders, task.getHeaders(), context, task.getSuiteName());
+        Auth auth = headerUtils.clone(task.getAuth());
+        headerUtils.copyAuth(auth, task.getAuth(), context, task.getSuiteName());
 
         logger.debug("Suite [{}] Total tests [{}] auth [{}]", task.getProjectDataSetId(), task.getTestCases().size(), task.getAuth());
 
