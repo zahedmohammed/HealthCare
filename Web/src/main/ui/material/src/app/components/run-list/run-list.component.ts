@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MatPaginator, MatSort, MatTableDataSource } from "@angular/material";
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
+import 'chartjs-plugin-datalabels';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -106,6 +107,21 @@ export class RunListComponent implements OnInit {
     });
   }
 
+  dynamicColors(){
+    let r = Math.floor(Math.random() * 255);
+    let g = Math.floor(Math.random() * 255);
+    let b = Math.floor(Math.random() * 255);
+    return "rgba(" + r + "," + g + "," + b + ", 0.5)";
+  }
+
+  poolColors(a) {
+    var pool = [];
+    for(let i = 0; i < a; i++){
+        pool.push(this.dynamicColors());
+      }
+    return pool;
+  }
+
   //Graph Analytics - Start
   getAnalyticsData() {
     let totalData = this.list;
@@ -142,6 +158,7 @@ export class RunListComponent implements OnInit {
       dtDateConvert[i] = this.datePipe.transform(dt, "MMM dd");
      
       let bytes = totalData[i].task.totalBytes / 1024;
+      bytes = Math.round(bytes);
       totalBytes.push(bytes);      
 
       let closed: any[] = totalData[i].task.issuesClosed;
@@ -154,6 +171,7 @@ export class RunListComponent implements OnInit {
       issuesReopen.push(reopen);
 
       let totalTimeArr = totalData[i].task.totalTime / 1000;
+      totalTimeArr = Math.round(totalTimeArr);
       totalTime.push(totalTimeArr);
     }
     totalOpenIssues.reverse();
@@ -192,6 +210,19 @@ export class RunListComponent implements OnInit {
             labelString: 'Pass / Fail'
           }
         }]
+      },
+      plugins: {
+        datalabels: {
+          backgroundColor: function(context) {
+            return context.dataset.backgroundColor;
+          },
+          borderRadius: 5,
+          color: 'white',
+          datalabels: {
+						align: 'end',
+						anchor: 'end'
+					}
+        }
       }
     };
 
@@ -219,6 +250,19 @@ export class RunListComponent implements OnInit {
             labelString: 'Issues'
           }
         }]
+      },
+      plugins: {
+        datalabels: {
+          backgroundColor: function(context) {
+            return context.dataset.backgroundColor;
+          },
+          borderRadius: 5,
+          color: 'white',
+          datalabels: {
+						align: 'end',
+						anchor: 'end'
+					}
+        }
       }
     };
 
@@ -246,6 +290,19 @@ export class RunListComponent implements OnInit {
             labelString: 'Data ( In KBs )'
           }
         }]
+      },
+      plugins: {
+        datalabels: {
+          backgroundColor: function(context) {
+            return context.dataset.backgroundColor;
+          },
+          borderRadius: 5,
+          color: 'white',
+          datalabels: {
+						align: 'end',
+						anchor: 'end'
+					}
+        }
       }
     };
 
@@ -273,6 +330,19 @@ export class RunListComponent implements OnInit {
             labelString: 'Total Time ( In Seconds )'
           }
         }]
+      },
+      plugins: {
+        datalabels: {
+          backgroundColor: function(context) {
+            return context.dataset.backgroundColor;
+          },
+          borderRadius: 5,
+          color: 'white',
+          datalabels: {
+						align: 'end',
+						anchor: 'end'
+					}
+        }
       }
     };
 
@@ -285,28 +355,36 @@ export class RunListComponent implements OnInit {
           label: 'Passed',
           backgroundColor: this.config.success,
           borderColor: this.config.success,
-          pointBorderColor: "rgba(38, 185, 154, 0.7)",
-          pointBackgroundColor: "#fff",
-          pointHoverBackgroundColor: "#fff",
-          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointBorderColor: this.config.pointborderColor,
+          pointBackgroundColor: this.config.whiteColor,
+          pointHoverBackgroundColor: this.config.whiteColor,
+          pointHoverBorderColor: this.config.pointhoverBorderColor,
           pointBorderWidth: 1,          
           fill: false,
           pointRadius: 3,
-          pointHoverRadius: 4
+          pointHoverRadius: 4,
+          datalabels: {
+						align: 'top',
+						anchor: 'top'
+					}
         },
         {
           data: totalFail,
           label: 'Failed',
           backgroundColor: this.config.danger,
           borderColor: this.config.danger,
-          pointBorderColor: "rgba(3, 88, 106, 0.70)",
-          pointBackgroundColor: "#fff",
-          pointHoverBackgroundColor: "#fff",
-          pointHoverBorderColor: "rgba(151,187,205,1)",
+          pointBorderColor: this.config.pointborderColor,
+          pointBackgroundColor: this.config.whiteColor,
+          pointHoverBackgroundColor: this.config.whiteColor,
+          pointHoverBorderColor: this.config.pointhoverBorderColor,
           pointBorderWidth: 1,         
           fill: false,
           pointRadius: 3,
-          pointHoverRadius: 4
+          pointHoverRadius: 4,
+          datalabels: {
+						align: 'bottom',
+						anchor: 'bottom'
+					}
         }
       ]
     };
@@ -320,42 +398,54 @@ export class RunListComponent implements OnInit {
           label: 'Closed',
           borderColor: this.config.success,
           backgroundColor: this.config.success,
-          pointBorderColor: "rgba(38, 185, 154, 0.7)",
-          pointBackgroundColor: "#fff",
-          pointHoverBackgroundColor: "#fff",
-          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointBorderColor: this.config.pointborderColor,
+          pointBackgroundColor: this.config.whiteColor,
+          pointHoverBackgroundColor: this.config.whiteColor,
+          pointHoverBorderColor: this.config.pointhoverBorderColor,
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
-          pointHoverRadius: 4
+          pointHoverRadius: 4,
+          datalabels: {
+						align: 'top',
+						anchor: 'top'
+					}
         },
         {
           data: issuesLogged,
           label: 'New',
           borderColor: this.config.danger,
           backgroundColor: this.config.danger,
-          pointBorderColor: "rgba(38, 185, 154, 0.7)",
-          pointBackgroundColor: "#fff",
-          pointHoverBackgroundColor: "#fff",
-          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointBorderColor: this.config.pointborderColor,
+          pointBackgroundColor: this.config.whiteColor,
+          pointHoverBackgroundColor: this.config.whiteColor,
+          pointHoverBorderColor: this.config.pointhoverBorderColor,
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
-          pointHoverRadius: 4
+          pointHoverRadius: 4,
+          datalabels: {
+						align: 'center',
+						anchor: 'center'
+					}
         },
         {
           data: totalOpenIssues,
           label: 'Open',
           borderColor: this.config.warning,
           backgroundColor: this.config.warning,
-          pointBorderColor: "rgba(38, 185, 154, 0.7)",
-          pointBackgroundColor: "#fff",
-          pointHoverBackgroundColor: "#fff",
-          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointBorderColor: this.config.pointborderColor,
+          pointBackgroundColor: this.config.whiteColor,
+          pointHoverBackgroundColor: this.config.whiteColor,
+          pointHoverBorderColor: this.config.pointhoverBorderColor,
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
-          pointHoverRadius: 4
+          pointHoverRadius: 4,
+          datalabels: {
+						align: 'bottom',
+						anchor: 'bottom'
+					}
         }
       ]
     };
@@ -369,14 +459,18 @@ export class RunListComponent implements OnInit {
           label: 'Data (In KBs)',
           borderColor: this.config.info,
           backgroundColor: this.config.info,
-          pointBorderColor: "rgba(38, 185, 154, 0.7)",
-          pointBackgroundColor: "#fff",
-          pointHoverBackgroundColor: "#fff",
-          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointBorderColor: this.config.pointborderColor,
+          pointBackgroundColor: this.config.whiteColor,
+          pointHoverBackgroundColor: this.config.whiteColor,
+          pointHoverBorderColor: this.config.pointhoverBorderColor,
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
-          pointHoverRadius: 4
+          pointHoverRadius: 4,
+          datalabels: {
+						align: 'top',
+						anchor: 'top'
+					}
         },
       ]
     };
@@ -390,14 +484,18 @@ export class RunListComponent implements OnInit {
           label: 'Time (In Seconds)',
           borderColor: this.config.infoAlt,
           backgroundColor: this.config.infoAlt,
-          pointBorderColor: "rgba(38, 185, 154, 0.7)",
-          pointBackgroundColor: "#fff",
-          pointHoverBackgroundColor: "#fff",
-          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointBorderColor: this.config.pointborderColor,
+          pointBackgroundColor: this.config.whiteColor,
+          pointHoverBackgroundColor: this.config.whiteColor,
+          pointHoverBorderColor: this.config.pointhoverBorderColor,
           pointBorderWidth: 1,
           fill: false,
           pointRadius: 3,
-          pointHoverRadius: 4
+          pointHoverRadius: 4,
+          datalabels: {
+						align: 'top',
+						anchor: 'top'
+					}
         }
       ]
     }
@@ -453,26 +551,23 @@ export class RunListComponent implements OnInit {
   page = 0;
   pageSize = 10;
   change(evt) {
-    if(this.graph1 != undefined){
-      console.log("this.graph1", this.graph1)
-        this.graph1.destroy();
-        //this.graph1.clear();
-    }
-    if(this.graph2 != undefined){
-      console.log("this.graph2", this.graph2)
-        this.graph2.destroy();
-        //this.graph2.clear();
-    }
-    if(this.graph3 != undefined){
-      console.log("this.graph3", this.graph3)
-        this.graph3.destroy();
-        //this.graph3.clear();
-    }
-    if(this.graph4 != undefined){
-      console.log("this.graph4", this.graph4)
-        this.graph4.destroy();
-        //this.graph4.clear();
-    }
+    // console.log(this.graph1.length);
+    // if(this.graph1 != undefined || this.graph1 != null){
+    //   console.log("this.graph1", this.graph1)
+    //     this.graph1.destroy();
+    // }
+    // if(this.graph2 !== undefined || this.graph1 !== null){
+    //   console.log("this.graph2", this.graph2)
+    //     this.graph2.destroy();
+    // }
+    // if(this.graph3 !== undefined || this.graph1 !== null){
+    //   console.log("this.graph3", this.graph3)
+    //     this.graph3.destroy();
+    // }
+    // if(this.graph4 !== undefined || this.graph1 !== null){
+    //   console.log("this.graph4", this.graph4)
+    //     this.graph4.destroy();
+    // }
       this.page = evt['pageIndex'];
       this.getRunByJob(this.jobId);
   }
