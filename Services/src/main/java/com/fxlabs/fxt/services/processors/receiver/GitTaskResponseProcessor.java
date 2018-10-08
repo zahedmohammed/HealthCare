@@ -88,10 +88,10 @@ public class GitTaskResponseProcessor {
 
                 projectRepository.save(project);
 
-                endpointRepository.deleteAll(endpointRepository.findByProjectId(project.getId()));
-
                 if (!CollectionUtils.isEmpty(task.getApiEndpoints())) {
+                    endpointRepository.deleteAll(endpointRepository.findByProjectId(project.getId()));
                     endpointRepository.saveAll(endpointConverter.convertToEntities(task.getApiEndpoints()));
+                    endpointRepository.flush();
                 }
 
                 NameDto o = new NameDto();
