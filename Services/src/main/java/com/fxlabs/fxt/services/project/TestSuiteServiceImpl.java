@@ -135,7 +135,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
             ts.setProject(project.get());
         }
 
-        entity = ((TestSuiteRepository) repository).save(ts);
+        entity = ((TestSuiteRepository) repository).saveAndFlush(ts);
         if (entity != null && entity.getId() != null) {
             testSuiteESRepository.save(entity);
         }
@@ -202,7 +202,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         ts.setProject(project.get());
 
-         TestSuite entity = ((TestSuiteRepository) repository).save(ts);
+         TestSuite entity = ((TestSuiteRepository) repository).saveAndFlush(ts);
         if (entity != null && entity.getId() != null) {
             try {
                 testSuiteESRepository.save(entity);
@@ -293,7 +293,7 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
         ts.setProject(project.get());
 
 
-        TestSuite entity = ((TestSuiteRepository) repository).save(ts);
+        TestSuite entity = ((TestSuiteRepository) repository).saveAndFlush(ts);
         if (entity != null && entity.getId() != null) {
             testSuiteESRepository.save(entity);
         }
