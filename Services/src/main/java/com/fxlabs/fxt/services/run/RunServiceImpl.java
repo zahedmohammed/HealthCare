@@ -263,10 +263,13 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
     @Override
     public Response<com.fxlabs.fxt.dto.run.Run> findRunById(String runId, String user) {
-        Run run = this.repository.findByRunId(runId);
-        com.fxlabs.fxt.dto.run.Run run1 = this.converter.convertToDto(run);
-        run1.setRegions(run.getAttributes().get("REGION"));
-        return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
+        Optional<Run> runOptional = this.repository.findByRunId(runId);
+        if (runOptional.isPresent()) {
+            com.fxlabs.fxt.dto.run.Run run1 = this.converter.convertToDto(runOptional.get());
+            run1.setRegions(runOptional.get().getAttributes().get("REGION"));
+            return new Response<com.fxlabs.fxt.dto.run.Run>(run1);
+        }
+        return new Response<>().withErrors(true);
     }
 
     @Override
@@ -299,12 +302,13 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
         if (StringUtils.isEmpty(runId)) {
             throw new FxException("Invalid run");
         }
-        Run run = this.repository.findByRunId(runId);
+        Optional<Run> runOptional = this.repository.findByRunId(runId);
 
-        if (run == null) {
+        if (!runOptional.isPresent()) {
             throw new FxException("Invalid run");
         }
 
+        Run run = runOptional.get();
         run.getTask().setStatus(com.fxlabs.fxt.dao.entity.run.TaskStatus.STOPPED);
 
         run = this.repository.save(run);
@@ -736,8 +740,13 @@ public class RunServiceImpl extends GenericServiceImpl<Run, com.fxlabs.fxt.dto.r
 
         long timeSaved = 0L;
 
-        Run run = this.repository.findByRunId(runId);
-        if (run.getTask().getStartTime() != null && run.getTask().getEndTime() != null)
+        Optional<Run> runOptional = this.repository.findByRunId(runId);
+        Run run = null;
+        if (runOptional.isPresent()) {
+            run  = runOptional.get();
+        }
+
+        if (runOptional.isPresent() && run.getTask().getStartTime() != null && run.getTask().getEndTime() != null)
             timeSaved = run.getTask().getTotalTime() - (run.getTask().getEndTime().getTime() - run.getTask().getStartTime().getTime());
 
         savings.setTimeSaved(timeSaved);
