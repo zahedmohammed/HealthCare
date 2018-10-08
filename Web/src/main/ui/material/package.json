@@ -32,6 +32,7 @@
     "@angular/router": "^5.0.1",
     "@types/eventsource": "^1.0.2",
     "chart.js": "^2.7.2",
+    "chartjs-plugin-datalabels": "^0.4.0",
     "chartjs-plugin-labels": "^1.0.1",
     "core-js": "^2.5.1",
     "echarts": "^3.8.5",

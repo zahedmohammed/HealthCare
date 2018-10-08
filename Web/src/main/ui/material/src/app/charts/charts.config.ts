@@ -23,5 +23,7 @@ export const CHARTCONFIG = {
   lightBlue: '#bfe2cc',
   lightGreen: '#ace9af',
   lightYellow: '#f5ecab',
-  lightBlack: '#414345'
+  lightBlack: '#414345',
+  pointborderColor: "rgba(38, 185, 154, 0.7)",
+  pointhoverBorderColor: "rgba(220,220,220,1)",
 };

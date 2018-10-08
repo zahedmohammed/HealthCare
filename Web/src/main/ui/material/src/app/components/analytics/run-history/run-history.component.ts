@@ -115,11 +115,9 @@ export class RunHistoryComponent implements OnInit {
       this.length = results['totalElements'];
       this.dataSource = new MatTableDataSource(this.suites);
       this.dataSource.sort = this.sort;
-      //console.log('results -> ', results);
-
+     
       //Get data - Start
       let totalData = results['data'];
-      //console.log(totalData)
       let tp: any = [];
       let tf: any = [];
       let tb: any = [];
@@ -136,10 +134,8 @@ export class RunHistoryComponent implements OnInit {
         rt[i] = (totalData[i]['requestTime'] / 1000);
         crDate[i] = totalData[i]['createdDate'];
         let dt = new Date(crDate[i]);
-        //console.log("dt - ", dt);
         crDateConvert[i] = this.datePipe.transform(dt,"MMM dd");
         success.push(100 * (tp[i] / (tp[i] + tf[i])));
-        //runno.push(i['runNo']);
       }
       //End
       tb.reverse();
@@ -176,6 +172,19 @@ export class RunHistoryComponent implements OnInit {
               labelString: 'Success'
             }
           }]
+        },
+        plugins: {
+          datalabels: {
+            backgroundColor: function(context) {
+              return context.dataset.backgroundColor;
+            },
+            borderRadius: 5,
+            color: 'white',
+            datalabels: {
+              align: 'end',
+              anchor: 'end'
+            }
+          }
         }
       };
 
@@ -202,6 +211,19 @@ export class RunHistoryComponent implements OnInit {
               labelString: 'Data'
             }
           }]
+        },
+        plugins: {
+          datalabels: {
+            backgroundColor: function(context) {
+              return context.dataset.backgroundColor;
+            },
+            borderRadius: 5,
+            color: 'white',
+            datalabels: {
+              align: 'end',
+              anchor: 'end'
+            }
+          }
         }
       };
 
@@ -228,6 +250,19 @@ export class RunHistoryComponent implements OnInit {
               labelString: 'Time'
             }
           }]
+        },
+        plugins: {
+          datalabels: {
+            backgroundColor: function(context) {
+              return context.dataset.backgroundColor;
+            },
+            borderRadius: 5,
+            color: 'white',
+            datalabels: {
+              align: 'end',
+              anchor: 'end'
+            }
+          }
         }
       };
       // Options End
@@ -243,7 +278,12 @@ export class RunHistoryComponent implements OnInit {
             backgroundColor: this.config.success,
             fill: false,
             pointRadius: 4,
-            pointHoverRadius: 5
+            pointHoverRadius: 5,
+            pointBorderColor: "rgba(38, 185, 154, 0.7)",
+            pointBackgroundColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointBorderWidth: 1
           }
         ]
       };
@@ -259,7 +299,12 @@ export class RunHistoryComponent implements OnInit {
             backgroundColor: this.config.primary,
             fill: true,
             pointRadius: 4,
-            pointHoverRadius: 5
+            pointHoverRadius: 5,
+            pointBorderColor: "rgba(38, 185, 154, 0.7)",
+            pointBackgroundColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointBorderWidth: 1
           }
         ]
       };
@@ -275,7 +320,12 @@ export class RunHistoryComponent implements OnInit {
             backgroundColor: this.config.warning,
             fill: true,
             pointRadius: 4,
-            pointHoverRadius: 5
+            pointHoverRadius: 5,
+            pointBorderColor: "rgba(38, 185, 154, 0.7)",
+            pointBackgroundColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointBorderWidth: 1
           }
         ]
       };
