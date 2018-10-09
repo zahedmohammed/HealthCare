@@ -21,7 +21,7 @@ public interface RunRepository extends JpaRepository<Run, String> {
     // TODO - Replace this with job updating RunTask status
     //@Lock(LockModeType.WRITE)
     @Query("SELECT r FROM Run r WHERE r.id LIKE ?1")
-    Run findByRunId(String id);
+    Optional<Run> findByRunId(String id);
 
     // @Query("SELECT r FROM Run r WHERE r.id LIKE ?1")
     Optional<Run> findRunByJobIdAndRunId(String jobId, Long runNo);

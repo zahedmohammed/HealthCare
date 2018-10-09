@@ -45,7 +45,11 @@ public class RunTaskResponseProcessor {
             //logger.info("Response {}", i.incrementAndGet());
             logger.info("Task response [{}]...", task.getId());
             // TODO - Replace this with job updating RunTask status
-            com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findByRunId(task.getId());
+            Optional<com.fxlabs.fxt.dao.entity.run.Run> runOptional = runRepository.findByRunId(task.getId());
+            if (!runOptional.isPresent()) {
+                return;
+            }
+            com.fxlabs.fxt.dao.entity.run.Run run = runOptional.get();
             com.fxlabs.fxt.dao.entity.run.RunTask runTask = run.getTask();
 
             // only if SUITE
@@ -82,7 +86,12 @@ public class RunTaskResponseProcessor {
                 //logger.info("Response {}", i.incrementAndGet());
                 logger.info("Task response [{}]...", task.getId());
                 // TODO - Replace this with job updating RunTask status
-                com.fxlabs.fxt.dao.entity.run.Run run = runRepository.findByRunId(task.getId());
+                Optional<com.fxlabs.fxt.dao.entity.run.Run> runOptional = runRepository.findByRunId(task.getId());
+                if (!runOptional.isPresent()) {
+                    continue;
+                }
+                com.fxlabs.fxt.dao.entity.run.Run run = runOptional.get();
+
                 com.fxlabs.fxt.dao.entity.run.RunTask runTask = run.getTask();
 
                 // only if SUITE

@@ -135,7 +135,11 @@ public class TestCaseResponseProcessor {
             String runId = testCaseResponses.get(0).getRunId();
             if (!StringUtils.isEmpty(runId)) {
 
-                Run run = runRepository.findByRunId(runId);
+                Optional<com.fxlabs.fxt.dao.entity.run.Run> runOptional = runRepository.findByRunId(runId);
+                if (!runOptional.isPresent()) {
+                    return;
+                }
+                com.fxlabs.fxt.dao.entity.run.Run run = runOptional.get();
 
                 if (run != null && validations.intValue() != 0) {
                     run.setValidations(validations.intValue());

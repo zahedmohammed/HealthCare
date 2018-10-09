@@ -337,7 +337,7 @@ public class DataEvaluator {
                         // Handle Marketplace request
                         MarketplaceDataTask response = this.reader.get(context.getProjectId(), KEY);
                         if (response != null && StringUtils.isNotEmpty(response.getErrors())) {
-                            context.getLogs().append(AssertionLogger.LogType.INFO, context.getSuitename(), response.getErrors());
+                            context.getLogs().append(AssertionLogger.LogType.ERROR, context.getSuitename(), response.getErrors());
                         } else if (StringUtils.isNotEmpty(PATH)) {
                             if (isJsonObject(response.getEval())) {
                                 try {

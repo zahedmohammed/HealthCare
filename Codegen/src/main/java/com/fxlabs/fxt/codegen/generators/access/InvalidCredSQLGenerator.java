@@ -19,6 +19,7 @@ public class InvalidCredSQLGenerator extends AbstractGenerator {
 
     protected static final String SCENARIO = "auth_invalid_sql";
     protected static final String AUTH = "Invalid_Auth_SQL";
+    protected static final String INJECTION_DATASET = "@MySQLTimeboundSQLInjections";
 
 
     @Override
@@ -62,7 +63,8 @@ public class InvalidCredSQLGenerator extends AbstractGenerator {
                 }
             }
 
-            Policies policies = null;
+            Policies policies =  new Policies();
+            policies.setRepeatModule(INJECTION_DATASET);
 
             String postFix = configUtil.getTestSuitePostfix(SCENARIO);
             list = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
