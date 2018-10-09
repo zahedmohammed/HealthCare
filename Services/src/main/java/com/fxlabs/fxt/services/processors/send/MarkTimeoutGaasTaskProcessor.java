@@ -71,8 +71,8 @@ public class MarkTimeoutGaasTaskProcessor {
      */
     public void process() {
         Date dt = DateUtils.addMinutes(new Date(), -60);
-        Date dt_ = DateUtils.addMinutes(new Date(), -65);
-        Stream<Event> events = eventRepository.findByStatusAndEntityTypeAndCreatedDateBetween(Status.In_progress, Entity.Project, dt, dt_);
+        Date dt_ = DateUtils.addDays(new Date(), -10);
+        Stream<Event> events = eventRepository.findByStatusAndEntityTypeAndCreatedDateBetween(Status.In_progress, Entity.Project, dt_, dt);
 
         events.forEach(event -> {
             try {
