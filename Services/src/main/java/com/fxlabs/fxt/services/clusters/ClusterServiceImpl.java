@@ -289,9 +289,9 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 cloudTask.setCloudType(CloudType.AZURE);
                 opts.put("INSTANCE_NAME", String.valueOf(dto.getCreatedDate().getTime()));
                 opts.put("SUBSCRIPTION", dto.getAccount().getProp1());
-                opts.put("TENANT", dto.getAccount().getProp2());
-                opts.put("USERNAME", dto.getAccount().getAccessKey());
-                opts.put("PASSWORD", dto.getAccount().getSecretKey());
+                opts.put("TENANT", account.getProp2());
+                opts.put("USERNAME", account.getAccessKey());
+                opts.put("PASSWORD", getSecretKey(account.getId()));
                 break;
             default:
                 logger.info("Cloud not supported");
