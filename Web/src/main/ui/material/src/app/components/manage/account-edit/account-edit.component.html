@@ -222,6 +222,87 @@
             </div>
           </div>
           <!-- AWS  End    -->
+          <!-- AZURE  Start  -->
+          <div *ngIf="entry.accountType === 'AZURE'">
+
+            <div class="form-group row">
+              <label for="client" class="col-md-0 control-label">
+              </label>
+              <div  class="col-md-5">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.accessKey" name="client" id="client"
+                         matInput type="text" placeholder="Client">
+                </mat-input-container>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="azureSecretKey" class="col-md-0 control-label">
+              </label>
+              <div  class="col-md-5">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.secretKey" name="azureSecretKey" id="azureSecretKey"
+                         matInput type="password" placeholder="Key">
+                </mat-input-container>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="subscriptionId" class="col-md-0 control-label">
+              </label>
+              <div  class="col-md-5">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.prop1" name="subscriptionId" id="subscriptionId"
+                         matInput type="text" placeholder="Subscription-Id">
+                </mat-input-container>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="subscriptionId" class="col-md-0 control-label">
+              </label>
+              <div  class="col-md-5">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.prop2" name="tenant" id="tenant"
+                         matInput type="text" placeholder="Tenant">
+                </mat-input-container>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-0 control-label">
+              </label>
+              <div class="col-md-5">
+                <a href="javascript:;" (click)="toggleCloud()">Advanced section</a>
+              </div>
+            </div>
+
+            <div [hidden]="cloudShow">
+
+              <div class="form-group row">
+                <label class="col-md-0 control-label">
+                </label>
+                <div class="col-md-5">
+                  <mat-form-field class="full-width">
+                    <mat-select placeholder="Available regions" [(ngModel)]="entry.allowedRegions"
+                                name="region" multiple>
+                      <mat-option *ngFor="let region of AZUREREGIONS" [value]="region">
+                        {{region}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-7">
+                  <div class="callout1 text-muted callout-info1">
+                    <p>
+                      Restrict users from deploying bots across non available regions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Azure  End    -->
 
           <!-- BitBucket  Start    -->
           <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'  && entry.secretKey !=null && entry.accessKey !=null">
