@@ -169,6 +169,22 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Password/Secret-Key is empty"));
                 }
                 break;
+            case AZURE:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Client-Id is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Key is empty"));
+                }
+                if (dto != null && StringUtils.isEmpty(dto.getProp1())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Subscription is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getProp2())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Tenant is empty"));
+                }
+                break;
             case Self_Hosted:
                 break;
             case Slack:
@@ -243,6 +259,22 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
                 if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Password/Secret-Key is empty"));
+                }
+                break;
+            case AZURE:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Client-Id is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Key is empty"));
+                }
+                if (dto != null && StringUtils.isEmpty(dto.getProp1())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Subscription is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getProp2())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Tenant is empty"));
                 }
                 break;
             case Self_Hosted:

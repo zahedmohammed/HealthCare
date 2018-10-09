@@ -94,7 +94,7 @@ public class AzureCloudService implements CloudService {
      */
     @Override
     public CloudTaskResponse create(final CloudTask task) {
-        logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
+        logger.info("In IT AZURE Service for task [{}]", task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
@@ -127,8 +127,9 @@ public class AzureCloudService implements CloudService {
         //String resourceGroupName = "dev";
 
 //		// create RG
+         taskLogger.get().append("Resource group :" + resourceGroupName);
         azure.resourceGroups().define(resourceGroupName)
-                .withRegion(com.microsoft.azure.management.resources.fluentcore.arm.Region.US_EAST)
+                .withRegion(com.microsoft.azure.management.resources.fluentcore.arm.Region.fromName(region))
                 .create();
 
         // create network and subnet
