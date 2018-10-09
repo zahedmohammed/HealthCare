@@ -14,9 +14,9 @@
                 <mat-input-container class="float-right">
                     <input [(ngModel)]="keyword" name="search" id="search" matInput placeholder="Search by name..."
                         (keyup)="searchProject()">
-                        <mat-icon matSuffix class="info text-muted">search</mat-icon>
+                    <mat-icon matSuffix class="info text-muted">search</mat-icon>
 
-                </mat-input-container>                       
+                </mat-input-container>
             </div>
             <div class="col-md-1">
                 <p class="text-muted float-right mt-3">Total ({{length}})</p>
@@ -24,6 +24,29 @@
         </div>
         <br />
         <div class="row">
+            <div class="col-xl-6 col-lg-6">
+                <a href="javascript:;" class="item-card1 item-card">
+                    <a href="javascript:;" [routerLink]="['/app/superbotnetwork']">
+                        <div class="card__image1 card__image">
+                            <img src="assets/images/aws-azure-dc-map.png" />
+                            <div class="text-center text-white">
+                            </div>
+                        </div>
+
+                        <div class="card__body card-white">
+                            <div class="card__title">
+                                <span>
+                                    <h4 class="text-muted">Super-Bot-Network</h4>
+                                    <h6>FX Cloud provided regions for instant tests run</h6>
+                                </span>
+                            </div>
+                            <div class="card__price">
+
+                            </div>
+                        </div>
+                    </a>
+                </a>
+            </div>
             <div class="col-xl-3 col-lg-6">
                 <a href="javascript:;" class="item-card bg-color-primary">
                     <a href="javascript:;" [routerLink]="['/app/projects/new']">

@@ -44,7 +44,7 @@ export class SuperbotnetworkListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 10;
+  pageSize = 100;
   change(evt) {
     this.page = evt['pageIndex'];
     this.get();
