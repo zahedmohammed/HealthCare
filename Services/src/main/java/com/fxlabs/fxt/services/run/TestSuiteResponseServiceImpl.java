@@ -8,15 +8,11 @@ import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.Operator;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.sum.Sum;
 import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
-import org.elasticsearch.search.aggregations.support.ValueType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
@@ -28,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
@@ -120,12 +115,12 @@ public class TestSuiteResponseServiceImpl extends GenericServiceImpl<TestSuiteRe
             List<TestSuiteResponse> list = testSuiteResponseRepository.findByRunId(runId);
 
             // Total Failed By Category
-            for (TestSuiteResponse tsr : list){
-                String key = tsr.getCategory()+"_"+"Failed";
+            for (TestSuiteResponse tsr : list) {
+                String key = tsr.getCategory() + "_" + "Failed";
                 Long value = stats.get(key);
-                if (value != null){
+                if (value != null) {
                     value = value + tsr.getTotalFailed();
-                }else{
+                } else {
                     value = tsr.getTotalFailed();
                 }
 
@@ -133,36 +128,36 @@ public class TestSuiteResponseServiceImpl extends GenericServiceImpl<TestSuiteRe
             }
 
             // Total Passed By Category
-            for (TestSuiteResponse tsr : list){
-                String key = tsr.getCategory()+"_"+"Passed";
+            for (TestSuiteResponse tsr : list) {
+                String key = tsr.getCategory() + "_" + "Passed";
                 Long value = stats.get(key);
-                if (value != null){
+                if (value != null) {
                     value = value + tsr.getTotalPassed();
-                }else{
+                } else {
                     value = tsr.getTotalPassed();
                 }
                 stats.put(key, value);
             }
 
             // Total Failed By Severity
-            for (TestSuiteResponse tsr : list){
-                String key = tsr.getSeverity()+"_"+"Failed";
+            for (TestSuiteResponse tsr : list) {
+                String key = tsr.getSeverity() + "_" + "Failed";
                 Long value = stats.get(key);
-                if (value != null){
+                if (value != null) {
                     value = value + tsr.getTotalFailed();
-                }else{
+                } else {
                     value = tsr.getTotalFailed();
                 }
                 stats.put(key, value);
             }
 
             // Total Passed By Severity
-            for (TestSuiteResponse tsr : list){
-                String key = tsr.getSeverity()+"_"+"Passed";
+            for (TestSuiteResponse tsr : list) {
+                String key = tsr.getSeverity() + "_" + "Passed";
                 Long value = stats.get(key);
-                if (value != null){
+                if (value != null) {
                     value = value + tsr.getTotalPassed();
-                }else{
+                } else {
                     value = tsr.getTotalPassed();
                 }
                 stats.put(key, value);
@@ -170,7 +165,7 @@ public class TestSuiteResponseServiceImpl extends GenericServiceImpl<TestSuiteRe
 
             return stats;
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;

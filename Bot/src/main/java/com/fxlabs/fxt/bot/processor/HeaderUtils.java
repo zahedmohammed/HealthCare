@@ -34,6 +34,10 @@ public class HeaderUtils {
 
     public void copyAuth(Auth src, Auth dest, Context context, String suite) {
 
+        if (src == null) {
+            return;
+        }
+
         if (src.getAuthType() == AuthType.Token) {
             if (StringUtils.isNotEmpty(src.getHeader_1())) {
                 dest.setHeader_1(dataResolver.resolve(src.getHeader_1(), context, suite));
@@ -51,6 +55,10 @@ public class HeaderUtils {
     }
 
     public Auth clone(Auth auth) {
+        if (auth == null) {
+            return auth;
+        }
+
         Auth a = new Auth();
         a.setName(auth.getName());
 
