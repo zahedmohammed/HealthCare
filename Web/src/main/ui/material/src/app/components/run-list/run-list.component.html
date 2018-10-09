@@ -126,8 +126,8 @@
                                             <ng-container matColumnDef="no">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header> No
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let element">
-                                                    <button mat-button class="text-left" color="primary" [routerLink]="['/app/projects' , projectId, 'jobs' , job.id, 'runs', element.id]">{{element.runId}}</button>
+                                                <mat-cell *matCellDef="let element" style="overflow:visible;">
+                                                    <button mat-button class="text-center" color="primary" [routerLink]="['/app/projects' , projectId, 'jobs' , job.id, 'runs', element.id]">{{element.runId}}</button>
                                                 </mat-cell>
                                             </ng-container>
 
