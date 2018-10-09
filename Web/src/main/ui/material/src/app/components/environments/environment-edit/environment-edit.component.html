@@ -27,9 +27,9 @@
         <label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>
         <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>
 
-        <button mat-button color="warn" class="btn-w-sm text-danger pull-right" (click)="delete();">Delete
+        <button mat-button color="warn" class="btn-w-sm text-danger pull-right" (click)="delete();"><i class="material-icons">delete</i>Delete
         </button>
-        <button mat-button color="primary" class="btn-w-sm text-primary pull-right" (click)="cloneEnv()">Clone
+        <button mat-button color="primary" class="btn-w-sm text-primary pull-right" (click)="cloneEnv()"><i class="material-icons">content_copy</i>Clone
         </button>
     </nav>
     <br/>
