@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Mohammed Luqman Shareef
@@ -21,17 +22,16 @@ public class AutoSuggestion implements Serializable{
 
     private String projectId;
     private String testSuiteName;
+    private String testCaseNumber;
     private String region;
-    private String respStatuCode;
+    private String respStatusCode;
     private String endPoint;
     private String method;
     private String category;
     private String issueDesc;
     private String suggestion;
     private String estimates;
-
-
-
+    private Date createdDate;
 }
 
 

@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.dao.repository.jpa;
 
 import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
+import com.fxlabs.fxt.dao.entity.run.TestCaseResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -36,4 +37,6 @@ public interface TestCaseResponseITRepository extends JpaRepository<TestCaseResp
 
     @Query("SELECT SUM(iT.validations) FROM TestCaseResponseIssueTracker iT WHERE iT.projectId=?1 and iT.jobId=?2 and iT.modifiedDate>=?3 and iT.modifiedDate<=?4")
     Long sumByProjectIdAndJobIdAndModifiedDateGreaterThanAndCreatedDateLessThanEqual(String id, String id1, Date fromDate, Date toDate);
+
+//    Optional<TestCaseResponseIssueTracker> findByProjectIdAndJobIdAndTestSuiteNameAndTestCaseNumber(String project, String jobId, String suite, String testCase);
 }

@@ -4,6 +4,7 @@ import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.project.AutoSuggestion;
 import com.fxlabs.fxt.dto.project.Job;
 import com.fxlabs.fxt.services.base.GenericService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -33,4 +34,5 @@ public interface JobService extends GenericService<Job, String> {
 
     Response<List<AutoSuggestion>> getAutoSuggestions(String id, String user, Pageable pageable);
 
+    Response<Boolean> skipAutoSuggestion(String id, String suiteName, String tcNumber, String currentAuditor);
 }

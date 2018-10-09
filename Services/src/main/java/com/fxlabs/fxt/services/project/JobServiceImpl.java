@@ -372,4 +372,17 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
         }
     }
+
+    @Override
+      public Response<Boolean> skipAutoSuggestion(String id, String suiteName, String tcNumber, String currentAuditor){
+        Optional<Job> jobOptional = jobRepository.findById(id);
+        if (jobOptional.isPresent()) {
+            return new Response<>(autoSuggestService.skipSuggestion(jobOptional.get().getProject().getId(), id, suiteName, tcNumber, currentAuditor));
+        }else{
+            return new Response<>().withErrors(true);
+
+        }
+    }
+
+
 }

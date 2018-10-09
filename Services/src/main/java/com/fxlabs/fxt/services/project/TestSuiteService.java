@@ -20,6 +20,8 @@ public interface TestSuiteService extends GenericService<TestSuite, String> {
     Response<List<TestSuite>> search(String keyword, String user, Pageable pageable);
     Response<List<TestSuite>> findByProjectId(String id, String user, Pageable pageable);
 
+    Response<TestSuite> findByProjectIdAndSuiteName(String id, String suiteName);
+
     public Response<TestSuite> findById(String id, String orgId);
 
     public Response<TestSuite> create(TestSuite dto, String id);

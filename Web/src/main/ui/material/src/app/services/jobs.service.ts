@@ -59,4 +59,8 @@ export class JobsService {
     return this.http.get(this.serviceUrl + "/" + id + "/auto-suggestions");
   }
 
+  skipAutoSuggestion(jobId: string, suiteName: string, tcNumber: string) {
+    return this.http.get(this.serviceUrl + "/" + jobId + "/auto-suggestions/"+suiteName+"/"+tcNumber);
+  }
+
 }

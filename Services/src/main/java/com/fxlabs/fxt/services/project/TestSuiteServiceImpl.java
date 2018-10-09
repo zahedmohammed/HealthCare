@@ -110,6 +110,14 @@ public class TestSuiteServiceImpl extends GenericServiceImpl<TestSuite, com.fxla
 
         return new Response<List<com.fxlabs.fxt.dto.project.TestSuite>>(testSuites, page.getTotalElements(), page.getTotalPages());
     }
+
+    @Override
+    public Response<com.fxlabs.fxt.dto.project.TestSuite> findByProjectIdAndSuiteName(String id, String suiteName){
+        TestSuite ts = testSuiteESRepository.findByProjectIdAndName(id,suiteName);
+        com.fxlabs.fxt.dto.project.TestSuite testSuite = converter.convertToDto(ts);
+        return new Response<com.fxlabs.fxt.dto.project.TestSuite>(testSuite);
+    }
+
     @Override
     public Response<com.fxlabs.fxt.dto.project.TestSuite> create(com.fxlabs.fxt.dto.project.TestSuite testSuite, String user) {
 
