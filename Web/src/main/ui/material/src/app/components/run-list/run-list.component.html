@@ -204,7 +204,30 @@
                         <div class="box-body">
                             <div class="row article-title-style">
 
-
+                                <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
+                                    <div class="mat-elevation-z8 row no-margin-right">
+                                        <span class="col-md-1 mt-3">
+                                            <i class="fa fa-user-circle-o fa-md text-dark"></i>
+                                        </span>
+                                        <div class="col-md-11 mt-3 text-dark">
+                                            <p class="text-dark">AutoSuggestBot <span class="badge badge-secondary d-inline">BOT</span>
+                                                <small class="text-muted">At 2:14</small>  
+                                            </p>
+                                            <p class="text-muted">{{auto.issueDesc}}</p>
+                                            <div class="callout">
+                                                <p class="font-weight-bold">Endpoint</p>
+                                                <p class="text-muted ml-3"><span class="badge badge-primary d-inlinet">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
+                                                <p class="font-weight-bold">Suite Name</p>
+                                                <p class="text-muted ml-3"><span class="badge badge-warning d-inline">{{auto.category}}</span>&nbsp;&nbsp;{{auto.testSuiteName}}</p>
+                                                <p class="font-weight-bold">Suggestion</p>
+                                                <p class="text-muted ml-3">{{auto.suggestion}}</p>
+                                                <p class="font-weight-bold">Effort estimates</p>
+                                                <p class="text-muted ml-3">{{auto.estimates}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
 
                             </div>
                         </div>
