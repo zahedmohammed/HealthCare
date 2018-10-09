@@ -32,6 +32,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String VAULT_BASE = API_BASE + "/vault";
     public static final String DASHBOARD_BASE = API_BASE + "/dashboard";
     public static final String EVENTS_BASE = API_BASE + "/events";
+    public static final String ISSUE_BASE = API_BASE + "/issues";
 
 
     public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
