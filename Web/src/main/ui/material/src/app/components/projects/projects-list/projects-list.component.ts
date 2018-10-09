@@ -59,7 +59,7 @@ export class ProjectsListComponent implements OnInit {
 
   length = 0;
   page = 0;
-  pageSize = 11;
+  pageSize = 9;
   change(evt) {
     this.page = evt['pageIndex'];
     this.list();
