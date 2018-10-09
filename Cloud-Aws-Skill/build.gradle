@@ -1,7 +1,7 @@
 buildscript {
     ext {
         springBootVersion = SPRING_BOOT_VERSION
-        jcloudVersion_200 = '2.0.0'
+        azureVersion = '1.2.0'//'0.9.7'
     }
     repositories {
         mavenCentral()
@@ -39,6 +39,8 @@ repositories {
 }
 
 dependencies {
+    
+    
     compile('org.springframework.boot:spring-boot-starter')
     compile('org.springframework.boot:spring-boot-starter-amqp')
 
@@ -50,9 +52,26 @@ dependencies {
     // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ec2
     compile group: 'com.amazonaws', name: 'aws-java-sdk-ec2', version: '1.11.302'
 
+    compile("org.apache.httpcomponents:httpclient:4.5.1")
+
+    //compile("com.microsoft.azure:azure:$azureVersion")
+
+    //compile("com.microsoft.azure:azure-core:$azureVersion")
+    compile("com.microsoft.azure:azure:$azureVersion")
+    compile("com.microsoft.azure:azure-mgmt-resources:$azureVersion")
+    compile("com.microsoft.azure:azure-mgmt-storage:$azureVersion")
+    compile("com.microsoft.azure:azure-mgmt-network:$azureVersion")
+    compile("com.microsoft.azure:azure-mgmt-compute:$azureVersion")
+
 
     compile project(":Cloud-Skill-Kit")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+configurations.all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    exclude group: 'org.springframework.boot', module: 'logback-classic'
 }
 
 task buildDockerLatest(type: Docker, dependsOn: build) {

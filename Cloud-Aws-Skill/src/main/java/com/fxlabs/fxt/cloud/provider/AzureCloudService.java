@@ -10,23 +10,34 @@ import com.amazonaws.services.ec2.model.*;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.storage.StorageAccount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-//import com.google.common.collect.ImmutableMap;
 
 
 /**
  * @author Mohammed Shoukath Ali
  */
 
-//@Component
+@Component("azureCloudService")
 public class AzureCloudService implements CloudService {
 
 
@@ -39,6 +50,21 @@ public class AzureCloudService implements CloudService {
     private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet";
 
     private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
+
+    private static final String FXLABS_DEFAULT_SCRIPT_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Bot-Script/master/fx_bot_install_script.sh";
+
+
+    final String linuxCustomScriptExtensionName = "CustomScriptForLinux";
+    final String linuxCustomScriptExtensionTypeName = "CustomScriptForLinux";
+    final String linuxCustomScriptExtensionVersionName = "1.5.4";  //"1.4";
+    final String linuxCustomScriptExtensionPublisherName = "Microsoft.OSTCExtensions";
+
+    protected final static String SPACE = " ";
+
+    final static String SLASH = "/";
+
+
+    private static final String FX_BOT_RESOURCES_PREFIX = "fxbot";
 
 //    static final Map<String, String> REGION_ENPOINTS = ImmutableMap.<String, String>builder()
 //           .put("us-east-1", "ec2.us-east-1.amazonaws.com")
@@ -73,108 +99,116 @@ public class AzureCloudService implements CloudService {
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
         response.setId(task.getId());
-        AmazonEC2 awsService = null;
+        taskLogger.set(new StringBuilder());
+
+        if (task == null || CollectionUtils.isEmpty(task.getOpts())) {
+            taskLogger.get().append("Options empty for takd id :" + task.getId());
+            logger.info("Options empty for task id : [{}]", task.getId());
+            return response;
+        }
+
+//        String subscriptionId = "10cf3790-fa0d-4747-bf4d-8f5fbfe71d69";
+//        String tenant = "a3997700-5799-4d9e-b1b4-6744db57e9c7";
+//        String client = "92349a66-575b-4916-bf9c-caa6dae920da";
+//        String key = "HCSLxh7TOADqsQywNyeXDWpSSsLCkBsc2mPKRgpZWJg=";
         try {
+        Azure azure = getAzureInstance(task.getOpts());
+        String resourceGroupName = getIAMRole(task.getOpts());
 
-            taskLogger.set(new StringBuilder());
+        String tag_ = getInstanceTag(task.getOpts());
 
-            if (task == null || CollectionUtils.isEmpty(task.getOpts())) {
-                taskLogger.get().append("Options empty for takd id :" + task.getId());
-                logger.info("Options empty for task id : [{}]", task.getId());
-                return response;
-            }
+        String region = getRegion(task.getOpts());
 
-            Map<String, String> opts = task.getOpts();
+        String tag = FX_BOT_RESOURCES_PREFIX + "-" + tag_ + region;
 
-            // Args
-            String accessKeyId = opts.get("ACCESS_KEY_ID");
-            String secretKey = opts.get("SECRET_KEY");
+      if (StringUtils.isEmpty(resourceGroupName)) {
+          resourceGroupName = region + "-rg";
+      }
+        //String resourceGroupName = "dev";
 
-            String region = getRegion(opts);
-            // String region = "us-east-1";
+//		// create RG
+        azure.resourceGroups().define(resourceGroupName)
+                .withRegion(com.microsoft.azure.management.resources.fluentcore.arm.Region.US_EAST)
+                .create();
 
-            awsService = getAwsEc2Service(accessKeyId, secretKey, region);
+        // create network and subnet
+        String vn = FX_BOT_RESOURCES_PREFIX + region + "-vnet";
+        String subnet = FX_BOT_RESOURCES_PREFIX + region + "-subnet";
 
-            //Instance type/size
-            String hardware = getInstanceType(task);
-            taskLogger.get().append("setting hardware id " + hardware);
+        Network network = createNetwork(Region.US_EAST.toString(), azure, resourceGroupName, vn, subnet);
+        com.microsoft.azure.management.network.Subnet subnet1 = getSubnet(network, subnet);
 
-            String image = getImageId(opts, awsService);
-            taskLogger.get().append("Setting image id : " + image);
+        taskLogger.get().append("Setting Subnet " + subnet1.name());
 
-            String awsPrivateKeyName = getAwsPrivateKey(opts, awsService);
-            taskLogger.get().append("Setting Keypair " + awsPrivateKeyName);
 
-            String securityGroupId = getSecurityGroupId(opts, awsService);
-            taskLogger.get().append("Setting Security Group Id " + securityGroupId);
+        //NSG
+        String	nsgName = FX_BOT_RESOURCES_PREFIX + region + "-nsg";
 
-//            commenting out the securitygroup mandatory validation
-//            if (StringUtils.isEmpty(securityGroupId)){
-//                logger.info("Security Group not found for region " + region);
-//                taskLogger.get().append("Security group with group-name [" + FXLABS_DEFAULT_SECURITY_GROUP  + "] not found in region" + region);
-//                response.setLogs(taskLogger.get().toString());
-//                return response;
-//            }
+        com.microsoft.azure.management.network.NetworkSecurityGroup nsg = createNetworkSecurityGroup(Region.US_EAST.toString(), azure, resourceGroupName, "", nsgName);
+        taskLogger.get().append("Setting Security Group  " + nsgName);
 
-            String subnetId = getSubnetId(opts, awsService);
-            taskLogger.get().append("Setting Subnet Id " + subnetId);
-//             commenting subnet mandatory validation
-//            if (StringUtils.isEmpty(subnetId)){
-//                logger.info("Subnet not found for region " + region);
-//                taskLogger.get().append("Subnet with tag value [" + FXLABS_DEFAULT_SUBNET + "] not found in region " + region);
-//                response.setLogs(taskLogger.get().toString());
-//                return response;
-//            }
+        String nicName = FX_BOT_RESOURCES_PREFIX + region + "-nic";
 
-            int count = getCount(opts);
-            RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
-                    .withImageId(image)
-                    .withInstanceType(InstanceType.T2Micro)
-                    .withMinCount(count).withMaxCount(count)
-                    .withKeyName(awsPrivateKeyName)
-                    .withSubnetId(subnetId)
-                    .withSecurityGroupIds(securityGroupId);
+        com.microsoft.azure.management.network.NetworkInterface networkInterface1 = azure.networkInterfaces().define(nicName)
+                .withRegion(Region.US_EAST.toString())
+                .withExistingResourceGroup(resourceGroupName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet(subnet)
+                .withPrimaryPrivateIPAddressDynamic()
+                //.withNewPrimaryPublicIPAddress(ip)
+                .withIPForwarding()
+                .withExistingNetworkSecurityGroup(nsg)
+                .create();
 
-            //findby image name
-            //findbu by subnet name
-            // findby securit\y groupname
-            //fx-pk hard code
-            //fx-subnet hard code(UI also)
-            //fx-sg hardcode
-            // Documentation
+        // OSDisk Size
+        String osDiskName = tag + "-osddisk";
 
-            //getECSuserData(runInstancesRequest, opts);
-            runInstancesRequest.withUserData(getBotConfigScript(opts));
+        String sa = org.apache.commons.lang3.StringUtils.replace(FX_BOT_RESOURCES_PREFIX + tag_, "-", "") + "sa";
 
-            RunInstancesResult run_response = awsService.runInstances(runInstancesRequest);
-            StringBuilder sb = new StringBuilder();
+        StorageAccount storageAccount = createStorageAccount(Region.US_EAST.toString(), azure, resourceGroupName, sa);
 
-            boolean firstIterationFlag = true;
+        taskLogger.get().append("Setting image  : " + KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS);
+        taskLogger.get().append("Setting image  : " + VirtualMachineSizeTypes.STANDARD_D3_V2);
 
-            for (Instance instance : run_response.getReservation().getInstances()) {
-                if (firstIterationFlag) {
-                    firstIterationFlag = false;
-                } else {
-                    sb.append(",");
-                }
-                sb.append(instance.getInstanceId());
+        int count = getCount(task.getOpts());
 
-            }
-            logger.info("Created instances with id's  [{}] in region [{}]", sb.toString(), region);
+        taskLogger.get().append("VM count  : " + count);
+        VirtualMachine vm  = azure.virtualMachines().define(tag)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(resourceGroupName)
+                .withExistingPrimaryNetworkInterface(networkInterface1)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername("fxlabstest")
+                .withRootPassword("123Fxlabstest!")
+                .withComputerName(tag)
+                .withOSDiskName(osDiskName)
+                .withExistingStorageAccount(storageAccount)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .withBootDiagnostics()
+                .create();
 
-            String tag = getInstanceTag(opts);
-            if (!StringUtils.isEmpty(tag)) {
-                logger.info("Tagging instances with Name  [{}] in region [{}]", tag, region);
-                CreateTagsRequest createTagsRequest = new CreateTagsRequest();
-                createTagsRequest.withResources(sb.toString().split(",")) //
-                        .withTags(new Tag("Name", tag));
-                awsService.createTags(createTagsRequest);
-            }
-            // String instance_id = run_response.getReservation().getInstances().get(0).getInstanceId();
+        final String botInstallScript = getBotScriptURL(task.getOpts());
+        final String AZURE_CUSTOM_SCRIPT_CMD = "bash fx_bot_install_script.sh";
 
+        String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + getAzureConfig(task.getOpts());
+
+        final List<String> linuxScriptFileUris = new ArrayList<>();
+        linuxScriptFileUris.add(botInstallScript);
+
+
+        vm.update()
+                .defineNewExtension(linuxCustomScriptExtensionName)
+                .withPublisher(linuxCustomScriptExtensionPublisherName)
+                .withType(linuxCustomScriptExtensionTypeName)
+                .withVersion(linuxCustomScriptExtensionVersionName)
+                .withMinorVersionAutoUpgrade()
+                .withPublicSetting("fileUris", linuxScriptFileUris)
+                .withPublicSetting("commandToExecute", runBot)
+                .attach()
+                .apply();
 
             response.setSuccess(true);
-            response.setResponseId(sb.toString());
+            response.setResponseId(vm.id());
             response.setLogs(taskLogger.get().toString());
 
             return response;
@@ -189,6 +223,10 @@ public class AzureCloudService implements CloudService {
         return response;
 
     }
+
+
+
+
 
     @Override
     public CloudTaskResponse destroy(final CloudTask task) {
@@ -214,23 +252,56 @@ public class AzureCloudService implements CloudService {
             if (StringUtils.isEmpty(nodeIds)) {
                 return response;
             }
-            String[] instanceIds = nodeIds.split(",");
-            String accessKeyId = opts.get("ACCESS_KEY_ID");
-            String secretKey = opts.get("SECRET_KEY");
+
+            String tag = getInstanceTag(task.getOpts());
+
+            String region = getRegion(task.getOpts());
+
+            String vmName = FX_BOT_RESOURCES_PREFIX + "-" + tag + region;
+            //String vmName = FX_BOT_RESOURCES_PREFIX + "-" + tag + region;
+            //String vmName = Region.US_EAST.toString();
 
 
-            logger.info("Deleting bots with id's [{}]...", nodeIds);
-            taskLogger.get().append("Deleting Bots : " + nodeIds);
+            String resourceGroupName = region + "-rg";
 
-            AmazonEC2 client = getAwsEc2Service(accessKeyId, secretKey, getRegion(opts));
+            // delete VM, Nic, & ip, subnet, virtual-network, storage-account, network-security-group
+            String nicName = FX_BOT_RESOURCES_PREFIX + region + "-nic";
+            String ipAdd = vmName + "-pip";
+            String nsg =  FX_BOT_RESOURCES_PREFIX + region + "-nsg";
+            String subnet = FX_BOT_RESOURCES_PREFIX + region + "-subnet";
+            String vn = FX_BOT_RESOURCES_PREFIX + region + "-vnet";
+            String sa = org.apache.commons.lang3.StringUtils.replace(FX_BOT_RESOURCES_PREFIX + tag, "-", "") + "sa";
+            String osDiskName = vmName + "-osddisk";
+            String containerName = resourceGroupName + vmName;
+            //String resourceGroupName = "dev";
 
+            Azure azure = getAzureInstance(task.getOpts());
 
-            TerminateInstancesRequest termRequest = new TerminateInstancesRequest();
-            termRequest.withInstanceIds(instanceIds);
+            try {
+                azure.virtualMachines().deleteByResourceGroup(resourceGroupName, vmName);
+            } catch (Exception e) {
 
-            TerminateInstancesResult terminateInstancesResult = client.terminateInstances(termRequest);
-            logger.info("AWS response for termination of Instances :" + terminateInstancesResult.getTerminatingInstances().toString());
-            taskLogger.get().append("AWS response for termination of Instances :" + terminateInstancesResult.getTerminatingInstances().toString());
+            }
+
+            // delete NIC
+            if (!org.apache.commons.lang3.StringUtils.isEmpty(nicName)) {
+                try {
+                    azure.networkInterfaces().deleteByResourceGroup(resourceGroupName, nicName);
+                } catch (Exception e) {
+
+                }
+            }
+            // delete NSG
+            if (!org.apache.commons.lang3.StringUtils.isEmpty(nsg)) {
+                try {
+                    azure.networkSecurityGroups().deleteByResourceGroup(resourceGroupName, nsg);
+                } catch (Exception e) {
+
+                }
+            }
+
+            azure.disks().deleteByResourceGroup(resourceGroupName, osDiskName);
+
             response.setSuccess(true);
             response.setLogs(taskLogger.get().toString());
 
@@ -272,6 +343,19 @@ public class AzureCloudService implements CloudService {
         return region;
     }
 
+    private String getAzureConfig(Map<String, String> opts) {
+        String config = opts.get("AZURE_LINUX_CONFIG");
+        return config;
+    }
+
+    private String getBotScriptURL(Map<String, String> opts) {
+        String url = opts.get("BOT_SCRIPT_URL");
+        if (StringUtils.isEmpty(url)) {
+            url = FXLABS_DEFAULT_SCRIPT_URL;
+        }
+        return url;
+    }
+
     private String getInstanceTag(Map<String, String> opts) {
         String tag = opts.get("INSTANCE_NAME");
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(tag, "null")
@@ -295,197 +379,211 @@ public class AzureCloudService implements CloudService {
     }
 
 
-    private AmazonEC2 getAwsEc2Service(String accessKeyId, String secretKey, String region) {
-
-        logger.info("Signing in region [{}]", region);
-        taskLogger.get().append("Signing in region " + region);
-        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretKey);
 
 
-        AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                //.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(REGION_ENPOINTS.get(region), region))
-                .withRegion(region)
-                .build();
 
-        return ec2Client;
-    }
-
-
-//    /**
-//     *
-//     * @param opts
-//     * @return bot installation
-//     */
-//    private String getBotInstallationScript(Map<String, String> opts) {
-//        String value = opts.get("SCRIPT");
-//        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")) {
-//            return "";
-//        }
-//        return value;
-//    }
 
     /**
-     * @param opts
-     * @return keypair
+     * @param map
+     * @return region
      */
-    private String getAwsPrivateKey(Map<String, String> opts, AmazonEC2 awsService) {
-        String value = opts.get("KEY_PAIR");
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-            value = AWS_PKEY;
-        }
-        String keyPairFromEc2 = null;
-        try {
-            DescribeKeyPairsRequest describeKeyPairsRequest = new DescribeKeyPairsRequest().withKeyNames(value);
-            DescribeKeyPairsResult describeKeyPairsResult = awsService.describeKeyPairs(describeKeyPairsRequest);
-
-            for (KeyPairInfo kpi : describeKeyPairsResult.getKeyPairs()) {
-                keyPairFromEc2 = kpi.getKeyName();
-            }
-        } catch (AmazonClientException exception) {
-            logger.debug(exception.getLocalizedMessage(), exception);
-        }
-
-
-        if (org.apache.commons.lang3.StringUtils.isEmpty(keyPairFromEc2)) {
-
-            logger.debug("Creatring keypair [{}]", value);
-
-            CreateKeyPairRequest createKeyPairRequest = new CreateKeyPairRequest().withKeyName(value);
-            CreateKeyPairResult createKeyPairResult = awsService.createKeyPair(createKeyPairRequest);
-
-            keyPairFromEc2 = createKeyPairResult.getKeyPair().getKeyName();
-            taskLogger.get().append("Created key-pair  : " + keyPairFromEc2);
-        }
-
-        return keyPairFromEc2;
-    }
-
-
-    private static String getBotConfigScript(Map<String, String> opts) {
-        String value = opts.get("COMMAND");
-
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
+    protected String getLocationId(Map<String, String> map) {
+        String val = map.get("REGION");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
             return "";
         }
-
-        return value;
-    }
-
-    private String getImageId(Map<String, String> opts, AmazonEC2 awsService) {
-        try {
-            String accessKeyId = opts.get("ACCESS_KEY_ID");
-            String secretKey = opts.get("SECRET_KEY");
-
-            // AmazonEC2 awsService_ = getAwsEc2Service(secretKey, secretKey, "us-west-1");
-
-            String imageName = opts.get("IMAGE");
-
-            if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(imageName, "null")
-                    || org.apache.commons.lang3.StringUtils.isEmpty(imageName)) {
-                imageName = FXLABS_AWS_DEFAULT_IMAGE;
-            }
-
-            DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest()
-                    .withFilters(new Filter().withName("name").withValues(imageName));
-
-            DescribeImagesResult result = awsService.describeImages(describeImagesRequest);
-            List<Image> images = result.getImages();
-            for (Image image : images) {
-                return image.getImageId();
-            }
-
-        }catch (Exception e){
-            logger.info(e.getLocalizedMessage());
-        }
-        return null;
-
-    }
-
-    private String getSubnetId(Map<String, String> opts, AmazonEC2 awsService) {
-
-        String subnet_ = opts.get("SUBNET");
-
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(subnet_, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(subnet_)) {
-            subnet_ = FXLABS_DEFAULT_SUBNET;
-        }
-
-        DescribeSubnetsRequest request = new DescribeSubnetsRequest()
-                .withFilters(new Filter().withName("tag-value").withValues(subnet_));
-
-        DescribeSubnetsResult response = awsService.describeSubnets(request);
-        List<Subnet> subnets = response.getSubnets();
-
-        logger.info("Found  [{}] subnets in region [{}] for tag search", response.getSubnets().size(), getRegion(opts));
-
-        for (Subnet subnet : subnets) {
-            for (Tag entry : subnet.getTags()) {
-                if (subnet_.equals(entry.getValue())) {
-                    return subnet.getSubnetId();
-                }
-            }
-        }
-        try {
-            DescribeSubnetsRequest describeSubnetsWithId = new DescribeSubnetsRequest();
-
-            DescribeSubnetsResult describeSubnetsIdResult = awsService.describeSubnets(describeSubnetsWithId.withSubnetIds(subnet_));
-            List<Subnet> describeSubnetsIdsResult = describeSubnetsIdResult.getSubnets();
-
-            logger.info("Found  [{}] subnets in region [{}] for subnet Id search", describeSubnetsIdResult.getSubnets().size(), getRegion(opts));
-
-            for (Subnet subnet : describeSubnetsIdsResult) {
-                if (subnet.getSubnetId().equals(subnet_))
-                    return subnet.getSubnetId();
-            }
-        } catch (Exception ex) {
-            logger.info("No Subnet found with name [{}] in region [{}]. Searching for default subnet", subnet_, getRegion(opts));
-        }
-
-
-        DescribeSubnetsResult describeSubnetResult = awsService.describeSubnets();
-        List<Subnet> describeSubnetAllResult = describeSubnetResult.getSubnets();
-
-        logger.info("Found  [{}] subnets in region [{}] for subnet all search in region", describeSubnetResult.getSubnets().size(), getRegion(opts));
-
-        for (Subnet subnet : describeSubnetAllResult) {
-            if (subnet.isDefaultForAz())
-                return subnet.getSubnetId();
-        }
-
-        return null;
+        return val;
     }
 
 
     /**
-     * @param opts
-     * @return security group
+     * @param map
+     * @return zone
      */
-    private String getSecurityGroupId(Map<String, String> opts, AmazonEC2 awsService) {
-
-
-        String value = opts.get("SECURITY_GROUP");
-
-        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(value, "null")
-                || org.apache.commons.lang3.StringUtils.isEmpty(value)) {
-            value = FXLABS_DEFAULT_SECURITY_GROUP;
+    protected String getZone(Map<String, String> map) {
+        String val = map.get("ZONE");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
+            return "";
         }
+        return val;
+    }
 
-        DescribeSecurityGroupsRequest req = new DescribeSecurityGroupsRequest()
-                .withFilters(new Filter().withName("group-name").withValues(value));
-
-        DescribeSecurityGroupsResult result = awsService.describeSecurityGroups(req);
-
-        List<SecurityGroup> sgs = result.getSecurityGroups();
-        logger.info("Found  [{}] security groups in region [{}]", sgs.size(), getRegion(opts));
-        for (SecurityGroup sg_ : sgs) {
-            return sg_.getGroupId();
+    /**
+     * @param map
+     * @return group
+     */
+    protected String getGroupName(Map<String, String> map) {
+        String val = map.get("GROUP");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
+            return "";
         }
+        return val;
+    }
+
+    /**
+     * @param map
+     * @return hardware/flavor id
+     */
+    protected String getHardwareId(Map<String, String> map) {
+        String val = map.get("HARDWARE");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
+            return "";
+        }
+        return val;
+    }
+
+    /**
+     * @param map
+     * @return hardware/flavor id
+     */
+    protected String getCPU(Map<String, String> map) {
+        String val = map.get("CPU");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
+            return "";
+        }
+        return val;
+    }
+
+    /**
+     * @param map
+     * @return image id
+     */
+    protected String getImageId(Map<String, String> map) {
+        String val = map.get("IMAGE");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
+            return "";
+        }
+        return val;
+    }
+
+    /**
+     * @param map
+     * @return image id
+     */
+    protected String getImageUsername(Map<String, String> map) {
+        String val = map.get("IMAGE_USERNAME");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
+            return "";
+        }
+        return val;
+    }
+
+    private Azure getAzureInstance(Map<String, String> map) {
+
+        try {
+            String subscriptionId = map.get("SUBSCRIPTION");
+            String tenant = map.get("TENANT");
+            String client = getIdentity(map);
+            String key = getCredential(map);
+
+            ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+                    client, tenant, key, AzureEnvironment.AZURE);
+
+            Azure azure = Azure.authenticate(credentials).withSubscription(subscriptionId);
+
+            return azure;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected String getIAMRole(Map<String, String> map) {
+        String val = map.get("IAM-ROLE");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
+            return "";
+        }
+        return val;
+    }
+
+    /**
+     * @param map
+     * @return username
+     */
+    protected String getIdentity(Map<String, String> map) {
+        String val = map.get("USERNAME");
+        if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
+            return "";
+        }
+        return val;
+    }
+
+    /**
+     * @param map
+     * @return passowrd
+     */
+    protected String getCredential(Map<String, String> map) {
+        String password = map.get("PASSWORD");
+//        map.remove("PASSWORD");
+        return password;
+    }
 
 
+    private static  Network createNetwork(String region, Azure azure, String resourceGroupName, String vn, String subnet) {
+        Network network;
+        String networkCIDR = "10.0.0.0/16";
+        String subnetCIDR = "10.0.0.0/24";
+
+        network = azure.networks().define(vn)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroupName)
+                .withAddressSpace(networkCIDR)
+                .defineSubnet(subnet)
+                .withAddressPrefix(subnetCIDR)
+                .attach()
+                .create();
+        return network;
+    }
+
+    private static StorageAccount createStorageAccount(String region, Azure azure, String resourceGroupName, String sa) {
+        StorageAccount storageAccount;
+//		logger.info("Creating StorageAccount [{}]", sa);
+//		asyncRemoteLogger.log(String.format("Creating StorageAccount [%s]", sa));
+
+        storageAccount = azure.storageAccounts().define(sa)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroupName)
+                .create();
+        return storageAccount;
+    }
+
+    private static com.microsoft.azure.management.network.Subnet getSubnet(Network network, String subnet) {
+        for (String key : network.subnets().keySet()) {
+            com.microsoft.azure.management.network.Subnet subnet_ = network.subnets().get(key);
+            if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(subnet, subnet_.name())) {
+                return subnet_;
+            }
+        }
         return null;
     }
+
+    private static NetworkSecurityGroup createNetworkSecurityGroup(String region, Azure azure, String resourceGroupName, String ip, String nsgName) {
+        NetworkSecurityGroup nsg;
+//		logger.info("Creating NSG [{}]", ip);
+//		asyncRemoteLogger.log(String.format("Creating NSG [%s]", nsgName));
+        nsg = azure.networkSecurityGroups().define(nsgName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroupName)
+                .create();
+
+        int priority = 100;
+        // OPEN ALL OUTBOUND PORTS
+//		logger.info("Adding NSG Outbound Rule for 'ALLOW_ALL");
+//		asyncRemoteLogger.log(String.format("Adding NSG Outbound Rule for 'ALLOW_ALL"));
+        nsg.update().defineRule("ALLOW_ALL")
+                .allowOutbound()
+                .fromAnyAddress()
+                .fromAnyPort()
+                .toAnyAddress()
+                .toAnyPort()
+                .withProtocol(SecurityRuleProtocol.TCP)
+                .withDescription("Allow All Outbound Communication.")
+                .withPriority(priority++)
+                .attach()
+                .apply();
+
+        return nsg;
+    }
+
+
 
 }

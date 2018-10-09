@@ -17,37 +17,7 @@
                 <div class="box-body">
                 <form role="form" #heroForm="ngForm" class="px-4">
                         <h6 class="mat-step-label-selected pb-4">Credential Details</h6>
-                    <!--<div class="form-group row">
-                      <label class="col-md-0 control-label">
-                      </label>
-                      <div class="col-md-5">
-                        <mat-icon matSuffix class="material-icons">perm_identity</mat-icon>
-                        <mat-form-field class="full-width">
-                          <mat-select placeholder="Owner" required [(ngModel)]="entry.org.id" name="type">
-                            <mat-option *ngFor="let org of orgs" [value]="org.org.id">
-                              {{org.org.name}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </div>
 
-                    <div class="form-group row">
-                      <label class="col-md-0 control-label">
-                      </label>
-                      <div class="col-md-5">
-                        <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
-                        <mat-form-field class="full-width">
-                          <mat-select placeholder="Access level" [(ngModel)]="entry.visibility" name="Access level">
-                            <mat-option *ngFor="let visibility of visibilities" [value]="visibility">
-                              {{visibility}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </div>
-
-                    <div class="divider divider-dashed divider-lg pull-in"></div>-->
 
                     <div class="form-group row">
                         <label for="name" class="col-md-0 control-label"></label>
@@ -253,6 +223,134 @@
                         </div>
                     </div>
                     <!-- AWS  End    -->
+
+                    <!-- AZURE  Start  -->
+                    <div *ngIf="entry.accountType === 'AZURE'">
+
+                        <div class="form-group row">
+                            <label for="client" class="col-md-0 control-label">
+                            </label>
+                            <div  class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="entry.accessKey" name="client" id="client"
+                                           matInput type="text" placeholder="Client">
+                                </mat-input-container>
+                            </div>
+                            <!--<div class="col-md-7">-->
+                                <!--<div class="callout1 text-muted callout-info1">-->
+                                    <!--<p>AWS access keys-->
+                                        <!--<a target="_blank"-->
+                                           <!--href="https://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html">&nbsp;learn-->
+                                            <!--more <i class="material-icons"-->
+                                                    <!--style="font-size: 18px;">open_in_new</i></a>-->
+                                    <!--</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="azureSecretKey" class="col-md-0 control-label">
+                            </label>
+                            <div  class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="entry.secretKey" name="azureSecretKey" id="azureSecretKey"
+                                           matInput type="password" placeholder="Key">
+                                </mat-input-container>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="subscriptionId" class="col-md-0 control-label">
+                            </label>
+                            <div  class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="entry.prop1" name="subscriptionId" id="subscriptionId"
+                                           matInput type="text" placeholder="Subscription-Id">
+                                </mat-input-container>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="subscriptionId" class="col-md-0 control-label">
+                            </label>
+                            <div  class="col-md-5">
+                                <mat-input-container class="full-width">
+                                    <input required [(ngModel)]="entry.prop2" name="tenant" id="tenant"
+                                           matInput type="text" placeholder="Tenant">
+                                </mat-input-container>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-0 control-label">
+                            </label>
+                            <div class="col-md-5">
+                                <a href="javascript:;" (click)="toggleCloud()">Advanced section</a>
+                            </div>
+                        </div>
+
+                        <div [hidden]="cloudShow">
+
+                            <div class="form-group row">
+                                <label class="col-md-0 control-label">
+                                </label>
+                                <div class="col-md-5">
+                                    <mat-form-field class="full-width">
+                                        <mat-select placeholder="Available regions" [(ngModel)]="entry.allowedRegions"
+                                                    name="region" multiple>
+                                            <mat-option *ngFor="let region of AZUREREGIONS" [value]="region">
+                                                {{region}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="callout1 text-muted callout-info1">
+                                        <p>
+                                            Restrict users from deploying bots across non available regions.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--&lt;!&ndash;prop2 &ndash;&gt;-->
+                            <!--<div class="form-group row">-->
+                                <!--<label for="name" class="col-md-0 control-label"></label>-->
+                                <!--<div class="col-md-5">-->
+                                    <!--<mat-input-container class="full-width">-->
+                                        <!--<input [(ngModel)]="entry.prop2" name="prop2" id="fxsg"-->
+                                               <!--matInput placeholder="Security Group name">-->
+                                    <!--</mat-input-container>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-7">-->
+                                    <!--<div class="callout1 text-muted callout-info1">-->
+                                        <!--<p>-->
+                                            <!--Optional. The system will use default security-group in the selected region.-->
+                                            <!--Override value to provide your own security-group.-->
+                                        <!--</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--&lt;!&ndash;prop3 &ndash;&gt;-->
+                            <!--<div class="form-group row">-->
+                                <!--<label for="name" class="col-md-0 control-label"></label>-->
+                                <!--<div class="col-md-5">-->
+                                    <!--<mat-input-container class="full-width">-->
+                                        <!--<input [(ngModel)]="entry.prop3" name="prop3" id="fxsubnet"-->
+                                               <!--matInput placeholder="Subnet name or id">-->
+                                    <!--</mat-input-container>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-7">-->
+                                    <!--<div class="callout1 text-muted callout-info1">-->
+                                        <!--<p>-->
+                                            <!--Optional. The system will use default subnet in the selected region.-->
+                                            <!--Override value to provide your own subnet.-->
+                                        <!--</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <!-- Azure  End    -->
 
                     <!-- BitBucket  Start    -->
                     <div class="form-group" *ngIf="entry.accountType === 'BitBucket'">

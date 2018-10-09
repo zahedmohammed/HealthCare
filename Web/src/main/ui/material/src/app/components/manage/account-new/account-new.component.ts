@@ -24,12 +24,13 @@ export class AccountNewComponent implements OnInit {
   //accountTypes = [ 'VERSION_CONTROL', 'ISSUE_TRACKER', 'CLOUD', 'NOTIFICATION'];
   accountTypes = [
       '--- Version Control ---', 'Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local',
-      '--- Bot Deployment ---', 'AWS', 'Self_Hosted',
+      '--- Bot Deployment ---', 'AWS', 'AZURE', 'Self_Hosted',
       '--- Issue-Trackers ---', 'FX_Issues', 'GitHub', 'Jira',
       '--- Notifications ---', 'Slack' , 'Email'
       ];
 
   AWSREGIONS = ['us-east-1','us-east-2','us-west-1','us-west-2','ca-central-1','eu-central-1','eu-west-1','eu-west-2','eu-west-3','ap-northeast-1','ap-northeast-2','ap-northeast-3','ap-southeast-1','ap-southeast-2','ap-southeast-1','sa-east-1'];
+  AZUREREGIONS = ['eastus','eastus2','westus','westus2','canadacentral','canadaeast','northeurope','westeurope','uksouth','ukwest','eastasia','southeastasia','japanwest','australiaeast','australiasoutheast','centralindia', 'southindia', 'westindia', 'koreacentral'];
   constructor(private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
   ngOnInit() {
     //this.getOrgs();

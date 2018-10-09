@@ -8,6 +8,7 @@ import com.fxlabs.fxt.dto.cloud.PingTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,25 +20,59 @@ public class CloudDelegate {
     private Sender sender;
 
     @Autowired
-    private CloudService service;
+    @Qualifier("awsCloudService")
+    private CloudService awsCloudService;
+
+    @Autowired
+    @Qualifier("azureCloudService")
+    private CloudService azureCloudService;
 
     public void process(CloudTask task) {
         logger.info("CloudTask [{}]", task.getId());
         CloudTaskResponse response = null;
         try {
-            // TODO call Create or Destroy
-            if (task.getType() == CloudTaskType.CREATE) {
-                response = service.create(task);
-            } else if (task.getType() == CloudTaskType.DESTROY) {
-                response = service.destroy(task);
-            } else {
-                // TODO handle invalid type
+
+            switch (task.getCloudType()) {
+                case AWS:
+                    response = getAWSCloudTaskResponse(task, response);
+                    break;
+                case AZURE:
+                    response = getAzureCloudTaskResponse(task, response);
+                    break;
+                default:
+                    logger.info("CloudType [{}] not supported for CloudTask [{}]", task.getCloudType().toString(), task.getId());
+
             }
 
             sender.sendTask(response);
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         }
+    }
+
+    private CloudTaskResponse getAWSCloudTaskResponse(CloudTask task, CloudTaskResponse response) {
+        // TODO call Create or Destroy
+        if (task.getType() == CloudTaskType.CREATE) {
+            response = awsCloudService.create(task);
+        } else if (task.getType() == CloudTaskType.DESTROY) {
+            response = awsCloudService.destroy(task);
+        } else {
+            // TODO handle invalid type
+        }
+        return response;
+    }
+
+
+    private CloudTaskResponse getAzureCloudTaskResponse(CloudTask task, CloudTaskResponse response) {
+        // TODO call Create or Destroy
+        if (task.getType() == CloudTaskType.CREATE) {
+            response = azureCloudService.create(task);
+        } else if (task.getType() == CloudTaskType.DESTROY) {
+            response = azureCloudService.destroy(task);
+        } else {
+            // TODO handle invalid type
+        }
+        return response;
     }
 
     public String ping(PingTask pingTask) {

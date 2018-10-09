@@ -21,6 +21,8 @@ public class CloudTask implements Serializable {
 
     private CloudTaskType type;
 
+    private CloudType cloudType;
+
     // TODO - read [queue, url, u, p, image, size] - Skill
     // TODO - read [task-id, count, group-name, connect-queue, cmd] -> Subscription
 

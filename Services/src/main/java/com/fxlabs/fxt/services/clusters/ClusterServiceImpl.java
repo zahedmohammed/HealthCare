@@ -12,6 +12,7 @@ import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
+import com.fxlabs.fxt.dto.cloud.CloudType;
 import com.fxlabs.fxt.dto.cloud.PingTask;
 import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.clusters.AccountType;
@@ -47,6 +48,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -265,6 +267,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "No Skill found for the cloud"));
         }
 
+
+
         opts.put("ACCESS_KEY_ID", account.getAccessKey());
         opts.put("SECRET_KEY", getSecretKey(account.getId()));
         opts.put("COMMAND", getUserDataScript(dto.getKey()));
@@ -274,6 +278,27 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         opts.put("KEY_PAIR", account.getProp1());
         opts.put("SUBNET", account.getProp3());
         opts.put("SECURITY_GROUP", account.getProp2());
+        opts.put("AZURE_LINUX_CONFIG", getAzureConfig(dto.getKey()));
+        opts.put("BOT_SCRIPT_URL", fxExecutionBotScriptUrl);
+
+        switch (account.getAccountType()){
+            case AWS:
+                cloudTask.setCloudType(CloudType.AWS);
+                break;
+            case AZURE:
+                cloudTask.setCloudType(CloudType.AZURE);
+                opts.put("INSTANCE_NAME", String.valueOf(dto.getCreatedDate().getTime()));
+                opts.put("SUBSCRIPTION", dto.getAccount().getProp1());
+                opts.put("TENANT", dto.getAccount().getProp2());
+                opts.put("USERNAME", dto.getAccount().getAccessKey());
+                opts.put("PASSWORD", dto.getAccount().getSecretKey());
+                break;
+            default:
+                logger.info("Cloud not supported");
+        }
+
+
+
 
         cloudTask.setOpts(opts);
 
@@ -424,6 +449,19 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
 
         opts.put("NODE_ID", dto.getNodeId());
+
+
+        switch (account.getAccountType()){
+            case AWS:
+                cloudTask.setCloudType(CloudType.AWS);
+                break;
+            case AZURE:
+                cloudTask.setCloudType(CloudType.AZURE);
+                opts.put("INSTANCE_NAME", String.valueOf(dto.getCreatedDate().getTime()));
+                break;
+            default:
+                logger.info("Cloud not supported");
+        }
         cloudTask.setOpts(opts);
 
 
@@ -575,6 +613,37 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     }
 
 
+    private String getAzureConfig(String key) {
+
+        StringBuilder sb = new StringBuilder();
+
+        ArrayList<String> lines = new ArrayList<String>();
+
+        String host = systemSettingService.findByKey(SystemSettingService.FX_HOST);
+        String port = systemSettingService.findByKey(SystemSettingService.FX_PORT);
+        String ssl = systemSettingService.findByKey(SystemSettingService.FX_SSL);
+        String iam = systemSettingService.findByKey(SystemSettingService.FX_IAM);
+        String tag = systemSettingService.findByKey(SystemSettingService.BOT_TAG);
+
+
+        StringBuilder sb1 = new StringBuilder();
+        sb1
+                .append(host).append(SPACE)
+                .append(port).append(SPACE)
+                .append(ssl).append(SPACE)
+                .append(iam).append(SPACE)
+                .append(key).append(SPACE)
+                .append(tag);
+        lines.add(sb1.toString());
+
+        String configScript = join(lines, "\n");
+
+        logger.info("Azure Bot configuration script [{}]", configScript.toString());
+
+        return configScript;
+    }
+
+
     private String join(Collection<String> s, String delimiter) {
         StringBuilder builder = new StringBuilder();
         Iterator<String> iter = s.iterator();
@@ -595,6 +664,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
         switch (account.getAccountType()) {
             case AWS:
+            case AZURE:
                 key = fxCaasAwsEc2Queue;
                 break;
             default:
