@@ -72,6 +72,33 @@
                     </a>
                 </a>
             </div>
+
+            <div class="col-xl-3 col-lg-6">
+                <a href="javascript:;" class="item-card bg-color-primary">
+                    <a href="javascript:;" [routerLink]="['/app/marketplace']">
+                        <div class="card__image">
+
+                            <div class="text-center text-white">
+                                <h5 style="color:white">
+                                    <i class="material-icons">shopping_cart</i> &nbsp; Marketplace</h5>
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="card__body card-white">
+                            <div class="card__title">
+                                <span>
+                                    <h6> .</h6>
+                                    <h4 class="text-muted"> .</h4>
+                                </span>
+                            </div>
+                            <div class="card__price">
+                            </div>
+                        </div>
+                    </a>
+                </a>
+            </div>
+
             <div class="col-xl-3 col-lg-6" *ngFor="let project of projects">
                 <a href="javascript:;" class="item-card">
                     <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']" matTooltip=""
