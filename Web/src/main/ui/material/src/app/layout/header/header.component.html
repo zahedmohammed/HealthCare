@@ -21,12 +21,14 @@
         </div>
 
         <div class="top-nav-left">
-            <ul class="list-unstyled list-inline list-inline-item">
-                <li routerLinkActive="active">
-                    <button mat-button class="md-button header-btn" [routerLink]="['/app/projects']">
-                        <span>Projects</span><span class="nav-text"></span></button>
-                </li>
-            </ul>
+                <ul class="list-unstyled list-inline list-inline-item">
+                        <li routerLinkActive="active">
+                            <button mat-button class="md-button header-btn" [routerLink]="['/app/projects']">
+                                <!-- <span>Projects</span><span class="nav-text"></span> -->
+                                <mat-icon>home</mat-icon>
+                            </button>
+                        </li>
+                    </ul>
             <!-- <ul class="list-unstyled list-inline"> -->
             <!--<li class="list-inline-item"><button mat-button class="md-button header-btn" myOpenSearchOverlay><i class="material-icons">search</i></button></li>-->
             <!-- <li class="list-inline-item" [routerLink]="['/app/messages']">
