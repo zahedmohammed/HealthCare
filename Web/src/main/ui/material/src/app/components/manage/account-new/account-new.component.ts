@@ -1,11 +1,11 @@
-import{Component, OnInit}from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
-import {AccountService}from '../../../services/account.service';
-import {OrgService}from '../../../services/org.service';
-import {Account} from '../../../models/account.model';
-import {Handler}from '../../dialogs/handler/handler';
-import {VERSION, MatDialog, MatDialogRef }from '@angular/material';
-import {SnackbarService}from '../../../services/snackbar.service';
+import { Component, OnInit } from '@angular/core';
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
+import { AccountService } from '../../../services/account.service';
+import { OrgService } from '../../../services/org.service';
+import { Account } from '../../../models/account.model';
+import { Handler } from '../../dialogs/handler/handler';
+import { VERSION, MatDialog, MatDialogRef } from '@angular/material';
+import { SnackbarService } from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-account-new',
@@ -20,17 +20,19 @@ export class AccountNewComponent implements OnInit {
   entry: Account = new Account();
   cloudShow: boolean = true;
   isValid: boolean = true;
-  cloudTypes = ['AWS','DIGITAL_OCEAN','GCP','AZURE','PRIVATE_CLOUD','VMWARE','OPENSTACK','OTHER'];
+  cloudTypes = ['AWS', 'DIGITAL_OCEAN', 'GCP', 'AZURE', 'PRIVATE_CLOUD', 'VMWARE', 'OPENSTACK', 'OTHER'];
   //accountTypes = [ 'VERSION_CONTROL', 'ISSUE_TRACKER', 'CLOUD', 'NOTIFICATION'];
   accountTypes = [
-      '--- Version Control ---', 'Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local',
-      '--- Bot Deployment ---', 'AWS', 'AZURE', 'Self_Hosted',
-      '--- Issue-Trackers ---', 'FX_Issues', 'GitHub', 'Jira',
-      '--- Notifications ---', 'Slack' , 'Email'
-      ];
+    '--- Version Control ---', 'Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local',
+    '--- Bot Deployment ---', 'AWS', 'AZURE', 'Self_Hosted',
+    '--- Issue-Trackers ---', 'FX_Issues', 'GitHub', 'Jira',
+    '--- Notifications ---', 'Slack', 'Email'
+  ];
 
-  AWSREGIONS = ['us-east-1','us-east-2','us-west-1','us-west-2','ca-central-1','eu-central-1','eu-west-1','eu-west-2','eu-west-3','ap-northeast-1','ap-northeast-2','ap-northeast-3','ap-southeast-1','ap-southeast-2','ap-southeast-1','sa-east-1'];
-  AZUREREGIONS = ['eastus','eastus2','westus','westus2','canadacentral','canadaeast','northeurope','westeurope','uksouth','ukwest','eastasia','southeastasia','japanwest','australiaeast','australiasoutheast','centralindia', 'southindia', 'westindia', 'koreacentral'];
+  AWSREGIONS = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-southeast-1', 'ap-southeast-2', 'ap-southeast-1', 'sa-east-1'];
+  AZUREREGIONS = ['West US', 'West US 2', 'Central US', 'East US', 'East US 2', 'North Central US', 'South Central US','West Central US',
+    'Canada Central', 'Canada East', 'Brazil South', 'North Europe', 'West Europe', 'UK South', 'UK West','East Asia', 'South East Asia', 'Japan East', 'Japan West', 'Australia East', 'Australia Southeast', 'Central India', 'South India',
+    'West India', 'Korea Central', 'Korea South','China North', 'China East','Germany Central', 'Germany Northeast'];
   constructor(private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService) { }
   ngOnInit() {
     //this.getOrgs();
@@ -44,8 +46,8 @@ export class AccountNewComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-    this.snackbarService.openSnackBar(this.entry.name + " created successfully", "");
-    this.router.navigate(['/app/accounts']);
+      this.snackbarService.openSnackBar(this.entry.name + " created successfully", "");
+      this.router.navigate(['/app/accounts']);
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -72,8 +74,8 @@ export class AccountNewComponent implements OnInit {
 
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
 
-    changeValue(valid: boolean) {
-        this.isValid = valid;
-    }
+  changeValue(valid: boolean) {
+    this.isValid = valid;
+  }
 
 }
