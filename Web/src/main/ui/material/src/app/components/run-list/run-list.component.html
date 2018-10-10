@@ -210,22 +210,28 @@
                                             <i class="fa fa-user-circle-o fa-md text-dark"></i>
                                         </span>
                                         <div class="col-md-11 mt-3 text-dark">
-                                            <p class="text-dark">AutoSuggestBot <span class="badge badge-secondary d-inline">BOT</span>
-                                                <small class="text-muted">At 2:14</small>  
+                                            <p class="text-dark"> Recommendation <span class="badge badge-primary d-inline">BOT</span>
+                                                <small class="text-muted pull-right">{{auto.createdDate | timeAgo}}</small>
                                             </p>
-                                            <p class="text-muted">{{auto.issueDesc}}</p>
+                                            <p class="text-muted">{{auto.issueDesc}}.  This is resulting in failing the test suite <i>{{auto.testSuiteName}}</i></p>
+                                            <!--<p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>-->
+<!--
+                                            <p class="text-muted"><i class="fa fa-file-code-o fa-lg text-dark" title="TestSuite Name"></i> &nbsp;&nbsp;{{auto.testSuiteName}}</p>
+-->
                                             <div class="callout">
-                                                <p class="font-weight-bold">Endpoint</p>
-                                                <p class="text-muted ml-3"><span class="badge badge-primary d-inlinet">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
-                                                <p class="font-weight-bold">Suite Name</p>
-                                                <p class="text-muted ml-3"><span class="badge badge-warning d-inline">{{auto.category}}</span>&nbsp;&nbsp;{{auto.testSuiteName}}</p>
-                                                <p class="font-weight-bold">Suggestion</p>
-                                                <p class="text-muted ml-3">{{auto.suggestion}}</p>
-                                                <p class="font-weight-bold">Effort estimates</p>
-                                                <p class="text-muted ml-3">{{auto.estimates}}</p>
+                                                <!--<p class="font-weight-bold">Endpoint</p>-->
+                                                <!--<p class="font-weight-bold">Suite Name</p>-->
+<!--
+                                                <p class="text-muted ml-3"><span class="badge badge-warning d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
+-->
+                                                <!--<p class="font-weight-bold">FX Recommendation</p>-->
+                                                <p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
+                                                <p class="text-muted"><i class="fa fa-commenting fa-lg text-primary" title="FX Recommendation"></i> &nbsp;&nbsp;{{auto.suggestion}}.  {{auto.suggestion}}.  {{auto.suggestion}}.  {{auto.suggestion}}.</p>
+                                                <!--<p class="font-weight-bold">Effort estimates</p>-->
+                                                <p class="text-muted"><i class="fa fa-clock-o fa-lg text-warning" title="Effort Estimates"></i> &nbsp;&nbsp;Typically this fix would take {{auto.estimates}}</p>
                                             </div>
                                             <div>
-                                                <button mat-raised-button class="text-primary" (click)="openSkipDialog(auto)">Skip</button>
+                                                <button mat-raised-button color="primary" (click)="openSkipDialog(auto)">Skip</button>
                                             </div>
                                             <br/>
                                         </div>

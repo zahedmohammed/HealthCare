@@ -95,7 +95,7 @@ public class AutoSuggestService {
             if (tsResp != null && tsResp.getData() != null){
                 com.fxlabs.fxt.dto.project.TestSuite testSuite = tsResp.getData();
                 testSuite.setInactive(true);
-                testSuiteService.update(testSuite,user,true);
+//                testSuiteService.update(testSuite,user,true);
 //                testSuiteService.delete(tsResp.getData().getId(), user);
             }
             //TODO: 2. Generator add skip entry - update AutoCodeConfig....
