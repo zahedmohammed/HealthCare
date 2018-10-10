@@ -68,7 +68,7 @@ public class AwsCloudService implements CloudService {
      */
     @Override
     public CloudTaskResponse create(final CloudTask task) {
-        logger.info("In IT AwsCloud Service for task [{}]", task.getType().toString());
+        logger.info("In Cloud Skill Aws Service for task [{}]", task.getType().toString());
 
         CloudTaskResponse response = new CloudTaskResponse();
         response.setSuccess(false);
