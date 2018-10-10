@@ -462,6 +462,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 opts.put("TENANT", account.getProp2());
                 opts.put("USERNAME", account.getAccessKey());
                 opts.put("PASSWORD", getSecretKey(account.getId()));
+                opts.put("RESOURCE_GROUP", account.getProp3());
                 break;
             default:
                 logger.info("Cloud not supported");

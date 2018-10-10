@@ -30,6 +30,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class AzureCloudService implements CloudService {
     private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg";
     private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet";
 
-    private static final String FXLABS_AWS_DEFAULT_REGION = "us-west-1";
+    private static final String FXLABS_AWS_DEFAULT_REGION = "eastus";
 
     private static final String FXLABS_DEFAULT_SCRIPT_URL = "https://raw.githubusercontent.com/fxlabsinc/FX-Bot-Script/master/fx_bot_install_script.sh";
 
@@ -113,121 +114,137 @@ public class AzureCloudService implements CloudService {
 //        String client = "92349a66-575b-4916-bf9c-caa6dae920da";
 //        String key = "HCSLxh7TOADqsQywNyeXDWpSSsLCkBsc2mPKRgpZWJg=";
         try {
-        Azure azure = getAzureInstance(task.getOpts());
-        String resourceGroupName = getIAMRole(task.getOpts());
+            Azure azure = getAzureInstance(task.getOpts());
+            String resourceGroupName = getIAMRole(task.getOpts());
 
-        String tag_ = getInstanceTag(task.getOpts());
+            String tag_ = getInstanceTag(task.getOpts());
 
-        String region = getRegion(task.getOpts());
+            String region = getRegion(task.getOpts());
 
-        String tag = FX_BOT_RESOURCES_PREFIX + "-" + tag_ + region;
+            String tag = FX_BOT_RESOURCES_PREFIX + "-" + tag_ + region;
 
-      if (StringUtils.isEmpty(resourceGroupName)) {
-          resourceGroupName = tag + "-rg";
-      }
-        //String resourceGroupName = "dev";
+            if (StringUtils.isEmpty(resourceGroupName)) {
+                resourceGroupName = tag + "-rg";
+            }
+            //String resourceGroupName = "dev";
 
 //		// create RG
-         taskLogger.get().append("Resource group :" + resourceGroupName);
-         logger.info("Creating resource group :" + resourceGroupName);
-        azure.resourceGroups().define(resourceGroupName)
-                .withRegion(com.microsoft.azure.management.resources.fluentcore.arm.Region.fromName(region))
-                .create();
+            taskLogger.get().append("Resource group :" + resourceGroupName);
+            logger.info("Creating resource group :" + resourceGroupName);
+            azure.resourceGroups().define(resourceGroupName)
+                    .withRegion(com.microsoft.azure.management.resources.fluentcore.arm.Region.fromName(region))
+                    .create();
 
-        // create network and subnet
-        String vn = FX_BOT_RESOURCES_PREFIX + region + "-vnet";
-        String subnet = FX_BOT_RESOURCES_PREFIX + region + "-subnet";
+            // create network and subnet
+            String vn = FX_BOT_RESOURCES_PREFIX + region + "-vnet";
+            String subnet = FX_BOT_RESOURCES_PREFIX + region + "-subnet";
 
-        logger.info("Creating virtual network :" + vn);
-        Network network = createNetwork(region, azure, resourceGroupName, vn, subnet);
-        com.microsoft.azure.management.network.Subnet subnet1 = getSubnet(network, subnet);
+            logger.info("Creating virtual network :" + vn);
+            Network network = createNetwork(region, azure, resourceGroupName, vn, subnet);
+            com.microsoft.azure.management.network.Subnet subnet1 = getSubnet(network, subnet);
 
-        taskLogger.get().append("Setting Subnet " + subnet1.name());
+            taskLogger.get().append("Setting Subnet " + subnet1.name());
 
 
-        //NSG
+            //NSG
 
-        String	nsgName = FX_BOT_RESOURCES_PREFIX + region + "-nsg";
-        logger.info("Creating security group :" + nsgName);
+            String nsgName = FX_BOT_RESOURCES_PREFIX + region + "-nsg";
+            logger.info("Creating security group :" + nsgName);
 
-        com.microsoft.azure.management.network.NetworkSecurityGroup nsg = createNetworkSecurityGroup(region, azure, resourceGroupName, "", nsgName);
-        taskLogger.get().append("Setting Security Group  " + nsgName);
+            com.microsoft.azure.management.network.NetworkSecurityGroup nsg = createNetworkSecurityGroup(region, azure, resourceGroupName, "", nsgName);
+            taskLogger.get().append("Setting Security Group  " + nsgName);
 
-        String nicName = FX_BOT_RESOURCES_PREFIX + region + "-nic";
 
-        com.microsoft.azure.management.network.NetworkInterface networkInterface1 = azure.networkInterfaces().define(nicName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroupName)
-                .withExistingPrimaryNetwork(network)
-                .withSubnet(subnet)
-                .withPrimaryPrivateIPAddressDynamic()
-                //.withNewPrimaryPublicIPAddress(ip)
-                .withIPForwarding()
-                .withExistingNetworkSecurityGroup(nsg)
-                .create();
 
-        // OSDisk Size
-        String osDiskName = tag + "-osddisk";
-
-        String sa = org.apache.commons.lang3.StringUtils.replace(FX_BOT_RESOURCES_PREFIX + tag_, "-", "") + "sa";
-
-        StorageAccount storageAccount = createStorageAccount(region, azure, resourceGroupName, sa);
-
-        taskLogger.get().append("Setting image  : " + KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS);
-        taskLogger.get().append("Setting image  : " + VirtualMachineSizeTypes.STANDARD_D3_V2);
-
-        int count = getCount(task.getOpts());
+            int count = getCount(task.getOpts());
 
             taskLogger.get().append("VM count  : " + count);
+            boolean firstIterationFlag = true;
 
-            VirtualMachine vm = null;
-            try {
-                vm = azure.virtualMachines().define(tag)
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < count; i++) {
+
+                String nicName = tag + i  + "-nic";
+
+                com.microsoft.azure.management.network.NetworkInterface networkInterface1 = azure.networkInterfaces().define(nicName)
                         .withRegion(region)
-                        .withNewResourceGroup(resourceGroupName)
-                        .withExistingPrimaryNetworkInterface(networkInterface1)
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername("fxlabs" + RandomStringUtils.randomAlphanumeric(4))
-                        .withRootPassword(RandomStringUtils.randomAlphanumeric(8) + "Fxbot!")
-                        .withComputerName(tag)
-                        .withOSDiskName(osDiskName)
-                        .withExistingStorageAccount(storageAccount)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                        .withBootDiagnostics()
+                        .withExistingResourceGroup(resourceGroupName)
+                        .withExistingPrimaryNetwork(network)
+                        .withSubnet(subnet)
+                        .withPrimaryPrivateIPAddressDynamic()
+                        //.withNewPrimaryPublicIPAddress(ip)
+                        .withIPForwarding()
+                        .withExistingNetworkSecurityGroup(nsg)
                         .create();
-            } catch (Exception e) {
-                logger.info(e.getLocalizedMessage());
-                response.setResponseId(resourceGroupName);
-            }
 
-            if (vm != null) {
+                // OSDisk Size
+                String osDiskName = tag + i + "-osddisk";
+
+                String sa = org.apache.commons.lang3.StringUtils.replace(FX_BOT_RESOURCES_PREFIX + tag_, "-", "") + i + "sa";
+
+                StorageAccount storageAccount = createStorageAccount(region, azure, resourceGroupName, sa);
+
+                taskLogger.get().append("Setting image  : " + KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS);
+                taskLogger.get().append("Setting image  : " + VirtualMachineSizeTypes.STANDARD_D3_V2);
+
+
+                VirtualMachine vm = null;
                 try {
-                    final String botInstallScript = getBotScriptURL(task.getOpts());
-                    final String AZURE_CUSTOM_SCRIPT_CMD = "bash fx_bot_install_script.sh";
-
-                    String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + getAzureConfig(task.getOpts());
-
-                    logger.info("Azure bot execution script :" + runBot);
-                    //String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + "cloud.fxlabs.io" + SPACE + "5671" + SPACE + "true" + SPACE + "Mwc/0zF7dfX+PUq6Jz26AkdbFUE13eL5" + SPACE + "jrtPsZ5x96rhW6H/5zsFPFH8XzDmIq5/ldLAjyOZbbE=" + SPACE + "latest";
-
-
-                    final List<String> linuxScriptFileUris = new ArrayList<>();
-                    linuxScriptFileUris.add(botInstallScript);
-
-
-                    vm.update()
-                            .defineNewExtension(linuxCustomScriptExtensionName)
-                            .withPublisher(linuxCustomScriptExtensionPublisherName)
-                            .withType(linuxCustomScriptExtensionTypeName)
-                            .withVersion(linuxCustomScriptExtensionVersionName)
-                            .withMinorVersionAutoUpgrade()
-                            .withPublicSetting("fileUris", linuxScriptFileUris)
-                            .withPublicSetting("commandToExecute", runBot)
-                            .attach()
-                            .apply();
+                    vm = azure.virtualMachines().define(tag + i)
+                            .withRegion(region)
+                            .withNewResourceGroup(resourceGroupName)
+                            .withExistingPrimaryNetworkInterface(networkInterface1)
+                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                            .withRootUsername("fxlabs" + RandomStringUtils.randomAlphanumeric(4))
+                            .withRootPassword(RandomStringUtils.randomAlphanumeric(8) + "Fxbot!")
+                            .withComputerName(tag + i)
+                            .withOSDiskName(osDiskName)
+                            .withExistingStorageAccount(storageAccount)
+                            .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                            .withBootDiagnostics()
+                            .create();
                 } catch (Exception e) {
-                   logger.info("Exception configuring bot :" + e.getMessage());
-                    taskLogger.get().append("exception occured configuring bot  : " + e.getStackTrace());
+                    logger.info(e.getLocalizedMessage());
+                    response.setResponseId(resourceGroupName);
+                }
+
+                if (vm != null) {
+                    if (!firstIterationFlag) {
+                        sb.append("," + tag + i);
+                    } else {
+                        sb.append(tag + i);
+                    }
+                    firstIterationFlag = false;
+
+                    try {
+                        final String botInstallScript = getBotScriptURL(task.getOpts());
+                        final String AZURE_CUSTOM_SCRIPT_CMD = "bash fx_bot_install_script.sh";
+
+                        //String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + getAzureConfig(task.getOpts());
+
+
+                        String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + "cloud.fxlabs.io" + SPACE + "5671" + SPACE + "true" + SPACE + "Mwc/0zF7dfX+PUq6Jz26AkdbFUE13eL5" + SPACE + "jrtPsZ5x96rhW6H/5zsFPFH8XzDmIq5/ldLAjyOZbbE=" + SPACE + "latest";
+                        logger.info("Azure bot execution script :" + runBot);
+
+                        final List<String> linuxScriptFileUris = new ArrayList<>();
+                        linuxScriptFileUris.add(botInstallScript);
+
+
+                        vm.update()
+                                .defineNewExtension(linuxCustomScriptExtensionName)
+                                .withPublisher(linuxCustomScriptExtensionPublisherName)
+                                .withType(linuxCustomScriptExtensionTypeName)
+                                .withVersion(linuxCustomScriptExtensionVersionName)
+                                .withMinorVersionAutoUpgrade()
+                                .withPublicSetting("fileUris", linuxScriptFileUris)
+                                .withPublicSetting("commandToExecute", runBot)
+                                .attach()
+                                .apply();
+                    } catch (Exception e) {
+                        logger.info("Exception configuring bot :" + e.getMessage());
+                        taskLogger.get().append("exception occured configuring bot  : " + e.getStackTrace());
+                    }
                 }
             }
 
@@ -235,7 +252,7 @@ public class AzureCloudService implements CloudService {
             if (resourceGroupName.startsWith(FX_BOT_RESOURCES_PREFIX) && resourceGroupName.endsWith("-rg")) {
                 response.setResponseId(resourceGroupName);
             } else {
-                response.setResponseId(vm.id());
+                response.setResponseId(sb.toString());
             }
             response.setLogs(taskLogger.get().toString());
 
@@ -253,9 +270,6 @@ public class AzureCloudService implements CloudService {
     }
 
 
-
-
-
     @Override
     public CloudTaskResponse destroy(final CloudTask task) {
         logger.info("In Cloud Skill AZURE Service for task [{}]", task.getType().toString());
@@ -264,8 +278,6 @@ public class AzureCloudService implements CloudService {
         response.setSuccess(false);
         response.setId(task.getId());
 
-        // ComputeService awsService = null;
-        AmazonEC2 awsService = null;
         try {
             taskLogger.set(new StringBuilder());
             if (CollectionUtils.isEmpty(task.getOpts())) {
@@ -290,8 +302,6 @@ public class AzureCloudService implements CloudService {
             String resourceGroupName = vmName + "-rg";
 
 
-
-
             Azure azure = getAzureInstance(task.getOpts());
 
             if (resourceGroupName.startsWith(FX_BOT_RESOURCES_PREFIX) && resourceGroupName.endsWith("-rg")) {
@@ -304,57 +314,63 @@ public class AzureCloudService implements CloudService {
                     taskLogger.get().append("Failed to delete resource group : " + nodeIds + " " + e.getLocalizedMessage());
                 }
             } else {
+                String[] instanceIds = nodeIds.split(",");
+                List<String> list = Arrays.asList(instanceIds);
+                list.forEach(instance -> {
 
-                // delete VM, Nic, & ip, subnet, virtual-network, storage-account, network-security-group
-                String nicName = FX_BOT_RESOURCES_PREFIX + region + "-nic";
-                String ipAdd = vmName + "-pip";
-                String nsg =  FX_BOT_RESOURCES_PREFIX + region + "-nsg";
-                String subnet = FX_BOT_RESOURCES_PREFIX + region + "-subnet";
-                String vn = FX_BOT_RESOURCES_PREFIX + region + "-vnet";
-                String sa = org.apache.commons.lang3.StringUtils.replace(FX_BOT_RESOURCES_PREFIX + tag, "-", "") + "sa";
-                String osDiskName = vmName + "-osddisk";
-                String containerName = resourceGroupName + vmName;
-                boolean deletedVM = false;
-                try {
-                    logger.info("Deleting virtual machine [{}]", vmName);
-                    taskLogger.get().append("Deleting virtual machine " + vmName);
-                    azure.virtualMachines().deleteByResourceGroup(resourceGroupName, vmName);
-                    deletedVM = true;
-                } catch (Exception e) {
-                    logger.info("Failed to delete virtual Machine [{}]", vmName);
-                    taskLogger.get().append("Failed to delete virtual Machine " + vmName);
-                }
-                // delete NIC
-                if (!org.apache.commons.lang3.StringUtils.isEmpty(nicName) && deletedVM) {
+                    // delete VM,
                     try {
-                        azure.networkInterfaces().deleteByResourceGroup(resourceGroupName, nicName);
+                        logger.info("Deleting virtual machine [{}]", instance);
+                        taskLogger.get().append("Deleting virtual machine " + instance);
+                        azure.virtualMachines().deleteByResourceGroup(resourceGroupName, instance);
                     } catch (Exception e) {
-
+                        logger.info("Failed to delete virtual Machine [{}]", instance);
+                        taskLogger.get().append("Failed to delete virtual Machine " + instance);
                     }
-                }
-                // delete NSG
-                if (!org.apache.commons.lang3.StringUtils.isEmpty(nsg) && deletedVM) {
-                    try {
-                        azure.networkSecurityGroups().deleteByResourceGroup(resourceGroupName, nsg);
-                    } catch (Exception e) {
+                });
 
+                // deleting resources
+                list.forEach(instance -> {
+                    //Nic, & ip, subnet, virtual-network, storage-account, network-security-group
+                    String nicName = instance + "-nic";
+                    String ipAdd = instance + "-pip";
+                    String nsg = FX_BOT_RESOURCES_PREFIX + region + "-nsg";
+
+                    String subnet = FX_BOT_RESOURCES_PREFIX + region + "-subnet";
+                    String vn = FX_BOT_RESOURCES_PREFIX + region + "-vnet";
+                    String sa = org.apache.commons.lang3.StringUtils.replace(FX_BOT_RESOURCES_PREFIX + instance, "-", "") + "sa";
+                    String osDiskName = instance + "-osddisk";
+                    // delete NIC
+                    if (!org.apache.commons.lang3.StringUtils.isEmpty(nicName)) {
+                        try {
+                            azure.networkInterfaces().deleteByResourceGroup(resourceGroupName, nicName);
+                        } catch (Exception e) {
+
+                        }
                     }
-                }
+                    // delete NSG
+                    if (!org.apache.commons.lang3.StringUtils.isEmpty(nsg)) {
+                        try {
+                            azure.networkSecurityGroups().deleteByResourceGroup(resourceGroupName, nsg);
+                        } catch (Exception e) {
 
-                // delete Storage account
-                if (!org.apache.commons.lang3.StringUtils.isEmpty(sa) && deletedVM) {
-                    try {
-                        azure.storageAccounts().deleteByResourceGroup(resourceGroupName, sa);
-                    } catch (Exception e) {
-
+                        }
                     }
-                }
 
-                azure.disks().deleteByResourceGroup(resourceGroupName, osDiskName);
+                    // delete Storage account
+                    if (!org.apache.commons.lang3.StringUtils.isEmpty(sa)) {
+                        try {
+                            azure.storageAccounts().deleteByResourceGroup(resourceGroupName, sa);
+                        } catch (Exception e) {
+
+                        }
+                    }
+
+                    azure.disks().deleteByResourceGroup(resourceGroupName, osDiskName);
+                });
+
+
             }
-
-
-
 
 
             response.setSuccess(true);
@@ -432,10 +448,6 @@ public class AzureCloudService implements CloudService {
         }
         return hardware;
     }
-
-
-
-
 
 
     /**
@@ -543,7 +555,7 @@ public class AzureCloudService implements CloudService {
     }
 
     protected String getIAMRole(Map<String, String> map) {
-        String val = map.get("IAM-ROLE");
+        String val = map.get("RESOURCE_GROUP");
         if (org.apache.commons.lang3.StringUtils.equalsIgnoreCase(val, "null")) {
             return "";
         }
@@ -573,7 +585,7 @@ public class AzureCloudService implements CloudService {
     }
 
 
-    private static  Network createNetwork(String region, Azure azure, String resourceGroupName, String vn, String subnet) {
+    private static Network createNetwork(String region, Azure azure, String resourceGroupName, String vn, String subnet) {
         Network network;
         String networkCIDR = "10.0.0.0/16";
         String subnetCIDR = "10.0.0.0/24";
@@ -638,7 +650,6 @@ public class AzureCloudService implements CloudService {
 
         return nsg;
     }
-
 
 
 }
