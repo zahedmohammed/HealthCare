@@ -221,10 +221,8 @@ public class AzureCloudService implements CloudService {
                         final String botInstallScript = getBotScriptURL(task.getOpts());
                         final String AZURE_CUSTOM_SCRIPT_CMD = "bash fx_bot_install_script.sh";
 
-                        //String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + getAzureConfig(task.getOpts());
-
-
-                        String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + "cloud.fxlabs.io" + SPACE + "5671" + SPACE + "true" + SPACE + "Mwc/0zF7dfX+PUq6Jz26AkdbFUE13eL5" + SPACE + "jrtPsZ5x96rhW6H/5zsFPFH8XzDmIq5/ldLAjyOZbbE=" + SPACE + "latest";
+                        String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + getAzureConfig(task.getOpts());
+                        //String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + "cloud.fxlabs.io" + SPACE + "5671" + SPACE + "true" + SPACE + "Mwc/0zF7dfX+PUq6Jz26AkdbFUE13eL5" + SPACE + "jrtPsZ5x96rhW6H/5zsFPFH8XzDmIq5/ldLAjyOZbbE=" + SPACE + "latest";
                         logger.info("Azure bot execution script :" + runBot);
 
                         final List<String> linuxScriptFileUris = new ArrayList<>();
