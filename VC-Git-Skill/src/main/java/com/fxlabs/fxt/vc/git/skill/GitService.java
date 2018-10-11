@@ -272,7 +272,7 @@ public class GitService implements VersionControlService {
                 // add
                 // commit
                 // push
-                addAndCommit(git, "Fx Bot commit", ".");
+                addAndCommit(git, "FX Bot commit", ".");
 
                 PushCommand pushCommand = git.push();
 
@@ -284,7 +284,7 @@ public class GitService implements VersionControlService {
 
 
             if (isMissingFiles(git)) {
-                removeAndCommit(git, "Fx Bot commit", ".");
+                removeAndCommit(git, "FX Bot commit", ".");
                 PushCommand pushCommandRemove = git.push();
                 privateKey = setAuth(username, password, pushCommandRemove);
                 pushCommandRemove.call();
