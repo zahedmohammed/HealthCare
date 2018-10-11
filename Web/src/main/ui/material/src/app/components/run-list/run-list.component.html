@@ -204,7 +204,7 @@
                         <div class="box-body">
                             <div class="row article-title-style">
 
-                                <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
+                                <!-- <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
                                     <div class="mat-elevation-z8 row no-margin-right">
                                         <span class="col-md-1 mt-3">
                                             <i class="fa fa-user-circle-o fa-md text-dark"></i>
@@ -213,22 +213,22 @@
                                             <p class="text-dark"> Recommendation <span class="badge badge-primary d-inline">BOT</span>
                                                 <small class="text-muted pull-right">{{auto.createdDate | timeAgo}}</small>
                                             </p>
-                                            <p class="text-muted">{{auto.issueDesc}}  This is resulting in failing the test suite <i>{{auto.testSuiteName}}</i> under <i>{{auto.category}}</i> category.</p>
-                                            <!--<p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>-->
-<!--
+                                            <p class="text-muted">{{auto.issueDesc}}  This is resulting in failing the test suite <i>{{auto.testSuiteName}}</i> under <i>{{auto.category}}</i> category.</p> -->
+                                <!--<p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>-->
+                                <!--
                                             <p class="text-muted"><i class="fa fa-file-code-o fa-lg text-dark" title="TestSuite Name"></i> &nbsp;&nbsp;{{auto.testSuiteName}}</p>
 -->
-                                            <div class="callout">
-                                                <!--<p class="font-weight-bold">Endpoint</p>-->
-                                                <!--<p class="font-weight-bold">Suite Name</p>-->
-<!--
+                                <!-- <div class="callout"> -->
+                                <!--<p class="font-weight-bold">Endpoint</p>-->
+                                <!--<p class="font-weight-bold">Suite Name</p>-->
+                                <!--
                                                 <p class="text-muted ml-3"><span class="badge badge-warning d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
 -->
-                                                <!--<p class="font-weight-bold">FX Recommendation</p>-->
-                                                <p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
-                                                <p class="text-muted"><i class="fa fa-commenting fa-lg text-primary" title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p>
-                                                <!--<p class="font-weight-bold">Effort estimates</p>-->
-                                                <p class="text-muted"><i class="fa fa-clock-o fa-lg text-warning" title="Effort Estimates"></i> &nbsp;&nbsp;Typically this fix would take {{auto.estimates}}</p>
+                                <!--<p class="font-weight-bold">FX Recommendation</p>-->
+                                <!-- <p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p> -->
+                                <!-- <p class="text-muted"><i class="fa fa-commenting fa-lg text-primary" title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p> -->
+                                <!--<p class="font-weight-bold">Effort estimates</p>-->
+                                <!-- <p class="text-muted"><i class="fa fa-clock-o fa-lg text-warning" title="Effort Estimates"></i> &nbsp;&nbsp;Typically this fix would take {{auto.estimates}}</p>
                                             </div>
                                             <div>
                                                 <button mat-raised-button color="primary" (click)="openSkipDialog(auto)">Skip</button>
@@ -238,6 +238,51 @@
 
                                     </div>
                                     
+                                </div> -->
+
+
+                                <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
+                                    <div class="mat-elevation-z8 row no-margin-right">
+                                        <span class="col-md-1 mt-3">
+                                            <!-- <i class="fa fa-user-circle-o fa-md text-dark"></i> -->
+                                            <img src="assets/images/bot.png" height="35" width="35" />
+                                        </span>
+                                        <div class="col-md-11 mt-3 text-dark">
+                                            <p class="text-dark mb-1"> <strong>Recommendation</strong> <span class="badge badge-primary d-inline">BOT</span>
+                                                <small class="text-muted pull-right">{{auto.createdDate | timeAgo}}</small>
+                                            </p>
+                                            <p class="text-muted p-custom">{{auto.issueDesc}} This is resulting in failing
+                                                the test suite <i>{{auto.testSuiteName}}</i> under <i>{{auto.category}}</i>
+                                                category.</p>
+                                            <!--<p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>-->
+                                            <!--
+                                                <p class="text-muted"><i class="fa fa-file-code-o fa-lg text-dark" title="TestSuite Name"></i> &nbsp;&nbsp;{{auto.testSuiteName}}</p>
+    -->
+                                            <div class="callout-custom callout callout-warning">
+                                                <!--<p class="font-weight-bold">Endpoint</p>-->
+                                                <!--<p class="font-weight-bold">Suite Name</p>-->
+                                                <!--
+                                                    <p class="text-muted ml-3"><span class="badge badge-warning d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
+    -->
+                                                <!--<p class="font-weight-bold">FX Recommendation</p>-->
+                                                <p class="text-muted p-custom"><span class="badge badge-secondary d-inline"
+                                                        title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
+                                                <p class="text-muted p-custom"><i class="fa fa-commenting fa-lg text-primary"
+                                                        title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p>
+                                                <!--<p class="font-weight-bold">Effort estimates</p>-->
+                                                <p class="text-muted p-custom"><i class="fa fa-clock-o fa-lg text-warning"
+                                                        title="Effort Estimates"></i> &nbsp;&nbsp;Typically this fix
+                                                    would take {{auto.estimates}}</p>
+                                            </div>
+                                            <div>
+                                                <button mat-raised-button class="mat-raised-button-custom pull-right"
+                                                    (click)="openSkipDialog(auto)">Skip</button>
+                                            </div>
+                                            <br />
+                                        </div>
+
+                                    </div>
+
                                 </div>
 
                             </div>
