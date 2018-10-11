@@ -3,6 +3,8 @@
     <article>
       <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
         <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">{{project.name}}</a>
+          &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right"></i>&nbsp;</span>
+          <a href="javascript:;" [routerLink]="['/app/projects', id, 'test-suites']"> Code </a>
         &nbsp; <span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span> &nbsp;Git
 
       </section>
@@ -14,25 +16,41 @@
   <nav mat-tab-nav-bar>
     <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
     </label>
-    <label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+    <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments-->
+    <!--</label>-->
+    <label mat-tab-link [active]="true" [routerLink]="['/app/projects', id, 'test-suites']">Code
     </label>
-    <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
-    </label>
-    <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Insights
     </label>
 
-    <label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>
-    <label mat-tab-link [active]="true">Git</label>
-    <button mat-button color="warn" class="nav-btn pull-right" (click)="delete();"><i class="material-icons">delete</i>Delete Project
+    <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>-->
+    <!--<label mat-tab-link [active]="true">Git</label>-->
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']">Recommendations</label>
+
+      <button mat-button color="warn" class="nav-btn pull-right" (click)="delete();"><i class="material-icons">delete</i>Delete Project
     </button>
   </nav>
-  <br />
+  <!--<br />-->
 
   <article class="article">
 
     <div class="box box-default">
       <div class="box-body">
-        <!--<mat-horizontal-stepper [linear]="true" #stepper>-->
+          <div class="row">
+              <div class="col-md-7">
+                  <mat-button-toggle-group #group="matButtonToggleGroup" value="git" >
+                      <mat-button-toggle value="testsuites" [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+                      </mat-button-toggle>
+                      <mat-button-toggle value="configuration"  [routerLink]="['/app/projects', id, 'configuration']">Manage AutoCode
+                      </mat-button-toggle>
+                      <mat-button-toggle value="git"  [routerLink]="['/app/projects', id, 'manage']">Git
+                      </mat-button-toggle>
+                  </mat-button-toggle-group>
+              </div>
+          </div>
+          <hr>
+
+          <!--<mat-horizontal-stepper [linear]="true" #stepper>-->
         <!--<mat-step [stepControl]="firstFormGroup">-->
         <form [formGroup]="firstFormGroup">
           <!--<ng-template matStepLabel>Project Registration</ng-template>-->

@@ -13,21 +13,34 @@
     <nav mat-tab-nav-bar>
         <label mat-tab-link [active]="true">Jobs
         </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments-->
+        <!--</label>-->
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Code
         </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Insights
         </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
-        </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>
+        <!--<label mat-tab-link [routerLink]="['/app/issues']">Issues</label>-->
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']">Recommendations</label>
+        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>-->
+        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>-->
     </nav>
-    <br />
+    <!--<br />-->
 
     <article class="article1">
 
         <div class="box1 box-default">
             <div class="box-body">
+                <div class="row">
+                    <div class="col-md-7">
+                        <mat-button-toggle-group #group="matButtonToggleGroup" value="jobs" >
+                            <mat-button-toggle value="jobs" [routerLink]="['/app/projects', id, 'jobs']">Jobs
+                            </mat-button-toggle>
+                            <mat-button-toggle value="environment"  [routerLink]="['/app/projects', id, 'environments']">Manage Environments
+                            </mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+                </div>
+                <hr>
                 <div class="row">
                     <div class="col-md-10">
                         <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects', id, 'jobs', 'new']">

@@ -193,6 +193,8 @@ import { ConfirmDialogComponent } from './components/dialogs/confirm-dialog/conf
 import { TestsuitEditDialogComponent } from './components/dialogs/testsuit-edit-dialog/testsuit-edit-dialog.component';
 import { AutoSyncSaveConfigComponent } from './components/dialogs/auto-sync-save-config/auto-sync-save-config.component';
 import { TestsuitNewDialogComponent } from './components/dialogs/testsuit-new-dialog/testsuit-new-dialog.component';
+import { JobAnalyticsComponent } from './components/analytics/job-analytics/job-analytics.component';
+import { ProjectRecommendationsComponent } from './components/projects/project-recommendations/project-recommendations.component';
 
 @NgModule({
   imports: [
@@ -364,7 +366,9 @@ import { TestsuitNewDialogComponent } from './components/dialogs/testsuit-new-di
     ConfirmDialogComponent,
     TestsuitEditDialogComponent,
     AutoSyncSaveConfigComponent,
-    TestsuitNewDialogComponent
+    TestsuitNewDialogComponent,
+    JobAnalyticsComponent,
+    ProjectRecommendationsComponent
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, TestSuiteService, UsersService, AccountService, Handler, DatePipe],

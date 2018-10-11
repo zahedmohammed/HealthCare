@@ -4,6 +4,8 @@
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
                 <a href="javascript:;" [routerLink]="['/app/projects', project.id, 'jobs']">{{project.name}}</a>
                 <span class="text-muted">&nbsp;&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;&nbsp;</span>
+                <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"> Jobs </a>&nbsp;
+                <span class="text-muted"> <i class="fa fa-chevron-right"></i> </span>
                 Environments
             </section>
         </article>
@@ -12,22 +14,35 @@
 <br />
 <section class="container-fluid with-maxwidth chapter">
     <nav mat-tab-nav-bar>
-        <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
+        <label mat-tab-link [active]="true" [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
         </label>
-        <label mat-tab-link [active]="true">Environments
+        <!--<label mat-tab-link [active]="true">Environments-->
+        <!--</label>-->
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Code
         </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Test Suites
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Insights
         </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
-        </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>
+        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>-->
+        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>-->
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']">Recommendations</label>
+
     </nav>
-    <br />
+    <!--<br />-->
 
     <article class="article">
         <div class="box box-default">
             <div class="box-body">
+                <div class="row">
+                    <div class="col-md-7">
+                        <mat-button-toggle-group #group="matButtonToggleGroup" value="environment" >
+                            <mat-button-toggle value="jobs" [routerLink]="['/app/projects', id, 'jobs']">Jobs
+                            </mat-button-toggle>
+                            <mat-button-toggle value="environment"  [routerLink]="['/app/projects', id, 'environments']">Manage Environments
+                            </mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+                </div>
+                <hr>
                 <div class="row">
                     <div class="col-md-10">
                         <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects', id, 'environments', 'new']">
@@ -39,7 +54,6 @@
                         <p class="text-muted float-right">Total ({{length}})</p>
                     </div>
                 </div>
-
                 <div class="mat-elevation-z8 box-default">
                     <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
                         matSortDirection="desc">
@@ -68,31 +82,6 @@
                         [length]="length">
                     </mat-paginator>
                 </div>
-
-                <!-- <div class="box box-default table-box mdl-shadow--2dp">
-                    <table class="mdl-data-table">
-                        <thead>
-                            <tr>
-                                <th class="mdl-data-table__cell--non-numeric">Name</th>
-                                <th class="mdl-data-table__cell--non-numeric">Base URL</th>
-
-                                <th class="mdl-data-table__cell--non-numeric">AuthCount</th>
-                                <th class="mdl-data-table__cell--non-numeric">Created Date</th>
-                                <!--th class="mdl-data-table__cell--non-numeric">Next-Fire</th>
-                        <th class="mdl-data-table__cell--non-numeric"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let env of envs">
-                                <td class="mdl-data-table__cell--non-numeric">
-                                    <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments', env.id, 'edit']">{{env.name}}</a></td>
-                                <td class="mdl-data-table__cell--non-numeric">{{env.baseUrl}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{env.auths.length}}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{env.modifiedDate | date}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> -->
             </div>
         </div>
 

@@ -98,6 +98,8 @@ import { ApiCoverageComponent } from '../components/coverage/api-coverage/api-co
 
 import { AppFooterComponent } from './footer/footer.component';
 import {ProjectsConfigComponent} from "../components/projects/projects-config/projects-config.component";
+import {JobAnalyticsComponent} from "../components/analytics/job-analytics/job-analytics.component";
+import {ProjectRecommendationsComponent} from "../components/projects/project-recommendations/project-recommendations.component";
 
 const routes: Routes = [
   {
@@ -122,6 +124,8 @@ const routes: Routes = [
       { path: 'projects/:id/test-suites/:testSuiteId/edit', component: TestSuiteEditComponent },
       { path: 'projects/:entityId/test-suites', component: AppFooterComponent },
         { path: 'projects/:id/api-coverage', component: ApiCoverageComponent },
+       { path: 'projects/:id/job-analytics', component: JobAnalyticsComponent },
+       { path: 'projects/:id/recommendations', component: ProjectRecommendationsComponent },
 
       { path: 'projects/:id/jobs', component: JobslistComponent },
       { path: 'projects/:id/jobs/new', component: JobsNewComponent },
