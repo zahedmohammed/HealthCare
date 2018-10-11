@@ -4,18 +4,21 @@ import {ProjectService} from "../../../services/project.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Handler} from "../../dialogs/handler/handler";
 import {Project} from "../../../models/project.model";
+import {MatTableDataSource} from "@angular/material";
+import {JobsService} from "../../../services/jobs.service";
 
 @Component({
   selector: 'app-job-analytics',
   templateUrl: './job-analytics.component.html',
   styleUrls: ['./job-analytics.component.scss'],
-  providers: [ProjectService, TestSuiteService]
+  providers: [ProjectService, JobsService,TestSuiteService]
 
 })
 export class JobAnalyticsComponent implements OnInit {
     id; // project id
+    jobs;
     project: Project = new Project();
-    constructor(private testSuiteService: TestSuiteService, private projectService: ProjectService,
+    constructor(private testSuiteService: TestSuiteService, private projectService: ProjectService,private jobsService: JobsService,
                 private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
 
@@ -25,6 +28,7 @@ export class JobAnalyticsComponent implements OnInit {
             this.id = params['id'];
             //console.log(params);
             this.loadProject(this.id);
+            this.list(this.id);
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
@@ -38,6 +42,19 @@ export class JobAnalyticsComponent implements OnInit {
                 return;
             }
             this.project = results['data'];
+        }, error => {
+            this.handler.hideLoader();
+            this.handler.error(error);
+        });
+    }
+    list(id: string) {
+        this.handler.activateLoader();
+        this.jobsService.getJobs(id, 0, 10).subscribe(results => {
+            this.handler.hideLoader();
+            if (this.handler.handle(results)) {
+                return;
+            }
+            this.jobs = results['data'];
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);

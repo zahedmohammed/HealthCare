@@ -15,14 +15,10 @@
   <nav mat-tab-nav-bar>
     <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
     </label>
-    <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments-->
-    <!--</label>-->
     <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Code
     </label>
     <label mat-tab-link [active]="true">Insights
     </label>
-    <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>-->
-    <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>-->
     <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']">Recommendations</label>
 
   </nav>
@@ -38,6 +34,14 @@
               </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
+            <div class="col-md-5">
+                <mat-form-field>
+                    <mat-select placeholder="Select a Job">
+                        <mat-option *ngFor="let job of jobs" [value]="job.name">{{job.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
         </div>
         <hr>
       </div>
