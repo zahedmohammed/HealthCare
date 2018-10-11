@@ -1,6 +1,7 @@
 package com.fxlabs.fxt.rest.project;
 
 import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.project.AutoSuggestion;
 import com.fxlabs.fxt.dto.project.Job;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.JobService;
@@ -72,6 +73,23 @@ public class JobController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Job> delete(@PathVariable("id") String id) {
         return service.delete(id, SecurityUtil.getCurrentAuditor());
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/{id}/auto-suggestions", method = RequestMethod.GET)
+    public Response<List<AutoSuggestion>> getAutoSuggestions(@PathVariable("id") String id,
+                                                             @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                                             @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
+        return service.getAutoSuggestions(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize));
+    }
+
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/{id}/auto-suggestions/skip/{suiteName}/{tcNumber}", method = RequestMethod.GET)
+    public Response<Boolean> skipAutoSuggestion(@PathVariable("id") String id,
+                                                @PathVariable("suiteName") String suiteName,
+                                                @PathVariable("tcNumber") String tcNumber) {
+        return service.skipAutoSuggestion(id, suiteName, tcNumber, SecurityUtil.getCurrentAuditor());
+
     }
 
 }
