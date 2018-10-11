@@ -20,6 +20,7 @@ import com.fxlabs.fxt.services.clusters.AccountService;
 import com.fxlabs.fxt.services.processors.send.GaaSTaskRequestProcessor;
 import com.fxlabs.fxt.services.users.SystemSettingService;
 import com.fxlabs.fxt.services.util.AutoCodeConfigServiceUtil;
+import com.fxlabs.fxt.services.util.AutoSuggestService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
     private ProjectFileRepository projectFileRepository;
     private TestSuiteESRepository testSuiteESRepository;
     private TestSuiteRepository testSuiteRepository;
+    private AutoSuggestService autoSuggestService;
 
 
 
@@ -73,7 +75,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                               OrgRepository orgRepository, UsersRepository usersRepository, EnvironmentRepository environmentRepository, TestSuiteESRepository testSuiteESRepository,
                               GaaSTaskRequestProcessor gaaSTaskRequestProcessor, AutoCodeConfigRepository autoCodeConfigRepository, ProjectFileRepository projectFileRepository,
                               ProjectImportsRepository projectImportsRepository, ProjectImportsESRepository projectImportsESRepository, TestSuiteRepository testSuiteRepository,
-                              AccountService accountService, SystemSettingService systemSettingService, AutoCodeGeneratorRepository autoCodeGeneratorRepository, AutoCodeGeneratorConverter autoCodeGeneratorConverter) {
+                              AccountService accountService, SystemSettingService systemSettingService, AutoCodeGeneratorRepository autoCodeGeneratorRepository, AutoCodeGeneratorConverter autoCodeGeneratorConverter,
+                              AutoSuggestService autoSuggestService) {
 
         super(repository, converter);
         this.autoCodeGeneratorConverter = autoCodeGeneratorConverter;
@@ -97,6 +100,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         this.projectFileRepository = projectFileRepository;
         this.testSuiteESRepository = testSuiteESRepository;
         this.testSuiteRepository = testSuiteRepository;
+        this.autoSuggestService = autoSuggestService;
     }
 
 
@@ -743,5 +747,14 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         }
     }
 
+    @Override
+    public Response<List<AutoSuggestion>> getAutoSuggestions(String id, String user, Pageable pageable){
+            return new Response<>(autoSuggestService.getSuggestionsByProject(id));
+    }
+
+    @Override
+    public Response<Boolean> skipAutoSuggestion(String id, String suiteName, String tcNumber, String currentAuditor){
+            return new Response<>(autoSuggestService.skipSuggestionByProject(id, suiteName, tcNumber, currentAuditor));
+    }
 
 }

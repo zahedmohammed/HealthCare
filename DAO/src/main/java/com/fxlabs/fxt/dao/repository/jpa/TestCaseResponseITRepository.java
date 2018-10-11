@@ -26,9 +26,13 @@ public interface TestCaseResponseITRepository extends JpaRepository<TestCaseResp
 
     Optional<TestCaseResponseIssueTracker> findByProjectIdAndJobIdAndTestSuiteNameAndTestCaseNumber(String projectId, String jobId,String testSuite,String testCase);
 
+    Stream<TestCaseResponseIssueTracker> findByProjectIdAndTestSuiteNameAndTestCaseNumber(String projectId, String testSuite,String testCase);
+
     List<TestCaseResponseIssueTracker> findByRunIdAndProjectIdAndJobId(String runId, String projectId, String jobId);
 
     Stream<TestCaseResponseIssueTracker> findByJobIdAndStatusIgnoreCase(String jobId, String status);
+
+    Stream<TestCaseResponseIssueTracker> findByProjectIdAndStatusIgnoreCase(String jobId, String status);
 
     long countByStatusIgnoreCaseAndProjectIdAndJobId(String open, String name, String id);
 

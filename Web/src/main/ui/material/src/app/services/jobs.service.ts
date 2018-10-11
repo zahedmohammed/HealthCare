@@ -60,7 +60,7 @@ export class JobsService {
   }
 
   skipAutoSuggestion(jobId: string, suiteName: string, tcNumber: string) {
-    return this.http.get(this.serviceUrl + "/" + jobId + "/auto-suggestions/"+suiteName+"/"+tcNumber);
+    return this.http.get(this.serviceUrl + "/" + jobId + "/auto-suggestions/skip/"+suiteName+"/"+tcNumber);
   }
 
 }

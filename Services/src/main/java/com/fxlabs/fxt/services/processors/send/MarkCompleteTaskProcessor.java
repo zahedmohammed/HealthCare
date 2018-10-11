@@ -114,7 +114,7 @@ public class MarkCompleteTaskProcessor {
                     // TODO: Mark complete on 96% or above
                     double per = 0.0;
 
-                    if (count > 20) {
+                    if (count > 20 && run.getTask().getTotalTests() >0) {
                         per = count * 100 / run.getTask().getTotalTests();
                     }
 

@@ -19,4 +19,6 @@ public interface TestCaseResponseESRepository extends ElasticsearchRepository<Te
     List<TestCaseResponse> findByProjectAndJobIdAndSuiteAndTestCase(String project, String jobId, String suite, String testCase, Pageable pageable);
 
     Stream<TestCaseResponse> findByJobIdAndIssueIdIn(String jobId, List<String> issueId);
+
+    Stream<TestCaseResponse> findByProjectIdAndIssueIdIn(String jobId, List<String> issueId);
 }

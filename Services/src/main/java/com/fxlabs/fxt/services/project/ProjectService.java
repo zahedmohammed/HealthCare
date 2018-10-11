@@ -51,4 +51,9 @@ public interface ProjectService extends GenericService<Project, String> {
     Response<List<Project>> search(String keyword, String orgId, Pageable pageable);
 
     Response<List<Project>> findProjectsByOrgId(String orgId);
+
+    Response<List<AutoSuggestion>> getAutoSuggestions(String id, String user, Pageable pageable);
+
+    Response<Boolean> skipAutoSuggestion(String id, String suiteName, String tcNumber, String currentAuditor);
+
 }

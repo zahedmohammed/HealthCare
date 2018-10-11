@@ -133,4 +133,88 @@ public class AutoSuggestService {
         return false;
     }
 
+
+    public List<AutoSuggestion> getSuggestionsByProject(String projectId){
+
+        List<AutoSuggestion> suggestions = new ArrayList<>();
+        Stream<TestCaseResponseIssueTracker> issues = testCaseResponseITRepository.findByProjectIdAndStatusIgnoreCase(projectId,"open");
+
+        List<String> issueIds = new ArrayList<>();
+        issues.forEach(issue -> {
+            issueIds.add(issue.getIssueId());
+        });
+
+        if (CollectionUtils.isEmpty(issueIds)){
+            return suggestions;
+        }
+
+        Stream<TestCaseResponse> tcResponses = testCaseResponseESRepository.findByProjectIdAndIssueIdIn(projectId,issueIds);
+
+        tcResponses.forEach(tcResp -> {
+            TestSuite suite = testSuiteESRepository.findByProjectIdAndName(projectId,tcResp.getSuite());
+            if (suite != null) {
+                AutoSuggestion suggestion = new AutoSuggestion();
+                suggestion.setProjectId(projectId);
+                suggestion.setEndPoint(tcResp.getEndpointEval());
+                suggestion.setRegion(tcResp.getRegion());
+                suggestion.setRespStatusCode(tcResp.getStatusCode());
+                suggestion.setCategory(suite.getCategory().toString());
+                suggestion.setMethod(suite.getMethod().toString());
+                suggestion.setTestSuiteName(suite.getName());
+                suggestion.setTestCaseNumber(tcResp.getTestCase());
+                suggestion.setCreatedDate(tcResp.getCreatedDate());
+
+                AutoSuggestion suggestion_ = AutoSuggestionUtil.getAutoSuggestion(suite.getCategory().toString());
+                if (suggestion_ != null) {
+                    suggestion.setEstimates(suggestion_.getEstimates());
+                    suggestion.setIssueDesc(suggestion_.getIssueDesc());
+                    suggestion.setSuggestion(suggestion_.getSuggestion());
+                }
+                suggestions.add(suggestion);
+            }
+        });
+        return suggestions;
+    }
+
+
+    public Boolean skipSuggestionByProject(String projectId, String testSuiteName, String tcNumber, String user){
+        Stream<TestCaseResponseIssueTracker> tcResponses = testCaseResponseITRepository.findByProjectIdAndTestSuiteNameAndTestCaseNumber(projectId,testSuiteName,tcNumber);
+        tcResponses.forEach(tcResponse ->{
+            // 1. Delete TestSuite
+            // 2. Generator add skip entry
+            // 3. Close issue
+
+            Optional<TestSuite> tsOptional = testSuiteRepository.findByProjectIdAndName(projectId,testSuiteName);
+
+            if (tsOptional.isPresent()){
+                TestSuite ts = tsOptional.get();
+                ts.setInactive(true);
+                TestSuite entity = testSuiteRepository.saveAndFlush(ts);
+                if (entity != null && entity.getId() != null) {
+                    testSuiteESRepository.save(entity);
+                }
+            }
+
+            //TODO: 2. Generator add skip entry - update AutoCodeConfig....
+            Optional<AutoCodeConfig> config = autoCodeConfigRepository.findByProjectId(projectId);
+            List<AutoCodeGenerator> list =  config.get().getGenerators();
+            for (AutoCodeGenerator gen : list){
+                String type = gen.getType();
+                if (StringUtils.endsWithIgnoreCase(testSuiteName,type)){
+                    //TODO: get endpoint
+//                    new AutoCodeGeneratorMatches().setPathPatterns(endPoint);
+//                    gen.getMatches().add()
+                }
+            }
+//            TestCaseResponseIssueTracker tcit = tcResponse.get();
+            tcResponse.setStatus("closed");
+            testCaseResponseITRepository.save(tcResponse);
+
+        });
+
+
+        return false;
+    }
+
+
 }

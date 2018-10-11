@@ -23,7 +23,38 @@
   <article class="article1">
     <div class="box1 box-default">
       <div class="box-body">
+        <div class="row article-title-style">
+        <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
+        <div class="mat-elevation-z8 row no-margin-right">
+          <span class="col-md-1 mt-3">
+              <img src="assets/images/bot.png" height="35" width="35" />
+          </span>
+          <div class="col-md-11 mt-3 text-dark">
+            <p class="text-dark mb-1"> <strong>Recommendation</strong> <span class="badge badge-primary d-inline">BOT</span>
+              <small class="pull-right">{{auto.createdDate | timeAgo}}</small>
+            </p>
+            <p class="p-custom">A test case under the category '{{auto.category}}' failed. {{auto.issueDesc}}</p>
+            <div class="callout-custom callout callout-warning">
+              <p class="p-custom"><i class="fa fa-commenting fa-lg text-primary"
+                                     title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p>
+              <p class="p-custom text-small"><span class="badge badge-secondary d-inline"
+                                                   title="Method">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
+              <p class="p-custom text-small"><i class="fa fa-file-code-o fa-lg"
+                                                title="Test Suite"></i>&nbsp;&nbsp;{{auto.testSuiteName}}</p>
+              <p class="p-custom text-small"><i class="fa fa-clock-o fa-lg text-success"
+                                                title="Effort Estimates"></i>&nbsp;&nbsp;{{auto.estimates}}</p>
+            </div>
+            <div>
+              <button mat-raised-button class="mat-raised-button-custom pull-right text-dark"
+                      (click)="openSkipDialog(auto)">Skip</button>
+            </div>
+            <br />
+          </div>
 
+        </div>
+          </div>
+
+      </div>
       </div>
     </div>
   </article>
