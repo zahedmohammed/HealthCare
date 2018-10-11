@@ -107,7 +107,7 @@ export class RunListComponent implements OnInit {
   }
 
   openSkipDialog(obj){
-    var skip = confirm("Are you sure you want to skip this suggestion for all tests?");
+    var skip = confirm("Are you sure you want to skip this endpoint from '"+obj.category+"' testing?");
     if (skip == true) {
         // invoke skip service
         this.jobsService.skipAutoSuggestion(this.jobId, obj.testSuiteName,obj.testCaseNumber).subscribe(results => {

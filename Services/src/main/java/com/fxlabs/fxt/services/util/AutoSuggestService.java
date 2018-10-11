@@ -2,9 +2,13 @@ package com.fxlabs.fxt.services.util;
 
 import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
+import com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeConfig;
+import com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeGenerator;
+import com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeGeneratorMatches;
 import com.fxlabs.fxt.dao.entity.run.TestCaseResponse;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
+import com.fxlabs.fxt.dao.repository.jpa.AutoCodeConfigRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestCaseResponseITRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
 import com.fxlabs.fxt.dto.base.Response;
@@ -12,6 +16,7 @@ import com.fxlabs.fxt.dto.project.AutoSuggestion;
 import com.fxlabs.fxt.dto.project.AutoSuggestionUtil;
 import com.fxlabs.fxt.services.project.TestSuiteService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,19 +29,21 @@ import java.util.stream.Stream;
 public class AutoSuggestService {
 
     private TestCaseResponseITRepository testCaseResponseITRepository;
+
     private TestSuiteESRepository testSuiteESRepository;
+    private TestSuiteRepository testSuiteRepository;
     private TestCaseResponseESRepository testCaseResponseESRepository;
-    private TestSuiteService testSuiteService;
-
-
+    private AutoCodeConfigRepository autoCodeConfigRepository;
 
     @Autowired
     public AutoSuggestService(TestCaseResponseITRepository testCaseResponseITRepository, TestSuiteESRepository testSuiteESRepository,
-                              TestCaseResponseESRepository testCaseResponseESRepository, TestSuiteService testSuiteService){
+                              TestCaseResponseESRepository testCaseResponseESRepository, TestSuiteRepository testSuiteRepository,
+                              AutoCodeConfigRepository autoCodeConfigRepository){
         this.testCaseResponseITRepository = testCaseResponseITRepository;
         this.testSuiteESRepository = testSuiteESRepository;
         this.testCaseResponseESRepository = testCaseResponseESRepository;
-        this.testSuiteService = testSuiteService;
+        this.testSuiteRepository = testSuiteRepository;
+        this.autoCodeConfigRepository = autoCodeConfigRepository;
     }
 
     public List<AutoSuggestion> getSuggestions(String projectId, String jobId){
@@ -91,14 +98,31 @@ public class AutoSuggestService {
             // 2. Generator add skip entry
             // 3. Close issue
 
-            Response<com.fxlabs.fxt.dto.project.TestSuite> tsResp = testSuiteService.findByProjectIdAndSuiteName(projectId,testSuiteName);
-            if (tsResp != null && tsResp.getData() != null){
-                com.fxlabs.fxt.dto.project.TestSuite testSuite = tsResp.getData();
-                testSuite.setInactive(true);
-//                testSuiteService.update(testSuite,user,true);
-//                testSuiteService.delete(tsResp.getData().getId(), user);
+            Optional<TestSuite> tsOptional = testSuiteRepository.findByProjectIdAndName(projectId,testSuiteName);
+
+            if (tsOptional.isPresent()){
+                TestSuite ts = tsOptional.get();
+                ts.setInactive(true);
+                TestSuite entity = testSuiteRepository.saveAndFlush(ts);
+                if (entity != null && entity.getId() != null) {
+                    testSuiteESRepository.save(entity);
+                }
             }
+
             //TODO: 2. Generator add skip entry - update AutoCodeConfig....
+
+            Optional<AutoCodeConfig> config = autoCodeConfigRepository.findByProjectId(projectId);
+            List<AutoCodeGenerator> list =  config.get().getGenerators();
+            for (AutoCodeGenerator gen : list){
+                String type = gen.getType();
+                if (StringUtils.endsWithIgnoreCase(testSuiteName,type)){
+                    //TODO: get endpoint
+//                    new AutoCodeGeneratorMatches().setPathPatterns(endPoint);
+//                    gen.getMatches().add()
+                }
+
+            }
+
 
             TestCaseResponseIssueTracker tcit = tcResponse.get();
             tcit.setStatus("closed");
