@@ -49,6 +49,7 @@ export class RegionNewComponent implements OnInit {
       accountCtrl: ['', Validators.required],
       regionCtrl: ['', Validators.required]
     });
+
   }
 
   selectedRegion(event, selectedRegionValue) {
@@ -117,21 +118,6 @@ export class RegionNewComponent implements OnInit {
 
   }
 
-  // getRegions() {
-  //   if (this.entry.account.accountType === 'GCP') {
-  //     this.regions = this.GCP_REGIONS;
-  //   } else
-  //     if (this.entry.account.accountType === 'AWS') {
-  //       if (this.entry.account.allowedRegions.length > 0) {
-  //         this.regions = this.entry.account.allowedRegions;
-  //       } else {
-  //         this.regions = this.AWS_REGIONS;
-  //       }
-  //     } else
-  //       if (this.entry.account.accountType === 'AZURE') {
-  //         this.regions = this.AZURE_REGIONS;
-  //       }
-  // }
   getRegions(event, accountSelected) {
     accountSelected.active = !accountSelected.active;
     this.entry.account = accountSelected
@@ -188,12 +174,16 @@ export class RegionNewComponent implements OnInit {
   }
 
   getCloudAccountForExecutionBotPage() {
+    this.cloudAccounts = [];
     for (let entry of this.accounts) {
       if (entry.accountType != 'Self_Hosted') {
         this.cloudAccounts.push(entry);
       }
+
     }
+
   }
+
 
   setAccount(account_) {
     this.entry.account.accountType = account_.accountType;
