@@ -45,7 +45,7 @@
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
                                         <input [(ngModel)]="project.url" id="repo" [ngModelOptions]="{standalone: true}"
-                                               matInput placeholder="Git Repository URL (Optional)" autocomplete="off">
+                                               matInput placeholder="Version Control URL (Optional)" autocomplete="off">
                                         <mat-error>Required</mat-error>
                                     </mat-input-container>
                                 </div>
@@ -66,7 +66,7 @@
                                 </label>
                                 <div class="col-md-5">
                                     <mat-input-container class="full-width">
-                                        <mat-select placeholder="Git Repository Credentials" [ngModelOptions]="{standalone: true}"
+                                        <mat-select placeholder="Version Control Credentials" [ngModelOptions]="{standalone: true}"
                                                     [(ngModel)]="project.account.id">
                                             <mat-option *ngFor="let account of accounts" [value]="account.id">
                                                 {{account.name}} ({{account.accountType}})

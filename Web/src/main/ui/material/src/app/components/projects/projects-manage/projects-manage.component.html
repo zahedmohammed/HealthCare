@@ -59,7 +59,7 @@
             <label class="col-md-0 control-label"></label>
             <div class="col-md-5">
               <mat-input-container class="full-width">
-                <input [(ngModel)]="project.url" [ngModelOptions]="{standalone: true}" id="repo" matInput placeholder="Git Repository URL (Optional)"
+                <input [(ngModel)]="project.url" [ngModelOptions]="{standalone: true}" id="repo" matInput placeholder="Version Control URL (Optional)"
                   autocomplete="off">
                 <mat-error>Required</mat-error>
               </mat-input-container>
@@ -83,7 +83,7 @@
             </label>
             <div class="col-md-5">
               <mat-form-field class="full-width">
-                <mat-select placeholder="Git Repository Credentials" [(ngModel)]="project.account.id" [ngModelOptions]="{standalone: true}">
+                <mat-select placeholder="Version Control Credentials" [(ngModel)]="project.account.id" [ngModelOptions]="{standalone: true}">
                   <mat-option *ngFor="let account of accounts" [value]="account.id">
                     {{account.name}} ({{account.accountType}})
                   </mat-option>
@@ -95,7 +95,7 @@
               <div class="callout1 text-muted callout-info1">
                 <p>
                   <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i class="fa fa-plus"></i>&nbsp;&nbsp;
-                    New Credentials</button>
+                    New Version Control Credentials</button>
                   <br /> A user with read/write access to the test repository. <br /> Note: You can create a new 'FX'
                   user
                   with read/write access to the test repository.

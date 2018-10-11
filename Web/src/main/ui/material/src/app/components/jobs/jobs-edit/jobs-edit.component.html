@@ -228,7 +228,7 @@
                                     <div class="callout1 text-muted callout-info1">
                                         <p>
                                             <button mat-raised-button class="btn-w-md text-primary" (click)="openDialogSlackRegister()"><i
-                                                    class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials
+                                                    class="fa fa-plus"></i>&nbsp;&nbsp; New Slack Credentials
                                             </button>
                                             <br/> Slack token of your slack workspace.<br/>
                                         </p>
@@ -293,7 +293,7 @@
                                     </label>
                                     <div class="col-md-5">
                                         <mat-form-field class="full-width">
-                                            <mat-select placeholder="Credentials (Optional)" [(ngModel)]="job.issueTracker.account" [ngModelOptions]="{standalone: true}">
+                                            <mat-select placeholder="Issue Tracker Credentials (Optional)" [(ngModel)]="job.issueTracker.account" [ngModelOptions]="{standalone: true}">
                                                 <mat-option *ngFor="let account of itAccounts" [value]="account.id">
                                                     {{account.name}}
                                                 </mat-option>
@@ -304,7 +304,7 @@
                                         <div class="callout1 text-muted callout-info1">
                                             <p>
                                                 <button mat-raised-button class="btn-w-md text-primary" (click)="openDialogITCredentials()"><i
-                                                        class="fa fa-plus"></i>&nbsp;&nbsp; New Credentials
+                                                        class="fa fa-plus"></i>&nbsp;&nbsp; New Issue Tracker Credentials
                                                 </button>
                                                 <br/> A user with read/write access to the Issue Tracker. <br/> Note: You can
                                                 create a new 'FX' user with read/write access to the test repository.
