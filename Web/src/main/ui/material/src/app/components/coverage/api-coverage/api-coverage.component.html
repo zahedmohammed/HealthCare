@@ -84,10 +84,14 @@
                     </mat-expansion-panel-header>
                     <div class="mb-3">
                     </div>
-                    <div class="col-md-12" *ngFor="let e of coverageDetails.endpoints">
+                    <div class="col-md-12" *ngFor="let e of endPOintDataSource ">
                         <div class="mb-3">
                             <div class="callout callout-danger" *ngIf="e.method=='DELETE'">
                                 <span class="button text-danger"><b>{{e.method}}</b></span>
+                                <span class="opblock-summary-path">{{e.endpoint}}</span>
+                            </div>
+                            <div class="callout callout-info" *ngIf="e.method=='GET'">
+                                <span class="button text-info"><b>{{e.method}}</b></span>
                                 <span class="opblock-summary-path">{{e.endpoint}}</span>
                             </div>
                             <div class="callout callout-success" *ngIf="e.method=='POST'">
@@ -98,10 +102,7 @@
                                 <span class="button text-warning"><b>{{e.method}}</b></span>
                                 <span class="opblock-summary-path">{{e.endpoint}}</span>
                             </div>
-                            <div class="callout callout-info" *ngIf="e.method=='GET'">
-                                <span class="button text-info"><b>{{e.method}}</b></span>
-                                <span class="opblock-summary-path">{{e.endpoint}}</span>
-                            </div>
+                           
 
                         </div>
                     </div>

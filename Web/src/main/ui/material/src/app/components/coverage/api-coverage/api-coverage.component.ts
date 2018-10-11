@@ -23,34 +23,35 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 })
 export class ApiCoverageComponent implements OnInit {
 
-    id; // project id
-    coverageDetails: CoverageDetails = new CoverageDetails();
-    project: Project = new Project();
-    config = CHARTCONFIG;
-    categoryDonutChart;
-    byCatagory = []; // This will hold our chart info
-    byMethod = []; // This will hold our chart info
-    bySeverity = []; // This will hold our chart info
-    //pie1:Object
+  id; // project id
+  coverageDetails: CoverageDetails = new CoverageDetails();
+  project: Project = new Project();
+  config = CHARTCONFIG;
+  categoryDonutChart;
+  byCatagory = []; // This will hold our chart info
+  byMethod = []; // This will hold our chart info
+  bySeverity = []; // This will hold our chart info
+  //pie1:Object
 
-  displayedColumns: string[] = ['category', 'api-count', 'ts-count',  'coverage-percent'];
+  displayedColumns: string[] = ['category', 'api-count', 'ts-count', 'coverage-percent'];
   dataSource = null;
+  endPOintDataSource = null;
 
   //@ViewChild(MatPaginator) paginator: MatPaginator;
   //@ViewChild(MatSort) sort: MatSort;
 
 
   constructor(private testSuiteService: TestSuiteService, private projectService: ProjectService,
-        private route: ActivatedRoute, private router: Router, private handler: Handler) { }
+    private route: ActivatedRoute, private router: Router, private handler: Handler) { }
 
-        ngOnInit() {
-    
+  ngOnInit() {
+
     this.handler.activateLoader();
     this.route.params.subscribe(params => {
       this.id = params['id'];
       //console.log(params);
       this.loadProject(this.id);
-        this.getCoverage();
+      this.getCoverage();
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -64,7 +65,7 @@ export class ApiCoverageComponent implements OnInit {
     this.page = evt['pageIndex'];
   }
 
-getCoverage(){
+  getCoverage() {
     this.handler.activateLoader();
     this.testSuiteService.getApiCoverage(this.id).subscribe(results => {
       //console.log('results - ',results);
@@ -76,24 +77,31 @@ getCoverage(){
 
 
       this.dataSource = new MatTableDataSource(this.coverageDetails.coverage);
-      //this.dataSource.sort = this.sort;
+      // this.dataSource.sort = this.sort;
+       this.endPOintDataSource=this.coverageDetails.endpoints;
 
-      
+      this.endPOintDataSource = this.endPOintDataSource.sort((n1, n2) => {
+        return this.sortEndpoints(n1.endpoint, n2.endpoint)
+      })
+
       //Get data for ByCategory - Start
       let countbycat = results['data'].countByCategory;
-      let groupby:any = [];
-      let count1:any = [];
-      for ( let i of countbycat){
-      groupby.push(i['groupBy']);
-      count1.push(i['count']);
+      let groupby: any = [];
+      let count1: any = [];
+      for (let i of countbycat) {
+        groupby.push(i['groupBy']);
+        count1.push(i['count']);
       }
       //End
+
+      //
+      
 
       //Get data for ByMethod - Start
       let countbyMethod = results['data'].countByMethod;
       let groupByM: any = [];
       let countByM: any = [];
-      for(let i of countbyMethod){
+      for (let i of countbyMethod) {
         groupByM.push(i['groupBy']);
         countByM.push(i['count']);
       }
@@ -103,145 +111,145 @@ getCoverage(){
       let countbySeverity = results['data'].countBySeverity;
       let groupByS: any = [];
       let countByS: any = [];
-      for(let i of countbySeverity){
+      for (let i of countbySeverity) {
         groupByS.push(i['groupBy']);
         countByS.push(i['count']);
       }
       //End
 
       //Graph 1 Start
-      this.byCatagory = new Chart('canvas1',{
-        type:'doughnut',
-        data:{
-          labels:groupby,
-          datasets:[
+      this.byCatagory = new Chart('canvas1', {
+        type: 'doughnut',
+        data: {
+          labels: groupby,
+          datasets: [
             {
-              data:count1,
+              data: count1,
               backgroundColor: this.config.backgroundColor
             }
           ]
         },
-        options:{
+        options: {
           responsive: true,
-          legend:{
-            display:true,
-            position:'left'
+          legend: {
+            display: true,
+            position: 'left'
           },
-          title:{
-            text:'Test Suite Categories',
-            display:false
+          title: {
+            text: 'Test Suite Categories',
+            display: false
           },
           animation: {
             duration: 1000,
-            animateScale:true,
+            animateScale: true,
             easing: 'linear'
           },
           plugins: {
-            labels:[
+            labels: [
               {
-              fontSize: 11,
-              render: 'value',
-              fontColor: '#000',
-              fontStyle: 'normal',
-              textShadow: true,
-              overlap: true,
-              arc: true,
-              position: 'outside'
-            }
-          ]
-        }
+                fontSize: 11,
+                render: 'value',
+                fontColor: '#000',
+                fontStyle: 'normal',
+                textShadow: true,
+                overlap: true,
+                arc: true,
+                position: 'outside'
+              }
+            ]
+          }
         }
       });
 
       //Graph 2 Start
-      this.byMethod = new Chart('canvas2',{
-        type:'doughnut',
-        data:{
-          labels:groupByM,
-          datasets:[
+      this.byMethod = new Chart('canvas2', {
+        type: 'doughnut',
+        data: {
+          labels: groupByM,
+          datasets: [
             {
-              data:countByM,
+              data: countByM,
               backgroundColor: this.config.backgroundColor
             }
           ]
         },
-        options:{
+        options: {
           responsive: true,
-          legend:{
-            display:true,
-            position:'left'
+          legend: {
+            display: true,
+            position: 'left'
           },
-          title:{
-            text:'HTTP Methods',
-            display:false
+          title: {
+            text: 'HTTP Methods',
+            display: false
           },
           animation: {
             duration: 1000,
             easing: 'linear'
           },
           plugins: {
-            labels:[
+            labels: [
               {
-              fontSize: 11,
-              render: 'value',
-              fontColor: '#000',
-              fontStyle: 'normal',
-              textShadow: true,
-              overlap: true,
-              arc: true,
-              position: 'outside'
-            }
-          ]
-        }
+                fontSize: 11,
+                render: 'value',
+                fontColor: '#000',
+                fontStyle: 'normal',
+                textShadow: true,
+                overlap: true,
+                arc: true,
+                position: 'outside'
+              }
+            ]
+          }
         }
       });
 
       //Graph 3 Start
-      this.bySeverity = new Chart('canvas3',{
-        type:'doughnut',
-        data:{
-          labels:groupByS,
-          datasets:[
+      this.bySeverity = new Chart('canvas3', {
+        type: 'doughnut',
+        data: {
+          labels: groupByS,
+          datasets: [
             {
-              data:countByS,
+              data: countByS,
               backgroundColor: this.config.backgroundColor
             }
           ]
         },
-        options:{
+        options: {
           responsive: true,
-          legend:{
-            display:true,
-            position:'left'
+          legend: {
+            display: true,
+            position: 'left'
           },
-          title:{
-            text:'Test Suite Severities',
-            display:true
+          title: {
+            text: 'Test Suite Severities',
+            display: true
           },
           animation: {
             duration: 1000,
             easing: 'linear'
           },
           plugins: {
-            labels:[
+            labels: [
               {
-              fontSize: 11,
-              render: 'value',
-              fontColor: '#000',
-              fontStyle: 'normal',
-              textShadow: true,
-              overlap: true,
-              arc: true
-            }
-          ]
-        }
+                fontSize: 11,
+                render: 'value',
+                fontColor: '#000',
+                fontStyle: 'normal',
+                textShadow: true,
+                overlap: true,
+                arc: true
+              }
+            ]
+          }
         }
       });
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
-}
+  }
 
   loadProject(id: string) {
     this.handler.activateLoader();
@@ -255,5 +263,22 @@ getCoverage(){
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
+
+  //sorting endpoints 
+  sortEndpoints(a, b) {
+    var ax = [], bx = [];
+
+    a.replace(/(\d+)|(\D+)/g, function (_, $1, $2) { ax.push([$1 || Infinity, $2 || ""]) });
+    b.replace(/(\d+)|(\D+)/g, function (_, $1, $2) { bx.push([$1 || Infinity, $2 || ""]) });
+
+    while (ax.length && bx.length) {
+      var an = ax.shift();
+      var bn = bx.shift();
+      var nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
+      if (nn) return nn;
+    }
+
+    return ax.length - bx.length;
   }
 }

@@ -21,7 +21,6 @@
         <div class="box box-default">
             <div class="box-body">
                 <div class="box-body">
-
                     <mat-horizontal-stepper [linear]="isLinear" #stepper>
                         <mat-step [stepControl]="firstFormGroup">
                             <form [formGroup]="firstFormGroup">
@@ -64,46 +63,56 @@
                             <form [formGroup]="secondFormGroup">
                                 <ng-template matStepLabel>Deploy Cloud</ng-template>
                                 <form role="form" #heroForm2="ngForm" class="row">
-                                    <mat-form-field class="col-md-5">
-                                        <mat-select placeholder="Account" required [(ngModel)]="entry.account" name="type"
-                                            (change)="getRegions()">
-                                            <mat-option *ngFor="let account of cloudAccounts" [value]="account"
-                                                (change)="setAccount(account);">
-                                                {{account.name}} ({{account.accountType}})
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <div class="col-md-7">
-                                        <div class="callout1 text-muted callout-info1">
-                                            <p>
-                                                <button mat-raised-button class="btn-w-md text-primary" (click)="openDialog()"><i
-                                                        class="fa fa-plus"></i>&nbsp;&nbsp; New Cloud Credentials</button>
-                                            </p>
+
+                                    <div class="col-md-12 container">
+                                        <div class="h6">Accounts &nbsp; <button mat-raised-button class="btn-w-md text-primary pull-right"
+                                                (click)="openDialog()"><i class="fa fa-plus"></i>&nbsp;&nbsp;
+                                                New Cloud Credentials</button></div><br><br>
+                                        <div class="row">
+                                            <div class="col-xl-2 mb-3" *ngFor="let account of cloudAccounts">
+                                                <a href="javascript:;" class="item-card text-dark mat-elevation-z8">
+                                                    <div class="text-center" (click)="getRegions($event, account)"
+                                                        [ngClass]="{'active': entry.account == account}">
+                                                        <div class="card-header">
+                                                            <div *ngIf="account.accountType === 'AZURE'"><i class="fa fa-windows fa-2x mt-2 text-primary"
+                                                                    aria-hidden="true"></i></div>
+                                                            <div *ngIf="account.accountType === 'AWS'"><i class="fa fa-amazon fa-2x mt-2 text-warning"
+                                                                    aria-hidden="true"></i></div>
+                                                            <span class="text-muted"> {{account.accountType}}</span>
+                                                        </div>
+                                                        <div class="card-footer py-2 no-border">{{account.name}}</div>
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
+                                        <hr>
                                     </div>
 
-
-                                    <mat-form-field class="col-md-5">
-                                        <mat-select placeholder="Region" required [(ngModel)]="entry.region" name="type">
-                                            <mat-option *ngFor="let r of regions" [value]="r">
-                                                {{r}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <div class="col-md-7">
-                                        <div class="callout1 text-muted callout-info1">
-                                            <p>
-                                                Cloud region where the bot will be deployed.
-                                            </p>
+                                    <div class="col-md-12 container">
+                                        <span class="h6">Regions</span>
+                                        <span>&nbsp; &nbsp;(Cloud region where the bot will be deployed.)</span><br><br>
+                                        <div class="row">
+                                            <div class="col-xl-2 mb-3" *ngFor="let r of regions" (click)="selectedRegion($event, r)">
+                                                <a href="javascript:;" class="item-card text-dark mat-elevation-z8">
+                                                    <div class="card-header text-center" [ngClass]="{'active': entry.region == r}">
+                                                        <div class="card-bottom">&nbsp;</div>
+                                                        <span>{{r}}</span>
+                                                        <div class="card-bottom">&nbsp;</div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <hr>
                                         </div>
+                                        <hr>
                                     </div>
+
                                     <mat-form-field class="col-md-5">
                                         <input [(ngModel)]="entry.min" name="min" id="min" matInput placeholder="Cluster Size (1-100)"
-                                            autocomplete="off">
+                                            autocomplete="off" type="number" min="1" max="100" required>
                                     </mat-form-field>
                                     <div class="col-md-7">
 
-                                        <div class="callout1 text-muted callout-info1">
+                                        <div class="callout1 text-muted callout-info1 mt-4">
                                             <p>
                                                 Total bot instances. Defaults to 1.
                                             </p>

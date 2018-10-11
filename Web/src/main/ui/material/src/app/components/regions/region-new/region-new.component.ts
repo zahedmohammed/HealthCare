@@ -22,9 +22,9 @@ export class RegionNewComponent implements OnInit {
 
 
   GCP_REGIONS = ['NORTHAMERICA-NORTHEAST1', 'US-CENTRAL', 'US-EAST1', 'US-EAST4', 'SOUTHAMERICA-EAST1', 'EUROPE-WEST', 'EUROPE-WEST2', 'EUROPE-WEST3', 'ASIA-NORTHEAST1', 'ASIA-SOUTH1', 'AUSTRALIA-SOUTHEAST1'];
-  AWS_REGIONS = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-southeast-1', 'ap-southeast-2', 'ap-southeast-1', 'sa-east-1'];
+  AWS_REGIONS = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'eu-west-3', 'ap-northeast-1', 'ap-northeast-2', 'ap-northeast-3', 'ap-southeast-1', 'ap-southeast-2', 'sa-east-1'];
   //AWS_REGIONS = ['US-WEST-1'];
-  AZURE_REGIONS = ['eastus','eastus2','westus','westus2','canadacentral','canadaeast','northeurope','westeurope','uksouth','ukwest','eastasia','southeastasia','japanwest','australiaeast','australiasoutheast','centralindia', 'southindia', 'westindia', 'koreacentral'];
+  AZURE_REGIONS = ['eastus', 'eastus2', 'westus', 'westus2', 'canadacentral', 'canadaeast', 'northeurope', 'westeurope', 'uksouth', 'ukwest', 'eastasia', 'southeastasia', 'japanwest', 'australiaeast', 'australiasoutheast', 'centralindia', 'southindia', 'westindia', 'koreacentral'];
 
   regions = [];
   showSpinner: boolean = false;
@@ -35,6 +35,8 @@ export class RegionNewComponent implements OnInit {
   isLinear = true;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+  selectedRegionValue = '';
+
   constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService, public dialog: MatDialog, private _formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -49,17 +51,21 @@ export class RegionNewComponent implements OnInit {
     });
   }
 
+  selectedRegion(event, selectedRegionValue) {
+    this.selectedRegionValue = selectedRegionValue
+    this.entry.region = selectedRegionValue
+
+  }
   create() {
     this.handler.activateLoader();
     this.snackbarService.openSnackBar(this.entry.name + " creating...", "");
     this.regionsService.create(this.entry).subscribe(results => {
       this.handler.hideLoader();
-      this.entry = results['data'];
-      console.log('id', this.entry.id);
-      var scriptlog = this.entry.manualScript;
       if (this.handler.handle(results)) {
         return;
       }
+      this.entry = results['data'];
+      var scriptlog = this.entry.manualScript;
       if (scriptlog != null) {
         const dialogRef = this.dialog.open(BotDialogComponent, {
           width: '800px',
@@ -89,7 +95,6 @@ export class RegionNewComponent implements OnInit {
     this.regionsService.create(this.entry).subscribe(results => {
       this.handler.hideLoader();
       this.entry = results['data'];
-      console.log('id', this.entry.id);
       var scriptlog = this.entry.manualScript;
       if (scriptlog != null) {
         const dialogRef = this.dialog.open(BotDialogComponent, {
@@ -112,18 +117,36 @@ export class RegionNewComponent implements OnInit {
 
   }
 
-  getRegions() {
-    if (this.entry.account.accountType === 'GCP') {
+  // getRegions() {
+  //   if (this.entry.account.accountType === 'GCP') {
+  //     this.regions = this.GCP_REGIONS;
+  //   } else
+  //     if (this.entry.account.accountType === 'AWS') {
+  //       if (this.entry.account.allowedRegions.length > 0) {
+  //         this.regions = this.entry.account.allowedRegions;
+  //       } else {
+  //         this.regions = this.AWS_REGIONS;
+  //       }
+  //     } else
+  //       if (this.entry.account.accountType === 'AZURE') {
+  //         this.regions = this.AZURE_REGIONS;
+  //       }
+  // }
+  getRegions(event, accountSelected) {
+    accountSelected.active = !accountSelected.active;
+    this.entry.account = accountSelected
+    if (accountSelected.accountType === 'GCP') {
+
       this.regions = this.GCP_REGIONS;
     } else
-      if (this.entry.account.accountType === 'AWS') {
-        if (this.entry.account.allowedRegions.length > 0) {
-          this.regions = this.entry.account.allowedRegions;
+      if (accountSelected.accountType === 'AWS') {
+        if (accountSelected.allowedRegions.length > 0) {
+          this.regions = accountSelected.allowedRegions;
         } else {
           this.regions = this.AWS_REGIONS;
         }
       } else
-        if (this.entry.account.accountType === 'AZURE') {
+        if (accountSelected.accountType === 'AZURE') {
           this.regions = this.AZURE_REGIONS;
         }
   }
@@ -199,7 +222,7 @@ export class RegionNewComponent implements OnInit {
     });
   }
   visibilities = ['PRIVATE', 'PUBLIC'];
-  
+
   enable() {
     this.isLinear = false;
   }
