@@ -77,10 +77,11 @@ public class AutoSuggestService {
                 suggestion.setCreatedDate(tcResp.getCreatedDate());
 
                 AutoSuggestion suggestion_ = AutoSuggestionUtil.getAutoSuggestion(suite.getCategory().toString());
-                suggestion.setEstimates(suggestion_.getEstimates());
-                suggestion.setIssueDesc(suggestion_.getIssueDesc());
-                suggestion.setSuggestion(suggestion_.getSuggestion());
-
+                if (suggestion_ != null) {
+                    suggestion.setEstimates(suggestion_.getEstimates());
+                    suggestion.setIssueDesc(suggestion_.getIssueDesc());
+                    suggestion.setSuggestion(suggestion_.getSuggestion());
+                }
                 suggestions.add(suggestion);
             }
         });
