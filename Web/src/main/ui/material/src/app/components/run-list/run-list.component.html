@@ -251,7 +251,7 @@
                                             <p class="text-dark mb-1"> <strong>Recommendation</strong> <span class="badge badge-primary d-inline">BOT</span>
                                                 <small class="pull-right">{{auto.createdDate | timeAgo}}</small>
                                             </p>
-                                            <p class="p-custom">A test case under the category '{{auto.category}}' is failed. {{auto.issueDesc}}</p>
+                                            <p class="p-custom">A test case under the category '{{auto.category}}' failed. {{auto.issueDesc}}</p>
                                             <!--<p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>-->
                                             <!--
                                                 <p class="text-muted"><i class="fa fa-file-code-o fa-lg text-dark" title="TestSuite Name"></i> &nbsp;&nbsp;{{auto.testSuiteName}}</p>
@@ -273,11 +273,10 @@
 
                                                 <!--<p class="font-weight-bold">Effort estimates</p>-->
                                                 <p class="p-custom text-small"><i class="fa fa-clock-o fa-lg text-success"
-                                                        title="Effort Estimates"></i> &nbsp;&nbsp;Typically this fix
-                                                    would take {{auto.estimates}}</p>
+                                                        title="Effort Estimates"></i>&nbsp;&nbsp;{{auto.estimates}}</p>
                                             </div>
                                             <div>
-                                                <button mat-raised-button class="mat-raised-button-custom pull-right"
+                                                <button mat-raised-button class="mat-raised-button-custom pull-right text-dark"
                                                     (click)="openSkipDialog(auto)">Skip</button>
                                             </div>
                                             <br />
