@@ -181,6 +181,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         o.setId(org);
         dto.setOrg(o);
 
+        Org org1 = orgService.findById(org).getData();
+
 
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = clusterRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
         if (clusterOptional.isPresent()) {
@@ -189,7 +191,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         String queue = null;
         if (StringUtils.isEmpty(dto.getKey())) {
-            queue = "key-" + RandomStringUtils.randomAlphabetic(12);
+            queue = String.format("%s-%s-%s", "FX Bot", org1.getName(), dto.getName() + RandomStringUtils.randomAlphabetic(6));
         } else {
             queue = dto.getKey();
         }
