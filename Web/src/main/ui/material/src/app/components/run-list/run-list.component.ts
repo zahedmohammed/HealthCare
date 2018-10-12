@@ -564,23 +564,6 @@ export class RunListComponent implements OnInit {
   page = 0;
   pageSize = 10;
   change(evt) {
-    // console.log(this.graph1.length);
-    // if(this.graph1 != undefined || this.graph1 != null){
-    //   console.log("this.graph1", this.graph1)
-    //     this.graph1.destroy();
-    // }
-    // if(this.graph2 !== undefined || this.graph1 !== null){
-    //   console.log("this.graph2", this.graph2)
-    //     this.graph2.destroy();
-    // }
-    // if(this.graph3 !== undefined || this.graph1 !== null){
-    //   console.log("this.graph3", this.graph3)
-    //     this.graph3.destroy();
-    // }
-    // if(this.graph4 !== undefined || this.graph1 !== null){
-    //   console.log("this.graph4", this.graph4)
-    //     this.graph4.destroy();
-    // }
       this.page = evt['pageIndex'];
       this.getRunByJob(this.jobId);
   }
