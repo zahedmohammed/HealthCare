@@ -1,9 +1,9 @@
 package com.fxlabs.fxt.dto.it;
 
+import com.fxlabs.fxt.dto.base.AccountMinimalDto;
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.NameDto;
 import com.fxlabs.fxt.dto.base.Visibility;
-import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.skills.Opt;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,7 +38,7 @@ public class IssueTracker extends BaseDto<String> {
 
     private State state;
 
-    private Account account;
+    private AccountMinimalDto account;
 
     private Visibility visibility;
 

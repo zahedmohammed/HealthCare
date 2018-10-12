@@ -145,7 +145,7 @@ public class MarkTimeoutTaskProcessor {
                 Map<String, String> opts = new HashMap<>();
                 switch (notificationResponse.getData().getAccount().getAccountType()) {
                     case Slack:
-                        if (notificationResponse.getData().getAccount() == null || StringUtils.isEmpty(notificationResponse.getData().getAccount().getAccessKey())) {
+                        if (notificationResponse.getData().getAccount() == null) {
                             logger.info("Notification Token not found for account [{}]", notificationResponse.getData().getId());
                             break;
                         }

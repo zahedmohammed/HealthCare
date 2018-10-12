@@ -1,8 +1,8 @@
 package com.fxlabs.fxt.dto.project;
 
+import com.fxlabs.fxt.dto.base.AccountMinimalDto;
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.NameDto;
-import com.fxlabs.fxt.dto.clusters.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,7 +38,7 @@ public class Project extends BaseDto<String> {
     private GenPolicy genPolicy;
     private String openAPISpec;
 
-    private Account account;
+    private AccountMinimalDto account;
 
     private String url;
     private String branch;
