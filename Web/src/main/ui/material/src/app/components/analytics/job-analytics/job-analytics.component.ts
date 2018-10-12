@@ -38,6 +38,7 @@ export class JobAnalyticsComponent implements OnInit {
     graph3: Chart = []; // This will hold our chart info
     graph4: Chart = []; // This will hold our chart info
     line1: any;
+    totalData:any;
 
     ngOnInit() {
         this.route.params.subscribe(params => {
@@ -89,7 +90,15 @@ export class JobAnalyticsComponent implements OnInit {
 
     //Graph Analytics - Start
     getAnalyticsData() {
-        let totalData = this.list;
+        if(this.totalData != null)
+        {
+            this.graph1.destroy();
+            this.graph2.destroy();
+            this.graph3.destroy();
+            this.graph4.destroy();
+
+        }
+        this.totalData = this.list;
         let totalPass: any = [];
         let totalFail: any = [];
         let totalBytes: any = [];
@@ -103,39 +112,39 @@ export class JobAnalyticsComponent implements OnInit {
         let totalTime: any = [];
         let runId: any = [];
 
-        for (let i = 0; i < totalData.length; i++) {
-            let rid: any[] = totalData[i].runId;
+        for (let i = 0; i < this.totalData.length; i++) {
+            let rid: any[] = this.totalData[i].runId;
             runId.push(rid);
 
-            let openIssues: any[] = totalData[i].task.totalOpenIssues;
+            let openIssues: any[] = this.totalData[i].task.totalOpenIssues;
             totalOpenIssues.push(openIssues);
 
-            let failed: any[] = totalData[i].task.failedTests;
+            let failed: any[] = this.totalData[i].task.failedTests;
             totalFail.push(failed);
 
-            let passed: any[] = totalData[i].task.totalTestCompleted;
+            let passed: any[] = this.totalData[i].task.totalTestCompleted;
             totalPass.push(passed);
 
-            let dateTimeX: any[] = totalData[i].createdDate;
+            let dateTimeX: any[] = this.totalData[i].createdDate;
             dateTime.push(dateTimeX);
             crDate[i] = dateTimeX;
             let dt = new Date(crDate[i]);
             dtDateConvert[i] = this.datePipe.transform(dt, "MMM dd");
 
-            let bytes = totalData[i].task.totalBytes / 1024;
+            let bytes = this.totalData[i].task.totalBytes / 1024;
             bytes = Math.round(bytes);
             totalBytes.push(bytes);
 
-            let closed: any[] = totalData[i].task.issuesClosed;
+            let closed: any[] = this.totalData[i].task.issuesClosed;
             issuesClosed.push(closed);
 
-            let logged: any[] = totalData[i].task.issuesLogged;
+            let logged: any[] = this.totalData[i].task.issuesLogged;
             issuesLogged.push(logged);
 
-            let reopen: any[] = totalData[i].task.issuesReopen;
+            let reopen: any[] = this.totalData[i].task.issuesReopen;
             issuesReopen.push(reopen);
 
-            let totalTimeArr = totalData[i].task.totalTime / 1000;
+            let totalTimeArr = this.totalData[i].task.totalTime / 1000;
             totalTimeArr = Math.round(totalTimeArr);
             totalTime.push(totalTimeArr);
         }
