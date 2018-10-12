@@ -45,11 +45,11 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Pass/Fail
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let element">
-                                                    <span class="text-success h6"><b>{{element.task.totalTestCompleted
+                                                    <span class="text-success">{{element.task.totalTestCompleted
                                                             ||
-                                                            0}}</b></span>&nbsp;<span class="text-success small">Passed</span>&nbsp;
-                                                    <span *ngIf="element.task.failedTests != 0"><span class="text-danger h6"><b>{{element.task.failedTests
-                                                                || 0}}</b></span>&nbsp;<span class="text-danger small">Failed</span>&nbsp;</span>
+                                                            0}}</span>&nbsp;<span class="text-success small">Passed</span>&nbsp;
+                                                    <span *ngIf="element.task.failedTests != 0"><span class="text-danger">{{element.task.failedTests
+                                                                || 0}}</span>&nbsp;<span class="text-danger small">Failed</span>&nbsp;</span>
                                                 </mat-cell>
                                             </ng-container>
                                             <!-- Success Column -->
@@ -86,14 +86,14 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.job.issueTrackerToDo === false">
-                                                        <span class="text-danger"><b>{{element.task.issuesLogged || 0}}</b></span>
-                                                        <span class="text-danger small">New</span>&nbsp;
-                                                        <span class="text-success"><b>{{element.task.issuesClosed ||
-                                                                0}}</b></span>
-                                                        <span class="text-success small">Closed</span>
-                                                        <span class="text-danger"><b>{{element.task.totalOpenIssues ||
-                                                                0}}</b></span>
-                                                        <span class="text-danger small">Open</span>
+                                                        <span class="text-danger">{{element.task.issuesLogged || 0}}</span>
+                                                        <span class="text-muted small ">New</span>&nbsp;
+                                                        <span class="text-success">{{element.task.issuesClosed ||
+                                                                0}}</span>
+                                                        <span class="text-muted small">Closed</span>
+                                                        <span class="text-danger">{{element.task.totalOpenIssues ||
+                                                                0}}</span>
+                                                        <span class="text-muted small">Open</span>
                                                     </div>
                                                 </mat-cell>
                                             </ng-container>

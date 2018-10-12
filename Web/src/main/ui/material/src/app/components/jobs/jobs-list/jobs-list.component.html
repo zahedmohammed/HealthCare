@@ -83,10 +83,9 @@
                             <mat-cell *matCellDef="let element">
                                 <div *ngIf="element.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
                                 <div *ngIf="!element.issueTrackerToDo">
-                                    <span class="text-danger">{{element.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>&nbsp;<span
-                                        class="text-success">{{element.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>
+                                    <span class="text-success">{{element.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>&nbsp;
+                                    <span class="text-danger">{{element.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>
                                 </div>
-
                             </mat-cell>
                         </ng-container>
 
