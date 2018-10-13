@@ -13,11 +13,13 @@
   <nav mat-tab-nav-bar>
     <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
     </label>
-    <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Code
-    </label>
-    <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Insights
-    </label>
-    <label mat-tab-link   [active]="true" [routerLink]="['/app/projects', id, 'recommendations']">Recommendations</label>
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">
+      <i class="material-icons">code</i> &nbsp;Code </label>
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">
+      <i class="fa fa-line-chart"></i> &nbsp;Insights</label>
+    <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']" [active]="true">
+      <i class="material-icons text-danger" >lightbulb_outline</i> &nbsp;
+      <span class="text-danger">Recommendations</span></label>
 
   </nav>
   <article class="article1">

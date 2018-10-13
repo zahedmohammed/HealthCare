@@ -13,16 +13,13 @@
     <nav mat-tab-nav-bar>
         <label mat-tab-link [routerLink]="['/app/projects', id, 'jobs']" [active]="true">Jobs
         </label>
-        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments-->
-        <!--</label>-->
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Code
-        </label>
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">Insights
-        </label>
-        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>-->
-        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>-->
-        <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']">Recommendations</label>
-
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">
+            <i class="material-icons">code</i> &nbsp;Code</label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">
+            <i class="fa fa-line-chart"></i> &nbsp;Insights </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']">
+            <i class="material-icons text-danger" >lightbulb_outline</i> &nbsp;
+            <span class="text-danger">Recommendations</span></label>
     </nav>
     <!--<br/>-->
     <article class="article">

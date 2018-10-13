@@ -2,8 +2,8 @@ package com.fxlabs.fxt.rest.project;
 
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.base.TestSuitesDeletedDto;
-import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.dto.project.APICoverageDetails;
+import com.fxlabs.fxt.dto.project.TestSuite;
 import com.fxlabs.fxt.rest.base.SecurityUtil;
 import com.fxlabs.fxt.services.project.TestSuiteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +48,11 @@ public class TestSuiteController {
 
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/project-id/{id}", method = RequestMethod.GET)
-    public Response<List<TestSuite>> findByProjectId(@PathVariable("id") String id,@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+    public Response<List<TestSuite>> findByProjectId(@PathVariable("id") String id, @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                      @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) Integer pageSize) {
-        return service.findByProjectId(id,SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
+        return service.findByProjectId(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
+
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<TestSuite> findById(@PathVariable("id") String id) {
@@ -99,10 +100,10 @@ public class TestSuiteController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}/test-suite/search", method = RequestMethod.GET)
     public Response<List<TestSuite>> search(@PathVariable("id") String id,
-                                        @RequestParam(value = "category", required = false) String category,
-                                        @RequestParam(value = "keyword", required = false) String keyword,
-                                        @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
-                                        @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
+                                            @RequestParam(value = "category", required = false) String category,
+                                            @RequestParam(value = "keyword", required = false) String keyword,
+                                            @RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                            @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_1k_PAGE_SIZE_VALUE, required = false) Integer pageSize
     ) {
         return service.search(id, category, keyword, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
@@ -110,7 +111,7 @@ public class TestSuiteController {
     @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/project-id/{id}/coverage", method = RequestMethod.GET)
     public Response<APICoverageDetails> findCoverageByProjectId(@PathVariable("id") String id) {
-        return service.getCoverageByProjectId(id,SecurityUtil.getCurrentAuditor());
+        return service.getCoverageByProjectId(id, SecurityUtil.getCurrentAuditor());
     }
 
 }

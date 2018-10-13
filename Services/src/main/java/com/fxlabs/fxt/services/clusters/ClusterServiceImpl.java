@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.services.clusters;
 
 import com.fxlabs.fxt.converters.clusters.ClusterConverter;
-import com.fxlabs.fxt.dao.entity.project.Project;
 import com.fxlabs.fxt.dao.entity.skills.TaskStatus;
 import com.fxlabs.fxt.dao.entity.skills.TaskType;
 import com.fxlabs.fxt.dao.repository.es.ClusterESRepository;
@@ -14,7 +13,6 @@ import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskType;
 import com.fxlabs.fxt.dto.cloud.CloudType;
 import com.fxlabs.fxt.dto.cloud.PingTask;
-import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.clusters.AccountType;
 import com.fxlabs.fxt.dto.clusters.Cluster;
 import com.fxlabs.fxt.dto.clusters.ClusterStatus;
@@ -32,6 +30,7 @@ import com.fxlabs.fxt.services.users.OrgService;
 import com.fxlabs.fxt.services.users.SystemSettingService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jasypt.util.text.TextEncryptor;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -46,9 +45,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang3.StringUtils;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -181,6 +178,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         o.setId(org);
         dto.setOrg(o);
 
+        Org org1 = orgService.findById(org).getData();
+
 
         Optional<com.fxlabs.fxt.dao.entity.clusters.Cluster> clusterOptional = clusterRepository.findByNameAndOrgId(dto.getName(), dto.getOrg().getId());
         if (clusterOptional.isPresent()) {
@@ -189,7 +188,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         String queue = null;
         if (StringUtils.isEmpty(dto.getKey())) {
-            queue = "key-" + RandomStringUtils.randomAlphabetic(12);
+            queue = String.format("%s-%s-%s", "FX Bot", org1.getName(), dto.getName() + RandomStringUtils.randomAlphabetic(6));
         } else {
             queue = dto.getKey();
         }
@@ -256,7 +255,9 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Map<String, String> opts = new HashMap<>();
 
-        Account account = dto.getAccount();
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(dto.getAccount().getId());
+
+        com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.get();
 
         if (account == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, "", "Cloud account not found"));
@@ -288,7 +289,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             case AZURE:
                 cloudTask.setCloudType(CloudType.AZURE);
                 opts.put("INSTANCE_NAME", String.valueOf(dto.getCreatedDate().getTime()));
-                opts.put("SUBSCRIPTION", dto.getAccount().getProp1());
+                opts.put("SUBSCRIPTION", account.getProp1());
                 opts.put("TENANT", account.getProp2());
                 opts.put("USERNAME", account.getAccessKey());
                 opts.put("PASSWORD", getSecretKey(account.getId()));
@@ -433,7 +434,10 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         Map<String, String> opts = new HashMap<>();
 
-        Account account = dto.getAccount();
+        Optional<com.fxlabs.fxt.dao.entity.clusters.Account> accountOptional = accountRepository.findById(dto.getAccount().getId());
+
+        com.fxlabs.fxt.dao.entity.clusters.Account account = accountOptional.get();
+
         String key = getCloudSkillKey(account);
 
         if (org.apache.commons.lang3.StringUtils.isEmpty(key)) {
@@ -458,7 +462,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
             case AZURE:
                 cloudTask.setCloudType(CloudType.AZURE);
                 opts.put("INSTANCE_NAME", String.valueOf(dto.getCreatedDate().getTime()));
-                opts.put("SUBSCRIPTION", dto.getAccount().getProp1());
+                opts.put("SUBSCRIPTION", account.getProp1());
                 opts.put("TENANT", account.getProp2());
                 opts.put("USERNAME", account.getAccessKey());
                 opts.put("PASSWORD", getSecretKey(account.getId()));
@@ -662,7 +666,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return builder.toString();
     }
 
-    private String getCloudSkillKey(Account account) {
+    private String getCloudSkillKey(com.fxlabs.fxt.dao.entity.clusters.Account account) {
         String key = null;
         if (account == null || account.getAccountType() == null) {
             return key;

@@ -67,6 +67,16 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.fxt.dto.u
     }
 
     @Override
+    public Response<com.fxlabs.fxt.dto.users.Org> findById(String id) {
+        Optional<Org> optionalOrg = this.orgRepository.findById(id);
+        com.fxlabs.fxt.dto.users.Org org = null;
+        if (optionalOrg.isPresent()) {
+            org = orgConverter.convertToDto(optionalOrg.get());
+        }
+        return new Response<com.fxlabs.fxt.dto.users.Org>(org);
+    }
+
+    @Override
     public Response<List<com.fxlabs.fxt.dto.users.OrgUsers>> findByAccess(String user, Pageable pageable) {
         Page<OrgUsers> page = this.orgUsersRepository.findByUsersIdAndStatusAndOrgRoleIn(user, OrgUserStatus.ACTIVE, roles, pageable);
         return new Response<>(orgUsersConverter.convertToDtos(page.getContent()), page.getTotalElements(), page.getTotalPages());

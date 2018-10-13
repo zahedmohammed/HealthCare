@@ -9,10 +9,7 @@ import com.fxlabs.fxt.dao.repository.es.ProjectFileESRepository;
 import com.fxlabs.fxt.dao.repository.es.ProjectImportsESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
-import com.fxlabs.fxt.dto.base.Message;
-import com.fxlabs.fxt.dto.base.MessageType;
-import com.fxlabs.fxt.dto.base.NameDto;
-import com.fxlabs.fxt.dto.base.Response;
+import com.fxlabs.fxt.dto.base.*;
 import com.fxlabs.fxt.dto.clusters.Account;
 import com.fxlabs.fxt.dto.project.*;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
@@ -185,7 +182,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         Response<Project> projectResponse = super.save(dto, user);
 
         if (projectResponse.getData().getAccount() == null) {
-            projectResponse.getData().setAccount(new Account());
+            projectResponse.getData().setAccount(new AccountMinimalDto());
         }
         // set org
 

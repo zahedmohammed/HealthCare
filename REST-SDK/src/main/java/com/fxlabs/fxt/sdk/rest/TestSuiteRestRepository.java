@@ -32,8 +32,8 @@ public class TestSuiteRestRepository extends GenericRestRespository<TestSuite> {
             HttpEntity<TestSuitesDeletedDto> request = new HttpEntity<>(testSuitesDeletedDto, this.getHeaders());
             String url = getUrl();
 
-            ResponseEntity<Response<String>> response = restTemplate.exchange(url +  "/deletedtestsuites", HttpMethod.PUT, request, referenceList);
-        }catch(Exception ex){
+            ResponseEntity<Response<String>> response = restTemplate.exchange(url + "/deletedtestsuites", HttpMethod.PUT, request, referenceList);
+        } catch (Exception ex) {
             logger.warn(ex.getLocalizedMessage());
         }
 //        return response.getBody();

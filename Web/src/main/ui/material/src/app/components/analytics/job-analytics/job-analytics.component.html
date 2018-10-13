@@ -15,11 +15,13 @@
   <nav mat-tab-nav-bar>
     <label mat-tab-link [routerLink]="['/app/projects', project.id, 'jobs']">Jobs
     </label>
-    <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">Code
-    </label>
-    <label mat-tab-link [active]="true">Insights
-    </label>
-    <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']">Recommendations</label>
+    <label mat-tab-link [routerLink]="['/app/projects', project.id, 'test-suites']">
+      <i class="material-icons">code</i> &nbsp;Code</label>
+    <label mat-tab-link [routerLink]="['/app/projects', project.id, 'api-coverage']" [active]="true">
+      <i class="fa fa-line-chart"></i> &nbsp;Insights</label>
+    <label mat-tab-link [routerLink]="['/app/projects', project.id, 'recommendations']">
+      <i class="material-icons text-danger" >lightbulb_outline</i> &nbsp;
+      <span class="text-danger">Recommendations</span></label>
 
   </nav>
   <article class="article">
@@ -28,22 +30,70 @@
         <div class="row">
           <div class="col-md-7">
             <mat-button-toggle-group #group="matButtonToggleGroup" value="Job-Analytics" >
-              <mat-button-toggle value="Insights" [routerLink]="['/app/projects', id, 'api-coverage']">Coverage
+              <mat-button-toggle value="Insights" [routerLink]="['/app/projects', project.id, 'api-coverage']">Coverage
               </mat-button-toggle>
-              <mat-button-toggle value="Job-Analytics"  [routerLink]="['/app/projects', id, 'job-analytics']">Analytics
+              <mat-button-toggle value="Job-Analytics"  [routerLink]="['/app/projects', project.id, 'job-analytics']">Analytics
               </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
             <div class="col-md-5">
                 <mat-form-field>
-                    <mat-select placeholder="Select a Job">
-                        <mat-option *ngFor="let job of jobs" [value]="job.name">{{job.name}}</mat-option>
+                    <mat-select placeholder="Select a Job" [(ngModel)]="jobId" (selectionChange)="getRunByJob()" >
+                        <mat-option *ngFor="let job of jobs" [value]="job.id">{{job.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-
             </div>
         </div>
         <hr>
+        <!--<div class="mt-4">-->
+          <!--<section class="box-body">-->
+            <div class="row article-title-style" *ngIf="jobId!=null;">
+              <div class="col-xl-6">
+                <div class="box box-default">
+                  <div class="box-body mat-elevation-z8">
+                    <p class="text-dark font-weight-bold">Passed & Failed</p>
+                    <div *ngIf="graph1">
+                      <canvas id="canvasGraph1">{{ graph1 }}</canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-6">
+                <div class="box box-default">
+                  <div class="box-body mat-elevation-z8">
+                    <p class="text-dark font-weight-bold">AutoIssues</p>
+                    <div *ngIf="graph2">
+                      <canvas id="canvasGraph2">{{ graph2 }}</canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-6">
+                <div class="box box-default">
+                  <div class="box-body mat-elevation-z8">
+                    <p class="text-dark font-weight-bold">Data</p>
+                    <div *ngIf="graph3">
+                      <canvas id="canvasGraph3">{{ graph3 }}</canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-6">
+                <div class="box box-default">
+                  <div class="box-body mat-elevation-z8">
+                    <p class="text-dark font-weight-bold">Time</p>
+                    <div *ngIf="graph4">
+                      <canvas id="canvasGraph4">{{ graph4 }}</canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!--</section>-->
+        <!--</div>-->
       </div>
     </div>
   </article>

@@ -1,5 +1,6 @@
 package com.fxlabs.fxt.dto.clusters;
 
+import com.fxlabs.fxt.dto.base.AccountMinimalDto;
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.NameDto;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Cluster extends BaseDto<String> {
 
     private NameDto org;
-    private Account account;
+    private AccountMinimalDto account;
 
     private ClusterDriver driver;
 

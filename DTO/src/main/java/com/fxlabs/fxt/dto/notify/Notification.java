@@ -1,8 +1,8 @@
 package com.fxlabs.fxt.dto.notify;
 
+import com.fxlabs.fxt.dto.base.AccountMinimalDto;
 import com.fxlabs.fxt.dto.base.BaseDto;
 import com.fxlabs.fxt.dto.base.NameDto;
-import com.fxlabs.fxt.dto.clusters.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +28,7 @@ public class Notification extends BaseDto<String> {
 
     private NameDto org;
 
-    private Account account;
+    private AccountMinimalDto account;
 
     private NotificationType type;
 

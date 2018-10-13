@@ -2,7 +2,6 @@ package com.fxlabs.fxt.services.project;
 
 import com.fxlabs.fxt.dao.entity.project.Endpoint;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
-import com.fxlabs.fxt.dao.entity.project.TestSuiteCount;
 import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.EndpointRepository;
 import com.fxlabs.fxt.dao.repository.jpa.TestSuiteRepository;
@@ -71,7 +70,7 @@ public class TestCoverageService {
         });
 
 
-        System.out.println(endpointTSByCategory);
+        //System.out.println(endpointTSByCategory);
 
         int totalEndpoints = endpoints != null ? endpoints.size() : 0;
 

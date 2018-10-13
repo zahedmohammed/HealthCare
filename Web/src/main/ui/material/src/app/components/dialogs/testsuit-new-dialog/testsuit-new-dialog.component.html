@@ -1,8 +1,17 @@
-<h6 mat-dialog-title>New Test Suite</h6>
+<div class="row">
+    <div class="col-md-8 overflow-hidden">
+        <h6 mat-dialog-title class="text-primary">New Test Suite</h6>
+    </div>
+    <div class="col-md-4">
+        <a class="float-right" href="javascript:;;" (click)="dialogRef.close()"><i class="material-icons">
+            close
+        </i></a>
+    </div>
+</div>
 
 <mat-dialog-content class="mat-typography">
-  <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
-  <!--<form [formGroup]="firstFormGroup">-->
+    <!-- <p class="fluid-container" style="white-space: pre;">{{data}}</p> -->
+    <!--<form [formGroup]="firstFormGroup">-->
     <ace-editor class="col-md-12 border editor" [(text)]="testSuitText" [theme]="'github'" [mode]="'yaml'"
                 [options]="{maxLines: 'Infinity', minLines: '25', showPrintMargin: false,fontSize:'11pt'}"
                 [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" #editor>
@@ -10,7 +19,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-raised-button color="primary" class="nav-btn" (click)="saveTestSuiteYaml();">Create & Commit
-  </button>
-  <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" class="nav-btn" (click)="saveTestSuiteYaml();">Create & Commit
+    </button>
 </mat-dialog-actions>
