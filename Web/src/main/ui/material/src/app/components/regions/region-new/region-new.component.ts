@@ -37,7 +37,13 @@ export class RegionNewComponent implements OnInit {
   secondFormGroup: FormGroup;
   selectedRegionValue = '';
 
-  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService, public dialog: MatDialog, private _formBuilder: FormBuilder) { }
+  constructor(private regionsService: RegionsService, private accountService: AccountService, private orgService: OrgService,
+    private route: ActivatedRoute, private router: Router, private handler: Handler, private snackbarService: SnackbarService,
+    public dialog: MatDialog, private _formBuilder: FormBuilder) {
+    dialog.afterAllClosed.subscribe(() => {
+      this.getAccountForExecutionBotPage();
+    })
+  }
 
   ngOnInit() {
     this.getAccountForExecutionBotPage();
@@ -164,6 +170,8 @@ export class RegionNewComponent implements OnInit {
         return;
       }
       this.accounts = results['data'];
+      if (this.accounts != null)
+        this.getCloudAccountForExecutionBotPage();
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -200,6 +208,8 @@ export class RegionNewComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getAccountForExecutionBotPage();
+
+
     });
   }
 
