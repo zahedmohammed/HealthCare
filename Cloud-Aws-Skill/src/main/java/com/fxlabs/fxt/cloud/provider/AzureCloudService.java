@@ -172,13 +172,17 @@ public class AzureCloudService implements CloudService {
 
                 StorageAccount storageAccount = createStorageAccount(region, azure, resourceGroupName, sa);
 
+                VirtualMachineSizeTypes virtualMachineSizeTypes = getVMTypeSize(region);
+
                 taskLogger.get().append("Setting image  : " + KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS);
-                taskLogger.get().append("Setting image  : " + VirtualMachineSizeTypes.STANDARD_D1_V2);
+                taskLogger.get().append("Setting image  : " + virtualMachineSizeTypes);
+                logger.info("VirtualMachineSizeTypes [{}]", virtualMachineSizeTypes.toString());
 
 
                 VirtualMachine vm = null;
                 try {
-                    taskLogger.get().append(String.format("Creating Vm [{}] in rg [{}]", tag +i, resourceGroupName ));
+                    taskLogger.get().append(String.format("Creating Vm [{}] in rg [{}]", tag + i, resourceGroupName ));
+                    logger.info("Creating Vm [{}] in rg [{}] with size [{}]", tag + i, resourceGroupName, virtualMachineSizeTypes.toString());
                     vm = azure.virtualMachines().define(tag + i)
                             .withRegion(region)
                             .withNewResourceGroup(resourceGroupName)
@@ -189,7 +193,7 @@ public class AzureCloudService implements CloudService {
                             .withComputerName(tag + i)
                             .withOSDiskName(osDiskName)
                             .withExistingStorageAccount(storageAccount)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
+                            .withSize(virtualMachineSizeTypes)
                             .withBootDiagnostics()
                             .create();
                 } catch (Exception e) {
@@ -260,6 +264,71 @@ public class AzureCloudService implements CloudService {
 
     }
 
+
+    private VirtualMachineSizeTypes getVMTypeSize(String region) {
+
+        VirtualMachineSizeTypes virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+
+        Region region_ = Region.findByLabelOrName(region);
+
+        if (region_.equals(Region.US_WEST)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.US_WEST2)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.US_EAST)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.US_EAST2)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.US_CENTRAL)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.US_NORTH_CENTRAL)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.US_SOUTH_CENTRAL)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.US_WEST_CENTRAL)) {
+            //Not available
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.UK_SOUTH)) {
+            //Not available
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+            //Not available
+        } else if (region_.equals(Region.UK_WEST)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.EUROPE_NORTH)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.EUROPE_WEST)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.ASIA_EAST)) {
+            //Not available
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.ASIA_SOUTHEAST)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.INDIA_CENTRAL)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+            //Not available
+        } else if (region_.equals(Region.INDIA_SOUTH)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.INDIA_WEST)) {
+            //Not available
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.CANADA_CENTRAL)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.CANADA_EAST)) {
+            //Not available
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.JAPAN_EAST)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.JAPAN_WEST)) {
+            //Not available
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.KOREA_CENTRAL)) {
+            //Not available
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        } else if (region_.equals(Region.KOREA_SOUTH)) {
+            virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
+        }
+        return virtualMachineSizeTypes;
+    }
 
 
 
