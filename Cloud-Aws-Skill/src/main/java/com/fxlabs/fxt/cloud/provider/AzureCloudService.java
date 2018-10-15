@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.SecurityRuleProtocol;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static com.microsoft.azure.management.resources.fluentcore.arm.Region.US_WEST;
 
 
 /**
@@ -101,10 +104,10 @@ public class AzureCloudService implements CloudService {
             logger.info("Options empty for task id : [{}]", task.getId());
             return response;
         }
-
+        String resourceGroupName = null;
         try {
             Azure azure = getAzureInstance(task.getOpts());
-            String resourceGroupName = getIAMRole(task.getOpts());
+            resourceGroupName = getIAMRole(task.getOpts());
 
             String tag_ = getInstanceTag(task.getOpts());
 
@@ -127,15 +130,15 @@ public class AzureCloudService implements CloudService {
             String vn = FX_BOT_RESOURCES_PREFIX + region + "-vnet";
             String subnet = FX_BOT_RESOURCES_PREFIX + region + "-subnet";
 
-            logger.info("Creating virtual network :" + vn);
+            logger.info("Creating virtual network : [{}] in resource group [{}]", vn, resourceGroupName);
             Network network = createNetwork(region, azure, resourceGroupName, vn, subnet);
             com.microsoft.azure.management.network.Subnet subnet1 = getSubnet(network, subnet);
 
-            taskLogger.get().append("Setting Subnet " + subnet1.name());
+            taskLogger.get().append( String.format("Subnet [{}] in vn [{}] in rg [[]]", subnet1.name(), vn, resourceGroupName));
 
             //NSG
             String nsgName = FX_BOT_RESOURCES_PREFIX + region + "-nsg";
-            logger.info("Creating security group :" + nsgName);
+            logger.info("Creating security group [{}] in rg [{}]",  nsgName, resourceGroupName);
 
             com.microsoft.azure.management.network.NetworkSecurityGroup nsg = createNetworkSecurityGroup(region, azure, resourceGroupName, "", nsgName);
 
@@ -165,16 +168,17 @@ public class AzureCloudService implements CloudService {
                 // OSDisk Size
                 String osDiskName = tag + i + "-osddisk";
 
-                String sa = org.apache.commons.lang3.StringUtils.replace(FX_BOT_RESOURCES_PREFIX + tag_, "-", "") + i + "sa";
+                String sa = org.apache.commons.lang3.StringUtils.replace(FX_BOT_RESOURCES_PREFIX + tag_, "-", "").toLowerCase() + i + "sa";
 
                 StorageAccount storageAccount = createStorageAccount(region, azure, resourceGroupName, sa);
 
                 taskLogger.get().append("Setting image  : " + KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS);
-                taskLogger.get().append("Setting image  : " + VirtualMachineSizeTypes.STANDARD_D3_V2);
+                taskLogger.get().append("Setting image  : " + VirtualMachineSizeTypes.STANDARD_D1_V2);
 
 
                 VirtualMachine vm = null;
                 try {
+                    taskLogger.get().append(String.format("Creating Vm [{}] in rg [{}]", tag +i, resourceGroupName ));
                     vm = azure.virtualMachines().define(tag + i)
                             .withRegion(region)
                             .withNewResourceGroup(resourceGroupName)
@@ -185,7 +189,7 @@ public class AzureCloudService implements CloudService {
                             .withComputerName(tag + i)
                             .withOSDiskName(osDiskName)
                             .withExistingStorageAccount(storageAccount)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                            .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                             .withBootDiagnostics()
                             .create();
                 } catch (Exception e) {
@@ -206,13 +210,14 @@ public class AzureCloudService implements CloudService {
                         final String AZURE_CUSTOM_SCRIPT_CMD = "bash fx_bot_install_script.sh";
 
                         String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + getAzureConfig(task.getOpts());
-
+                        
                         logger.info("Azure bot execution script :" + runBot);
 
                         final List<String> linuxScriptFileUris = new ArrayList<>();
                         linuxScriptFileUris.add(botInstallScript);
 
-
+                        taskLogger.get().append(String.format("Configuring  bot [{}] in rg [{}]", vm.computerName(), resourceGroupName));
+                        logger.info("Configuring  bot [{}] in rg [{}]", vm.computerName(), resourceGroupName);
                         vm.update()
                                 .defineNewExtension(linuxCustomScriptExtensionName)
                                 .withPublisher(linuxCustomScriptExtensionPublisherName)
@@ -223,9 +228,10 @@ public class AzureCloudService implements CloudService {
                                 .withPublicSetting("commandToExecute", runBot)
                                 .attach()
                                 .apply();
+                        logger.info("Configured  bot [{}] in rg [{}]", vm.computerName(), resourceGroupName);
                     } catch (Exception e) {
-                        logger.info("Exception configuring bot :" + e.getMessage());
-                        taskLogger.get().append("exception occured configuring bot  : " + e.getStackTrace());
+                        logger.info("Exception configuring bot [{}] with message [{}]", vm.computerName(),  e.getMessage());
+                        taskLogger.get().append(String.format("Exception configuring bot [{}] with message [{}]", vm.computerName(),  e.getMessage()));
                     }
                 }
             }
@@ -243,6 +249,9 @@ public class AzureCloudService implements CloudService {
             logger.warn(ex.getLocalizedMessage(), ex);
             taskLogger.get().append(ex.getLocalizedMessage()).append("\n");
             response.setLogs(taskLogger.get().toString());
+            if (!StringUtils.isEmpty(resourceGroupName) && resourceGroupName.startsWith(FX_BOT_RESOURCES_PREFIX) && resourceGroupName.endsWith("-rg")) {
+                response.setResponseId(resourceGroupName);
+            }
         } finally {
             //TODO close any connections if
         }
@@ -250,6 +259,8 @@ public class AzureCloudService implements CloudService {
         return response;
 
     }
+
+
 
 
     @Override
