@@ -2,10 +2,15 @@ package com.fxlabs.fxt.services.processors.receiver;
 
 import com.fxlabs.fxt.converters.run.TestCaseResponseConverter;
 import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
+import com.fxlabs.fxt.dao.entity.project.AutoSuggestion;
 import com.fxlabs.fxt.dao.entity.project.Job;
+import com.fxlabs.fxt.dao.entity.project.SuggestionStatus;
+import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.run.Run;
+import com.fxlabs.fxt.dao.repository.es.AutoSuggestionESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseESRepository;
 import com.fxlabs.fxt.dao.repository.es.TestCaseResponseITESRepository;
+import com.fxlabs.fxt.dao.repository.es.TestSuiteESRepository;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Response;
 import com.fxlabs.fxt.dto.clusters.Account;
@@ -16,6 +21,7 @@ import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.it.IssueTrackerService;
 import com.fxlabs.fxt.services.skills.SkillService;
 import org.apache.commons.collections.IteratorUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.jasypt.util.text.TextEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +36,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 /**
  * @author Intesar Shannan Mohammed
@@ -59,6 +66,9 @@ public class TestCaseResponseProcessor {
     private TestCaseResponseITESRepository testCaseResponseITESRepository;
     private RunRepository runRepository;
 
+    private AutoSuggestionRepository autoSuggestionRepository;
+    private AutoSuggestionESRepository autoSuggestionESRepository;
+    private TestSuiteESRepository testSuiteESRepository;
 
     public static final Sort DEFAULT_SORT = new Sort(Sort.Direction.DESC, "modifiedDate", "createdDate");
 
@@ -67,7 +77,8 @@ public class TestCaseResponseProcessor {
     public TestCaseResponseProcessor(TestCaseResponseESRepository testCaseResponseESRepository, TestCaseResponseConverter converter,
                                      TestCaseResponseRepository testCaseResponseRepository, AmqpClientService amqpClientService,
                                      JobRepository jobRepository, IssueTrackerService skillSubscriptionService, SkillService skillService, TestCaseResponseITRepository testCaseResponseITRepository,
-                                     AccountRepository accountRepository, TextEncryptor encryptor, TestCaseResponseITESRepository testCaseResponseITESRepository, RunRepository runRepository) {
+                                     AccountRepository accountRepository, TextEncryptor encryptor, TestCaseResponseITESRepository testCaseResponseITESRepository, RunRepository runRepository,
+                                     AutoSuggestionRepository autoSuggestionRepository, AutoSuggestionESRepository autoSuggestionESRepository, TestSuiteESRepository testSuiteESRepository) {
         this.testCaseResponseESRepository = testCaseResponseESRepository;
         this.testCaseResponseRepository = testCaseResponseRepository;
         this.skillService = skillService;
@@ -80,6 +91,9 @@ public class TestCaseResponseProcessor {
         this.testCaseResponseITESRepository = testCaseResponseITESRepository;
         this.testCaseResponseITRepository = testCaseResponseITRepository;
         this.runRepository = runRepository;
+        this.autoSuggestionRepository = autoSuggestionRepository;
+        this.autoSuggestionESRepository = autoSuggestionESRepository;
+        this.testSuiteESRepository = testSuiteESRepository;
     }
 
     public void process(List<TestCaseResponse> testCaseResponses) {
@@ -113,11 +127,13 @@ public class TestCaseResponseProcessor {
                 if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "fail")) {
                     validations.incrementAndGet();
                     amqpClientService.sendTask(tc, key);
+                    addAutoSuggestion(tc);
                 }
 
                 if (org.apache.commons.lang3.StringUtils.equals(tc.getResult(), "pass") && !StringUtils.isEmpty(tc.getIssueId())) {
                     validations.incrementAndGet();
                     amqpClientService.sendTask(tc, key);
+                    updateAutoSuggestion(tc);
                 }
 
 
@@ -147,9 +163,52 @@ public class TestCaseResponseProcessor {
                 }
             }
 
+
+
+
         } catch (RuntimeException ex) {
             logger.warn(ex.getLocalizedMessage(), ex);
         }
+    }
+
+    private void addAutoSuggestion(TestCaseResponse tcResp) {
+
+        Stream<AutoSuggestion> suggestions = autoSuggestionRepository.findByProjectIdAndTestSuiteNameAndTestCaseNumber(tcResp.getProjectId(), tcResp.getSuite(),tcResp.getTestCase());
+        if (suggestions.count() > 0){
+            // Issue already exists...
+            return;
+        }
+
+        TestSuite suite = testSuiteESRepository.findByProjectIdAndName(tcResp.getProjectId(),tcResp.getSuite());
+
+        AutoSuggestion suggestion = new AutoSuggestion();
+        suggestion.setSuggestionId(RandomStringUtils.randomAlphanumeric(8));
+        suggestion.setProjectId(tcResp.getProjectId());
+        suggestion.setStatus(SuggestionStatus.NEW);
+        suggestion.setEndPoint(tcResp.getEndpointEval());
+        suggestion.setRegion(tcResp.getRegion());
+        suggestion.setRespStatusCode(tcResp.getStatusCode());
+        suggestion.setTestSuiteId(suite.getId());
+        suggestion.setCategory(suite.getCategory().toString());
+        suggestion.setSeverity(suite.getSeverity().toString());
+        suggestion.setMethod(suite.getMethod().toString());
+        suggestion.setTestSuiteName(suite.getName());
+        suggestion.setTestCaseNumber(tcResp.getTestCase());
+
+        AutoSuggestion entity = autoSuggestionRepository.saveAndFlush(suggestion);
+        autoSuggestionESRepository.save(entity);
+    }
+
+    private void updateAutoSuggestion(TestCaseResponse tcResp) {
+
+        Stream<AutoSuggestion> suggestions = autoSuggestionRepository.findByProjectIdAndTestSuiteNameAndTestCaseNumber(tcResp.getProjectId(), tcResp.getSuite(),tcResp.getTestCase());
+
+        suggestions.forEach(suggestion -> {
+            suggestion.setStatus(SuggestionStatus.CLOSED);
+            AutoSuggestion entity = autoSuggestionRepository.saveAndFlush(suggestion);
+            autoSuggestionESRepository.save(entity);
+        });
+
     }
 
     private String getKeyForTestCaseResponse(TestCaseResponse tc) {

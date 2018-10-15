@@ -156,7 +156,7 @@ public class IssueTrackerTaskResponseProcessor {
             long totalOpenIssues = testCaseResponseITRepository.countByStatusIgnoreCaseAndProjectIdAndJobId("open", run.getJob().getProject().getId(), run.getJob().getId());
 
             run.getTask().setTotalOpenIssues(totalOpenIssues);
-            run.getStats().put("total_issues", totalOpenIssues);
+//            run.getStats().put("total_issues", totalOpenIssues);
             runRepository.saveAndFlush(run);
         }
 

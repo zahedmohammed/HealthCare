@@ -1,29 +1,33 @@
-package com.fxlabs.fxt.dto.project;
+package com.fxlabs.fxt.dao.entity.project;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fxlabs.fxt.dto.base.BaseDto;
-import com.fxlabs.fxt.dto.base.ProjectMinimalDto;
+import com.fxlabs.fxt.dao.entity.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.hibernate.annotations.Type;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Mohammed Luqman Shareef
  */
-
+@Document(indexName = "fx-auto-suggest")
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class AutoSuggestion extends BaseDto<String> {
+@EqualsAndHashCode(callSuper = false)
+public class AutoSuggestion extends BaseEntity {
+
+//    @ManyToOne
+//    @JoinColumn(name = "project_id")
+    private String projectId;
 
     private String suggestionId;
-    private String projectId;
+
     private String testSuiteId;
     private String testSuiteName;
     private String testCaseNumber;
@@ -36,7 +40,9 @@ public class AutoSuggestion extends BaseDto<String> {
     private String issueDesc;
     private String suggestion;
     private String estimates;
-    private SuggestionStatus status;
-}
 
+    @Enumerated(EnumType.STRING)
+    private SuggestionStatus status;
+
+}
 

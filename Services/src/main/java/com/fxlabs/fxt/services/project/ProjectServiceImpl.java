@@ -751,7 +751,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
     @Override
     public Response<Boolean> skipAutoSuggestion(String id, String suiteName, String tcNumber, String currentAuditor){
-            return new Response<>(autoSuggestService.skipSuggestionByProject(id, suiteName, tcNumber, currentAuditor));
+            return new Response<>(autoSuggestService.skipSuggestion(id));
     }
 
 }
