@@ -59,7 +59,7 @@ public class AzureCloudService implements CloudService {
     final static String SLASH = "/";
 
 
-    private static final String FX_BOT_RESOURCES_PREFIX = "fxbot";
+    private static final String FX_BOT_RESOURCES_PREFIX = "FX-";
 
 //    static final Map<String, String> REGION_ENPOINTS = ImmutableMap.<String, String>builder()
 //           .put("us-east-1", "ec2.us-east-1.amazonaws.com")
@@ -138,15 +138,11 @@ public class AzureCloudService implements CloudService {
 
             taskLogger.get().append("Setting Subnet " + subnet1.name());
 
-
             //NSG
-
             String nsgName = FX_BOT_RESOURCES_PREFIX + region + "-nsg";
             logger.info("Creating security group :" + nsgName);
 
             com.microsoft.azure.management.network.NetworkSecurityGroup nsg = createNetworkSecurityGroup(region, azure, resourceGroupName, "", nsgName);
-            taskLogger.get().append("Setting Security Group  " + nsgName);
-
 
 
             int count = getCount(task.getOpts());
@@ -578,7 +574,7 @@ public class AzureCloudService implements CloudService {
 
     private static Network createNetwork(String region, Azure azure, String resourceGroupName, String vn, String subnet) {
         Network network;
-        String networkCIDR = "10.0.0.0/16";
+        String networkCIDR = "10.0.0.0/24";
         String subnetCIDR = "10.0.0.0/24";
 
         network = azure.networks().define(vn)
