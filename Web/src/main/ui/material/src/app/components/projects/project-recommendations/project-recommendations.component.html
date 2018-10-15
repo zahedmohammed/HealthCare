@@ -40,42 +40,47 @@
                       <div class="col-md-11 mt-3 text-dark">
 
                         <div class="callout-custom-h callout callout-info" *ngIf="auto.method=='GET'">
-                            <p><span class="button text-info"><b>{{auto.method}}</b></span> &nbsp; {{auto.endPoint}}
+                            <p><span class="badge badge-info d-inline"><b>{{auto.method}}</b></span> &nbsp; {{auto.endPoint}}
                                 <span class="p-custom pull-right text-small text-muted">{{auto.createdDate | timeAgo}}</span>
-                                <br/>
+                                <!--<br/>
                                 <span class="badge badge-primary d-inline">{{auto.category | uppercase}}</span>
-                                <span class="badge badge-warning d-inline">{{auto.severity}}</span>
+                                <span class="badge badge-warning d-inline">{{auto.severity}}</span>-->
                             </p>
                         </div>
                         <div class="callout-custom-h callout callout-success" *ngIf="auto.method=='POST'">
-                          <p><span class="button text-success"><b>{{auto.method}}</b></span> &nbsp; {{auto.endPoint}}
+                          <p><span class="badge badge-success d-inline"><b>{{auto.method}}</b></span> &nbsp; {{auto.endPoint}}
                             <span class="p-custom pull-right text-small text-muted">{{auto.createdDate | timeAgo}}</span>
-                            <br/>
+                            <!--<br/>
                             <span class="badge badge-primary d-inline">{{auto.category | uppercase}}</span>
-                            <span class="badge badge-warning d-inline">{{auto.severity}}</span>
+                            <span class="badge badge-warning d-inline">{{auto.severity}}</span>-->
                           </p>
                         </div>
                         <div class="callout-custom-h callout  callout-warning" *ngIf="auto.method=='PUT'">
-                          <p><span class="button text-warning"><b>{{auto.method}}</b></span> &nbsp; {{auto.endPoint}}
+                          <p><span class="badge badge-warning d-inline"><b>{{auto.method}}</b></span> &nbsp; {{auto.endPoint}}
                             <span class="p-custom pull-right text-small text-muted">{{auto.createdDate | timeAgo}}</span>
-                            <br/>
+                            <!--<br/>
                             <span class="badge badge-primary d-inline">{{auto.category | uppercase}}</span>
-                            <span class="badge badge-warning d-inline">{{auto.severity}}</span>
+                            <span class="badge badge-warning d-inline">{{auto.severity}}</span>-->
                           </p>
                         </div>
                         <div class="callout-custom-h callout callout-danger" *ngIf="auto.method=='DELETE'">
-                          <p><span class="button text-danger"><b>{{auto.method}}</b></span> &nbsp; {{auto.endPoint}}
+                          <p><span class="badge badge-danger d-inline"><b>{{auto.method}}</b></span> &nbsp; {{auto.endPoint}}
                             <span class="p-custom pull-right text-small text-muted">{{auto.createdDate | timeAgo}}</span>
-                            <br/>
+                            <!--<br/>
                             <span class="badge badge-primary d-inline">{{auto.category | uppercase}}</span>
-                            <span class="badge badge-warning d-inline">{{auto.severity}}</span>
+                            <span class="badge badge-warning d-inline">{{auto.severity}}</span>-->
                           </p>
                         </div>
 
                         <div class="callout-custom callout callout-warning">
-        
+
+                          <p class="p-custom">
+                          <span class="badge badge-primary d-inline">{{auto.category | uppercase}}</span>
+                          <span class="badge badge-warning d-inline">{{auto.severity}}</span>
+                            <span class="pull-right text-small text-muted">ID: <u>{{auto.suggestionId}}</u></span>
+                          </p>
                           <p class="p-custom">{{auto.issueDesc}}
-                            <span class="p-custom pull-right text-small text-muted">ID: <u>{{auto.suggestionId}}</u></span>
+
                           </p>
                           <p class="p-custom">
                             <i class="fa fa-commenting fa-lg text-primary" title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p>
