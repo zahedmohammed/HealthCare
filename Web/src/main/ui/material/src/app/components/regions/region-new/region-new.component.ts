@@ -133,7 +133,12 @@ export class RegionNewComponent implements OnInit {
         }
       } else
         if (accountSelected.accountType === 'AZURE') {
-          this.regions = this.AZURE_REGIONS;
+          if (accountSelected.allowedRegions.length > 0) {
+            this.regions = accountSelected.allowedRegions;
+          }
+          else {
+            this.regions = this.AZURE_REGIONS;
+          }
         }
   }
 
