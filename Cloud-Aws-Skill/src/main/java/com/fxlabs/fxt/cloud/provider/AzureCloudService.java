@@ -190,7 +190,7 @@ public class AzureCloudService implements CloudService {
                             .withComputerName(tag + i)
                             .withOSDiskName(osDiskName)
                             .withExistingStorageAccount(storageAccount)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                            .withSize(VirtualMachineSizeTypes.STANDARD_A1)
                             .withBootDiagnostics()
                             .create();
                 } catch (Exception e) {

@@ -100,6 +100,7 @@ public class RunTaskRequestProcessor {
                 if (env == null) {
                     run.getTask().setStatus(TaskStatus.FAIL);
                     runRepository.saveAndFlush(run);
+                    logger.info("Invalid env for job [{}] in project [{}]", run.getJob().getName() , run.getJob().getProject().getName());
                     return;
                 }
 
@@ -107,6 +108,7 @@ public class RunTaskRequestProcessor {
                 if (region == null) {
                     run.getTask().setStatus(TaskStatus.FAIL);
                     runRepository.saveAndFlush(run);
+                    logger.info("Invalid region [{}] for job [{}] in project [{}]", region, run.getJob().getName() , run.getJob().getProject().getName());
                     return;
                 }
 

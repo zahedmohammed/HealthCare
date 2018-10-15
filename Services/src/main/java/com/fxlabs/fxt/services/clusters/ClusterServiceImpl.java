@@ -345,7 +345,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         event.setLogId(logId);
 
 
-        logger.info("Creating bot [{}] and status [{}] for task type [{}]" , dto.getId(), status.toString(), event.getName());
+        logger.info("Event for Bot [{}] and status [{}] for task type [{}] generated" , dto.getId(), status.toString(), type.toString());
         localEventPublisher.publish(event);
     }
 
