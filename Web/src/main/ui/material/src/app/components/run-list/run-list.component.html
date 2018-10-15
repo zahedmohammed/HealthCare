@@ -33,6 +33,22 @@
                         date:'short'}}
                     </mat-cell>
                 </ng-container>
+                <!-- Data Column -->
+                <ng-container matColumnDef="data">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Data
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        {{element.task.totalBytes | byteFormat}}
+                    </mat-cell>
+                </ng-container>
+                <!-- Total Time Column -->
+                <ng-container matColumnDef="totaltime">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Total Time
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.task.totalTime |
+                        mstoDuration}}
+                    </mat-cell>
+                </ng-container>
                 <!-- Pass/Fail Column -->
                 <ng-container matColumnDef="passfail">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Pass/Fail
@@ -46,35 +62,6 @@
                                                                 || 0}}</span>&nbsp;<span class="text-danger small">Failed</span>&nbsp;</span>
                     </mat-cell>
                 </ng-container>
-                <!-- Success Column -->
-                <ng-container matColumnDef="success">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Sucess
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{ ( (element.task.totalTestCompleted ) /
-                        (element.task.totalTestCompleted +
-                        element.task.failedTests) ) | percent}}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Data Column -->
-                <ng-container matColumnDef="data">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Data
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{element.task.totalBytes | byteFormat}}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Total Time Column -->
-                <ng-container matColumnDef="totaltime">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Total Time
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.task.totalTime |
-                        mstoDuration}}
-                    </mat-cell>
-                </ng-container>
-
                 <!-- Bugs Column -->
                 <ng-container matColumnDef="bugs">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> AutoIssues
@@ -101,9 +88,18 @@
                         </div>
                     </mat-cell>
                 </ng-container>
+                <!-- Success Column -->
+                <ng-container matColumnDef="success">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Sucess
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        {{ ( (element.task.totalTestCompleted ) /
+                        (element.task.totalTestCompleted +
+                        element.task.failedTests) ) | percent}}
+                    </mat-cell>
+                </ng-container>
 
                 <!-- Status Column -->
-
                 <ng-container matColumnDef="status">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Status
                     </mat-header-cell>
