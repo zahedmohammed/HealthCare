@@ -65,7 +65,7 @@ loadSuggestions(id: string) {
     var skip = confirm("Are you sure you want to skip this endpoint from '"+obj.category+"' testing?");
     if (skip == true) {
         // invoke skip service
-        this.projectService.skipAutoSuggestion(this.id, obj.testSuiteName,obj.testCaseNumber).subscribe(results => {
+        this.projectService.skipAutoSuggestion(obj.id, obj.testSuiteName,obj.testCaseNumber).subscribe(results => {
           if (this.handler.handle(results)) {
             return;
           }
