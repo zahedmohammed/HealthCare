@@ -102,10 +102,6 @@ public class AzureCloudService implements CloudService {
             return response;
         }
 
-//        String subscriptionId = "10cf3790-fa0d-4747-bf4d-8f5fbfe71d69";
-//        String tenant = "a3997700-5799-4d9e-b1b4-6744db57e9c7";
-//        String client = "92349a66-575b-4916-bf9c-caa6dae920da";
-//        String key = "HCSLxh7TOADqsQywNyeXDWpSSsLCkBsc2mPKRgpZWJg=";
         try {
             Azure azure = getAzureInstance(task.getOpts());
             String resourceGroupName = getIAMRole(task.getOpts());
@@ -114,14 +110,13 @@ public class AzureCloudService implements CloudService {
 
             String region = getRegion(task.getOpts());
 
-            String tag = FX_BOT_RESOURCES_PREFIX + "-" + tag_ + region;
+            String tag = FX_BOT_RESOURCES_PREFIX  + tag_ + region;
 
             if (StringUtils.isEmpty(resourceGroupName)) {
                 resourceGroupName = tag + "-rg";
             }
-            //String resourceGroupName = "dev";
 
-		    // create RG
+            // create RG
             taskLogger.get().append("Resource group :" + resourceGroupName);
             logger.info("Creating resource group :" + resourceGroupName);
             azure.resourceGroups().define(resourceGroupName)
@@ -211,7 +206,7 @@ public class AzureCloudService implements CloudService {
                         final String AZURE_CUSTOM_SCRIPT_CMD = "bash fx_bot_install_script.sh";
 
                         String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + getAzureConfig(task.getOpts());
-                        //String runBot = AZURE_CUSTOM_SCRIPT_CMD + SPACE + "cloud.fxlabs.io" + SPACE + "5671" + SPACE + "true" + SPACE + "Mwc/0zF7dfX+PUq6Jz26AkdbFUE13eL5" + SPACE + "jrtPsZ5x96rhW6H/5zsFPFH8XzDmIq5/ldLAjyOZbbE=" + SPACE + "latest";
+
                         logger.info("Azure bot execution script :" + runBot);
 
                         final List<String> linuxScriptFileUris = new ArrayList<>();
