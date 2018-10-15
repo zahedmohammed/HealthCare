@@ -5,20 +5,14 @@ import com.fxlabs.fxt.converters.project.JobIssueTrackerConverter;
 import com.fxlabs.fxt.converters.project.JobNotificationConverter;
 import com.fxlabs.fxt.dao.entity.clusters.Account;
 import com.fxlabs.fxt.dao.entity.clusters.AccountType;
-import com.fxlabs.fxt.dao.entity.it.IssueTracker;
-import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
 import com.fxlabs.fxt.dao.entity.project.Job;
 import com.fxlabs.fxt.dao.entity.project.JobIssueTracker;
 import com.fxlabs.fxt.dao.repository.jpa.*;
 import com.fxlabs.fxt.dto.base.Message;
 import com.fxlabs.fxt.dto.base.Response;
-import com.fxlabs.fxt.dto.project.AutoSuggestion;
 import com.fxlabs.fxt.dto.project.Project;
-import com.fxlabs.fxt.dto.users.Org;
 import com.fxlabs.fxt.services.base.GenericServiceImpl;
 import com.fxlabs.fxt.services.exceptions.FxException;
-import com.fxlabs.fxt.services.users.OrgService;
-import com.fxlabs.fxt.services.util.AutoSuggestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,7 +34,7 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
     private JobRepository jobRepository;
     private ProjectService projectService;
-    private RunRepository runRepository;
+//    private RunRepository runRepository;
     private JobNotificationConverter jobNotificationConverter;
     private JobIssueTrackerConverter jobIssueTrackerConverter;
 
@@ -51,28 +45,24 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
 
     private OrgRepository orgRepository;
 
-    private IssueTrackerRepository issueTrackerRepository;
+//    private IssueTrackerRepository issueTrackerRepository;
 
     private AccountRepository accountRepository;
 
-    private AutoSuggestService autoSuggestService;
-
     @Autowired
-    public JobServiceImpl(JobRepository repository, JobConverter converter, ProjectService projectService, RunRepository runRepository, AccountRepository accountRepository,
-                          JobNotificationConverter projectNotificationConverter, JobIssueTrackerConverter jobIssueTrackerConverter, OrgRepository orgRepository,
-                          JobIssueTrackerRepository jobIssueTrackerRepository, TestCaseResponseITRepository testCaseResponseITRepository, IssueTrackerRepository issueTrackerRepository,
-                          AutoSuggestService autoSuggestService) {
+    public JobServiceImpl(JobRepository repository, JobConverter converter, ProjectService projectService, AccountRepository accountRepository,
+                          JobIssueTrackerConverter jobIssueTrackerConverter, OrgRepository orgRepository,
+                          JobIssueTrackerRepository jobIssueTrackerRepository, TestCaseResponseITRepository testCaseResponseITRepository) {
         super(repository, converter);
         this.jobRepository = repository;
         this.projectService = projectService;
-        this.runRepository = runRepository;
+//        this.runRepository = runRepository;
         this.jobNotificationConverter = jobNotificationConverter;
         this.jobIssueTrackerConverter = jobIssueTrackerConverter;
         this.jobIssueTrackerRepository = jobIssueTrackerRepository;
         this.testCaseResponseITRepository = testCaseResponseITRepository;
         this.accountRepository = accountRepository;
         this.orgRepository = orgRepository;
-        this.autoSuggestService = autoSuggestService;
     }
 
     @Override
@@ -359,29 +349,5 @@ public class JobServiceImpl extends GenericServiceImpl<Job, com.fxlabs.fxt.dto.p
         }
         projectService.isUserEntitled(jobOptional.get().getProject().getId(), user);*/
     }
-
-    @Override
-    public Response<List<AutoSuggestion>> getAutoSuggestions(String id, String user, Pageable pageable){
-
-        Optional<Job> jobOptional = jobRepository.findById(id);
-
-//        if (jobOptional.isPresent()) {
-//            return new Response<>(autoSuggestService.getSuggestions(jobOptional.get().getProject().getId(), id));
-//        }else{
-            return new Response<>(new ArrayList<AutoSuggestion>()).withErrors(false);
-
-//        }
-    }
-
-    @Override
-      public Response<Boolean> skipAutoSuggestion(String id, String suiteName, String tcNumber, String currentAuditor){
-        Optional<Job> jobOptional = jobRepository.findById(id);
-//        if (jobOptional.isPresent()) {
-//            return new Response<>(autoSuggestService.skipSuggestion(jobOptional.get().getProject().getId(), id, suiteName, tcNumber, currentAuditor));
-//        }else{
-            return new Response<>();
-//        }
-    }
-
 
 }

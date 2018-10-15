@@ -32,7 +32,4 @@ public interface JobService extends GenericService<Job, String> {
 
     Response<List<com.fxlabs.fxt.dto.project.Job>> findJobsByIssueTracker(String issueTracker);
 
-    Response<List<AutoSuggestion>> getAutoSuggestions(String id, String user, Pageable pageable);
-
-    Response<Boolean> skipAutoSuggestion(String id, String suiteName, String tcNumber, String currentAuditor);
 }
