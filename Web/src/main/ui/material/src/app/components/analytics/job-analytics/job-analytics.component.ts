@@ -67,6 +67,8 @@ export class JobAnalyticsComponent implements OnInit {
                 return;
             }
             this.jobs = results['data'];
+            this.jobId = this.jobs[0]['id'];
+            this.getRunByJob();
         }, error => {
             this.handler.hideLoader();
             this.handler.error(error);
