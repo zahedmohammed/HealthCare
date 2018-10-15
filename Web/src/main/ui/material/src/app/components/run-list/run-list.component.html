@@ -16,281 +16,128 @@
 <!-- <pre>{{list | json}}</pre> -->
 <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
     <article class="article">
-        <mat-tab-group (selectedTabChange)="getAnalyticsData()">
-            <mat-tab label="Runs">
-                <div class="box box-default mt-4">
-                    <div class="box-body">
-                        <section class="box box-transparent">
-                            <div class="box-body">
-                                <div class="article-title-style">
-                                    <div class="mat-elevation-z8 box-default">
-                                        <mat-table [dataSource]="dataSource" matSort matSortActive="no"
-                                            matSortDisableClear matSortDirection="desc">
-                                            <!-- Region Column -->
-                                            <ng-container matColumnDef="region">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Region
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element"> {{element.regions}} </mat-cell>
-                                            </ng-container>
-                                            <!-- Date Column -->
-                                            <ng-container matColumnDef="date">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Date
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element"> {{element.createdDate |
-                                                    date:'short'}}
-                                                </mat-cell>
-                                            </ng-container>
-                                            <!-- Pass/Fail Column -->
-                                            <ng-container matColumnDef="passfail">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Pass/Fail
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element">
+        <div class="mat-elevation-z8 box-default">
+            <mat-table [dataSource]="dataSource" matSort matSortActive="no"
+                       matSortDisableClear matSortDirection="desc">
+                <!-- Region Column -->
+                <ng-container matColumnDef="region">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Region
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.regions}}</mat-cell>
+                </ng-container>
+                <!-- Date Column -->
+                <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.createdDate |
+                        date:'short'}}
+                    </mat-cell>
+                </ng-container>
+                <!-- Pass/Fail Column -->
+                <ng-container matColumnDef="passfail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Pass/Fail
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
                                                     <span class="text-success">{{element.task.totalTestCompleted
                                                             ||
-                                                            0}}</span>&nbsp;<span class="text-success small">Passed</span>&nbsp;
-                                                    <span *ngIf="element.task.failedTests != 0"><span class="text-danger">{{element.task.failedTests
+                                                            0}}</span>&nbsp;<span
+                            class="text-success small">Passed</span>&nbsp;
+                        <span *ngIf="element.task.failedTests != 0"><span class="text-danger">{{element.task.failedTests
                                                                 || 0}}</span>&nbsp;<span class="text-danger small">Failed</span>&nbsp;</span>
-                                                </mat-cell>
-                                            </ng-container>
-                                            <!-- Success Column -->
-                                            <ng-container matColumnDef="success">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Sucess
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element">
-                                                    {{ ( (element.task.totalTestCompleted ) /
-                                                    (element.task.totalTestCompleted +
-                                                    element.task.failedTests) ) | percent}}
-                                                </mat-cell>
-                                            </ng-container>
+                    </mat-cell>
+                </ng-container>
+                <!-- Success Column -->
+                <ng-container matColumnDef="success">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Sucess
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        {{ ( (element.task.totalTestCompleted ) /
+                        (element.task.totalTestCompleted +
+                        element.task.failedTests) ) | percent}}
+                    </mat-cell>
+                </ng-container>
 
-                                            <!-- Data Column -->
-                                            <ng-container matColumnDef="data">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Data
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element">
-                                                    {{element.task.totalBytes | byteFormat}}
-                                                </mat-cell>
-                                            </ng-container>
+                <!-- Data Column -->
+                <ng-container matColumnDef="data">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Data
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        {{element.task.totalBytes | byteFormat}}
+                    </mat-cell>
+                </ng-container>
 
-                                            <!-- Total Time Column -->
-                                            <ng-container matColumnDef="totaltime">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Total Time
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element"> {{element.task.totalTime |
-                                                    mstoDuration}} </mat-cell>
-                                            </ng-container>
+                <!-- Total Time Column -->
+                <ng-container matColumnDef="totaltime">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Total Time
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.task.totalTime |
+                        mstoDuration}}
+                    </mat-cell>
+                </ng-container>
 
-                                            <!-- Bugs Column -->
-                                            <ng-container matColumnDef="bugs">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> AutoIssues
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element">
-                                                    <div *ngIf="element.job.issueTrackerToDo === false">
-                                                        <span class="text-danger">{{element.task.issuesLogged || 0}}</span>
-                                                        <span class="text-muted small ">New</span>&nbsp;
-                                                        <span class="text-success">{{element.task.issuesClosed ||
+                <!-- Bugs Column -->
+                <ng-container matColumnDef="bugs">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> AutoIssues
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <div *ngIf="element.job.issueTrackerToDo === false">
+                            <span class="text-danger">{{element.task.issuesLogged || 0}}</span>
+                            <span class="text-muted small ">New</span>&nbsp;
+                            <span class="text-success">{{element.task.issuesClosed ||
                                                                 0}}</span>
-                                                        <span class="text-muted small">Closed</span>
-                                                        <span class="text-danger">{{element.task.totalOpenIssues ||
+                            <span class="text-muted small">Closed</span>
+                            <span class="text-danger">{{element.task.totalOpenIssues ||
                                                                 0}}</span>
-                                                        <span class="text-muted small">Open</span>
-                                                    </div>
-                                                </mat-cell>
-                                            </ng-container>
+                            <span class="text-muted small">Open</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
 
-                                            <ng-container matColumnDef="bugs2">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-                                                <mat-cell *matCellDef="let element">
-                                                    <div *ngIf="element.job.issueTrackerToDo === true">
-                                                        <span class="text-danger"> N/A </span>
-                                                    </div>
-                                                </mat-cell>
-                                            </ng-container>
+                <ng-container matColumnDef="bugs2">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <div *ngIf="element.job.issueTrackerToDo === true">
+                            <span class="text-danger"> N/A </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
 
-                                            <!-- Status Column -->
+                <!-- Status Column -->
 
-                                            <ng-container matColumnDef="status">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> Status
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element">
-                                                    <span *ngIf="element.task.status == 'COMPLETED'" class="text-success">{{element.task.status}}</span>
-                                                    <span *ngIf="element.task.status != 'COMPLETED' && element.task.status != 'PROCESSING'"
-                                                        class="text-danger">{{element.task.status}}</span>
-                                                    <span *ngIf="element.task.status == 'PROCESSING'" class="text-warning"><i
-                                                            class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span *ngIf="element.task.status == 'COMPLETED'"
+                              class="text-success">{{element.task.status}}</span>
+                        <span *ngIf="element.task.status != 'COMPLETED' && element.task.status != 'PROCESSING'"
+                              class="text-danger">{{element.task.status}}</span>
+                        <span *ngIf="element.task.status == 'PROCESSING'" class="text-warning"><i
+                                class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                                                         {{element.task.status}}</span>
-                                                </mat-cell>
-                                            </ng-container>
+                    </mat-cell>
+                </ng-container>
 
-                                            <!-- Number Column -->
-                                            <ng-container matColumnDef="no">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header> No
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" style="overflow:visible;">
-                                                    <button mat-button class="text-center" color="primary" [routerLink]="['/app/projects' , projectId, 'jobs' , job.id, 'runs', element.id]">{{element.runId}}</button>
-                                                </mat-cell>
-                                            </ng-container>
-
-
-                                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                                        </mat-table>
-                                        <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true"
-                                            (page)="change($event)" [length]="length">
-                                        </mat-paginator>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </mat-tab>
-            <mat-tab label="Analytics">
-                <div class="box box-default mt-4">
-                    <section class="box-body">
-                        <div class="row article-title-style">
-                            <div class="col-xl-6">
-                                <div class="box box-default">
-                                    <div class="box-body mat-elevation-z8">
-                                        <p class="text-dark font-weight-bold">Passed & Failed</p>
-                                        <div *ngIf="graph1">
-                                            <canvas id="canvasGraph1">{{ graph1 }}</canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="box box-default">
-                                    <div class="box-body mat-elevation-z8">
-                                        <p class="text-dark font-weight-bold">AutoIssues</p>
-                                        <div *ngIf="graph2">
-                                            <canvas id="canvasGraph2">{{ graph2 }}</canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="box box-default">
-                                    <div class="box-body mat-elevation-z8">
-                                        <p class="text-dark font-weight-bold">Data</p>
-                                        <div *ngIf="graph3">
-                                            <canvas id="canvasGraph3">{{ graph3 }}</canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-6">
-                                <div class="box box-default">
-                                    <div class="box-body mat-elevation-z8">
-                                        <p class="text-dark font-weight-bold">Time</p>
-                                        <div *ngIf="graph4">
-                                            <canvas id="canvasGraph4">{{ graph4 }}</canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </mat-tab>
-            <mat-tab label="AutoSuggest">
-
-                <div class="box box-default mt-4">
-                    <section class="box box-transparent">
-                        <div class="box-body">
-                            <div class="row article-title-style">
-
-                                <!-- <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
-                                    <div class="mat-elevation-z8 row no-margin-right">
-                                        <span class="col-md-1 mt-3">
-                                            <i class="fa fa-user-circle-o fa-md text-dark"></i>
-                                        </span>
-                                        <div class="col-md-11 mt-3 text-dark">
-                                            <p class="text-dark"> Recommendation <span class="badge badge-primary d-inline">BOT</span>
-                                                <small class="text-muted pull-right">{{auto.createdDate | timeAgo}}</small>
-                                            </p>
-                                            <p class="text-muted">{{auto.issueDesc}}  This is resulting in failing the test suite <i>{{auto.testSuiteName}}</i> under <i>{{auto.category}}</i> category.</p> -->
-                                <!--<p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>-->
-                                <!--
-                                            <p class="text-muted"><i class="fa fa-file-code-o fa-lg text-dark" title="TestSuite Name"></i> &nbsp;&nbsp;{{auto.testSuiteName}}</p>
--->
-                                <!-- <div class="callout"> -->
-                                <!--<p class="font-weight-bold">Endpoint</p>-->
-                                <!--<p class="font-weight-bold">Suite Name</p>-->
-                                <!--
-                                                <p class="text-muted ml-3"><span class="badge badge-warning d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
--->
-                                <!--<p class="font-weight-bold">FX Recommendation</p>-->
-                                <!-- <p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p> -->
-                                <!-- <p class="text-muted"><i class="fa fa-commenting fa-lg text-primary" title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p> -->
-                                <!--<p class="font-weight-bold">Effort estimates</p>-->
-                                <!-- <p class="text-muted"><i class="fa fa-clock-o fa-lg text-warning" title="Effort Estimates"></i> &nbsp;&nbsp;Typically this fix would take {{auto.estimates}}</p>
-                                            </div>
-                                            <div>
-                                                <button mat-raised-button color="primary" (click)="openSkipDialog(auto)">Skip</button>
-                                            </div>
-                                            <br/>
-                                        </div>
-
-                                    </div>
-                                    
-                                </div> -->
+                <!-- Number Column -->
+                <ng-container matColumnDef="no">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> No
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="overflow:visible;">
+                        <button mat-button class="text-center" color="primary"
+                                [routerLink]="['/app/projects' , projectId, 'jobs' , job.id, 'runs', element.id]">
+                            {{element.runId}}
+                        </button>
+                    </mat-cell>
+                </ng-container>
 
 
-                                <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
-                                    <div class="mat-elevation-z8 row no-margin-right">
-                                        <span class="col-md-1 mt-3">
-                                            <!-- <i class="fa fa-user-circle-o fa-md text-dark"></i> -->
-                                            <img src="assets/images/bot.png" height="35" width="35" />
-                                        </span>
-                                        <div class="col-md-11 mt-3 text-dark">
-                                            <p class="text-dark mb-1"> <strong>Recommendation</strong> <span class="badge badge-primary d-inline">BOT</span>
-                                                <small class="pull-right">{{auto.createdDate | timeAgo}}</small>
-                                            </p>
-                                            <p class="p-custom">A test case under the category '{{auto.category}}' failed. {{auto.issueDesc}}</p>
-                                            <!--<p class="text-muted"><span class="badge badge-secondary d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>-->
-                                            <!--
-                                                <p class="text-muted"><i class="fa fa-file-code-o fa-lg text-dark" title="TestSuite Name"></i> &nbsp;&nbsp;{{auto.testSuiteName}}</p>
-    -->
-                                            <div class="callout-custom callout callout-warning">
-                                                <!--<p class="font-weight-bold">Endpoint</p>-->
-                                                <!--<p class="font-weight-bold">Suite Name</p>-->
-                                                <!--
-                                                    <p class="text-muted ml-3"><span class="badge badge-warning d-inlinet" title="Endpoint">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
-    -->
-                                                <!--<p class="font-weight-bold">FX Recommendation</p>-->
-                                                <p class="p-custom"><i class="fa fa-commenting fa-lg text-primary"
-                                                                       title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p>
-                                                <p class="p-custom text-small"><span class="badge badge-secondary d-inline"
-                                                                          title="Method">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>
-                                                <p class="p-custom text-small"><i class="fa fa-file-code-o fa-lg"
-                                                                       title="Test Suite"></i>&nbsp;&nbsp;{{auto.testSuiteName}}</p>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator [hidden]="length <= pageSize" [pageSize]="pageSize" hidePageSize="true"
+                           (page)="change($event)" [length]="length">
+            </mat-paginator>
 
-
-                                                <!--<p class="font-weight-bold">Effort estimates</p>-->
-                                                <p class="p-custom text-small"><i class="fa fa-clock-o fa-lg text-success"
-                                                        title="Effort Estimates"></i>&nbsp;&nbsp;{{auto.estimates}}</p>
-                                            </div>
-                                            <div>
-                                                <button mat-raised-button class="mat-raised-button-custom pull-right text-dark"
-                                                    (click)="openSkipDialog(auto)">Skip</button>
-                                            </div>
-                                            <br />
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </mat-tab>
-        </mat-tab-group>
+        </div>
     </article>
 </section>
