@@ -2,6 +2,7 @@ package com.fxlabs.fxt.services.util;
 
 import com.fxlabs.fxt.converters.project.AutoSuggestionConverter;
 import com.fxlabs.fxt.dao.entity.it.TestCaseResponseIssueTracker;
+import com.fxlabs.fxt.dao.entity.project.SuggestionStatus;
 import com.fxlabs.fxt.dao.entity.project.TestSuite;
 import com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeConfig;
 import com.fxlabs.fxt.dao.entity.project.autocode.AutoCodeGenerator;
@@ -79,6 +80,9 @@ public class AutoSuggestService {
         Optional<com.fxlabs.fxt.dao.entity.project.AutoSuggestion> optional = autoSuggestionRepository.findById(id);
         if (optional.isPresent()){
             com.fxlabs.fxt.dao.entity.project.AutoSuggestion suggestion = optional.get();
+
+            suggestion.setStatus(SuggestionStatus.SKIPPED);
+            autoSuggestionRepository.save(suggestion);
 
             Optional<TestSuite> tsOptional = testSuiteRepository.findByProjectIdAndName(suggestion.getProjectId(),suggestion.getTestSuiteName());
 
