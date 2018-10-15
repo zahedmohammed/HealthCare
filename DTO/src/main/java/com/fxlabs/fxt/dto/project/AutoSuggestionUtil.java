@@ -57,7 +57,7 @@ public class AutoSuggestionUtil {
             case RBAC:
                 autoSuggestion.setIssueDesc("The end point is not fully Secured. It is accessible by unauthorized users.");
                 autoSuggestion.setEstimates("< 16 hours ");
-                autoSuggestion.setSuggestion("Make sure this endpoint is accessible only y intended roles.");
+                autoSuggestion.setSuggestion("Make sure this endpoint is accessible by only intended roles.");
                 break;
             case Negative:
                 autoSuggestion.setIssueDesc("A negative testcase is passing on this endpoint. It might result in improper behaviour of the application.");
