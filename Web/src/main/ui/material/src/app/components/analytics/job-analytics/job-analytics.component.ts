@@ -75,7 +75,7 @@ export class JobAnalyticsComponent implements OnInit {
 
     getRunByJob() {
         this.handler.activateLoader();
-        this.runService.get(this.jobId, 0, 20).subscribe(results => {
+        this.runService.get(this.jobId, 0, 10).subscribe(results => {
             this.handler.hideLoader();
             if (this.handler.handle(results)) {
                 return;
