@@ -27,59 +27,52 @@
     <div class="box1 box-default">
       <div class="box-body">
         <div class="row article-title-style">
-          <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
-            <div class="mat-elevation-z8 row no-margin-right">
-          <span class="col-md-1 mt-3">
-              <img src="assets/images/bot.png" height="35" width="35" />
-          </span>
-              <div class="col-md-11 mt-3 text-dark">
-                <!--
-                            <p class="text-dark mb-1"> <strong>Recommendation</strong> <span class="badge badge-primary d-inline">BOT</span>
-                              <small class="pull-right">{{auto.createdDate | timeAgo}}</small>
-                            </p>
-                -->
+       
+                <div class="col-md-6 mb-3" *ngFor="let auto of autoSuggest">
+                    <div class="mat-elevation-z8 row no-margin-right">
+                  <span class="col-md-1 mt-3">
+                      <img src="assets/images/bot.png" height="35" width="35" />
+                  </span>
+                      <div class="col-md-11 mt-3 text-dark"> 
+                        
+                          <div class="callout-custom callout callout-info">
 
-                <p>{{auto.method}}&nbsp;{{auto.endPoint}}
-                  <span class="p-custom pull-right text-small text-muted">{{auto.createdDate | timeAgo}}</span>
-                </p>
-                <p class="p-custom pull-right text-small">ID: {{auto.suggestionId}}</p>
-
-                <mat-chip-list>
-                  <mat-chip color="accent" >{{auto.category | uppercase}}</mat-chip>
-                  <mat-chip *ngIf="auto.severity === 'Critical'" color="warn" selected>{{auto.severity}}</mat-chip>
-                  <mat-chip *ngIf="auto.severity === 'Major'"  color="danger" selected>{{auto.severity}}</mat-chip>
-                  <mat-chip *ngIf="auto.severity === 'Minor'">{{auto.severity}}</mat-chip>
-                </mat-chip-list>
-
-                <!--<p class="p-custom">A test case under the category '{{auto.category}}' failed. {{auto.issueDesc}}</p>-->
-                <div class="callout-custom callout callout-warning">
-
-                  <p class="p-custom">{{auto.issueDesc}}</p>
-                  <p class="p-custom">
-                    <i class="fa fa-commenting fa-lg text-primary" title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p>
-                  <!--<p class="p-custom text-small"><span class="badge badge-secondary d-inline"
-                                                       title="Method">{{auto.method}}</span>&nbsp;&nbsp;{{auto.endPoint}}</p>-->
-                  <p class="p-custom text-small"><i class="fa fa-file-code-o fa-lg"
-                                                    title="Test Suite"></i>&nbsp;&nbsp;<a href="/app/projects/{{auto.projectId}}/test-suites">{{auto.testSuiteName}}</a>
-                  &nbsp;&nbsp;<!--<a href="openSkipDialog(auto)" title="Deactivate this test suite">Deactivate</a>-->
-                    <button mat-button class="text-center text-small" color="primary" title="Deactivate this test suite" (click)="openSkipDialog(auto)">Deactivate</button>
-                  </p>
-
-                  <p class="p-custom text-small"><i class="fa fa-clock-o fa-lg text-success"
-                                                    title="Effort Estimates"></i>&nbsp;&nbsp;{{auto.estimates}}</p>
+                              <p>{{auto.method}}&nbsp;{{auto.endPoint}}
+                                  <span class="p-custom pull-right text-small text-muted">{{auto.createdDate | timeAgo}}</span>
+                                </p>
+                                <p class="p-custom pull-right text-small">ID: {{auto.suggestionId}}
+                                <!-- <mat-chip-list>
+                                    <mat-chip color="accent" >auto.category | uppercase</mat-chip>
+                                    <mat-chip *ngIf="auto.severity === 'Critical'" color="warn" selected>auto.severity</mat-chip>
+                                    <mat-chip *ngIf="auto.severity === 'Major'"  color="danger" selected>auto.severity</mat-chip>
+                                    <mat-chip *ngIf="auto.severity === 'Minor'">auto.severity</mat-chip>
+                                  </mat-chip-list> -->
+                                  <span class="badge badge-secondary d-inline">Critical</span>
+                                </p>
+                            </div>
+                        
+                       
+      
+                        <div class="callout-custom callout callout-warning">
+        
+                          <p class="p-custom">{{auto.issueDesc}}</p>
+                          <p class="p-custom">
+                            <i class="fa fa-commenting fa-lg text-primary" title="FX Recommendation"></i> &nbsp;&nbsp;<b>{{auto.suggestion}}</b></p>
+                        
+                          <p class="p-custom text-small"><i class="fa fa-file-code-o fa-lg"
+                                                            title="Test Suite"></i>&nbsp;&nbsp;<a href="/app/projects/{{auto.projectId}}/test-suites">{{auto.testSuiteName}}</a>
+                          
+                            <button mat-button class="text-center text-small" color="primary" title="Deactivate this test suite" (click)="openSkipDialog(auto)">Deactivate</button>
+                          </p>
+        
+                          <p class="p-custom text-small"><i class="fa fa-clock-o fa-lg text-success"
+                                                            title="Effort Estimates"></i>&nbsp;&nbsp;{{auto.estimates}}</p>
+                          </div>
+                        <br />
+                      </div>
+        
+                    </div>
                   </div>
-                <!--<div>
-                    <button mat-button class="text-center pull-right" color="primary" (click)="openSkipDialog(auto)">Deactivate</button>
-                </div>
-                <div>
-                  <button mat-raised-button class="mat-raised-button-custom pull-right text-dark"
-                          (click)="openSkipDialog(auto)">Deactivate</button>
-                </div>-->
-                <br />
-              </div>
-
-            </div>
-          </div>
 
         </div>
       </div>
