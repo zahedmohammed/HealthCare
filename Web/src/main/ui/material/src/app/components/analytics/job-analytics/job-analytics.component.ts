@@ -45,7 +45,7 @@ export class JobAnalyticsComponent implements OnInit {
             if (params['id']) {
                 this.projectId = params['id'];
                 this.loadProject(this.projectId);
-                this.list(this.projectId)
+                this.list(this.projectId);
             }
         });
     }
