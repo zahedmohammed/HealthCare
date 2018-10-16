@@ -35,7 +35,7 @@
                                 <mat-input-container class="ml-8">
                                     <input [(ngModel)]="keyword" name="search" id="search" matInput type="search"
                                         placeholder="Search by name..." (keyup)="searchBot()">
-                                     <mat-icon matSuffix class="text-muted">search</mat-icon>
+                                        <span matPrefix><i class="fa fa-search text-muted"></i> &nbsp;</span>
                                 </mat-input-container>
                                 <p class="text-muted float-right mt-3">Total ({{length}})</p>
                             </div>

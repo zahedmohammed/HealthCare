@@ -25,7 +25,7 @@
                                 <mat-input-container class="ml-2">
                                     <input [(ngModel)]="keyword" name="search" id="search" matInput type="search"
                                         placeholder="Search by key..." (keyup)="searchVault()">
-                                    <mat-icon matSuffix class="text-muted">search</mat-icon>
+                                        <span matPrefix><i class="fa fa-search text-muted"></i> &nbsp;</span>
                                 </mat-input-container>
                                 <p class="text-muted float-right mt-4">Total ({{length}})</p>
                             </div>
