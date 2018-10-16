@@ -45,9 +45,13 @@
                                 <mat-form-field class="full-width">
                                     <mat-select placeholder="Account Type" required [(ngModel)]="entry.accountType"
                                         name="type" (change)="changeValue(true)">
-                                        <mat-option *ngFor="let type of accountTypes" [value]="type">
-                                            {{type}}
-                                        </mat-option>
+                                        <mat-option>-- None --</mat-option>
+                                        <mat-optgroup *ngFor="let group of accountTypeGroup" [label]="group.name"
+                                                      [disabled]="group.disabled">
+                                            <mat-option *ngFor="let accountType of group.accountType" [value]="accountType.value">
+                                                {{accountType.viewValue}}
+                                            </mat-option>
+                                        </mat-optgroup>
                                     </mat-select>
                                     <mat-error>Required</mat-error>
                                 </mat-form-field>
