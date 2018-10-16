@@ -1,22 +1,23 @@
 package com.fxlabs.fxt.codegen.generators.rbac;
 
 import com.fxlabs.fxt.codegen.code.Generator;
-import com.fxlabs.fxt.codegen.code.Match;
-import com.fxlabs.fxt.codegen.code.TestSuite;
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
+import io.swagger.models.HttpMethod;
+import io.swagger.models.Model;
 import io.swagger.models.Operation;
+import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Component(value = "rBACGenerator")
 public class RBACGenerator extends AbstractGenerator {
@@ -27,6 +28,14 @@ public class RBACGenerator extends AbstractGenerator {
     protected static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
     public List<TestSuiteMin> generate(String path, io.swagger.models.HttpMethod method, Operation op) {
+
+
+        Generator generator = configUtil.get(SCENARIO);
+        if (generator == null || generator.isInactive()) {
+            return null;
+        }
+
+
         final String path_ = path;
 
         for (Parameter param : op.getParameters()) {
@@ -38,78 +47,56 @@ public class RBACGenerator extends AbstractGenerator {
             }
         }
 
-        // No need to build body
+        // Need to build body
         // only assertions and auth are required post path pattern matches
 
-        Generator generator = configUtil.get(SCENARIO);
-        if (generator == null || generator.isInactive()) {
-//            System.err.println("No RBAC configuration found or RBAC is inactive...");
-            return null;
-        }
-
-        if (CollectionUtils.isEmpty(generator.getMatches())) {
-//            System.err.println("No RBAC matches configuration found...");
-            return null;
-        }
 
         final String endPoint = path;
-        Match match = null;
-
-        for (Match m : generator.getMatches()) {
-            if (StringUtils.isEmpty(m.getPathPatterns())) {
-                continue;
-            }
-            for (String pattern : m.getPathPatterns().split(", ")) {
-                if (ANT_PATH_MATCHER.match(pattern, path_) &&
-                        (StringUtils.isEmpty(m.getMethods()) || org.apache.commons.lang3.StringUtils.containsIgnoreCase(m.getMethods(), method.name()))) {
-                    System.out.print(String.format("Match found for pattern [%s] and path [%s]", pattern, path_));
-                    match = m;
-                    break;
-                }
-            }
-            if (match != null) break;
-        }
-
-        if (match == null) {
-            System.err.println(String.format("No RBAC matches found for path [%s]...", path_));
-            return null;
-        }
 
 
         String postFix = configUtil.getTestSuitePostfix(SCENARIO);
 
-        List<String> assertions = generator.getAssertions();
-        if (CollectionUtils.isEmpty(assertions)) {
-            assertions = Arrays.asList("@StatusCode == 403");
+        Set<String> allowedAssertions = configUtil.getAllowedAssertions();
+        Set<String> disallowedAssertions = configUtil.getDisallowedAssertions();
+
+        Set<String> allRoles = configUtil.getAllRoles();
+        Set<String> allowedRoles = configUtil.getAllowedRoles(method.name(), path);
+
+        String testcase = null;
+        // Only POST & PUT
+        if (method == HttpMethod.POST || method == HttpMethod.PUT) {
+
+            // Only body Parameter
+            Model model = null;
+            for (Parameter p : op.getParameters()) {
+                if (!(p instanceof BodyParameter)) {
+                    continue;
+                }
+                model = ((BodyParameter) p).getSchema();
+            }
+
+            if (model != null || !StringUtils.isBlank(model.getReference())) {
+                testcase = factory.getValid(model.getReference());
+            }
+
         }
 
-        // TODO get role not in
-        String roles = "Anonymous";
-        if (!StringUtils.isEmpty(match.getDenyRoles())) {
-            roles = match.getDenyRoles();
-        }
 
         List<TestSuiteMin> list = new ArrayList<>();
 
-        Arrays.stream(roles.split(", ")).forEach(role -> {
-            list.addAll(build(op, path_, endPoint, role + "_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role, null));
+        allRoles.stream().forEach(role -> {
+            if (CollectionUtils.containsAny(allRoles, allowedRoles)) {
+                list.addAll(build(op, path_, endPoint, role + "_Allowed_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role, null, allowedAssertions));
+            } else {
+                list.addAll(build(op, path_, endPoint, role + "_Disallowed_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role, null, disallowedAssertions));
+            }
+
         });
 
-
-        // TS for allowed Roles
-        if (CollectionUtils.isEmpty(assertions)) {
-            assertions = Arrays.asList("@StatusCode == 200");
-        }
-
-        String allowed_roles = null;
-        if (!StringUtils.isEmpty(match.getDenyRoles())) {
-            allowed_roles = match.getAllowRoles();
-        }
-
-        if (org.apache.commons.lang3.StringUtils.isNotEmpty(allowed_roles)) {
-            Arrays.stream(allowed_roles.split(", ")).forEach(role -> {
-                list.addAll(build(op, path_, endPoint, role + "_" + postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, role, null));
-            });
+        if (testcase != null) {
+            for (TestSuiteMin ts : list) {
+                buildTestCase(ts, 1, testcase);
+            }
         }
 
         return list;

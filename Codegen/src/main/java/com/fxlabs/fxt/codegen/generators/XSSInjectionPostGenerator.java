@@ -4,20 +4,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
-import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
-import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Model;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.Parameter;
-import io.swagger.models.parameters.QueryParameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mohammed Luqman Shareef
@@ -79,7 +79,7 @@ public class XSSInjectionPostGenerator extends AbstractGenerator {
 
         String testcase = objNode.toString();
         String postFix = configUtil.getTestSuitePostfix(SCENARIO);
-        List<TestSuiteMin> list = build(op, path, postFix, SCENARIO,op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+        List<TestSuiteMin> list = build(op, path, postFix, SCENARIO,op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, configUtil.getAssertions(SCENARIO));
         if (!CollectionUtils.isEmpty(list)) {
             buildTestCase(list.get(0), 1, testcase);
         }

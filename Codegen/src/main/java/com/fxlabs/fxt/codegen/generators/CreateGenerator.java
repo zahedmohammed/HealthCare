@@ -48,7 +48,7 @@ public class CreateGenerator extends AbstractGenerator {
 
         String postFix = configUtil.getTestSuitePostfix(SCENARIO);
 
-        List<TestSuiteMin> list = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+        List<TestSuiteMin> list = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, configUtil.getAssertions(SCENARIO));
 
         // TODO - if Security required
 

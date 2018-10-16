@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
-import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
-import com.fxlabs.fxt.dto.project.*;
+import com.fxlabs.fxt.dto.project.Policies;
+import com.fxlabs.fxt.dto.project.TestSuiteMin;
+import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Model;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.BodyParameter;
@@ -16,17 +16,15 @@ import io.swagger.models.parameters.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component(value = "mySQLTimeboundSqlInjectionPostGenerator")
 public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
 
-    protected static final String GENERATOR_TYPE = "sql_injection_timebound";
+    protected static final String SCENARIO = "sql_injection_timebound";
     protected static final String PARAM_TYPE = "post";
     protected static final String AUTH = "Default";// BASIC
     protected static final String INJECTION_DATASET = "@MySQLTimeboundSQLInjections";
@@ -43,10 +41,10 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
             return null;
         }
 
-        if (! configUtil.isDB(GENERATOR_TYPE,DB_NAME)){
+        if (! configUtil.isDB(SCENARIO,DB_NAME)){
             return null;
         }
-        String dbVersion = configUtil.getDBVersion(GENERATOR_TYPE,DB_NAME);
+        String dbVersion = configUtil.getDBVersion(SCENARIO,DB_NAME);
 
         Policies policies =  new Policies();
         policies.setRepeatModule(INJECTION_DATASET);
@@ -64,14 +62,14 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
             return null;
         }
 
-        String postFix =  configUtil.getTestSuitePostfix(GENERATOR_TYPE); //PARAM_TYPE + "_" +
+        String postFix =  configUtil.getTestSuitePostfix(SCENARIO); //PARAM_TYPE + "_" +
         List<TestSuiteMin> list = new ArrayList<>();
         String testcase = null;
 
         // check for method from config
 
 
-        String resSampleMappings = configUtil.getResourceSampleMappings(GENERATOR_TYPE);
+        String resSampleMappings = configUtil.getResourceSampleMappings(SCENARIO);
         if ( StringUtils.isBlank(resSampleMappings)) {
             return null;
         }else{
@@ -82,7 +80,7 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
 
             for( String resName : resSampleMappingsArr)
             {
-                String sampleBody = configUtil.getResourceSample(GENERATOR_TYPE, resName);
+                String sampleBody = configUtil.getResourceSample(SCENARIO, resName);
                 if (StringUtils.isBlank(sampleBody)){
                     continue;
                 }
@@ -91,7 +89,7 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
                 JsonNode node = null;
                 try {
 
-                    String bodyProperties = configUtil.getBodyProperties(GENERATOR_TYPE); //TODO: get from config requestMapping.getSqlProperties();
+                    String bodyProperties = configUtil.getBodyProperties(SCENARIO); //TODO: get from config requestMapping.getSqlProperties();
 
                     System.out.println("Body properties..............");
                     if (StringUtils.isBlank(bodyProperties)){
@@ -118,7 +116,7 @@ public class MySQLTimeboundSQLInjectionPostGenerator extends AbstractGenerator {
                             ((ObjectNode) node).put(prop,"{{" + INJECTION_DATASET + "}}");
                             testcase = mapper.writeValueAsString(node);
 
-                            List<TestSuiteMin> list_ = build(op, path, endPoint, postFix + "_" + prop, GENERATOR_TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+                            List<TestSuiteMin> list_ = build(op, path, endPoint, postFix + "_" + prop, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, configUtil.getAssertions(SCENARIO));
                             buildTestCase(list_.get(0), index++, testcase);
                             list.add(list_.get(0));
                         }

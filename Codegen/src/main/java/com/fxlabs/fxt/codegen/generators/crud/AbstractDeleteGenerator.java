@@ -52,7 +52,7 @@ public class AbstractDeleteGenerator extends AbstractGenerator {
 
         //String testcase = factory.getValid(model.getReference());
 
-        List<TestSuiteMin> list = build(op, path, POSTFIX, POSTFIX, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH);
+        List<TestSuiteMin> list = build(op, path, POSTFIX, POSTFIX, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH, configUtil.getAssertions(POSTFIX));
 
         if (!CollectionUtils.isEmpty(list)) {
             list.get(0).setEndpoint(path_);

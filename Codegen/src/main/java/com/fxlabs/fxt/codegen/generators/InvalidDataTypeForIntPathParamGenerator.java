@@ -1,16 +1,13 @@
 package com.fxlabs.fxt.codegen.generators;
 
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
-import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
-import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +38,7 @@ public class InvalidDataTypeForIntPathParamGenerator extends AbstractGenerator {
                     continue;
                 }
                 String postFix = PARAM_TYPE + "_" + pathParam.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO) ;
-                List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, configUtil.getAssertions(SCENARIO));
                 for (TestSuiteMin testSuite : testSuites) {
                     String _path = path.replace("{" + pathParam.getName() + "}", RandomStringUtils.randomAlphanumeric(6));
                     testSuite.setEndpoint(_path);

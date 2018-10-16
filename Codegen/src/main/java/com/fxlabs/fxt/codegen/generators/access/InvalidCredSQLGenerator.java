@@ -67,7 +67,7 @@ public class InvalidCredSQLGenerator extends AbstractGenerator {
             policies.setRepeatModule(INJECTION_DATASET);
 
             String postFix = configUtil.getTestSuitePostfix(SCENARIO);
-            list = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+            list = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, configUtil.getAssertions(SCENARIO));
 
 
         }

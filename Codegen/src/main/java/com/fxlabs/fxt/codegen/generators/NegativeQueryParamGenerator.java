@@ -1,13 +1,15 @@
 package com.fxlabs.fxt.codegen.generators;
 
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
-import com.fxlabs.fxt.dto.project.*;
+import com.fxlabs.fxt.dto.project.Policies;
+import com.fxlabs.fxt.dto.project.TestSuiteCategory;
+import com.fxlabs.fxt.dto.project.TestSuiteMin;
+import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
+import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.PathParameter;
 import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
-import io.swagger.models.parameters.Parameter;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class NegativeQueryParamGenerator extends AbstractGenerator {
                     QueryParameter queryParam = (QueryParameter) param;
                     if ("integer".equals(queryParam.getType())){
                         String postFix = PARAM_TYPE + "_"  + queryParam.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO)  ;
-                        List<TestSuiteMin> testSuites = build(op, path, endPoint, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+                        List<TestSuiteMin> testSuites = build(op, path, endPoint, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, configUtil.getAssertions(SCENARIO));
                         for (TestSuiteMin testSuite : testSuites) {
                             testSuite.setEndpoint(endPoint + "?" + queryParam.getName() + "=" + "-1");
                             testSuite.setCategory(TestSuiteCategory.Negative);

@@ -30,6 +30,8 @@ public class AutoCodeConfigUtil {
         }
         if (this.config == null) {
             this.config = config;
+            populateAssertions();
+            populateAllRoles();
 //            if (this.config.getTestSuites() != null) {
 //                this.config.getTestSuites().forEach(System.out::println);
 //                System.out.println("");
@@ -44,9 +46,13 @@ public class AutoCodeConfigUtil {
 
     public void resetConfig() {
         this.config = null;
+        this.allowedAssertions = new HashSet<>();
+        this.disallowedAssertions = new HashSet<>();
+        this.allRoles = new HashSet<>();
+
     }
 
-    private static final List<String> DEFAULT_ASSERTIONS = new ArrayList<>();
+    private static final Set<String> DEFAULT_ASSERTIONS = new HashSet<>();
     private static final TestSuiteCategory DEFAULT_CATEGORY = TestSuiteCategory.Functional;
     private static final TestSuiteSeverity DEFAULT_SEVERITY = TestSuiteSeverity.Major;
     private static final boolean DEFAULT_INACTIVE = true;
@@ -253,7 +259,7 @@ public class AutoCodeConfigUtil {
 //        return null;
     }
 
-    public List<String> getAssertions(String type) {
+    public Set<String> getAssertions(String type) {
 
         if (this.config == null) return DEFAULT_ASSERTIONS;
 
@@ -266,7 +272,7 @@ public class AutoCodeConfigUtil {
                             gen.getAssertions().get(0).equalsIgnoreCase("null")) {
                         return DEFAULT_ASSERTIONS;
                     } else {
-                        return gen.getAssertions();
+                        return new HashSet<>(gen.getAssertions());
                     }
                 }
             }
@@ -449,6 +455,85 @@ public class AutoCodeConfigUtil {
         return null;
     }
     // ###################     DDOS support end   ###################
+
+
+    // ##################      RBAC support start ###################
+
+    private Set<String> allRoles = new HashSet<>();
+
+    private void populateAllRoles() {
+        Generator gen = get("rbac");
+
+        if (gen == null || CollectionUtils.isEmpty(gen.getMatches())) {
+            return;
+        }
+
+        for (Match match : gen.getMatches()) {
+            if (StringUtils.isEmpty(match.getResourceSamples())) {
+                continue;
+            }
+            for (String prop : match.getName().split(",|\\n|\\t")) {
+                allRoles.add(prop);
+            }
+        }
+    }
+
+    public Set<String> getAllRoles() {
+        return allRoles;
+    }
+    public Set<String> getAllowedRoles(String method, String endpoint) {
+        Generator gen = get("rbac");
+
+        if (gen == null || CollectionUtils.isEmpty(gen.getMatches())) {
+            return new HashSet<>();
+        }
+
+        for (Match match : gen.getMatches()) {
+            if (StringUtils.isEmpty(match.getResourceSamples())) {
+                continue;
+            }
+            for (String prop : match.getName().split(",|\\n|\\t")) {
+                if (StringUtils.startsWithIgnoreCase(method + ":" + endpoint, prop)) {
+                    if (prop.contains("[") && prop.contains("]")) {
+                        String roles = StringUtils.substring(prop, StringUtils.indexOf(prop, "["), StringUtils.indexOf(prop, "]"));
+                        return new HashSet<>(Arrays.asList(roles.split(",|\\n|\\t")));
+                    } else {
+                        return new HashSet<>();
+                    }
+                }
+            }
+        }
+        return new HashSet<>();
+    }
+
+    private Set<String> allowedAssertions = new HashSet<>();
+    private Set<String> disallowedAssertions = new HashSet<>();
+
+    private void populateAssertions() {
+        Set<String> assertions = getAssertions("rbac");
+        for (String assertion : assertions) {
+            System.out.println(assertion);
+            if (StringUtils.startsWithIgnoreCase(assertion, "Allowed:")) {
+                System.out.println("Allowed : " + assertion.split(":")[1]);
+                allowedAssertions.add(assertion.split(":")[1]);
+            } else {
+                disallowedAssertions.add(assertion.split(":")[1]);
+            }
+        }
+    }
+
+    public Set<String> getAllowedAssertions() {
+        return allowedAssertions;
+
+    }
+
+    public Set<String> getDisallowedAssertions() {
+        return disallowedAssertions;
+
+    }
+
+
+    // ##################      RBAC support end  ###################
 
     // PropertyMapping
 

@@ -63,7 +63,7 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
         String val = configUtil.getDDOSMappedValue(path, SCENARIO);
         if (StringUtils.isNotEmpty(val)) {
             String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_Mapped";
-            testSuites = build(op, path, val, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+            testSuites = build(op, path, val, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, configUtil.getAssertions(SCENARIO));
             allTestSuites.addAll(testSuites);
         } else {
 
@@ -87,7 +87,7 @@ public class MaxIntQueryParamGenerator extends AbstractGenerator {
                 String postFix = PARAM_TYPE + "_" + param.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO) ;
 
                 if (testSuites == null) {
-                    testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+                    testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, configUtil.getAssertions(SCENARIO));
                     allTestSuites.addAll(testSuites);
                     if (testSuites != null && testSuites.size() > 0) {
                         testSuites.get(0).setEndpoint(endPoint + "?" + param.getName() + "=" + value);

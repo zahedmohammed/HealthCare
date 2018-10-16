@@ -47,7 +47,7 @@ public class AbstractCreateGenerator extends AbstractGenerator {
 
         String testcase = factory.getValid(model.getReference());
 
-        List<TestSuiteMin> list = build(op, path, POSTFIX, SCENARIO, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH);
+        List<TestSuiteMin> list = build(op, path, POSTFIX, SCENARIO, op.getDescription(), TestSuiteType.ABSTRACT, method, TAG, AUTH, configUtil.getAssertions(SCENARIO));
 
         // TODO - if Security required
 

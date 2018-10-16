@@ -5,7 +5,6 @@ import com.fxlabs.fxt.dto.project.TestSuiteMin;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import io.swagger.models.Operation;
 import io.swagger.models.parameters.Parameter;
-import io.swagger.models.parameters.QueryParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -19,7 +18,7 @@ import java.util.List;
 @Component(value = "noParamsGetGenerator")
 public class NoParamsGetGenerator extends AbstractGenerator {
 
-    protected static final String TYPE = "no_params";
+    protected static final String SCENARIO = "no_params";
     protected static final String PARAM_TYPE = "no_params";
     protected static final String AUTH = "Default";
 
@@ -39,8 +38,8 @@ public class NoParamsGetGenerator extends AbstractGenerator {
             }
             // There are no parameters or all params are optional
 
-            String postFix = configUtil.getTestSuitePostfix(TYPE) ;
-            List<TestSuiteMin> testSuites = build(op, path, postFix, TYPE, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+            String postFix = configUtil.getTestSuitePostfix(SCENARIO) ;
+            List<TestSuiteMin> testSuites = build(op, path, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, configUtil.getAssertions(SCENARIO));
             for (TestSuiteMin testSuite : testSuites) {
                 testSuite.setEndpoint(path );
                 System.out.println(testSuite.getName());

@@ -67,7 +67,7 @@ public class SLAGetGenerator extends AbstractGenerator {
             // postFix -> filename
             // val -> endpoint
             String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_Mapped";
-            testSuites = build(op, path, val, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+            testSuites = build(op, path, val, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, configUtil.getAssertions(SCENARIO));
             allTestSuites.addAll(testSuites);
         } else if (!CollectionUtils.isEmpty(op.getParameters())) {
 
@@ -91,7 +91,7 @@ public class SLAGetGenerator extends AbstractGenerator {
                 String postFix = PARAM_TYPE + "_" + param.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO);
 
                 if (testSuites == null) {
-                    testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+                    testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, configUtil.getAssertions(SCENARIO));
                     allTestSuites.addAll(testSuites);
                     if (testSuites != null && testSuites.size() > 0) {
                         testSuites.get(0).setEndpoint(endPoint + "?" + param.getName() + "=" + value);
@@ -105,7 +105,7 @@ public class SLAGetGenerator extends AbstractGenerator {
             }
         } else {
             String postFix = PARAM_TYPE + "_" + configUtil.getTestSuitePostfix(SCENARIO) + "_Mapped";
-            testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies);
+            testSuites = build(op, path, endPoint, postFix, SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, policies, configUtil.getAssertions(SCENARIO));
             allTestSuites.addAll(testSuites);
         }
 

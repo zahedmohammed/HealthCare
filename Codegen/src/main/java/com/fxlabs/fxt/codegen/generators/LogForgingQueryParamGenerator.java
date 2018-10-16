@@ -1,9 +1,7 @@
 package com.fxlabs.fxt.codegen.generators;
 
 import com.fxlabs.fxt.codegen.generators.base.AbstractGenerator;
-import com.fxlabs.fxt.dto.project.TestSuiteCategory;
 import com.fxlabs.fxt.dto.project.TestSuiteMin;
-import com.fxlabs.fxt.dto.project.TestSuiteSeverity;
 import com.fxlabs.fxt.dto.project.TestSuiteType;
 import com.mifmif.common.regex.Generex;
 import io.swagger.models.Operation;
@@ -44,7 +42,7 @@ public class LogForgingQueryParamGenerator extends AbstractGenerator {
                 if (param instanceof QueryParameter) {
                     QueryParameter queryParam = (QueryParameter) param;
                     String postFix = PARAM_TYPE + "_" + queryParam.getName() + "_" + configUtil.getTestSuitePostfix(SCENARIO);
-                    List<TestSuiteMin> testSuites = build(op, path, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH);
+                    List<TestSuiteMin> testSuites = build(op, path, postFix,SCENARIO, op.getDescription(), TestSuiteType.SUITE, method, TAG, AUTH, configUtil.getAssertions(SCENARIO));
                     for (TestSuiteMin testSuite : testSuites) {
                         testSuite.setEndpoint(path + "?" + queryParam.getName() + "=" + logForgerStr );  // "{{@LogForging}}"
                     }

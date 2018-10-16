@@ -201,26 +201,32 @@ public class AutoCodeConfigServiceUtil {
 
         rbac.setSeverity(TestSuiteSeverity.Critical);
         rbac.setType("rbac");
-        rbac.setDisplayHeaderLabel("Role Based Access Control");
-        rbac.setDisplayHeaderDescription("RBAC Test suite is a way to test security that checks Roles access information they are authorized to and are not accessing additional information that is not relevant to them.");
-        rbac.setAssertionDescription("Successful test suite response codes are 200. UnSuccessful test suite response codes are 401, 403.");
+        rbac.setDisplayHeaderLabel("Role Based Access Control (RBAC)");
+        rbac.setDisplayHeaderDescription("Tests how RBAC policies are correctly enforced.\n" +
+                "        In RBAC, users receive privileges through role assignments and activate them during sessions (ANSI 2004).\n" +
+                "        Despite its simplicity, mistakes can occur during development and lead to faults, or either security breaches. Therefore, software verification and validation becomes necessary.\n" +
+                "        Access control breaches are critical security problems that can result from unintended and improper implementation of security policies\n" +
+                "        ");
+        rbac.setAssertionDescription("Change or add more assertions below '--Allowed Assertions' and '--Disallowed Assertions' sections");
 
 
         List<String> assertions = new ArrayList<>();
-        assertions.add("@StatusCode == 403");
+        assertions.add("Disallowed:@StatusCode == 401 OR @StatusCode == 403");
+        assertions.add("Allowed:@StatusCode != 401 AND @StatusCode != 403");
         rbac.setAssertions(assertions);
 
         List<AutoCodeGeneratorMatches> matchesList = new ArrayList<>();
 
         AutoCodeGeneratorMatches admin = new AutoCodeGeneratorMatches();
-        admin.setName("Admin access");
-        admin.setPathPatterns("/api/v1/orgs/**, /api/v1/accounts/**");
-        admin.setMethods("Post, Put, Delete");
-        admin.setDenyRoles("Writer, Reader");
-        admin.setAllowRoles("Admin");
+        admin.setName("ROLE_ADMIN,ROLE_PM,ROLE_USER");
+        admin.setResourceSamples("Get:/api/v1/orgs/:Allowed[ROLE_ADMIN]\n" +
+                "Post:/api/v1/accounts/:Allowed[ROLE_ADMIN,ROLE_PM]");
+        //admin.setMethods("Post, Put, Delete");
+        //admin.setDenyRoles("Writer, Reader");
+        //admin.setAllowRoles("Admin");
         matchesList.add(admin);
 
-        AutoCodeGeneratorMatches writer = new AutoCodeGeneratorMatches();
+        /*AutoCodeGeneratorMatches writer = new AutoCodeGeneratorMatches();
         writer.setName("Writer access");
         writer.setPathPatterns("/api/v1/projects/**, /api/v1/regions/**");
         writer.setMethods("Post, Put, Delete");
@@ -242,7 +248,7 @@ public class AutoCodeConfigServiceUtil {
         reader.setMethods("Get, Post, Put, Delete");
         reader.setDenyRoles("Other");
         reader.setAllowRoles("Reader, Writer");
-        matchesList.add(reader);
+        matchesList.add(reader);*/
 
         rbac.setMatches(matchesList);
         rbac.setSequenceOrder(seqOrder);
