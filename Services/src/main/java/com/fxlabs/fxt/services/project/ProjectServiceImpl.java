@@ -727,6 +727,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                     pGen.setAssertionDescription(gen.getAssertionDescription());
                     pGen.setSeverity(gen.getSeverity());
                     pGen.setSequenceOrder(gen.getSequenceOrder());
+                    pGen.setTags(gen.getTags());
 
                     if (CollectionUtils.isEmpty(pGen.getMatches()) &&
                             CollectionUtils.isNotEmpty(gen.getMatches())) {

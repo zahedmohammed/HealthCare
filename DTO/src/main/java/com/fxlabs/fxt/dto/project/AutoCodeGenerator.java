@@ -23,6 +23,7 @@ public class AutoCodeGenerator extends BasicBaseDto {
     private String displayHeaderDescription;
     private String displayHeaderLabel;
     private String assertionDescription;
+    private List<String> tags;
     private List<String> assertions;
     private String assertionsText;
     private TestSuiteSeverity severity;

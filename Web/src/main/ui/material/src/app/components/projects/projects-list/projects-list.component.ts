@@ -69,7 +69,7 @@ export class ProjectsListComponent implements OnInit {
       this.runsChartTile = new Chart('canvas1', {
         type: 'doughnut',
         data: {
-          labels: ["Total Runs", "Remaining Runs"],
+          labels: ["Used", "Remaining"],
           datasets: [
             {
               data: [currentRuns, maxRuns - currentRuns],

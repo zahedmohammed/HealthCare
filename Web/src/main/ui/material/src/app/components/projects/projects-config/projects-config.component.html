@@ -112,6 +112,9 @@
                                         <div class="mb-3">
                                             {{res.displayHeaderDescription}}
                                         </div>
+                                        <div class="mb-3">
+                                            <span *ngFor="let tag of res.tags"><span class="badge badge-warning d-inline">{{tag | uppercase}}</span>&nbsp;&nbsp;</span>
+                                        </div>
                                         <div *ngIf="res.type === 'DDOS'">
                                             <div class="row">
                                                 <div class="col-md-10">

@@ -35,7 +35,7 @@ public class AutoCodeConfigServiceUtil {
         autoCodeGenerators.add(getSpecial_chars(110));
         autoCodeGenerators.add(getNull_value(120));
         autoCodeGenerators.add(getEmpty_value(130));
-        autoCodeGenerators.add(getNegagtive_Number(140));
+        autoCodeGenerators.add(getNegative_Number(140));
         autoCodeGenerators.add(getCreate(150));
 
         Collections.sort(autoCodeGenerators,
@@ -93,7 +93,7 @@ public class AutoCodeConfigServiceUtil {
         empty_value.setType("empty_value");
 
         empty_value.setDisplayHeaderLabel("Empty Value");
-        empty_value.setDisplayHeaderDescription("Empty value is a negative test case to check how APIs behave when empty values are sent in a data type that API is not expecting.");
+        empty_value.setDisplayHeaderDescription("Negative tests with empty values.");
         empty_value.setAssertionDescription("Successful test suite response code is 400, 403, 406 and 500. UnSuccessful test suite response code is 200.");
 
 
@@ -107,7 +107,7 @@ public class AutoCodeConfigServiceUtil {
         return empty_value;
     }
 
-    private static AutoCodeGenerator getNegagtive_Number(int seqOrder) {
+    private static AutoCodeGenerator getNegative_Number(int seqOrder) {
 
         AutoCodeGenerator negative_number = new AutoCodeGenerator();
         negative_number.setInactive(false);
@@ -288,6 +288,8 @@ public class AutoCodeConfigServiceUtil {
                 "query parameters, request body parameters, path parameters and passed to the application server/database.");
         sql_injection_timebound.setAssertionDescription("Successful test suite response codes are 200 or 408. UnSuccessful test suite response codes are 400, 404, 500.");
 
+        sql_injection_timebound.setTags(Arrays.asList("OWASP A1", "[PCI DSS 3.0] 6.5.1"));
+
         List<String> assertions = new ArrayList<>();
         assertions.add("@ResponseTime < 7000 OR @ResponseTime > 10000");
         // assertions.add("@StatusCode != 401");
@@ -338,10 +340,11 @@ public class AutoCodeConfigServiceUtil {
         XSS_Injection.setInactive(false);
         XSS_Injection.setSeverity(TestSuiteSeverity.Critical);
         XSS_Injection.setType("XSS_Injection");
-        XSS_Injection.setDisplayHeaderLabel("Cross Site Scripting(XSS) Injection");
+        XSS_Injection.setDisplayHeaderLabel("Cross Site Scripting Injection (XSS)");
         XSS_Injection.setDisplayHeaderDescription("Cross-site scripting (XSS) is a type of injection security attack in which an attacker injects data, such as a malicious script, into content from otherwise trusted websites.");
         XSS_Injection.setAssertionDescription("Successful test suite attack response code is 200. UnSuccessful test suite response code is 400, 401 and 500.");
 
+        XSS_Injection.setTags(Arrays.asList("OWASP A3", "[PIC DSS 3.0] 6.5.7"));
 
         List<String> assertions = new ArrayList<>();
         assertions.add("@StatusCode != 200");
@@ -362,9 +365,11 @@ public class AutoCodeConfigServiceUtil {
         ddos.setSeverity(TestSuiteSeverity.Critical);
         ddos.setType("DDOS");
 
-        ddos.setDisplayHeaderLabel("Distributed Denial of Service");
-        ddos.setDisplayHeaderDescription("Distributed Denial of service is flooding the targeted machine or resource with superfluous requests from many different sources in an attempt to overload systems and prevent some or all legitimate requests from being fulfilled.");
+        ddos.setDisplayHeaderLabel("Distributed Denial of Service (DDOS)");
+        ddos.setDisplayHeaderDescription("Distributed Denial of service is flooding the targeted machine or resource with superfluous " +
+                "requests from many different sources in an attempt to overload systems and prevent some or all legitimate requests from being fulfilled.");
         ddos.setAssertionDescription("Successful test suite response code is 401, 404, 500 or 503. UnSuccessful test suite response code is 200.");
+        ddos.setTags(Arrays.asList("[PCI DSS 3.0] 6.5.2"));
 
 
         List<String> assertions = new ArrayList<>();
@@ -389,8 +394,10 @@ public class AutoCodeConfigServiceUtil {
         auth_invalid.setType("auth_invalid");
 
         auth_invalid.setDisplayHeaderLabel("Authentication Invalid");
-        auth_invalid.setDisplayHeaderDescription("Identifies endpoints that skips token validation. Note: Environment should have an Auth with name 'Invalid_Auth'");
+        auth_invalid.setDisplayHeaderDescription("Identifies endpoints that skips token validation. Note: Environment should have an Auth with name 'Invalid_Auth'.");
         auth_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
+
+        auth_invalid.setTags(Arrays.asList("OWASP A2", "OWASP A5", "OWASP A6", "OWASP A7", "[PIC DSS 3.0] 6.5.8", "[PIC DSS 3.0] 6.5.10"));
 
 
         List<String> assertions = new ArrayList<>();
@@ -416,9 +423,11 @@ public class AutoCodeConfigServiceUtil {
         auth_invalid.setSeverity(TestSuiteSeverity.Critical);
         auth_invalid.setType("auth_invalid_empty");
 
-        auth_invalid.setDisplayHeaderLabel("Authentication Invalid [Empty]");
+        auth_invalid.setDisplayHeaderLabel("Authentication Invalid (Empty)");
         auth_invalid.setDisplayHeaderDescription("Identifies endpoints that skips token validation. Note: Environment should have an Auth with name 'Invalid_Auth_Empty'");
         auth_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
+
+        auth_invalid.setTags(Arrays.asList("OWASP A2", "OWASP A5", "OWASP A6", "OWASP A7", "[PIC DSS 3.0] 6.5.8", "[PIC DSS 3.0] 6.5.10"));
 
 
         List<String> assertions = new ArrayList<>();
@@ -444,9 +453,11 @@ public class AutoCodeConfigServiceUtil {
         auth_invalid.setSeverity(TestSuiteSeverity.Critical);
         auth_invalid.setType("auth_invalid_sql");
 
-        auth_invalid.setDisplayHeaderLabel("Authentication Invalid [SQL]");
+        auth_invalid.setDisplayHeaderLabel("Authentication Invalid (SQL)");
         auth_invalid.setDisplayHeaderDescription("Identifies endpoints that skips token validation. Note: Environment should have an Auth with name 'Invalid_Auth_SQL'");
         auth_invalid.setAssertionDescription("Successful test suite response code should be 401 and 403. Unsuccessful test suite response code is 200.");
+
+        auth_invalid.setTags(Arrays.asList("OWASP A1", "[PCI DSS 3.0] 6.5.1"));
 
 
         List<String> assertions = new ArrayList<>();
