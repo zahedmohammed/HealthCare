@@ -184,6 +184,18 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 if (dto != null && StringUtils.isEmpty(dto.getProp2())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Tenant is empty"));
                 }
+            case GCP:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Client-Id is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Secret Secret is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getProp3())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Project ID"));
+                }
                 break;
             case Self_Hosted:
                 break;
@@ -275,6 +287,19 @@ public class AccountServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
                 if (dto != null && StringUtils.isEmpty(dto.getProp2())) {
                     return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Tenant is empty"));
+                }
+                break;
+            case GCP:
+                if (dto != null && StringUtils.isEmpty(dto.getAccessKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Client-Id is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getSecretKey())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Client Secret is empty"));
+                }
+
+                if (dto != null && StringUtils.isEmpty(dto.getProp3())) {
+                    return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid Project ID"));
                 }
                 break;
             case Self_Hosted:
