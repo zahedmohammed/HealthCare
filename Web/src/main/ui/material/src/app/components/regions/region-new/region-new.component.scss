@@ -2,3 +2,5 @@
     background-color: #2196F3;
     color: white !important;
 }
+$flag-icon-css-path: '~flag-icon-css/flags' !default;
+@import "~flag-icon-css/sass/flag-icon";
