@@ -320,6 +320,80 @@
           </div>
           <!-- Azure  End    -->
 
+          <!-- GCP start -->
+          <div *ngIf="entry.accountType === 'GCP'">
+
+            <div class="form-group row">
+              <label for="Gcpclient" class="col-md-0 control-label">
+              </label>
+              <div class="col-md-5">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.accessKey" name="client" id="client"
+                         matInput type="text" placeholder="ClientId">
+                  <mat-error>Required</mat-error>
+                </mat-input-container>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="gcpSecretKey" class="col-md-0 control-label">
+              </label>
+              <div class="col-md-5">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.secretKey" name="gcpSecretKey" id="gcpSecretKey"
+                         matInput type="password" placeholder="ClientSecret">
+                  <mat-error>Required</mat-error>
+                </mat-input-container>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="projectId" class="col-md-0 control-label">
+              </label>
+              <div class="col-md-5">
+                <mat-input-container class="full-width">
+                  <input required [(ngModel)]="entry.prop3" name="projectId" id="projectId" matInput
+                         type="text" placeholder="Project ID">
+                  <mat-error>Required</mat-error>
+                </mat-input-container>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-0 control-label">
+              </label>
+              <div class="col-md-5">
+                <a href="javascript:;" (click)="toggleCloud()">Advanced section</a>
+              </div>
+            </div>
+
+            <div [hidden]="cloudShow">
+
+              <div class="form-group row">
+                <label class="col-md-0 control-label">
+                </label>
+                <div class="col-md-5">
+                  <mat-form-field class="full-width">
+                    <mat-select placeholder="Available regions" [(ngModel)]="entry.allowedRegions"
+                                name="region" multiple>
+                      <mat-option *ngFor="let region of GCPREGIONS" [value]="region">
+                        {{region}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-7">
+                  <div class="callout1 text-muted callout-info1 mt-4">
+                    <p>
+                      Restrict users from deploying bots across non available regions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- GCP  End    -->
+
           <!-- BitBucket  Start    -->
           <div class="form-group row" *ngIf="entry.accountType === 'BitBucket'  && entry.secretKey !=null && entry.accessKey !=null">
             <label for="bitBucketAccessKey" class="col-md-0 control-label">
