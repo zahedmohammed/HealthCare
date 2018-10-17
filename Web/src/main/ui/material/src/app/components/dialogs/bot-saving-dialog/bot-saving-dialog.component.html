@@ -1,51 +1,60 @@
 <meta name="author" content="Syed Abdul Rasheed">
-<h2 mat-dialog-title>Bot Savings</h2>
+<div class="row">
+    <div class="col-md-8 overflow-hidden">
+        <h6 mat-dialog-title class="text-primary">Bot Savings</h6>
+    </div>
+    <div class="col-md-4">
+        <a class="float-right" href="javascript:;;" (click)="dialogRef.close()"><i class="material-icons">
+                close
+            </i></a>
+    </div>
+</div>
 
 <mat-dialog-content class="mat-typography">
-  <div class="box box-default table-box mdl-shadow--2dp">
-    <table class="mdl-data-table">
-        <thead>
-            <tr>
-                <th class="mdl-data-table__cell--non-numeric">#</th>
-                <th class="mdl-data-table__cell--non-numeric">Type</th>
-                <th class="mdl-data-table__cell--non-numeric">Formula</th>
-                <th>Savings</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="mdl-data-table__cell--non-numeric">1</td>
-                <td class="mdl-data-table__cell--non-numeric">License</td>
-                <td class="mdl-data-table__cell--non-numeric text-muted md-small">
-                    (~$500/yr/node) x nodes x duration (months)
-                </td>
-                <td>${{saving?.licenseSaving}}</td>
-            </tr>
-            <tr>
-                <td class="mdl-data-table__cell--non-numeric">2</td>
-                <td class="mdl-data-table__cell--non-numeric">Managed
-                    Instance
-                </td>
-                <td class="mdl-data-table__cell--non-numeric text-muted">
-                    (~$42/mo/instance) x nodes x duration (months)
-                </td>
-                <td>${{saving?.managedInstanceSaving}}</td>
-            </tr>
-            <tr class="bg-color-info">
-                <td class="mdl-data-table__cell--non-numeric"></td>
-                <td class="mdl-data-table__cell--non-numeric">Total savings
-                </td>
-                <td class="mdl-data-table__cell--non-numeric text-muted">
-                    License savings + Managed Instance savings
-                </td>
-                <td>${{saving?.total}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div>Total Months : {{saving?.calMonths}}<br></div>
-<div>Instance Count: {{saving?.count}}<br></div>
-<div>Instance Create Date: {{saving?.startDate | date:'short'}}<br></div>
+    <div class="box box-default table-box mdl-shadow--2dp">
+        <table class="mdl-data-table">
+            <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">#</th>
+                    <th class="mdl-data-table__cell--non-numeric">Type</th>
+                    <th class="mdl-data-table__cell--non-numeric">Formula</th>
+                    <th>Savings</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">1</td>
+                    <td class="mdl-data-table__cell--non-numeric">License</td>
+                    <td class="mdl-data-table__cell--non-numeric text-muted md-small">
+                        (~$500/yr/node) x nodes x duration (months)
+                    </td>
+                    <td>${{saving?.licenseSaving}}</td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">2</td>
+                    <td class="mdl-data-table__cell--non-numeric">Managed
+                        Instance
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric text-muted">
+                        (~$42/mo/instance) x nodes x duration (months)
+                    </td>
+                    <td>${{saving?.managedInstanceSaving}}</td>
+                </tr>
+                <tr class="bg-color-info">
+                    <td class="mdl-data-table__cell--non-numeric"></td>
+                    <td class="mdl-data-table__cell--non-numeric">Total savings
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric text-muted">
+                        License savings + Managed Instance savings
+                    </td>
+                    <td>${{saving?.total}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>Total Months : {{saving?.calMonths}}<br></div>
+    <div>Instance Count: {{saving?.count}}<br></div>
+    <div>Instance Create Date: {{saving?.startDate | date:'short'}}<br></div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
