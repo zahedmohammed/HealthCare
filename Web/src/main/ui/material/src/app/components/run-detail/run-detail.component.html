@@ -33,10 +33,11 @@
                         <h6>Region: {{run.regions}}</h6>
                     </div>
                     <div class="col-md-8">
-                        <button mat-raised-button class="btn-w-sm text-danger float-right" (click)="deleteRun();">
+                        <button mat-raised-button class="btn-w-sm text-danger float-right" (click)="deleteRun();"><i
+                            class="material-icons">delete</i>
                             Delete &nbsp;</button>
-                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="rerun();">
-                            Re-Run &nbsp;
+                        <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="rerun();"><i class="material-icons">play_circle_outline</i>
+                            &nbsp;Re-Run 
                         </button>
                         <button mat-raised-button class="btn-w-sm text-primary float-right" (click)="nextRun();">Next<i
                                 class="material-icons">keyboard_arrow_right</i></button>

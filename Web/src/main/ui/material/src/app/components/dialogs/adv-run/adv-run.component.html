@@ -1,4 +1,13 @@
-<h2 mat-dialog-title>{{data.name}}</h2>
+<div class="row">
+    <div class="col-md-8 overflow-hidden">
+        <h2 mat-dialog-title class="text-primary">{{data.name}}</h2>
+    </div>
+    <div class="col-md-4">
+        <a class="float-right" href="javascript:;;" (click)="dialogRef.close()"><i class="material-icons">
+                close
+            </i></a>
+    </div>
+</div>
 
 <mat-dialog-content class="mat-typography">
     <form role="form" #heroForm="ngForm">
@@ -23,13 +32,14 @@
             <label class="col-md-3 control-label">Test Categories</label>
             <div class="col-md-8">
                 <mat-form-field class="full-width">
-                        <!-- <mat-select placeholder="Test Categories (Optional)" [(ngModel)]="category"  [value]="selectedCategories" name="category" [ngModelOptions]="{standalone: true}"multiple>
+                    <!-- <mat-select placeholder="Test Categories (Optional)" [(ngModel)]="category"  [value]="selectedCategories" name="category" [ngModelOptions]="{standalone: true}"multiple>
                                 <mat-option *ngFor="let category of categories" [value]="category">
                                     {{category}}
                                 </mat-option>
                             </mat-select> -->
 
-                    <mat-select placeholder="Choose the Test Caetgories OR skip to run all" [(ngModel)]="selectedCategories"  name="category" [ngModelOptions]="{standalone: true}" multiple>
+                    <mat-select placeholder="Choose the Test Caetgories OR skip to run all" [(ngModel)]="selectedCategories"
+                        name="category" [ngModelOptions]="{standalone: true}" multiple>
                         <mat-option *ngFor="let category of categories" [value]="category">
                             {{category}}
                         </mat-option>
@@ -58,7 +68,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button [mat-dialog-close]="true" color="primary" (click)="run();" class="btn-w-md no-margin-left" cdkFocusInitial>Run
+    <button mat-button [mat-dialog-close]="true" color="primary" (click)="run();" class="btn-w-sm no-margin-left"
+        cdkFocusInitial><i class="material-icons">play_circle_outline</i> &nbsp; Run &nbsp;
     </button>
 </mat-dialog-actions>
