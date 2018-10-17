@@ -84,7 +84,7 @@ public abstract class AbstractGenerator implements Generator {
                 // TODO buildAssertion(testSuite, )
                 // TODO buildInit(testSuite)
                 // TODO buildCleanup(testSuite)
-                .buildTag(testSuite, tag)
+                .buildTag(testSuite, tag, configUtil.getTags(type))
                 .buildAuth(testSuite, auth)
                 .buildAuthor(testSuite, AUTHOR)
                 .buildPolicies(testSuite, policies);
@@ -234,16 +234,18 @@ public abstract class AbstractGenerator implements Generator {
     }
 
     protected AbstractGenerator buildTag(TestSuiteMin testSuite) {
-        return buildTag(testSuite, "V1");
+        return buildTag(testSuite, "V1", new ArrayList<>());
     }
 
-    protected AbstractGenerator buildTag(TestSuiteMin testSuite, String tag) {
+    protected AbstractGenerator buildTag(TestSuiteMin testSuite, String tag, List<String> tags) {
 
         // Tags
         if (testSuite.getTags() == null) {
             testSuite.setTags(new ArrayList<>());
         }
         testSuite.getTags().add(tag);
+
+        testSuite.getTags().addAll(tags);
 
         return this;
     }

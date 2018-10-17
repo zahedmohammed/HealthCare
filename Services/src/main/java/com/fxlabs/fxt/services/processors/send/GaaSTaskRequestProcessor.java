@@ -19,6 +19,7 @@ import com.fxlabs.fxt.dto.vc.VCTask;
 import com.fxlabs.fxt.services.amqp.sender.AmqpClientService;
 import com.fxlabs.fxt.services.events.LocalEventPublisher;
 import com.fxlabs.fxt.services.users.UsersService;
+import com.fxlabs.fxt.services.util.AutoCodeConfigServiceUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jasypt.util.text.TextEncryptor;
@@ -116,6 +117,15 @@ public class GaaSTaskRequestProcessor {
             if (codeConfigOptional.isPresent()) {
                 AutoCodeConfig dto = autoCodeConfigConverter.convertToDto(codeConfigOptional.get());
                 AutoCodeConfigMinimal autoCodeConfigMinimal = autoCodeConfigMinimalConverter.convertToEntity(dto);
+
+                AutoCodeConfigServiceUtil.getAutoCodeConfig(null).getGenerators().forEach(g -> {
+                    autoCodeConfigMinimal.getGenerators().forEach(m -> {
+                        if (StringUtils.equals(m.getType(), g.getType())) {
+                            m.setTags(g.getTags());
+                        }
+                    });
+                });
+
                 task.setAutoCodeConfigMinimal(autoCodeConfigMinimal);
                 //   task.setGenPolicy(GenPolicy.valueOf(autoCodeConfigMinimal.getGenPolicy().name()));
                 task.setOpenAPISpec(autoCodeConfigMinimal.getOpenAPISpec());

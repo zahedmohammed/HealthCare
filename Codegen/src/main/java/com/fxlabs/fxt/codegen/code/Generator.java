@@ -24,6 +24,7 @@ public class Generator implements Serializable {
     private String postfix;
     private String type;
     private List<String> assertions;
+    private List<String> tags;
     private List<String> logForgingPatterns;
     private String severity;
     private boolean inactive;

@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.dto.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fxlabs.fxt.dto.base.BasicBaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +21,7 @@ public class AutoCodeGeneratorMinimal implements Serializable{
 
     private String type;
     private List<String> assertions;
+    private List<String> tags;
     private TestSuiteSeverity severity;
     private Database database;
     protected boolean inactive = false;

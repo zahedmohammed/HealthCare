@@ -280,6 +280,23 @@ public class AutoCodeConfigUtil {
         return DEFAULT_ASSERTIONS;
     }
 
+    public List<String> getTags(String type) {
+
+        if (this.config == null) return new ArrayList<>();
+
+        String version = null;
+        if (!CollectionUtils.isEmpty(this.config.getGenerators())) {
+            for (Generator gen : this.config.getGenerators()) {
+                if (StringUtils.equalsIgnoreCase(gen.getType(), type)) {
+                    if (!CollectionUtils.isEmpty(gen.getTags())) {
+                        return gen.getTags();
+                    }
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
+
     public TestSuiteSeverity getTestSuiteSeverity(String type) {
 
         TestSuiteSeverity severity = DEFAULT_SEVERITY;
