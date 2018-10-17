@@ -212,13 +212,10 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         if (dto.getAccount() != null && dto.getAccount().getAccountType().equals(AccountType.Self_Hosted)) {
 
-            String host = systemSettingService.findByKey(SystemSettingService.FX_HOST);
-            String port = systemSettingService.findByKey(SystemSettingService.FX_PORT);
-            String ssl = systemSettingService.findByKey(SystemSettingService.FX_SSL);
             String iam = systemSettingService.findByKey(SystemSettingService.FX_IAM);
             String tag = systemSettingService.findByKey(SystemSettingService.BOT_TAG);
 
-            String script = getExecutionBotManualScript(host, port, ssl, iam, encryptedQueue, tag);
+            String script = getExecutionBotManualScript(iam, encryptedQueue, tag);
             cluster.setManualScript(script);
             cluster.setRegion(AccountType.Self_Hosted.toString());
 
@@ -272,10 +269,8 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
 
         opts.put("ACCESS_KEY_ID", account.getAccessKey());
         opts.put("SECRET_KEY", getSecretKey(account.getId()));
-        opts.put("COMMAND", getUserDataScript(dto.getKey()));
         opts.put("COUNT", dto.getMin().toString());
         opts.put("REGION", dto.getRegion());
-        opts.put("AZURE_LINUX_CONFIG", getAzureConfig(dto.getKey()));
         opts.put("BOT_SCRIPT_URL", fxExecutionBotScriptUrl);
         opts.put("SUBNET", account.getProp3());
 
@@ -285,6 +280,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 opts.put("KEY_PAIR", account.getProp1());
                 opts.put("INSTANCE_NAME", dto.getName());
                 opts.put("SECURITY_GROUP", account.getProp2());
+                opts.put("COMMAND", getUserDataScript(dto.getKey()));
                 break;
             case AZURE:
                 cloudTask.setCloudType(CloudType.AZURE);
@@ -293,6 +289,17 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 opts.put("TENANT", account.getProp2());
                 opts.put("USERNAME", account.getAccessKey());
                 opts.put("PASSWORD", getSecretKey(account.getId()));
+                opts.put("AZURE_LINUX_CONFIG", getAzureConfig(dto.getKey()));
+                opts.put("RESOURCE_GROUP", account.getProp3());
+                break;
+            case GCP:
+                cloudTask.setCloudType(CloudType.GCP);
+                opts.put("INSTANCE_NAME", String.valueOf(dto.getCreatedDate().getTime()));
+                opts.put("RESOURCE_GROUP", account.getProp3());
+                String iam = systemSettingService.findByKey(SystemSettingService.FX_IAM);
+                String tag = systemSettingService.findByKey(SystemSettingService.BOT_TAG);
+                String script = getExecutionBotManualScript(iam, dto.getKey(), tag);
+                opts.put("COMMAND", script);
                 break;
             default:
                 logger.info("Cloud not supported");
@@ -468,6 +475,10 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
                 opts.put("PASSWORD", getSecretKey(account.getId()));
                 opts.put("RESOURCE_GROUP", account.getProp3());
                 break;
+            case GCP:
+                cloudTask.setCloudType(CloudType.GCP);
+                opts.put("RESOURCE_GROUP", account.getProp3());
+                break;
             default:
                 logger.info("Cloud not supported");
         }
@@ -565,7 +576,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         return mos == 0 ? 1 : mos;
     }
 
-    private String getExecutionBotManualScript(String host, String port, String ssl, String iam, String key, String tag) {
+    private String getExecutionBotManualScript(String iam, String key, String tag) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("docker").append(SPACE).append("run")

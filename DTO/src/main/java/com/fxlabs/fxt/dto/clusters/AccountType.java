@@ -8,7 +8,7 @@ import java.util.List;
  */
 public enum AccountType {
 
-    AWS, AZURE, BitBucket, GitHub, Git, GitLab, Self_Hosted,
+    AWS, AZURE, GCP, BitBucket, GitHub, Git, GitLab, Self_Hosted,
     Microsoft_TFS_Git, Microsoft_VSTS_Git, Slack, Email, Local, Jira, FX_Issues
 
 }

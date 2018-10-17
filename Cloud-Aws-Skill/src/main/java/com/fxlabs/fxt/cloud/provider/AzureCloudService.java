@@ -1,7 +1,6 @@
 package com.fxlabs.fxt.cloud.provider;
 
 
-import com.amazonaws.services.ec2.model.*;
 import com.fxlabs.fxt.cloud.skill.services.CloudService;
 import com.fxlabs.fxt.dto.cloud.CloudTask;
 import com.fxlabs.fxt.dto.cloud.CloudTaskResponse;
@@ -28,8 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.microsoft.azure.management.resources.fluentcore.arm.Region.US_WEST;
-
 
 /**
  * @author Mohammed Shoukath Ali
@@ -40,12 +37,7 @@ public class AzureCloudService implements CloudService {
 
 
     final Logger logger = LoggerFactory.getLogger(getClass());
-    private static final String FXLABS_AWS_DEFAULT_INSTANCE_TYPE = InstanceType.T2Micro.toString();
-    private static final String AWS_PKEY = "fx-kp";
     private static final String FXLABS_AWS_DEFAULT_IMAGE = "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*";
-
-    private static final String FXLABS_DEFAULT_SECURITY_GROUP = "fx-sg";
-    private static final String FXLABS_DEFAULT_SUBNET = "fx-subnet";
 
     private static final String FXLABS_AWS_DEFAULT_REGION = "eastus";
 
@@ -63,12 +55,6 @@ public class AzureCloudService implements CloudService {
 
 
     private static final String FX_BOT_RESOURCES_PREFIX = "FX-";
-
-//    static final Map<String, String> REGION_ENPOINTS = ImmutableMap.<String, String>builder()
-//           .put("us-east-1", "ec2.us-east-1.amazonaws.com")
-//            .put("us-west-1", "ec2.us-west-1.amazonaws.com").build();
-
-    //  private static final String FXLABS_AWS_DEFAULT_VPC = "fx-vpc";
 
     public ThreadLocal<StringBuilder> taskLogger = new ThreadLocal<>();
 
@@ -272,6 +258,7 @@ public class AzureCloudService implements CloudService {
         Region region_ = Region.findByLabelOrName(region);
 
         if (region_.equals(Region.US_WEST)) {
+            //Not available
             virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
         } else if (region_.equals(Region.US_WEST2)) {
             virtualMachineSizeTypes = VirtualMachineSizeTypes.STANDARD_A1;
@@ -497,20 +484,6 @@ public class AzureCloudService implements CloudService {
         }
         return tag;
     }
-
-//    private AmazonEC2 getAmazonEC2Client(String accessKeyId, String secretKey, String region) {
-//        AWSCredentialsProvider credentials = new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKeyId, secretKey));
-//        return AmazonEC2ClientBuilder.standard().withRegion(region).withCredentials(credentials).build();
-//    }
-
-    private String getInstanceType(CloudTask task) {
-        String hardware = task.getOpts().get("HARDWARE");
-        if (StringUtils.isEmpty(hardware)) {
-            hardware = FXLABS_AWS_DEFAULT_INSTANCE_TYPE;
-        }
-        return hardware;
-    }
-
 
     /**
      * @param map

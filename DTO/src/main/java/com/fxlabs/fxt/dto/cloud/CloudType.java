@@ -5,5 +5,5 @@ package com.fxlabs.fxt.dto.cloud;
  */
 public enum CloudType {
 
-    AWS, AZURE
+    AWS, AZURE, GCP
 }

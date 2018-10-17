@@ -48,20 +48,23 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
-
+    //EC2
     // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ec2
     compile group: 'com.amazonaws', name: 'aws-java-sdk-ec2', version: '1.11.302'
 
     compile("org.apache.httpcomponents:httpclient:4.5.1")
 
-    //compile("com.microsoft.azure:azure:$azureVersion")
-
-    //compile("com.microsoft.azure:azure-core:$azureVersion")
+   //AZURE
     compile("com.microsoft.azure:azure:$azureVersion")
     compile("com.microsoft.azure:azure-mgmt-resources:$azureVersion")
     compile("com.microsoft.azure:azure-mgmt-storage:$azureVersion")
     compile("com.microsoft.azure:azure-mgmt-network:$azureVersion")
     compile("com.microsoft.azure:azure-mgmt-compute:$azureVersion")
+
+    compile 'com.google.apis:google-api-services-compute:v1-rev199-1.25.0'
+    compile 'com.google.apis:google-api-services-oauth2:v2-rev141-1.25.0'
+    compile group: 'com.google.oauth-client', name: 'google-oauth-client-java6', version: '1.18.0-rc'
+    compile group: 'com.google.oauth-client', name: 'google-oauth-client-jetty', version: '1.25.0'
 
 
     compile project(":Cloud-Skill-Kit")

@@ -27,6 +27,11 @@ public class CloudDelegate {
     @Qualifier("azureCloudService")
     private CloudService azureCloudService;
 
+
+    @Autowired
+    @Qualifier("gcpCloudService")
+    private CloudService gcpCloudService;
+
     public void process(CloudTask task) {
         logger.info("CloudTask [{}]", task.getId());
         CloudTaskResponse response = null;
@@ -38,6 +43,9 @@ public class CloudDelegate {
                     break;
                 case AZURE:
                     response = getAzureCloudTaskResponse(task, response);
+                    break;
+                case GCP:
+                    response = getGCPCloudTaskResponse(task, response);
                     break;
                 default:
                     logger.info("CloudType [{}] not supported for CloudTask [{}]", task.getCloudType().toString(), task.getId());
@@ -51,7 +59,7 @@ public class CloudDelegate {
     }
 
     private CloudTaskResponse getAWSCloudTaskResponse(CloudTask task, CloudTaskResponse response) {
-        // TODO call Create or Destroy
+
         if (task.getType() == CloudTaskType.CREATE) {
             response = awsCloudService.create(task);
         } else if (task.getType() == CloudTaskType.DESTROY) {
@@ -64,7 +72,7 @@ public class CloudDelegate {
 
 
     private CloudTaskResponse getAzureCloudTaskResponse(CloudTask task, CloudTaskResponse response) {
-        // TODO call Create or Destroy
+
         if (task.getType() == CloudTaskType.CREATE) {
             response = azureCloudService.create(task);
         } else if (task.getType() == CloudTaskType.DESTROY) {
@@ -74,6 +82,19 @@ public class CloudDelegate {
         }
         return response;
     }
+
+    private CloudTaskResponse getGCPCloudTaskResponse(CloudTask task, CloudTaskResponse response) {
+
+        if (task.getType() == CloudTaskType.CREATE) {
+            response = gcpCloudService.create(task);
+        } else if (task.getType() == CloudTaskType.DESTROY) {
+            response = gcpCloudService.destroy(task);
+        } else {
+            // TODO handle invalid type
+        }
+        return response;
+    }
+
 
     public String ping(PingTask pingTask) {
         logger.info("PingTask received...");
