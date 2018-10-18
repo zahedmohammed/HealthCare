@@ -2,9 +2,9 @@ FROM openjdk:8-jre
 
 VOLUME /tmp
 
-ADD Web-0.0.1-SNAPSHOT.jar control-plane.jar
+ADD Web-0.0.1-SNAPSHOT.jar parent.jar
 
-RUN bash -c 'touch /control-plane.jar'
+RUN bash -c 'touch /parent.jar'
 
 EXPOSE 8080
 

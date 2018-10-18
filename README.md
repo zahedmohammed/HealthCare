@@ -1,3 +1,19 @@
+## application.properties changes
+# Make sure to have ES and PG accessible on the following hosts and credentials or change them according to your setup.
+ELASTICSEARCH_HOST=fx-elasticsearch
+POSTGRES_HOST=fx-postgres
+POSTGRES_DB=fx_issues
+POSTGRES_USER=fx_issues_admin
+POSTGRES_PASSWORD=fx_issues_password
+
+## Start server
+./gradlew w:bootrun
+
+## Build Dev
+./gradlew w:buildAngularDev
+
+## Build prod
+./gradlew w:buildAngular
 
 ## Start proxy
 cd Web/src/main/ui/material

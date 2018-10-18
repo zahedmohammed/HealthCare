@@ -29,3 +29,10 @@
 1529973155292:exit
 1529973240687:eit
 1529973242119:exit
+1532038970781:gen --project-dir /Users/intesar/Documents/Git/fx-lt-private --open-api-spec-file OpenAPISpec.json
+1532039006491:exit
+1532039017280:gen --project-dir /Users/intesar/Documents/Git/fx-lt-private --open-api-spec-file OpenAPISpec.json
+1532043622640:gen --project-dir /Users/intesar/Documents/Git/fx-test --open-api-spec-file https://cloud.fxlabs.io/v2/api-docs
+1532044045943:gen --project-dir /Users/intesar/Documents/Git/fx-test --open-api-spec-file http://13.57.51.56/v2/api-docs
+1532044345129:exit
+1532044409496:gen --project-dir /Users/intesar/Documents/Git/fx-test --open-api-spec-file http://13.57.51.56/v2/api-docs
