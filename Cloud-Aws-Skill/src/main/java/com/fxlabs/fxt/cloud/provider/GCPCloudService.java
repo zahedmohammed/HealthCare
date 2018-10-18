@@ -10,6 +10,7 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -56,7 +57,14 @@ public class GCPCloudService implements CloudService {
     final static String SLASH = "/";
     private static final String FXLABS_GCP_DEFAULT_REGION = "us-east1-b";
 
-    private static final String FX_BOT_RESOURCES_PREFIX = "FX-";
+    private static final String FX_BOT_RESOURCES_PREFIX = "fx-";
+
+
+    /**
+     * Directory to store user credentials.
+     */
+    private static final java.io.File DATA_STORE_DIR =
+            new java.io.File(System.getProperty("user.home"), ".store/compute_engine_sample");
 
     private static FileDataStoreFactory dataStoreFactory;
 
@@ -109,7 +117,7 @@ public class GCPCloudService implements CloudService {
         try {
 
             // Authorization
-            //Credential credential = authorize("829255892794-b58sci7gg41p17b8bkpc65d2eu3como0.apps.googleusercontent.com", "WUK7w6cna-_31QB_Az7nJ2cj");
+
             Credential credential = authorize(getIdentity(task.getOpts()), getCredential(task.getOpts()));
 
             // Create compute engine object for listing instances
@@ -125,8 +133,8 @@ public class GCPCloudService implements CloudService {
 
             String region = getRegion(task.getOpts());
 
-            String instanceName = FX_BOT_RESOURCES_PREFIX  + tag_ + region;
-
+            String instanceName = FX_BOT_RESOURCES_PREFIX  + tag_;
+            instanceName = instanceName.toLowerCase();
             if (StringUtils.isEmpty(resourceGroupName)) {
                 taskLogger.get().append(String.format("Invalid project id [{}]", resourceGroupName));
                 logger.info("Invalid project id [{}]", resourceGroupName);
@@ -134,6 +142,7 @@ public class GCPCloudService implements CloudService {
             }
 
             String config1 = getConfig(task.getOpts());
+           // String config1  = "docker run -d -e FX_IAM=Mwc/0zF7dfX+PUq6Jz26AkdbFUE13eL5 -e FX_KEY=x8/W2WMZ2Cn0/5b86Aj1HEJPEoNGTnU0QhbDH7aTS1EhN9E6+/P87g== fxlabs/bot:latest";
             int count = getCount(task.getOpts());
 
             taskLogger.get().append("VM count  : " + count);
@@ -142,6 +151,7 @@ public class GCPCloudService implements CloudService {
 
 
             for (int i = 0; i < count; i++) {
+
                 String instanceNameWithCount = instanceName + i;
                 instance.setName(instanceNameWithCount);
                 instance.setMachineType(
@@ -271,7 +281,7 @@ public class GCPCloudService implements CloudService {
             }
 
             // Authorization
-            Credential credential = authorize("829255892794-b58sci7gg41p17b8bkpc65d2eu3como0.apps.googleusercontent.com", "WUK7w6cna-_31QB_Az7nJ2cj");
+            Credential credential = authorize(getIdentity(task.getOpts()), getCredential(task.getOpts()));
 
             // Create compute engine object for listing instances
             Compute compute = new Compute.Builder(
@@ -289,13 +299,14 @@ public class GCPCloudService implements CloudService {
 
                 // delete VM,
                 try {
-                    logger.info("Deleting virtual machine [{}]", instance);
-                    taskLogger.get().append("Deleting virtual machine " + instance);
+                    logger.info("Deleting virtual machine [{}] in project [{}] in region [{}]", instance, resourceGroupName, region);
+                    taskLogger.get().append(String.format("Deleting virtual machine [{}] in project [{}] in region [{}]", instance, resourceGroupName, region));
                     Compute.Instances.Delete delete =
                             compute.instances().delete(resourceGroupName, region, instance);
+                    delete.execute();
                 } catch (Exception e) {
-                    logger.info("Failed to delete virtual Machine [{}]", instance);
-                    taskLogger.get().append("Failed to delete virtual Machine " + instance);
+                    logger.info("Failed to delete virtual Machine [{}] in project [{}] in region [{}]", instance, resourceGroupName, region);
+                    taskLogger.get().append(String.format("Deleting virtual machine [{}] in project [{}] in region [{}]", instance, resourceGroupName, region));
                 }
             });
 
@@ -395,6 +406,9 @@ public class GCPCloudService implements CloudService {
      * Authorizes the installed application to access user's protected data.
      */
     private static Credential authorize(String cliendId, String clientSecret) throws Exception {
+
+        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
         // initialize client secrets object
         GoogleClientSecrets clientSecrets = new GoogleClientSecrets();
         // load client secrets

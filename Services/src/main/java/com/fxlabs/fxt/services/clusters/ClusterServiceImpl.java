@@ -685,6 +685,7 @@ public class ClusterServiceImpl extends GenericServiceImpl<com.fxlabs.fxt.dao.en
         switch (account.getAccountType()) {
             case AWS:
             case AZURE:
+            case GCP:
                 key = fxCaasAwsEc2Queue;
                 break;
             default:
