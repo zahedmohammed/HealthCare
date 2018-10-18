@@ -128,6 +128,7 @@ public class GCPCloudService implements CloudService {
             Instance instance = new Instance();
 
             resourceGroupName = getIAMRole(task.getOpts());
+            resourceGroupName = resourceGroupName.toLowerCase();
 
             String tag_ = getInstanceTag(task.getOpts());
 
