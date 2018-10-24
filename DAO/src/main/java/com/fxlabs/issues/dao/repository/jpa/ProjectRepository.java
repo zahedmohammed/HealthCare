@@ -19,8 +19,6 @@ public interface ProjectRepository extends JpaRepository<Project, String> {
 
     Optional<Project> findByIdAndOrgId(String id, String org);
 
-    List<Project> findByAccountIdAndInactive(String id, boolean inactive);
-
     Page<Project> findByOrgIdAndInactive(String org, boolean inactive, Pageable pageable);
     List<Project> findByOrgIdAndInactive(String org, boolean inactive);
 

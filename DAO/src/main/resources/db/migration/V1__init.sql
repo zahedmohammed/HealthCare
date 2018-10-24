@@ -73,7 +73,6 @@ CREATE TABLE project_users (
     users_id character varying(255)
 );
 
-
 --
 -- Name: qrtz_blob_triggers; Type: TABLE; Schema: public; Owner: -
 --
@@ -312,6 +311,25 @@ CREATE TABLE users_privileges (
     privileges character varying(255)
 );
 
+-- Table: access_key
+
+-- DROP TABLE access_key;
+
+DROP TABLE if EXISTS access_key;
+CREATE TABLE access_key
+(
+  id character varying(255) NOT NULL,
+  created_by character varying(255),
+  created_date timestamp without time zone NOT NULL,
+  inactive boolean NOT NULL,
+  modified_by character varying(255),
+  modified_date timestamp without time zone,
+  access_key character varying(255),
+  expiration timestamp without time zone NOT NULL,
+  secret_key character varying(255),
+  users_id character varying(255)
+);
+
 --
 -- Name: org org_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
@@ -438,14 +456,6 @@ ALTER TABLE ONLY qrtz_triggers
 
 ALTER TABLE ONLY system_setting
     ADD CONSTRAINT system_setting_pkey PRIMARY KEY (id);
-
-
---
--- Name: test_suite test_suite_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_suite
-    ADD CONSTRAINT test_suite_pkey PRIMARY KEY (id);
 
 
 --
