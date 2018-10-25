@@ -6,7 +6,7 @@ import {OrgService }from '../../../services/org.service';
 import {JobsService}from '../../../services/jobs.service';
 import {AccountService}from '../../../services/account.service';
 import {Account} from '../../../models/account.model';
-import {Project}from '../../../models/project.model';
+import {Project}from '../../../models/issues-project.model';
 import {AutoCodeConfig}from '../../../models/project-autocode-config.model';
 import {Env, Auth }from '../../../models/project-env.model';
 import {Job}from '../../../models/project-job.model';
@@ -61,7 +61,6 @@ export class ProjectsNewComponent implements OnInit {
 
   ngOnInit() {
     this.AppConfig = APPCONFIG;
-    this.getAccountsForProjectPage();
     this.route.params.subscribe(params => {
       this.id = params['id'];
       if (this.id) {
@@ -89,23 +88,7 @@ export class ProjectsNewComponent implements OnInit {
       pswCtrl:['']
     });
 
-    /*this.fourthFormGroup = this._formBuilder.group({
-      authNameCtrl:  ['', Validators.required],
-      usernameCtrl:  ['', Validators.required],
-      passwordCtrl:  ['', Validators.required],
-    });
 
-    this.fifthFormGroup = this._formBuilder.group({
-      header1Ctrl:  ['', Validators.required],
-    });
-
-    grantTypeCtrl:  ['', Validators.required],
-      clientIdCtrl:  ['', Validators.required],
-      clientSecretCtrl:  ['', Validators.required],
-      accessTokenUriCtrl:  ['', Validators.required],
-      clientAuthenticationSchemeCtrl:  ['', Validators.required],
-      authorizationSchemeCtrl:  ['', Validators.required],
-      scopeCtrl:  ['', Validators.required]*/
 
   }
 
@@ -165,12 +148,6 @@ export class ProjectsNewComponent implements OnInit {
         }
         this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
         this.project = results['data'];
-        if (!this.project.account) {
-          let p: Project = new Project();
-          this.project.account = p.account;
-        }
-        this.matStepper.next();
-        this.getAutoCode();
     }, error => {
         this.handler.hideLoader();
         this.handler.error(error);
@@ -187,11 +164,7 @@ export class ProjectsNewComponent implements OnInit {
       }
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saved successfully", "");
       this.project = results['data'];
-      if (!this.project.account) {
-        let p: Project = new Project();
-        this.project.account = p.account;
-      }
-      this.matStepper.next();
+        this.matStepper.next();
       this.getAutoCode();
     }, error => {
       this.handler.hideLoader();
@@ -282,30 +255,13 @@ export class ProjectsNewComponent implements OnInit {
     });
   }
 
-  getAccountsForProjectPage() {
-    this.handler.activateLoader();
-    this.accountService.getAccountByAccountType('PROJECT').subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.accounts = results['data'];
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  setAccount(account){
-     this.project.account.accountType =  account.accountType;
-  }
 
   openDialog() {
     const dialogRef = this.dialog.open(RegisterComponent, {
       width:'800px'
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.getAccountsForProjectPage();
+     // this.getAccountsForProjectPage();
     });
   }
 

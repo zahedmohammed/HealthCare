@@ -4,7 +4,7 @@ import { Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/toPromise';
-import { Project } from '../models/project.model';
+import { Project } from '../models/issues-project.model';
 import { ProjectSync } from '../models/project-sync.model';
 import { AutoCodeConfig } from '../models/project-autocode-config.model';
 import { Env } from '../models/project-env.model';
