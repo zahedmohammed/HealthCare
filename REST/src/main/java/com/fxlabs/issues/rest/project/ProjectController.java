@@ -57,14 +57,13 @@ public class ProjectController {
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Project> update(@Valid @RequestBody Project dto) {
-        return projectService.save(dto, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
+        return projectService.update(dto, SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Project> delete(@PathVariable("id") String id) {
-        //return projectService.delete(id, SecurityUtil.getOrgId(), SecurityUtil.getCurrentAuditor());
-        return null;
+        return projectService.delete(id, SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})

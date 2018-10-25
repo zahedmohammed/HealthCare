@@ -13,9 +13,12 @@ import java.util.List;
  */
 public interface ProjectService extends GenericService<Project, String> {
 
+    Response<Project> delete(String id, String user, String org);
 
     Response<Project> save(Project dto, String user, String org);
 
     Response<List<Project>> findProjects(String owner, Pageable pageable);
+
+    Response<Project> update(Project request, String user, String org);
 
 }
