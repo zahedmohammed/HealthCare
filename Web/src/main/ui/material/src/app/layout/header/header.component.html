@@ -1,6 +1,5 @@
 <section class="app-header">
-    <div class="app-header-inner"
-         [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
+    <div class="app-header-inner" [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-dark': AppConfig.colorOption === '31',
                  'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,
@@ -17,18 +16,18 @@
 
         <div class="brand d-none d-lg-inline-block d-xl-inline-block">
             <!--<h2><a [routerLink]="['/']">{{AppConfig.productName}}</a></h2>-->
-            <img src="/fx-white-100x100.png" class="logo" height="65" [routerLink]="['/']"/>
+            <img src="assets/images/fx-white-100x100.png" class="logo" height="65" [routerLink]="['/']" />
         </div>
 
         <div class="top-nav-left">
-                <ul class="list-unstyled list-inline list-inline-item">
-                        <li routerLinkActive="active">
-                            <button mat-button class="md-button header-btn" [routerLink]="['/app/projects']">
-                                <!-- <span>Projects</span><span class="nav-text"></span> -->
-                                <mat-icon>home</mat-icon>
-                            </button>
-                        </li>
-                    </ul>
+            <ul class="list-unstyled list-inline list-inline-item">
+                <li routerLinkActive="active">
+                    <button mat-button class="md-button header-btn" [routerLink]="['/app/projects']">
+                        <!-- <span>Projects</span><span class="nav-text"></span> -->
+                        <mat-icon>home</mat-icon>
+                    </button>
+                </li>
+            </ul>
             <!-- <ul class="list-unstyled list-inline"> -->
             <!--<li class="list-inline-item"><button mat-button class="md-button header-btn" myOpenSearchOverlay><i class="material-icons">search</i></button></li>-->
             <!-- <li class="list-inline-item" [routerLink]="['/app/messages']">
@@ -140,27 +139,34 @@
                 <li>
                     <button mat-menu-item [routerLink]="['/app/accounts']">
                         <mat-icon>vpn_key</mat-icon>
-                        <span>Credentials</span></button>
+                        <span>Credentials</span>
+                    </button>
                     <button mat-menu-item [routerLink]="['/app/vault']">
                         <mat-icon>security</mat-icon>
-                        <span>Vault</span></button>
+                        <span>Vault</span>
+                    </button>
                     <button mat-menu-item [routerLink]="['/app/messages']">
                         <mat-icon>notifications_none</mat-icon>
-                        <span>Tasks</span></button>
+                        <span>Tasks</span>
+                    </button>
                     <button mat-menu-item [routerLink]="['/app/regions']">
                         <mat-icon>cloud_queue</mat-icon>
-                        <span>Test Bots</span></button>
+                        <span>Test Bots</span>
+                    </button>
                     <button mat-menu-item [routerLink]="['/app/marketplace']">
                         <mat-icon>shopping_cart</mat-icon>
-                        <span>Marketplace</span></button>
+                        <span>Marketplace</span>
+                    </button>
                     <button mat-menu-item [routerLink]="['/app/orgs']">
                         <mat-icon>domain</mat-icon>
-                        <span>Orgs</span></button>
+                        <span>Orgs</span>
+                    </button>
 
                     <!-- <button mat-menu-item href="/logout"><i class="material-icons">power_settings_new</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Sign out</span></button> -->
                     <a href="/logout" mat-menu-item>
                         <mat-icon>power_settings_new</mat-icon>
-                        <span>Sign out</span></a>
+                        <span>Sign out</span>
+                    </a>
                 </li>
                 <!-- <li><a mat-button [routerLink]="['/app/vault']"><i class="nav-icon material-icons">security</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Vault</span></a></li>
                 <li><a mat-button [routerLink]="['/app/regions']"><i class="nav-icon material-icons">cloud_queue</i>&nbsp; &nbsp; &nbsp; &nbsp; <span class="nav-text">Test Bots</span></a></li>

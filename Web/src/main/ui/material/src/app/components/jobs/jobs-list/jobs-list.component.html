@@ -10,31 +10,31 @@
 </div>
 <br />
 <section class="container-fluid with-maxwidth chapter">
-    <nav mat-tab-nav-bar>
+    <!-- <nav mat-tab-nav-bar>
         <label mat-tab-link [active]="true">Jobs
         </label>
-        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments-->
-        <!--</label>-->
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'environments']">Environments
+        </label>
         <label mat-tab-link [routerLink]="['/app/projects', id, 'test-suites']">
             <i class="material-icons">code</i> &nbsp;Code
         </label>
         <label mat-tab-link [routerLink]="['/app/projects', id, 'api-coverage']">
             <i class="fa fa-line-chart"></i>&nbsp;&nbsp;Insights
         </label>
-        <!--<label mat-tab-link [routerLink]="['/app/issues']">Issues</label>-->
+        <label mat-tab-link [routerLink]="['/app/issues']">Issues</label>
         <label mat-tab-link [routerLink]="['/app/projects', id, 'recommendations']">
         <i class="material-icons text-danger" >lightbulb_outline</i> &nbsp;
             <span class="text-danger">Recommendations</span></label>
-        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>-->
-        <!--<label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>-->
-    </nav>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'configuration']">AutoCode</label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'manage']">Git</label>
+    </nav> -->
     <!--<br />-->
 
     <article class="article1">
 
         <div class="box1 box-default">
             <div class="box-body">
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-7">
                         <mat-button-toggle-group #group="matButtonToggleGroup" value="jobs" >
                             <mat-button-toggle value="jobs" [routerLink]="['/app/projects', id, 'jobs']">&nbsp;&nbsp;&nbsp;&nbsp; Jobs &nbsp;&nbsp;&nbsp;&nbsp;
@@ -44,12 +44,12 @@
                         </mat-button-toggle-group>
                     </div>
                 </div>
-                <hr>
+                <hr> -->
                 <div class="row">
                     <div class="col-md-10">
                         <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects', id, 'jobs', 'new']">
                             <i class="fa fa-plus"></i>
-                            New Job
+                            New Issue
                         </button>
                     </div>
                     <div class="col-md-2">
@@ -115,8 +115,7 @@
                                 <button mat-button color="primary" (click)="advRun(element)"><i class="material-icons">play_circle_outline</i>
                                     &nbsp; Run &nbsp;
                                 </button>
-                                <button mat-button color="primary" [routerLink]="['/app/projects' , id, 'jobs' , element.id, 'runs']"
-                                    >History</button>
+                                <button mat-button color="primary" [routerLink]="['/app/projects' , id, 'jobs' , element.id, 'runs']">History</button>
                                 <button mat-button color="primary" [matMenuTriggerFor]="menu">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
