@@ -16,22 +16,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String USER_BASE = API_BASE + "/users";
     public static final String ORG_BASE = API_BASE + "/orgs";
     public static final String PROJECTS_BASE = API_BASE + "/projects";
-    public static final String JOBS_BASE = API_BASE + "/jobs";
-    public static final String ENVS_BASE = API_BASE + "/envs";
-    public static final String TEST_SUITES_BASE = API_BASE + "/test-suites";
-    public static final String DATA_RECORD_BASE = API_BASE + "/data-records";
-    public static final String DATA_SET_BASE = API_BASE + "/data-sets";
-    public static final String PROJECT_RUNS_BASE = API_BASE + "/runs";
-    public static final String SYSTEM_SETTING_BASE = API_BASE + "/system-settings";
-    public static final String ALERT_BASE = API_BASE + "/alerts";
-    public static final String CLUSTER_BASE = API_BASE + "/bot-clusters";
-    public static final String ACCOUNT_BASE = API_BASE + "/accounts";
-    public static final String NOTIFICATION_BASE = API_BASE + "/notifications";
-    public static final String SKILLS_BASE = API_BASE + "/skills";
-    public static final String ISSUE_TRACKER_BASE = API_BASE + "/issue-trackers";
-    public static final String VAULT_BASE = API_BASE + "/vault";
-    public static final String DASHBOARD_BASE = API_BASE + "/dashboard";
-    public static final String EVENTS_BASE = API_BASE + "/events";
+
     public static final String ISSUE_BASE = API_BASE + "/issues";
 
 
