@@ -40,7 +40,7 @@ public class IssueController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/{projectId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/project/{projectId}", method = RequestMethod.GET)
     public Response<List<Issue>> findByProjectId(@PathVariable("projectId") String projectId, @RequestParam(value = BaseController.PAGE_PARAM, defaultValue = BaseController.DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
                                          @RequestParam(value = BaseController.PAGE_SIZE_PARAM, defaultValue = BaseController.DEFAULT_PAGE_SIZE_VALUE, required = false) @Max(20) Integer pageSize) {
 
