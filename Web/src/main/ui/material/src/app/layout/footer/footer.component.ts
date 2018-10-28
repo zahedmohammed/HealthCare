@@ -41,8 +41,8 @@ export class AppFooterComponent implements OnInit {
   ngOnInit() {    
     $('.chat-content').slideToggle();
     $("i", this).toggleClass("fa-window-minimize fa-window-maximize");
-    this.tasks();
-    this.connect();
+    // this.tasks();
+    // this.connect();
     //console.log('Searching:', this.project.id);
     this.AppConfig = APPCONFIG;
       $('.show-chat-box').click(function(){

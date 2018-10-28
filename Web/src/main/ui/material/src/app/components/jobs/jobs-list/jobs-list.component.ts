@@ -47,8 +47,8 @@ export class JobslistComponent implements OnInit {
       this.id = params['id'];
       console.log(params);
       this.loadProject(this.id);
-      this.list(this.id);
-      this.notificationFlag = false;
+    //  this.list(this.id);
+      // this.notificationFlag = false;
     });
   }
 
