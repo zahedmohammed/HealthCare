@@ -121,6 +121,7 @@ export class JobsNewComponent implements OnInit {
   createIssue() {
     this.handler.activateLoader();
     this.issue.project.id = this.project.id
+    this.issue.headers = this.issue.headersText.split(",");
     this.issuesService.create(this.issue).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
