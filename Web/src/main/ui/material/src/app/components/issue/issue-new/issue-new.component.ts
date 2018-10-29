@@ -15,20 +15,20 @@ import { DeleteDialogComponent } from '../../dialogs/delete-dialog/delete-dialog
 import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
-import { IssueTrackerRegisterComponent } from './../../dialogs/issue-tracker-register/issue-tracker-register.component';
-import { SlackRegisterComponent } from './../../dialogs/slack-register/slack-register.component';
+import { IssueTrackerRegisterComponent } from '../../dialogs/issue-tracker-register/issue-tracker-register.component';
+import { SlackRegisterComponent } from '../../dialogs/slack-register/slack-register.component';
 import { Job } from '../../../models/project-job.model';
 import { RegionsService } from '../../../services/regions.service';
-import { IssuesService } from './../../../services/issues.service';
+import { IssuesService } from '../../../services/issues.service';
 import { Issue } from '../../../models/issue.model';
 
 @Component({
-  selector: 'app-jobs-new',
-  templateUrl: './jobs-new.component.html',
-  styleUrls: ['./jobs-new.component.scss'],
+  selector: 'app-issue-new',
+  templateUrl: './issue-new.component.html',
+  styleUrls: ['./issue-new.component.scss'],
   providers: [ProjectService, SnackbarService, JobsService, AccountService, RegionsService, IssuesService]
 })
-export class JobsNewComponent implements OnInit {
+export class IssueNewComponent implements OnInit {
   httpMethod = ['GET', 'POST', 'PUT', 'DELETE'];
   issue: Issue = new Issue;
   id: string;
@@ -64,9 +64,9 @@ export class JobsNewComponent implements OnInit {
 
   ngOnInit() {
     // this.getRegions();
+    console.log('New issue data',this.issue);
     this.job.notifications[0] = new Noti();
     this.job.notifications[1] = new Noti();
-
     this.route.params.subscribe(params => {
       this.id = params['id'];
       if (this.id) {
@@ -88,6 +88,7 @@ export class JobsNewComponent implements OnInit {
       nameCtrl8: ['', Validators.required],
       nameCtrl9: ['', Validators.required],
       nameCtrl10: ['', Validators.required],
+      nameCtrl11: ['', Validators.required]
     });
 
     this.secondFormGroup = this._formBuilder.group({
@@ -120,7 +121,7 @@ export class JobsNewComponent implements OnInit {
 
   createIssue() {
     this.handler.activateLoader();
-    this.issue.project.id = this.project.id
+    this.issue.project.id = this.project.id;
     this.issue.headers = this.issue.headersText.split(",");
     this.issuesService.create(this.issue).subscribe(results => {
       this.handler.hideLoader();
@@ -128,8 +129,9 @@ export class JobsNewComponent implements OnInit {
         return
       }
       this.issue = results['data'];
+      this.router.navigate(['/app/projects', this.project.id, 'issue']);
+      console.log('issue new data',this.issue);
       error => {
-        console.log('issue 2..',this.issue);
         this.handler.hideLoader();
         this.handler.error(error);
       }

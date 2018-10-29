@@ -2,7 +2,7 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']">{{project.name}}</a>
+                <a href="javascript:;" [routerLink]="['/app/projects', id, 'issue']">{{project.name}}</a>
                 <span class="text-muted">&nbsp; <i class="fa fa-chevron-right"></i> &nbsp;</span>Issues
             </section>
         </article>
@@ -15,10 +15,10 @@
 
         <div class="box1 box-default">
             <div class="box-body">
-              
+
                 <div class="row">
                     <div class="col-md-10">
-                        <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects', id, 'jobs', 'new']">
+                        <button mat-button color="primary" class="btn-w-md" [routerLink]="['/app/projects', id, 'issue', 'new']">
                             <i class="fa fa-plus"></i>
                             New Issue
                         </button>
@@ -33,51 +33,20 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                            <mat-cell *matCellDef="let element" [routerLink]="['/app/projects', id, 'jobs', element.id, 'edit']">
-                                <a href="javascript:;">{{element.name}}</a></mat-cell>
+                            <mat-cell *matCellDef="let issue" [routerLink]="['/app/projects', id, 'issue', element.id, 'edit']">
+                                <a href="javascript:;">{{issue.result}}</a></mat-cell>
                         </ng-container>
-                        <!--Env Name-->
-                        <ng-container matColumnDef="env">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Env</mat-header-cell>
-                            <mat-cell *matCellDef="let element">{{element.environment?.name}}</mat-cell>
+                        <!--End Point-->
+                        <ng-container matColumnDef="endPoint">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>End Point</mat-header-cell>
+                            <mat-cell *matCellDef="let issue">
+                                {{issue.endPoint}}</mat-cell>
                         </ng-container>
-
-                        <!--Bot Region-->
-                        <ng-container matColumnDef="bot-region">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Bot-Region</mat-header-cell>
-                            <mat-cell *matCellDef="let element">{{element.regions}}</mat-cell>
-                        </ng-container>
-
-                        <!--Bug Management-->
-                        <ng-container matColumnDef="bug-management">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>AutoIssues</mat-header-cell>
-                            <mat-cell *matCellDef="let element">
-                                <div *ngIf="element.issueTrackerToDo" class="ml-3"> {{"TODO"}}</div>
-                                <div *ngIf="!element.issueTrackerToDo">
-                                    <span class="text-success">{{element.closedIssues}}</span>&nbsp;<span class="text-muted small">Closed</span>&nbsp;
-                                    <span class="text-danger">{{element.openIssues}}</span>&nbsp;<span class="text-muted small">Open</span>
-                                </div>
-                            </mat-cell>
-                        </ng-container>
-
-                        <!--Notification-->
-                        <ng-container matColumnDef="notifications">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Notifications</mat-header-cell>
-                            <mat-cell *matCellDef="let element">
-                                <div class="ml-4">
-                                    <mat-checkbox [checked]="true" *ngIf="!element.notificationToDo" [disabled]="true"></mat-checkbox>
-                                </div>
-                                <div *ngIf="element.notificationToDo" class="ml-3">
-                                    <span class="text-muted small">{{"TODO"}}</span>
-                                </div>
-
-                            </mat-cell>
-                        </ng-container>
-
-                        <!--Next Fire-->
-                        <ng-container matColumnDef="next-fire">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Next-Fire</mat-header-cell>
-                            <mat-cell *matCellDef="let element">{{element.nextFire | date:'short'}}</mat-cell>
+                        <!--Method Point-->
+                        <ng-container matColumnDef="method">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Method</mat-header-cell>
+                            <mat-cell *matCellDef="let issue">
+                                {{issue.method}}</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="jobsNoHeader">
@@ -86,7 +55,7 @@
                                 <button mat-button color="primary" (click)="advRun(element)"><i class="material-icons">play_circle_outline</i>
                                     &nbsp; Run &nbsp;
                                 </button>
-                                <button mat-button color="primary" [routerLink]="['/app/projects' , id, 'jobs' , element.id, 'runs']">History</button>
+                                <button mat-button color="primary" [routerLink]="['/app/projects' , id, 'issue' , element.id, 'runs']">History</button>
                                 <button mat-button color="primary" [matMenuTriggerFor]="menu">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>

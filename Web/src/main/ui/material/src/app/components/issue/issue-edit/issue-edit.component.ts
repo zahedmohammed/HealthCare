@@ -16,16 +16,16 @@ import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
 import { RegionsService } from '../../../services/regions.service';
-import { IssueTrackerRegisterComponent } from './../../dialogs/issue-tracker-register/issue-tracker-register.component';
-import { SlackRegisterComponent } from './../../dialogs/slack-register/slack-register.component';
+import { IssueTrackerRegisterComponent } from '../../dialogs/issue-tracker-register/issue-tracker-register.component';
+import { SlackRegisterComponent } from '../../dialogs/slack-register/slack-register.component';
 
 @Component({
-  selector: 'app-jobs-edit',
-  templateUrl: './jobs-edit.component.html',
-  styleUrls: ['./jobs-edit.component.scss'],
+  selector: 'app-issue-edit',
+  templateUrl: './issue-edit.component.html',
+  styleUrls: ['./issue-edit.component.scss'],
   providers: [ProjectService, SnackbarService, JobsService, AccountService, RegionsService]
 })
-export class JobsEditComponent implements OnInit {
+export class IssueEditComponent implements OnInit {
 
   id: string;
   jobId: string;

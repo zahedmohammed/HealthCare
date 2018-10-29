@@ -31,8 +31,8 @@ export class Issue {
     public failedAssertions: string;
 
     public result: string;
-
-
+    
+    public environment: string;
 }
 export class Project {
     id: string;

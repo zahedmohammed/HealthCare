@@ -7,6 +7,31 @@ export class IssuesService {
   private serviceUrl = '/api/v1/issues';
   constructor(private http: HttpClient) { }
 
+  // get(page, pageSize) {
+  //   let params = new HttpParams();
+  //   params = params.append('page', page);
+  //   params = params.append('pageSize', pageSize);
+  //   return this.http.get(this.serviceUrl, {params});
+  // }
+
+  getById(id: string) {
+    return this.http.get(this.serviceUrl + "/" + id);
+  }
+
+  /**
+   * Get the jobs in observable from endpoint
+   */
+  getIssue(id: string) {
+    let params = new HttpParams();
+    params = params.append('page', '1');
+    params = params.append('pageSize', '10');
+    return this.http.get(this.serviceUrl + "/project/" + id, { params });
+  }
+
+  getCountIssue() {
+    return this.http.get(this.serviceUrl + "/count");
+  }
+
   create(issue: Issue) {
     return this.http.post(this.serviceUrl, issue);
   }
@@ -16,10 +41,10 @@ export class IssuesService {
   }
 
   delete(issue: Issue) {
-    return this.http.delete(this.serviceUrl + "/" + issue['id']);
+    return this.http.delete(this.serviceUrl + "/project" + issue['id']);
   }
   get() {
-    return this.http.get(this.serviceUrl + "/issue" );
+    return this.http.get(this.serviceUrl + "/issue");
   }
 }
 

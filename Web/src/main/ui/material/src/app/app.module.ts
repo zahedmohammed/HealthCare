@@ -78,9 +78,7 @@ import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
 // hmr
 //import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
-import { JobslistComponent } from "./components/jobs/jobs-list/jobs-list.component";
-import { JobDetailsComponent } from "./components/jobs/job-details/job-details.component";
-
+import { IssuelistComponent } from "./components/issue/issue-list/issue-list.component";
 import { ProjectsListComponent } from './components/projects/projects-list/projects-list.component';
 import { ProjectsNewComponent } from './components/projects/projects-new/projects-new.component';
 import { ProjectsEditComponent } from './components/projects/projects-edit/projects-edit.component';
@@ -168,8 +166,7 @@ import { SuitDailogComponent } from './components/dialogs/suit-dailog/suit-dailo
 import { IssueTrackerRegisterComponent } from './components/dialogs/issue-tracker-register/issue-tracker-register.component';
 
 import { ProjectsSyncComponent } from './components/dialogs/projects-sync/projects-sync.component';
-import { JobsNewComponent } from './components/jobs/jobs-new/jobs-new.component';
-import { JobsEditComponent } from './components/jobs/jobs-edit/jobs-edit.component';
+import { IssueEditComponent } from './components/issue/issue-edit/issue-edit.component';
 import { ProjectsManageComponent } from './components/projects/projects-manage/projects-manage.component';
 import { RegisterComponent } from './components/dialogs/register/register.component';
 import { EnvironmentNewComponent } from './components/environments/environment-new/environment-new.component';
@@ -195,7 +192,7 @@ import { AutoSyncSaveConfigComponent } from './components/dialogs/auto-sync-save
 import { TestsuitNewDialogComponent } from './components/dialogs/testsuit-new-dialog/testsuit-new-dialog.component';
 import { JobAnalyticsComponent } from './components/analytics/job-analytics/job-analytics.component';
 import { ProjectRecommendationsComponent } from './components/projects/project-recommendations/project-recommendations.component';
-
+import { IssueNewComponent } from './components/issue/issue-new/issue-new.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -271,8 +268,7 @@ import { ProjectRecommendationsComponent } from './components/projects/project-r
     DashboardComponent,
     // Pages
     PageLayoutFullscreenComponent,
-    JobslistComponent,
-    JobDetailsComponent,
+    IssuelistComponent,
     ProjectsListComponent,
     RegionsListComponent,
     RunListComponent,
@@ -341,8 +337,8 @@ import { ProjectRecommendationsComponent } from './components/projects/project-r
     DeleteDialogComponent,
     SuitDailogComponent,
     ProjectsSyncComponent,
-    JobsNewComponent,
-    JobsEditComponent,
+    IssueEditComponent,
+    IssueNewComponent,
     ProjectsManageComponent,
     RegisterComponent,
     EnvironmentNewComponent,

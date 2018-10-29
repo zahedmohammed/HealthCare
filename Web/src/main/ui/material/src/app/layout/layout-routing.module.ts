@@ -5,10 +5,9 @@ import { LayoutComponent } from './layout.component';
 
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
-import { JobslistComponent } from '../components/jobs/jobs-list/jobs-list.component';
-import { JobDetailsComponent} from '../components/jobs/job-details/job-details.component';
-import { JobsNewComponent } from '../components/jobs/jobs-new/jobs-new.component';
-import { JobsEditComponent } from '../components/jobs/jobs-edit/jobs-edit.component';
+import { IssuelistComponent } from '../components/issue/issue-list/issue-list.component';
+import { IssueNewComponent } from '../components/issue/issue-new/issue-new.component';
+import { IssueEditComponent } from '../components/issue/issue-edit/issue-edit.component';
 
 
 import { RunListComponent } from '../components/run-list/run-list.component';
@@ -127,11 +126,10 @@ const routes: Routes = [
        { path: 'projects/:id/job-analytics', component: JobAnalyticsComponent },
        { path: 'projects/:id/recommendations', component: ProjectRecommendationsComponent },
 
-      { path: 'projects/:id/jobs', component: JobslistComponent },
-      { path: 'projects/:id/jobs/new', component: JobsNewComponent },
-      { path: 'projects/:id/jobs/:jobId/edit', component: JobsEditComponent },
+      { path: 'projects/:id/issue', component: IssuelistComponent },
+      { path: 'projects/:id/issue/new', component: IssueNewComponent },
+      { path: 'projects/:id/issue/:jobId/edit', component: IssueEditComponent },
 
-      { path: 'jobs/:id', component: JobDetailsComponent},
       { path: 'projects/:projectId/jobs/:jobId/runs', component: RunListComponent },
       { path: 'projects/:projectId/jobs/:jobId/runs/:runId', component: RunDetailComponent },
       { path: 'projects/:projectId/jobs/:jobId/runs/:id/history/:suiteId', component: RunHistoryComponent },
