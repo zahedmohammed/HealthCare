@@ -86,6 +86,9 @@ import { IssueEditComponent } from './components/issue/issue-edit/issue-edit.com
 import { DashboardService } from './services/dashboard.service';
 import { Handler } from './components/dialogs/handler/handler';
 import { ErrorDialogComponent } from './components/dialogs/error-dialog/error-dialog.component';
+import { ResponseDialogComponent } from './components/dialogs/response-dialog/response-dialog.component';
+import { ByteFormatPipe } from './pipes/byte-format.pipe';
+import { MstoDurationPipe } from './pipes/msto-duration.pipe';
 
 @NgModule({
   imports: [
@@ -168,11 +171,14 @@ import { ErrorDialogComponent } from './components/dialogs/error-dialog/error-di
     IssueNewComponent,
     IssueEditComponent,
     TimeAgoPipe,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    ResponseDialogComponent,
+    ByteFormatPipe,
+    MstoDurationPipe
   ],
   bootstrap: [AppComponent],
   providers: [DashboardService, DatePipe, Handler],
-  entryComponents: [ErrorDialogComponent]
+  entryComponents: [ErrorDialogComponent, ResponseDialogComponent]
 })
 
 export class AppModule {

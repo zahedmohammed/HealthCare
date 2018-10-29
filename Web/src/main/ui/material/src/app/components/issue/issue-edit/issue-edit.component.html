@@ -30,9 +30,9 @@
         <i class="material-icons text-danger" >lightbulb_outline</i> &nbsp;
         <span class="text-danger">Recommendations</span></label>
 
-        <button mat-button color="warn" class="btn-w-xs text-danger pull-right" (click)="delete();"><i class="material-icons">delete</i>Delete
+        <button mat-button color="warn" class="btn-w-xs text-danger pull-right"><i class="material-icons">delete</i>Delete
         </button>
-        <button mat-button color="primary" class="btn-w-xs text-primary pull-right" (click)="cloneJob()"><i class="material-icons">content_copy</i>Clone
+        <button mat-button color="primary" class="btn-w-xs text-primary pull-right"><i class="material-icons">content_copy</i>Clone
         </button>
     </nav>
     <!--<br/>-->
@@ -195,7 +195,7 @@
 
                             <div>
                                 <mat-card-actions class="pull-right">
-                                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid"  (click)="saveJob();">Save
+                                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid">Save
                                         & Complete
                                     </button>
                                     <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid" matStepperNext>Next
@@ -241,7 +241,7 @@
                                 <div class="col-md-7">
                                     <div class="callout1 text-muted callout-info1">
                                         <p>
-                                            <button mat-raised-button class="btn-w-md text-primary" (click)="openDialogSlackRegister()"><i
+                                            <button mat-raised-button class="btn-w-md text-primary"><i
                                                     class="fa fa-plus"></i>&nbsp;&nbsp; New Slack Credentials
                                             </button>
                                             <br/> Slack token of your slack workspace.<br/>
@@ -288,7 +288,7 @@
                                 <div class="col-md-5">
                                     <mat-form-field class="full-width">
                                         <mat-select placeholder="Issue Tracker Type (Optional)" [(ngModel)]="job.issueTracker.accountType" name="type" [ngModelOptions]="{standalone: true}">
-                                            <mat-option *ngFor="let type of accountTypes" [value]="type" (click)="getITAccountsByAccountType();">
+                                            <mat-option *ngFor="let type of accountTypes" [value]="type">
                                                 {{type}}
                                             </mat-option>
                                         </mat-select>
@@ -317,7 +317,7 @@
                                     <div class="col-md-7">
                                         <div class="callout1 text-muted callout-info1">
                                             <p>
-                                                <button mat-raised-button class="btn-w-md text-primary" (click)="openDialogITCredentials()"><i
+                                                <button mat-raised-button class="btn-w-md text-primary"><i
                                                         class="fa fa-plus"></i>&nbsp;&nbsp; New Issue Tracker Credentials
                                                 </button>
                                                 <br/> A user with read/write access to the Issue Tracker. <br/> Note: You can
@@ -357,7 +357,7 @@
                             <div>
                                 <mat-card-actions class="pull-right">
                                     <button  mat-button matStepperPrevious>Back</button>
-                                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="secondFormGroup.invalid"  (click)="saveJob();">Save
+                                    <button mat-raised-button color="primary" class="nav-btn" [disabled]="secondFormGroup.invalid">Save
                                         & Complete
                                     </button>
                                 </mat-card-actions>

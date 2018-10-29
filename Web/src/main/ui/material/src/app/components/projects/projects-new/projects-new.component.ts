@@ -128,8 +128,7 @@ export class ProjectsNewComponent implements OnInit {
     });
   }
 
-  save(matStepper) {
-    this.matStepper = matStepper;
+  save() {
     if (this.project.id) {
       this.update();
     } else {
