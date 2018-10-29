@@ -60,5 +60,10 @@ public class Issue extends BaseEntity {
 
     private String result;
 
+    @ElementCollection
+    private List<String> tags;
+
+    private String env;
+
 }
 

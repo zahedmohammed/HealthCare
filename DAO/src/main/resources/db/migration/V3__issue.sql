@@ -1,8 +1,8 @@
 -- author Mohammed Shoukath Ali
 
--- Table: public.issue
+-- Table: issue
 
-CREATE TABLE public.issue
+CREATE TABLE issue
 (
   id character varying(255) NOT NULL,
   created_by character varying(255),
@@ -21,14 +21,15 @@ CREATE TABLE public.issue
   result character varying(255),
   status_code character varying(255),
   project_id character varying(255),
+  env character varying(255),
   CONSTRAINT issue_pkey PRIMARY KEY (id),
   CONSTRAINT fkcombytcpeogaqi2012phvvvhy FOREIGN KEY (project_id)
-      REFERENCES public.project (id) MATCH SIMPLE
+      REFERENCES project (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
 
-  -- Table: public.issue_headers
+  -- Table: issue_headers
   CREATE TABLE issue_headers
   (
     issue_id character varying(255) NOT NULL,
@@ -37,6 +38,19 @@ CREATE TABLE public.issue
         REFERENCES issue (id) MATCH SIMPLE
         ON UPDATE NO ACTION ON DELETE NO ACTION
   );
+
+  -- Table: issue_tags
+
+  CREATE TABLE issue_tags
+  (
+    issue_id character varying(255) NOT NULL,
+    tags character varying(255),
+    CONSTRAINT fkaqa2tu48w268qwe8w4ax07xju FOREIGN KEY (issue_id)
+        REFERENCES issue (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION
+  );
+
+
 
 
 

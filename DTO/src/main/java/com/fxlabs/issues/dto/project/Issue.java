@@ -41,5 +41,9 @@ public class Issue extends BaseDto<String> {
     private String description;
 
     private Project project;
+
+    private List<String> tags;
+
+    private String env;
 }
 
