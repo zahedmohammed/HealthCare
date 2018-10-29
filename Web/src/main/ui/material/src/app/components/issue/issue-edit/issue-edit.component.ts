@@ -11,13 +11,10 @@ import { Account } from '../../../models/account.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
 import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig, MAT_DIALOG_DATA } from '@angular/material';
-import { DeleteDialogComponent } from '../../dialogs/delete-dialog/delete-dialog.component';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
 import { RegionsService } from '../../../services/regions.service';
-import { IssueTrackerRegisterComponent } from '../../dialogs/issue-tracker-register/issue-tracker-register.component';
-import { SlackRegisterComponent } from '../../dialogs/slack-register/slack-register.component';
 
 @Component({
   selector: 'app-issue-edit',
@@ -60,21 +57,12 @@ export class IssueEditComponent implements OnInit {
     public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.getRegions();
     this.job.notifications[0] = new Noti();
     this.job.notifications[1] = new Noti();
 
     this.route.params.subscribe(params => {
       this.id = params['id'];
       this.jobId = params['jobId'];
-      if (this.id) {
-        this.loadProject();
-        this.getEnvs();
-        this.getNotifyAccounts();
-      }
-      if (this.jobId) {
-        this.loadJob();
-      }
     });
 
     this.firstFormGroup = this._formBuilder.group({
@@ -104,172 +92,6 @@ export class IssueEditComponent implements OnInit {
       this.project = results['data'];
       this.job['project'] = this.project;
       this.context = this.project.name + " > Edit";
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  loadJob() {
-    this.handler.activateLoader();
-    this.jobsService.getById(this.jobId).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.job = results['data'];
-      if (this.job.categories) {
-        this.selectedCategories = this.job.categories.split(",")
-          .map(function (item) {
-            return item.trim();
-          });
-      }
-      if (this.job.categories) {
-        this.category = this.job.categories.split(",")
-          .map(function (item) {
-            return item.trim();
-          });
-      }
-      this.getITAccountsByAccountType();
-      this.loadProject();
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getEnvs() {
-    this.projectService.getEnvsByProjectId(this.id).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.envs = results['data'];
-      if (!this.envs) {
-      }
-      console.log(this.envs);
-    });
-  }
-
-  getAccountsForIssueTracker() {
-    this.handler.activateLoader();
-    this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      //this.itAccounts = results['data'];
-      this.itAccounts = new Array();
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getITAccountsByAccountType() {
-    this.handler.activateLoader();
-    this.itAccounts.splice(0)
-    this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.itAccounts = new Array();
-      for (let entry of results['data']) {
-        if (entry.accountType == this.job.issueTracker.accountType) {
-          this.itAccounts.push(entry);
-        }
-      }
-
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  openDialogITCredentials() {
-    const dialogRef = this.dialog.open(IssueTrackerRegisterComponent, {
-      width: '800px',
-      data: this.accountTypes
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getITAccountsByAccountType();
-    });
-  }
-
-  openDialogSlackRegister() {
-    const dialogRef = this.dialog.open(SlackRegisterComponent, {
-      width: '800px'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getNotifyAccounts();
-    });
-  }
-
-  getNotifyAccounts() {
-    this.handler.activateLoader();
-    this.accountService.getAccountByAccountType('NOTIFICATION_HUB').subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.notifyAccounts = results['data'];
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  saveJob() {
-    this.handler.activateLoader();
-    this.snackbarService.openSnackBar("'Job '" + this.job.name + "' updating.", "");
-    this.jobsService.update(this.job, this.category).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.snackbarService.openSnackBar("'Job '" + this.job.name + "' updated.", "");
-      this.router.navigate(['/app/projects', this.id, 'jobs']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  delete() {
-
-    var r = confirm("Are you sure you want to delete this job?");
-    if (r == true) {
-      this.snackbarService.openSnackBar(this.job.name + " deleting...", "");
-      this.handler.activateLoader();
-
-      this.jobsService.delete(this.job).subscribe(results => {
-        if (this.handler.handle(results)) {
-          return;
-        }
-        this.snackbarService.openSnackBar("'Job '" + this.job.name + "' deleted", "");
-        this.router.navigate(['/app/projects', this.id, 'jobs']);
-      }, error => {
-        this.handler.hideLoader();
-        this.handler.error(error);
-      });
-    }
-  }
-
-  cloneJob() {
-    localStorage.setItem('jobClone', JSON.stringify(this.job));
-    this.router.navigate(['/app/projects', this.id, 'jobs', 'new']);
-  }
-
-  getRegions() {
-    this.handler.activateLoader();
-    this.regionService.getEntitled(this.page, this.pageSize).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.list = results['data'];
-      //this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

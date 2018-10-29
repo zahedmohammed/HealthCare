@@ -11,12 +11,9 @@ import { Account } from '../../../models/account.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
 import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig, MAT_DIALOG_DATA } from '@angular/material';
-import { DeleteDialogComponent } from '../../dialogs/delete-dialog/delete-dialog.component';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material';
-import { IssueTrackerRegisterComponent } from '../../dialogs/issue-tracker-register/issue-tracker-register.component';
-import { SlackRegisterComponent } from '../../dialogs/slack-register/slack-register.component';
 import { Job } from '../../../models/project-job.model';
 import { RegionsService } from '../../../services/regions.service';
 import { IssuesService } from '../../../services/issues.service';
@@ -63,16 +60,10 @@ export class IssueNewComponent implements OnInit {
     public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) { }
 
   ngOnInit() {
-    // this.getRegions();
-    console.log('New issue data',this.issue);
-    this.job.notifications[0] = new Noti();
-    this.job.notifications[1] = new Noti();
     this.route.params.subscribe(params => {
       this.id = params['id'];
       if (this.id) {
         this.loadProject(this.id);
-        // this.getEnvs();
-        // this.getNotifyAccounts();
       }
     });
 
@@ -96,27 +87,6 @@ export class IssueNewComponent implements OnInit {
 
     this.thirdFormGroup = this._formBuilder.group({
     });
-
-    if (localStorage.getItem('jobClone') != null) {
-      var jobClone = localStorage.getItem("jobClone");
-      this.job.name = JSON.parse(jobClone)["name"] + "_copy";
-      this.job.environment = JSON.parse(jobClone)["environment"];
-      this.job.regions = JSON.parse(jobClone)["regions"];
-      this.job.categories = JSON.parse(jobClone)["categories"];
-      if (this.job.categories) {
-        this.category = this.job.categories.split(",")
-          .map(function (item) {
-            return item.trim();
-          });
-      }
-      this.job.cron = JSON.parse(jobClone)["cron"];
-      localStorage.removeItem('jobClone');
-    }
-    this.crons[0] = new Cron("0 0 12 * * ?", "Fire at 12pm (noon) every day"),
-      this.crons[1] = new Cron("0 15 10 * * ?", "Fire at 10:15am every day"),
-      this.crons[2] = new Cron("0 15 10 ? * MON-FRI", "Fire at 10:15am every Monday, Tuesday, Wednesday, Thursday and Friday")
-    this.categories = ['SimpleGET', 'Functional', 'SLA', 'Negative', 'UnSecured', 'InvalidAuth', 'InvalidAuthSQL', 'InvalidAuthEmpty', 'DDOS', 'XSS_Injection', 'SQL_Injection', 'Log_Forging', 'RBAC'];
-
   }
 
   createIssue() {
@@ -130,7 +100,7 @@ export class IssueNewComponent implements OnInit {
       }
       this.issue = results['data'];
       this.router.navigate(['/app/projects', this.project.id, 'issue']);
-      console.log('issue new data',this.issue);
+      console.log('issue new data', this.issue);
       error => {
         this.handler.hideLoader();
         this.handler.error(error);
@@ -149,119 +119,6 @@ export class IssueNewComponent implements OnInit {
       this.project = results['data'];
       this.job['project'] = this.project;
       this.context = this.project.name + " > Edit";
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getEnvs() {
-    this.projectService.getEnvsByProjectId(this.id).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.envs = results['data'];
-      if (!this.envs) {
-      }
-      console.log(this.envs);
-    });
-  }
-
-  getAccountsForIssueTracker() {
-    this.handler.activateLoader();
-    this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      //this.itAccounts = results['data'];
-      this.itAccounts = new Array();
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getITAccountsByAccountType() {
-    this.handler.activateLoader();
-    this.accountService.getAccountByAccountType('ISSUE_TRACKER').subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      //this.itAccounts = results['data'];
-      this.itAccounts = new Array();
-      for (let entry of results['data']) {
-        if (entry.accountType == this.job.issueTracker.accountType) {
-          this.itAccounts.push(entry);
-        }
-      }
-
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  openDialogITCredentials() {
-    const dialogRef = this.dialog.open(IssueTrackerRegisterComponent, {
-      width: '800px',
-      data: this.accountTypes
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getITAccountsByAccountType();
-    });
-  }
-
-  openDialogSlackRegister() {
-    const dialogRef = this.dialog.open(SlackRegisterComponent, {
-      width: '800px'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getNotifyAccounts();
-    });
-  }
-
-  getNotifyAccounts() {
-    this.handler.activateLoader();
-    this.accountService.getAccountByAccountType('NOTIFICATION_HUB').subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.notifyAccounts = results['data'];
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  saveJob() {
-    this.handler.activateLoader();
-    this.snackbarService.openSnackBar("'Job '" + this.job.name + "' adding.", "");
-    this.jobsService.create(this.job, this.category).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.snackbarService.openSnackBar("'Job '" + this.job.name + "' added.", "");
-      this.router.navigate(['/app/projects', this.id, 'jobs']);
-    }, error => {
-      this.handler.hideLoader();
-      this.handler.error(error);
-    });
-  }
-
-  getRegions() {
-    this.handler.activateLoader();
-    this.regionService.getEntitled(this.page, this.pageSize).subscribe(results => {
-      this.handler.hideLoader();
-      if (this.handler.handle(results)) {
-        return;
-      }
-      this.list = results['data'];
-      //this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);

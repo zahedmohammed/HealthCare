@@ -1,4 +1,3 @@
-import{RegisterComponent}from'./../../dialogs/register/register.component';
 import { Component, OnInit, Inject}from '@angular/core';
 import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
 import {ProjectService}from '../../../services/project.service';
@@ -256,15 +255,7 @@ export class ProjectsNewComponent implements OnInit {
   }
 
 
-  openDialog() {
-    const dialogRef = this.dialog.open(RegisterComponent, {
-      width:'800px'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-     // this.getAccountsForProjectPage();
-    });
-  }
-
+ 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
   genPolicies = ['None', 'Create'];

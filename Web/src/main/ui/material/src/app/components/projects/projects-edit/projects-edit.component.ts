@@ -1,18 +1,16 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatTabChangeEvent}from '@angular/material';
-import {Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
+import { MatTabChangeEvent } from '@angular/material';
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
 import { ProjectService } from '../../../services/project.service';
 import { OrgService } from '../../../services/org.service';
 import { AccountService } from '../../../services/account.service';
-import {DashboardService}from '../../../services/dashboard.service';
-import {TestSuiteService}from '../../../services/test-suite.service';
+import { DashboardService } from '../../../services/dashboard.service';
+import { TestSuiteService } from '../../../services/test-suite.service';
 import { Project } from '../../../models/project.model';
 import { Handler } from '../../dialogs/handler/handler';
 import { APPCONFIG } from '../../../config';
-import {VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
-import {DeleteDialogComponent}from '../../dialogs/delete-dialog/delete-dialog.component';
-import {SnackbarService}from '../../../services/snackbar.service';
-import {SuitDailogComponent} from "../../dialogs/suit-dailog/suit-dailog.component";
+import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { SnackbarService } from '../../../services/snackbar.service';
 import { ProjectSync } from '../../../models/project-sync.model';
 
 @Component({
@@ -30,13 +28,13 @@ export class ProjectsEditComponent implements OnInit {
   /*config;*/
   TestSuite;
   id;
-  projectSync: ProjectSync = new ProjectSync(); 
+  projectSync: ProjectSync = new ProjectSync();
   suiteFile;
   suiteFileData;
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService,
-  private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
-  public dialog: MatDialog, public snackBar: MatSnackBar, private dashboardService: DashboardService, private snackbarService: SnackbarService) { }
+    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
+    public dialog: MatDialog, public snackBar: MatSnackBar, private dashboardService: DashboardService, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
     this.AppConfig = APPCONFIG;
@@ -48,15 +46,15 @@ export class ProjectsEditComponent implements OnInit {
     });
   }
 
-    tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
-      //console.log('tabChangeEvent => ', tabChangeEvent);
-      console.log('index => ', tabChangeEvent.index);
-      if (tabChangeEvent.index === 0) {
-          this.getFiles(this.id);
-      }
-      else if (tabChangeEvent.index === 1) {
-          this.getTestSuite(this.id);
-      }
+  tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
+    //console.log('tabChangeEvent => ', tabChangeEvent);
+    console.log('index => ', tabChangeEvent.index);
+    if (tabChangeEvent.index === 0) {
+      this.getFiles(this.id);
+    }
+    else if (tabChangeEvent.index === 1) {
+      this.getTestSuite(this.id);
+    }
 
   }
 
@@ -79,13 +77,13 @@ export class ProjectsEditComponent implements OnInit {
     this.snackbarService.openSnackBar(this.project.name + " saving...", "");
     this.projectService.update(this.project).subscribe(results => {
       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      if (this.handler.handle(results)) {
         return;
       }
-     /* this.config.verticalPosition = 'top';
-      this.config.horizontalPosition = 'right';
-      this.config.duration = 3000;*/
-      this.snackbarService.openSnackBar( this.project.name + "  saved successfully", "");
+      /* this.config.verticalPosition = 'top';
+       this.config.horizontalPosition = 'right';
+       this.config.duration = 3000;*/
+      this.snackbarService.openSnackBar(this.project.name + "  saved successfully", "");
       this.router.navigate(['/app/projects']);
     }, error => {
       this.handler.hideLoader();
@@ -93,34 +91,34 @@ export class ProjectsEditComponent implements OnInit {
     });
   }
 
-    delete() {
-    let dialogRef = this.dialog.open(DeleteDialogComponent, {
-        data: {
-            project: this.project
-        }
-    });
+  //     delete() {
+  //     let dialogRef = this.dialog.open(DeleteDialogComponent, {
+  //         data: {
+  //             project: this.project
+  //         }
+  //     });
 
-    dialogRef.afterClosed().subscribe(result => {
-        if (result != null) {
-            this.handler.activateLoader();
-            this.snackbarService.openSnackBar(this.project.name + " deleting...", "");
-            this.projectService.delete(this.project).subscribe(results => {
-                this.handler.hideLoader();
-                if (this.handler.handle(results)) {
-                    return;
-                }
-               /* this.config.verticalPosition = 'top';
-                this.config.horizontalPosition = 'right';
-                this.config.duration = 3000;*/
-                this.snackbarService.openSnackBar(this.project.name + " deleted successfully", "");
-                this.router.navigate(['/app/projects']);
-            }, error => {
-                this.handler.hideLoader();
-                this.handler.error(error);
-            });
-        }
-    });
-}
+  //     dialogRef.afterClosed().subscribe(result => {
+  //         if (result != null) {
+  //             this.handler.activateLoader();
+  //             this.snackbarService.openSnackBar(this.project.name + " deleting...", "");
+  //             this.projectService.delete(this.project).subscribe(results => {
+  //                 this.handler.hideLoader();
+  //                 if (this.handler.handle(results)) {
+  //                     return;
+  //                 }
+  //                /* this.config.verticalPosition = 'top';
+  //                 this.config.horizontalPosition = 'right';
+  //                 this.config.duration = 3000;*/
+  //                 this.snackbarService.openSnackBar(this.project.name + " deleted successfully", "");
+  //                 this.router.navigate(['/app/projects']);
+  //             }, error => {
+  //                 this.handler.hideLoader();
+  //                 this.handler.error(error);
+  //             });
+  //         }
+  //     });
+  // }
 
   getOrgs() {
     this.orgService.getByUser().subscribe(results => {
@@ -148,7 +146,7 @@ export class ProjectsEditComponent implements OnInit {
       this.handler.error(error);
     });
   }
-   getTestSuite(id: string) {
+  getTestSuite(id: string) {
     this.handler.activateLoader();
     this.dashboardService.projectSavings(id).subscribe(results => {
       this.handler.hideLoader();
@@ -162,73 +160,73 @@ export class ProjectsEditComponent implements OnInit {
     });
   }
 
-  getFiles(id: string){
-      this.handler.activateLoader();
-      this.projectService.getFiles(id,this.page, this.pageSize).subscribe(results => {
-          this.handler.hideLoader();
-          if (this.handler.handle(results)) {
-              return;
-          }
-          this.suiteFile = results['data'];
-          this.length = results['totalElements'];
-      }, error => {
-          this.handler.hideLoader();
-          this.handler.error(error);
-      });
+  getFiles(id: string) {
+    this.handler.activateLoader();
+    this.projectService.getFiles(id, this.page, this.pageSize).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.suiteFile = results['data'];
+      this.length = results['totalElements'];
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
   }
 
-    getFileDetail(fileId: string) {
-        this.handler.activateLoader();
-        this.projectService.getFilesDetails(this.id, fileId).subscribe(results => {
-            this.handler.hideLoader();
-            if (this.handler.handle(results)) {
-                return;
-            }
-            this.suiteFileData = results['data'];
-            var log =  this.suiteFileData;
-            this.showDialog(log);
-        }, error => {
-            this.handler.hideLoader();
-            this.handler.error(error);
-        });
+  getFileDetail(fileId: string) {
+    this.handler.activateLoader();
+    this.projectService.getFilesDetails(this.id, fileId).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.suiteFileData = results['data'];
+      var log = this.suiteFileData;
+      // this.showDialog(log);
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
 
-    }
+  }
 
-  setAccount(account){
-     this.project.account.accountType =  account.accountType;
+  setAccount(account) {
+    this.project.account.accountType = account.accountType;
   }
 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
   genPolicies = ['None', 'Create'];
 
-    length = 0;
-    page = 0;
-    pageSize = 20;
-    change(evt) {
-        this.page = evt['pageIndex'];
-        this.getFiles(this.id);
-    }
+  length = 0;
+  page = 0;
+  pageSize = 20;
+  change(evt) {
+    this.page = evt['pageIndex'];
+    this.getFiles(this.id);
+  }
 
-    showDialog(log) {
-        this.dialog.open(SuitDailogComponent, {
-            width:'50%',
-            height:'80%',
-            data: log
-        });
-    }
-    projectSynchronization() {
-      this.showSpinner = true;
-      this.snackbarService.openSnackBar(this.project.name + " syncing...", "");
-      this.projectSync.projectId = this.project.id;
-      this.projectService.projectSync(this.projectSync).subscribe(results => {
-        this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-          return;
-        }
-      }, error => {
-        this.handler.hideLoader();
-        this.handler.error(error);
-      });
-    }
+  // showDialog(log) {
+  //     this.dialog.open(SuitDailogComponent, {
+  //         width:'50%',
+  //         height:'80%',
+  //         data: log
+  //     });
+  // }
+  projectSynchronization() {
+    this.showSpinner = true;
+    this.snackbarService.openSnackBar(this.project.name + " syncing...", "");
+    this.projectSync.projectId = this.project.id;
+    this.projectService.projectSync(this.projectSync).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
 }
