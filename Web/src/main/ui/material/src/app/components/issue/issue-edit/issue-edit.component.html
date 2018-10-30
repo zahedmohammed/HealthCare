@@ -12,6 +12,10 @@
 </div>
 <br />
 <section class="container-fluid with-maxwidth chapter">
+    <nav mat-tab-nav-bar>
+        <button mat-button color="warn" class="btn-w-xs text-danger pull-right" (click)="delete()"><i class="material-icons">delete</i>Delete
+        </button>
+    </nav>
 
     <article class="article">
         <div class="box box-default">
@@ -189,11 +193,7 @@
                     </div>
                     <mat-card-actions class="pull-right">
                         <button mat-raised-button color="primary" class="nav-btn" type="submit" [disabled]="firstFormGroup.invalid"
-                            (click)="save();">
-                            Update </button>
-                            <button mat-raised-button color="danger" class="nav-btn" type="submit" [disabled]="firstFormGroup.invalid"
-                            (click)="delete();">
-                            Delete </button>
+                            (click)="save();"> Update </button>
                     </mat-card-actions>
                 </form>
             </div>

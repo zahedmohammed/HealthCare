@@ -85,6 +85,8 @@ export class ProjectsEditComponent implements OnInit {
   }
 
   delete() {
+    var r = confirm("Are you sure you want to delete this project ?");
+      if (r == true) {
     this.handler.activateLoader();
     this.snackbarService.openSnackBar(this.project.name + " deleting...", "");
     this.projectService.delete(this.project).subscribe(results => {
@@ -98,6 +100,7 @@ export class ProjectsEditComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
+  }
   }
 
   getOrgs() {

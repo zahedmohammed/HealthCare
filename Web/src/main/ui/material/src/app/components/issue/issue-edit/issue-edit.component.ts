@@ -133,6 +133,8 @@ export class IssueEditComponent implements OnInit {
     });
   }
   delete() {
+    var r = confirm("Are you sure you want to delete this issue project ?");
+      if (r == true) {
     this.snackbarService.openSnackBar(this.issue.env + " deleting...", "");
     this.handler.activateLoader();
     this.IssuesService.delete(this.issues.project.id, this.issueId).subscribe(results => {
@@ -147,6 +149,6 @@ export class IssueEditComponent implements OnInit {
       this.handler.hideLoader();
       this.handler.error(error);
     });
-
+  }
   }
 }
