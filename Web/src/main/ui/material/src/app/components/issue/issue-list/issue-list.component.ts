@@ -10,7 +10,6 @@ import { VERSION, MatDialog, MatDialogRef, MatTableDataSource, MatPaginator, Mat
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import { Subscription } from 'rxjs/Subscription';
-import { Issue } from '../../../models/issue.model';
 import { IssuesService } from './../../../services/issues.service';
 
 @Component({
@@ -22,15 +21,16 @@ import { IssuesService } from './../../../services/issues.service';
 export class IssuelistComponent implements OnInit {
 
   id; // project id
+  issueId: string;
   jobs;
   projectId: string = "";
   project: Base = new Base();
-  issue = [];
+  issues = [];
   showSpinner: boolean = false;
   notificationFlag: boolean;
   autoBugMngmnt: boolean = false;
 
-  displayedColumns: string[] = ['name', 'endPoint', 'method'];
+  displayedColumns: string[] = ['name', 'endPoint', 'method', 'result'];
   dataSource = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -72,9 +72,8 @@ export class IssuelistComponent implements OnInit {
       if (this.handler.handle(results)) {
         return;
       }
-      this.issue = results['data'];
-      console.log('checking data', this.issue);
-      this.dataSource = new MatTableDataSource(this.issue);
+      this.issues = results['data'];
+      this.dataSource = new MatTableDataSource(this.issues);
       this.dataSource.sort = this.sort
       this.length = results['totalElements'];
     }, error => {

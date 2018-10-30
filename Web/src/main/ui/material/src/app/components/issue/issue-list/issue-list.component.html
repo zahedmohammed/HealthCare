@@ -3,7 +3,7 @@
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
                 <a href="javascript:;" [routerLink]="['/app/projects', id, 'issue']">{{project.name}}</a>
-                <span class="text-muted">&nbsp; <i class="fa fa-chevron-right"></i> &nbsp;</span>Issues
+                <span class="text-muted">&nbsp; &nbsp;<i class="fa fa-chevron-right"></i> &nbsp;&nbsp;</span>Issues
             </section>
         </article>
     </div>
@@ -33,48 +33,27 @@
                         <!-- Name Column -->
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                            <mat-cell *matCellDef="let issue" [routerLink]="['/app/projects', id, 'issue', element.id, 'edit']">
-                                <a href="javascript:;">{{issue.result}}</a></mat-cell>
+                            <mat-cell *matCellDef="let issue" [routerLink]="['/app/projects', id,'issue', issue.id, 'edit']">
+                                <a href="javascript:;">{{issue.assertions}}</a></mat-cell>
                         </ng-container>
                         <!--End Point-->
                         <ng-container matColumnDef="endPoint">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>End Point</mat-header-cell>
                             <mat-cell *matCellDef="let issue">
-                                {{issue.endPoint}}</mat-cell>
+                                {{issue.endpoint}}</mat-cell>
                         </ng-container>
-                        <!--Method Point-->
+                        <!--Http Method-->
                         <ng-container matColumnDef="method">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Method</mat-header-cell>
                             <mat-cell *matCellDef="let issue">
                                 {{issue.method}}</mat-cell>
                         </ng-container>
-
-                        <ng-container matColumnDef="jobsNoHeader">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-                            <mat-cell *matCellDef="let element">
-                                <button mat-button color="primary" (click)="advRun(element)"><i class="material-icons">play_circle_outline</i>
-                                    &nbsp; Run &nbsp;
-                                </button>
-                                <button mat-button color="primary" [routerLink]="['/app/projects' , id, 'issue' , element.id, 'runs']">History</button>
-                                <button mat-button color="primary" [matMenuTriggerFor]="menu">
-                                    <mat-icon>more_vert</mat-icon>
-                                </button>
-                                <mat-menu #menu="matMenu" [overlapTrigger]="false">
-                                    <button mat-button color="primary" (click)="openJenkins()"><i class="material-icons">all_inclusive</i>
-                                        &nbsp; Jenkins &nbsp;
-                                    </button><br>
-                                    <button mat-button color="primary" (click)="openMaven()"><i class="material-icons"
-                                            style="transform: rotate(90deg);">explicit</i>
-                                        &nbsp; Maven &nbsp;
-                                    </button>
-                                    <br>
-                                    <button mat-button color="primary" (click)="openGradle()"><i class="material-icons">filter_tilt_shift</i>
-                                        &nbsp; Gradle &nbsp;
-                                    </button>
-                                </mat-menu>
-                            </mat-cell>
+                        <!-- Reult -->
+                        <ng-container matColumnDef="result">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Result</mat-header-cell>
+                            <mat-cell *matCellDef="let issue">
+                                {{issue.result}}</mat-cell>
                         </ng-container>
-
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                     </mat-table>

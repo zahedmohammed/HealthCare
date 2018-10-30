@@ -32,7 +32,7 @@ export class Issue {
 
     public result: string;
     
-    public environment: string;
+    public env: string;
 }
 export class Project {
     id: string;

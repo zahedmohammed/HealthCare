@@ -25,7 +25,7 @@ export class IssuesService {
     let params = new HttpParams();
     params = params.append('page', '1');
     params = params.append('pageSize', '10');
-    return this.http.get(this.serviceUrl + "/project/" + id, { params });
+    return this.http.get(this.serviceUrl + "/project/" + id);
   }
 
   getCountIssue() {
@@ -40,8 +40,8 @@ export class IssuesService {
     return this.http.put(this.serviceUrl, issue);
   }
 
-  delete(issue: Issue) {
-    return this.http.delete(this.serviceUrl + "/project" + issue['id']);
+  delete(projectId: string, issue: string) {
+    return this.http.delete(this.serviceUrl + "/project/" + projectId + "/issue/" + issue);
   }
   get() {
     return this.http.get(this.serviceUrl + "/issue");
