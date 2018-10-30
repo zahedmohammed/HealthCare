@@ -71,8 +71,6 @@ export class ProjectsNewComponent implements OnInit {
 
     this.firstFormGroup = this._formBuilder.group({
       nameCtrl: ['', Validators.required],
-      //urlCtrl: ['', Validators.required],
-      //typeCtrl: ['', Validators.required ]
     });
     this.secondFormGroup = this._formBuilder.group({
       openAPISpec: ['', Validators.required]

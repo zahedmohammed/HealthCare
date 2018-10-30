@@ -2,7 +2,7 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                <a href="javascript:;" [routerLink]="['/app/projects', id, 'issue']">{{project.name}}</a>
+                <a href="javascript:;" [routerLink]="['/app/projects']">{{project.name}}</a>
                 <span class="text-muted">&nbsp; &nbsp;<i class="fa fa-chevron-right"></i> &nbsp;&nbsp;</span>Issues
             </section>
         </article>
@@ -10,6 +10,14 @@
 </div>
 <br />
 <section class="container-fluid with-maxwidth chapter">
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'issue']" [active]="true">
+            &nbsp;Issues
+        </label>
+        <label mat-tab-link [routerLink]="['/app/projects', id, 'edit']">
+            &nbsp;&nbsp; Edit
+        </label>
+    </nav>
 
     <article class="article1">
 
@@ -28,13 +36,13 @@
                     </div>
                 </div>
                 <div class="mat-elevation-z8 box-default">
-                    <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="env" matSortDisableClear
                         matSortDirection="desc">
                         <!-- Name Column -->
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                        <ng-container matColumnDef="env">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Environments</mat-header-cell>
                             <mat-cell *matCellDef="let issue" [routerLink]="['/app/projects', id,'issue', issue.id, 'edit']">
-                                <a href="javascript:;">{{issue.assertions}}</a></mat-cell>
+                                <a href="javascript:;">{{issue.env}}</a></mat-cell>
                         </ng-container>
                         <!--End Point-->
                         <ng-container matColumnDef="endPoint">

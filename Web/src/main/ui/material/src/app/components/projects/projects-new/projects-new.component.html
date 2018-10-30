@@ -1,11 +1,7 @@
-
-<br/>
 <section class="container-fluid with-maxwidth chapter">
     <article class="article">
-
         <div class="box box-default">
             <div class="box-body">
-
                 <hr>
                 <form [formGroup]="firstFormGroup">
                     <div class="form-group row"></div>
@@ -13,32 +9,31 @@
                         <label for="name" class="col-md-0 control-label"></label>
                         <div class="col-md-5">
                             <mat-input-container class="full-width">
-                                <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name" matInput placeholder="Project name"
-                                       autocomplete="off">
+                                <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name"
+                                    matInput placeholder="Project name" autocomplete="off">
                                 <mat-error>Required</mat-error>
                             </mat-input-container>
                         </div>
                     </div>
                     <!-- Repository details -->
-
                     <div class="form-group row">
                         <label class="col-md-0 control-label"></label>
                         <div class="col-md-5">
                             <mat-input-container class="full-width">
-                                <input [(ngModel)]="project.description" [ngModelOptions]="{standalone: true}" id="repo" matInput placeholder="Description (Optional)"
-                                       autocomplete="off">
+                                <input [(ngModel)]="project.description" [ngModelOptions]="{standalone: true}" id="repo"
+                                    matInput placeholder="Description (Optional)" autocomplete="off">
                                 <mat-error>Required</mat-error>
                             </mat-input-container>
                         </div>
                     </div>
                     <div>
                         <mat-card-actions class="pull-right">
-                            <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid" (click)="save();">Save
+                            <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid"
+                                (click)="save();">Create
                             </button>
                         </mat-card-actions>
                     </div>
                 </form>
-
             </div>
         </div>
     </article>

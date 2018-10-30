@@ -12,6 +12,7 @@ import { APPCONFIG } from '../../../config';
 import { VERSION, MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { ProjectSync } from '../../../models/project-sync.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-projects-edit',
@@ -25,37 +26,33 @@ export class ProjectsEditComponent implements OnInit {
   orgs;
   project: Project = new Project();
   accounts;
-  /*config;*/
   TestSuite;
   id;
+  firstFormGroup: FormGroup;
   projectSync: ProjectSync = new ProjectSync();
   suiteFile;
   suiteFileData;
   public AppConfig: any;
-  constructor(private projectService: ProjectService, private accountService: AccountService,
+  constructor(private _formBuilder: FormBuilder, private projectService: ProjectService, private accountService: AccountService,
     private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
     public dialog: MatDialog, public snackBar: MatSnackBar, private dashboardService: DashboardService, private snackbarService: SnackbarService) { }
 
   ngOnInit() {
+    this.firstFormGroup = this._formBuilder.group({
+      nameCtrl: ['', Validators.required],
+    });
     this.AppConfig = APPCONFIG;
     this.route.params.subscribe(params => {
       //console.log(params);
       this.id = params['id'];
-      this.getFiles(this.id);
+      // this.getFiles(this.id);
       this.getById(this.id);
     });
   }
-
-  tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
-    //console.log('tabChangeEvent => ', tabChangeEvent);
-    console.log('index => ', tabChangeEvent.index);
-    if (tabChangeEvent.index === 0) {
-      this.getFiles(this.id);
+  updateProject() {
+    if (this.project.id) {
+      this.update();
     }
-    else if (tabChangeEvent.index === 1) {
-      this.getTestSuite(this.id);
-    }
-
   }
 
   getById(id: string) {
@@ -73,16 +70,12 @@ export class ProjectsEditComponent implements OnInit {
   }
 
   update() {
-    console.log(this.project);
     this.snackbarService.openSnackBar(this.project.name + " saving...", "");
     this.projectService.update(this.project).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      /* this.config.verticalPosition = 'top';
-       this.config.horizontalPosition = 'right';
-       this.config.duration = 3000;*/
       this.snackbarService.openSnackBar(this.project.name + "  saved successfully", "");
       this.router.navigate(['/app/projects']);
     }, error => {
@@ -91,34 +84,21 @@ export class ProjectsEditComponent implements OnInit {
     });
   }
 
-  //     delete() {
-  //     let dialogRef = this.dialog.open(DeleteDialogComponent, {
-  //         data: {
-  //             project: this.project
-  //         }
-  //     });
-
-  //     dialogRef.afterClosed().subscribe(result => {
-  //         if (result != null) {
-  //             this.handler.activateLoader();
-  //             this.snackbarService.openSnackBar(this.project.name + " deleting...", "");
-  //             this.projectService.delete(this.project).subscribe(results => {
-  //                 this.handler.hideLoader();
-  //                 if (this.handler.handle(results)) {
-  //                     return;
-  //                 }
-  //                /* this.config.verticalPosition = 'top';
-  //                 this.config.horizontalPosition = 'right';
-  //                 this.config.duration = 3000;*/
-  //                 this.snackbarService.openSnackBar(this.project.name + " deleted successfully", "");
-  //                 this.router.navigate(['/app/projects']);
-  //             }, error => {
-  //                 this.handler.hideLoader();
-  //                 this.handler.error(error);
-  //             });
-  //         }
-  //     });
-  // }
+  delete() {
+    this.handler.activateLoader();
+    this.snackbarService.openSnackBar(this.project.name + " deleting...", "");
+    this.projectService.delete(this.project).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+      }
+      this.snackbarService.openSnackBar(this.project.name + " deleted successfully", "");
+      this.router.navigate(['/app/projects']);
+    }, error => {
+      this.handler.hideLoader();
+      this.handler.error(error);
+    });
+  }
 
   getOrgs() {
     this.orgService.getByUser().subscribe(results => {

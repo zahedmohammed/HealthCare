@@ -30,7 +30,7 @@ export class IssuelistComponent implements OnInit {
   notificationFlag: boolean;
   autoBugMngmnt: boolean = false;
 
-  displayedColumns: string[] = ['name', 'endPoint', 'method', 'result'];
+  displayedColumns: string[] = ['env', 'endPoint', 'method', 'result'];
   dataSource = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

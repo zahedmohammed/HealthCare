@@ -38,7 +38,7 @@ export class ProjectService {
   }
 
   update(project: Project) {
-    return this.http.put(this.serviceUrl + "/" + project['id'], project);
+    return this.http.put(this.serviceUrl, project);
   }
 
   delete(project: Project) {

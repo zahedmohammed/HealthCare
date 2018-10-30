@@ -1,146 +1,55 @@
-
-
+<div class="box box-default">
+    <div>
+        <article>
+            <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                <a href="javascript:;" [routerLink]="['/app/projects']">{{project.name}}</a>
+                <span class="text-muted">&nbsp; &nbsp;<i class="fa fa-chevron-right"></i> &nbsp;&nbsp;</span>Edit
+            </section>
+        </article>
+    </div>
+</div>
+<br />
 <section class="container-fluid with-maxwidth chapter">
-
-    <mat-toolbar class="rounded">
-        <span style="flex: 1 1 auto;"></span>
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'jobs']"><small>Jobs</small></a> &nbsp;&nbsp;
-
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'environments']"><small>Environment1</small></a> &nbsp;&nbsp;
-        <small>Test Suites</small> &nbsp;&nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'api-coverage']">
-            <small>Coverage</small>
-        </a> &nbsp;&nbsp;
-
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'configuration']"><small >Configuration</small></a>&nbsp;&nbsp;
-        <a href="javascript:;" [routerLink]="['/app/projects', id, 'manage']"><small >Git</small></a>
-
-    </mat-toolbar>
+    <nav mat-tab-nav-bar>
+        <label mat-tab-link [routerLink]="['/app/projects', project.id, 'issue']"> &nbsp; Issues</label>
+        <label mat-tab-link [routerLink]="['/app/projects', project.id]" [active]="true"> &nbsp;&nbsp; Edit </label>
+        <button mat-button color="warn" class="btn-w-xs text-danger pull-right" (click)="delete()"><i class="material-icons">delete</i>Delete
+        </button>
+    </nav>
 
     <article class="article">
         <div class="box box-default">
             <div class="box-body">
-                 {{project.name}}
-                &nbsp;<span class="text-muted">&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;</span>&nbsp; Test Suites
+                <hr>
+                <form [formGroup]="firstFormGroup">
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name"
+                                    matInput placeholder="Project name" autocomplete="off">
+                                <mat-error>Required</mat-error>
+                            </mat-input-container>
+                        </div>
+                    </div>
+                    <!-- Repository details -->
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            <mat-input-container class="full-width">
+                                <input [(ngModel)]="project.description" [ngModelOptions]="{standalone: true}" id="repo"
+                                    matInput placeholder="Description (Optional)" autocomplete="off">
+                                <mat-error>Required</mat-error>
+                            </mat-input-container>
+                        </div>
+                    </div>
+                    <div>
+                        <mat-card-actions class="pull-right">
+                            <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid"
+                                (click)="updateProject();">Update
+                            </button>
+                        </mat-card-actions>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="box box-default">
-            <div class="box-body">
-
-                <mat-tab-group (selectedTabChange)="tabChanged($event)">
-
-                    <mat-tab label="Test Suites">
-                        <section class="box box-transparent">
-                            <div class="box-body padding-xl1">
-                                <div class="box box-transparent">
-                                    <div class="box-body no-padding-h">
-                                        <div class="row">
-                                            <div class="col-lg-12 mb-2">
-                                                <button mat-raised-button color="primary"
-                                                        (click)="projectSynchronization();"
-                                                        class="btn-w-md float-right">
-                                                    <i class="material-icons">autorenew</i> &ngsp; AutoCode Sync
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="box box-default table-box mdl-shadow--2dp">
-                                            <table class="mdl-data-table">
-                                                <thead>
-                                                <tr>
-                                                    <!-- <th class="mdl-data-table__cell&#45;&#45;non-numeric">#</th>-->
-                                                    <th class="mdl-data-table__cell--non-numeric">File-Name</th>
-                                                    <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">Category</th>-->
-                                                    <th class="mdl-data-table__cell--non-numeric">Updated-date</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr *ngFor="let suiteData of suiteFile">
-                                                    <!-- <td class="mdl-data-table__cell&#45;&#45;non-numeric">1</td>-->
-                                                    <td class="mdl-data-table__cell--non-numeric bold">
-                                                        <a href="javascript:;" (click)="getFileDetail(suiteData.id)">{{suiteData.filename}}</a>
-                                                    </td>
-                                                    <td class="mdl-data-table__cell--non-numeric">
-                                                        {{suiteData.modifiedDate | date:'medium'}}
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <mat-paginator
-                                    [pageSize]="pageSize"
-                                    hidePageSize="true"
-                                    (page)="change($event)"
-                                    [length]="length">
-                            </mat-paginator>
-                        </section>
-                    </mat-tab>
-
-                    <mat-tab label="Savings">
-                        <section class="box box-transparent">
-                            <div class="box-body padding-xl">
-                                <div class="box box-transparent">
-                                    <div class="box-body no-padding-h">
-
-                                        <div class="box box-default table-box mdl-shadow--2dp">
-                                            <table class="mdl-data-table">
-                                                <thead>
-                                                <tr>
-                                                    <th class="mdl-data-table__cell--non-numeric">#</th>
-                                                    <th class="mdl-data-table__cell--non-numeric">Type</th>
-                                                    <th class="mdl-data-table__cell--non-numeric">Formula</th>
-                                                    <th>Savings</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td class="mdl-data-table__cell--non-numeric">1</td>
-                                                    <td class="mdl-data-table__cell--non-numeric">AutoCode Coverage</td>
-                                                    <td class="mdl-data-table__cell--non-numeric text-muted">Total
-                                                        test-suites checked-in by AutoCode
-                                                    </td>
-                                                    <td> {{ TestSuite?.autoGenAllSuites }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="mdl-data-table__cell--non-numeric">2</td>
-                                                    <td class="mdl-data-table__cell--non-numeric">Time savings</td>
-                                                    <td class="mdl-data-table__cell--non-numeric text-muted">~(20
-                                                        integration test per month per developer)
-                                                    </td>
-                                                    <td> {{ TestSuite?.totalTimeSaving | number }} hrs</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="mdl-data-table__cell--non-numeric">3</td>
-                                                    <td class="mdl-data-table__cell--non-numeric">Cost savings</td>
-                                                    <td class="mdl-data-table__cell--non-numeric text-muted">~$50/hr per
-                                                        developer
-                                                    </td>
-                                                    <td> ${{ TestSuite?.totalCostSaving | number}}</td>
-                                                </tr>
-                                                <tr class="bg-color-info font-weight-bold">
-                                                    <td class="mdl-data-table__cell--non-numeric"></td>
-                                                    <td class="mdl-data-table__cell--non-numeric">Total Value</td>
-                                                    <td class="mdl-data-table__cell--non-numeric">Time saving + Cost
-                                                        saving
-                                                    </td>
-                                                    <td>${{ TestSuite?.totalCostSaving | number}}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </mat-tab>
-
-                </mat-tab-group>
-
-            </div>
-        </div>
-
     </article>
-
 </section>
