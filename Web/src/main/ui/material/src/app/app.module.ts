@@ -89,6 +89,7 @@ import { ErrorDialogComponent } from './components/dialogs/error-dialog/error-di
 import { ResponseDialogComponent } from './components/dialogs/response-dialog/response-dialog.component';
 import { ByteFormatPipe } from './pipes/byte-format.pipe';
 import { MstoDurationPipe } from './pipes/msto-duration.pipe';
+import { AccountService } from './services/account.service';
 
 @NgModule({
   imports: [
@@ -177,7 +178,7 @@ import { MstoDurationPipe } from './pipes/msto-duration.pipe';
     MstoDurationPipe
   ],
   bootstrap: [AppComponent],
-  providers: [DashboardService, DatePipe, Handler],
+  providers: [DashboardService, DatePipe, Handler, AccountService],
   entryComponents: [ErrorDialogComponent, ResponseDialogComponent]
 })
 
