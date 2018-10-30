@@ -1,27 +1,27 @@
-import { Component, OnInit, Inject}from '@angular/core';
-import {Routes, RouterModule, Router, ActivatedRoute}from "@angular/router";
-import {ProjectService}from '../../../services/project.service';
-import {OrgService }from '../../../services/org.service';
-import {JobsService}from '../../../services/jobs.service';
-import {AccountService}from '../../../services/account.service';
-import {Account} from '../../../models/account.model';
-import {Project}from '../../../models/issues-project.model';
-import {AutoCodeConfig}from '../../../models/project-autocode-config.model';
-import {Env, Auth }from '../../../models/project-env.model';
-import {Job}from '../../../models/project-job.model';
-import {OrgUser}from '../../../models/org.model';
-import {Handler} from '../../dialogs/handler/handler';
-import {APPCONFIG} from '../../../config';
-import {MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA}from '@angular/material';
-import {SnackbarService} from '../../../services/snackbar.service';
-import {FormBuilder, FormGroup, Validators}from '@angular/forms';
-import {MatStepper} from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
+import { ProjectService } from '../../../services/project.service';
+import { OrgService } from '../../../services/org.service';
+import { JobsService } from '../../../services/jobs.service';
+import { AccountService } from '../../../services/account.service';
+import { Account } from '../../../models/account.model';
+import { Project } from '../../../models/issues-project.model';
+import { AutoCodeConfig } from '../../../models/project-autocode-config.model';
+import { Env, Auth } from '../../../models/project-env.model';
+import { Job } from '../../../models/project-job.model';
+import { OrgUser } from '../../../models/org.model';
+import { Handler } from '../../dialogs/handler/handler';
+import { APPCONFIG } from '../../../config';
+import { MatSnackBar, MatSnackBarConfig, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { SnackbarService } from '../../../services/snackbar.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material';
 
 @Component({
   selector: 'app-projects-new',
   templateUrl: './projects-new.component.html',
   styleUrls: ['./projects-new.component.scss'],
-  providers: [ProjectService, OrgService, SnackbarService, JobsService]
+  providers: [ProjectService, OrgService, SnackbarService, JobsService, AccountService]
 })
 export class ProjectsNewComponent implements OnInit {
 
@@ -47,15 +47,14 @@ export class ProjectsNewComponent implements OnInit {
   grantTypes = ['password', 'client_credentials', 'authorization_code', 'implicit'];
   auth0GrantTypes = ['client_credentials', 'password'];
   schemeTypes = ['form', 'header', 'none', 'query'];
-  scopeTypes= ['read', 'write'];
+  scopeTypes = ['read', 'write'];
 
 
 
   public AppConfig: any;
   constructor(private projectService: ProjectService, private accountService: AccountService, private jobsService: JobsService,
-            private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
-            public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) {
-
+    private orgService: OrgService, private route: ActivatedRoute, private router: Router, private handler: Handler,
+    public snackBar: MatSnackBar, private snackbarService: SnackbarService, private _formBuilder: FormBuilder, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -81,20 +80,17 @@ export class ProjectsNewComponent implements OnInit {
 
     this.thirdFormGroup = this._formBuilder.group({
       nameCtrl: ['', [Validators.required]],
-      urlCtrl:  ['', Validators.required],
-      authTypeCtrl:  ['', Validators.required],
+      urlCtrl: ['', Validators.required],
+      authTypeCtrl: ['', Validators.required],
       usernameCtrl: [''],
-      pswCtrl:['']
+      pswCtrl: ['']
     });
-
-
-
   }
 
 
-  setAuthType(obj){
-    this.env.auths[0].authType=obj;
-    if (obj=='No_Authentication' || obj =='OAuth_2_0'|| obj=='Token' ) {
+  setAuthType(obj) {
+    this.env.auths[0].authType = obj;
+    if (obj == 'No_Authentication' || obj == 'OAuth_2_0' || obj == 'Token') {
       this.thirdFormGroup.controls["pswCtrl"].setValidators([]);
       this.thirdFormGroup.controls["pswCtrl"].updateValueAndValidity();
       this.thirdFormGroup.controls["usernameCtrl"].setValidators([]);
@@ -106,14 +102,14 @@ export class ProjectsNewComponent implements OnInit {
       this.thirdFormGroup.controls["usernameCtrl"].updateValueAndValidity();*/
     }
 
-    if ( obj == 'Auth0' ) {
+    if (obj == 'Auth0') {
       this.env.auths[0].grantType = 'client_credentials';
     }
 
   }
 
 
-   loadProject(id: string) {
+  loadProject(id: string) {
     this.handler.activateLoader();
     this.projectService.getById(id).subscribe(results => {
       this.handler.hideLoader();
@@ -135,20 +131,22 @@ export class ProjectsNewComponent implements OnInit {
       this.create();
     }
   }
-  
+
   create() {
     this.handler.activateLoader();
-      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' creating...", "");
-      this.projectService.create(this.project).subscribe(results => {
-        this.handler.hideLoader();
-        if (this.handler.handle(results)) {
-            return;
-        }
-        this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
-        this.project = results['data'];
+    this.snackbarService.openSnackBar("'Project '" + this.project.name + "' creating...", "");
+    this.projectService.create(this.project).subscribe(results => {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
+        return;
+        
+      }
+      this.snackbarService.openSnackBar("'Project '" + this.project.name + "' created successfully", "");
+      this.project = results['data'];
+      this.router.navigate(['/app/projects']);
     }, error => {
-        this.handler.hideLoader();
-        this.handler.error(error);
+      this.handler.hideLoader();
+      this.handler.error(error);
     });
   }
 
@@ -157,13 +155,11 @@ export class ProjectsNewComponent implements OnInit {
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saving...", "");
     this.projectService.update(this.project).subscribe(results => {
       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      if (this.handler.handle(results)) {
         return;
       }
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' saved successfully", "");
       this.project = results['data'];
-        this.matStepper.next();
-      this.getAutoCode();
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
@@ -172,8 +168,8 @@ export class ProjectsNewComponent implements OnInit {
 
   getAutoCode() {
     this.projectService.getAutoCodeConfig(this.project.id).subscribe(results => {
-       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      this.handler.hideLoader();
+      if (this.handler.handle(results)) {
         return;
       }
       this.autoCodeConfig = results['data'];
@@ -184,15 +180,13 @@ export class ProjectsNewComponent implements OnInit {
   saveAutoCode() {
     console.log(this.autoCodeConfig);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saving...", "");
-
     this.projectService.saveAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      if (this.handler.handle(results)) {
         return;
       }
       this.autoCodeConfig = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
-      //this.getEnvByProjectId(this.project.id);
       this.matStepper.next();
     }, error => {
       this.handler.hideLoader();
@@ -200,18 +194,17 @@ export class ProjectsNewComponent implements OnInit {
     });
   }
 
-   saveNewProjectAutoCode() {
+  saveNewProjectAutoCode() {
     console.log(this.autoCodeConfig);
     this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saving...", "");
 
     this.projectService.saveNewProjectAutoCodeConfig(this.autoCodeConfig, this.project.id).subscribe(results => {
       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      if (this.handler.handle(results)) {
         return;
       }
       this.autoCodeConfig = results['data'];
       this.snackbarService.openSnackBar("'Project '" + this.project.name + "' AutoCode saved successfully", "");
-      //this.getEnvByProjectId(this.project.id);
       this.matStepper.next();
     }, error => {
       this.handler.hideLoader();
@@ -225,7 +218,7 @@ export class ProjectsNewComponent implements OnInit {
     this.env.projectId = this.project.id;
     this.projectService.saveEnv(this.env, this.project.id).subscribe(results => {
       this.handler.hideLoader();
-        if (this.handler.handle(results)) {
+      if (this.handler.handle(results)) {
         return;
       }
       this.env = results['data'];
@@ -237,24 +230,21 @@ export class ProjectsNewComponent implements OnInit {
     });
   }
 
-   getEnvByProjectId(id: string) {
+  getEnvByProjectId(id: string) {
     this.handler.activateLoader();
     this.projectService.getEnvsByProjectId(id).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      if (results['data'] != null ){
-        this.env  =  results['data'][0];
+      if (results['data'] != null) {
+        this.env = results['data'][0];
       }
     }, error => {
       this.handler.hideLoader();
       this.handler.error(error);
     });
   }
-
-
- 
   projectTypes = ['Git', 'GitHub', 'BitBucket', 'GitLab', 'Microsoft_TFS_Git', 'Microsoft_VSTS_Git', 'Local'];
   visibilities = ['PRIVATE', 'ORG_PUBLIC'];
   genPolicies = ['None', 'Create'];
