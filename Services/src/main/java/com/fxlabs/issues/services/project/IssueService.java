@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IssueService extends GenericService<Issue, String> {
 
-    Response<Issue> delete(String id, String user, String org);
+    Response<Issue> delete(String id, String projectId, String org);
 
     Response<Issue> create(Issue dto, String user, String org);
 

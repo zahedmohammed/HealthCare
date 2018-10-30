@@ -62,9 +62,9 @@ public class IssueController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public Response<Issue> delete(@PathVariable("id") String id) {
-        return issueService.delete(id, SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
+    @RequestMapping(value = "/project/{projectId}/issue/{id}", method = RequestMethod.DELETE)
+    public Response<Issue> delete(@PathVariable("id") String id, @PathVariable("projectId") String projectId) {
+        return issueService.delete(id, projectId, SecurityUtil.getOrgId());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})

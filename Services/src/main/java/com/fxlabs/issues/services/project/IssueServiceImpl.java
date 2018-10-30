@@ -93,13 +93,13 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
 
 
     @Override
-    public Response<Issue> delete(String id, String projectId, String user) {
+    public Response<Issue> delete(String id, String projectId, String org) {
         //TODO  check user entitled to org
         Optional<com.fxlabs.issues.dao.entity.project.Issue> optionalProject = repository.findByIdAndProjectId(id, projectId);
         if (!optionalProject.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
-        return delete(id, user);
+        return delete(id, "");
     }
 
     @Override
