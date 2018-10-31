@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs';
+
+
 import { Project } from '../models/issues-project.model';
 import { ProjectSync } from '../models/project-sync.model';
 import { AutoCodeConfig } from '../models/project-autocode-config.model';

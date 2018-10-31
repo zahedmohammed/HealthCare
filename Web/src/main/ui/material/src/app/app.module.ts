@@ -1,6 +1,6 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
+// import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -94,7 +94,7 @@ import { AccountService } from './services/account.service';
 @NgModule({
   imports: [
     BrowserModule,
-    HttpModule,
+    // HttpModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

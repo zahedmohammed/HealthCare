@@ -49,16 +49,16 @@ a {
   width: 100%;
 }
 
-mat-input-container {
+mat-form-field {
   &.mat-icon-left {
     position: relative;
     padding-left: 36px;
 
-    .mat-input-wrapper {
+    .mat-form-field-wrapper {
       position: relative;
     }
 
-    .mat-input-infix > mat-icon {
+    .mat-form-field-infix > mat-icon {
       position: absolute;
       top: 0;
       left: -32px;
@@ -66,7 +66,7 @@ mat-input-container {
     }
   }
 }
-.mat-input-container .mat-icon.material-icons {
+.mat-form-field .mat-icon.material-icons {
   font-size: 24px;
 }
 

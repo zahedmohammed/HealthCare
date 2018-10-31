@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router, Event as RouterEvent, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { LayoutService } from './layout.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[myPreloader]',

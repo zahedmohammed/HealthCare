@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs';
+
+
 import { Org, OrgUser, Member } from '../models/org.model';
 
 

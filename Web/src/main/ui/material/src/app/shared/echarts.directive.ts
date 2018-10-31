@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import echarts from 'echarts';
 import 'echarts/theme/macarons';
 import { LayoutService } from '../layout/layout.service';

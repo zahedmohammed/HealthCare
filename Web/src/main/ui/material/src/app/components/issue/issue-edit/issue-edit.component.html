@@ -24,11 +24,11 @@
                     <div class="form-group row">
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input [(ngModel)]="issue.endpoint" required id="name" formControlName="nameCtrl"
                                     matInput placeholder="End Point" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -52,11 +52,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input [(ngModel)]="headers" required id="name" formControlName="nameCtrl2" matInput
                                     placeholder="Headers" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -66,11 +66,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <textarea [(ngModel)]="issue.requestBody" required id="name" formControlName="nameCtrl3"
                                     matInput placeholder="Request Body" autocomplete="off"></textarea>
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -80,11 +80,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <textarea [(ngModel)]="issue.responseBody" required id="name" formControlName="nameCtrl4"
                                     matInput placeholder="Response Body" autocomplete="off"></textarea>
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -94,11 +94,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <textarea [(ngModel)]="issue.responseHeaders" required id="name" formControlName="nameCtrl5"
                                     matInput placeholder="Response Headers" autocomplete="off"></textarea>
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -108,11 +108,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input [(ngModel)]="issue.assertions" required id="name" formControlName="nameCtrl6"
                                     matInput placeholder="Assertions" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -122,11 +122,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input [(ngModel)]="issue.statusCode" required id="name" formControlName="nameCtrl7"
                                     matInput placeholder="Status Code" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -136,11 +136,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input [(ngModel)]="issue.failedAssertions" required id="name" formControlName="nameCtrl8"
                                     matInput placeholder="Failed Assertions" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -150,11 +150,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input [(ngModel)]="issue.result" required id="name" formControlName="nameCtrl9"
                                     matInput placeholder="Result" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -164,11 +164,11 @@
                         </div>
 
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <textarea [(ngModel)]="issue.description" required id="name" formControlName="nameCtrl10"
                                     matInput placeholder="Description" autocomplete="off"></textarea>
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">
@@ -177,11 +177,11 @@
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input [(ngModel)]="issue.env" required id="name" formControlName="nameCtrl11" matInput
                                     placeholder="Environment" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-7">
                             <div class="callout1 text-muted callout-info1">

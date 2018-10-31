@@ -1,6 +1,6 @@
 import { Directive, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { LayoutService } from '../layout.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Directive({ selector: '[mySearchOverlay]' })
 

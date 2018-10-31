@@ -24,21 +24,21 @@
                 <form [formGroup]="firstFormGroup">
                     <div class="form-group row">
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input required [(ngModel)]="project.name" formControlName="nameCtrl" id="name"
                                     matInput placeholder="Project name" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                     </div>
                     <!-- Repository details -->
                     <div class="form-group row">
                         <div class="col-md-5">
-                            <mat-input-container class="full-width">
+                            <mat-form-field class="full-width">
                                 <input [(ngModel)]="project.description" [ngModelOptions]="{standalone: true}" id="repo"
                                     matInput placeholder="Description (Optional)" autocomplete="off">
                                 <mat-error>Required</mat-error>
-                            </mat-input-container>
+                            </mat-form-field>
                         </div>
                     </div>
                     <div>

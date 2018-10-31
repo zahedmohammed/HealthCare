@@ -38,7 +38,7 @@ import {
 import { FormsRoutingModule } from './forms-routing.module';
 import { FormsComponent } from './forms.component';
 
-import { FormAutocompleteComponent } from './autocomplete/autocomplete.component';
+// import { FormAutocompleteComponent } from './autocomplete/autocomplete.component';
 import { FormCheckboxComponent } from './checkbox/checkbox.component';
 import { FormChipsComponent } from './chips/chips.component';
 import { FormDatepickerComponent } from './datepicker/datepicker.component';
@@ -93,7 +93,7 @@ import { FormValidationComponent } from './validation/validation.component';
   ],
   declarations: [
     FormsComponent,
-    FormAutocompleteComponent,
+    // FormAutocompleteComponent,
     FormCheckboxComponent,
     FormChipsComponent,
     FormDatepickerComponent,

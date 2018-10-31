@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs';
+
+
 import { Skill } from '../models/skill.model';
 
 @Injectable()

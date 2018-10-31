@@ -7,9 +7,7 @@ import { Base } from '../../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 import { Handler } from '../../dialogs/handler/handler';
 import { VERSION, MatDialog, MatDialogRef, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription } from 'rxjs';
 import { IssuesService } from './../../../services/issues.service';
 
 @Component({

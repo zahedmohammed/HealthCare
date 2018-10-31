@@ -39,7 +39,7 @@ import { TablesComponent } from './tables.component';
 
 import { TableResponsiveComponent } from './responsive/responsive.component';
 import { TableStaticComponent } from './static/static.component';
-import { TableDataTableComponent } from './data-table/data-table.component';
+// import { TableDataTableComponent } from './data-table/data-table.component';
 
 @NgModule({
   imports: [
@@ -79,7 +79,7 @@ import { TableDataTableComponent } from './data-table/data-table.component';
   ],
   declarations: [
     TablesComponent,
-    TableDataTableComponent,
+    // TableDataTableComponent,
     TableResponsiveComponent,
     TableStaticComponent,
   ]
