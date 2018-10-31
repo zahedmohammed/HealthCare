@@ -6,7 +6,7 @@ import { Handler } from './../../components/dialogs/handler/handler';
 import { Component, OnInit } from '@angular/core';
 import { APPCONFIG } from '../../config';
 import { TasksService } from './../../services/tasks.service';
-import { Routes, RouterModule, Router, ActivatedRoute } from "@angular/router";
+import { Routes, RouterModule, Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'my-app-footer',
@@ -23,24 +23,31 @@ export class AppFooterComponent implements OnInit {
   count: number;
   project: Project = new Project();
   job: Jobs = new Jobs();
-  constructor(private tasksService: TasksService,
-    private handler: Handler,
-    private projectService: ProjectService,
-    private jobsService: JobsService,
-    private route: ActivatedRoute,
-    private router: Router) {
+
+  constructor(private tasksService: TasksService, 
+              private handler: Handler, 
+              private projectService: ProjectService, 
+              private jobsService: JobsService,
+              private route: ActivatedRoute, 
+              private router: Router){
+    
   }
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.id = params['entityId'];
-      this.jobId = params['entityId'];
-      if (this.id) {
-        this.loadProject();
-      }
-      if (this.jobId) {
-        this.loadJob();
-      }
-    });
+  ngOnInit() {    
+    this.AppConfig = APPCONFIG;
+     
+
+  this.route.params.subscribe(params => {
+    this.id = params['entityId'];
+   
+    this.jobId = params['entityId'];
+    if (this.id) {
+      this.loadProject();
+    }
+    if (this.jobId) {
+       this.loadJob();
+    }
+  });
+
   }
 
   loadProject() {
