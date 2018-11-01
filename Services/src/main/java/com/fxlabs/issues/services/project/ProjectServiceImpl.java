@@ -82,7 +82,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao
     }
 
     @Override
-    public Response<Project> update(Project request, String org, String user) {
+    public Response<Project> update(Project request, String user,  String org) {
 
         if (request == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for update Project "));
@@ -120,7 +120,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao
 
 
     @Override
-    public Response<Project> delete(String id, String org, String user) {
+    public Response<Project> delete(String id,  String user, String org) {
         // check user entitled to org
         Optional<com.fxlabs.issues.dao.entity.project.Project> optionalProject = projectRepository.findByIdAndOrgId(id, org);
         if (!optionalProject.isPresent()) {
