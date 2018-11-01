@@ -38,7 +38,6 @@ export class ProjectsListComponent implements OnInit {
         return;
       }
       this.projects = results['data'];
-      console.log(this.projects)
       this.length = results['totalElements'];
     }, error => {
       this.handler.hideLoader();
