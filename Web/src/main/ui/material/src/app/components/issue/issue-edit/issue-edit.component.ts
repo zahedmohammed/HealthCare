@@ -117,7 +117,7 @@ export class IssueEditComponent implements OnInit {
     });
   }
   save() {
-    this.snackbarService.openSnackBar(this.issue.env + "  saving...", "");
+    this.snackbarService.openSnackBar(this.issue.env + "  updating...", "");
     this.handler.activateLoader();
     this.IssuesService.update(this.issue).subscribe(results => {
       this.handler.hideLoader();
@@ -125,7 +125,7 @@ export class IssueEditComponent implements OnInit {
         return;
       }
       this.issues = results['data'];
-      this.snackbarService.openSnackBar(this.issue.env + "  saved successfully", "");
+      this.snackbarService.openSnackBar(this.issue.env + "  updated successfully", "");
       this.router.navigate(['/app/projects', this.project.id, 'issue']);
     }, error => {
       this.handler.hideLoader();

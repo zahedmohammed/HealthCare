@@ -70,13 +70,13 @@ export class ProjectsEditComponent implements OnInit {
   }
 
   update() {
-    this.snackbarService.openSnackBar(this.project.name + " saving...", "");
+    this.snackbarService.openSnackBar(this.project.name + " updating...", "");
     this.projectService.update(this.project).subscribe(results => {
       this.handler.hideLoader();
       if (this.handler.handle(results)) {
         return;
       }
-      this.snackbarService.openSnackBar(this.project.name + "  saved successfully", "");
+      this.snackbarService.openSnackBar(this.project.name + "  updated successfully", "");
       this.router.navigate(['/app/projects']);
     }, error => {
       this.handler.hideLoader();
