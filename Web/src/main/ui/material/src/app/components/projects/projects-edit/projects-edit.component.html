@@ -13,8 +13,6 @@
     <nav mat-tab-nav-bar>
         <label mat-tab-link [routerLink]="['/app/projects', project.id, 'issue']"> &nbsp; Issues</label>
         <label mat-tab-link [routerLink]="['/app/projects', project.id]" [active]="true"> &nbsp;&nbsp; Edit </label>
-        <button mat-button color="warn" class="btn-w-xs text-danger pull-right" (click)="delete()"><i class="material-icons">delete</i>Delete
-        </button>
     </nav>
 
     <article class="article">
@@ -43,6 +41,9 @@
                     </div>
                     <div>
                         <mat-card-actions class="pull-right">
+                            <button mat-button color="warn" class="btn-w-xs text-danger" (click)="delete()"><i
+                                    class="material-icons">delete</i>Delete
+                            </button>
                             <button mat-raised-button color="primary" class="nav-btn" [disabled]="firstFormGroup.invalid"
                                 (click)="updateProject();">Update
                             </button>

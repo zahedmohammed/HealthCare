@@ -7,7 +7,7 @@ import { Base } from '../../../models/base.model';
 //import { MatSort, MatSortable, MatTableDataSource } from '@angular/material';
 import { Handler } from '../../dialogs/handler/handler';
 import { VERSION, MatDialog, MatDialogRef, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { IssuesService } from './../../../services/issues.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class IssuelistComponent implements OnInit {
   notificationFlag: boolean;
   autoBugMngmnt: boolean = false;
 
-  displayedColumns: string[] = ['env', 'endPoint', 'method', 'result'];
+  displayedColumns: string[] = ['name', 'endPoint', 'method', 'env', 'result'];
   dataSource = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

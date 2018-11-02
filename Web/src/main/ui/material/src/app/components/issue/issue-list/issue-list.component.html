@@ -36,10 +36,10 @@
                     </div>
                 </div>
                 <div class="mat-elevation-z8 box-default">
-                    <mat-table [dataSource]="dataSource" matSort matSortActive="env" matSortDisableClear
+                    <mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear
                         matSortDirection="desc">
                         <!-- Name Column -->
-                        <ng-container matColumnDef="env">
+                        <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Issues</mat-header-cell>
                             <mat-cell *matCellDef="let issue" [routerLink]="['/app/projects', id,'issue', issue.id, 'edit']">
                                 <a href="javascript:;">{{issue.env}}</a></mat-cell>
@@ -55,6 +55,12 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Method</mat-header-cell>
                             <mat-cell *matCellDef="let issue">
                                 <button mat-button color="primary">{{issue.method}}</button></mat-cell>
+                        </ng-container>
+                        <!-- environment -->
+                        <ng-container matColumnDef="env">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Envrinment</mat-header-cell>
+                            <mat-cell *matCellDef="let issue">
+                                {{issue.env}}</mat-cell>
                         </ng-container>
                         <!-- Reult -->
                         <ng-container matColumnDef="result">
