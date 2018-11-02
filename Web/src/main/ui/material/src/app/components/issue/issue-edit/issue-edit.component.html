@@ -10,193 +10,141 @@
         </article>
     </div>
 </div>
-<br />
+<!-- <br /> -->
 <section class="container-fluid with-maxwidth chapter">
-    <nav mat-tab-nav-bar>
-        <button mat-button color="warn" class="btn-w-xs text-danger pull-right" (click)="delete()"><i class="material-icons">delete</i>Delete
-        </button>
-    </nav>
-
     <article class="article">
         <div class="box box-default">
             <div class="box-body">
-                <form [formGroup]="firstFormGroup">
-                    <div class="form-group row">
+                <div class="row col-md-12">
+                    <div class="col-md-4">
+                        <mat-form-field class="full-width">
+                            <input required id="name" matInput placeholder="Issue Id" value="Issue101" autocomplete="off"
+                                [disabled]="true">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
 
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <input [(ngModel)]="issue.endpoint" required id="name" formControlName="nameCtrl"
-                                    matInput placeholder="End Point" autocomplete="off">
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
+                    <div class="col-md-4">
+                        <mat-form-field class="full-width">
+                            <input required id="name" matInput placeholder="Status" value="Open" autocomplete="off">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
 
-                        <mat-form-field class="col-md-5">
-                            <mat-select [(ngModel)]="issue.method" placeholder="State" formControlName="nameCtrl1"
-                                placeholder="Http Method">
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <mat-form-field class="full-width">
+                            <input required id="name" matInput placeholder="Assigned To" value="Developer1"
+                                autocomplete="off">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <h6 class="font-weight-bold border border-bottom-0">Request</h6>
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="row col-md-12">
+                    <div class="col-md-6">
+                        <mat-form-field class="full-width">
+                            <mat-select [(ngModel)]="issue.method" placeholder="State" placeholder="Http Method">
                                 <mat-option *ngFor="let method of httpMethod" [value]="method">{{method}}</mat-option>
                             </mat-select>
                             <mat-error>Required</mat-error>
                         </mat-form-field>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <input [(ngModel)]="headers" required id="name" formControlName="nameCtrl2" matInput
-                                    placeholder="Headers" autocomplete="off">
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> Comma seperated value (value,value).
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <textarea [(ngModel)]="issue.requestBody" required id="name" formControlName="nameCtrl3"
-                                    matInput placeholder="Request Body" autocomplete="off"></textarea>
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <textarea [(ngModel)]="issue.responseBody" required id="name" formControlName="nameCtrl4"
-                                    matInput placeholder="Response Body" autocomplete="off"></textarea>
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <textarea [(ngModel)]="issue.responseHeaders" required id="name" formControlName="nameCtrl5"
-                                    matInput placeholder="Response Headers" autocomplete="off"></textarea>
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <input [(ngModel)]="issue.assertions" required id="name" formControlName="nameCtrl6"
-                                    matInput placeholder="Assertions" autocomplete="off">
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <input [(ngModel)]="issue.statusCode" required id="name" formControlName="nameCtrl7"
-                                    matInput placeholder="Status Code" autocomplete="off">
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <input [(ngModel)]="issue.failedAssertions" required id="name" formControlName="nameCtrl8"
-                                    matInput placeholder="Failed Assertions" autocomplete="off">
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <input [(ngModel)]="issue.result" required id="name" formControlName="nameCtrl9"
-                                    matInput placeholder="Result" autocomplete="off">
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <textarea [(ngModel)]="issue.description" required id="name" formControlName="nameCtrl10"
-                                    matInput placeholder="Description" autocomplete="off"></textarea>
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <mat-form-field class="full-width">
-                                <input [(ngModel)]="issue.env" required id="name" formControlName="nameCtrl11" matInput
-                                    placeholder="Environment" autocomplete="off">
-                                <mat-error>Required</mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="callout1 text-muted callout-info1">
-                                <p class="mt-4"> some text
-                                </p>
-                            </div>
-                        </div>
-
                     </div>
-                    <mat-card-actions class="pull-right">
-                        <button mat-raised-button color="primary" class="nav-btn" type="submit" [disabled]="firstFormGroup.invalid"
-                            (click)="save();"> Update </button>
-                    </mat-card-actions>
-                </form>
+
+                    <div class="col-md-6">
+                        <mat-form-field class="full-width">
+                            <input [(ngModel)]="issue.endpoint" required id="name" matInput placeholder="End Point"
+                                autocomplete="off">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                        <mat-form-field class="full-width">
+                            <input [(ngModel)]="issue.env" required id="name" matInput placeholder="Environment"
+                                autocomplete="off">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-8">
+                        <mat-form-field class="full-width">
+                            <textarea required id="name" value="Host: localhost:4200" matInput placeholder="Headers"
+                                autocomplete="off" rows="4"></textarea>
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-8">
+                        <mat-form-field class="full-width">
+                            <textarea [(ngModel)]="issue.requestBody" required id="name" matInput placeholder="Request Body"
+                                autocomplete="off" rows="4"></textarea>
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
             </div>
+        </div>
+        <h6 class="font-weight-bold">Assertions</h6>
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="row col-md-12">
+                    <div class="col-md-8">
+                        <mat-form-field class="full-width">
+                            <textarea [(ngModel)]="issue.assertions" required id="name" matInput placeholder="Assertions"
+                                autocomplete="off" rows="4"></textarea>
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h6 class="font-weight-bold">Response</h6>
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="row col-md-12">
+                    <div class="col-md-6">
+                        <mat-form-field class="full-width">
+                            <input [(ngModel)]="issue.statusCode" required id="name" matInput placeholder="Status Code"
+                                autocomplete="off">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+
+                    <div class="col-md-8">
+                        <mat-form-field class="full-width">
+                            <textarea [(ngModel)]="issue.responseHeaders" required id="name" matInput placeholder="Response Headers"
+                                autocomplete="off" rows="4"></textarea>
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-8">
+                        <mat-form-field class="full-width">
+                            <textarea [(ngModel)]="issue.responseBody" required id="name" matInput placeholder="Response Body"
+                                autocomplete="off" rows="4"></textarea>
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <mat-card-actions class="pull-right mt-4">
+                <button mat-button color="warn" class="btn-w-xs text-danger" (click)="delete()"><i class="material-icons">delete</i>Delete
+                </button>
+                <button mat-raised-button color="primary" class="nav-btn" type="submit" (click)="save();"> Update
+                </button>
+            </mat-card-actions>
+
         </div>
     </article>
 </section>

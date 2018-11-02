@@ -40,7 +40,7 @@
                         matSortDirection="desc">
                         <!-- Name Column -->
                         <ng-container matColumnDef="env">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Environments</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Issues</mat-header-cell>
                             <mat-cell *matCellDef="let issue" [routerLink]="['/app/projects', id,'issue', issue.id, 'edit']">
                                 <a href="javascript:;">{{issue.env}}</a></mat-cell>
                         </ng-container>
@@ -54,13 +54,13 @@
                         <ng-container matColumnDef="method">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Method</mat-header-cell>
                             <mat-cell *matCellDef="let issue">
-                                {{issue.method}}</mat-cell>
+                                <button mat-button color="primary">{{issue.method}}</button></mat-cell>
                         </ng-container>
                         <!-- Reult -->
                         <ng-container matColumnDef="result">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Result</mat-header-cell>
-                            <mat-cell *matCellDef="let issue">
-                                {{issue.result}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                            <mat-cell *matCellDef="let issue" class="text-danger">
+                                {{issue.result}} Open</mat-cell>
                         </ng-container>
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

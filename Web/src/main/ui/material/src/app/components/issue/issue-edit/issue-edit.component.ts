@@ -71,20 +71,20 @@ export class IssueEditComponent implements OnInit {
     });
 
     this.loadIssues();
-    this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: ['', Validators.required],
-      nameCtrl1: ['', Validators.required],
-      nameCtrl2: ['', Validators.required],
-      nameCtrl3: ['', Validators.required],
-      nameCtrl4: ['', Validators.required],
-      nameCtrl5: ['', Validators.required],
-      nameCtrl6: ['', Validators.required],
-      nameCtrl7: ['', Validators.required],
-      nameCtrl8: ['', Validators.required],
-      nameCtrl9: ['', Validators.required],
-      nameCtrl10: ['', Validators.required],
-      nameCtrl11: ['', Validators.required]
-    });
+    // this.firstFormGroup = this._formBuilder.group({
+    //   nameCtrl: ['', Validators.required],
+    //   nameCtrl1: ['', Validators.required],
+    //   nameCtrl2: ['', Validators.required],
+    //   nameCtrl3: ['', Validators.required],
+    //   nameCtrl4: ['', Validators.required],
+    //   nameCtrl5: ['', Validators.required],
+    //   nameCtrl6: ['', Validators.required],
+    //   nameCtrl7: ['', Validators.required],
+    //   nameCtrl8: ['', Validators.required],
+    //   nameCtrl9: ['', Validators.required],
+    //   nameCtrl10: ['', Validators.required],
+    //   nameCtrl11: ['', Validators.required]
+    // });
   }
 
   loadProject() {
