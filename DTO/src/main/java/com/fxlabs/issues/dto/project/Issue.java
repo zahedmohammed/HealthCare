@@ -45,5 +45,13 @@ public class Issue extends BaseDto<String> {
     private List<String> tags;
 
     private String env;
+
+    private String issueName;
+
+    private String issueType;
+
+    private IssueStatus issueStatus;
+
+    private String assignedTo;
 }
 
