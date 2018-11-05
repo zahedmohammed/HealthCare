@@ -26,7 +26,12 @@
 
                     <div class="col-md-4">
                         <mat-form-field class="full-width">
-                            <input required id="name" matInput placeholder="Status" value="Open" autocomplete="off">
+                            <mat-select placeholder="Status" required [(ngModel)]="issue.issueStatus"
+                                         [ngModelOptions]="{standalone: true}">
+                            <mat-option *ngFor="let issueStatus of status" [value]="issueStatus">
+                                {{issueStatus}}
+                            </mat-option>
+                        </mat-select>
                             <mat-error>Required</mat-error>
                         </mat-form-field>
 

@@ -54,6 +54,7 @@ export class IssueEditComponent implements OnInit {
   category: string[];
   headers = "";
   selectedCategories: string[] = [];
+  status = ['OPEN', 'ClOSED'];
 
   constructor(private IssuesService: IssuesService, private projectService: ProjectService, private jobsService: JobsService, private accountService: AccountService,
     private route: ActivatedRoute, private regionService: RegionsService, private router: Router, private handler: Handler,

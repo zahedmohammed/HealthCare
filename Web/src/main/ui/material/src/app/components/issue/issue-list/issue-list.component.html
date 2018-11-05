@@ -58,15 +58,15 @@
                         </ng-container>
                         <!-- environment -->
                         <ng-container matColumnDef="env">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Envrinment</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Environment</mat-header-cell>
                             <mat-cell *matCellDef="let issue">
                                 {{issue.env}}</mat-cell>
                         </ng-container>
-                        <!-- Reult -->
-                        <ng-container matColumnDef="result">
+                        <!-- Status -->
+                        <ng-container matColumnDef="status">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
                             <mat-cell *matCellDef="let issue" class="text-danger">
-                                {{issue.result}} Open</mat-cell>
+                                {{issue.issueStatus}}</mat-cell>
                         </ng-container>
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
