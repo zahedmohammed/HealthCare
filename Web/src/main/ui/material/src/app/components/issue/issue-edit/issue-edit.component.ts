@@ -27,6 +27,7 @@ import { Issue } from './../../../models/issue.model';
 })
 export class IssueEditComponent implements OnInit {
   httpMethod = ['GET', 'POST', 'PUT', 'DELETE'];
+  issueStatus= ['OPEN', 'CLOSED'];
   issue: Issue = new Issue;
   issueId: string;
   id: string;
