@@ -201,10 +201,12 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
+                <a href="javascript:;" [routerLink]="['/app/projects']">Projects</a>
+                <span class="text-muted"> &nbsp;&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;&nbsp; </span>
                 <a href="javascript:;" [routerLink]="['/app/projects', id, 'issue']">{{project.name}}</a>
                 <span class="text-muted"> &nbsp;&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;&nbsp; </span>
                 <a href="javascript:;" [routerLink]="['/app/projects', id, 'issue']"> Issues </a>
-                <span class="text-muted">&nbsp;&nbsp; <i class="fa fa-chevron-right"></i> &nbsp;&nbsp;</span> Edit
+                <span class="text-muted">&nbsp;&nbsp; <i class="fa fa-chevron-right"></i> &nbsp;&nbsp;</span> New
             </section>
         </article>
     </div>
@@ -225,8 +227,7 @@
 
                     <div class="col-md-4">
                         <mat-form-field class="full-width">
-                            <mat-select placeholder="Status" required [(ngModel)]="issue.issueStatus"
-                                        [ngModelOptions]="{standalone: true}">
+                            <mat-select placeholder="Status" required [(ngModel)]="issue.issueStatus" [ngModelOptions]="{standalone: true}">
                                 <mat-option *ngFor="let issueStatus of status" [value]="issueStatus">
                                     {{issueStatus}}
                                 </mat-option>

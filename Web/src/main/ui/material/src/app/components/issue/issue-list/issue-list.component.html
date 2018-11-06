@@ -2,7 +2,9 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                <a href="javascript:;" [routerLink]="['/app/projects']">{{project.name}}</a>
+                <a href="javascript:;" [routerLink]="['/app/projects']">Projects</a>
+                <span class="text-muted">&nbsp; &nbsp;<i class="fa fa-chevron-right"></i>&nbsp;&nbsp;</span>
+                <a href="javascript:;" [routerLink]="['/app/projects', id, 'issue']">{{project.name}}</a>
                 <span class="text-muted">&nbsp; &nbsp;<i class="fa fa-chevron-right"></i> &nbsp;&nbsp;</span>Issues
             </section>
         </article>
@@ -54,7 +56,9 @@
                         <ng-container matColumnDef="method">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Method</mat-header-cell>
                             <mat-cell *matCellDef="let issue">
-                                <button mat-button color="primary">{{issue.method}}</button></mat-cell>
+                                    <span [ngClass]="{'text-info': issue.method === 'GET','text-danger': issue.method === 'DELETE',
+                                    'text-success': issue.method === 'POST','text-warning': issue.method === 'PUT'}">
+                                <b>{{issue.method}}</b></span></mat-cell>
                         </ng-container>
                         <!-- environment -->
                         <ng-container matColumnDef="env">

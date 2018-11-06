@@ -1,5 +1,13 @@
 export class Issue {
 
+    public issueName:string;
+
+    public issueType:string;
+
+    public issueStatus: string;
+
+    public assignedTo: string;
+
     public project: Project = new Project;
 
     public name: string;
