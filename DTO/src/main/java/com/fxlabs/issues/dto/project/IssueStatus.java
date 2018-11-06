@@ -6,6 +6,6 @@ package com.fxlabs.issues.dto.project;
 
 public enum IssueStatus {
 
-    OPEN, ClOSED;
+    OPEN, CLOSED;
 }
 

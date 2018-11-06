@@ -40,7 +40,7 @@ export class IssueNewComponent implements OnInit {
   itAccounts: Array<Account> = [];
   notifyAccounts: Account[];
   entry: Account = new Account();
-  status = ['OPEN', 'ClOSED'];
+  status = ['OPEN', 'CLOSED'];
 
   crons: Cron[] = [
   ];

@@ -6,5 +6,5 @@ package com.fxlabs.issues.dao.entity.project;
 
 public enum IssueStatus {
 
-    OPEN, ClOSED;
+    OPEN, CLOSED;
 }
