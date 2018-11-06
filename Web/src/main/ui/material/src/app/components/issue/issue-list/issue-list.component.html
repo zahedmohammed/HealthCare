@@ -44,7 +44,7 @@
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Issues</mat-header-cell>
                             <mat-cell *matCellDef="let issue" [routerLink]="['/app/projects', id,'issue', issue.id, 'edit']">
-                                <a href="javascript:;">{{issue.env}}</a></mat-cell>
+                                <a href="javascript:;">{{issue.issueName}}</a></mat-cell>
                         </ng-container>
                         <!--End Point-->
                         <ng-container matColumnDef="endPoint">
@@ -56,9 +56,9 @@
                         <ng-container matColumnDef="method">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Method</mat-header-cell>
                             <mat-cell *matCellDef="let issue">
-                                    <span [ngClass]="{'text-info': issue.method === 'GET','text-danger': issue.method === 'DELETE',
+                                <span [ngClass]="{'text-info': issue.method === 'GET','text-danger': issue.method === 'DELETE',
                                     'text-success': issue.method === 'POST','text-warning': issue.method === 'PUT'}">
-                                <b>{{issue.method}}</b></span></mat-cell>
+                                    <b>{{issue.method}}</b></span></mat-cell>
                         </ng-container>
                         <!-- environment -->
                         <ng-container matColumnDef="env">
@@ -69,8 +69,10 @@
                         <!-- Status -->
                         <ng-container matColumnDef="status">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-                            <mat-cell *matCellDef="let issue" class="text-danger">
-                                {{issue.issueStatus}}</mat-cell>
+                            <mat-cell *matCellDef="let issue">
+                                    <span [ngClass]="{'bg-success': issue.issueStatus === 'ClOSED',
+                                    'bg-danger': issue.issueStatus === 'OPEN'}" class="p-1 text-white rounded">{{issue.issueStatus}}</span>
+                                </mat-cell>
                         </ng-container>
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

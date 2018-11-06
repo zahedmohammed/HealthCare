@@ -18,36 +18,39 @@
         <div class="box box-default">
             <div class="box-body">
                 <div class="row col-md-12">
-                    <div class="col-md-4">
-                        <mat-form-field class="full-width">
-                            <input required id="name" matInput placeholder="Issue Id" value="Issue101" autocomplete="off"
-                                [disabled]="true">
-                            <mat-error>Required</mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div class="col-md-4">
-                        <mat-form-field class="full-width">
-                            <mat-select placeholder="Status" required [(ngModel)]="issue.issueStatus"
-                                         [ngModelOptions]="{standalone: true}">
-                            <mat-option *ngFor="let issueStatus of status" [value]="issueStatus">
-                                {{issueStatus}}
-                            </mat-option>
-                        </mat-select>
-                            <mat-error>Required</mat-error>
-                        </mat-form-field>
-
-
-                    </div>
-
-                    <div class="col-md-4">
-                        <mat-form-field class="full-width">
-                            <input required id="name" matInput placeholder="Assigned To" value="Developer1"
-                                autocomplete="off">
-                            <mat-error>Required</mat-error>
-                        </mat-form-field>
-
-                    </div>
+                        <div class="col-md-3">
+                                <mat-form-field class="full-width">
+                                    <input required id="name" [(ngModel)]="issue.issueName" matInput placeholder="Issue Name" [value]="issue.issueName"
+                                        autocomplete="off">
+                                    <mat-error>Required</mat-error>
+                                </mat-form-field>
+        
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field class="full-width">
+                                    <input required id="name" [(ngModel)]="issue.issueType" matInput placeholder="Issue Type" [value]="issueType" autocomplete="off">
+                                    <mat-error>Required</mat-error>
+                                </mat-form-field>
+                            </div>
+        
+                            <div class="col-md-3">
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="Status" required [(ngModel)]="issue.issueStatus" [ngModelOptions]="{standalone: true}">
+                                        <mat-option *ngFor="let status of issueStatus" [value]="status">
+                                            {{status}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>Required</mat-error>
+                                </mat-form-field>
+                            </div>
+        
+                            <div class="col-md-3">
+                                <mat-form-field class="full-width">
+                                    <input required id="name" [(ngModel)]="issue.assignedTo" matInput placeholder="Assigned To" value="assignedTo"
+                                        autocomplete="off">
+                                    <mat-error>Required</mat-error>
+                                </mat-form-field>
+                            </div>
 
                 </div>
             </div>
