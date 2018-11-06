@@ -1,7 +1,9 @@
 package com.fxlabs.issues.services.project;
 
 import com.fxlabs.issues.converters.project.ProjectConverter;
+import com.fxlabs.issues.dao.entity.project.Issue;
 import com.fxlabs.issues.dao.entity.users.Org;
+import com.fxlabs.issues.dao.repository.jpa.IssueRepository;
 import com.fxlabs.issues.dao.repository.jpa.OrgRepository;
 import com.fxlabs.issues.dao.repository.jpa.ProjectRepository;
 import com.fxlabs.issues.dao.repository.jpa.UsersRepository;
@@ -35,12 +37,13 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao
     private UsersRepository usersRepository;
     private SystemSettingService systemSettingService;
     private OrgRepository orgRepository;
+    private IssueRepository issueRepository;
 
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository repository, ProjectConverter converter,
                               UsersRepository usersRepository, OrgRepository orgRepository,
-                              SystemSettingService systemSettingService) {
+                              SystemSettingService systemSettingService, IssueRepository issueRepository) {
 
         super(repository, converter);
         this.projectConverter = converter;
@@ -48,6 +51,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao
         this.usersRepository = usersRepository;
         this.systemSettingService = systemSettingService;
         this.orgRepository = orgRepository;
+        this.issueRepository = issueRepository;
 
     }
 
@@ -126,8 +130,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao
         if (!optionalProject.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
+
+        List<Issue> issueList = issueRepository.findByProjectId(id);
+
+        for(Issue issue:issueList)
+            issueRepository.delete(issue);
+
         return delete(id, user);
     }
+
 
     @Override
     public void isUserEntitled(String s, String user) {
