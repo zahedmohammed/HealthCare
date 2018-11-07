@@ -86,7 +86,7 @@
                     </div>
                     <div class="col-md-8">
                         <mat-form-field class="full-width">
-                            <textarea required id="name" value="Host: localhost:4200" matInput placeholder="Headers"
+                            <textarea required id="name" [(ngModel)]="issue.headers" matInput placeholder="Headers"
                                 autocomplete="off" rows="4"></textarea>
                             <mat-error>Required</mat-error>
                         </mat-form-field>
