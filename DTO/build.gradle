@@ -1,3 +1,4 @@
+
 buildscript {
     ext {
         springBootVersion = SPRING_BOOT_VERSION
@@ -13,15 +14,43 @@ buildscript {
     }
 }
 
-plugins { id "io.spring.dependency-management" version "1.0.0.RELEASE" }
+plugins { id "io.spring.dependency-management" version "1.0.0.RELEASE"
+    id 'io.codearte.nexus-staging' version '0.10.0'
+}
+
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'signing'
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+nexusStaging {
+    packageGroup = "io.fxlabs" //optional if packageGroup == project.getGroup()
+   //when not defined will be got from server using "packageGroup"
+}
+
 
 jar {
-    baseName = 'DTO'
+    baseName = "DTO"
     version = '0.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.8
@@ -56,7 +85,44 @@ uploadArchives {
                 authentication(userName: "admin", password: "Apple12#4")
             }
             version = "0.0.1-SNAPSHOT"
+
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+
+            pom.project {
+                name 'FXIssues DTO'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'Contains FXIssues DTO beans.'
+                url 'http://www.fxlabs.io'
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'shoukathmd'
+                        name 'Mohammed Shoukath Ali'
+                        email 'shoukath@fxlabs.io'
+                    }
+                }
+            }
         }
     }
 }
+
+group = fxlabsGroup
+version = fxlabsVersion
 

@@ -2,20 +2,20 @@ package com.fxlabs.issues.services.project;
 
 import com.fxlabs.issues.converters.project.IssueConverter;
 import com.fxlabs.issues.converters.project.ProjectConverter;
-import com.fxlabs.issues.dao.entity.users.Org;
+import com.fxlabs.issues.converters.users.OrgConverter;
+import com.fxlabs.issues.dao.entity.project.Project;
 import com.fxlabs.issues.dao.repository.es.IssueESRepository;
 import com.fxlabs.issues.dao.repository.jpa.IssueRepository;
-import com.fxlabs.issues.dao.repository.jpa.OrgRepository;
 import com.fxlabs.issues.dao.repository.jpa.ProjectRepository;
-import com.fxlabs.issues.dao.repository.jpa.UsersRepository;
 import com.fxlabs.issues.dto.base.Message;
 import com.fxlabs.issues.dto.base.MessageType;
 import com.fxlabs.issues.dto.base.NameDto;
 import com.fxlabs.issues.dto.base.Response;
 import com.fxlabs.issues.dto.project.Issue;
-import com.fxlabs.issues.dto.project.Project;
+import com.fxlabs.issues.dto.users.Org;
 import com.fxlabs.issues.services.base.GenericServiceImpl;
-import com.fxlabs.issues.services.users.SystemSettingService;
+import com.fxlabs.issues.services.users.OrgService;
+import com.fxlabs.issues.services.users.UsersService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,12 +38,16 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
     private IssueRepository repository;
     private IssueESRepository issueESRepository;
     private IssueConverter converter;
+    private OrgService orgService;
+    private OrgConverter orgConverter;
+    private UsersService usersService;
+
 
 
 
     @Autowired
-    public IssueServiceImpl(IssueRepository repository, IssueConverter converter, IssueESRepository issueESRepository,
-                            ProjectRepository projectRepository, ProjectConverter projectConverter) {
+    public IssueServiceImpl(IssueRepository repository, IssueConverter converter, IssueESRepository issueESRepository, OrgService orgService,
+                            ProjectRepository projectRepository, ProjectConverter projectConverter, OrgConverter orgConverter) {
 
         super(repository, converter);
         this.converter = converter;
@@ -51,6 +55,8 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
         this.repository = repository;
         this.projectConverter = projectConverter;
         this.projectRepository = projectRepository;
+        this.orgService = orgService;
+        this.orgConverter = orgConverter;
     }
 
 
@@ -65,12 +71,42 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
     public Response<Issue> create(Issue dto, String user, String org) {
         //TODO validate the user in projectorg
 
-        if (dto == null || dto.getProject() == null || StringUtils.isEmpty(dto.getProject().getId())) {
+        if (dto == null || dto.getProject() == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for project"));
+        }
+        //check project exist with given refid
+        //project  exist assign issue to project
+        //project dosn't exist create new project in org
+        //assign the issue to new project created
+        //
+        if (StringUtils.isEmpty(dto.getProject().getId()) && StringUtils.isEmpty(dto.getProject().getRefId())){
+            Optional<Project> optionalProject = projectRepository.findByRefIdAndInactive(dto.getProject().getRefId(), false);
+
+            if(optionalProject.isPresent()) {
+                dto.setProject(projectConverter.convertToDto(optionalProject.get()));
+            } else {
+                //creating new project
+                Project projectEntity = getProject(dto, org);
+                dto.setProject(projectConverter.convertToDto(projectEntity));
+            }
         }
         //TODO  check issue is not duplicate
         Response<Issue> issueResponse = super.save(dto, user);
         return issueResponse;
+    }
+
+    private Project getProject(Issue dto, String org) {
+        Project projectEntity = new Project();
+        projectEntity.setDescription(dto.getProject().getName());
+        projectEntity.setDescription(dto.getProject().getDescription());
+        projectEntity.setRefId(dto.getProject().getRefId());
+
+        Response<Org> orgResponse = orgService.findById(org);
+        NameDto nameDto = new NameDto();
+        nameDto.setId(org);
+        projectEntity.setOrg(orgConverter.convertToEntity(orgResponse.getData()));
+        projectEntity = projectRepository.save(projectEntity);
+        return projectEntity;
     }
 
     @Override

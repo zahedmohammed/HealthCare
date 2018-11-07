@@ -19,6 +19,7 @@ public class Project extends BaseDto<String> {
     private String name;
     private String description;
 
+    private String refId;
     private NameDto org;
 
 
