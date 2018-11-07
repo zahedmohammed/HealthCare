@@ -69,18 +69,19 @@ export class IssueNewComponent implements OnInit {
     });
 
     this.firstFormGroup = this._formBuilder.group({
-      nameCtrl: ['', Validators.required],
-      nameCtrl1: ['', Validators.required],
-      nameCtrl2: ['', Validators.required],
-      nameCtrl3: ['', Validators.required],
-      nameCtrl4: ['', Validators.required],
-      nameCtrl5: ['', Validators.required],
-      nameCtrl6: ['', Validators.required],
-      nameCtrl7: ['', Validators.required],
-      nameCtrl8: ['', Validators.required],
-      nameCtrl9: ['', Validators.required],
-      nameCtrl10: ['', Validators.required],
-      nameCtrl11: ['', Validators.required]
+      Ctrl1: ['', Validators.required],
+      Ctrl2: ['', Validators.required],
+      Ctrl3: ['', Validators.required],
+      Ctrl4: ['', Validators.required],
+      Ctrl5: ['', Validators.required],
+      Ctrl6: ['', Validators.required],
+      Ctrl7: ['', Validators.required],
+      Ctrl8: ['', Validators.required],
+      Ctrl9: ['', Validators.required],
+      Ctrl10: ['', Validators.required],
+      Ctrl11: ['', Validators.required],
+      Ctrl12: ['', Validators.required],
+      Ctrl13: ['', Validators.required]
     });
 
     this.secondFormGroup = this._formBuilder.group({
