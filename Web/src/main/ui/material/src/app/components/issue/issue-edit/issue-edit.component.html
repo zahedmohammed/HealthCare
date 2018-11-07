@@ -2,8 +2,8 @@
     <div>
         <article>
             <section class="container-fluid with-maxwidth no-breadcrumbs chapter">
-                    <a href="javascript:;" [routerLink]="['/app/projects']">Projects</a>
-                    <span class="text-muted"> &nbsp;&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;&nbsp; </span>
+                <a href="javascript:;" [routerLink]="['/app/projects']">Projects</a>
+                <span class="text-muted"> &nbsp;&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;&nbsp; </span>
                 <a href="javascript:;" [routerLink]="['/app/projects', id, 'issue']">{{project.name}}</a>
                 <span class="text-muted"> &nbsp;&nbsp;<i class="fa fa-chevron-right text-muted"></i>&nbsp;&nbsp; </span>
                 <a href="javascript:;" [routerLink]="['/app/projects', id, 'issue']"> Issues </a>
@@ -18,39 +18,40 @@
         <div class="box box-default">
             <div class="box-body">
                 <div class="row col-md-12">
-                        <div class="col-md-3">
-                                <mat-form-field class="full-width">
-                                    <input required id="name" [(ngModel)]="issue.issueName" matInput placeholder="Issue Name" [value]="issue.issueName"
-                                        autocomplete="off">
-                                    <mat-error>Required</mat-error>
-                                </mat-form-field>
-        
-                            </div>
-                            <div class="col-md-3">
-                                <mat-form-field class="full-width">
-                                    <input required id="name" [(ngModel)]="issue.issueType" matInput placeholder="Issue Type" [value]="issueType" autocomplete="off">
-                                    <mat-error>Required</mat-error>
-                                </mat-form-field>
-                            </div>
-        
-                            <div class="col-md-3">
-                                <mat-form-field class="full-width">
-                                    <mat-select placeholder="Status" required [(ngModel)]="issue.issueStatus" [ngModelOptions]="{standalone: true}">
-                                        <mat-option *ngFor="let status of issueStatus" [value]="status">
-                                            {{status}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error>Required</mat-error>
-                                </mat-form-field>
-                            </div>
-        
-                            <div class="col-md-3">
-                                <mat-form-field class="full-width">
-                                    <input required id="name" [(ngModel)]="issue.assignedTo" matInput placeholder="Assigned To" value="assignedTo"
-                                        autocomplete="off">
-                                    <mat-error>Required</mat-error>
-                                </mat-form-field>
-                            </div>
+                    <div class="col-md-3">
+                        <mat-form-field class="full-width">
+                            <input required id="name" [(ngModel)]="issue.issueName" matInput placeholder="Issue Name"
+                                [value]="issue.issueName" autocomplete="off">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field class="full-width">
+                            <input required id="name" [(ngModel)]="issue.issueType" matInput placeholder="Issue Type"
+                                [value]="issueType" autocomplete="off">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Status" required [(ngModel)]="issue.issueStatus" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let status of issueStatus" [value]="status">
+                                    {{status}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field class="full-width">
+                            <input required id="name" [(ngModel)]="issue.assignedTo" matInput placeholder="Assigned To"
+                                value="assignedTo" autocomplete="off">
+                            <mat-error>Required</mat-error>
+                        </mat-form-field>
+                    </div>
 
                 </div>
             </div>
@@ -148,13 +149,12 @@
                     </div>
                 </div>
             </div>
-            <mat-card-actions class="pull-right mt-4">
-                <button mat-button color="warn" class="btn-w-xs text-danger" (click)="delete()"><i class="material-icons">delete</i>Delete
-                </button>
-                <button mat-raised-button color="primary" class="nav-btn" type="submit" (click)="save();"> Update
-                </button>
-            </mat-card-actions>
-
         </div>
+        <mat-card-actions class="pull-right">
+            <button mat-button color="warn" class="btn-w-xs text-danger" (click)="delete()"><i class="material-icons">delete</i>Delete
+            </button>
+            <button mat-raised-button color="primary" class="nav-btn" type="submit" (click)="save();"> Update
+            </button>
+        </mat-card-actions><br>
     </article>
 </section>

@@ -67,7 +67,7 @@
                         <div class="row col-md-12">
                             <div class="col-md-6">
                                 <mat-form-field class="full-width">
-                                    <mat-select [(ngModel)]="issue.method" formControlName="Ctrl5" placeholder="State"
+                                    <mat-select [(ngModel)]="issue.method" required formControlName="Ctrl5" placeholder="State"
                                         placeholder="Http Method">
                                         <mat-option *ngFor="let method of httpMethod" [value]="method">{{method}}</mat-option>
                                     </mat-select>
@@ -161,9 +161,9 @@
                             Create
                         </button>
                     </mat-card-actions>
-
                 </div>
             </div>
-        </form>
+        </form><br>
+
     </article>
 </section>
