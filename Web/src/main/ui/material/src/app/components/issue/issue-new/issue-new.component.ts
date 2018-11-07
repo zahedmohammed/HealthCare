@@ -91,7 +91,7 @@ export class IssueNewComponent implements OnInit {
   }
 
   createIssue() {
-    this.snackbarService.openSnackBar(this.issue.env + " Creating ...", "");
+    this.snackbarService.openSnackBar(this.issue.issueName + " Creating ...", "");
     this.handler.activateLoader();
     this.issue.project.id = this.project.id;
     this.issue.headers = this.issue.headersText.split(",");
@@ -101,7 +101,7 @@ export class IssueNewComponent implements OnInit {
         return
       }
       this.issue = results['data'];
-      this.snackbarService.openSnackBar(this.issue.env + "  Created successfully", "");
+      this.snackbarService.openSnackBar(this.issue.issueName + "  Created successfully", "");
       this.router.navigate(['/app/projects', this.project.id, 'issue']);
       error => {
         this.handler.hideLoader();

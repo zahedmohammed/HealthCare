@@ -70,7 +70,7 @@
                         <ng-container matColumnDef="status">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
                             <mat-cell *matCellDef="let issue">
-                                    <span [ngClass]="{'bg-success': issue.issueStatus === 'ClOSED',
+                                    <span [ngClass]="{'bg-success': issue.issueStatus === 'CLOSED',
                                     'bg-danger': issue.issueStatus === 'OPEN'}" class="p-1 text-white rounded">{{issue.issueStatus}}</span>
                                 </mat-cell>
                         </ng-container>

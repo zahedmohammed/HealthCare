@@ -119,7 +119,7 @@ export class IssueEditComponent implements OnInit {
     });
   }
   save() {
-    this.snackbarService.openSnackBar(this.issue.env + "  updating...", "");
+    this.snackbarService.openSnackBar(this.issue.issueName + "  updating...", "");
     this.handler.activateLoader();
     this.IssuesService.update(this.issue).subscribe(results => {
       this.handler.hideLoader();
@@ -127,7 +127,7 @@ export class IssueEditComponent implements OnInit {
         return;
       }
       this.issues = results['data'];
-      this.snackbarService.openSnackBar(this.issue.env + "  updated successfully", "");
+      this.snackbarService.openSnackBar(this.issue.issueName + "  updated successfully", "");
       this.router.navigate(['/app/projects', this.project.id, 'issue']);
     }, error => {
       this.handler.hideLoader();
@@ -137,7 +137,7 @@ export class IssueEditComponent implements OnInit {
   delete() {
     var r = confirm("Are you sure you want to delete this issue project ?");
       if (r == true) {
-    this.snackbarService.openSnackBar(this.issue.env + " deleting...", "");
+    this.snackbarService.openSnackBar(this.issue.issueName + " deleting...", "");
     this.handler.activateLoader();
     this.IssuesService.delete(this.issues.project.id, this.issueId).subscribe(results => {
       this.handler.hideLoader();
@@ -145,7 +145,7 @@ export class IssueEditComponent implements OnInit {
         return;
       }
       this.issues = results['data'];
-      this.snackbarService.openSnackBar(this.issue.env + "  deleted successfully", "");
+      this.snackbarService.openSnackBar(this.issue.issueName + "  deleted successfully", "");
       this.router.navigate(['/app/projects', this.project.id, 'issue']);
     }, error => {
       this.handler.hideLoader();
