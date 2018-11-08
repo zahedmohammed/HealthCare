@@ -48,7 +48,7 @@ public class Issue extends BaseDto<String> {
 
     private String issueName;
 
-    private String issueType;
+    private IssueType issueType;
 
     private IssueStatus issueStatus;
 

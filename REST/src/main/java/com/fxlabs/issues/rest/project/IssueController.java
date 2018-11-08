@@ -78,4 +78,10 @@ public class IssueController {
         return issueService.create(request,  SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
     }
 
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @RequestMapping(value = "/ui", method = RequestMethod.POST)
+    public Response<Issue> addFromUI(@RequestBody Issue request) {
+        return issueService.createFromUI(request, SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
+    }
+
 }

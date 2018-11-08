@@ -33,7 +33,7 @@ export class IssuesService {
   }
 
   create(issue: Issue) {
-    return this.http.post(this.serviceUrl, issue);
+    return this.http.post(this.serviceUrl + "/ui", issue);
   }
 
   update(issue: Issue) {

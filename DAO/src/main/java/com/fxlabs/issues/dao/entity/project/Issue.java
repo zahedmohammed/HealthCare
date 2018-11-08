@@ -67,7 +67,8 @@ public class Issue extends BaseEntity {
 
     private String issueName;
 
-    private String issueType;
+    @Enumerated(EnumType.STRING)
+    private IssueType issueType;
 
     @Enumerated(EnumType.STRING)
     private IssueStatus issueStatus;

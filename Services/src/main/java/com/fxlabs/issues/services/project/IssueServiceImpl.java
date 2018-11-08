@@ -13,6 +13,7 @@ import com.fxlabs.issues.dto.base.NameDto;
 import com.fxlabs.issues.dto.base.Response;
 import com.fxlabs.issues.dto.project.Issue;
 import com.fxlabs.issues.dto.project.IssueStatus;
+import com.fxlabs.issues.dto.project.IssueType;
 import com.fxlabs.issues.dto.users.Org;
 import com.fxlabs.issues.services.base.GenericServiceImpl;
 import com.fxlabs.issues.services.users.OrgService;
@@ -70,11 +71,7 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
 
     @Override
     public Response<Issue> create(Issue dto, String user, String org) {
-        //TODO validate the user in projectorg
 
-        if (dto == null || dto.getProject() == null) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for project"));
-        }
         //check project exist with given refid
         //project  exist assign issue to project
         //project dosn't exist create new project in org
@@ -92,6 +89,24 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
             }
         }
         //TODO  check issue is not duplicate
+        dto.setIssueName("issue_" + dto.getEndpoint() + "_" + dto.getEnv());
+        dto.setIssueType(IssueType.AUTOMATIC);
+        dto.setIssueStatus(IssueStatus.OPEN);
+        Response<Issue> issueResponse = super.save(dto, user);
+        issueESRepository.save(converter.convertToEntity(issueResponse.getData()));
+        return issueResponse;
+    }
+
+    public Response<Issue> createFromUI(Issue dto, String user, String org)
+    {
+        //TODO validate the user in projectorg
+
+        if (dto == null || dto.getProject() == null || StringUtils.isEmpty(dto.getProject().getId())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for project"));
+        }
+
+        dto.setIssueType(IssueType.MANUAL);
+        dto.setIssueStatus(IssueStatus.OPEN);
         Response<Issue> issueResponse = super.save(dto, user);
         issueESRepository.save(converter.convertToEntity(issueResponse.getData()));
         return issueResponse;
