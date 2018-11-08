@@ -124,7 +124,10 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
         }
         //TODO Apply update rules
 
-        return this.save(request, user);
+        Response<Issue> updatedResponse = this.save(request, user);
+        issueESRepository.save(converter.convertToEntity(updatedResponse.getData()));
+        return updatedResponse;
+
     }
 
     @Override
@@ -149,6 +152,7 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
         issue.setIssueStatus(com.fxlabs.issues.dao.entity.project.IssueStatus.valueOf(request.getIssueStatus().toString()));
         issue.setMethod(com.fxlabs.issues.dao.entity.project.HttpMethod.valueOf(request.getMethod().toString()));
         issue = repository.save(issue);
+        issueESRepository.save(issue);
         //TODO Apply update rules
         return new Response<Issue>(converter.convertToDto(issue));
     }
@@ -160,6 +164,7 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
         if (!optionalProject.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid access"));
         }
+        issueESRepository.deleteById(id);
         return delete(id, "");
     }
 
