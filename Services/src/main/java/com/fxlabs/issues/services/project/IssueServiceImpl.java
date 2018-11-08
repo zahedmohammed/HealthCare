@@ -12,6 +12,7 @@ import com.fxlabs.issues.dto.base.MessageType;
 import com.fxlabs.issues.dto.base.NameDto;
 import com.fxlabs.issues.dto.base.Response;
 import com.fxlabs.issues.dto.project.Issue;
+import com.fxlabs.issues.dto.project.IssueStatus;
 import com.fxlabs.issues.dto.users.Org;
 import com.fxlabs.issues.services.base.GenericServiceImpl;
 import com.fxlabs.issues.services.users.OrgService;
@@ -92,6 +93,7 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
         }
         //TODO  check issue is not duplicate
         Response<Issue> issueResponse = super.save(dto, user);
+        issueESRepository.save(converter.convertToEntity(issueResponse.getData()));
         return issueResponse;
     }
 
@@ -110,7 +112,7 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
     }
 
     @Override
-    public Response<Issue> update(Issue request, String org, String user) {
+    public Response<Issue> updateFromUI(Issue request, String org, String user) {
         //TODO  check user entitled to org
         if (request == null) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for update Issue "));
@@ -118,15 +120,38 @@ public class IssueServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.e
 
         Optional<com.fxlabs.issues.dao.entity.project.Issue> optionalIssue = repository.findByIdAndProjectId(request.getId(), request.getProject().getId());
         if (!optionalIssue.isPresent()) {
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,   String.format("Invavid issue for issue id %s")));
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,   String.format("Invavid issue for issue id %s", request.getId())));
         }
         //TODO Apply update rules
 
         return this.save(request, user);
     }
 
+    @Override
+    public Response<Issue> update(Issue request, String org, String user) {
+        //TODO  check user entitled to org
+        if (request == null) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for update Issue "));
+        }
 
+        Optional<com.fxlabs.issues.dao.entity.project.Issue> optionalIssue = repository.findByIdAndProjectId(request.getId(), request.getProject().getRefId());
+        if (!optionalIssue.isPresent()) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,   String.format("Invavid issue for issue id %s", request.getId())));
+        }
 
+        com.fxlabs.issues.dao.entity.project.Issue issue = optionalIssue.get();
+        //
+        issue.setAssertions(request.getAssertions());
+        issue.setResult(request.getResult());
+        issue.setEnv(request.getEnv());
+        issue.setFailedAssertions(request.getFailedAssertions());
+        issue.setHeaders(request.getHeaders());
+        issue.setIssueStatus(com.fxlabs.issues.dao.entity.project.IssueStatus.valueOf(request.getIssueStatus().toString()));
+        issue.setMethod(com.fxlabs.issues.dao.entity.project.HttpMethod.valueOf(request.getMethod().toString()));
+        issue = repository.save(issue);
+        //TODO Apply update rules
+        return new Response<Issue>(converter.convertToDto(issue));
+    }
 
     @Override
     public Response<Issue> delete(String id, String projectId, String org) {

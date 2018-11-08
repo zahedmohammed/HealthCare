@@ -21,4 +21,6 @@ public interface IssueService extends GenericService<Issue, String> {
 
     Response<Issue> update(Issue request, String user, String org);
 
+    Response<Issue> updateFromUI(Issue request, String user, String org);
+
 }
