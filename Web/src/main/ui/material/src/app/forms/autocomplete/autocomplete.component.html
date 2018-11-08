@@ -6,9 +6,9 @@
     <div class="box box-default">
       <div class="box-header">Basic autocomplete</div>
       <div class="box-body">
-        <mat-input-container>
+        <mat-form-field>
           <input matInput placeholder="State" [matAutocomplete]="auto" [formControl]="stateCtrl">
-        </mat-input-container>
+        </mat-form-field>
 
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let state of filteredStates | async" [value]="state">

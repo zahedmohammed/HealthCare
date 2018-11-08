@@ -8,49 +8,49 @@
 
         <form>
           <div class="form-group">
-            <mat-input-container class="full-width">
+            <mat-form-field class="full-width">
               <input matInput placeholder="Company (disabled)" disabled value="Google">
-            </mat-input-container>
+            </mat-form-field>
           </div>
 
           <div class="form-group row">
             <div class="col-6">
-              <mat-input-container class="full-width mat-icon-left">
+              <mat-form-field class="full-width mat-icon-left">
                 <mat-icon class="material-icons">perm_identity</mat-icon>
                 <input matInput placeholder="First name">
-              </mat-input-container>
+              </mat-form-field>
             </div>
             <div class="col-6">
-              <mat-input-container class="full-width"> <input matInput placeholder="Long Last Name That Will Be Truncated And 3 Dots (Ellipsis) Will Appear At The End"> </mat-input-container>
+              <mat-form-field class="full-width"> <input matInput placeholder="Long Last Name That Will Be Truncated And 3 Dots (Ellipsis) Will Appear At The End"> </mat-form-field>
             </div>
           </div>
 
           <div class="form-group">
-            <mat-input-container class="full-width">
+            <mat-form-field class="full-width">
               <textarea matInput placeholder="Address" value="1600 Amphitheatre Pkway"></textarea>
-            </mat-input-container>
-            <mat-input-container class="full-width">
+            </mat-form-field>
+            <mat-form-field class="full-width">
               <textarea matInput placeholder="Address 2"></textarea>
-            </mat-input-container>
+            </mat-form-field>
           </div>
 
           <div class="form-group row">
             <div class="col-4">
-              <mat-input-container class="full-width" dividerColor="primary"> <input matInput placeholder="City" value="Mountain View"> </mat-input-container>
+              <mat-form-field class="full-width" dividerColor="primary"> <input matInput placeholder="City" value="Mountain View"> </mat-form-field>
             </div>
             <div class="col-4">
-              <mat-input-container class="full-width" dividerColor="accent"> <input matInput placeholder="State"> </mat-input-container>
+              <mat-form-field class="full-width" dividerColor="accent"> <input matInput placeholder="State"> </mat-form-field>
             </div>
             <div class="col-4">
-              <mat-input-container class="full-width" dividerColor="warn"> <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043"> <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint> </mat-input-container>
+              <mat-form-field class="full-width" dividerColor="warn"> <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043"> <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint> </mat-form-field>
             </div>
           </div>
 
           <div class="form-group">
-            <mat-input-container class="full-width">
+            <mat-form-field class="full-width">
               <textarea matInput #biography placeholder="Biography" maxlength="150" rows="5" value="Loves kittens, snowboarding, and can type at 130 WPM.\n\nAnd rumor has it she bouldered up Castle Craig!"></textarea>
               <mat-hint align="end">{{biography.value.length}} / 150</mat-hint>
-            </mat-input-container>
+            </mat-form-field>
           </div>
 
         </form>

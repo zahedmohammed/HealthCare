@@ -15,8 +15,6 @@
               [max]="max"
               [min]="min"
               [step]="step"
-              [thumb-label]="thumbLabel"
-              [tick-interval]="tickInterval"
               [value]="value"
               [vertical]="vertical"></mat-slider>
           </div>
@@ -26,18 +24,18 @@
           <div class="col-md-4" style="margin-top: 15px;">Slider configuration</div>
           <div class="col-md-8">
             <section class="form-group">
-              <mat-input-container class="example-margin">
+              <mat-form-field class="example-margin">
                 <input matInput type="number" placeholder="Value" [(ngModel)]="value">
-              </mat-input-container>
-              <mat-input-container class="example-margin">
+              </mat-form-field>
+              <mat-form-field class="example-margin">
                 <input matInput type="number" placeholder="Min value" [(ngModel)]="min">
-              </mat-input-container>
-              <mat-input-container class="example-margin">
+              </mat-form-field>
+              <mat-form-field class="example-margin">
                 <input matInput type="number" placeholder="Max value" [(ngModel)]="max">
-              </mat-input-container>
-              <mat-input-container class="example-margin">
+              </mat-form-field>
+              <mat-form-field class="example-margin">
                 <input matInput type="number" placeholder="Step size" [(ngModel)]="step">
-              </mat-input-container>
+              </mat-form-field>
             </section>
 
             <section class="form-group">
@@ -47,9 +45,9 @@
                 Auto ticks
               </mat-checkbox>
               <span class="space space-md"></span>
-              <mat-input-container class="example-margin" *ngIf="showTicks && !autoTicks">
+              <mat-form-field class="example-margin" *ngIf="showTicks && !autoTicks">
                 <input matInput type="number" placeholder="Tick interval" [(ngModel)]="tickInterval">
-              </mat-input-container>
+              </mat-form-field>
             </section>
 
             <section class="form-group">

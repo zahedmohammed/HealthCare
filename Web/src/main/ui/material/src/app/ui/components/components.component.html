@@ -63,13 +63,13 @@
       <div class="box-header">Basic Usage</div>
       <div class="box-body">
 
-        <mat-input-container>
+        <mat-form-field>
           <input matInput value="Disco party!" placeholder="Message" #message>
-        </mat-input-container>
+        </mat-form-field>
 
-        <mat-input-container>
+        <mat-form-field>
           <input matInput value="Dance" placeholder="Action" #action>
-        </mat-input-container>
+        </mat-form-field>
 
         <span class="space space-md"></span>
         <button mat-raised-button color="accent" class="btn-w-md" (click)="openSnackBar(message.value, action.value)">Show snack-bar</button>
