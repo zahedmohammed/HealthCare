@@ -1,4 +1,4 @@
-rootProject.name = 'FX-Issues'
+rootProject.name = 'OnlineBanking'
 
 include 'DAO'
 include 'DTO'
