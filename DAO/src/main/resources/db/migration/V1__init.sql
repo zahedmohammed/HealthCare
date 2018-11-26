@@ -275,6 +275,7 @@ CREATE TABLE users (
     company character varying(255),
     credentials_non_expired boolean NOT NULL,
     email character varying(255) NOT NULL,
+    account_number character varying(255) NOT NULL,
     enabled boolean NOT NULL,
     job_title character varying(255),
     location character varying(255),

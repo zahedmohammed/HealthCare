@@ -1,0 +1,13 @@
+package com.fxlabs.issues.services.account;
+
+import com.fxlabs.issues.dto.account.PrimaryAccount;
+import com.fxlabs.issues.dto.base.Response;
+import com.fxlabs.issues.services.base.GenericService;
+
+import java.util.List;
+
+public interface PrimaryAccountService extends GenericService<PrimaryAccount, String> {
+    Response<PrimaryAccount> findPrimaryAccountById(String id, String currentAuditor);
+
+    Response<List<PrimaryAccount>> findAllPrimaryAccount(String currentAuditor);
+}

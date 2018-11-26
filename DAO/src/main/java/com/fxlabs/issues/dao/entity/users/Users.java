@@ -47,6 +47,8 @@ public class Users extends BaseEntity {
     private String location;
     private String jobTitle;
 
+    private int accountNumber;
+
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
