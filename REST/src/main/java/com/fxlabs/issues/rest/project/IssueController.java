@@ -39,7 +39,7 @@ public class IssueController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/project/{projectId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/product/{projectId}", method = RequestMethod.GET)
     public Response<List<Issue>> findByProjectId(@PathVariable("projectId") String projectId, @RequestParam(value = BaseController.PAGE_PARAM, defaultValue = BaseController.DEFAULT_PAGE_VALUE, required = false) @Min(0) Integer page,
                                          @RequestParam(value = BaseController.PAGE_SIZE_PARAM, defaultValue = BaseController.DEFAULT_PAGE_SIZE_VALUE, required = false) @Max(20) Integer pageSize) {
 
@@ -67,7 +67,7 @@ public class IssueController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/project/{projectId}/issue/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/product/{projectId}/issue/{id}", method = RequestMethod.DELETE)
     public Response<Issue> delete(@PathVariable("id") String id, @PathVariable("projectId") String projectId) {
         return issueService.delete(id, projectId, SecurityUtil.getOrgId());
     }
