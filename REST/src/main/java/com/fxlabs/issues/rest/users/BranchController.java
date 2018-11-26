@@ -24,13 +24,13 @@ import static com.fxlabs.issues.rest.base.BaseController.*;
  */
 @RestController
 @RequestMapping(ORG_BASE)
-public class OrgController {
+public class BranchController {
 
     private OrgUsersService orgUsersService;
     private OrgService orgService;
 
     @Autowired
-    public OrgController(OrgUsersService orgUsersService, OrgService orgService) {
+    public BranchController(OrgUsersService orgUsersService, OrgService orgService) {
         this.orgUsersService = orgUsersService;
         this.orgService = orgService;
     }

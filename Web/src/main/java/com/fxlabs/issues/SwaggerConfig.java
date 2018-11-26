@@ -31,11 +31,11 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "FxLabs REST API",
+                "Online Banking REST API",
                 "Public API.",
                 "V1",
                 "Terms of service",
-                new Contact("founders", "https://fxlabs.io/", "founders@fxlabs.io"),
+                new Contact("founders", "", "founders@fxlabs.io"),
                 "", "", Collections.emptyList());
     }
 

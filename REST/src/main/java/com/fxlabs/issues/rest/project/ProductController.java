@@ -27,13 +27,13 @@ import static com.fxlabs.issues.rest.base.BaseController.ROLE_PROJECT_MANAGER;
 @RestController
 @RequestMapping(BaseController.PROJECTS_BASE)
 @Validated
-public class ProjectController {
+public class ProductController {
 
     private ProjectService projectService;
 
 
     @Autowired
-    public ProjectController(
+    public ProductController(
             ProjectService projectService) {
         this.projectService = projectService;
     }
