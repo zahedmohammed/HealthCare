@@ -1,6 +1,8 @@
 package com.fxlabs.issues.converters.base;
 
 
+import com.fxlabs.issues.dto.account.PrimaryAccount;
+import com.fxlabs.issues.dto.base.Response;
 import org.mapstruct.InheritInverseConfiguration;
 
 import java.util.List;

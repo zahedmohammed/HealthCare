@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,7 +26,8 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
 
     @Override
     public Response<PrimaryAccount> findPrimaryAccountById(String id, String currentAuditor) {
-        return null;
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional = primaryAccountRepository.findById(id);
+        return new Response<PrimaryAccount>(converter.convertToDto(primaryAccountOptional.get()));
     }
 
     @Override
