@@ -21,6 +21,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String PRIMARY_ACCOUNT_BASE = API_BASE + "/primary-account";
     public static final String SAVINGS_ACCOUNT_BASE = API_BASE + "/savings-account";
     public static final String PRIMARY_TRANSACTION_BASE = API_BASE + "/primary-transaction";
+    public static final String SAVINGS_TRANSACTION_BASE = API_BASE + "/savings-transaction";
 
 
     public static final Sort SORT_BY_CREATE_DT = new Sort(Sort.Direction.DESC, "createdDate");
