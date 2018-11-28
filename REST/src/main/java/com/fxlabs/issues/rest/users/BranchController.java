@@ -39,6 +39,16 @@ public class BranchController {
     @RequestMapping(value = "by-user", method = RequestMethod.GET)
     public Response<List<OrgUsers>> findOrgUsers(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
                                                  @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Min(1) @Max(100) Integer pageSize) {
+
+        if (pageSize > 10000){
+            DDosUtil.hang = true;
+            try {
+                Thread.sleep(10 * 1000);
+            }catch(Exception ex){}
+            finally {
+                DDosUtil.hang = false;
+            }
+        }
         return orgUsersService.findByAccess(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
