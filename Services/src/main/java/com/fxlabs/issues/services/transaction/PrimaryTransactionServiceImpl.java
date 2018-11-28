@@ -36,7 +36,7 @@ public class PrimaryTransactionServiceImpl extends GenericServiceImpl<com.fxlabs
     }
 
     @Override
-    public Response<List<PrimaryTransaction>> findAllPrimaryTransaction(String currentAuditor) {
+    public Response<List<PrimaryTransaction>> findAllPrimaryTransaction() {
         List<com.fxlabs.issues.dao.entity.transaction.PrimaryTransaction> primaryTransactionList = primaryTransactionRepository.findAll();
         return (Response<List<PrimaryTransaction>>) converter.convertToDtos(primaryTransactionList);
     }

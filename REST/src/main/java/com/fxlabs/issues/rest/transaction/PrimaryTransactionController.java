@@ -26,36 +26,34 @@ public class PrimaryTransactionController {
         this.primaryTransactionService = primaryTransactionService;
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/primary-transaction/{id}", method = RequestMethod.GET)
+    //@Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<PrimaryTransaction> findPrimaryTransactionById(@PathVariable("id") String id) {
 
 
         return primaryTransactionService.findPrimaryTransactionById(id, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/primary-transaction", method = RequestMethod.GET)
+   // @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public Response<List<PrimaryTransaction>> findAllPrimaryTransaction() {
-
-
-        return primaryTransactionService.findAllPrimaryTransaction(SecurityUtil.getCurrentAuditor());
+        return primaryTransactionService.findAllPrimaryTransaction();
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/primary-transaction", method = RequestMethod.POST)
+   // @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public Response<PrimaryTransaction> add(@RequestBody PrimaryTransaction request) {
         return primaryTransactionService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/primary-transaction", method = RequestMethod.PUT)
+   // @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
     public Response<PrimaryTransaction> update(@RequestBody PrimaryTransaction request) {
         return primaryTransactionService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/primary-transaction/{id}", method = RequestMethod.DELETE)
+    //@Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<PrimaryTransaction> deleteById(@PathVariable("id") String id) {
         return primaryTransactionService.delete(id, SecurityUtil.getCurrentAuditor());
     }

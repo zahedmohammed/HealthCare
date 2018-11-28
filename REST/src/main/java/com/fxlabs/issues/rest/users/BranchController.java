@@ -97,29 +97,29 @@ public class BranchController {
     }*/
 
     @Secured({ROLE_ADMIN})
-    @RequestMapping(value = "/{orgId}/users/{userId}", method = RequestMethod.PUT)
-    public Response<Boolean> updateOrgUser(@PathVariable("orgId") String orgId,
+    @RequestMapping(value = "/{branchId}/users/{userId}", method = RequestMethod.PUT)
+    public Response<Boolean> updateOrgUser(@PathVariable("branchId") String orgId,
                                            @PathVariable("userId") String userId,
                                            @RequestBody OrgUsers request) {
         return orgService.saveUser(userId, request.getUsers(), request, orgId, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_ADMIN})
-    @RequestMapping(value = "/{orgId}/org-user/{orgUserId}", method = RequestMethod.GET)
-    public Response<OrgUsers> findOrgUserById(@PathVariable("orgId") String orgId,
+    @RequestMapping(value = "/{branchId}/branch-user/{orgUserId}", method = RequestMethod.GET)
+    public Response<OrgUsers> findOrgUserById(@PathVariable("branchId") String orgId,
                                               @PathVariable("orgUserId") String orgUserId) {
         return orgService.getUserByOrgUserId(orgUserId, orgId);
     }
 
     @Secured({ROLE_ADMIN})
-    @RequestMapping(value = "/{orgId}/users/add-member", method = RequestMethod.POST)
-    public Response<Boolean> findOrgUsersById(@PathVariable("orgId") String orgId, @RequestBody Member member) {
+    @RequestMapping(value = "/{branchId}/users/add-member", method = RequestMethod.POST)
+    public Response<Boolean> findOrgUsersById(@PathVariable("branchId") String orgId, @RequestBody Member member) {
         return orgService.addMember(member, orgId, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_ADMIN})
-    @RequestMapping(value = "/{orgId}/users/{userId}/reset-password", method = RequestMethod.POST)
-    public Response<Boolean> resetPassword(@PathVariable("orgId") String orgId,
+    @RequestMapping(value = "/{branchId}/users/{userId}/reset-password", method = RequestMethod.POST)
+    public Response<Boolean> resetPassword(@PathVariable("branchId") String orgId,
                                            @PathVariable("userId") String userId,
                                            @RequestBody Member member) {
         return orgService.resetPassword(userId, member, orgId, SecurityUtil.getCurrentAuditor(), SecurityUtil.getOrgId());
