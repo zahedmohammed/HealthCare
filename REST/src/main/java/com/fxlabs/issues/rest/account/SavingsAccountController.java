@@ -7,6 +7,7 @@ import com.fxlabs.issues.rest.base.SecurityUtil;
 import com.fxlabs.issues.services.account.SavingsAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 import static com.fxlabs.issues.rest.base.BaseController.*;
 
 @RestController
+@Validated
 @RequestMapping(BaseController.SAVINGS_ACCOUNT_BASE)
 public class SavingsAccountController {
 
