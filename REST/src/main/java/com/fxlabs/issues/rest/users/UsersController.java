@@ -1,5 +1,7 @@
 package com.fxlabs.issues.rest.users;
 
+import com.fxlabs.issues.dto.base.Message;
+import com.fxlabs.issues.dto.base.MessageType;
 import com.fxlabs.issues.dto.base.Response;
 import com.fxlabs.issues.dto.users.Users;
 import com.fxlabs.issues.rest.base.SecurityUtil;
@@ -29,6 +31,11 @@ public class UsersController {
     @Secured({ROLE_USER})
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public Response<Users> login() {
+
+        if (DDosUtil.hang){
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR,null,"System Unresponsive....  Pls contact Administrator"));
+        }
+
         return usersService.findById(SecurityUtil.getCurrentAuditor());
     }
 
