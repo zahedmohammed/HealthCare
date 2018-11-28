@@ -35,19 +35,19 @@ public class PrimaryTransactionController {
     }
 
    // @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public Response<List<PrimaryTransaction>> findAllPrimaryTransaction() {
         return primaryTransactionService.findAllPrimaryTransaction();
     }
 
-   // @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+   /@Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<PrimaryTransaction> add(@RequestBody PrimaryTransaction request) {
         return primaryTransactionService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-   // @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+   /@Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<PrimaryTransaction> update(@RequestBody PrimaryTransaction request) {
         return primaryTransactionService.save(request, SecurityUtil.getCurrentAuditor());
     }
