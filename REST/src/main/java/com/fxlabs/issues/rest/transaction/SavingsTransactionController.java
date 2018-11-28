@@ -27,7 +27,7 @@ public class SavingsTransactionController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/savings-transaction/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<SavingsTransaction> findSavingsTransactionById(@PathVariable("id") String id) {
 
 
@@ -35,7 +35,7 @@ public class SavingsTransactionController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/savings-transaction", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public Response<List<SavingsTransaction>> findAllSavingsTransaction() {
 
 
@@ -43,19 +43,19 @@ public class SavingsTransactionController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/savings-transaction", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<SavingsTransaction> add(@RequestBody SavingsTransaction request) {
         return savingsTransactionService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/savings-transaction", method = RequestMethod.PUT)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<SavingsTransaction> update(@RequestBody SavingsTransaction request) {
         return savingsTransactionService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
-    @RequestMapping(value = "/savings-transaction/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<SavingsTransaction> deleteById(@PathVariable("id") String id) {
         return savingsTransactionService.delete(id, SecurityUtil.getCurrentAuditor());
     }

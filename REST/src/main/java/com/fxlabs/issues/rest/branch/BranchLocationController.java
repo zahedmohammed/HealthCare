@@ -35,7 +35,7 @@ public class BranchLocationController {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public Response<List<Branch>> findAllBranches() {
 
 
