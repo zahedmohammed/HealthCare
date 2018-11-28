@@ -40,6 +40,18 @@ public class UsersController {
     }
 
     @CrossOrigin
+    @RequestMapping(value = "/personal-sign-up", method = RequestMethod.POST)
+    public Response<Boolean> personalSignUp(@RequestBody Users users) {
+        return usersService.personalSignUp(users);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/team-sign-up", method = RequestMethod.POST)
+    public Response<Boolean> teamSignUp(@RequestBody Users users) {
+        return usersService.teamSignUp(users);
+    }
+
+    @CrossOrigin
     @RequestMapping(value = "/enterprise-sign-up", method = RequestMethod.POST)
     public Response<Boolean> enterpriseSignUp(@RequestBody Users users) {
         return usersService.enterpriseSignUp(users);
