@@ -1,15 +1,12 @@
 package com.fxlabs.issues.services.transaction;
 
-import com.fxlabs.issues.converters.transaction.PrimaryTransactionConverter;
 import com.fxlabs.issues.dao.entity.users.Users;
-import com.fxlabs.issues.dao.repository.jpa.PrimaryTransactionRepository;
-import com.fxlabs.issues.dto.base.Response;
+
 import com.fxlabs.issues.dto.transaction.PrimaryTransaction;
-import com.fxlabs.issues.services.base.GenericServiceImpl;
 import com.github.javafaker.Faker;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
@@ -18,62 +15,56 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+/**
+ * @author Mohammed Shoukath Ali
+ */
 @Service
-@Transactional
-public class PrimaryTransactionServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.entity.transaction.PrimaryTransaction, PrimaryTransaction, String> implements PrimaryTransactionService {
-
-    PrimaryTransactionRepository primaryTransactionRepository;
-    PrimaryTransactionConverter primaryTransactionConverter;
-    DummyDataProcessor dummyDataProcessor;
+public class DummyDataProcessor {
 
     private static List<PrimaryTransaction> primaryTransactionListDto = null;
 
-    public PrimaryTransactionServiceImpl(PrimaryTransactionRepository repository, PrimaryTransactionConverter converter, DummyDataProcessor dummyDataProcessor) {
-        super(repository, converter);
-        this.primaryTransactionRepository = repository;
-        this.primaryTransactionConverter = converter;
-        this.dummyDataProcessor = dummyDataProcessor;
+    @PostConstruct
+    public void findAllPrimaryTransaction() {
+        int pageSize = 1200;
+        System.out.print("Primary Transactions construct...........");
+        List<PrimaryTransaction> primaryTransactionList = new ArrayList<>();
+        Faker faker = new Faker();
+
+        int size;
+        if (pageSize > 999) {
+            size = faker.random().nextInt(1000, 1500);
+        } else {
+            size = pageSize;
+        }
+
+        for (int i = 0; i < size; i++) {
+            primaryTransactionList.add(i, data());
+          //  System.out.println("check data----" + primaryTransactionList.toString());
+        }
+        primaryTransactionListDto = primaryTransactionList;
+
+                System.out.print("Primary Transactions dummy data processing complete...........");
+
     }
 
-    @Override
-    public void isUserEntitled(String s, String user) {
+    public List<PrimaryTransaction> getList(int size){
 
+        if (CollectionUtils.isNotEmpty(primaryTransactionListDto)) {
+            if (size > primaryTransactionListDto.size()) {
+                size = primaryTransactionListDto.size();
+            }
+            System.out.print("Loading......");
+            List<PrimaryTransaction> firstNElementsList = primaryTransactionListDto.stream().limit(size).collect(Collectors.toList());
+            return firstNElementsList;
+        }
+        return null;
     }
 
-    @Override
-    public Response<PrimaryTransaction> findPrimaryTransactionById(String id, String currentAuditor) {
-        Optional<com.fxlabs.issues.dao.entity.transaction.PrimaryTransaction> primaryTransactionOptional = primaryTransactionRepository.findById(id);
-        return new Response<PrimaryTransaction>(converter.convertToDto(primaryTransactionOptional.get()));
-    }
-
-
-    @Override
-    public Response<List<PrimaryTransaction>> findAllPrimaryTransaction(Integer pageSize) {
-
-        System.out.print("Primary Transactions...........");
-        List<com.fxlabs.issues.dao.entity.transaction.PrimaryTransaction> primaryTransactionList = new ArrayList<>();
-//        Faker faker = new Faker();
-//
-//        int size;
-//        if (pageSize > 999) {
-//            size = faker.random().nextInt(1000, 1500);
-//        } else {
-//            size = pageSize;
-//        }
-//
-//        for (int i = 0; i < size; i++) {
-//            primaryTransactionList.add(i, data());
-//            System.out.println("check data----" + primaryTransactionList.toString());
-//        }
-//        primaryTransactionListDto = converter.convertToDtos(primaryTransactionList);
-
-        return new Response<List<PrimaryTransaction>>(dummyDataProcessor.getList(pageSize));
-    }
-
-    public com.fxlabs.issues.dao.entity.transaction.PrimaryTransaction data() {
-        com.fxlabs.issues.dao.entity.transaction.PrimaryTransaction savingsTransaction = new com.fxlabs.issues.dao.entity.transaction.PrimaryTransaction();
+    @Async
+    public PrimaryTransaction data() {
+        PrimaryTransaction savingsTransaction = new PrimaryTransaction();
         Faker faker = new Faker();
         String description = String.valueOf(faker.book().genre());
         String type = "Primary";
@@ -113,7 +104,8 @@ public class PrimaryTransactionServiceImpl extends GenericServiceImpl<com.fxlabs
         user.setCreatedDate(faker.date().between(date, date1));
         user.setModifiedBy(String.valueOf(faker.number().numberBetween(10, 15)));
         user.setModifiedDate(faker.date().between(date, date1));
-        savingsTransaction.setUser(user);
+       // savingsTransaction.setUser(user);
         return savingsTransaction;
     }
+
 }
