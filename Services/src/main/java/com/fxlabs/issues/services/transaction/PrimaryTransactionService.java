@@ -9,5 +9,5 @@ import java.util.List;
 public interface PrimaryTransactionService extends GenericService<PrimaryTransaction, String> {
     Response<PrimaryTransaction> findPrimaryTransactionById(String id, String currentAuditor);
 
-    Response<List<PrimaryTransaction>> findAllPrimaryTransaction();
+    Response<List<PrimaryTransaction>> findAllPrimaryTransaction(Integer pageSize);
 }

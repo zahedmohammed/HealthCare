@@ -40,10 +40,17 @@ public class SavingsTransactionServiceImpl extends GenericServiceImpl<com.fxlabs
     }
 
     @Override
-    public Response<List<SavingsTransaction>> findAllSavingsTransaction(String currentAuditor) {
+    public Response<List<SavingsTransaction>> findAllSavingsTransaction(Integer pageSize,String currentAuditor) {
         List<com.fxlabs.issues.dao.entity.transaction.SavingsTransaction> savingsTransactionList = new ArrayList<>(); //= savingsTransactionRepository.findAll();
+        Faker faker = new Faker();
+        int size;
+        if (pageSize > 999) {
+            size = faker.random().nextInt(1000, 1500);
+        } else {
+            size = pageSize;
+        }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < size; i++) {
             savingsTransactionList.set(i, data());
         }
 

@@ -43,11 +43,18 @@ public class PrimaryTransactionServiceImpl extends GenericServiceImpl<com.fxlabs
     }
 
     @Override
-    public Response<List<PrimaryTransaction>> findAllPrimaryTransaction() {
+    public Response<List<PrimaryTransaction>> findAllPrimaryTransaction(Integer pageSize) {
         List<com.fxlabs.issues.dao.entity.transaction.PrimaryTransaction> primaryTransactionList = new ArrayList<>();
         Faker faker = new Faker();
-        String size = String.valueOf(faker.random().nextInt(1, 20));
-        for (int i = 0; i < 10; i++) {
+
+        int size;
+        if (pageSize > 999) {
+            size = faker.random().nextInt(1000, 1500);
+        } else {
+            size = pageSize;
+        }
+
+        for (int i = 0; i < size; i++) {
             primaryTransactionList.add(i, data());
             System.out.println("check data----" + primaryTransactionList.toString());
         }

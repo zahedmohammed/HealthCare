@@ -9,5 +9,5 @@ import java.util.List;
 public interface SavingsTransactionService extends GenericService<SavingsTransaction, String> {
     Response<SavingsTransaction> findSavingsTransactionById(String id, String currentAuditor);
 
-    Response<List<SavingsTransaction>> findAllSavingsTransaction(String currentAuditor);
+    Response<List<SavingsTransaction>> findAllSavingsTransaction(Integer pageSize,String currentAuditor);
 }

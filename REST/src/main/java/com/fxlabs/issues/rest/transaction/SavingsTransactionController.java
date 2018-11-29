@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 import static com.fxlabs.issues.rest.base.BaseController.*;
@@ -36,10 +38,10 @@ public class SavingsTransactionController {
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Response<List<SavingsTransaction>> findAllSavingsTransaction() {
+    public Response<List<SavingsTransaction>> findAllSavingsTransaction(@RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Min(1) @Max(2000) Integer pageSize) {
 
 
-        return savingsTransactionService.findAllSavingsTransaction(SecurityUtil.getCurrentAuditor());
+        return savingsTransactionService.findAllSavingsTransaction(pageSize, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})

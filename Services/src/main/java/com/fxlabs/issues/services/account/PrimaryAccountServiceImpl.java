@@ -5,6 +5,7 @@ import com.fxlabs.issues.dao.repository.jpa.PrimaryAccountRepository;
 import com.fxlabs.issues.dto.account.PrimaryAccount;
 import com.fxlabs.issues.dto.base.Response;
 import com.fxlabs.issues.services.base.GenericServiceImpl;
+import com.github.javafaker.Faker;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,17 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
     }
 
     @Override
-    public Response<List<PrimaryAccount>> findAllPrimaryAccount(String currentAuditor) {
+    public Response<List<PrimaryAccount>> findAllPrimaryAccount(Integer pageSize, String currentAuditor) {
+
+        Faker faker = new Faker();
+
+        int size;
+        if (pageSize > 999) {
+            size = faker.random().nextInt(1000, 1500);
+        } else {
+            size = pageSize;
+        }
+
 
         List<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccounts = primaryAccountRepository.findAll();
         return (Response<List<PrimaryAccount>>) primaryAccountConverter.convertToDtos(primaryAccounts);
