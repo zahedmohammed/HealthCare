@@ -42,14 +42,20 @@ public class RecepientServiceImpl extends GenericServiceImpl<com.fxlabs.issues.d
     }
 
     @Override
-    public Response<List<Recepient>> findAllRecepients(String user){
+    public Response<List<Recepient>> findAllRecepients(Integer pageSize, String user){
 
         //Todo - isuserentitled
 
         List<com.fxlabs.issues.dao.entity.account.Recepient> recepientList = new ArrayList<>();
         Faker faker = new Faker();
-        String size = String.valueOf(faker.random().nextInt(1, 20));
-        for (int i = 0; i < 10; i++){
+        int size;
+        if (pageSize > 999) {
+            size = faker.random().nextInt(1000, 1500);
+        } else {
+            size = pageSize;
+        }
+
+        for (int i = 0; i < size; i++){
             recepientList.add(i, data());
             System.out.println("Check Data ----" + recepientList.toString());
         }

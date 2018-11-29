@@ -11,6 +11,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 import static com.fxlabs.issues.rest.base.BaseController.*;
@@ -36,8 +38,8 @@ public class AppointmentController {
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Response<List<Appointment>> findAllAppointments() {
-        return appointmentService.findAllAppointments(SecurityUtil.getCurrentAuditor());
+    public Response<List<Appointment>> findAllAppointments(@RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Min(1) @Max(2000) Integer pageSize) {
+        return appointmentService.findAllAppointments(pageSize, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})

@@ -10,5 +10,5 @@ public interface RecepientService extends GenericService<Recepient, String> {
 
     Response<Recepient> findRecepientById(String id, String currentAuditor);
 
-    Response<List<Recepient>> findAllRecepients(String currentAuditor);
+    Response<List<Recepient>> findAllRecepients(Integer pageSize, String currentAuditor);
 }
