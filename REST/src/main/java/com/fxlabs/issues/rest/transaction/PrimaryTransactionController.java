@@ -42,7 +42,7 @@ public class PrimaryTransactionController {
         return primaryTransactionService.findAllPrimaryTransaction( pageSize);
     }
 
-   // @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<PrimaryTransaction> add(@RequestBody PrimaryTransaction request) {
         return primaryTransactionService.save(request, SecurityUtil.getCurrentAuditor());
