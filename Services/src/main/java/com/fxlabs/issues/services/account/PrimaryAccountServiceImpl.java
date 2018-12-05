@@ -3,12 +3,15 @@ package com.fxlabs.issues.services.account;
 import com.fxlabs.issues.converters.account.PrimaryAccountConverter;
 import com.fxlabs.issues.dao.repository.jpa.PrimaryAccountRepository;
 import com.fxlabs.issues.dto.account.PrimaryAccount;
+import com.fxlabs.issues.dto.base.Message;
+import com.fxlabs.issues.dto.base.MessageType;
 import com.fxlabs.issues.dto.base.Response;
 import com.fxlabs.issues.services.base.GenericServiceImpl;
 import com.github.javafaker.Faker;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +50,51 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
         List<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccounts = primaryAccountRepository.findAll();
         return (Response<List<PrimaryAccount>>) primaryAccountConverter.convertToDtos(primaryAccounts);
     }
+
+    @Override
+    public Response<Boolean> depositAmount(PrimaryAccount request, String currentAuditor) {
+
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> account =null;
+//        if(request.getAccountBalance() > 9 ){
+//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,"invalid account number"));
+//        }
+        if (!request.getId().isEmpty() || request.getId() != null) {
+            account = primaryAccountRepository.findById(request.getId()) ;
+
+            Integer presentAmt = Integer.valueOf(String.valueOf(account.get().getAccountBalance()));
+            Integer newAmount = Integer.valueOf(String.valueOf(request.getAccountBalance()))+ presentAmt;
+            System.out.println(presentAmt);
+            account.get().setAccountBalance(BigDecimal.valueOf(newAmount));
+
+        }
+
+            primaryAccountRepository.save(account.get());
+
+        return new Response<>(true);
+    }
+
+    @Override
+    public Response<Boolean> withdrawAmount(PrimaryAccount request, String currentAuditor) {
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> account =null;
+
+//        if(request.getAccountBalance() == null ){
+//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,"invalid amount"));
+//        }
+        if (!request.getId().isEmpty() || request.getId() != null) {
+            account = primaryAccountRepository.findById(request.getId()) ;
+
+            Integer presentAmt = Integer.valueOf(String.valueOf(account.get().getAccountBalance()));
+            Integer newAmount =  presentAmt - Integer.valueOf(String.valueOf(request.getAccountBalance())) ;
+            System.out.println(presentAmt);
+            account.get().setAccountBalance(BigDecimal.valueOf(newAmount));
+
+        }
+
+        primaryAccountRepository.save(account.get());
+
+        return  new Response<>(true);
+    }
+
 
     @Override
     public void isUserEntitled(String s, String user) {

@@ -10,4 +10,7 @@ public interface PrimaryAccountService extends GenericService<PrimaryAccount, St
     Response<PrimaryAccount> findPrimaryAccountById(String id, String currentAuditor);
 
     Response<List<PrimaryAccount>> findAllPrimaryAccount(Integer pageSize,String currentAuditor);
+
+    Response<Boolean> depositAmount(PrimaryAccount request, String currentAuditor);
+    Response<Boolean> withdrawAmount(PrimaryAccount request, String currentAuditor);
 }

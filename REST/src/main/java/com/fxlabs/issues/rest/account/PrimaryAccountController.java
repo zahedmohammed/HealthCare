@@ -61,4 +61,15 @@ public class PrimaryAccountController {
     public Response<PrimaryAccount> deleteById(@PathVariable("id") String id) {
         return primaryAccountService.delete(id, SecurityUtil.getCurrentAuditor());
     }
+
+    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @RequestMapping(value = "/deposit-amount", method = RequestMethod.PUT)
+    public Response<Boolean> deposit(@RequestBody PrimaryAccount request) {
+        return primaryAccountService.depositAmount(request, SecurityUtil.getCurrentAuditor());
+    }
+    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @RequestMapping(value = "/withdraw-amount", method = RequestMethod.PUT)
+    public Response<Boolean> withdraw(@RequestBody PrimaryAccount request) {
+        return primaryAccountService.withdrawAmount(request, SecurityUtil.getCurrentAuditor());
+    }
 }
