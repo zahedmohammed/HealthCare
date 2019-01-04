@@ -20,12 +20,12 @@ import static com.fxlabs.issues.rest.base.BaseController.*;
 @RestController
 @RequestMapping(BaseController.APPOINTMENT_BASE)
 @Validated
-public class AppointmentController {
+public class PrivateMessage {
 
     private AppointmentService appointmentService;
 
     @Autowired
-    public AppointmentController(
+    public PrivateMessage(
             AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
