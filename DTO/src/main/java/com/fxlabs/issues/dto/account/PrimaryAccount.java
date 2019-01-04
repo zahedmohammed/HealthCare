@@ -16,6 +16,6 @@ import java.math.BigDecimal;
 public class PrimaryAccount extends BaseDto<String> {
     private int accountNumber;
     private BigDecimal accountBalance;
-    private NameDto user;
+   // private NameDto user;
 
 }

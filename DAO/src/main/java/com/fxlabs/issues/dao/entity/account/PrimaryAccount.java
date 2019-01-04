@@ -24,9 +24,9 @@ public class PrimaryAccount extends BaseEntity {
     private int accountNumber;
     private BigDecimal accountBalance;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+   /* @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
-    Users user;
+    Users user;*/
 
 
 }

@@ -61,7 +61,7 @@ public class PrivateMessage {
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public Response<Appointment> findByContactName(@RequestParam(value = "contactName", required = true) String contactName) {
         return appointmentService.findByContactName(contactName, SecurityUtil.getCurrentAuditor());
     }

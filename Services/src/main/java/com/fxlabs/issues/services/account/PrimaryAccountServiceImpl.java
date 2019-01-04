@@ -30,7 +30,14 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
 
     @Override
     public Response<PrimaryAccount> findPrimaryAccountById(String id, String currentAuditor) {
-        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional = primaryAccountRepository.findById(id);
+
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional = primaryAccountRepository.findByIdAndCreatedBy(id,currentAuditor);
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional1 = primaryAccountRepository.findById(id);
+        System.out.println("primaryAccountOptional "+primaryAccountOptional);
+        System.out.println("primaryAccountOptional1 "+primaryAccountOptional1);
+        if(primaryAccountOptional1.isPresent() && !primaryAccountOptional.isPresent()){
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "UnAuthorized request for Account"));
+        }
         return new Response<PrimaryAccount>(converter.convertToDto(primaryAccountOptional.get()));
     }
 
