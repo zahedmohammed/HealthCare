@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface PrimaryAccountRepository extends JpaRepository<PrimaryAccount, String> {
     Optional<PrimaryAccount> findByIdAndCreatedBy(String id, String currentAuditor);
+
+    Optional<PrimaryAccount> deleteByIdAndCreatedBy(String id, String currentAuditor);
 }

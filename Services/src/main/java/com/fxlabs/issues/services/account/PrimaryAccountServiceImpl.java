@@ -31,11 +31,9 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
     @Override
     public Response<PrimaryAccount> findPrimaryAccountById(String id, String currentAuditor) {
 
-        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional = primaryAccountRepository.findByIdAndCreatedBy(id,currentAuditor);
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional = primaryAccountRepository.findByIdAndCreatedBy(id, currentAuditor);
         Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional1 = primaryAccountRepository.findById(id);
-        System.out.println("primaryAccountOptional "+primaryAccountOptional);
-        System.out.println("primaryAccountOptional1 "+primaryAccountOptional1);
-        if(primaryAccountOptional1.isPresent() && !primaryAccountOptional.isPresent()){
+        if (primaryAccountOptional1.isPresent() && !primaryAccountOptional.isPresent()) {
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "UnAuthorized request for Account"));
         }
         return new Response<PrimaryAccount>(converter.convertToDto(primaryAccountOptional.get()));
@@ -61,37 +59,15 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
     @Override
     public Response<Boolean> depositAmount(PrimaryAccount request, String currentAuditor) {
 
-        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> account =null;
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> account = null;
 //        if(request.getAccountBalance() > 9 ){
 //            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,"invalid account number"));
 //        }
         if (!request.getId().isEmpty() || request.getId() != null) {
-            account = primaryAccountRepository.findById(request.getId()) ;
+            account = primaryAccountRepository.findById(request.getId());
 
             Integer presentAmt = Integer.valueOf(String.valueOf(account.get().getAccountBalance()));
-            Integer newAmount = Integer.valueOf(String.valueOf(request.getAccountBalance()))+ presentAmt;
-            System.out.println(presentAmt);
-            account.get().setAccountBalance(BigDecimal.valueOf(newAmount));
-
-        }
-
-            primaryAccountRepository.save(account.get());
-
-        return new Response<>(true);
-    }
-
-    @Override
-    public Response<Boolean> withdrawAmount(PrimaryAccount request, String currentAuditor) {
-        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> account =null;
-
-//        if(request.getAccountBalance() == null ){
-//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,"invalid amount"));
-//        }
-        if (!request.getId().isEmpty() || request.getId() != null) {
-            account = primaryAccountRepository.findById(request.getId()) ;
-
-            Integer presentAmt = Integer.valueOf(String.valueOf(account.get().getAccountBalance()));
-            Integer newAmount =  presentAmt - Integer.valueOf(String.valueOf(request.getAccountBalance())) ;
+            Integer newAmount = Integer.valueOf(String.valueOf(request.getAccountBalance())) + presentAmt;
             System.out.println(presentAmt);
             account.get().setAccountBalance(BigDecimal.valueOf(newAmount));
 
@@ -99,7 +75,42 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
 
         primaryAccountRepository.save(account.get());
 
-        return  new Response<>(true);
+        return new Response<>(true);
+    }
+
+    @Override
+    public Response<Boolean> withdrawAmount(PrimaryAccount request, String currentAuditor) {
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> account = null;
+
+//        if(request.getAccountBalance() == null ){
+//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,"invalid amount"));
+//        }
+        if (!request.getId().isEmpty() || request.getId() != null) {
+            account = primaryAccountRepository.findById(request.getId());
+
+            Integer presentAmt = Integer.valueOf(String.valueOf(account.get().getAccountBalance()));
+            Integer newAmount = presentAmt - Integer.valueOf(String.valueOf(request.getAccountBalance()));
+            System.out.println(presentAmt);
+            account.get().setAccountBalance(BigDecimal.valueOf(newAmount));
+
+        }
+
+        primaryAccountRepository.save(account.get());
+
+        return new Response<>(true);
+    }
+
+    @Override
+    public Response<PrimaryAccount> deletePrimaryAccount(String id, String currentAuditor) {
+        Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional1 = primaryAccountRepository.findById(id);
+        if (!currentAuditor.equalsIgnoreCase(primaryAccountOptional1.get().getCreatedBy())) {
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "UnAuthorized request for Delete Account"));
+        }else{
+             Optional<com.fxlabs.issues.dao.entity.account.PrimaryAccount> primaryAccountOptional = primaryAccountRepository.deleteByIdAndCreatedBy(id,currentAuditor);
+            System.out.println("check account "+ primaryAccountOptional);
+            return new Response<PrimaryAccount>(converter.convertToDto(primaryAccountOptional.get()));
+
+        }
     }
 
 

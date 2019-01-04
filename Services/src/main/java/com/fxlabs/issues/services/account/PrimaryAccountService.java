@@ -13,4 +13,6 @@ public interface PrimaryAccountService extends GenericService<PrimaryAccount, St
 
     Response<Boolean> depositAmount(PrimaryAccount request, String currentAuditor);
     Response<Boolean> withdrawAmount(PrimaryAccount request, String currentAuditor);
+
+    Response<PrimaryAccount> deletePrimaryAccount(String id, String currentAuditor);
 }
