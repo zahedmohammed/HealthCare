@@ -12,4 +12,5 @@ public interface AppointmentService extends GenericService<Appointment, String> 
 
     Response<List<Appointment>> findAllAppointments(Integer pageSize,String currentAuditor);
 
-   }
+    Response<Appointment> findByContactName(String contactName, String currentAuditor);
+}

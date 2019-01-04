@@ -25,8 +25,10 @@ public class Appointment extends BaseEntity {
     private String location;
     private String description;
     private boolean confirmed;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    private String contactName;
+   /* @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "users_id")
-    Users user;
+    Users user;*/
+
+
 }

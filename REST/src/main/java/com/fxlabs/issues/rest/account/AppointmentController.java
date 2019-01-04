@@ -60,4 +60,10 @@ public class AppointmentController {
         return appointmentService.delete(id, SecurityUtil.getCurrentAuditor());
     }
 
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public Response<Appointment> findByContactName(@RequestParam(value = "contactName", required = true) String contactName) {
+        return appointmentService.findByContactName(contactName, SecurityUtil.getCurrentAuditor());
+    }
+
 }

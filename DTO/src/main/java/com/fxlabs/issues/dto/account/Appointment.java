@@ -19,6 +19,8 @@ public class Appointment extends BaseDto<String> {
     private String location;
     private String description;
     private boolean confirmed;
-    private NameDto users;
+    private String contactName;
+
+    // private NameDto users;
 
 }

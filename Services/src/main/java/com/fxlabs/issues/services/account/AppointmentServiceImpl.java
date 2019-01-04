@@ -64,6 +64,14 @@ public class AppointmentServiceImpl extends GenericServiceImpl<com.fxlabs.issues
         return new Response<List<Appointment>>(appointmentConverter.convertToDtos(appointmentList));
     }
 
+    @Override
+    public Response<Appointment> findByContactName(String contactName, String currentAuditor) {
+        Optional<com.fxlabs.issues.dao.entity.account.Appointment> optionalAppointment = appointmentRepository.findByContactName(contactName);
+        if (!optionalAppointment.isPresent())
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for search"));
+        return new Response<Appointment>(appointmentConverter.convertToDto(optionalAppointment.get()));
+     }
+
     private com.fxlabs.issues.dao.entity.account.Appointment data() {
 
         com.fxlabs.issues.dao.entity.account.Appointment appointmentData = new com.fxlabs.issues.dao.entity.account.Appointment();
@@ -99,7 +107,7 @@ public class AppointmentServiceImpl extends GenericServiceImpl<com.fxlabs.issues
         user.setCreatedDate(faker.date().birthday());
         user.setModifiedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
         user.setModifiedDate(faker.date().birthday());
-        appointmentData.setUser(user);
+    //    appointmentData.setUser(user);
 
         return appointmentData;
     }
