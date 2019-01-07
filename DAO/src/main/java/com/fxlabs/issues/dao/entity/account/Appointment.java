@@ -21,7 +21,6 @@ import java.util.Date;
 
 public class Appointment extends BaseEntity {
 
-    private Date date;
     private String location;
     private String description;
     private boolean confirmed;

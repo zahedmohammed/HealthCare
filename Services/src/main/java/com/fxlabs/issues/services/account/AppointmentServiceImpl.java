@@ -81,7 +81,9 @@ public class AppointmentServiceImpl extends GenericServiceImpl<com.fxlabs.issues
         String description = String.valueOf(faker.random());
         boolean confirmed = Boolean.valueOf(faker.bool().bool()) ;
 
+/*
         appointmentData.setDate(date);
+*/
         appointmentData.setLocation(location);
         appointmentData.setDescription(description);
         appointmentData.setConfirmed(confirmed);

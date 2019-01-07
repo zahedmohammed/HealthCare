@@ -58,7 +58,7 @@ public class PrimaryAccountController {
 
     @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/primary-account/{id}", method = RequestMethod.DELETE)
-    public Response<PrimaryAccount> deleteById(@PathVariable("id") String id) {
+    public Response<Boolean> deleteById(@PathVariable("id") String id) {
         return primaryAccountService.deletePrimaryAccount(id, SecurityUtil.getCurrentAuditor());
     }
 
