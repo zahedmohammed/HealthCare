@@ -13,9 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Appointment extends BaseDto<String> {
+public class RecentTransaction extends BaseDto<String> {
 
-     private String location;
+    private String location;
     private String description;
     private boolean confirmed;
     private String contactName;

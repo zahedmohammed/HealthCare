@@ -19,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 
-public class Appointment extends BaseEntity {
+public class RecentTransaction extends BaseEntity {
 
     private String location;
     private String description;

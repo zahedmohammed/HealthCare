@@ -27,7 +27,7 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String PRIMARY_TRANSACTION_BASE = API_BASE + "/primary-transaction";
     public static final String SAVINGS_TRANSACTION_BASE = API_BASE + "/savings-transaction";
     public static final String RECEPIENT_BASE = API_BASE + "/recepient";
-    public static final String APPOINTMENT_BASE = API_BASE + "/appointment";
+    public static final String RECENTTRANSACTION_BASE = API_BASE + "/recenttransactions";
 
 
 
