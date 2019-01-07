@@ -22,8 +22,8 @@ import static com.fxlabs.issues.rest.base.BaseController.*;
 /**
  * Mohammed Shoukath Ali
  */
-@RestController
-@RequestMapping(EVENT)
+//@RestController
+//@RequestMapping(EVENT)
 public class EventController {
 
     private OrgUsersService orgUsersService;
@@ -90,11 +90,11 @@ public class EventController {
         return orgService.findOrgUsers(id, SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
-    /*@Secured(ROLE_USER)
+    @Secured(ROLE_USER)
     @RequestMapping(value = "org-user", method = RequestMethod.POST)
     public Response<OrgUsers> createOrgUser(@RequestBody OrgUsers request) {
         return orgUsersService.save(request, SecurityUtil.getCurrentAuditor());
-    }*/
+    }
 
     @Secured({ROLE_ADMIN})
     @RequestMapping(value = "/{branchId}/users/{userId}", method = RequestMethod.PUT)
