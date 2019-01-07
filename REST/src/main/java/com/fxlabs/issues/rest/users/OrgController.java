@@ -67,6 +67,13 @@ public class OrgController {
         return orgService.findAll(SecurityUtil.getCurrentAuditor(), PageRequest.of(page, pageSize, DEFAULT_SORT));
     }
 
+    @Secured({ROLE_USER, ROLE_PROJECT_MANAGER, ROLE_ADMIN})
+    @RequestMapping(value = "/allorgs", method = RequestMethod.GET)
+    public Response<List<Org>> findAllOrgs(@RequestParam(value = PAGE_PARAM, defaultValue = DEFAULT_PAGE_VALUE, required = false) Integer page,
+                                       @RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Min(1) @Max(100) Integer pageSize) {
+        return orgService.findAllOrgs(PageRequest.of(page, pageSize, DEFAULT_SORT));
+    }
+
     @Secured({ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Org> findById(@PathVariable("id") String id) {

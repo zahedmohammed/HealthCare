@@ -89,6 +89,18 @@ public class OrgServiceImpl extends GenericServiceImpl<Org, com.fxlabs.issues.dt
     }
 
     @Override
+    public Response<List<com.fxlabs.issues.dto.users.Org>> findAllOrgs(Pageable pageable) {
+
+        Page<OrgUsers> orgUsers = orgUsersRepository.findAll(pageable);
+
+        List<Org> orgs = new ArrayList<>();
+        orgUsers.forEach(ou -> {
+            orgs.add(ou.getOrg());
+        });
+        return new Response<>(converter.convertToDtos(orgs), orgUsers.getTotalElements(), orgs.size());
+    }
+
+    @Override
     public Response<com.fxlabs.issues.dto.users.Org> save(com.fxlabs.issues.dto.users.Org dto, String user) {
         // check dup name
         Optional<Org> orgOptional = orgRepository.findByName(dto.getName());

@@ -42,4 +42,6 @@ public interface OrgService extends GenericService<Org, String> {
     Response<Org> findByName(String orgName);
 
     Response<List<Org>> searchOrg(String keyword, String user, Pageable pageable);
+
+    public Response<List<com.fxlabs.issues.dto.users.Org>> findAllOrgs(Pageable pageable);
 }
