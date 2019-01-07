@@ -93,7 +93,7 @@ public class OrgController {
         return orgService.update(dto, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_ENTERPRISE_ADMIN})
+    @Secured({ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Org> delete(@PathVariable("id") String id) {
         return orgService.delete(id, SecurityUtil.getCurrentAuditor());
