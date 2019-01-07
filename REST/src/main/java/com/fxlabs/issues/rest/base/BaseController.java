@@ -14,7 +14,7 @@ public abstract class BaseController<D, ID extends Serializable> {
 
     public static final String API_BASE = "/api/v1";
     public static final String USER_BASE = API_BASE + "/users";
-    public static final String ORG_BASE = API_BASE + "/branches";
+    public static final String ORG_BASE = API_BASE + "/orgs";
     public static final String BRANCH_BASE = API_BASE + "/branches";
 
     public static final String EVENT = API_BASE + "/events";

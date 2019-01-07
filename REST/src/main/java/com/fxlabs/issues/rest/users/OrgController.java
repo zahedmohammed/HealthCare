@@ -23,7 +23,7 @@ import static com.fxlabs.issues.rest.base.BaseController.*;
  * Mohammed Shoukath Ali
  */
 @RestController
-@RequestMapping(BRANCH_BASE)
+@RequestMapping(ORG_BASE)
 public class OrgController {
 
     private OrgUsersService orgUsersService;
