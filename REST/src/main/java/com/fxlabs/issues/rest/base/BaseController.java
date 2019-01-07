@@ -15,12 +15,13 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String API_BASE = "/api/v1";
     public static final String USER_BASE = API_BASE + "/users";
     public static final String ORG_BASE = API_BASE + "/branches";
+    public static final String BRANCH_BASE = API_BASE + "/branches";
 
     public static final String EVENT = API_BASE + "/events";
     public static final String PROJECTS_BASE = API_BASE + "/products";
 
     public static final String ISSUE_BASE = API_BASE + "/issues";
-    public static final String BRANCH_BASE = API_BASE + "/branch-location";
+    public static final String BRANCH_LOCATION_BASE = API_BASE + "/branch-location";
     public static final String PRIMARY_ACCOUNT_BASE = API_BASE + "/primary-account";
     public static final String SAVINGS_ACCOUNT_BASE = API_BASE + "/savings-account";
     public static final String PRIMARY_TRANSACTION_BASE = API_BASE + "/primary-transaction";
