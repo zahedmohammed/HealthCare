@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface RecentTransactionRepository extends JpaRepository<RecentTransaction, String> {
 
-    Optional<RecentTransaction> findByContactName(String contactName);
+  //  Optional<RecentTransaction> findByContactName(String contactName);
 }

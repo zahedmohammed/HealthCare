@@ -60,10 +60,4 @@ public class RecentTransactionController {
         return recentTransactionService.delete(id, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Response<RecentTransaction> findByContactName(@RequestParam(value = "contactName", required = true) String contactName) {
-        return recentTransactionService.findByContactName(contactName, SecurityUtil.getCurrentAuditor());
-    }
-
 }

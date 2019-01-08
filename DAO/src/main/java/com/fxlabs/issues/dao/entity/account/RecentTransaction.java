@@ -24,7 +24,7 @@ public class RecentTransaction extends BaseEntity {
     private String location;
     private String description;
     private boolean confirmed;
-    private String contactName;
+   // private String contactName;
    /* @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "users_id")
     Users user;*/

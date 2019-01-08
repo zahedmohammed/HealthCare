@@ -46,19 +46,19 @@ public class SavingsAccountController {
         return savingsAccountService.findAllSavingsAccount(pageSize,SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/savings-account", method = RequestMethod.POST)
     public Response<SavingsAccount> add(@RequestBody SavingsAccount request) {
         return savingsAccountService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/savings-account", method = RequestMethod.PUT)
     public Response<SavingsAccount> update(@RequestBody SavingsAccount request) {
         return savingsAccountService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/savings-account/{id}", method = RequestMethod.DELETE)
     public Response<SavingsAccount> deleteById(@PathVariable("id") String id) {
         return savingsAccountService.delete(id, SecurityUtil.getCurrentAuditor());

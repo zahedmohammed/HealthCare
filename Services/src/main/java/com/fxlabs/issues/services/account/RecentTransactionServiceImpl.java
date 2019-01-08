@@ -63,13 +63,13 @@ public class RecentTransactionServiceImpl extends GenericServiceImpl<com.fxlabs.
         return new Response<List<RecentTransaction>>(recentTransactionConverter.convertToDtos(appointmentList));
     }
 
-    @Override
-    public Response<RecentTransaction> findByContactName(String contactName, String currentAuditor) {
-        Optional<com.fxlabs.issues.dao.entity.account.RecentTransaction> optionalAppointment = recentTransactionRepository.findByContactName(contactName);
-        if (!optionalAppointment.isPresent())
-            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for recent transactions"));
-        return new Response<RecentTransaction>(recentTransactionConverter.convertToDto(optionalAppointment.get()));
-     }
+//    @Override
+//    public Response<RecentTransaction> findByContactName(String contactName, String currentAuditor) {
+//        Optional<com.fxlabs.issues.dao.entity.account.RecentTransaction> optionalAppointment = recentTransactionRepository.findByContactName(contactName);
+//        if (!optionalAppointment.isPresent())
+//            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for recent transactions"));
+//        return new Response<RecentTransaction>(recentTransactionConverter.convertToDto(optionalAppointment.get()));
+//     }
 
     private com.fxlabs.issues.dao.entity.account.RecentTransaction data() {
 

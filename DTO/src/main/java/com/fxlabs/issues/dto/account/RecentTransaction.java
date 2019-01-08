@@ -18,7 +18,7 @@ public class RecentTransaction extends BaseDto<String> {
     private String location;
     private String description;
     private boolean confirmed;
-    private String contactName;
+  //  private String contactName;
 
     // private NameDto users;
 

@@ -12,5 +12,5 @@ public interface RecentTransactionService extends GenericService<RecentTransacti
 
     Response<List<RecentTransaction>> findAllRecentTransactions(Integer pageSize, String currentAuditor);
 
-    Response<RecentTransaction> findByContactName(String contactName, String currentAuditor);
+  //  Response<RecentTransaction> findByContactName(String contactName, String currentAuditor);
 }
