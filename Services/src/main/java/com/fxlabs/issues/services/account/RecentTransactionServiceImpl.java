@@ -46,21 +46,21 @@ public class RecentTransactionServiceImpl extends GenericServiceImpl<com.fxlabs.
 
     @Override
     public Response<List<RecentTransaction>> findAllRecentTransactions(Integer pageSize, String currentAuditor) {
-        List<com.fxlabs.issues.dao.entity.account.RecentTransaction> appointmentList = new ArrayList<>();
-        Faker faker = new Faker();
-        int size;
-        if (pageSize > 999) {
-            size = faker.random().nextInt(1000, 1500);
-        } else {
-            size = pageSize;
-        }
+        List<com.fxlabs.issues.dao.entity.account.RecentTransaction> recentTransactionList = recentTransactionRepository.findAll();
+//        Faker faker = new Faker();
+//        int size;
+//        if (pageSize > 999) {
+//            size = faker.random().nextInt(1000, 1500);
+//        } else {
+//            size = pageSize;
+//        }
+//
+//        for (int i = 0; i < size; i++) {
+//            appointmentList.add(i, data());
+//            System.out.println("Check Data ----" + appointmentList.toString());
+//        }
 
-        for (int i = 0; i < size; i++) {
-            appointmentList.add(i, data());
-            System.out.println("Check Data ----" + appointmentList.toString());
-        }
-
-        return new Response<List<RecentTransaction>>(recentTransactionConverter.convertToDtos(appointmentList));
+        return new Response<List<RecentTransaction>>(recentTransactionConverter.convertToDtos(recentTransactionList));
     }
 
 //    @Override
@@ -71,47 +71,47 @@ public class RecentTransactionServiceImpl extends GenericServiceImpl<com.fxlabs.
 //        return new Response<RecentTransaction>(recentTransactionConverter.convertToDto(optionalAppointment.get()));
 //     }
 
-    private com.fxlabs.issues.dao.entity.account.RecentTransaction data() {
-
-        com.fxlabs.issues.dao.entity.account.RecentTransaction recentTransactionData = new com.fxlabs.issues.dao.entity.account.RecentTransaction();
-        Faker faker = new Faker();
-        Date date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        String location = String.valueOf(faker.random());
-        String description = String.valueOf(faker.random());
-        boolean confirmed = Boolean.valueOf(faker.bool().bool()) ;
-
-/*
-        appointmentData.setDate(date);
-*/
-        recentTransactionData.setLocation(location);
-        recentTransactionData.setDescription(description);
-        recentTransactionData.setConfirmed(confirmed);
-        recentTransactionData.setCreatedDate(faker.date().birthday());
-        recentTransactionData.setModifiedDate(faker.date().birthday());
-        recentTransactionData.setId(faker.idNumber().valid());
-        recentTransactionData.setCreatedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-        recentTransactionData.setModifiedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-
-        Users user = new Users();
-        user.setAccountNonExpired(faker.bool().bool());
-        user.setAccountNonLocked(faker.bool().bool());
-        user.setAccountNumber(faker.number().numberBetween(1,10));
-        user.setCompany(faker.company().industry());
-        user.setEmail(faker.internet().emailAddress());
-        user.setLocation(faker.address().fullAddress());
-        user.setEnabled(faker.bool().bool());
-        user.setJobTitle(faker.job().title());
-        user.setName(faker.name().name());
-        user.setUsername(faker.name().username());
-        user.setCreatedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-        user.setId(faker.idNumber().valid());
-        user.setCreatedDate(faker.date().birthday());
-        user.setModifiedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-        user.setModifiedDate(faker.date().birthday());
-    //    appointmentData.setUser(user);
-
-        return recentTransactionData;
-    }
+//    private com.fxlabs.issues.dao.entity.account.RecentTransaction data() {
+//
+//        com.fxlabs.issues.dao.entity.account.RecentTransaction recentTransactionData = new com.fxlabs.issues.dao.entity.account.RecentTransaction();
+//        Faker faker = new Faker();
+//        Date date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//        String location = String.valueOf(faker.random());
+//        String description = String.valueOf(faker.random());
+//        boolean confirmed = Boolean.valueOf(faker.bool().bool()) ;
+//
+///*
+//        appointmentData.setDate(date);
+//*/
+//        recentTransactionData.setLocation(location);
+//        recentTransactionData.setDescription(description);
+//        recentTransactionData.setConfirmed(confirmed);
+//        recentTransactionData.setCreatedDate(faker.date().birthday());
+//        recentTransactionData.setModifiedDate(faker.date().birthday());
+//        recentTransactionData.setId(faker.idNumber().valid());
+//        recentTransactionData.setCreatedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+//        recentTransactionData.setModifiedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+//
+//        Users user = new Users();
+//        user.setAccountNonExpired(faker.bool().bool());
+//        user.setAccountNonLocked(faker.bool().bool());
+//        user.setAccountNumber(faker.number().numberBetween(1,10));
+//        user.setCompany(faker.company().industry());
+//        user.setEmail(faker.internet().emailAddress());
+//        user.setLocation(faker.address().fullAddress());
+//        user.setEnabled(faker.bool().bool());
+//        user.setJobTitle(faker.job().title());
+//        user.setName(faker.name().name());
+//        user.setUsername(faker.name().username());
+//        user.setCreatedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+//        user.setId(faker.idNumber().valid());
+//        user.setCreatedDate(faker.date().birthday());
+//        user.setModifiedBy(faker.numerify("abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+//        user.setModifiedDate(faker.date().birthday());
+//    //    appointmentData.setUser(user);
+//
+//        return recentTransactionData;
+//    }
 
     @Override
     public void isUserEntitled(String s, String user) {
