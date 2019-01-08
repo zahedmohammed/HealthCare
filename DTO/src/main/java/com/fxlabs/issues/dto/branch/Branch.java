@@ -21,7 +21,7 @@ public class Branch extends BaseDto<String> {
     private String customerSegment;
     private String faxNumber;
 
-    NameDto address;
+ //   NameDto address;
 
 
 }

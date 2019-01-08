@@ -32,15 +32,12 @@ public class BranchLocationController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response<Branch> findBranchById(@PathVariable("id") String id) {
 
-
         return branchService.findBranchById(id, SecurityUtil.getCurrentAuditor());
     }
 
     @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.GET)
     public Response<List<Branch>> findAllBranches() {
-
-
         return branchService.findAllBranches(SecurityUtil.getCurrentAuditor());
     }
 

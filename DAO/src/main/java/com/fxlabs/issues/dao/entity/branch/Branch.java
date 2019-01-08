@@ -23,7 +23,7 @@ public class Branch extends BaseEntity {
     private String customerSegment;
     private String faxNumber;
 
-    Address address;
+   // Address address;
 
 
 }
