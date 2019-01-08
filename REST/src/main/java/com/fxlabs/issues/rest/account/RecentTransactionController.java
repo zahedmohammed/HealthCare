@@ -42,19 +42,19 @@ public class RecentTransactionController {
         return recentTransactionService.findAllRecentTransactions(pageSize, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER,  ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<RecentTransaction> add(@RequestBody RecentTransaction request) {
         return recentTransactionService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER,  ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<RecentTransaction> update(@RequestBody RecentTransaction request) {
         return recentTransactionService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<RecentTransaction> deleteById(@PathVariable("id") String id) {
         return recentTransactionService.delete(id, SecurityUtil.getCurrentAuditor());

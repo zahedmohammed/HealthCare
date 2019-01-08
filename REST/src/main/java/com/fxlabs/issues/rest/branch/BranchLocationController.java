@@ -41,19 +41,19 @@ public class BranchLocationController {
         return branchService.findAllBranches(SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER,  BaseController.ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Branch> add(@RequestBody Branch request) {
         return branchService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER,  BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public Response<Branch> update(@RequestBody Branch request) {
         return branchService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER,  BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Branch> deleteById(@PathVariable("id") String id) {
         return branchService.delete(id, SecurityUtil.getCurrentAuditor());

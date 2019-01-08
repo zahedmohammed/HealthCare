@@ -35,25 +35,25 @@ public class RecepientController {
         return recepientService.findRecepientById(id, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER,  ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.GET)
     public Response<List<Recepient>> findAllRecepients(@RequestParam(value = PAGE_SIZE_PARAM, defaultValue = DEFAULT_PAGE_SIZE_VALUE, required = false) @Min(1) @Max(2000) Integer pageSize) {
         return recepientService.findAllRecepients(pageSize, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Response<Recepient> addRecepient(@RequestBody Recepient request) {
         return recepientService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response<Recepient> update(@RequestBody Recepient request) {
         return recepientService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, ROLE_USER, ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, ROLE_ADMIN})
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Response<Recepient> deleteById(@PathVariable("id") String id) {
         return recepientService.delete(id, SecurityUtil.getCurrentAuditor());

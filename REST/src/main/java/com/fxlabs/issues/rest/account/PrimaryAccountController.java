@@ -44,19 +44,19 @@ public class PrimaryAccountController {
         return primaryAccountService.findAllPrimaryAccount(pageSize,SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/primary-account", method = RequestMethod.POST)
     public Response<PrimaryAccount> add(@RequestBody PrimaryAccount request) {
         return primaryAccountService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER,  BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/primary-account", method = RequestMethod.PUT)
     public Response<PrimaryAccount> update(@RequestBody PrimaryAccount request) {
         return primaryAccountService.save(request, SecurityUtil.getCurrentAuditor());
     }
 
-    @Secured({ROLE_PROJECT_MANAGER, BaseController.ROLE_USER, BaseController.ROLE_ADMIN})
+    @Secured({ROLE_PROJECT_MANAGER,  BaseController.ROLE_ADMIN})
     @RequestMapping(value = "/primary-account/{id}", method = RequestMethod.DELETE)
     public Response<Boolean> deleteById(@PathVariable("id") String id) {
         return primaryAccountService.deletePrimaryAccount(id, SecurityUtil.getCurrentAuditor());
