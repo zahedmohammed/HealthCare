@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -25,9 +22,9 @@ public class RecentTransaction extends BaseEntity {
     private String description;
     private boolean confirmed;
    // private String contactName;
-   /* @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "users_id")
-    Users user;*/
-
-
+    @Enumerated (EnumType.STRING)
+    private TransactionType transactionType;
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "user_id")
+    Users user;
 }

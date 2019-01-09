@@ -19,7 +19,7 @@ public class RecentTransaction extends BaseDto<String> {
     private String description;
     private boolean confirmed;
   //  private String contactName;
-
-    // private NameDto users;
+    private TransactionType transactionType;
+    private NameDto users;
 
 }
