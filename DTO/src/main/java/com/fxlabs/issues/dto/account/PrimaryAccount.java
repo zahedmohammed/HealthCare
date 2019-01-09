@@ -14,8 +14,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class PrimaryAccount extends BaseDto<String> {
-    private int accountNumber;
-    private BigDecimal accountBalance;
-   // private NameDto user;
+    private long accountNumber;
+    private long accountBalance;
+    private AccountType accountType;
+    private NameDto user;
 
 }

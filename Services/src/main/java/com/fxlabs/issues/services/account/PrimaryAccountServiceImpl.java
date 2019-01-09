@@ -70,17 +70,23 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
 //        if(request.getAccountBalance() > 9 ){
 //            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,"invalid account number"));
 //        }
+
         if (!request.getId().isEmpty() || request.getId() != null) {
             account = primaryAccountRepository.findById(request.getId());
 
-            Integer presentAmt = Integer.valueOf(String.valueOf(account.get().getAccountBalance()));
-            Integer newAmount = Integer.valueOf(String.valueOf(request.getAccountBalance())) + presentAmt;
-            System.out.println(presentAmt);
-            account.get().setAccountBalance(BigDecimal.valueOf(newAmount));
+            if (request.getAccountType().toString().equalsIgnoreCase("saving") ||
+                    request.getAccountType().toString().equalsIgnoreCase("current")) {
 
+                Integer presentAmt = Integer.valueOf(String.valueOf(account.get().getAccountBalance()));
+                Integer newAmount = Integer.valueOf(String.valueOf(request.getAccountBalance())) + presentAmt;
+                System.out.println(presentAmt);
+                account.get().setAccountBalance(Integer.valueOf(newAmount));
+
+            }
+            else
+            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null,"invalid account type"));
         }
-
-        primaryAccountRepository.save(account.get());
+         primaryAccountRepository.save(account.get());
 
         return new Response<>(true);
     }
@@ -98,7 +104,7 @@ public class PrimaryAccountServiceImpl extends GenericServiceImpl<com.fxlabs.iss
             Integer presentAmt = Integer.valueOf(String.valueOf(account.get().getAccountBalance()));
             Integer newAmount = presentAmt - Integer.valueOf(String.valueOf(request.getAccountBalance()));
             System.out.println(presentAmt);
-            account.get().setAccountBalance(BigDecimal.valueOf(newAmount));
+            account.get().setAccountBalance(Integer.valueOf(newAmount));
 
         }
 
