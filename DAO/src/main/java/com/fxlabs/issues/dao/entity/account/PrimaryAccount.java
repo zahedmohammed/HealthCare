@@ -23,9 +23,9 @@ public class PrimaryAccount extends BaseEntity {
     @Enumerated (EnumType.STRING)
     private AccountType accountType; //Saving | Current
 
-    @OneToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "user_id")
-    Users user;
+//    @OneToOne(cascade = CascadeType.REFRESH)
+//    @JoinColumn(name = "user_id")
+//    Users user;
 
 
 }

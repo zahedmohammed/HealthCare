@@ -17,6 +17,6 @@ public class PrimaryAccount extends BaseDto<String> {
     private long accountNumber;
     private long accountBalance;
     private AccountType accountType;
-    private NameDto user;
+//    private NameDto user;
 
 }

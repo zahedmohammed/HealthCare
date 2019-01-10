@@ -24,7 +24,7 @@ public class RecentTransaction extends BaseEntity {
    // private String contactName;
     @Enumerated (EnumType.STRING)
     private TransactionType transactionType;
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "user_id")
-    Users user;
+//    @ManyToOne(cascade = CascadeType.REFRESH)
+//    @JoinColumn(name = "user_id")
+//    Users user;
 }
