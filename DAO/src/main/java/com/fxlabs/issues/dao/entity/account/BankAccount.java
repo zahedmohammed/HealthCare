@@ -8,23 +8,22 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+public class BankAccount extends BaseEntity {
+    //@Min(10)
+    private long accountNumber;
+    private long accountBalance;
+//    @Enumerated (EnumType.STRING)
+//    private AccountType accountType; //Saving | Current
 
-public class RecentTransaction extends BaseEntity {
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "user_id")
+    Users user;
 
-    private String location;
-    private String description;
-    private boolean confirmed;
-   // private String contactName;
-    @Enumerated (EnumType.STRING)
-    private TransactionType transactionType;
-//    @ManyToOne(cascade = CascadeType.REFRESH)
-//    @JoinColumn(name = "user_id")
-//    Users user;
+
 }

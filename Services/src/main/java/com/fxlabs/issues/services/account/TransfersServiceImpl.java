@@ -1,52 +1,46 @@
 package com.fxlabs.issues.services.account;
 
-import com.fxlabs.issues.converters.account.RecentTransactionConverter;
-import com.fxlabs.issues.dao.entity.users.Users;
-import com.fxlabs.issues.dto.account.RecentTransaction;
-import com.fxlabs.issues.dao.repository.jpa.RecentTransactionRepository;
+import com.fxlabs.issues.converters.account.TransfersConverter;
+import com.fxlabs.issues.dto.account.Transfers;
+import com.fxlabs.issues.dao.repository.jpa.TransfersRepository;
 import com.fxlabs.issues.dto.base.Message;
 import com.fxlabs.issues.dto.base.MessageType;
 import com.fxlabs.issues.dto.base.Response;
 import com.fxlabs.issues.services.base.GenericServiceImpl;
-import com.github.javafaker.Faker;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 
-public class RecentTransactionServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.entity.account.RecentTransaction, RecentTransaction, String> implements RecentTransactionService {
+public class TransfersServiceImpl extends GenericServiceImpl<com.fxlabs.issues.dao.entity.account.Transfers, Transfers, String> implements TransfersService {
 
-    private RecentTransactionConverter recentTransactionConverter;
-    private RecentTransactionRepository recentTransactionRepository;
+    private TransfersConverter transfersConverter;
+    private TransfersRepository transfersRepository;
 
-    public RecentTransactionServiceImpl(RecentTransactionRepository recentTransactionRepository, RecentTransactionConverter recentTransactionConverter) {
-        super(recentTransactionRepository, recentTransactionConverter);
-        this.recentTransactionConverter = recentTransactionConverter;
-        this.recentTransactionRepository = recentTransactionRepository;
+    public TransfersServiceImpl(TransfersRepository transfersRepository, TransfersConverter transfersConverter) {
+        super(transfersRepository, transfersConverter);
+        this.transfersConverter = transfersConverter;
+        this.transfersRepository = transfersRepository;
     }
 
     @Override
-    public Response<RecentTransaction> findRecentTransactionById(String id, String currentAuditor) {
+    public Response<Transfers> findTransfersById(String id, String currentAuditor) {
 
         //Todo - isuserentitled
-        Optional<com.fxlabs.issues.dao.entity.account.RecentTransaction> optionalAppointment = recentTransactionRepository.findById(id);
+        Optional<com.fxlabs.issues.dao.entity.account.Transfers> optionalAppointment = transfersRepository.findById(id);
         if (!optionalAppointment.isPresent())
             return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for appointment"));
-        return new Response<RecentTransaction>(recentTransactionConverter.convertToDto(optionalAppointment.get()));
+        return new Response<Transfers>(transfersConverter.convertToDto(optionalAppointment.get()));
 
     }
 
     @Override
-    public Response<List<RecentTransaction>> findAllRecentTransactions(Integer pageSize, String currentAuditor) {
-        List<com.fxlabs.issues.dao.entity.account.RecentTransaction> recentTransactionList = recentTransactionRepository.findAll();
+    public Response<List<Transfers>> findAllTransfers(Integer pageSize, String currentAuditor) {
+        List<com.fxlabs.issues.dao.entity.account.Transfers> transfersList = transfersRepository.findAll();
 //        Faker faker = new Faker();
 //        int size;
 //        if (pageSize > 999) {
@@ -60,20 +54,20 @@ public class RecentTransactionServiceImpl extends GenericServiceImpl<com.fxlabs.
 //            System.out.println("Check Data ----" + appointmentList.toString());
 //        }
 
-        return new Response<List<RecentTransaction>>(recentTransactionConverter.convertToDtos(recentTransactionList));
+        return new Response<List<Transfers>>(transfersConverter.convertToDtos(transfersList));
     }
 
 //    @Override
-//    public Response<RecentTransaction> findByContactName(String contactName, String currentAuditor) {
-//        Optional<com.fxlabs.issues.dao.entity.account.RecentTransaction> optionalAppointment = recentTransactionRepository.findByContactName(contactName);
+//    public Response<Transfers> findByContactName(String contactName, String currentAuditor) {
+//        Optional<com.fxlabs.issues.dao.entity.account.Transfers> optionalAppointment = recentTransactionRepository.findByContactName(contactName);
 //        if (!optionalAppointment.isPresent())
 //            return new Response<>().withErrors(true).withMessage(new Message(MessageType.ERROR, null, "Invalid request for recent transactions"));
-//        return new Response<RecentTransaction>(recentTransactionConverter.convertToDto(optionalAppointment.get()));
+//        return new Response<Transfers>(recentTransactionConverter.convertToDto(optionalAppointment.get()));
 //     }
 
-//    private com.fxlabs.issues.dao.entity.account.RecentTransaction data() {
+//    private com.fxlabs.issues.dao.entity.account.Transfers data() {
 //
-//        com.fxlabs.issues.dao.entity.account.RecentTransaction recentTransactionData = new com.fxlabs.issues.dao.entity.account.RecentTransaction();
+//        com.fxlabs.issues.dao.entity.account.Transfers recentTransactionData = new com.fxlabs.issues.dao.entity.account.Transfers();
 //        Faker faker = new Faker();
 //        Date date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 //        String location = String.valueOf(faker.random());

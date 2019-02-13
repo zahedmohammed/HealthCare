@@ -7,19 +7,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class RecentTransaction extends BaseDto<String> {
-
-    private String location;
-    private String description;
-    private boolean confirmed;
-  //  private String contactName;
-    private TransactionType transactionType;
-//    private NameDto users;
-
+public class BankAccount extends BaseDto<String> {
+    private long accountNumber;
+    private long accountBalance;
+//    private AccountType accountType;
+    private NameDto user;
 }

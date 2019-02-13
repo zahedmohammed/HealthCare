@@ -23,11 +23,12 @@ public abstract class BaseController<D, ID extends Serializable> {
     public static final String ISSUE_BASE = API_BASE + "/issues";
     public static final String BRANCH_LOCATION_BASE = API_BASE + "/branch-location";
     public static final String PRIMARY_ACCOUNT_BASE = API_BASE + "/primary-account";
+    public static final String BANK_ACCOUNT_BASE = API_BASE + "/bank-account";
     public static final String SAVINGS_ACCOUNT_BASE = API_BASE + "/savings-account";
     public static final String PRIMARY_TRANSACTION_BASE = API_BASE + "/primary-transaction";
     public static final String SAVINGS_TRANSACTION_BASE = API_BASE + "/savings-transaction";
     public static final String RECEPIENT_BASE = API_BASE + "/recepient";
-    public static final String RECENTTRANSACTION_BASE = API_BASE + "/recenttransactions";
+    public static final String TRANSSFERS_BASE = API_BASE + "/transfers";
 
 
 
