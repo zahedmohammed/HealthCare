@@ -2,7 +2,7 @@
 
 -- Table: secondary account
 
-CREATE TABLE bank_Account
+CREATE TABLE bank_account
 (
   id character varying(255) NOT NULL,
   created_by character varying(255),
